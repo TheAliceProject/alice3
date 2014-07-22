@@ -101,7 +101,7 @@ public class MouseClickEventImp {
 			if( this.scene != null ) {
 				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = this.getOnscreenLookingGlass();
 				if( lg != null ) {
-					edu.cmu.cs.dennisc.renderer.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
+					edu.cmu.cs.dennisc.renderer.PickResult pickResult = lg.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
 					if( pickResult != null ) {
 						edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 						if( sgVisual != null ) {

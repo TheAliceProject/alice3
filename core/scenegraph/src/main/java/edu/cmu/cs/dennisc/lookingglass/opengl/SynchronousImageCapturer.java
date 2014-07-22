@@ -40,11 +40,65 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.pictureplane;
+package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface OnscreenPicturePlane extends PicturePlane {
-	public java.awt.Component getAwtComponent();
+public class SynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.SynchronousImageCapturer {
+	public SynchronousImageCapturer( AbstractLookingGlass lookingGlass ) {
+		this.lookingGlass = lookingGlass;
+	}
+
+	@Override
+	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer() {
+		return this.lookingGlass.getGlEventAdapter().createBufferedImageForUseAsColorBuffer();
+	}
+
+	@Override
+	public java.awt.image.BufferedImage getColorBufferNotBotheringToFlipVertically( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown ) {
+		return this.lookingGlass.getGlEventAdapter().getColorBuffer( rv, atIsUpsideDown );
+	}
+
+	@Override
+	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
+		return this.lookingGlass.getGlEventAdapter().getColorBuffer( rv, null );
+	}
+
+	@Override
+	public final java.awt.image.BufferedImage getColorBuffer() {
+		return getColorBuffer( createBufferedImageForUseAsColorBuffer() );
+	}
+
+	@Override
+	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
+		return this.lookingGlass.getGlEventAdapter().createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
+	}
+
+	@Override
+	public java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer() {
+		return this.lookingGlass.getGlEventAdapter().createFloatBufferForUseAsDepthBuffer();
+	}
+
+	@Override
+	public java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv ) {
+		return this.lookingGlass.getGlEventAdapter().getDepthBuffer( rv );
+	}
+
+	@Override
+	public final java.nio.FloatBuffer getDepthBuffer() {
+		return getDepthBuffer( createFloatBufferForUseAsDepthBuffer() );
+	}
+
+	@Override
+	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer ) {
+		return this.lookingGlass.getGlEventAdapter().getColorBufferWithTransparencyBasedOnDepthBuffer( rv, depthBuffer, null );
+	}
+
+	@Override
+	public final java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer() {
+		return getColorBufferWithTransparencyBasedOnDepthBuffer( createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer(), createFloatBufferForUseAsDepthBuffer() );
+	}
+
+	private final AbstractLookingGlass lookingGlass;
 }

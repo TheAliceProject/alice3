@@ -40,13 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass.event;
+package edu.cmu.cs.dennisc.ui.imageeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LookingGlassEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.lookingglass.LookingGlass> {
-	public LookingGlassEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
-		super( lookingGlass );
+public class ImageEditor extends javax.swing.JFrame {
+	private ImagePane m_imagePane = new ImagePane();
+
+	public ImageEditor() {
+		class MyFileTransferHandler extends edu.cmu.cs.dennisc.javax.swing.transfer.FileTransferHandler {
+			@Override
+			protected void handleFiles( java.util.List<java.io.File> files ) {
+				java.io.File file0 = files.get( 0 );
+				try {
+					ImageEditor.this.load( file0 );
+				} catch( java.io.IOException ioe ) {
+					throw new RuntimeException( file0.getAbsolutePath(), ioe );
+				}
+			}
+		}
+
+		MyFileTransferHandler myFileTransferHandler = new MyFileTransferHandler();
+		m_imagePane.setTransferHandler( myFileTransferHandler );
+		getContentPane().add( m_imagePane, java.awt.BorderLayout.CENTER );
+	}
+
+	private void load( java.io.File file ) throws java.io.IOException {
+		m_imagePane.setImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( file ) );
+	}
+
+	public static void main( String[] args ) {
+		ImageEditor imageEditor = new ImageEditor();
+		imageEditor.setDefaultCloseOperation( javax.swing.WindowConstants.EXIT_ON_CLOSE );
+		imageEditor.pack();
+		imageEditor.setVisible( true );
 	}
 }

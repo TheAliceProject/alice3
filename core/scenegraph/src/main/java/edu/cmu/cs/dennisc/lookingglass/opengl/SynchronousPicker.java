@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 /**
  * @author Dennis Cosgrove
  */
-public final class Picker implements edu.cmu.cs.dennisc.renderer.Picker {
+public final class SynchronousPicker implements edu.cmu.cs.dennisc.renderer.SynchronousPicker {
 	private static class ActualPicker {
 		private static final int SELECTION_CAPACITY = 256;
 		private final PickContext pickContext = new PickContext();
@@ -280,7 +280,7 @@ public final class Picker implements edu.cmu.cs.dennisc.renderer.Picker {
 
 	private final AbstractLookingGlass lookingGlass;
 
-	public Picker( AbstractLookingGlass lookingGlass ) {
+	public SynchronousPicker( AbstractLookingGlass lookingGlass ) {
 		this.lookingGlass = lookingGlass;
 	}
 

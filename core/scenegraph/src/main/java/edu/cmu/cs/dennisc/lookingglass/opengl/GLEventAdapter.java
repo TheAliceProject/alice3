@@ -63,7 +63,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	private boolean isDisplayIgnoredDueToPreviousException = false;
 
-	private static class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent {
+	private static class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent {
 		public ReusableLookingGlassRenderEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, Graphics2D g ) {
 			super( lookingGlass, g );
 		}
@@ -349,7 +349,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		this.height = GlDrawableUtilities.getGlDrawableHeight( drawable );
 
 		this.renderContext.setGL( gl );
-		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, GlDrawableUtilities.getGlDrawableWidth( this.drawable ), GlDrawableUtilities.getGlDrawableHeight( this.drawable ) ) );
+		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent( this.lookingGlass, GlDrawableUtilities.getGlDrawableWidth( this.drawable ), GlDrawableUtilities.getGlDrawableHeight( this.drawable ) ) );
 	}
 
 	//todo: investigate not being invoked
@@ -393,13 +393,13 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		assert drawable == this.drawable;
 		this.width = width;
 		this.height = height;
-		this.lookingGlass.fireResized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent( this.lookingGlass, width, height ) );
+		this.lookingGlass.fireResized( new edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent( this.lookingGlass, width, height ) );
 	}
 
 	public void displayChanged( javax.media.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "displayChanged", drawable, modeChanged, deviceChanged );
 		assert drawable == this.drawable;
-		this.lookingGlass.fireDisplayChanged( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent( this.lookingGlass, modeChanged, deviceChanged ) );
+		this.lookingGlass.fireDisplayChanged( new edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent( this.lookingGlass, modeChanged, deviceChanged ) );
 	}
 
 	@Override

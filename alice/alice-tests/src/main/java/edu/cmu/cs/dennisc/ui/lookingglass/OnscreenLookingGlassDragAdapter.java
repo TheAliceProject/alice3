@@ -40,26 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass.event;
+package edu.cmu.cs.dennisc.ui.lookingglass;
+
+import edu.cmu.cs.dennisc.ui.DragAdapter;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LookingGlassDisplayChangeEvent extends LookingGlassEvent {
-	private boolean m_isModeChanged;
-	private boolean m_isDeviceChanged;
+public abstract class OnscreenLookingGlassDragAdapter extends DragAdapter {
+	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass m_onscreenLookingGlass;
 
-	public LookingGlassDisplayChangeEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, boolean isModeChanged, boolean isDeviceChanged ) {
-		super( lookingGlass );
-		m_isModeChanged = isModeChanged;
-		m_isDeviceChanged = isDeviceChanged;
+	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+		return m_onscreenLookingGlass;
 	}
 
-	public boolean isModeChanged() {
-		return m_isModeChanged;
+	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
+		m_onscreenLookingGlass = onscreenLookingGlass;
+		setAWTComponent( getAWTComponentToAddListenersTo( onscreenLookingGlass ) );
 	}
 
-	public boolean isDeviceChanged() {
-		return m_isDeviceChanged;
+	protected java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
+		return onscreenLookingGlass.getAwtComponent();
 	}
 }

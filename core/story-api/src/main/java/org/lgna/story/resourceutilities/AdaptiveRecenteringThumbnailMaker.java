@@ -120,11 +120,11 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 		AffineMatrix4x4 cameraTransform = getSGCameraVehicle().getAbsoluteTransformation();
 
 		edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass testImageLG = testImageOffscreenLookingGlass;
-		java.awt.image.BufferedImage testImage = testImageLG.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
-		java.nio.FloatBuffer depthBuffer = testImageLG.createFloatBufferForUseAsDepthBuffer();
+		java.awt.image.BufferedImage testImage = testImageLG.getSynchronousImageCapturer().createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
+		java.nio.FloatBuffer depthBuffer = testImageLG.getSynchronousImageCapturer().createFloatBufferForUseAsDepthBuffer();
 
 		testImageLG.clearAndRenderOffscreen();
-		testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
+		testImage = testImageLG.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
 
 		writeDebugImageIfAppropriate( "initial.png", testImage );
 
@@ -146,7 +146,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 			cameraRay.getPointAlong( testPosition, currentT );
 			getSGCameraVehicle().setTranslationOnly( testPosition, this.getScene().getSgReferenceFrame() );
 			testImageLG.clearAndRenderOffscreen();
-			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
+			testImage = testImageLG.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
 
 			writeDebugImageIfAppropriate( "test" + limitCount + ".png", testImage );
 
@@ -169,7 +169,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 			cameraRay.getPointAlong( testPosition, currentT );
 			getSGCameraVehicle().setTranslationOnly( testPosition, this.getScene().getSgReferenceFrame() );
 			testImageLG.clearAndRenderOffscreen();
-			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
+			testImage = testImageLG.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
 
 			writeDebugImageIfAppropriate( "test" + ( firstLimit + limitCount ) + ".png", testImage );
 

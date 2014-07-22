@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass.event;
+package edu.cmu.cs.dennisc.renderer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LookingGlassAdapter implements LookingGlassListener {
-	@Override
-	public void initialized( LookingGlassInitializeEvent e ) {
-	}
+public interface AsynchronousImageCapturer {
+	void captureColorBuffer( ColorBuffer colorBuffer, Observer<ColorBuffer> observer );
 
-	@Override
-	public void cleared( LookingGlassRenderEvent e ) {
-	}
-
-	@Override
-	public void rendered( LookingGlassRenderEvent e ) {
-	}
-
-	@Override
-	public void resized( LookingGlassResizeEvent e ) {
-	}
-
-	@Override
-	public void displayChanged( LookingGlassDisplayChangeEvent e ) {
-	}
+	void captureColorBufferWithTransparencyBasedOnDepthBuffer( ColorAndDepthBuffers colorAndDepthBuffers, Observer<ColorAndDepthBuffers> observer );
 }

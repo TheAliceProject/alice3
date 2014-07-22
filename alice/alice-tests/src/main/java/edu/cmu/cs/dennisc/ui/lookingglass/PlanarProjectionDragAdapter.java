@@ -40,11 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass.event;
+package edu.cmu.cs.dennisc.ui.lookingglass;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface AutomaticDisplayListener {
-	public void automaticDisplayCompleted( AutomaticDisplayEvent e );
+public abstract class PlanarProjectionDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter {
+	protected abstract edu.cmu.cs.dennisc.math.Plane getPlaneInAbsolute();
+
+	protected abstract void handlePointInAbsolute( edu.cmu.cs.dennisc.math.Point3 xyzInAbsolute );
+
+	@Override
+	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
+		return edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
+	}
+
+	private edu.cmu.cs.dennisc.math.Point3 getPointInAbsolutePlane( java.awt.Point p ) {
+		edu.cmu.cs.dennisc.math.Point3 rv;
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getOnscreenLookingGlass().getCameraAtPixel( p.x, p.y );
+		if( sgCamera != null ) {
+			edu.cmu.cs.dennisc.math.Ray ray = getOnscreenLookingGlass().getRayAtPixel( p.x, p.y, sgCamera );
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
+			ray.transform( m );
+			edu.cmu.cs.dennisc.math.Plane planeInAbsolute = this.getPlaneInAbsolute();
+			double t = planeInAbsolute.intersect( ray );
+			rv = ray.getPointAlong( t );
+		} else {
+			rv = null;
+		}
+		return rv;
+	}
+
+	@Override
+	protected void handleMousePress( java.awt.Point current, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
+		if( isOriginalAsOpposedToStyleChange ) {
+		} else {
+		}
+	}
+
+	@Override
+	protected void handleMouseDrag( java.awt.Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, edu.cmu.cs.dennisc.ui.DragStyle dragStyle ) {
+		edu.cmu.cs.dennisc.math.Point3 xyzInAbsolute = getPointInAbsolutePlane( current );
+		if( xyzInAbsolute != null ) {
+			handlePointInAbsolute( xyzInAbsolute );
+		}
+	}
+
+	@Override
+	protected java.awt.Point handleMouseRelease( java.awt.Point rv, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
+		return rv;
+	}
 }

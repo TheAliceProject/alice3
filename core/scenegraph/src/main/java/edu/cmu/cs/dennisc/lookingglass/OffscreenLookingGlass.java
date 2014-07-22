@@ -45,9 +45,6 @@ package edu.cmu.cs.dennisc.lookingglass;
 /**
  * @author Dennis Cosgrove
  */
-public interface OffscreenLookingGlass extends LookingGlass {
+public interface OffscreenLookingGlass extends LookingGlass, edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget {
 	public void clearAndRenderOffscreen();
-
-	@Override
-	public void release();
 }

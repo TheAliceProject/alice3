@@ -40,13 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass.event;
+package edu.cmu.cs.dennisc.ui;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AutomaticDisplayEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory> {
-	public AutomaticDisplayEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory ) {
-		super( lookingGlassFactory );
+public enum DragStyle {
+	NORMAL( false, false ),
+	CONTROL( true, false ),
+	SHIFT( false, true ),
+	CONTROL_SHIFT( true, true );
+	private boolean m_isControlDown;
+	private boolean m_isShiftDown;
+
+	DragStyle( boolean isControlDown, boolean isShiftDown ) {
+		m_isControlDown = isControlDown;
+		m_isShiftDown = isShiftDown;
+	}
+
+	public boolean isControlDown() {
+		return m_isControlDown;
+	}
+
+	public boolean isShiftDown() {
+		return m_isShiftDown;
 	}
 }

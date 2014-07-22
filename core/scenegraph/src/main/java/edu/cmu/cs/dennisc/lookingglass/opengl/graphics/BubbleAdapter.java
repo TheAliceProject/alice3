@@ -56,7 +56,7 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 	}
 
 	protected abstract void render(
-			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2,
+			edu.cmu.cs.dennisc.renderer.Graphics2D g2,
 			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
 			java.awt.Rectangle actualViewport,
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
@@ -71,7 +71,7 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 
 	@Override
 	protected void render(
-			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2,
+			edu.cmu.cs.dennisc.renderer.Graphics2D g2,
 			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
 			java.awt.Rectangle actualViewport,
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,

@@ -115,7 +115,7 @@ public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implem
 	}
 
 	@Override
-	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
+	protected java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		rv.setSize( this.size );
 		return rv;
 	}
@@ -137,9 +137,9 @@ public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implem
 		if( this.image != null ) {
 			//pass
 		} else {
-			this.image = this.createBufferedImageForUseAsColorBuffer();
+			this.image = this.getSynchronousImageCapturer().createBufferedImageForUseAsColorBuffer();
 		}
-		this.getColorBufferNotBotheringToFlipVertically( this.image, this.atIsUpSideDown );
+		this.getSynchronousImageCapturer().getColorBufferNotBotheringToFlipVertically( this.image, this.atIsUpSideDown );
 		observer.handleImage( this.image, this.atIsUpSideDown[ 0 ] );
 		this.jPanel.repaint();
 	}

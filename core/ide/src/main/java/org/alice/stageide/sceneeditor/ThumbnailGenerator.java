@@ -74,7 +74,7 @@ public final class ThumbnailGenerator {
 					offscreenLookingGlass.clearSgCameras();
 					offscreenLookingGlass.addSgCamera( sgCamera );
 				}
-				java.awt.image.BufferedImage thumbImage = offscreenLookingGlass.getColorBuffer();
+				java.awt.image.BufferedImage thumbImage = offscreenLookingGlass.getSynchronousImageCapturer().getColorBuffer();
 
 				sceneEditor.postScreenCapture();
 				return thumbImage;

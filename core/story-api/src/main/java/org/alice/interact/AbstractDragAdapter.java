@@ -355,7 +355,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	}
 
 	@Override
-	protected void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+	protected void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getSGCamera();
 		if( sgCamera != null ) {
 			if( !hasSetCameraTransformables )

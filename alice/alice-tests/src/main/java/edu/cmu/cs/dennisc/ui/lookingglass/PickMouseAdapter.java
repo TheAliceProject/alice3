@@ -40,26 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass.event;
+package edu.cmu.cs.dennisc.ui.lookingglass;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LookingGlassResizeEvent extends LookingGlassEvent {
-	private int m_width;
-	private int m_height;
+public abstract class PickMouseAdapter implements java.awt.event.MouseListener {
+	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass m_onscreenLookingGlass;
 
-	public LookingGlassResizeEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, int width, int height ) {
-		super( lookingGlass );
-		m_width = width;
-		m_height = height;
+	public PickMouseAdapter() {
+		this( null );
 	}
 
-	public int getWidth() {
-		return m_width;
+	public PickMouseAdapter( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
+		setOnscreenLookingGlass( onscreenLookingGlass );
 	}
 
-	public int getHeight() {
-		return m_height;
+	protected abstract void handlePickResult( edu.cmu.cs.dennisc.renderer.PickResult pickResult );
+
+	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+		return m_onscreenLookingGlass;
+	}
+
+	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
+		m_onscreenLookingGlass = onscreenLookingGlass;
+	}
+
+	@Override
+	public void mousePressed( java.awt.event.MouseEvent e ) {
+		assert m_onscreenLookingGlass != null;
+		handlePickResult( m_onscreenLookingGlass.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED ) );
+	}
+
+	@Override
+	public void mouseReleased( java.awt.event.MouseEvent e ) {
+	}
+
+	@Override
+	public void mouseClicked( java.awt.event.MouseEvent arg0 ) {
+	}
+
+	@Override
+	public void mouseEntered( java.awt.event.MouseEvent e ) {
+	}
+
+	@Override
+	public void mouseExited( java.awt.event.MouseEvent e ) {
 	}
 }

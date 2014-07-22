@@ -61,7 +61,7 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 	}
 
 	@Override
-	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
+	protected java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		if( this.glPbuffer != null ) {
 			rv.setSize( GlDrawableUtilities.getGlDrawableWidth( this.glPbuffer ), GlDrawableUtilities.getGlDrawableHeight( this.glPbuffer ) );
 		} else {

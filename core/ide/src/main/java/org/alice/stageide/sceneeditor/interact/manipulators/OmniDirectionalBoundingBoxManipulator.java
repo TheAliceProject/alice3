@@ -118,8 +118,8 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		double dotProd = Vector3.calculateDotProduct( cameraTransform.orientation.up, Vector3.accessPositiveYAxis() );
 		if( ( dotProd == 1 ) || ( dotProd == -1 ) ) {
 			Point3 cameraPosition = orthoCamera.getAbsoluteTransformation().translation;
-			ClippedZPlane dummyPlane = new ClippedZPlane( orthoCamera.picturePlane.getValue(), this.onscreenPicturePlane.getActualViewport( orthoCamera ) );
-			double yRatio = this.onscreenPicturePlane.getHeight() / dummyPlane.getHeight();
+			ClippedZPlane dummyPlane = new ClippedZPlane( orthoCamera.picturePlane.getValue(), this.onscreenRenderTarget.getActualViewport( orthoCamera ) );
+			double yRatio = this.onscreenRenderTarget.getHeight() / dummyPlane.getHeight();
 			double horizonInCameraSpace = 0.0d - cameraPosition.y;
 			double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
 			int horizonLinePixelVal = (int)( yRatio * distanceFromMaxY );
@@ -131,7 +131,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 	private boolean isHorizonInView() {
 		assert this.camera instanceof OrthographicCamera;
 		int horizonLinePixelVal = this.getHorizonPixelLocation();
-		double lookingGlassHeight = this.onscreenPicturePlane.getHeight();
+		double lookingGlassHeight = this.onscreenRenderTarget.getHeight();
 		if( ( horizonLinePixelVal >= 0 ) && ( horizonLinePixelVal <= lookingGlassHeight ) ) {
 			return true;
 		}
@@ -140,7 +140,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 
 	@Override
 	protected Point3 getOthographicMovementVector( InputState currentInput, InputState previousInput ) {
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
 		Point3 pickPoint = PlaneUtilities.getPointInPlane( this.orthographicPickPlane, pickRay );
 		if( isHorizonInView() ) {
 			pickPoint.y = 0;

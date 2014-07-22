@@ -135,13 +135,13 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 					if( image != null ) {
 						//pass
 					} else {
-						image = lookingGlass.createBufferedImageForUseAsColorBuffer();
+						image = lookingGlass.getSynchronousImageCapturer().createBufferedImageForUseAsColorBuffer();
 						//					image = new BufferedImage( lookingGlass.getWidth(), lookingGlass.getHeight(), BufferedImage.TYPE_3BYTE_BGR );
 					}
 					if( image != null ) {
 						boolean[] atIsUpsideDown = { false };
 						synchronized( image ) {
-							image = lookingGlass.getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
+							image = lookingGlass.getSynchronousImageCapturer().getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
 							if( atIsUpsideDown[ 0 ] ) {
 								handleImage( image, imageCount, atIsUpsideDown[ 0 ] );
 							} else {

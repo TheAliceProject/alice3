@@ -101,10 +101,6 @@ import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.TransformableImp;
 
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
-import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
-import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
-import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent;
-import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
@@ -113,6 +109,10 @@ import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent;
+import edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent;
+import edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent;
+import edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
@@ -122,7 +122,7 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
  * @author dculyba
  * 
  */
-public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener {
+public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.cmu.cs.dennisc.renderer.event.RenderTargetListener {
 
 	private class SceneEditorDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
 		@Override
@@ -224,9 +224,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private static javax.swing.Icon EXPAND_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/expand.png" ) );
 	private static javax.swing.Icon CONTRACT_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/contract.png" ) );
 
-	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+	private edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
 		@Override
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
 			StorytellingSceneEditor.this.animator.update();
 		}
 	};
@@ -237,7 +237,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private class LookingGlassPanel extends org.lgna.croquet.views.CompassPointSpringPanel {
 		@Override
 		protected javax.swing.JPanel createJPanel() {
-			return StorytellingSceneEditor.this.onscreenLookingGlass.getJPanel();
+			return StorytellingSceneEditor.this.onscreenLookingGlass.getAwtComponent();
 		}
 
 		@Override
@@ -759,7 +759,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			this.globalDragAdapter = new org.alice.stageide.sceneeditor.interact.GlobalDragAdapter( this );
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
-			this.onscreenLookingGlass.addLookingGlassListener( this );
+			this.onscreenLookingGlass.addRenderTargetListener( this );
 			this.globalDragAdapter.setAnimator( animator );
 			if( this.getSelectedField() != null )
 			{
@@ -1200,27 +1200,27 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	// ######### Begin implementation of edu.cmu.cs.dennisc.lookingglass.event.LookingGlassAdapter
 	@Override
-	public void initialized( LookingGlassInitializeEvent e ) {
+	public void initialized( RenderTargetInitializeEvent e ) {
 	}
 
 	@Override
-	public void cleared( LookingGlassRenderEvent e ) {
+	public void cleared( RenderTargetRenderEvent e ) {
 	}
 
 	@Override
-	public void rendered( LookingGlassRenderEvent e ) {
+	public void rendered( RenderTargetRenderEvent e ) {
 		if( ( this.onscreenLookingGlass.getSgCameraCount() > 0 ) && ( this.onscreenLookingGlass.getSgCameraAt( 0 ) instanceof OrthographicCamera ) ) {
 			paintHorizonLine( e.getGraphics2D(), this.onscreenLookingGlass, (OrthographicCamera)this.onscreenLookingGlass.getSgCameraAt( 0 ) );
 		}
 	}
 
 	@Override
-	public void resized( LookingGlassResizeEvent e ) {
+	public void resized( RenderTargetResizeEvent e ) {
 		// updateCameraMarkers();
 	}
 
 	@Override
-	public void displayChanged( LookingGlassDisplayChangeEvent e ) {
+	public void displayChanged( RenderTargetDisplayChangeEvent e ) {
 	}
 
 	// ######### End implementation of edu.cmu.cs.dennisc.lookingglass.event.LookingGlassAdapter

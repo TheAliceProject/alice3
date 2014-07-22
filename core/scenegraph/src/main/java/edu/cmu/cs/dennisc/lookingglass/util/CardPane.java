@@ -122,11 +122,11 @@ public class CardPane extends javax.swing.JPanel {
 				//pass
 			} else {
 				if( ( desiredImageWidth > 0 ) && ( desiredImageHeight > 0 ) ) {
-					this.bufferedImage = this.onscreenLookingGlass.createBufferedImageForUseAsColorBuffer();
+					this.bufferedImage = this.onscreenLookingGlass.getSynchronousImageCapturer().createBufferedImageForUseAsColorBuffer();
 				}
 			}
 			if( this.bufferedImage != null ) {
-				this.onscreenLookingGlass.getColorBuffer( this.bufferedImage );
+				this.onscreenLookingGlass.getSynchronousImageCapturer().getColorBuffer( this.bufferedImage );
 				this.snapshotPane.setSnapshotImage( this.bufferedImage );
 				//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				//				public void run() {

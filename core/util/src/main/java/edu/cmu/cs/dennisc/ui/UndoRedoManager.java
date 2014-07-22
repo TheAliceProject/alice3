@@ -40,26 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass.event;
+package edu.cmu.cs.dennisc.ui;
 
+//todo: move to core?
 /**
  * @author Dennis Cosgrove
  */
-public class LookingGlassInitializeEvent extends LookingGlassEvent {
-	private int m_width;
-	private int m_height;
+public abstract class UndoRedoManager {
+	private java.util.Stack<edu.cmu.cs.dennisc.pattern.Action> m_undoStack = new java.util.Stack<edu.cmu.cs.dennisc.pattern.Action>();
+	private java.util.Stack<edu.cmu.cs.dennisc.pattern.Action> m_redoStack = new java.util.Stack<edu.cmu.cs.dennisc.pattern.Action>();
 
-	public LookingGlassInitializeEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, int width, int height ) {
-		super( lookingGlass );
-		m_width = width;
-		m_height = height;
+	protected abstract void handleChange();
+
+	public boolean isUndoStackEmpty() {
+		return m_undoStack.isEmpty();
 	}
 
-	public int getWidth() {
-		return m_width;
+	public boolean isRedoStackEmpty() {
+		return m_redoStack.isEmpty();
 	}
 
-	public int getHeight() {
-		return m_height;
+	public void runAndPush( edu.cmu.cs.dennisc.pattern.Action action ) {
+		action.run();
+		pushAlreadyRunActionOntoUndoStack( action );
+	}
+
+	public void pushAlreadyRunActionOntoUndoStack( edu.cmu.cs.dennisc.pattern.Action action ) {
+		m_undoStack.push( action );
+		m_redoStack.clear();
+		handleChange();
+	}
+
+	public void undo() {
+		edu.cmu.cs.dennisc.pattern.Action action = m_undoStack.pop();
+		m_redoStack.push( action );
+		action.undo();
+		handleChange();
+	}
+
+	public void redo() {
+		edu.cmu.cs.dennisc.pattern.Action action = m_redoStack.pop();
+		action.redo();
+		m_undoStack.push( action );
+		handleChange();
 	}
 }

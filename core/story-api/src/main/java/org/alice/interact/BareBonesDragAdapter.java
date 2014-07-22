@@ -138,12 +138,12 @@ public abstract class BareBonesDragAdapter {
 
 	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		if( this.onscreenLookingGlass != null ) {
-			this.onscreenLookingGlass.getLookingGlassFactory().removeAutomaticDisplayListener( this.automaticDisplayAdapter );
+			this.onscreenLookingGlass.getRenderFactory().removeAutomaticDisplayListener( this.automaticDisplayAdapter );
 		}
 		this.onscreenLookingGlass = onscreenLookingGlass;
 		setAWTComponent( getAWTComponentToAddListenersTo( this.onscreenLookingGlass ) );
 		if( this.onscreenLookingGlass != null ) {
-			this.onscreenLookingGlass.getLookingGlassFactory().addAutomaticDisplayListener( this.automaticDisplayAdapter );
+			this.onscreenLookingGlass.getRenderFactory().addAutomaticDisplayListener( this.automaticDisplayAdapter );
 		}
 	}
 
@@ -175,7 +175,7 @@ public abstract class BareBonesDragAdapter {
 	}
 
 	public void setLookingGlassOnManipulator( OnscreenPicturePlaneInformedManipulator manipulator ) {
-		manipulator.setOnscreenPicturePlane( this.onscreenLookingGlass );
+		manipulator.setOnscreenRenderTarget( this.onscreenLookingGlass );
 	}
 
 	protected abstract void setManipulatorStartState( AbstractManipulator manipulator, InputState startState );
@@ -280,7 +280,7 @@ public abstract class BareBonesDragAdapter {
 	private PickResult pickIntoScene( java.awt.Point mouseLocation ) {
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
 		assert onscreenLookingGlass != null;
-		edu.cmu.cs.dennisc.renderer.PickResult pickResult = onscreenLookingGlass.getPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED );
+		edu.cmu.cs.dennisc.renderer.PickResult pickResult = onscreenLookingGlass.getSynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED );
 		return pickResult;
 	}
 
@@ -421,11 +421,11 @@ public abstract class BareBonesDragAdapter {
 
 	}
 
-	protected abstract void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e );
+	protected abstract void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e );
 
-	private final edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+	private final edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
 		@Override
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
 			handleAutomaticDisplayCompleted( e );
 		}
 	};

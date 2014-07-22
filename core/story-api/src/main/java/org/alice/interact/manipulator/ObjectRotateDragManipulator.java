@@ -140,13 +140,13 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
-		return this.onscreenPicturePlane;
+	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
-		this.onscreenPicturePlane = onscreenPicturePlane;
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
 	@Override
@@ -222,7 +222,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	}
 
 	protected Angle getRotationBasedOnMouse( Point mouseLocation ) {
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if( pickRay != null ) {
 			AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors( this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation.backward );
 			double distanceToRightAngle = Math.abs( ( Math.PI * .5d ) - angleBetweenVector.getAsRadians() );
@@ -306,7 +306,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	}
 
 	protected void hideCursor() {
-		CursorUtilities.pushAndSet( this.onscreenPicturePlane.getAwtComponent(), CursorUtilities.NULL_CURSOR );
+		CursorUtilities.pushAndSet( this.onscreenRenderTarget.getAwtComponent(), CursorUtilities.NULL_CURSOR );
 		this.hidCursor = true;
 	}
 
@@ -315,10 +315,10 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		{
 			try {
 				Point3 pointInCamera = this.rotationHandle.getSphereLocation( this.getCamera() );
-				Point awtPoint = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.onscreenPicturePlane, this.getCamera() );
-				edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenPicturePlane.getAwtComponent(), awtPoint );
+				Point awtPoint = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
+				edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenRenderTarget.getAwtComponent(), awtPoint );
 			} finally {
-				CursorUtilities.popAndSet( this.onscreenPicturePlane.getAwtComponent() );
+				CursorUtilities.popAndSet( this.onscreenRenderTarget.getAwtComponent() );
 			}
 		}
 	}
@@ -353,6 +353,6 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	private Plane cameraFacingPlane;
 	private RotationRingHandle rotationHandle;
 	private AbstractCamera camera = null;
-	private edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane;
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
 	private boolean hidCursor = false;
 }

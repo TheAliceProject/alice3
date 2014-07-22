@@ -90,15 +90,15 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
-		return this.onscreenPicturePlane;
+	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
-		this.onscreenPicturePlane = onscreenPicturePlane;
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+		this.onscreenRenderTarget = onscreenRenderTarget;
 		if( this.activeManipulator instanceof OnscreenPicturePlaneInformedManipulator ) {
-			( (OnscreenPicturePlaneInformedManipulator)this.activeManipulator ).setOnscreenPicturePlane( onscreenPicturePlane );
+			( (OnscreenPicturePlaneInformedManipulator)this.activeManipulator ).setOnscreenRenderTarget( onscreenRenderTarget );
 		}
 	}
 
@@ -245,7 +245,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	}
 
 	private AbstractManipulator activeManipulator;
-	private edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane;
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
 	private ManipulationHandle activeHandle = null;
 	private AbstractCamera camera = null;
 }
