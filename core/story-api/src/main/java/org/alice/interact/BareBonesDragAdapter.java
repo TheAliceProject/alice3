@@ -175,7 +175,7 @@ public abstract class BareBonesDragAdapter {
 	}
 
 	public void setLookingGlassOnManipulator( OnscreenPicturePlaneInformedManipulator manipulator ) {
-		manipulator.setOnscreenPicturePlane( this.onscreenLookingGlass );
+		manipulator.setOnscreenRenderTarget( this.onscreenLookingGlass );
 	}
 
 	protected abstract void setManipulatorStartState( AbstractManipulator manipulator, InputState startState );

@@ -62,27 +62,27 @@ public abstract class AbstractCamera extends Leaf {
 		}
 	};
 
-	public java.awt.Point transformToAWT( java.awt.Point rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformToAWT( rv, xyzw, picturePlane, this );
+	public java.awt.Point transformToAWT( java.awt.Point rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget ) {
+		return transformToAWT( rv, xyzw, renderTarget, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformFromAWT( rv, p, z, picturePlane, this );
+	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget ) {
+		return transformFromAWT( rv, p, z, renderTarget, this );
 	}
 
-	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformToAWT_New( xyzw, picturePlane, this );
+	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget ) {
+		return transformToAWT_New( xyzw, renderTarget, this );
 	}
 
-	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformToAWT_New( xyz, picturePlane, this );
+	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget ) {
+		return transformToAWT_New( xyz, renderTarget, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT_NewVectorD4( java.awt.Point p, double z, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformFromAWT_NewVectorD4( p, z, picturePlane, this );
+	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT_NewVectorD4( java.awt.Point p, double z, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget ) {
+		return transformFromAWT_NewVectorD4( p, z, renderTarget, this );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 transformFromAWT_NewPointD3( java.awt.Point p, double z, edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane ) {
-		return transformFromAWT_NewPointD3( p, z, picturePlane, this );
+	public edu.cmu.cs.dennisc.math.Point3 transformFromAWT_NewPointD3( java.awt.Point p, double z, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget ) {
+		return transformFromAWT_NewPointD3( p, z, renderTarget, this );
 	}
 }

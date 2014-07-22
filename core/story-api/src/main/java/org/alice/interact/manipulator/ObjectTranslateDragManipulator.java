@@ -96,13 +96,13 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
-		return this.onscreenPicturePlane;
+	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
-		this.onscreenPicturePlane = onscreenPicturePlane;
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
 	@Override
@@ -132,7 +132,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	}
 
 	protected Point3 getPositionBasedonOnMouseLocation( Point mouseLocation ) {
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if( pickRay != null ) {
 			Plane toMoveIn = this.movementPlane;
 			double badAngleAmount = this.getBadAngleAmount( this.movementPlane, pickRay );
@@ -246,7 +246,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 			this.movementPlane = createPickPlane( this.initialClickPoint );
 			this.badAnglePlane = createBadAnglePlane( this.initialClickPoint );
 
-			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
+			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 			if( pickRay != null ) {
 				this.initialClickPoint = PlaneUtilities.getPointInPlane( this.movementPlane, pickRay );
 				this.offsetToOrigin = Point3.createSubtraction( this.manipulatedTransformable.getAbsoluteTransformation().translation, this.initialClickPoint );
@@ -280,5 +280,5 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	private Boolean hasMoved = false;
 
 	private AbstractCamera camera = null;
-	private edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane;
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
 }
