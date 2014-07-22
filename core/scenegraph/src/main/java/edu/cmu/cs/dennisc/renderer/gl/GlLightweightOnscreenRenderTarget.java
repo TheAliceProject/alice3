@@ -45,11 +45,11 @@ package edu.cmu.cs.dennisc.renderer.gl;
 /**
  * @author Dennis Cosgrove
  */
-public class GlLightweightOnscreenRenderTarget extends GlOnscreenRenderTarget<javax.swing.JComponent> implements edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget {
+public class GlLightweightOnscreenRenderTarget extends GlOnscreenRenderTarget<javax.swing.JPanel> implements edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget {
 	private final javax.media.opengl.awt.GLJPanel glJPanel = new javax.media.opengl.awt.GLJPanel();
 
 	@Override
-	public javax.swing.JComponent getAwtComponent() {
+	public javax.swing.JPanel getAwtComponent() {
 		return this.glJPanel;
 	}
 

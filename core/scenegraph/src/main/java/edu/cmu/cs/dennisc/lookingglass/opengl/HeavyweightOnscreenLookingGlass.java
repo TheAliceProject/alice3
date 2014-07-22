@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-class HeavyweightOnscreenLookingGlass extends OnscreenLookingGlass implements edu.cmu.cs.dennisc.lookingglass.HeavyweightOnscreenLookingGlass {
+class HeavyweightOnscreenLookingGlass extends OnscreenLookingGlass<java.awt.Component> implements edu.cmu.cs.dennisc.lookingglass.HeavyweightOnscreenLookingGlass {
 	private javax.media.opengl.awt.GLCanvas m_glCanvas;
 
 	/* package-private */HeavyweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {

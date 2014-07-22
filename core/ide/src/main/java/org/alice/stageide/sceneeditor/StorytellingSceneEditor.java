@@ -237,7 +237,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private class LookingGlassPanel extends org.lgna.croquet.views.CompassPointSpringPanel {
 		@Override
 		protected javax.swing.JPanel createJPanel() {
-			return StorytellingSceneEditor.this.onscreenLookingGlass.getJPanel();
+			return StorytellingSceneEditor.this.onscreenLookingGlass.getAwtComponent();
 		}
 
 		@Override

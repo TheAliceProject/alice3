@@ -52,10 +52,4 @@ public interface LookingGlassFactory extends edu.cmu.cs.dennisc.renderer.RenderF
 	public HeavyweightOnscreenLookingGlass createHeavyweightOnscreenLookingGlass();
 
 	public OffscreenLookingGlass createOffscreenLookingGlass( int width, int height, LookingGlass lookingGlassToShareContextWith );
-	
-	public Iterable<? extends LightweightOnscreenLookingGlass> getLightweightOnscreenLookingGlasses();
-
-	public Iterable<? extends HeavyweightOnscreenLookingGlass> getHeavyweightOnscreenLookingGlasses();
-
-	public Iterable<? extends OffscreenLookingGlass> getOffscreenLookingGlasses();
 }

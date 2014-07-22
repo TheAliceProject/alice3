@@ -328,17 +328,17 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	}
 
 	@Override
-	public Iterable<? extends edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass> getLightweightOnscreenLookingGlasses() {
-		return this.lightweightOnscreenLookingGlasses;
+	public Iterable<? extends edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets() {
+		return java.util.Collections.unmodifiableCollection( this.heavyweightOnscreenLookingGlasses );
 	}
 
 	@Override
-	public Iterable<? extends edu.cmu.cs.dennisc.lookingglass.HeavyweightOnscreenLookingGlass> getHeavyweightOnscreenLookingGlasses() {
-		return this.heavyweightOnscreenLookingGlasses;
+	public Iterable<? extends edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets() {
+		return java.util.Collections.unmodifiableCollection( this.lightweightOnscreenLookingGlasses );
 	}
 
 	@Override
-	public Iterable<? extends edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass> getOffscreenLookingGlasses() {
-		return this.offscreenLookingGlasses;
+	public Iterable<? extends edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget> getOffscreenRenderTargets() {
+		return java.util.Collections.unmodifiableCollection( this.offscreenLookingGlasses );
 	}
 }

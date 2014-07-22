@@ -45,5 +45,5 @@ package edu.cmu.cs.dennisc.lookingglass;
 /**
  * @author Dennis Cosgrove
  */
-public interface HeavyweightOnscreenLookingGlass extends OnscreenLookingGlass {
+public interface HeavyweightOnscreenLookingGlass extends OnscreenLookingGlass<java.awt.Component>, edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget {
 }

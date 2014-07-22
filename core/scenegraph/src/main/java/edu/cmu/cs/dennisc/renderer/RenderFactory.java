@@ -58,11 +58,11 @@ public interface RenderFactory {
 	//
 	//	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height );
 	//
-	//	Iterable<HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets();
-	//
-	//	Iterable<LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets();
-	//
-	//	Iterable<OffscreenRenderTarget> getOffscreenRenderTargets();
+	Iterable<? extends HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets();
+
+	Iterable<? extends LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets();
+
+	Iterable<? extends OffscreenRenderTarget> getOffscreenRenderTargets();
 
 	void acquireRenderingLock();
 

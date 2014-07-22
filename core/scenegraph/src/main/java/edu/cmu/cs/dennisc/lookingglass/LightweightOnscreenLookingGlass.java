@@ -45,6 +45,5 @@ package edu.cmu.cs.dennisc.lookingglass;
 /**
  * @author Dennis Cosgrove
  */
-public interface LightweightOnscreenLookingGlass extends OnscreenLookingGlass {
-	public javax.swing.JPanel getJPanel();
+public interface LightweightOnscreenLookingGlass extends OnscreenLookingGlass<javax.swing.JPanel>, edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget {
 }
