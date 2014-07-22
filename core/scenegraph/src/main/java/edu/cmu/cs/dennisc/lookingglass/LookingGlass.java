@@ -103,9 +103,7 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 	@Override
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index );
 
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getSgCameras( edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] rv );
-
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getSgCameras();
+	public java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getSgCameras();
 
 	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras();
 

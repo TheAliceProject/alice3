@@ -278,17 +278,8 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getSgCameras( edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] rv ) {
-		synchronized( m_cameras ) {
-			m_cameras.copyInto( rv );
-		}
-		return rv;
-	}
-
-	@Override
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getSgCameras() {
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] rv = new edu.cmu.cs.dennisc.scenegraph.AbstractCamera[ getSgCameraCount() ];
-		return getSgCameras( rv );
+	public java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getSgCameras() {
+		return java.util.Collections.unmodifiableList( m_cameras );
 	}
 
 	@Override
