@@ -103,10 +103,6 @@ public interface RenderTarget extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 
 	void setViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle viewport );
 
-	void pickFrontMost( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickFrontMostObserver observer );
-
-	void pickAll( int xPixel, int yPixel, PickSubElementPolicy pickSubElementPolicy, VisualInclusionCriterion criterion, PickAllObserver observer );
-
 	//	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 	//
 	//	public void setIsLetterboxedAsOpposedToDistorted( boolean isLetterboxedAsOpposedToDistorted, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
@@ -114,6 +110,11 @@ public interface RenderTarget extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 	boolean isRenderingEnabled();
 
 	void setRenderingEnabled( boolean isRenderingEnabled );
+
 	//
 	//	public void forgetAllCachedItems();
+
+	SynchronousPicker getSynchronousPicker();
+
+	AsynchronousPicker getAsynchronousPicker();
 }

@@ -238,12 +238,12 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	}
 
 	@Override
-	public void pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickFrontMostObserver observer ) {
+	public edu.cmu.cs.dennisc.renderer.SynchronousPicker getSynchronousPicker() {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickAllObserver observer ) {
+	public edu.cmu.cs.dennisc.renderer.AsynchronousPicker getAsynchronousPicker() {
 		throw new RuntimeException( "todo" );
 	}
 
