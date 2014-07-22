@@ -80,7 +80,7 @@ class WaitingRunnable implements Runnable {
 /**
  * @author Dennis Cosgrove
  */
-public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory, edu.cmu.cs.dennisc.pattern.event.ReleaseListener {
+public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFactory, edu.cmu.cs.dennisc.pattern.event.ReleaseListener {
 	static {
 		edu.cmu.cs.dennisc.renderer.RendererNativeLibraryLoader.initializeIfNecessary();
 	}

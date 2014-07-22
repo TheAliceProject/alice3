@@ -57,7 +57,7 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 
 	protected abstract void render(
 			edu.cmu.cs.dennisc.renderer.Graphics2D g2,
-			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
+			edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget,
 			java.awt.Rectangle actualViewport,
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
 			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
@@ -72,7 +72,7 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 	@Override
 	protected void render(
 			edu.cmu.cs.dennisc.renderer.Graphics2D g2,
-			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
+			edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget,
 			java.awt.Rectangle actualViewport,
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
 			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
@@ -85,7 +85,7 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 		if( originator != null ) {
 			g2.setFont( font );
 			java.awt.geom.Dimension2D size = multilineText.getDimension( g2, wrapWidth );
-			originator.calculate( originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, this.m_element, lookingGlass, actualViewport, camera, size );
+			originator.calculate( originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, this.m_element, renderTarget, actualViewport, camera, size );
 			OnscreenBubble bubble = BubbleManager.getInstance().getBubble( this.m_element );
 			if( bubble == null )
 			{
@@ -105,7 +105,7 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 				bubble.updateOriginOfTail( originOfTail, actualViewport );
 			}
 
-			this.render( g2, lookingGlass, actualViewport, camera, multilineText, font, textColor, wrapWidth, fillColor, outlineColor, bubble, m_element.portion.getValue() );
+			this.render( g2, renderTarget, actualViewport, camera, multilineText, font, textColor, wrapWidth, fillColor, outlineColor, bubble, m_element.portion.getValue() );
 		}
 	}
 

@@ -64,7 +64,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	private boolean isDisplayIgnoredDueToPreviousException = false;
 
 	private static class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent {
-		public ReusableLookingGlassRenderEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, Graphics2D g ) {
+		public ReusableLookingGlassRenderEvent( AbstractLookingGlass lookingGlass, Graphics2D g ) {
 			super( lookingGlass, g );
 		}
 

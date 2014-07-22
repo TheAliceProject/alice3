@@ -56,7 +56,7 @@ public abstract class TitleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graph
 	@Override
 	protected void render(
 			edu.cmu.cs.dennisc.renderer.Graphics2D g2,
-			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
+			edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget,
 			java.awt.Rectangle actualViewport,
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
 			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText,
