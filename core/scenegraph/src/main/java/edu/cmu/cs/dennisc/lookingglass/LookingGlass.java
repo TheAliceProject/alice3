@@ -46,20 +46,10 @@ package edu.cmu.cs.dennisc.lookingglass;
 /**
  * @author Dennis Cosgrove
  */
-public interface LookingGlass extends edu.cmu.cs.dennisc.pictureplane.PicturePlane, edu.cmu.cs.dennisc.pattern.Releasable {
-	public LookingGlassFactory getLookingGlassFactory();
-
+public interface LookingGlass extends edu.cmu.cs.dennisc.renderer.RenderTarget, edu.cmu.cs.dennisc.pattern.Releasable {
 	public java.awt.Dimension getSize();
 
 	public java.awt.Dimension getSize( java.awt.Dimension rv );
-
-	@Override
-	public int getWidth();
-
-	@Override
-	public int getHeight();
-
-	public edu.cmu.cs.dennisc.renderer.SynchronousImageCapturer getSynchronousImageCapturer();
 
 	public java.awt.Graphics2D createGraphics( edu.cmu.cs.dennisc.texture.Texture texture );
 
@@ -74,84 +64,19 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 
 	public void setDescription( String description );
 
-	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-
-	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-
-	public void clearSgCameras();
-
-	public int getSgCameraCount();
-
-	@Override
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index );
-
-	public java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getSgCameras();
-
 	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras();
-
-	public void addLookingGlassListener( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener lookingGlassListener );
-
-	public void removeLookingGlassListener( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener lookingGlassListener );
-
-	public int getLookingGlassListenerCount();
-
-	public edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener getLookingGlassListenerAt( int index );
-
-	public edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[] getLookingGlassListeners( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[] rv );
-
-	public edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[] getLookingGlassListeners();
-
-	public Iterable<edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener> accessLookingGlassListeners();
-
-	public edu.cmu.cs.dennisc.renderer.SynchronousPicker getSynchronousPicker();
-
-	@Override
-	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-
-	@Override
-	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, edu.cmu.cs.dennisc.scenegraph.OrthographicCamera orthographicCamera );
 
-	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.OrthographicCamera orthographicCamera );
-
 	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera perspectiveCamera );
-
-	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera perspectiveCamera );
-
-	public edu.cmu.cs.dennisc.math.Angle getActualHorizontalViewingAngle( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera symmetricPerspectiveCamera );
-
-	public edu.cmu.cs.dennisc.math.Angle getActualVerticalViewingAngle( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera symmetricPerspectiveCamera );
-
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getCameraAtPixel( int xPixel, int yPixel );
 
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
-	@Override
-	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel );
-
-	@Override
-	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel );
-
-	@Override
-	public java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-
-	@Override
-	public java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-
-	public java.awt.Rectangle getSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-
-	public void setSpecifiedViewport( java.awt.Rectangle viewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	public void setIsLetterboxedAsOpposedToDistorted( boolean isLetterboxedAsOpposedToDistorted, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-
-	public boolean isRenderingEnabled();
-
-	public void setRenderingEnabled( boolean isRenderingEnabled );
 
 	public void forgetAllCachedItems();
 

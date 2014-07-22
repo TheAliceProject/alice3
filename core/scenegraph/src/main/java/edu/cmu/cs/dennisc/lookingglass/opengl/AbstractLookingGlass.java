@@ -75,7 +75,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 
 	private String m_description = new String();
 	private java.util.Vector<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> m_cameras = new java.util.Vector<edu.cmu.cs.dennisc.scenegraph.AbstractCamera>();
-	private java.util.Vector<edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener> m_lookingGlassListeners = new java.util.Vector<edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener>();
+	private java.util.Vector<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener> m_lookingGlassListeners = new java.util.Vector<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener>();
 
 	protected abstract javax.media.opengl.GLAutoDrawable getGLAutoDrawable();
 
@@ -95,7 +95,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory getLookingGlassFactory() {
+	public edu.cmu.cs.dennisc.renderer.RenderFactory getRenderFactory() {
 		return m_lookingGlassFactory;
 	}
 
@@ -107,6 +107,16 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	@Override
 	public edu.cmu.cs.dennisc.renderer.SynchronousImageCapturer getSynchronousImageCapturer() {
 		return this.synchronousImageCapturer;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.AsynchronousPicker getAsynchronousPicker() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer getAsynchronousImageCapturer() {
+		throw new UnsupportedOperationException();
 	}
 
 	//private java.util.List< TextureGraphicsCommit > m_pendingTextureGraphicsCommits = new java.util.LinkedList< TextureGraphicsCommit >();
@@ -188,41 +198,41 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	//		}
 	//	}	
 
-	/* package-private */void fireInitialized( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent e ) {
+	/* package-private */void fireInitialized( edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent e ) {
 		synchronized( m_lookingGlassListeners ) {
-			for( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener lookingGlassListener : m_lookingGlassListeners ) {
+			for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener lookingGlassListener : m_lookingGlassListeners ) {
 				lookingGlassListener.initialized( e );
 			}
 		}
 	}
 
-	/* package-private */void fireCleared( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent e ) {
+	/* package-private */void fireCleared( edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent e ) {
 		synchronized( m_lookingGlassListeners ) {
-			for( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener lookingGlassListener : m_lookingGlassListeners ) {
+			for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener lookingGlassListener : m_lookingGlassListeners ) {
 				lookingGlassListener.cleared( e );
 			}
 		}
 	}
 
-	/* package-private */void fireRendered( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent e ) {
+	/* package-private */void fireRendered( edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent e ) {
 		synchronized( m_lookingGlassListeners ) {
-			for( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener lookingGlassListener : m_lookingGlassListeners ) {
+			for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener lookingGlassListener : m_lookingGlassListeners ) {
 				lookingGlassListener.rendered( e );
 			}
 		}
 	}
 
-	/* package-private */void fireResized( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent e ) {
+	/* package-private */void fireResized( edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent e ) {
 		synchronized( m_lookingGlassListeners ) {
-			for( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener lookingGlassListener : m_lookingGlassListeners ) {
+			for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener lookingGlassListener : m_lookingGlassListeners ) {
 				lookingGlassListener.resized( e );
 			}
 		}
 	}
 
-	/* package-private */void fireDisplayChanged( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent e ) {
+	/* package-private */void fireDisplayChanged( edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent e ) {
 		synchronized( m_lookingGlassListeners ) {
-			for( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener lookingGlassListener : m_lookingGlassListeners ) {
+			for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener lookingGlassListener : m_lookingGlassListeners ) {
 				lookingGlassListener.displayChanged( e );
 			}
 		}
@@ -316,48 +326,22 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	}
 
 	@Override
-	public void addLookingGlassListener( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener lookingGlassListener ) {
+	public void addRenderTargetListener( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener listener ) {
 		synchronized( m_lookingGlassListeners ) {
-			m_lookingGlassListeners.add( lookingGlassListener );
+			m_lookingGlassListeners.add( listener );
 		}
 	}
 
 	@Override
-	public void removeLookingGlassListener( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener lookingGlassListener ) {
+	public void removeRenderTargetListener( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener listener ) {
 		synchronized( m_lookingGlassListeners ) {
-			m_lookingGlassListeners.remove( lookingGlassListener );
+			m_lookingGlassListeners.remove( listener );
 		}
 	}
 
 	@Override
-	public int getLookingGlassListenerCount() {
-		return m_lookingGlassListeners.size();
-	}
-
-	@Override
-	public edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener getLookingGlassListenerAt( int index ) {
-		return m_lookingGlassListeners.elementAt( index );
-	}
-
-	@Override
-	public edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[] getLookingGlassListeners( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[] rv ) {
-		synchronized( m_lookingGlassListeners ) {
-			m_lookingGlassListeners.copyInto( rv );
-		}
-		return rv;
-	}
-
-	@Override
-	public edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[] getLookingGlassListeners() {
-		edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[] rv = new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener[ getLookingGlassListenerCount() ];
-		return getLookingGlassListeners( rv );
-	}
-
-	@Override
-	public Iterable<edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener> accessLookingGlassListeners() {
-		synchronized( m_lookingGlassListeners ) {
-			return m_lookingGlassListeners;
-		}
+	public java.util.List<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener> getRenderTargetListeners() {
+		return java.util.Collections.unmodifiableList( m_lookingGlassListeners );
 	}
 
 	@Override
@@ -389,7 +373,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	}
 
 	@Override
-	public void setSpecifiedViewport( java.awt.Rectangle viewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+	public void setSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, java.awt.Rectangle viewport ) {
 		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
 		cameraAdapter.setSpecifiedViewport( viewport );
 	}

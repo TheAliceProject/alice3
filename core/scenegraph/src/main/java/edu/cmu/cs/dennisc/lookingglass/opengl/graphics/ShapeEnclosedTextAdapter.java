@@ -47,7 +47,7 @@ public abstract class ShapeEnclosedTextAdapter<E extends edu.cmu.cs.dennisc.scen
 	private java.awt.Color outlineColor = null;
 
 	protected abstract void render(
-			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2,
+			edu.cmu.cs.dennisc.renderer.Graphics2D g2,
 			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
 			java.awt.Rectangle actualViewport,
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,
@@ -60,7 +60,7 @@ public abstract class ShapeEnclosedTextAdapter<E extends edu.cmu.cs.dennisc.scen
 
 	@Override
 	protected void render(
-			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2,
+			edu.cmu.cs.dennisc.renderer.Graphics2D g2,
 			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
 			java.awt.Rectangle actualViewport,
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera,

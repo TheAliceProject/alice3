@@ -95,9 +95,9 @@ public interface RenderTarget extends edu.cmu.cs.dennisc.pictureplane.PicturePla
 	@Override
 	java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
-	java.awt.Rectangle getViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	java.awt.Rectangle getSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
-	void setViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle viewport );
+	void setSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle viewport );
 
 	//	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 	//

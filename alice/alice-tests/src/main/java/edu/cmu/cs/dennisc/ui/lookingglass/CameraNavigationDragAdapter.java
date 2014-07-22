@@ -51,7 +51,7 @@ enum CameraNavigationMode {
 /**
  * @author Dennis Cosgrove
  */
-public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter implements java.awt.event.MouseWheelListener, edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener {
+public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter implements java.awt.event.MouseWheelListener, edu.cmu.cs.dennisc.renderer.event.RenderTargetListener {
 	private CameraNavigationFunction m_function = new CameraNavigationFunction();
 	private double m_tPrev = Double.NaN;
 
@@ -70,7 +70,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	@Override
 	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		super.setOnscreenLookingGlass( onscreenLookingGlass );
-		onscreenLookingGlass.getLookingGlassFactory().addAutomaticDisplayListener( new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
+		onscreenLookingGlass.getRenderFactory().addAutomaticDisplayListener( new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
 			@Override
 			public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
 				CameraNavigationDragAdapter.this.handleDisplayed();
@@ -270,23 +270,23 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	}
 
 	@Override
-	public void initialized( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent e ) {
+	public void initialized( edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent e ) {
 	}
 
 	@Override
-	public void resized( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent e ) {
+	public void resized( edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent e ) {
 	}
 
 	@Override
-	public void displayChanged( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent e ) {
+	public void displayChanged( edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent e ) {
 	}
 
 	@Override
-	public void cleared( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent e ) {
+	public void cleared( edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent e ) {
 	}
 
 	@Override
-	public void rendered( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent e ) {
+	public void rendered( edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent e ) {
 		paint( e.getGraphics2D() );
 	}
 
@@ -332,7 +332,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 
 		startCameraNavigationMode( cameraNavigationMode, current.x, current.y );
 		if( isOriginalAsOpposedToStyleChange ) {
-			getOnscreenLookingGlass().addLookingGlassListener( this );
+			getOnscreenLookingGlass().addRenderTargetListener( this );
 			m_awtCursorPrev = getAWTComponent().getCursor();
 			getAWTComponent().setCursor( new java.awt.Cursor( java.awt.Cursor.CROSSHAIR_CURSOR ) );
 		}
@@ -348,7 +348,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		stopCameraNavigationMode();
 		if( isOriginalAsOpposedToStyleChange ) {
 			getAWTComponent().setCursor( m_awtCursorPrev );
-			getOnscreenLookingGlass().removeLookingGlassListener( this );
+			getOnscreenLookingGlass().removeRenderTargetListener( this );
 		}
 		return rvCurrent;
 	}

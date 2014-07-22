@@ -228,18 +228,18 @@ public abstract class ProgramImp {
 	};
 
 	public void startAnimator() {
-		edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory = this.getOnscreenLookingGlass().getLookingGlassFactory();
-		lookingGlassFactory.addAutomaticDisplayListener( this.automaticDisplayListener );
-		lookingGlassFactory.incrementAutomaticDisplayCount();
+		edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = this.getOnscreenLookingGlass().getRenderFactory();
+		renderFactory.addAutomaticDisplayListener( this.automaticDisplayListener );
+		renderFactory.incrementAutomaticDisplayCount();
 		this.isAnimatorStarted = true;
 	}
 
 	public void stopAnimator() {
 		if( this.isAnimatorStarted ) {
 			this.getAnimator().completeAll( null );
-			edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory lookingGlassFactory = this.getOnscreenLookingGlass().getLookingGlassFactory();
-			lookingGlassFactory.decrementAutomaticDisplayCount();
-			lookingGlassFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
+			edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = this.getOnscreenLookingGlass().getRenderFactory();
+			renderFactory.decrementAutomaticDisplayCount();
+			renderFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
 			this.isAnimatorStarted = false;
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.isAnimatorStarted );

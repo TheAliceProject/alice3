@@ -171,7 +171,7 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 						xyzInAbsolutePlane.x = t.x;
 						xyzInAbsolutePlane.z = t.z;
 
-						getOnscreenLookingGlass().getLookingGlassFactory().invokeLater( new Runnable() {
+						getOnscreenLookingGlass().getRenderFactory().invokeLater( new Runnable() {
 							@Override
 							public void run() {
 								updateTranslation( m_sgDragAcceptor, xyzInAbsolutePlane, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
@@ -181,7 +181,7 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 				} else {
 					final edu.cmu.cs.dennisc.math.Point3 xyzInAbsolutePlane = getPointInPlane( m_planeInAbsolute, current.x, current.y );
 					xyzInAbsolutePlane.subtract( m_offset );
-					getOnscreenLookingGlass().getLookingGlassFactory().invokeLater( new Runnable() {
+					getOnscreenLookingGlass().getRenderFactory().invokeLater( new Runnable() {
 						@Override
 						public void run() {
 							updateTranslation( m_sgDragAcceptor, xyzInAbsolutePlane, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );

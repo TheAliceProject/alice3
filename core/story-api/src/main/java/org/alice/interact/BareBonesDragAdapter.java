@@ -138,12 +138,12 @@ public abstract class BareBonesDragAdapter {
 
 	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		if( this.onscreenLookingGlass != null ) {
-			this.onscreenLookingGlass.getLookingGlassFactory().removeAutomaticDisplayListener( this.automaticDisplayAdapter );
+			this.onscreenLookingGlass.getRenderFactory().removeAutomaticDisplayListener( this.automaticDisplayAdapter );
 		}
 		this.onscreenLookingGlass = onscreenLookingGlass;
 		setAWTComponent( getAWTComponentToAddListenersTo( this.onscreenLookingGlass ) );
 		if( this.onscreenLookingGlass != null ) {
-			this.onscreenLookingGlass.getLookingGlassFactory().addAutomaticDisplayListener( this.automaticDisplayAdapter );
+			this.onscreenLookingGlass.getRenderFactory().addAutomaticDisplayListener( this.automaticDisplayAdapter );
 		}
 	}
 

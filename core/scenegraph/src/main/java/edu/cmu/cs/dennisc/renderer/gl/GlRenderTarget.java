@@ -212,12 +212,12 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	}
 
 	@Override
-	public java.awt.Rectangle getViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	public java.awt.Rectangle getSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		return this.mapSgCameraToViewport.get( sgCamera );
 	}
 
 	@Override
-	public void setViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle viewport ) {
+	public void setSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle viewport ) {
 		if( viewport != null ) {
 			this.mapSgCameraToViewport.put( sgCamera, viewport );
 		} else {
