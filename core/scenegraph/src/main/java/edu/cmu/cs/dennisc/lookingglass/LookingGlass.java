@@ -47,15 +47,6 @@ package edu.cmu.cs.dennisc.lookingglass;
  * @author Dennis Cosgrove
  */
 public interface LookingGlass extends edu.cmu.cs.dennisc.renderer.RenderTarget, edu.cmu.cs.dennisc.pattern.Releasable {
-	public java.awt.Graphics2D createGraphics( edu.cmu.cs.dennisc.texture.Texture texture );
-
-	public void commitGraphics( edu.cmu.cs.dennisc.texture.Texture texture, java.awt.Graphics2D g, int x, int y, int width, int height );
-
-	public void commitGraphics( edu.cmu.cs.dennisc.texture.Texture texture, java.awt.Graphics2D g );
-
-	//todo
-	public java.awt.Image getImage( edu.cmu.cs.dennisc.texture.Texture texture );
-
 	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras();
 
 	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
