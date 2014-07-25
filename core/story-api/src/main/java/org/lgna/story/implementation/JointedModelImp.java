@@ -236,17 +236,6 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			throw new RuntimeException( sb.toString() );
 		}
 
-		//TODO: Arrays?
-
-		//do something for joint arrays here?
-		//get all the JointArrayId fields
-		//find all the joints that match those ids?
-		// How? we need to look up the joints in the visualData perhaps
-		//This is the code from alice.JointImplementationAndVisualDataFactory.createJointImplementation(
-		//		String key = jointId.toString();
-		//		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
-		//		edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( key );
-
 		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
 		edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;
 		if( rootIds.length == 0 ) {
@@ -268,6 +257,8 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			}
 		}
 
+		//Handle joint arrays
+		//This makes sure we have JointImps or JointWrappers for the given jointIds and adds them to mapIdToJoint for future retrieval 
 		for( org.lgna.story.resources.JointArrayId arrayId : this.getJointArrayIds() ) {
 			this.createJointImpsAsNeededForJointArrayIds( arrayId, this.mapIdToJoint, true );
 		}
