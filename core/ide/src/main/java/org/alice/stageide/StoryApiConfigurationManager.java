@@ -396,8 +396,6 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
 
-	//	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_IMP_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.implementation.JointedModelImp.class );
-
 	private static String getFieldMethodNameHint( org.lgna.project.ast.AbstractField field ) {
 		if( field instanceof org.lgna.project.ast.JavaField ) {
 			java.lang.reflect.Field fld = ( (org.lgna.project.ast.JavaField)field ).getFieldReflectionProxy().getReification();
@@ -435,40 +433,6 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 					org.lgna.project.ast.JavaMethod getJointArrayMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", org.lgna.story.resources.JointId[].class );
 					org.lgna.project.ast.JavaMethod getJointArrayIdMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", org.lgna.story.resources.JointArrayId.class );
 					org.lgna.project.ast.JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJoint", org.lgna.story.resources.JointId.class );
-					//					ArrayList<?> methods = resourceType.getDeclaredMethods();
-					//					org.lgna.project.ast.JavaMethod getImplementationMethod = (org.lgna.project.ast.JavaMethod)JOINTED_MODEL_TYPE.findMethod( "HACKgetImplementation" );
-					//					org.lgna.project.ast.JavaMethod getResourceMethod = (org.lgna.project.ast.JavaMethod)JOINTED_MODEL_TYPE.findMethod( "getTypedJointedModelResource", java.lang.Class.class );
-					//
-					//					for( org.lgna.project.ast.AbstractMethod method : resourceType.getDeclaredMethods() ) {
-					//						if( method.getAllParameters().length == 0 ) {
-					//							org.lgna.project.annotations.Visibility visibility = method.getVisibility();
-					//							Class<?> returnType = null;
-					//							org.lgna.project.ast.JavaMethod getMethod = null;
-					//							if( method.getReturnType().isAssignableTo( org.lgna.story.resources.JointId.class ) && ( method.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
-					//								returnType = org.lgna.story.SJoint.class;
-					//								getMethod = getJointMethod;
-					//							}
-					//							else if( method.getReturnType().isAssignableTo( org.lgna.story.resources.JointId[].class ) && ( method.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
-					//								returnType = org.lgna.story.SJoint[].class;
-					//								getMethod = getJointArrayMethod;
-					//							}
-					//							if( returnType != null ) {
-					//								org.lgna.project.ast.UserMethod userMethod = org.lgna.project.ast.AstUtilities.createFunction( method.getName(), returnType );
-					//								userMethod.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
-					//								org.lgna.project.ast.BlockStatement body = userMethod.body.getValue();
-					//
-					//								org.lgna.project.ast.Expression getResourceExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), getResourceMethod, org.lgna.project.ast.AstUtilities.createTypeExpression( resourceType ) );
-					//
-					//								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
-					//										new org.lgna.project.ast.ThisExpression(),
-					//										getMethod,
-					//										org.lgna.project.ast.AstUtilities.createMethodInvocation( getResourceExpression, method )
-					//										);
-					//								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( returnType, expression ) );
-					//								rv.methods.add( userMethod );
-					//							}
-					//						}
-					//					}
 					for( org.lgna.project.ast.AbstractField field : resourceType.getDeclaredFields() ) {
 						if( field.isStatic() ) {
 							if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointId.class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {

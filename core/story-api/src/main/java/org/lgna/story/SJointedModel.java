@@ -98,16 +98,6 @@ public abstract class SJointedModel extends SModel {
 	}
 
 	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	public <T extends org.lgna.story.resources.JointedModelResource> T getTypedJointedModelResource( Class<T> resourceType ) {
-		return resourceType.cast( this.getImplementation().getResource() );
-	}
-
-	//	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	//	public org.lgna.story.implementation.JointedModelImp HACKgetImplementation() {
-	//		return this.getImplementation();
-	//	}
-
-	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
 	protected void setJointedModelResource( org.lgna.story.resources.JointedModelResource resource ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( resource, 0 );
 		this.getImplementation().setNewResource( resource );
