@@ -13,6 +13,7 @@ import org.lgna.project.Version;
 import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
 
 /*
@@ -689,18 +690,27 @@ public class GalleryDiff {
 		File jarDir = new File(curDir);
 		jarDir = jarDir.getParentFile().getParentFile();
 		jarDir = new File(jarDir, "ide/lib/alice");
-
+		File aliceJarDir = new File("C:/Users/alice/.m2/repository/org/alice/alice-model-source/2014.07.22");
+		File nebulousJarDir = new File("C:/Users/alice/.m2/repository/org/alice/nonfree/nebulous-model-source/2014.07.22");
 		System.out.println(jarDir);
 
-		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
-				.listDescendants(jarDir, "jar");
+//		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
+//				.listDescendants(jarDir, "jar");
+		
+		File[] aliceJarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
+				.listDescendants(aliceJarDir, "jar");
+		File[] nebulousJarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
+				.listDescendants(nebulousJarDir, "jar");
+		
+		File[] jarFiles = ArrayUtilities.concatArrays(File.class, aliceJarFiles, nebulousJarFiles);
+		
 		final String DATA_LOCATIONS = "C:\\batchOutput\\galleryVersionData\\";
 		final String FILE_NAME = "\\galleryData.txt";
 		
 
-		 GalleryDiff.saveGalleryInfo(ProjectVersion.getCurrentVersion(),
-		 DATA_LOCATIONS+ProjectVersion.getCurrentVersion().toString()+FILE_NAME,
-		 jarFiles);
+//		 GalleryDiff.saveGalleryInfo(ProjectVersion.getCurrentVersion(),
+//		 DATA_LOCATIONS+ProjectVersion.getCurrentVersion().toString()+FILE_NAME,
+//		 jarFiles);
 
 		final String[] DATA_VERSIONS = {
 				// "3.1.0.0.0", //Not supported
@@ -713,7 +723,7 @@ public class GalleryDiff {
 				// "3.1.29.0.0",
 				// "3.1.46.0.0",
 				// "3.1.47.0.0",
-				"3.1.69.0.0", "3.1.70.0.0" };
+				"3.1.70.0.0", "3.1.92.0.0", "3.1.93.0.0" };
 
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < DATA_VERSIONS.length - 1; i++) {

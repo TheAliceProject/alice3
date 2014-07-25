@@ -5171,6 +5171,16 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"edu.cmu.cs.dennisc.matt.EndOcclusionEvent",
 					"org.lgna.story.event.EndOcclusionEvent"
 
+			),
+
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.85.0.0" ),
+					new org.lgna.project.Version( "3.1.92.0.0" )
+			),
+
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.92.0.0" ),
+					new org.lgna.project.Version( "3.1.93.0.0" )
 			)
 
 			//			, EventAstMigration.getTextMigration() 
