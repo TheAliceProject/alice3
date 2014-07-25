@@ -82,13 +82,13 @@
 									<type>zip</type>
 									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
 								</artifactItem>
-<!-- 								<artifactItem> -->
-<!-- 									<groupId>org.alice.nonfree</groupId> -->
-<!-- 									<artifactId>nebulous-person-resources</artifactId> -->
-<!-- 									<version>${nebulous.person.version}</version> -->
-<!-- 									<type>zip</type> -->
-<!-- 									<outputDirectory>${project.resources.gallery.directory}</outputDirectory> -->
-<!-- 								</artifactItem> -->
+									<artifactItem>
+										<groupId>org.alice.nonfree</groupId>
+										<artifactId>nebulous-person-resources</artifactId>
+										<version>${nebulous.person.version}</version>
+										<type>zip</type>
+										<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
+									</artifactItem>
 								<artifactItem>
 									<groupId>org.alice</groupId>
 									<artifactId>sound-gallery</artifactId>
