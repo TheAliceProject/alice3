@@ -129,5 +129,10 @@ public abstract class AbstractMethodContainedByUserField extends AbstractMethod 
 		return null;
 	}
 
+	@Override
+	public boolean isUserAuthored() {
+		return true;
+	}
+
 	private final UserField field;
 }
