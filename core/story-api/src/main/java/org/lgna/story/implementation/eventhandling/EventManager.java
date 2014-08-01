@@ -270,12 +270,12 @@ public class EventManager {
 	//		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	//	}
 
-	public void addComesIntoViewEventListener( ViewEnterListener listener, SModel[] entities ) {
-		this.viewHandler.addViewEventListener( listener, entities );
+	public void addComesIntoViewEventListener( ViewEnterListener listener, SModel[] entities, MultipleEventPolicy policy ) {
+		this.viewHandler.addViewEventListener( listener, entities, policy );
 	}
 
-	public void addLeavesViewEventListener( ViewExitListener listener, SModel[] entities ) {
-		this.viewHandler.addViewEventListener( listener, entities );
+	public void addLeavesViewEventListener( ViewExitListener listener, SModel[] entities, MultipleEventPolicy policy ) {
+		this.viewHandler.addViewEventListener( listener, entities, policy );
 	}
 
 	public void sceneActivated() {
@@ -322,12 +322,12 @@ public class EventManager {
 		contingent.register( listener, group, frequency, policy );
 	}
 
-	public void addOcclusionEventListener( OcclusionStartListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo ) {
-		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
+	public void addOcclusionEventListener( OcclusionStartListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, MultipleEventPolicy policy ) {
+		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo, policy );
 	}
 
-	public void addOcclusionEventListener( OcclusionEndListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo ) {
-		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
+	public void addOcclusionEventListener( OcclusionEndListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, MultipleEventPolicy policy ) {
+		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo, policy );
 	}
 
 	public void addSceneActivationListener( SceneActivationListener listener ) {

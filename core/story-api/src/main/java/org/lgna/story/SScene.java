@@ -252,8 +252,8 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addViewEnterListener( org.lgna.story.event.ViewEnterListener listener, SModel[] set ) {
-		this.implementation.getEventManager().addComesIntoViewEventListener( listener, set );
+	public void addViewEnterListener( org.lgna.story.event.ViewEnterListener listener, SModel[] set, AddViewEnterListener.Detail... details ) {
+		this.implementation.getEventManager().addComesIntoViewEventListener( listener, set, MultipleEventPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
@@ -265,14 +265,14 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addViewExitListener( org.lgna.story.event.ViewExitListener listener, SModel[] set ) {
-		this.implementation.getEventManager().addLeavesViewEventListener( listener, set );
+	public void addViewExitListener( org.lgna.story.event.ViewExitListener listener, SModel[] set, AddViewExitListener.Detail... details ) {
+		this.implementation.getEventManager().addLeavesViewEventListener( listener, set, MultipleEventPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addOcclusionStartListener( org.lgna.story.event.OcclusionStartListener listener, SModel[] setA, SModel[] setB ) {
-		this.getImplementation().getEventManager().addOcclusionEventListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ) );
+	public void addOcclusionStartListener( org.lgna.story.event.OcclusionStartListener listener, SModel[] setA, SModel[] setB, AddOcclusionStartListener.Detail... details ) {
+		this.getImplementation().getEventManager().addOcclusionEventListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ), MultipleEventPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
@@ -288,8 +288,8 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addOcclusionEndListener( org.lgna.story.event.OcclusionEndListener listener, SModel[] setA, SModel[] setB ) {
-		this.getImplementation().getEventManager().addOcclusionEventListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ) );
+	public void addOcclusionEndListener( org.lgna.story.event.OcclusionEndListener listener, SModel[] setA, SModel[] setB, AddOcclusionEndListener.Detail... details ) {
+		this.getImplementation().getEventManager().addOcclusionEventListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ), MultipleEventPolicy.getValue( details ) );
 	}
 
 	//remove
