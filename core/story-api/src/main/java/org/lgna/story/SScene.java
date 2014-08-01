@@ -207,8 +207,8 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addCollisionStartListener( org.lgna.story.event.CollisionStartListener listener, SThing[] setA, SThing[] setB ) {
-		this.getImplementation().getEventManager().addCollisionListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ) );
+	public void addCollisionStartListener( org.lgna.story.event.CollisionStartListener listener, SThing[] setA, SThing[] setB, AddCollisionStartListener.Detail... details ) {
+		this.getImplementation().getEventManager().addCollisionListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ), MultipleEventPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
@@ -222,14 +222,14 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addCollisionEndListener( org.lgna.story.event.CollisionEndListener listener, SThing[] setA, SThing[] setB ) {
-		this.getImplementation().getEventManager().addCollisionListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ) );
+	public void addCollisionEndListener( org.lgna.story.event.CollisionEndListener listener, SThing[] setA, SThing[] setB, AddCollisionEndListener.Detail... details ) {
+		this.getImplementation().getEventManager().addCollisionListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ), MultipleEventPolicy.getValue( details ) );
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addProximityEnterListener( org.lgna.story.event.ProximityEnterListener listener, SThing[] setA, SThing[] setB, Number distance ) {
-		this.getImplementation().getEventManager().addProximityEventListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ), distance );// AddEnterProximityEventListener.getDist( details ));
+	public void addProximityEnterListener( org.lgna.story.event.ProximityEnterListener listener, SThing[] setA, SThing[] setB, Number distance, AddProximityEnterListener.Detail... details ) {
+		this.getImplementation().getEventManager().addProximityEventListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ), distance, MultipleEventPolicy.getValue( details ) );// AddEnterProximityEventListener.getDist( details ));
 	}
 
 	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
@@ -246,8 +246,8 @@ public abstract class SScene extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	@AddEventListenerTemplate( )
-	public void addProximityExitListener( org.lgna.story.event.ProximityExitListener listener, SThing[] setA, SThing[] setB, Number distance ) {
-		this.getImplementation().getEventManager().addProximityEventListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ), distance );// AddExitProximityEventListener.getDist( details ));
+	public void addProximityExitListener( org.lgna.story.event.ProximityExitListener listener, SThing[] setA, SThing[] setB, Number distance, AddProximityExitListener.Detail... details ) {
+		this.getImplementation().getEventManager().addProximityEventListener( listener, edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setA ), edu.cmu.cs.dennisc.java.util.Lists.newArrayList( setB ), distance, MultipleEventPolicy.getValue( details ) );// AddExitProximityEventListener.getDist( details ));
 	}
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )

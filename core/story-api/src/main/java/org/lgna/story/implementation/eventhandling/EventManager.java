@@ -222,12 +222,12 @@ public class EventManager {
 		}
 	}
 
-	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
-		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo );
+	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo, MultipleEventPolicy policy ) {
+		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo, policy );
 	}
 
-	public void addProximityEventListener( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Number dist ) {
-		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist.doubleValue() );
+	public void addProximityEventListener( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Number dist, MultipleEventPolicy policy ) {
+		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist.doubleValue(), policy );
 	}
 
 	public void addTimerEventListener( TimeListener timerEventListener, Number frequency, MultipleEventPolicy policy ) {
