@@ -1,7 +1,7 @@
 package org.lgna.story;
 
 public enum MultipleEventPolicy implements
-		AddPositionOrientationChangeListener.Detail, AddMouseClickOnScreenListener.Detail, AddMouseClickOnObjectListener.Detail,
+		AddMouseClickOnScreenListener.Detail, AddMouseClickOnObjectListener.Detail,
 		AddKeyPressListener.Detail,
 		AddTimeListener.Detail,
 		AddProximityEnterListener.Detail, AddProximityExitListener.Detail,
