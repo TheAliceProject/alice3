@@ -43,10 +43,18 @@
 package org.lgna.story.ast;
 
 import org.lgna.project.ast.JavaMethod;
+import org.lgna.story.AddCollisionEndListener;
+import org.lgna.story.AddCollisionStartListener;
 import org.lgna.story.AddKeyPressListener;
 import org.lgna.story.AddMouseClickOnObjectListener;
 import org.lgna.story.AddMouseClickOnScreenListener;
+import org.lgna.story.AddOcclusionEndListener;
+import org.lgna.story.AddOcclusionStartListener;
+import org.lgna.story.AddProximityEnterListener;
+import org.lgna.story.AddProximityExitListener;
 import org.lgna.story.AddTimeListener;
+import org.lgna.story.AddViewEnterListener;
+import org.lgna.story.AddViewExitListener;
 import org.lgna.story.SModel;
 import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SScene;
@@ -119,34 +127,34 @@ public class EventListenerMethodUtilities {
 	public static final JavaMethod ADD_START_COLLISION_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addCollisionStartListener",
-			CollisionStartListener.class, SThing[].class, SThing[].class );
+			CollisionStartListener.class, SThing[].class, SThing[].class, AddCollisionStartListener.Detail[].class );
 	public static final JavaMethod ADD_END_COLLISION_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addCollisionEndListener",
-			CollisionEndListener.class, SThing[].class, SThing[].class );
+			CollisionEndListener.class, SThing[].class, SThing[].class, AddCollisionEndListener.Detail[].class );
 	public static final JavaMethod ADD_ENTER_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addProximityEnterListener",
-			ProximityEnterListener.class, SThing[].class, SThing[].class, Number.class );
+			ProximityEnterListener.class, SThing[].class, SThing[].class, Number.class, AddProximityEnterListener.Detail[].class );
 	public static final JavaMethod ADD_EXIT_PROXIMITY_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addProximityExitListener",
-			ProximityExitListener.class, SThing[].class, SThing[].class, Number.class );
+			ProximityExitListener.class, SThing[].class, SThing[].class, Number.class, AddProximityExitListener.Detail[].class );
 	public static final JavaMethod ADD_ENTER_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addViewEnterListener",
-			ViewEnterListener.class, SModel[].class );
+			ViewEnterListener.class, SModel[].class, AddViewEnterListener.Detail[].class );
 	public static final JavaMethod ADD_EXIT_VIEW_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addViewExitListener",
-			ViewExitListener.class, SModel[].class );
+			ViewExitListener.class, SModel[].class, AddViewExitListener.Detail[].class );
 	public static final JavaMethod ADD_START_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addOcclusionStartListener",
-			OcclusionStartListener.class, SModel[].class, SModel[].class );
+			OcclusionStartListener.class, SModel[].class, SModel[].class, AddOcclusionStartListener.Detail[].class );
 	public static final JavaMethod ADD_END_OCCLUSION_EVENT_LISTENER_METHOD = JavaMethod.getInstance(
 			SScene.class,
 			"addOcclusionEndListener",
-			OcclusionEndListener.class, SModel[].class, SModel[].class );
+			OcclusionEndListener.class, SModel[].class, SModel[].class, AddOcclusionEndListener.Detail[].class );
 
 }

@@ -190,5 +190,10 @@ public class JavaField extends AbstractField {
 		}
 	}
 
+	@Override
+	public boolean isUserAuthored() {
+		return false;
+	}
+
 	private final FieldReflectionProxy fieldReflectionProxy;
 }

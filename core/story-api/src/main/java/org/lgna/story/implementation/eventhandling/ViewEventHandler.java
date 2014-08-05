@@ -130,9 +130,9 @@ public class ViewEventHandler extends TransformationChangedHandler<Object, ViewE
 		}
 	}
 
-	public void addViewEventListener( Object listener, SModel[] models ) {
+	public void addViewEventListener( Object listener, SModel[] models, MultipleEventPolicy policy ) {
 		registerIsFiringMap( listener );
-		registerPolicyMap( listener, MultipleEventPolicy.IGNORE );
+		registerPolicyMap( listener, policy );
 		for( SModel m : models ) {
 			if( !getModelList().contains( m ) ) {
 				getModelList().add( m );

@@ -67,9 +67,9 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 
 	protected final CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
 
-	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
+	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo, MultipleEventPolicy policy ) {
 		registerIsFiringMap( collisionListener );
-		registerPolicyMap( collisionListener, MultipleEventPolicy.IGNORE );
+		registerPolicyMap( collisionListener, policy );
 		List<SThing> allObserving = Lists.newCopyOnWriteArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		for( SThing m : allObserving ) {

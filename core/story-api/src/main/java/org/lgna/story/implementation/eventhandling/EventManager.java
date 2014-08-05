@@ -222,12 +222,12 @@ public class EventManager {
 		}
 	}
 
-	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
-		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo );
+	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo, MultipleEventPolicy policy ) {
+		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo, policy );
 	}
 
-	public void addProximityEventListener( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Number dist ) {
-		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist.doubleValue() );
+	public void addProximityEventListener( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Number dist, MultipleEventPolicy policy ) {
+		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist.doubleValue(), policy );
 	}
 
 	public void addTimerEventListener( TimeListener timerEventListener, Number frequency, MultipleEventPolicy policy ) {
@@ -270,12 +270,12 @@ public class EventManager {
 	//		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	//	}
 
-	public void addComesIntoViewEventListener( ViewEnterListener listener, SModel[] entities ) {
-		this.viewHandler.addViewEventListener( listener, entities );
+	public void addComesIntoViewEventListener( ViewEnterListener listener, SModel[] entities, MultipleEventPolicy policy ) {
+		this.viewHandler.addViewEventListener( listener, entities, policy );
 	}
 
-	public void addLeavesViewEventListener( ViewExitListener listener, SModel[] entities ) {
-		this.viewHandler.addViewEventListener( listener, entities );
+	public void addLeavesViewEventListener( ViewExitListener listener, SModel[] entities, MultipleEventPolicy policy ) {
+		this.viewHandler.addViewEventListener( listener, entities, policy );
 	}
 
 	public void sceneActivated() {
@@ -322,12 +322,12 @@ public class EventManager {
 		contingent.register( listener, group, frequency, policy );
 	}
 
-	public void addOcclusionEventListener( OcclusionStartListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo ) {
-		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
+	public void addOcclusionEventListener( OcclusionStartListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, MultipleEventPolicy policy ) {
+		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo, policy );
 	}
 
-	public void addOcclusionEventListener( OcclusionEndListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo ) {
-		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
+	public void addOcclusionEventListener( OcclusionEndListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, MultipleEventPolicy policy ) {
+		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo, policy );
 	}
 
 	public void addSceneActivationListener( SceneActivationListener listener ) {

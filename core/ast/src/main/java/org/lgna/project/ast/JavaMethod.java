@@ -263,6 +263,11 @@ public class JavaMethod extends AbstractMethod {
 		}
 	}
 
+	@Override
+	public boolean isUserAuthored() {
+		return false;
+	}
+
 	private final MethodReflectionProxy methodReflectionProxy;
 	private final java.util.ArrayList<JavaMethodParameter> requiredParameters;
 	private final JavaMethodParameter variableOrKeyedParameter;
