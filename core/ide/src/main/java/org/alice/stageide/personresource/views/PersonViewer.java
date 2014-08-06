@@ -138,7 +138,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.dragAdapter.setOnscreenLookingGlass( this.getOnscreenLookingGlass() );
+		this.dragAdapter.setOnscreenRenderTarget( this.getOnscreenRenderTarget() );
 		this.dragAdapter.addCameraView( org.alice.interact.AbstractDragAdapter.CameraView.MAIN, this.getCamera().getSgCamera(), null );
 		this.dragAdapter.makeCameraActive( this.getCamera().getSgCamera() );
 	}

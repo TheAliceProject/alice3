@@ -232,9 +232,9 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		return scene != null ? scene.getProgram() : null;
 	}
 
-	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+	protected edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		ProgramImp program = this.getProgram();
-		return program != null ? program.getOnscreenLookingGlass() : null;
+		return program != null ? program.getOnscreenRenderTarget() : null;
 	}
 
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
@@ -260,7 +260,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 	}
 
 	public java.awt.Point transformToAwt( edu.cmu.cs.dennisc.math.Point3 xyz, CameraImp<?> camera ) {
-		return this.getSgComposite().transformToAWT_New( xyz, this.getOnscreenLookingGlass(), camera.getSgCamera() );
+		return this.getSgComposite().transformToAWT_New( xyz, this.getOnscreenRenderTarget(), camera.getSgCamera() );
 	}
 
 	protected static final double DEFAULT_DURATION = 1.0;
@@ -302,9 +302,9 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 	private java.awt.Component getParentComponent() {
 		SceneImp scene = this.getScene();
 		if( scene != null ) {
-			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
-			if( onscreenLookingGlass != null ) {
-				return onscreenLookingGlass.getAwtComponent();
+			edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+			if( onscreenRenderTarget != null ) {
+				return onscreenRenderTarget.getAwtComponent();
 			}
 		}
 		return null;

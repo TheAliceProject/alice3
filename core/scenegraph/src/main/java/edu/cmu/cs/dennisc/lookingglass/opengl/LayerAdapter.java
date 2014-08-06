@@ -82,7 +82,7 @@ public class LayerAdapter extends ElementAdapter<edu.cmu.cs.dennisc.scenegraph.L
 		}
 	}
 
-	/* package-private */void render( edu.cmu.cs.dennisc.renderer.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+	/* package-private */void render( edu.cmu.cs.dennisc.renderer.Graphics2D g2, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		synchronized( this.forgetGraphicAdapters ) {
 			for( GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter : this.forgetGraphicAdapters ) {
 				graphicAdapter.forget( g2 );
@@ -94,7 +94,7 @@ public class LayerAdapter extends ElementAdapter<edu.cmu.cs.dennisc.scenegraph.L
 		}
 		synchronized( this.activeGraphicAdapters ) {
 			for( GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter : this.activeGraphicAdapters ) {
-				graphicAdapter.render( g2, lookingGlass, actualViewport, camera );
+				graphicAdapter.render( g2, renderTarget, actualViewport, camera );
 			}
 		}
 	}

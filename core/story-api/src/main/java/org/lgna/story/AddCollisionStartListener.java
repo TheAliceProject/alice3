@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,16 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.lookingglass;
+package org.lgna.story;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public interface LookingGlassFactory extends edu.cmu.cs.dennisc.renderer.RenderFactory {
-	public LightweightOnscreenLookingGlass createLightweightOnscreenLookingGlass();
+public class AddCollisionStartListener {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = AddCollisionStartListener.class )
+	public interface Detail {
+	}
 
-	public HeavyweightOnscreenLookingGlass createHeavyweightOnscreenLookingGlass();
-
-	public OffscreenLookingGlass createOffscreenLookingGlass( int width, int height, LookingGlass lookingGlassToShareContextWith );
+	public static MultipleEventPolicy multipleEventPolicy( MultipleEventPolicy multipleEventPolicy ) {
+		return multipleEventPolicy;
+	}
 }

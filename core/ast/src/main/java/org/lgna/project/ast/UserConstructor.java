@@ -62,6 +62,11 @@ public abstract class UserConstructor extends AbstractConstructor {
 		return null;
 	}
 
+	@Override
+	public boolean isUserAuthored() {
+		return true;
+	}
+
 	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 
 	public String generateJavaCode( JavaCodeGenerator generator ) {

@@ -244,6 +244,23 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	}
 
 	@Override
+	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
+		return cameraAdapter.isLetterboxedAsOpposedToDistorted();
+	}
+
+	@Override
+	public void setLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted ) {
+		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
+		cameraAdapter.setIsLetterboxedAsOpposedToDistorted( isLetterboxedAsOpposedToDistorted );
+	}
+
+	@Override
+	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras() {
+		return this.sgCameras;
+	}
+
+	@Override
 	public edu.cmu.cs.dennisc.renderer.SynchronousPicker getSynchronousPicker() {
 		throw new RuntimeException( "todo" );
 	}
@@ -260,6 +277,21 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer getAsynchronousImageCapturer() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public void forgetAllCachedItems() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public void clearUnusedTextures() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public void release() {
 		throw new RuntimeException( "todo" );
 	}
 

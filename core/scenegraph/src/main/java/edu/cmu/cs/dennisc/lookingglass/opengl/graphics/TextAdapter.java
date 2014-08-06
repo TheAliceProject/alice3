@@ -49,7 +49,7 @@ public abstract class TextAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graphi
 
 	protected abstract float getWrapWidth( java.awt.Rectangle actualViewport );
 
-	protected abstract void render( edu.cmu.cs.dennisc.renderer.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, edu.cmu.cs.dennisc.java.awt.MultilineText multilineText, java.awt.Font font, java.awt.Color textColor, float wrapWidth );
+	protected abstract void render( edu.cmu.cs.dennisc.renderer.Graphics2D g2, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, edu.cmu.cs.dennisc.java.awt.MultilineText multilineText, java.awt.Font font, java.awt.Color textColor, float wrapWidth );
 
 	private void forgetFontIfNecessary( edu.cmu.cs.dennisc.renderer.Graphics2D g2 ) {
 		if( this.rememberedFont != null ) {
@@ -59,7 +59,7 @@ public abstract class TextAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graphi
 	}
 
 	@Override
-	protected void render( edu.cmu.cs.dennisc.renderer.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+	protected void render( edu.cmu.cs.dennisc.renderer.Graphics2D g2, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		String text = this.m_element.text.getValue();
 		java.awt.Font font = this.m_element.font.getValue();
 		if( font == this.rememberedFont ) {
@@ -74,7 +74,7 @@ public abstract class TextAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graphi
 		} else {
 			this.multilineText = new edu.cmu.cs.dennisc.java.awt.MultilineText( text );
 		}
-		this.render( g2, lookingGlass, actualViewport, camera, this.multilineText, this.rememberedFont, this.textColor, this.getWrapWidth( actualViewport ) );
+		this.render( g2, renderTarget, actualViewport, camera, this.multilineText, this.rememberedFont, this.textColor, this.getWrapWidth( actualViewport ) );
 	}
 
 	@Override

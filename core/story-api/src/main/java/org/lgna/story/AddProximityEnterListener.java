@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.lookingglass;
+package org.lgna.story;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public interface LookingGlass extends edu.cmu.cs.dennisc.renderer.RenderTarget, edu.cmu.cs.dennisc.pattern.Releasable {
-	public java.awt.Graphics2D createGraphics( edu.cmu.cs.dennisc.texture.Texture texture );
+public class AddProximityEnterListener {
 
-	public void commitGraphics( edu.cmu.cs.dennisc.texture.Texture texture, java.awt.Graphics2D g, int x, int y, int width, int height );
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = AddProximityEnterListener.class )
+	public interface Detail {
+	}
 
-	public void commitGraphics( edu.cmu.cs.dennisc.texture.Texture texture, java.awt.Graphics2D g );
-
-	//todo
-	public java.awt.Image getImage( edu.cmu.cs.dennisc.texture.Texture texture );
-
-	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras();
-
-	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-
-	public void setIsLetterboxedAsOpposedToDistorted( boolean isLetterboxedAsOpposedToDistorted, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-
-	public void forgetAllCachedItems();
-
-	public void clearUnusedTextures();
+	public static MultipleEventPolicy multipleEventPolicy( MultipleEventPolicy multipleEventPolicy ) {
+		return multipleEventPolicy;
+	}
 }

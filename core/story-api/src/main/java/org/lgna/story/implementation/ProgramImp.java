@@ -162,9 +162,9 @@ public abstract class ProgramImp {
 		}
 	}
 
-	protected ProgramImp( org.lgna.story.SProgram abstraction, edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
+	protected ProgramImp( org.lgna.story.SProgram abstraction, edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget ) {
 		this.abstraction = abstraction;
-		this.onscreenLookingGlass = onscreenLookingGlass;
+		this.onscreenRenderTarget = onscreenRenderTarget;
 		this.toggleFullScreenAction.putValue( javax.swing.Action.SMALL_ICON, new FullScreenIcon() );
 	}
 
@@ -206,8 +206,8 @@ public abstract class ProgramImp {
 		return this.abstraction;
 	}
 
-	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
+	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 
 	public abstract edu.cmu.cs.dennisc.animation.Animator getAnimator();
@@ -228,7 +228,7 @@ public abstract class ProgramImp {
 	};
 
 	public void startAnimator() {
-		edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = this.getOnscreenLookingGlass().getRenderFactory();
+		edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
 		renderFactory.addAutomaticDisplayListener( this.automaticDisplayListener );
 		renderFactory.incrementAutomaticDisplayCount();
 		this.isAnimatorStarted = true;
@@ -237,7 +237,7 @@ public abstract class ProgramImp {
 	public void stopAnimator() {
 		if( this.isAnimatorStarted ) {
 			this.getAnimator().completeAll( null );
-			edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = this.getOnscreenLookingGlass().getRenderFactory();
+			edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
 			renderFactory.decrementAutomaticDisplayCount();
 			renderFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
 			this.isAnimatorStarted = false;
@@ -247,7 +247,7 @@ public abstract class ProgramImp {
 	}
 
 	private void addComponents( AwtContainerInitializer awtContainerInitializer ) {
-		java.awt.Component awtLgComponent = this.getOnscreenLookingGlass().getAwtComponent();
+		java.awt.Component awtLgComponent = this.getOnscreenRenderTarget().getAwtComponent();
 		synchronized( awtLgComponent.getTreeLock() ) {
 			javax.swing.JPanel controlPanel;
 			if( this.isControlPanelDesired() ) {
@@ -255,16 +255,16 @@ public abstract class ProgramImp {
 			} else {
 				controlPanel = null;
 			}
-			awtContainerInitializer.addComponents( onscreenLookingGlass, controlPanel );
+			awtContainerInitializer.addComponents( onscreenRenderTarget, controlPanel );
 		}
 	}
 
 	private void requestFocusInWindow() {
-		this.getOnscreenLookingGlass().getAwtComponent().requestFocusInWindow();
+		this.getOnscreenRenderTarget().getAwtComponent().requestFocusInWindow();
 	}
 
 	public static interface AwtContainerInitializer {
-		public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel );
+		public void addComponents( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel );
 	}
 
 	private static class DefaultAwtContainerInitializer implements AwtContainerInitializer {
@@ -275,8 +275,8 @@ public abstract class ProgramImp {
 		}
 
 		@Override
-		public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel ) {
-			this.awtContainer.add( onscreenLookingGlass.getAwtComponent() );
+		public void addComponents( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
+			this.awtContainer.add( onscreenRenderTarget.getAwtComponent() );
 			if( controlPanel != null ) {
 				this.awtContainer.add( controlPanel, java.awt.BorderLayout.PAGE_START );
 			}
@@ -343,7 +343,7 @@ public abstract class ProgramImp {
 	}
 
 	public void shutDown() {
-		this.onscreenLookingGlass.release();
+		this.onscreenRenderTarget.release();
 		this.stopAnimator();
 		this.isProgramClosedExceptionDesired = true;
 	}
@@ -359,7 +359,7 @@ public abstract class ProgramImp {
 	}
 
 	private final org.lgna.story.SProgram abstraction;
-	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+	private final edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget;
 	private double simulationSpeedFactor = 1.0;
 	private javax.swing.Action restartAction;
 	private boolean isAnimatorStarted = false;

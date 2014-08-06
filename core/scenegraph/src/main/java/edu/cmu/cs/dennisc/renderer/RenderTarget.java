@@ -98,16 +98,13 @@ public interface RenderTarget {
 
 	void setSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle viewport );
 
-	//	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-	//
-	//	public void setIsLetterboxedAsOpposedToDistorted( boolean isLetterboxedAsOpposedToDistorted, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-	//
+	boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+
+	void setLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted );
+
 	boolean isRenderingEnabled();
 
 	void setRenderingEnabled( boolean isRenderingEnabled );
-
-	//
-	//	public void forgetAllCachedItems();
 
 	SynchronousPicker getSynchronousPicker();
 
@@ -117,9 +114,19 @@ public interface RenderTarget {
 
 	AsynchronousImageCapturer getAsynchronousImageCapturer();
 
+	void forgetAllCachedItems();
+
+	void clearUnusedTextures();
+
 	//todo: remove?
 	edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	//todo: remove?
 	java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+
+	//todo: remove?
+	Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras();
+
+	//todo: remove?
+	void release();
 }

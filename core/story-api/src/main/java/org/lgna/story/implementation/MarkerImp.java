@@ -54,12 +54,17 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 public abstract class MarkerImp extends VisualScaleModelImp {
 	protected MarkerImp( org.lgna.story.SMarker abstraction ) {
 		super();
+		this.initializeData();
 		this.abstraction = abstraction;
 		createVisuals();
 		this.boundingBox = this.calculateBoundingBox();
 		setMarkerColor( getDefaultMarkerColor() );
 		setMarkerOpacity( getDefaultMarkerOpacity() );
 		this.setShowing( false );
+	}
+
+	protected void initializeData() {
+
 	}
 
 	@Override

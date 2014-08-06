@@ -67,7 +67,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultReleasable implements edu.cmu.cs.dennisc.lookingglass.LookingGlass {
+abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultReleasable implements edu.cmu.cs.dennisc.renderer.RenderTarget {
 	private static java.awt.Rectangle s_actualViewportBufferForReuse = new java.awt.Rectangle();
 	private static java.awt.Dimension s_sizeBufferForReuse = new java.awt.Dimension();
 
@@ -117,34 +117,6 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	@Override
 	public edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer getAsynchronousImageCapturer() {
 		throw new UnsupportedOperationException();
-	}
-
-	//private java.util.List< TextureGraphicsCommit > m_pendingTextureGraphicsCommits = new java.util.LinkedList< TextureGraphicsCommit >();
-
-	@Override
-	public java.awt.Graphics2D createGraphics( edu.cmu.cs.dennisc.texture.Texture texture ) {
-		TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter = AdapterFactory.getAdapterFor( texture );
-		return textureAdapter.createGraphics();
-	}
-
-	@Override
-	public void commitGraphics( edu.cmu.cs.dennisc.texture.Texture texture, java.awt.Graphics2D g, int x, int y, int width, int height ) {
-		TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter = AdapterFactory.getAdapterFor( texture );
-		textureAdapter.commitGraphics( g, x, y, width, height );
-		//		synchronized( m_pendingTextureGraphicsCommits ) {
-		//			m_pendingTextureGraphicsCommits.add( new TextureGraphicsCommit( textureAdapter, g, x, y, width, height ) );
-		//		}
-	}
-
-	@Override
-	public void commitGraphics( edu.cmu.cs.dennisc.texture.Texture sgTexture, java.awt.Graphics2D g ) {
-		commitGraphics( sgTexture, g, 0, 0, sgTexture.getWidth(), sgTexture.getHeight() );
-	}
-
-	@Override
-	public java.awt.Image getImage( edu.cmu.cs.dennisc.texture.Texture texture ) {
-		TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter = AdapterFactory.getAdapterFor( texture );
-		return textureAdapter.getImage();
 	}
 
 	//	private com.sun.opengl.util.j2d.Overlay m_glOverlay;
@@ -512,14 +484,14 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	}
 
 	@Override
-	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
-		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
+	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
 		return cameraAdapter.isLetterboxedAsOpposedToDistorted();
 	}
 
 	@Override
-	public void setIsLetterboxedAsOpposedToDistorted( boolean isLetterboxedAsOpposedToDistorted, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
-		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
+	public void setLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted ) {
+		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
 		cameraAdapter.setIsLetterboxedAsOpposedToDistorted( isLetterboxedAsOpposedToDistorted );
 	}
 

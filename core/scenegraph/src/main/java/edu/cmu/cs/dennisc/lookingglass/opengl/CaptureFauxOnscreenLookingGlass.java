@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass {
+public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<javax.swing.JPanel> {
 	public static interface Observer {
 		public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown );
 	}
@@ -149,7 +149,7 @@ public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implem
 	}
 
 	@Override
-	public java.awt.Component getAwtComponent() {
+	public javax.swing.JPanel getAwtComponent() {
 		return this.jPanel;
 	}
 

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-class LightweightOnscreenLookingGlass extends OnscreenLookingGlass<javax.swing.JPanel> implements edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass {
+class LightweightOnscreenLookingGlass extends OnscreenLookingGlass<javax.swing.JPanel> implements edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget {
 	class RenderPane extends /* edu.cmu.cs.dennisc. */javax.media.opengl.awt.GLJPanel {
 
 		private Throwable prevThrowable = null;

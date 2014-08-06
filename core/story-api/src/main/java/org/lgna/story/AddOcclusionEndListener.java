@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -42,22 +42,16 @@
  */
 package org.lgna.story;
 
-import org.alice.stageide.apis.story.event.ProximityDistance;
-
 /**
  * @author Matt May
  */
-public class AddEnterProximityEventListener {
+public class AddOcclusionEndListener {
 
-	public static interface Detail {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = AddOcclusionEndListener.class )
+	public interface Detail {
 	}
 
-	public static Double getDist( Detail[] details ) {
-		for( Detail detail : details ) {
-			if( detail instanceof ProximityDistance ) {
-				return ( (ProximityDistance)detail ).getDist();
-			}
-		}
-		return 0.0;
+	public static MultipleEventPolicy multipleEventPolicy( MultipleEventPolicy multipleEventPolicy ) {
+		return multipleEventPolicy;
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,11 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass;
+package org.lgna.story;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public interface OffscreenLookingGlass extends LookingGlass, edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget {
-	public void clearAndRenderOffscreen();
+public class AddViewEnterListener {
+
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = AddViewEnterListener.class )
+	public interface Detail {
+	}
+
+	public static MultipleEventPolicy multipleEventPolicy( MultipleEventPolicy multipleEventPolicy ) {
+		return multipleEventPolicy;
+	}
 }

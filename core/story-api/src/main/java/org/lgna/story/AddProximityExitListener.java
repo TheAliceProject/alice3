@@ -40,13 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass;
+package org.lgna.story;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class PickException extends Exception {
-	public PickException( String message ) {
-		super( message );
+public class AddProximityExitListener {
+
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = AddProximityEnterListener.class )
+	public interface Detail {
+	}
+
+	public static MultipleEventPolicy multipleEventPolicy( MultipleEventPolicy multipleEventPolicy ) {
+		return multipleEventPolicy;
 	}
 }
