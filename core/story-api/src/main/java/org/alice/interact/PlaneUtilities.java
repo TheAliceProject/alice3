@@ -60,8 +60,8 @@ public class PlaneUtilities {
 		}
 	}
 
-	public static edu.cmu.cs.dennisc.math.Ray getRayFromPixel( edu.cmu.cs.dennisc.pictureplane.PicturePlane picturePlane, AbstractCamera camera, int xPixel, int yPixel ) {
-		edu.cmu.cs.dennisc.math.Ray ray = picturePlane.getRayAtPixel( xPixel, yPixel, camera );
+	public static edu.cmu.cs.dennisc.math.Ray getRayFromPixel( edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, AbstractCamera camera, int xPixel, int yPixel ) {
+		edu.cmu.cs.dennisc.math.Ray ray = renderTarget.getRayAtPixel( xPixel, yPixel, camera );
 
 		//So this is a little crazy
 		//The pick ray from the lookingglass is calculated to be pointing along the "backward" direction of the camera

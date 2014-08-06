@@ -62,13 +62,13 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
 	private static final double MAX_DISTANCE_PER_PIXEL = .05d;
 
 	@Override
-	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
-		return this.onscreenPicturePlane;
+	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
-		this.onscreenPicturePlane = onscreenPicturePlane;
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
 	@Override
@@ -145,11 +145,11 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
 	}
 
 	private void calculateMovementFactors( Point mousePoint ) {
-		Ray centerRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mousePoint.x, mousePoint.y );
-		Ray oneUp = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mousePoint.x, mousePoint.y - 1 );
-		Ray oneDown = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mousePoint.x, mousePoint.y + 1 );
-		Ray oneRight = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mousePoint.x + 1, mousePoint.y );
-		Ray oneLeft = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mousePoint.x - 1, mousePoint.y );
+		Ray centerRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y );
+		Ray oneUp = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y - 1 );
+		Ray oneDown = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mousePoint.x, mousePoint.y + 1 );
+		Ray oneRight = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mousePoint.x + 1, mousePoint.y );
+		Ray oneLeft = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mousePoint.x - 1, mousePoint.y );
 
 		double distancePerUpPixel = MAX_DISTANCE_PER_PIXEL;
 		double distancePerDownPixel = MAX_DISTANCE_PER_PIXEL;
@@ -205,5 +205,5 @@ public class CameraMoveDragManipulator extends CameraManipulator implements Onsc
 	private double initialCameraDotVertical;
 	private double pickDistance;
 
-	private edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane;
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
 }

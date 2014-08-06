@@ -10,5 +10,12 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/story-api-migration"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ide"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/alice-ide"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ast"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/croquet"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/java_code_utilities"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/story-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/story-api-migration"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/util"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

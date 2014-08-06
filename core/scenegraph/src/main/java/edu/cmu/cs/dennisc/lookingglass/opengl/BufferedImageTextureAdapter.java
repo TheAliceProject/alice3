@@ -48,21 +48,6 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  */
 public class BufferedImageTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.texture.BufferedImageTexture> {
 	@Override
-	public java.awt.Graphics2D createGraphics() {
-		throw new RuntimeException( "TODO" );
-	}
-
-	@Override
-	public void commitGraphics( java.awt.Graphics2D g, int x, int y, int width, int height ) {
-		throw new RuntimeException( "TODO" );
-	}
-
-	@Override
-	public java.awt.Image getImage() {
-		throw new RuntimeException( "TODO" );
-	}
-
-	@Override
 	protected com.jogamp.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
 		return newTextureData( gl, m_element.getBufferedImage(), m_element.isMipMappingDesired() );
 	}

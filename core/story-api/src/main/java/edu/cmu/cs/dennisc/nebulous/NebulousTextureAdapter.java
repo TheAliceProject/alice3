@@ -55,21 +55,6 @@ public class NebulousTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.ne
 	private final NebulousTextureBinding nebulousBinding = new NebulousTextureBinding();
 
 	@Override
-	public java.awt.Graphics2D createGraphics() {
-		throw new RuntimeException( "NOT SUPPORTED" );
-	}
-
-	@Override
-	public void commitGraphics( java.awt.Graphics2D g, int x, int y, int width, int height ) {
-		throw new RuntimeException( "NOT SUPPORTED" );
-	}
-
-	@Override
-	public java.awt.Image getImage() {
-		throw new RuntimeException( "NOT SUPPORTED" );
-	}
-
-	@Override
 	protected com.jogamp.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}

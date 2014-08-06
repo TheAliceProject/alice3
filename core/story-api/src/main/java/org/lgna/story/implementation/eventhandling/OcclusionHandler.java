@@ -72,9 +72,9 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 	private final OcclusionEventHandler occlusionEventHandler = new OcclusionEventHandler();
 	private CameraImp<?> camera;
 
-	public void addOcclusionEvent( Object occlusionEventListener, List<SModel> groupOne, List<SModel> groupTwo ) {
+	public void addOcclusionEvent( Object occlusionEventListener, List<SModel> groupOne, List<SModel> groupTwo, MultipleEventPolicy policy ) {
 		registerIsFiringMap( occlusionEventListener );
-		registerPolicyMap( occlusionEventListener, MultipleEventPolicy.IGNORE );
+		registerPolicyMap( occlusionEventListener, policy );
 		List<SModel> allObserving = Lists.newCopyOnWriteArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		if( ( groupOne.size() > 0 ) && ( groupOne.get( 0 ) != null ) && ( camera == null ) ) {

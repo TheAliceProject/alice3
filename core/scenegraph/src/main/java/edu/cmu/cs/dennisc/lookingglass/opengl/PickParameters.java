@@ -48,14 +48,14 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  */
 public class PickParameters {
 	private final java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> pickResults = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass;
+	private final AbstractLookingGlass lookingGlass;
 	private final edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera;
 	private final int x;
 	private final int y;
 	private final boolean isSubElementRequired;
 	private final edu.cmu.cs.dennisc.renderer.PickObserver pickObserver;
 
-	public PickParameters( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
+	public PickParameters( AbstractLookingGlass lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
 		this.lookingGlass = lookingGlass;
 		this.sgCamera = sgCamera;
 		this.x = x;
@@ -82,7 +82,7 @@ public class PickParameters {
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.lookingglass.LookingGlass getLookingGlass() {
+	public AbstractLookingGlass getLookingGlass() {
 		return this.lookingGlass;
 	}
 

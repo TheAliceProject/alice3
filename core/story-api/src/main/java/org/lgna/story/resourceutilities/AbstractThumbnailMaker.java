@@ -75,7 +75,7 @@ public abstract class AbstractThumbnailMaker {
 	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgModelTransformable;
 	private final Transformable sgCameraVehicle;
 	private final SymmetricPerspectiveCamera sgCamera;
-	private final edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
+	private final edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget offscreenRenderTarget;
 
 	protected AbstractThumbnailMaker( int width, int height )
 	{
@@ -99,14 +99,14 @@ public abstract class AbstractThumbnailMaker {
 		this.sgCamera.farClippingPlaneDistance.setValue( 1000.0 );
 		this.sgCamera.nearClippingPlaneDistance.setValue( .1 );
 		this.sgCamera.setParent( this.sgCameraVehicle );
-		this.offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( this.width * this.antAliasFactor, this.height * this.antAliasFactor, null );
-		setUpCamera( this.offscreenLookingGlass );
+		this.offscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenRenderTarget( this.width * this.antAliasFactor, this.height * this.antAliasFactor, null );
+		setUpCamera( this.offscreenRenderTarget );
 	}
 
 	protected void removeComponent( edu.cmu.cs.dennisc.scenegraph.Component sgComponent )
 	{
-		if( this.offscreenLookingGlass.getSgCameraCount() > 0 ) {
-			Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameras = this.offscreenLookingGlass.accessSgCameras();
+		if( this.offscreenRenderTarget.getSgCameraCount() > 0 ) {
+			Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameras = this.offscreenRenderTarget.accessSgCameras();
 			synchronized( cameras ) {
 				for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : cameras ) {
 					AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
@@ -123,8 +123,8 @@ public abstract class AbstractThumbnailMaker {
 	protected void clear()
 	{
 
-		this.offscreenLookingGlass.forgetAllCachedItems();
-		this.offscreenLookingGlass.clearUnusedTextures();
+		this.offscreenRenderTarget.forgetAllCachedItems();
+		this.offscreenRenderTarget.clearUnusedTextures();
 	}
 
 	protected static boolean isTransparent( int pixel ) {
@@ -263,8 +263,8 @@ public abstract class AbstractThumbnailMaker {
 
 	protected synchronized java.awt.image.BufferedImage takePicture( AffineMatrix4x4 cameraTransform, boolean trimWhitespace, java.awt.Color colorKey ) {
 		getSGCameraVehicle().setLocalTransformation( cameraTransform );
-		//offscreenLookingGlass.clearAndRenderOffscreen();
-		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
+		//offscreenRenderTarget.clearAndRenderOffscreen();
+		java.awt.image.BufferedImage rv = offscreenRenderTarget.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer();
 
 		writeDebugImageIfAppropriate( "rawFinal.png", rv );
 
@@ -453,11 +453,11 @@ public abstract class AbstractThumbnailMaker {
 		return createThumbnail( v, v.getAxisAlignedMinimumBoundingBox(), trimWhitespace );
 	}
 
-	protected void setUpCamera( edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass lookingGlass )
+	protected void setUpCamera( edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget renderTarget )
 	{
 		boolean isClearingAndAddingRequired;
-		if( lookingGlass.getSgCameraCount() == 1 ) {
-			if( lookingGlass.getSgCameraAt( 0 ) == this.sgCamera ) {
+		if( renderTarget.getSgCameraCount() == 1 ) {
+			if( renderTarget.getSgCameraAt( 0 ) == this.sgCamera ) {
 				isClearingAndAddingRequired = false;
 			} else {
 				isClearingAndAddingRequired = true;
@@ -466,8 +466,8 @@ public abstract class AbstractThumbnailMaker {
 			isClearingAndAddingRequired = true;
 		}
 		if( isClearingAndAddingRequired ) {
-			lookingGlass.clearSgCameras();
-			lookingGlass.addSgCamera( this.sgCamera );
+			renderTarget.clearSgCameras();
+			renderTarget.addSgCamera( this.sgCamera );
 		}
 	}
 

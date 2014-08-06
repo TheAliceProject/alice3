@@ -51,7 +51,6 @@ import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.renderer.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
@@ -71,12 +70,12 @@ public class MouseClickEventImp {
 		this.scene = scene;
 	}
 
-	private OnscreenLookingGlass getOnscreenLookingGlass() {
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		if( this.scene != null ) {
 			SceneImp sceneImp = EmployeesOnly.getImplementation( this.scene );
 			ProgramImp programImp = sceneImp.getProgram();
 			if( programImp != null ) {
-				return programImp.getOnscreenLookingGlass();
+				return programImp.getOnscreenRenderTarget();
 			}
 		}
 		return null;
@@ -86,10 +85,10 @@ public class MouseClickEventImp {
 		if( this.viewport != null ) {
 			//pass
 		} else {
-			OnscreenLookingGlass lg = this.getOnscreenLookingGlass();
+			edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
 			//todo: search through cameras for the one that contains mouse point, or default to [0] if outside
-			AbstractCamera sgCamera = lg.getSgCameraAt( 0 );
-			this.viewport = lg.getActualViewport( sgCamera );
+			AbstractCamera sgCamera = rt.getSgCameraAt( 0 );
+			this.viewport = rt.getActualViewport( sgCamera );
 		}
 		return this.viewport;
 	}
@@ -99,9 +98,9 @@ public class MouseClickEventImp {
 			//pass
 		} else {
 			if( this.scene != null ) {
-				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = this.getOnscreenLookingGlass();
-				if( lg != null ) {
-					edu.cmu.cs.dennisc.renderer.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
+				edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
+				if( rt != null ) {
+					edu.cmu.cs.dennisc.renderer.PickResult pickResult = rt.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
 					if( pickResult != null ) {
 						edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 						if( sgVisual != null ) {

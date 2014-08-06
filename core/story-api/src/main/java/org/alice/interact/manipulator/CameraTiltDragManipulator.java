@@ -108,13 +108,13 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 	private static final boolean SHOW_PICK_POINT = false;
 
 	@Override
-	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
-		return this.onscreenPicturePlane;
+	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
-		this.onscreenPicturePlane = onscreenPicturePlane;
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
 	private void addPickPointSphereToScene() {
@@ -157,8 +157,8 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 
 	@Override
 	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		Ray oldPickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), previousInput.getMouseLocation().x, previousInput.getMouseLocation().y );
-		Ray newPickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
+		Ray oldPickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), previousInput.getMouseLocation().x, previousInput.getMouseLocation().y );
+		Ray newPickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
 		Point3 oldPickPoint = PlaneUtilities.getPointInPlane( this.cameraFacingPickPlane, oldPickRay );
 		Point3 newPickPoint = PlaneUtilities.getPointInPlane( this.cameraFacingPickPlane, newPickRay );
 		if( ( newPickPoint != null ) && ( oldPickPoint != null ) ) {
@@ -228,7 +228,7 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 
 			addPickPointSphereToScene();
 
-			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
+			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 
 			Point3 planePoint = Point3.createAddition( this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward );
 			this.cameraFacingPickPlane = Plane.createInstance( planePoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward );
@@ -251,5 +251,5 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 
 	private Plane cameraFacingPickPlane;
 	private Point3 pickPoint = null;
-	private edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane;
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
 }

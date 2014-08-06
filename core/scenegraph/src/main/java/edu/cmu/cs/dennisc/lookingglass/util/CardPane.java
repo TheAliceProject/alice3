@@ -81,7 +81,7 @@ class SnapshotPane extends javax.swing.JComponent {
  */
 public class CardPane extends javax.swing.JPanel {
 	private SnapshotPane snapshotPane = new SnapshotPane();
-	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget;
 	public java.awt.image.BufferedImage bufferedImage = null;
 
 	private java.awt.CardLayout cardLayout = new java.awt.CardLayout();
@@ -89,9 +89,9 @@ public class CardPane extends javax.swing.JPanel {
 	private static final String SNAPSHOT_KEY = "snapshot";
 	private String currentKey = null;
 
-	public CardPane( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, java.awt.Component awtComponent ) {
+	public CardPane( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget, java.awt.Component awtComponent ) {
 		setLayout( this.cardLayout );
-		this.onscreenLookingGlass = onscreenLookingGlass;
+		this.onscreenRenderTarget = onscreenRenderTarget;
 		add( awtComponent, LIVE_KEY );
 		add( this.snapshotPane, SNAPSHOT_KEY );
 		showLive();
@@ -99,8 +99,8 @@ public class CardPane extends javax.swing.JPanel {
 		//setOpaque( false );
 	}
 
-	public CardPane( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		this( onscreenLookingGlass, onscreenLookingGlass.getAwtComponent() );
+	public CardPane( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+		this( onscreenRenderTarget, onscreenRenderTarget.getAwtComponent() );
 	}
 
 	private void showCard( String key ) {
@@ -111,8 +111,8 @@ public class CardPane extends javax.swing.JPanel {
 	public void showSnapshot() {
 		if( isLive() ) {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "showSnapshot" );
-			int desiredImageWidth = this.onscreenLookingGlass.getWidth();
-			int desiredImageHeight = this.onscreenLookingGlass.getHeight();
+			int desiredImageWidth = this.onscreenRenderTarget.getWidth();
+			int desiredImageHeight = this.onscreenRenderTarget.getHeight();
 			if( this.bufferedImage != null ) {
 				if( ( this.bufferedImage.getWidth() != desiredImageWidth ) || ( this.bufferedImage.getHeight() != desiredImageHeight ) ) {
 					this.bufferedImage = null;
@@ -122,16 +122,16 @@ public class CardPane extends javax.swing.JPanel {
 				//pass
 			} else {
 				if( ( desiredImageWidth > 0 ) && ( desiredImageHeight > 0 ) ) {
-					this.bufferedImage = this.onscreenLookingGlass.createBufferedImageForUseAsColorBuffer();
+					this.bufferedImage = this.onscreenRenderTarget.getSynchronousImageCapturer().createBufferedImageForUseAsColorBuffer();
 				}
 			}
 			if( this.bufferedImage != null ) {
-				this.onscreenLookingGlass.getColorBuffer( this.bufferedImage );
+				this.onscreenRenderTarget.getSynchronousImageCapturer().getColorBuffer( this.bufferedImage );
 				this.snapshotPane.setSnapshotImage( this.bufferedImage );
 				//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				//				public void run() {
 				showCard( CardPane.SNAPSHOT_KEY );
-				this.onscreenLookingGlass.setRenderingEnabled( false );
+				this.onscreenRenderTarget.setRenderingEnabled( false );
 				//				}
 				//			} );
 			}
@@ -146,7 +146,7 @@ public class CardPane extends javax.swing.JPanel {
 		} else {
 			//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			//				public void run() {
-			this.onscreenLookingGlass.setRenderingEnabled( true );
+			this.onscreenRenderTarget.setRenderingEnabled( true );
 			showCard( CardPane.LIVE_KEY );
 			//				}
 			//			} );

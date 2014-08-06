@@ -53,16 +53,4 @@ public abstract class AbstractMember extends AbstractAccessibleDeclaration imple
 	public AbstractType<?, ?, ?> getDeclaringType() {
 		return this.getFirstAncestorAssignableTo( AbstractType.class );
 	}
-
-	@Override
-	public boolean isUserAuthored() {
-		AbstractType<?, ?, ?> declaringType = getDeclaringType();
-		//assert declaringType != null;
-		if( declaringType != null ) {
-			return declaringType.isUserAuthored();
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "declaring type is null for:", this );
-			return false;
-		}
-	}
 }

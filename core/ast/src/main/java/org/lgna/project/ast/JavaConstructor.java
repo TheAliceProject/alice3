@@ -201,6 +201,11 @@ public class JavaConstructor extends AbstractConstructor {
 		}
 	}
 
+	@Override
+	public boolean isUserAuthored() {
+		return false;
+	}
+
 	private final ConstructorReflectionProxy constructorReflectionProxy;
 	private final java.util.ArrayList<JavaConstructorParameter> requiredParameters;
 	private final AbstractParameter variableOrKeyedParameter;

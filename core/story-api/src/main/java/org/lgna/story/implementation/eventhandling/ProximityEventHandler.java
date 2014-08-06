@@ -66,9 +66,9 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 
 	private final ProximityEventManager proximityEventManager = new ProximityEventManager();
 
-	public void addProximityEventListener( Object pEList, List<SThing> groupOne, List<SThing> groupTwo, Double distance ) {
+	public void addProximityEventListener( Object pEList, List<SThing> groupOne, List<SThing> groupTwo, Double distance, MultipleEventPolicy policy ) {
 		registerIsFiringMap( pEList );
-		registerPolicyMap( pEList, MultipleEventPolicy.IGNORE );
+		registerPolicyMap( pEList, policy );
 		List<SThing> allObserving = Lists.newCopyOnWriteArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		for( SThing m : allObserving ) {

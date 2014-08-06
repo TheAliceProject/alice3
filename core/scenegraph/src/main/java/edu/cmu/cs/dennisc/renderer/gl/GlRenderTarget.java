@@ -73,6 +73,22 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	}
 
 	@Override
+	public java.awt.Dimension getSize() {
+		javax.media.opengl.GLAutoDrawable glAutoDrawable = this.getGlAutoDrawable();
+		return new java.awt.Dimension( glAutoDrawable.getWidth(), glAutoDrawable.getHeight() );
+	}
+
+	@Override
+	public String getDescription() {
+		return this.description;
+	}
+
+	@Override
+	public void setDescription( String description ) {
+		this.description = description;
+	}
+
+	@Override
 	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		this.sgCameras.add( sgCamera );
 		if( this.sgCameras.size() == 1 ) {
@@ -124,16 +140,6 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	@Override
 	public java.util.List<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener> getRenderTargetListeners() {
 		return java.util.Collections.unmodifiableList( this.listeners );
-	}
-
-	@Override
-	public void captureColorBuffer( edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
-		throw new RuntimeException( "todo" );
-	}
-
-	@Override
-	public void captureColorBufferWithTransparencyBasedOnDepthBuffer( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
-		throw new RuntimeException( "todo" );
 	}
 
 	private java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.renderer.gl.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter ) {
@@ -222,12 +228,12 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	}
 
 	@Override
-	public java.awt.Rectangle getViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	public java.awt.Rectangle getSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		return this.mapSgCameraToViewport.get( sgCamera );
 	}
 
 	@Override
-	public void setViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle viewport ) {
+	public void setSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle viewport ) {
 		if( viewport != null ) {
 			this.mapSgCameraToViewport.put( sgCamera, viewport );
 		} else {
@@ -238,12 +244,54 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	}
 
 	@Override
-	public void pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickFrontMostObserver observer ) {
+	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
+		return cameraAdapter.isLetterboxedAsOpposedToDistorted();
+	}
+
+	@Override
+	public void setLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted ) {
+		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
+		cameraAdapter.setIsLetterboxedAsOpposedToDistorted( isLetterboxedAsOpposedToDistorted );
+	}
+
+	@Override
+	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras() {
+		return this.sgCameras;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.SynchronousPicker getSynchronousPicker() {
 		throw new RuntimeException( "todo" );
 	}
 
 	@Override
-	public void pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickAllObserver observer ) {
+	public edu.cmu.cs.dennisc.renderer.AsynchronousPicker getAsynchronousPicker() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.SynchronousImageCapturer getSynchronousImageCapturer() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer getAsynchronousImageCapturer() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public void forgetAllCachedItems() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public void clearUnusedTextures() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public void release() {
 		throw new RuntimeException( "todo" );
 	}
 
@@ -301,5 +349,6 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> sgCameras = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final java.util.Map<edu.cmu.cs.dennisc.scenegraph.AbstractCamera, java.awt.Rectangle> mapSgCameraToViewport = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
+	private String description;
 	private boolean isRenderingEnabled = true;
 }

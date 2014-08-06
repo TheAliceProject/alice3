@@ -105,13 +105,13 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
-		return this.onscreenPicturePlane;
+	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
-		this.onscreenPicturePlane = onscreenPicturePlane;
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	}
 
 	protected Angle getRotationBasedOnMouse( Point mouseLocation ) {
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if( pickRay != null )
 		{
 			int xDif = mouseLocation.x - this.initialPoint.x;
@@ -197,7 +197,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 
 	private Vector3 rotateAxis;
 	private MovementDirection rotateAxisDirection;
-	private edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane;
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
 
 	private Point initialPoint;
 	private Vector3 absoluteRotationAxis;

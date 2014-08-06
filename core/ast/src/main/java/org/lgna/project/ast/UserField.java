@@ -136,6 +136,11 @@ public final class UserField extends AbstractField implements UserMember {
 		return this.isStatic.getValue();
 	}
 
+	@Override
+	public boolean isUserAuthored() {
+		return true;
+	}
+
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.appendAccessLevel( this.getAccessLevel() );
 		if( this.isFinal() ) {

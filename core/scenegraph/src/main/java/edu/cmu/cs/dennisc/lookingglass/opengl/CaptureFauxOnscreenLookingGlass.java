@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass {
+public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<javax.swing.JPanel> {
 	public static interface Observer {
 		public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown );
 	}
@@ -115,7 +115,7 @@ public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implem
 	}
 
 	@Override
-	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
+	protected java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		rv.setSize( this.size );
 		return rv;
 	}
@@ -137,9 +137,9 @@ public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implem
 		if( this.image != null ) {
 			//pass
 		} else {
-			this.image = this.createBufferedImageForUseAsColorBuffer();
+			this.image = this.getSynchronousImageCapturer().createBufferedImageForUseAsColorBuffer();
 		}
-		this.getColorBufferNotBotheringToFlipVertically( this.image, this.atIsUpSideDown );
+		this.getSynchronousImageCapturer().getColorBufferNotBotheringToFlipVertically( this.image, this.atIsUpSideDown );
 		observer.handleImage( this.image, this.atIsUpSideDown[ 0 ] );
 		this.jPanel.repaint();
 	}
@@ -149,7 +149,7 @@ public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implem
 	}
 
 	@Override
-	public java.awt.Component getAwtComponent() {
+	public javax.swing.JPanel getAwtComponent() {
 		return this.jPanel;
 	}
 

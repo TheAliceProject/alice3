@@ -136,6 +136,11 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 		return this.isStrictFloatingPoint.getValue();
 	}
 
+	@Override
+	public boolean isUserAuthored() {
+		return true;
+	}
+
 	public final edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isSynchronized = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );

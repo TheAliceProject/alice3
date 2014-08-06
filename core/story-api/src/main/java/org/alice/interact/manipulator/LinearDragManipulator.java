@@ -92,13 +92,13 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane getOnscreenPicturePlane() {
-		return this.onscreenPicturePlane;
+	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenPicturePlane( edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane ) {
-		this.onscreenPicturePlane = onscreenPicturePlane;
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	}
 
 	protected double getDistanceAlongAxisBasedOnMouse( Point mouseLocation ) {
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenPicturePlane, this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if( pickRay != null ) {
 			Vector3 cameraBack = this.getCamera().getAbsoluteTransformation().orientation.backward;
 			double axisCameraDot = Vector3.calculateDotProduct( this.absoluteDragAxis, cameraBack );
@@ -267,5 +267,5 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	private Plane cameraFacingPlane;
 	private Plane handleAlignedPlane;
 	private AbstractCamera camera = null;
-	private edu.cmu.cs.dennisc.pictureplane.OnscreenPicturePlane onscreenPicturePlane;
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
 }
