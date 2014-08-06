@@ -178,15 +178,19 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 		return handleMouseRelease( m_current, m_dragStyleCurrent, isOriginalAsOpposedToStyleChange );
 	}
 
+	@Override
 	public final void mouseClicked( java.awt.event.MouseEvent e ) {
 	}
 
+	@Override
 	public final void mouseEntered( java.awt.event.MouseEvent e ) {
 	}
 
+	@Override
 	public final void mouseExited( java.awt.event.MouseEvent e ) {
 	}
 
+	@Override
 	public final void mousePressed( java.awt.event.MouseEvent e ) {
 		boolean isIntercepted = false;
 		for( edu.cmu.cs.dennisc.java.awt.EventInterceptor eventInterceptor : m_eventInterceptors ) {
@@ -224,6 +228,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 		}
 	}
 
+	@Override
 	public final void mouseReleased( java.awt.event.MouseEvent e ) {
 		if( m_isActive ) {
 			m_previous.x = m_current.x;
@@ -244,6 +249,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 	//			System.err.println( "skipping mouseDragged " + e.getPoint() + " while waiting for cursor warp: " + p );
 	//		}
 	//	}
+	@Override
 	public final void mouseDragged( java.awt.event.MouseEvent e ) {
 		//		if( m_cursorWarps.size() > 0 ) {
 		//			handleMouseWarp( e );
@@ -258,6 +264,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 		//		}
 	}
 
+	@Override
 	public final void mouseMoved( java.awt.event.MouseEvent e ) {
 		//the mac does not report dragged events if control is pressed
 		if( m_isActive ) {
@@ -340,14 +347,17 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 		}
 	}
 
+	@Override
 	public void keyPressed( java.awt.event.KeyEvent e ) {
 		addToDragStyleIfNecessary( e.getKeyCode() );
 	}
 
+	@Override
 	public void keyReleased( java.awt.event.KeyEvent e ) {
 		removeFromDragStyleIfNecessary( e.getKeyCode() );
 	}
 
+	@Override
 	public void keyTyped( java.awt.event.KeyEvent e ) {
 	}
 }

@@ -30,11 +30,13 @@ public enum FemaleAdultHairDreadlockShort implements FemaleAdultHair, FemaleElde
 	RED,
 	GREY;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

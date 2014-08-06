@@ -93,6 +93,7 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	}
 
 	//Not supported on nebulous models
+	@Override
 	public JointImp[] createJointArrayImplementation( JointedModelImp jointedModelImplementation, JointArrayId jointArrayId ) {
 		return null;
 	}

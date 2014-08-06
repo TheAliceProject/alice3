@@ -30,11 +30,13 @@ public enum FemaleAdultHairShortSlick implements FemaleAdultHair, FemaleElderHai
 	BROWN,
 	GREY;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

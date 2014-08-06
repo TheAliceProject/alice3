@@ -26,11 +26,13 @@ package org.lgna.story.resources.sims2;
 public enum MaleAdultHairHatBeanie implements MaleAdultHair, MaleElderHair {
 	BLACK_HAT;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return false;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return true;

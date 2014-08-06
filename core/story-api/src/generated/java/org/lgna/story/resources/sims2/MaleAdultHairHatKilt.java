@@ -50,11 +50,13 @@ public enum MaleAdultHairHatKilt implements MaleAdultHair, MaleElderHair {
 	GREY_BLUE_HAT,
 	GREY_PURPLE_HAT;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return true;

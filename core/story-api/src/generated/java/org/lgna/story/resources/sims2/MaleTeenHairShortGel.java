@@ -29,11 +29,13 @@ public enum MaleTeenHairShortGel implements MaleTeenHair {
 	RED,
 	BLACK;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

@@ -29,11 +29,13 @@ public enum MaleTeenHairDreadlockLong implements MaleTeenHair {
 	BLOND,
 	BROWN;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

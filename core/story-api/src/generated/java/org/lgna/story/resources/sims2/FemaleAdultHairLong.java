@@ -33,11 +33,13 @@ public enum FemaleAdultHairLong implements FemaleAdultHair, FemaleElderHair {
 	STREAKED,
 	FREAKED;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

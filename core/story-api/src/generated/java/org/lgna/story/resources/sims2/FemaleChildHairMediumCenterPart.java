@@ -30,11 +30,13 @@ public enum FemaleChildHairMediumCenterPart implements FemaleChildHair {
 	GREY,
 	RED;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;
