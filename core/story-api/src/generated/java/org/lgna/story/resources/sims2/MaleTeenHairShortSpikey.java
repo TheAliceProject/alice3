@@ -29,11 +29,13 @@ public enum MaleTeenHairShortSpikey implements MaleTeenHair {
 	RED,
 	BLOND;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

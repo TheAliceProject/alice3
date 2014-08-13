@@ -30,11 +30,13 @@ public enum FemaleChildHairBun implements FemaleChildHair {
 	GREY,
 	BROWN;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

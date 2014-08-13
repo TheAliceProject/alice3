@@ -30,11 +30,13 @@ public enum FemaleAdultHairPonyTailHigh implements FemaleAdultHair, FemaleElderH
 	BLOND,
 	GREY;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

@@ -50,11 +50,13 @@ public enum FemaleTeenHairHatAngora implements FemaleTeenHair {
 	GREY_BLACK_HAT,
 	GREY_SPOTTED_HAT;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return true;

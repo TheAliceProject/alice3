@@ -30,11 +30,13 @@ public enum FemaleAdultHairHalo implements FemaleAdultHair, FemaleElderHair {
 	RED,
 	GREY;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

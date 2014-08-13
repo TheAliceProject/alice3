@@ -30,11 +30,13 @@ public enum FemaleAdultHairRound implements FemaleAdultHair, FemaleElderHair {
 	GREY,
 	RED;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

@@ -35,11 +35,13 @@ public enum FemaleAdultHairPGChoppy implements FemaleAdultHair, FemaleElderHair 
 	VIOLET,
 	GREEN;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

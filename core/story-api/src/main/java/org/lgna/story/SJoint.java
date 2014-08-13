@@ -68,6 +68,7 @@ public class SJoint extends STurnable {
 
 	/* package-private */static SJoint[] getJointArray( SJointedModel jointedModel, org.lgna.story.resources.JointId[] jointIdArray ) {
 		return mapToArrayMap.getInitializingIfAbsent( jointedModel, jointIdArray, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SJointedModel, org.lgna.story.resources.JointId[], SJoint[]>() {
+			@Override
 			public SJoint[] initialize( SJointedModel jointedModel, org.lgna.story.resources.JointId[] jointIdArray ) {
 				SJoint[] jointArray = new SJoint[ jointIdArray.length ];
 				for( int i = 0; i < jointIdArray.length; i++ ) {

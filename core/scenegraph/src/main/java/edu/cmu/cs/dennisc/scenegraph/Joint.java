@@ -134,6 +134,7 @@ public class Joint extends Transformable implements ModelJoint
 	}
 
 	private static final Comparator<Joint> JOINT_ARRAY_COMPARATOR = new Comparator<Joint>() {
+		@Override
 		public int compare( Joint o1, Joint o2 ) {
 			return o1.jointID.getValue().compareTo( o2.jointID.getValue() );
 		}

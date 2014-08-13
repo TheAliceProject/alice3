@@ -30,11 +30,13 @@ public enum MaleTeenHairPGSkater implements MaleTeenHair {
 	RED,
 	BLEND;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

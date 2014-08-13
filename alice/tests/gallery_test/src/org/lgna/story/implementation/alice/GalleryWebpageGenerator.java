@@ -543,7 +543,7 @@ public class GalleryWebpageGenerator {
 
 	public static void buildGalleryWebpage( String webpageDir ) {
 		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde( null );
-		org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( new org.alice.ide.uricontent.BlankSlateProjectLoader( org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS ) );
+		//		org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( new org.alice.ide.uricontent.BlankSlateProjectLoader( org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS ) );
 
 		StringBuilder indexPageContent = new StringBuilder();
 		ResourceNode classBasedNode = TreeUtilities.getTreeBasedOnClassHierarchy();
@@ -621,7 +621,14 @@ public class GalleryWebpageGenerator {
 
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
+
 		String webpageDir = "C:/batchOutput/webpage";
+
+		String webpageDirProp = System.getProperty( "org.alice.batch.webpageDir" );
+		if( webpageDirProp != null ) {
+			webpageDir = webpageDirProp;
+		}
+
 		FileUtilities.delete( webpageDir );
 		GalleryWebpageGenerator.buildGalleryWebpage( webpageDir );
 

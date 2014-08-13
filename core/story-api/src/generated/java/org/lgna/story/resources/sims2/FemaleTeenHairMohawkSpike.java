@@ -28,11 +28,13 @@ public enum FemaleTeenHairMohawkSpike implements FemaleTeenHair {
 	BLUE,
 	GREEN;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

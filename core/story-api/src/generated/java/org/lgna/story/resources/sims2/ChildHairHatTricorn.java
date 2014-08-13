@@ -41,11 +41,13 @@ public enum ChildHairHatTricorn implements MaleChildHair, FemaleChildHair {
 	BROWN_GREEN_RIBBON,
 	BROWN_BROWN_RIBBON;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return true;

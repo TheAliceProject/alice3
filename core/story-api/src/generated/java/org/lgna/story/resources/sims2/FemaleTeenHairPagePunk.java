@@ -33,11 +33,13 @@ public enum FemaleTeenHairPagePunk implements FemaleTeenHair {
 	PURPLE,
 	PINK;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

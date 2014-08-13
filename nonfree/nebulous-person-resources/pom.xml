@@ -11,7 +11,7 @@
 
 	<artifactId>nebulous-person-resources</artifactId>
 	<!-- nebulous.person.version -->
-	<version>2014.07.25</version>
+	<version>2014.08.12</version>
 	<packaging>pom</packaging>
 
 	<licenses>

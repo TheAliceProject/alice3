@@ -462,6 +462,7 @@ public class ModelResourceExporter {
 		for( Entry<String, List<String>> arrayEntry : arrayEntries.entrySet() ) {
 			try {
 				Collections.sort( arrayEntry.getValue(), new Comparator<String>() {
+					@Override
 					public int compare( String o1, String o2 ) {
 						int index1 = getArrayIndexForJoint( o1 );
 						int index2 = getArrayIndexForJoint( o2 );

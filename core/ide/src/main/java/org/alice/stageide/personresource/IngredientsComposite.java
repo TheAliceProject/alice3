@@ -521,6 +521,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	//	}
 
 	private org.lgna.story.resources.sims2.BaseSkinTone closestBaseSkinTone = null;
+	private final boolean FORCE_GRAY_SKIN_TONE = true;
 
 	private void handleSkinColorChange( java.awt.Color color ) {
 		if( color != null ) {
@@ -543,6 +544,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 
 			this.getHairTab().getHairHatStyleListData().setLifeStageAndGender( lifeStage, gender );
 			this.getHairTab().getHairColorNameData().setHairHatStyle( hairHatStyle );
+			this.getHairTab().getView().repaint();
 
 			this.getHairHatStyleState().setValueTransactionlessly( hairHatStyle );
 			this.getHairColorNameState().setValueTransactionlessly( hairColorName );

@@ -29,11 +29,13 @@ public enum MaleTeenHairHatBallcapNPC implements MaleTeenHair {
 	BLACK,
 	BROWN;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

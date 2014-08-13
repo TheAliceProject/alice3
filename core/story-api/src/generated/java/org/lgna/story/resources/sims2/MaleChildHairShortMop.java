@@ -30,11 +30,13 @@ public enum MaleChildHairShortMop implements MaleChildHair {
 	BLOND,
 	BLACK;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;
