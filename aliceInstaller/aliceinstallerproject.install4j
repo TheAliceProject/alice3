@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<install4j version="5.1.12" transformSequenceNumber="4">
+  <directoryPresets config="./installerOutput" />
+  <application name="Alice 3" distributionSourceDir="" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="Alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="http://www.alice.org" version="3.1.93.0.0" allPathsRelative="true" backupOnSave="false" autoSave="true" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.6" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
+    <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
+      <principalLanguage id="en" customLocalizationFile="" />
+      <additionalLanguages>
+        <language id="zh_CN" customLocalizationFile="" />
+        <language id="zh_TW" customLocalizationFile="" />
+        <language id="hr" customLocalizationFile="" />
+        <language id="cs" customLocalizationFile="" />
+        <language id="da" customLocalizationFile="" />
+        <language id="nl" customLocalizationFile="" />
+        <language id="en" customLocalizationFile="" />
+        <language id="fi" customLocalizationFile="" />
+        <language id="fr" customLocalizationFile="" />
+        <language id="de" customLocalizationFile="" />
+        <language id="el" customLocalizationFile="" />
+        <language id="hu" customLocalizationFile="" />
+        <language id="it" customLocalizationFile="" />
+        <language id="ja" customLocalizationFile="" />
+        <language id="ko" customLocalizationFile="" />
+        <language id="no" customLocalizationFile="" />
+        <language id="pl" customLocalizationFile="" />
+        <language id="pt_BR" customLocalizationFile="" />
+        <language id="pt" customLocalizationFile="" />
+        <language id="ro" customLocalizationFile="" />
+        <language id="ru" customLocalizationFile="" />
+        <language id="es" customLocalizationFile="" />
+        <language id="sv" customLocalizationFile="" />
+        <language id="tr" customLocalizationFile="" />
+      </additionalLanguages>
+    </languages>
+    <searchSequence>
+      <registry />
+      <envVar name="JAVA_HOME" />
+      <envVar name="JDK_HOME" />
+    </searchSequence>
+    <variables />
+    <mergedProjects />
+    <codeSigning macEnabled="false" macPkcs12File="" windowsEnabled="false" windowsKeySource="pkcs12" windowsPvkFile="" windowsSpcFile="" windowsPkcs12File="" />
+  </application>
+  <files keepModificationTimes="true" missingFilesStrategy="warn" globalExcludeSuffixes="" defaultOverwriteMode="2" defaultUninstallMode="0" launcherOverwriteMode="3" defaultFileMode="644" defaultDirMode="755">
+    <filesets />
+    <roots />
+    <mountPoints>
+      <mountPoint id="23" root="" location="" mode="755" />
+    </mountPoints>
+    <entries>
+      <dirEntry mountPoint="23" file="./aliceInstallData/Alice3" overwriteMode="2" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" entryMode="direct" subDirectory="Alice3" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+        <exclude>
+          <entry location="Alice3.app" fileType="regular" />
+          <entry location="Alice3.exe" fileType="regular" />
+          <entry location="Alice3.ini" fileType="regular" />
+          <entry location="alice3.sh" fileType="regular" />
+          <entry location="Alice3Icon.ico" fileType="regular" />
+          <entry location="auxiliary" fileType="regular" />
+          <entry location="errlog.txt" fileType="regular" />
+        </exclude>
+      </dirEntry>
+    </entries>
+    <components>
+      <component name="aliceGallery" id="79" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
+        <description />
+        <include all="false">
+          <entry location="application/gallery/assets/alice/aliceModelResources" fileType="regular" />
+        </include>
+        <dependencies />
+      </component>
+      <component name="simsObjectsGallery" id="80" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
+        <description />
+        <include all="false">
+          <entry location="application/gallery/assets/alice/nebulousModelResources" fileType="regular" />
+          <entry location="application/gallery/assets/sims/BathroomBundle.nebundle" fileType="regular" />
+          <entry location="application/gallery/assets/sims/BedroomBundle.nebundle" fileType="regular" />
+          <entry location="application/gallery/assets/sims/FoodBundle.nebundle" fileType="regular" />
+          <entry location="application/gallery/assets/sims/FurnitureBundle.nebundle" fileType="regular" />
+          <entry location="application/gallery/assets/sims/KitchenBundle.nebundle" fileType="regular" />
+          <entry location="application/gallery/assets/sims/MiscBundle.nebundle" fileType="regular" />
+          <entry location="application/gallery/assets/sims/PlantsBundle.nebundle" fileType="regular" />
+          <entry location="application/gallery/assets/sims/RoomTextures.nebundle" fileType="regular" />
+          <entry location="application/gallery/assets/sims/VehicleBundle.nebundle" fileType="regular" />
+        </include>
+        <dependencies />
+      </component>
+      <component name="simsPersonGallery" id="82" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
+        <description />
+        <include all="false">
+          <entry location="application/gallery/assets/sims/Alice3BaseBundle.nebundle" fileType="regular" />
+          <entry location="application/gallery/ide" fileType="regular" />
+        </include>
+        <dependencies />
+      </component>
+      <component name="aliceSoundGallery" id="83" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
+        <description />
+        <include all="false">
+          <entry location="application/sound-gallery" fileType="regular" />
+        </include>
+        <dependencies />
+      </component>
+      <component name="aliceModelSource" id="84" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
+        <description />
+        <include all="false">
+          <entry location="ext/org/alice/alice-model-source" fileType="regular" />
+        </include>
+        <dependencies />
+      </component>
+      <component name="aliceSimsSource" id="85" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
+        <description />
+        <include all="false">
+          <entry location="ext/org/alice/nonfree" fileType="regular" />
+        </include>
+        <dependencies />
+      </component>
+      <component name="externalLibs" id="86" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
+        <description />
+        <include all="false">
+          <entry location="ext/axis" fileType="regular" />
+          <entry location="ext/com" fileType="regular" />
+          <entry location="ext/commons-codec" fileType="regular" />
+          <entry location="ext/commons-discovery" fileType="regular" />
+          <entry location="ext/commons-logging" fileType="regular" />
+          <entry location="ext/de" fileType="regular" />
+          <entry location="ext/javax" fileType="regular" />
+          <entry location="ext/net" fileType="regular" />
+          <entry location="ext/org/alice/external" fileType="regular" />
+          <entry location="ext/org/apache" fileType="regular" />
+          <entry location="ext/org/jogamp" fileType="regular" />
+          <entry location="ext/org/mortbay" fileType="regular" />
+          <entry location="ext/redstone" fileType="regular" />
+          <entry location="ext/uk" fileType="regular" />
+          <entry location="ext/wsdl4j" fileType="regular" />
+          <entry location="ext/xpp3" fileType="regular" />
+        </include>
+        <dependencies />
+      </component>
+      <component name="aliceCore" id="87" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="false" hidden="true">
+        <description />
+        <include all="false">
+          <entry location="lib/alice" fileType="regular" />
+        </include>
+        <dependencies />
+      </component>
+      <component name="aliceApplication" id="88" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="false" hidden="true">
+        <description />
+        <include all="false">
+          <entry location="application/EULA_Alice3.txt" fileType="regular" />
+          <entry location="application/EULA_LookingGlassWalkAndTouch.txt" fileType="regular" />
+          <entry location="application/EULA_TheSimsTM2ArtAsset.txt" fileType="regular" />
+          <entry location="application/SplashScreen.jpg" fileType="regular" />
+          <entry location="application/SplashScreen.png" fileType="regular" />
+          <entry location="application/test.txt" fileType="regular" />
+          <entry location="EULA_Alice3.txt" fileType="regular" />
+          <entry location="EULA_LookingGlassWalkAndTouch.txt" fileType="regular" />
+          <entry location="EULA_TheSimsTM2ArtAsset.txt" fileType="regular" />
+          <entry location="platform" fileType="regular" />
+          <entry location="Alice 3" fileType="launcher" />
+        </include>
+        <dependencies />
+      </component>
+    </components>
+  </files>
+  <launchers>
+    <launcher name="Alice 3" id="24" customizedId="" external="false" excludeFromMenu="false" unixMode="755" menuName="" icnsFile="" customMacBundleIdentifier="false" macBundleIdentifier="" swtApp="false" fileset="" macBundleBinary="JavaApplicationStub" addMacEntitlements="false" macEntitlementsFile="">
+      <executable name="Alice 3" type="1" iconSet="true" iconFile="" executableDir="." redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="false" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false">
+        <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" />
+      </executable>
+      <splashScreen show="true" autoOff="true" alwaysOnTop="true" width="684" height="301" bitmapFile="../installerProject/installer files/SplashScreen.png" java6SplashScreen="false">
+        <text>
+          <statusLine x="26" y="262" text="Loading..." font="Arial" fontSize="8" fontColor="0,0,0" fontWeight="500" />
+          <versionLine x="541" y="262" text="version ${compiler:sys.version}" font="Arial" fontSize="8" fontColor="0,0,0" fontWeight="500" />
+        </text>
+      </splashScreen>
+      <java mainClass="org.alice.stageide.EntryPoint" vmParameters="-ea -Xmx1024m -Dorg.alice.ide.rootDirectory=./ -Dswing.aatext=true -Djogamp.gluegen.UseTempJarCache=false" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true">
+        <classPath>
+          <archive location="ext/axis/axis/1.3/axis-1.3.jar" failOnError="true" />
+          <archive location="ext/axis/axis-jaxrpc/1.3/axis-jaxrpc-1.3.jar" failOnError="true" />
+          <archive location="ext/axis/axis-saaj/1.3/axis-saaj-1.3.jar" failOnError="true" />
+          <archive location="ext/axis/axis-wsdl4j/1.5.1/axis-wsdl4j-1.5.1.jar" failOnError="true" />
+          <archive location="ext/com/atlassian/jira/plugins/jira-soapclient/4.0/jira-soapclient-4.0.jar" failOnError="true" />
+          <archive location="ext/com/google/code/findbugs/jsr305/1.3.7/jsr305-1.3.7.jar" failOnError="true" />
+          <archive location="ext/com/google/gdata/core/1.47.1/core-1.47.1.jar" failOnError="true" />
+          <archive location="ext/com/google/guava/guava/13.0.1/guava-13.0.1.jar" failOnError="true" />
+          <archive location="ext/com/google/http-client/google-http-client/1.11.0-beta/google-http-client-1.11.0-beta.jar" failOnError="true" />
+          <archive location="ext/com/google/oauth-client/google-oauth-client/1.11.0-beta/google-oauth-client-1.11.0-beta.jar" failOnError="true" />
+          <archive location="ext/com/google/oauth-client/google-oauth-client-java6/1.11.0-beta/google-oauth-client-java6-1.11.0-beta.jar" failOnError="true" />
+          <archive location="ext/com/google/oauth-client/google-oauth-client-jetty/1.11.0-beta/google-oauth-client-jetty-1.11.0-beta.jar" failOnError="true" />
+          <archive location="ext/com/miglayout/miglayout-core/4.2/miglayout-core-4.2.jar" failOnError="true" />
+          <archive location="ext/com/miglayout/miglayout-swing/4.2/miglayout-swing-4.2.jar" failOnError="true" />
+          <archive location="ext/com/sun/javamp3/1.0/javamp3-1.0.jar" failOnError="true" />
+          <archive location="ext/com/yuvimasory/orange-extensions/1.3.0/orange-extensions-1.3.0.jar" failOnError="true" />
+          <archive location="ext/commons-codec/commons-codec/1.3/commons-codec-1.3.jar" failOnError="true" />
+          <archive location="ext/commons-discovery/commons-discovery/0.2/commons-discovery-0.2.jar" failOnError="true" />
+          <archive location="ext/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar" failOnError="true" />
+          <archive location="ext/de/java2html/java2html/5.0/java2html-5.0.jar" failOnError="true" />
+          <archive location="ext/javax/activation/activation/1.1/activation-1.1.jar" failOnError="true" />
+          <archive location="ext/javax/mail/mail/1.4/mail-1.4.jar" failOnError="true" />
+          <archive location="ext/javax/mail/mailapi/1.4.3/mailapi-1.4.3.jar" failOnError="true" />
+          <archive location="ext/javax/media/jmf/2.1.1e/jmf-2.1.1e.jar" failOnError="true" />
+          <archive location="ext/net/java/dev/jna/jna/3.5.2/jna-3.5.2.jar" failOnError="true" />
+          <archive location="ext/net/java/dev/jna/platform/3.5.2/platform-3.5.2.jar" failOnError="true" />
+          <archive location="ext/org/alice/external/wrapped-flow-layout/1.0/wrapped-flow-layout-1.0.jar" failOnError="true" />
+          <archive location="ext/org/apache/httpcomponents/httpclient/4.0.3/httpclient-4.0.3.jar" failOnError="true" />
+          <archive location="ext/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar" failOnError="true" />
+          <archive location="ext/org/jogamp/gluegen/gluegen-rt/2.1.5-01/gluegen-rt-2.1.5-01.jar" failOnError="true" />
+          <archive location="ext/org/jogamp/jogl/jogl-all/2.1.5-01/jogl-all-2.1.5-01.jar" failOnError="true" />
+          <archive location="ext/org/mortbay/jetty/jetty/6.1.26/jetty-6.1.26.jar" failOnError="true" />
+          <archive location="ext/org/mortbay/jetty/jetty-util/6.1.26/jetty-util-6.1.26.jar" failOnError="true" />
+          <archive location="ext/org/mortbay/jetty/servlet-api/2.5-20081211/servlet-api-2.5-20081211.jar" failOnError="true" />
+          <archive location="ext/redstone/xmlrpc/xmlrpc/1.1.1/xmlrpc-1.1.1.jar" failOnError="true" />
+          <archive location="ext/uk/co/caprica/vlcj/2.4.1/vlcj-2.4.1.jar" failOnError="true" />
+          <archive location="ext/uk/co/mmscomputing/mmsc/1.0/mmsc-1.0.jar" failOnError="true" />
+          <archive location="ext/wsdl4j/wsdl4j/1.5.1/wsdl4j-1.5.1.jar" failOnError="true" />
+          <archive location="ext/xpp3/xpp3/1.1.4c/xpp3-1.1.4c.jar" failOnError="true" />
+          <archive location="lib/alice/alicecore.jar" failOnError="true" />
+          <archive location="ext/org/alice/alice-model-source/alice-model-source-*.jar" failOnError="true" />
+          <archive location="ext/org/alice/nonfree/nebulous-model-source/nebulous-model-source-*.jar" failOnError="true" />
+        </classPath>
+        <nativeLibraryDirectories />
+      </java>
+      <includedFiles />
+      <unextractableFiles />
+      <vmOptionsFile mode="none" overwriteMode="0" fileMode="644">
+        <content />
+      </vmOptionsFile>
+      <customScript mode="1" file="">
+        <content />
+      </customScript>
+      <infoPlist mode="1" file="">
+        <content />
+      </infoPlist>
+      <iconImageFiles>
+        <file path="../installerProject/installeFiles/desktopIcon32.png" />
+        <file path="../installerProject/installerFiles/desktopIcon48.png" />
+        <file path="../installerProject/installerFiles/desktopIcon64.png" />
+        <file path="../installerProject/installerFiles/desktopIcon128.png" />
+        <file path="../installerProject/installerFiles/desktopIcon16.png" />
+      </iconImageFiles>
+    </launcher>
+  </launchers>
+  <installerGui installerType="1" addOnAppId="${compiler:sys.applicationId}" suggestPreviousLocations="true" autoUpdateDescriptorUrl="http://www.alice.org/downloads/installers/updates.xml" useAutoUpdateBaseUrl="false" autoUpdateBaseUrl="">
+    <customCode />
+    <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
+      <commentFiles />
+      <customAttributes />
+    </autoUpdate>
+    <applications>
+      <application name="" id="installer" customizedId="" beanClass="com.install4j.runtime.beans.applications.InstallerApplication" enabled="true" commentSet="false" comment="" actionElevationType="none" fileset="" customIcnsFile="" customIcoFile="" macEntitlementsFile="" automaticLauncherIntegration="false" launchMode="startupFirstWindow" launchInNewProcess="false" launchSchedule="updateSchedule" allLaunchers="true">
+        <serializedBean>
+          <java class="java.beans.XMLDecoder">
+            <object class="com.install4j.runtime.beans.applications.InstallerApplication">
+              <void property="customHeaderImage">
+                <object class="com.install4j.api.beans.ExternalFile">
+                  <string>./installerFiles/aliceInstallerIcon.png</string>
+                </object>
+              </void>
+              <void property="customIconImageFiles">
+                <void method="add">
+                  <object class="com.install4j.api.beans.ExternalFile">
+                    <string>./installerFiles/aliceInstallerIcon16.png</string>
+                  </object>
+                </void>
+                <void method="add">
+                  <object class="com.install4j.api.beans.ExternalFile">
+                    <string>./installerFiles/aliceInstallerIcon32.png</string>
+                  </object>
+                </void>
+                <void method="add">
+                  <object class="com.install4j.api.beans.ExternalFile">
+                    <string>./installerFiles/aliceInstallerIcon48.png</string>
+                  </object>
+                </void>
+                <void method="add">
+                  <object class="com.install4j.api.beans.ExternalFile">
+                    <string>./installerFiles/aliceInstallerIcon64.png</string>
+                  </object>
+                </void>
+                <void method="add">
+                  <object class="com.install4j.api.beans.ExternalFile">
+                    <string>./installerFiles/aliceInstallerIcon128.png</string>
+                  </object>
+                </void>
+              </void>
+              <void property="useCustomIcon">
+                <boolean>true</boolean>
+              </void>
+              <void property="watermark">
+                <boolean>false</boolean>
+              </void>
+            </object>
+          </java>
+        </serializedBean>
+        <launcherIds />
+        <variables />
+        <startup>
+          <screen name="" id="1" customizedId="" beanClass="com.install4j.runtime.beans.screens.StartupScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="false" wizardIndexChangeType="unchanged" wizardIndexKey="">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.StartupScreen" />
+              </java>
+            </serializedBean>
+            <condition />
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions>
+              <action name="" id="13" customizedId="" beanClass="com.install4j.runtime.beans.actions.misc.RequestPrivilegesAction" enabled="true" commentSet="false" comment="" actionElevationType="none" rollbackBarrier="false" multiExec="false" failureStrategy="1" errorMessage="">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.misc.RequestPrivilegesAction" />
+                  </java>
+                </serializedBean>
+                <condition />
+              </action>
+            </actions>
+            <formComponents />
+          </screen>
+        </startup>
+        <screens>
+          <screen name="" id="2" customizedId="" beanClass="com.install4j.runtime.beans.screens.WelcomeScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="false" wizardIndexChangeType="unchanged" wizardIndexKey="">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.WelcomeScreen">
+                  <void property="bannerImageFile">
+                    <object class="com.install4j.api.beans.ExternalFile">
+                      <string>./installerFiles/aliceBanner.png</string>
+                    </object>
+                  </void>
+                </object>
+              </java>
+            </serializedBean>
+            <condition />
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions>
+              <action name="" id="3" customizedId="" beanClass="com.install4j.runtime.beans.actions.misc.LoadResponseFileAction" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" multiExec="true" failureStrategy="1" errorMessage="">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.misc.LoadResponseFileAction">
+                      <void property="excludedVariables">
+                        <array class="java.lang.String" length="1">
+                          <void index="0">
+                            <string>sys.installationDir</string>
+                          </void>
+                        </array>
+                      </void>
+                    </object>
+                  </java>
+                </serializedBean>
+                <condition>context.getBooleanVariable("sys.confirmedUpdateInstallation")</condition>
+              </action>
+            </actions>
+            <formComponents />
+          </screen>
+          <screen name="" id="4" customizedId="" beanClass="com.install4j.runtime.beans.screens.InstallationDirectoryScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="false" wizardIndexChangeType="unchanged" wizardIndexKey="">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.InstallationDirectoryScreen" />
+              </java>
+            </serializedBean>
+            <condition>!context.getBooleanVariable("sys.confirmedUpdateInstallation")</condition>
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions>
+              <action name="" id="5" customizedId="" beanClass="com.install4j.runtime.beans.actions.misc.LoadResponseFileAction" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" multiExec="true" failureStrategy="1" errorMessage="">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.misc.LoadResponseFileAction">
+                      <void property="excludedVariables">
+                        <array class="java.lang.String" length="1">
+                          <void index="0">
+                            <string>sys.installationDir</string>
+                          </void>
+                        </array>
+                      </void>
+                    </object>
+                  </java>
+                </serializedBean>
+                <condition>context.getVariable("sys.responseFile") == null</condition>
+              </action>
+            </actions>
+            <formComponents />
+          </screen>
+          <screen name="" id="7" customizedId="" beanClass="com.install4j.runtime.beans.screens.StandardProgramGroupScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="false" wizardIndexChangeType="unchanged" wizardIndexKey="">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.StandardProgramGroupScreen">
+                  <void property="programGroupName">
+                    <string>${compiler:sys.fullName}</string>
+                  </void>
+                </object>
+              </java>
+            </serializedBean>
+            <condition>!context.getBooleanVariable("sys.confirmedUpdateInstallation")</condition>
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions />
+            <formComponents />
+          </screen>
+          <screen name="" id="142" customizedId="" beanClass="com.install4j.runtime.beans.screens.AdditionalConfirmationsScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="false" wizardIndexChangeType="unchanged" wizardIndexKey="">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.AdditionalConfirmationsScreen" />
+              </java>
+            </serializedBean>
+            <condition />
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions />
+            <formComponents>
+              <formComponent name="Add a desktop link" id="143" customizedId="" beanClass="com.install4j.runtime.beans.formcomponents.CheckboxComponent" enabled="true" commentSet="false" comment="" insetTop="" insetLeft="" insetBottom="" insetRight="" resetInitOnPrevious="false">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.formcomponents.CheckboxComponent">
+                      <void property="checkboxText">
+                        <string>${i18n:CreateDesktopIcon}</string>
+                      </void>
+                      <void property="initiallySelected">
+                        <boolean>true</boolean>
+                      </void>
+                      <void property="variableName">
+                        <string>createDesktopLinkAction</string>
+                      </void>
+                    </object>
+                  </java>
+                </serializedBean>
+                <initScript />
+                <visibilityScript />
+              </formComponent>
+            </formComponents>
+          </screen>
+          <screen name="" id="8" customizedId="" beanClass="com.install4j.runtime.beans.screens.InstallationScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="true" backButton="2" finishScreen="false" wizardIndexChangeType="unchanged" wizardIndexKey="">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.InstallationScreen" />
+              </java>
+            </serializedBean>
+            <condition />
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions>
+              <action name="" id="9" customizedId="" beanClass="com.install4j.runtime.beans.actions.InstallFilesAction" enabled="true" commentSet="false" comment="" actionElevationType="elevated" rollbackBarrier="false" multiExec="false" failureStrategy="2" errorMessage="${i18n:FileCorrupted}">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.InstallFilesAction" />
+                  </java>
+                </serializedBean>
+                <condition />
+              </action>
+              <action name="" id="10" customizedId="" beanClass="com.install4j.runtime.beans.actions.desktop.CreateProgramGroupAction" enabled="true" commentSet="false" comment="" actionElevationType="elevated" rollbackBarrier="false" multiExec="false" failureStrategy="1" errorMessage="">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.desktop.CreateProgramGroupAction">
+                      <void property="uninstallerMenuName">
+                        <string>${i18n:UninstallerMenuEntry(${compiler:sys.fullName})}</string>
+                      </void>
+                    </object>
+                  </java>
+                </serializedBean>
+                <condition>!context.getBooleanVariable("sys.programGroupDisabled")</condition>
+              </action>
+              <action name="" id="11" customizedId="" beanClass="com.install4j.runtime.beans.actions.desktop.RegisterAddRemoveAction" enabled="true" commentSet="false" comment="" actionElevationType="elevated" rollbackBarrier="false" multiExec="false" failureStrategy="1" errorMessage="">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.desktop.RegisterAddRemoveAction">
+                      <void property="itemName">
+                        <string>${compiler:sys.fullName} ${compiler:sys.version}</string>
+                      </void>
+                    </object>
+                  </java>
+                </serializedBean>
+                <condition />
+              </action>
+              <action name="" id="141" customizedId="" beanClass="com.install4j.runtime.beans.actions.desktop.CreateDesktopLinkAction" enabled="true" commentSet="false" comment="" actionElevationType="elevated" rollbackBarrier="false" multiExec="false" failureStrategy="1" errorMessage="">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.desktop.CreateDesktopLinkAction">
+                      <void property="file">
+                        <object class="java.io.File">
+                          <string>Alice 3</string>
+                        </object>
+                      </void>
+                      <void property="name">
+                        <string>${compiler:sys.fullName}</string>
+                      </void>
+                    </object>
+                  </java>
+                </serializedBean>
+                <condition>context.getBooleanVariable("createDesktopLinkAction")</condition>
+              </action>
+            </actions>
+            <formComponents />
+          </screen>
+          <screen name="" id="12" customizedId="" beanClass="com.install4j.runtime.beans.screens.FinishedScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="true" wizardIndexChangeType="unchanged" wizardIndexKey="">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.FinishedScreen">
+                  <void property="bannerImageFile">
+                    <object class="com.install4j.api.beans.ExternalFile">
+                      <string>./installerFiles/aliceBanner.png</string>
+                    </object>
+                  </void>
+                </object>
+              </java>
+            </serializedBean>
+            <condition />
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions />
+            <formComponents />
+          </screen>
+        </screens>
+      </application>
+      <application name="" id="uninstaller" customizedId="" beanClass="com.install4j.runtime.beans.applications.UninstallerApplication" enabled="true" commentSet="false" comment="" actionElevationType="none" fileset="" customIcnsFile="" customIcoFile="" macEntitlementsFile="" automaticLauncherIntegration="false" launchMode="startupFirstWindow" launchInNewProcess="false" launchSchedule="updateSchedule" allLaunchers="true">
+        <serializedBean>
+          <java class="java.beans.XMLDecoder">
+            <object class="com.install4j.runtime.beans.applications.UninstallerApplication">
+              <void property="customIconImageFiles">
+                <void method="add">
+                  <object class="com.install4j.api.beans.ExternalFile">
+                    <string>./installerFiles/aliceInstallerIcon16.png</string>
+                  </object>
+                </void>
+                <void method="add">
+                  <object class="com.install4j.api.beans.ExternalFile">
+                    <string>./installerFiles/aliceInstallerIcon16.png</string>
+                  </object>
+                </void>
+                <void method="add">
+                  <object class="com.install4j.api.beans.ExternalFile">
+                    <string>./installerFiles/aliceInstallerIcon48.png</string>
+                  </object>
+                </void>
+                <void method="add">
+                  <object class="com.install4j.api.beans.ExternalFile">
+                    <string>./installerFiles/aliceInstallerIcon64.png</string>
+                  </object>
+                </void>
+                <void method="add">
+                  <object class="com.install4j.api.beans.ExternalFile">
+                    <string>./installerFiles/aliceInstallerIcon128.png</string>
+                  </object>
+                </void>
+              </void>
+              <void property="useCustomIcon">
+                <boolean>true</boolean>
+              </void>
+              <void property="watermark">
+                <boolean>false</boolean>
+              </void>
+            </object>
+          </java>
+        </serializedBean>
+        <launcherIds />
+        <variables />
+        <startup>
+          <screen name="" id="14" customizedId="" beanClass="com.install4j.runtime.beans.screens.StartupScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="false" wizardIndexChangeType="unchanged" wizardIndexKey="">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.StartupScreen" />
+              </java>
+            </serializedBean>
+            <condition />
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions>
+              <action name="" id="20" customizedId="" beanClass="com.install4j.runtime.beans.actions.misc.LoadResponseFileAction" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" multiExec="false" failureStrategy="1" errorMessage="">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.misc.LoadResponseFileAction" />
+                  </java>
+                </serializedBean>
+                <condition />
+              </action>
+              <action name="" id="21" customizedId="" beanClass="com.install4j.runtime.beans.actions.misc.RequireInstallerPrivilegesAction" enabled="true" commentSet="false" comment="" actionElevationType="none" rollbackBarrier="false" multiExec="false" failureStrategy="1" errorMessage="">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.misc.RequireInstallerPrivilegesAction" />
+                  </java>
+                </serializedBean>
+                <condition />
+              </action>
+            </actions>
+            <formComponents />
+          </screen>
+        </startup>
+        <screens>
+          <screen name="" id="15" customizedId="" beanClass="com.install4j.runtime.beans.screens.UninstallWelcomeScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="false" wizardIndexChangeType="unchanged" wizardIndexKey="">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.UninstallWelcomeScreen">
+                  <void property="bannerImageFile">
+                    <object class="com.install4j.api.beans.ExternalFile">
+                      <string>./installerFiles/witchBanner.png</string>
+                    </object>
+                  </void>
+                </object>
+              </java>
+            </serializedBean>
+            <condition />
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions />
+            <formComponents />
+          </screen>
+          <screen name="" id="16" customizedId="" beanClass="com.install4j.runtime.beans.screens.UninstallationScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="false" wizardIndexChangeType="unchanged" wizardIndexKey="">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.UninstallationScreen" />
+              </java>
+            </serializedBean>
+            <condition />
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions>
+              <action name="" id="17" customizedId="" beanClass="com.install4j.runtime.beans.actions.UninstallFilesAction" enabled="true" commentSet="false" comment="" actionElevationType="elevated" rollbackBarrier="false" multiExec="false" failureStrategy="1" errorMessage="">
+                <serializedBean>
+                  <java class="java.beans.XMLDecoder">
+                    <object class="com.install4j.runtime.beans.actions.UninstallFilesAction" />
+                  </java>
+                </serializedBean>
+                <condition />
+              </action>
+            </actions>
+            <formComponents />
+          </screen>
+          <screen name="" id="19" customizedId="" beanClass="com.install4j.runtime.beans.screens.UninstallFailureScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="true" wizardIndexChangeType="unchanged" wizardIndexKey="">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.UninstallFailureScreen" />
+              </java>
+            </serializedBean>
+            <condition />
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions />
+            <formComponents />
+          </screen>
+          <screen name="" id="18" customizedId="" beanClass="com.install4j.runtime.beans.screens.UninstallSuccessScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="true" wizardIndexChangeType="unchanged" wizardIndexKey="">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.UninstallSuccessScreen">
+                  <void property="bannerImageFile">
+                    <object class="com.install4j.api.beans.ExternalFile">
+                      <string>./installerFiles/witchBanner.png</string>
+                    </object>
+                  </void>
+                </object>
+              </java>
+            </serializedBean>
+            <condition />
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions />
+            <formComponents />
+          </screen>
+        </screens>
+      </application>
+    </applications>
+  </installerGui>
+  <mediaSets>
+    <windows name="Windows 64 Offline" id="101" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="64" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="windows-amd64-1.7.0_67" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-amd64-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerDataTest" verifyIntegrity="true">
+      <excludedLaunchers />
+      <excludedBeans />
+      <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
+      <exclude>
+        <entry location="platform/linux-amd64" fileType="regular" />
+        <entry location="platform/linux-i586" fileType="regular" />
+        <entry location="platform/macosx" fileType="regular" />
+        <entry location="platform/win32" fileType="regular" />
+      </exclude>
+      <variables />
+      <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
+        <commentFiles />
+        <customAttributes />
+      </autoUpdate>
+      <excludedComponents />
+      <includedDownloadableComponents />
+    </windows>
+    <macos name="Mac OS X Single Bundle Offline" id="105" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="macosx-amd64-1.7.0_67" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/macosx-amd64-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" appleJre="false" requiredVmIdPrefix="" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" signLaunchers="false" launcherId="24">
+      <excludedBeans />
+      <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
+      <exclude>
+        <entry location="platform/linux-amd64" fileType="regular" />
+        <entry location="platform/linux-i586" fileType="regular" />
+        <entry location="platform/win32" fileType="regular" />
+        <entry location="platform/win64" fileType="regular" />
+      </exclude>
+      <variables />
+      <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
+        <commentFiles />
+        <customAttributes />
+      </autoUpdate>
+      <excludedComponents />
+      <includedDownloadableComponents />
+    </macos>
+    <unixInstaller name="Unix Installer Offline" id="111" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="" manualJREEntry="false" bundleType="1" jreURL="" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData">
+      <excludedLaunchers />
+      <excludedBeans />
+      <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
+      <exclude>
+        <entry location="platform/macosx" fileType="regular" />
+        <entry location="platform/win32" fileType="regular" />
+        <entry location="platform/win64" fileType="regular" />
+      </exclude>
+      <variables />
+      <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
+        <commentFiles />
+        <customAttributes />
+      </autoUpdate>
+      <excludedComponents />
+      <includedDownloadableComponents />
+      <installerScript mode="1" file="">
+        <content />
+      </installerScript>
+    </unixInstaller>
+    <windows name="Windows 32 Offline" id="117" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="windows-x86-1.7.0_67" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-x86-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" verifyIntegrity="true">
+      <excludedLaunchers />
+      <excludedBeans />
+      <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
+      <exclude>
+        <entry location="platform/linux-amd64" fileType="regular" />
+        <entry location="platform/linux-i586" fileType="regular" />
+        <entry location="platform/macosx" fileType="regular" />
+        <entry location="platform/win64" fileType="regular" />
+      </exclude>
+      <variables />
+      <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
+        <commentFiles />
+        <customAttributes />
+      </autoUpdate>
+      <excludedComponents />
+      <includedDownloadableComponents />
+    </windows>
+    <macosArchive name="Mac OS X Single Bundle Archive" id="195" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Archive_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="macosx-amd64-1.7.0_67" manualJREEntry="false" appleJre="false" launcherId="24">
+      <excludedBeans />
+      <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
+      <exclude>
+        <entry location="platform/linux-amd64" fileType="regular" />
+        <entry location="platform/linux-i586" fileType="regular" />
+        <entry location="platform/win32" fileType="regular" />
+        <entry location="platform/win64" fileType="regular" />
+      </exclude>
+      <variables />
+      <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
+        <commentFiles />
+        <customAttributes />
+      </autoUpdate>
+    </macosArchive>
+  </mediaSets>
+  <buildIds buildAll="false">
+    <mediaSet refId="111" />
+  </buildIds>
+  <buildOptions verbose="false" faster="false" disableSigning="false" debug="false" />
+</install4j>
+
