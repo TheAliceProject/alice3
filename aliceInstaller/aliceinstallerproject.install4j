@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="5.1.12" transformSequenceNumber="4">
-  <directoryPresets config="./installerOutput" />
+  <directoryPresets config="./installerFiles" />
   <application name="Alice 3" distributionSourceDir="" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="Alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="http://www.alice.org" version="3.1.93.0.0" allPathsRelative="true" backupOnSave="false" autoSave="true" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.6" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
       <principalLanguage id="en" customLocalizationFile="" />
@@ -161,7 +161,7 @@
     </components>
   </files>
   <launchers>
-    <launcher name="Alice 3" id="24" customizedId="" external="false" excludeFromMenu="false" unixMode="755" menuName="" icnsFile="" customMacBundleIdentifier="false" macBundleIdentifier="" swtApp="false" fileset="" macBundleBinary="JavaApplicationStub" addMacEntitlements="false" macEntitlementsFile="">
+    <launcher name="Alice 3" id="24" customizedId="" external="false" excludeFromMenu="false" unixMode="755" menuName="" icnsFile="./installerFiles/macIcon_flat.icns" customMacBundleIdentifier="false" macBundleIdentifier="" swtApp="false" fileset="" macBundleBinary="JavaApplicationStub" addMacEntitlements="false" macEntitlementsFile="">
       <executable name="Alice 3" type="1" iconSet="true" iconFile="" executableDir="." redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="false" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false">
         <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" />
       </executable>
@@ -400,7 +400,7 @@
             <actions />
             <formComponents />
           </screen>
-          <screen name="" id="142" customizedId="" beanClass="com.install4j.runtime.beans.screens.AdditionalConfirmationsScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="false" wizardIndexChangeType="unchanged" wizardIndexKey="">
+          <screen name="Add desktop shortcut" id="142" customizedId="" beanClass="com.install4j.runtime.beans.screens.AdditionalConfirmationsScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="false" wizardIndexChangeType="unchanged" wizardIndexKey="">
             <serializedBean>
               <java class="java.beans.XMLDecoder">
                 <object class="com.install4j.runtime.beans.screens.AdditionalConfirmationsScreen" />
@@ -689,7 +689,9 @@
       <includedDownloadableComponents />
     </windows>
     <macos name="Mac OS X Single Bundle Offline" id="105" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="macosx-amd64-1.7.0_67" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/macosx-amd64-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" appleJre="false" requiredVmIdPrefix="" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" signLaunchers="false" launcherId="24">
-      <excludedBeans />
+      <excludedBeans>
+        <bean refId="142" />
+      </excludedBeans>
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
       <exclude>
         <entry location="platform/linux-amd64" fileType="regular" />
