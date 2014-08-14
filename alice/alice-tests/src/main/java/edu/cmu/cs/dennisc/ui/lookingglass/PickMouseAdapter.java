@@ -46,23 +46,23 @@ package edu.cmu.cs.dennisc.ui.lookingglass;
  * @author Dennis Cosgrove
  */
 public abstract class PickMouseAdapter implements java.awt.event.MouseListener {
-	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass m_onscreenLookingGlass;
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> m_onscreenLookingGlass;
 
 	public PickMouseAdapter() {
 		this( null );
 	}
 
-	public PickMouseAdapter( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
+	public PickMouseAdapter( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenLookingGlass ) {
 		setOnscreenLookingGlass( onscreenLookingGlass );
 	}
 
 	protected abstract void handlePickResult( edu.cmu.cs.dennisc.renderer.PickResult pickResult );
 
-	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenLookingGlass() {
 		return m_onscreenLookingGlass;
 	}
 
-	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
+	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenLookingGlass ) {
 		m_onscreenLookingGlass = onscreenLookingGlass;
 	}
 

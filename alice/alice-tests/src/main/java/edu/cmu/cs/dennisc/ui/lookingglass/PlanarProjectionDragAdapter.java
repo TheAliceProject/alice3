@@ -57,9 +57,9 @@ public abstract class PlanarProjectionDragAdapter extends edu.cmu.cs.dennisc.ui.
 
 	private edu.cmu.cs.dennisc.math.Point3 getPointInAbsolutePlane( java.awt.Point p ) {
 		edu.cmu.cs.dennisc.math.Point3 rv;
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getOnscreenLookingGlass().getCameraAtPixel( p.x, p.y );
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getOnscreenRenderTarget().getCameraAtPixel( p.x, p.y );
 		if( sgCamera != null ) {
-			edu.cmu.cs.dennisc.math.Ray ray = getOnscreenLookingGlass().getRayAtPixel( p.x, p.y, sgCamera );
+			edu.cmu.cs.dennisc.math.Ray ray = getOnscreenRenderTarget().getRayAtPixel( p.x, p.y, sgCamera );
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
 			ray.transform( m );
 			edu.cmu.cs.dennisc.math.Plane planeInAbsolute = this.getPlaneInAbsolute();
