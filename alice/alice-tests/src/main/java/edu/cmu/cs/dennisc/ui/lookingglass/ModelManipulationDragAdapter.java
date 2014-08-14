@@ -87,7 +87,7 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 	}
 
 	private edu.cmu.cs.dennisc.math.Point3 getPointInPlane( edu.cmu.cs.dennisc.math.Plane plane, int xPixel, int yPixel ) {
-		edu.cmu.cs.dennisc.math.Ray ray = getOnscreenLookingGlass().getRayAtPixel( xPixel, yPixel, m_sgCamera );
+		edu.cmu.cs.dennisc.math.Ray ray = getOnscreenRenderTarget().getRayAtPixel( xPixel, yPixel, m_sgCamera );
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = m_sgCamera.getAbsoluteTransformation();
 		ray.transform( m );
 		double t = plane.intersect( ray );
@@ -99,7 +99,7 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 	@Override
 	protected void handleMousePress( java.awt.Point current, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
 		if( isOriginalAsOpposedToStyleChange ) {
-			edu.cmu.cs.dennisc.renderer.PickResult pickResult = getOnscreenLookingGlass().getSynchronousPicker().pickFrontMost( current.x, current.y, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED, getPickObserver() );
+			edu.cmu.cs.dennisc.renderer.PickResult pickResult = getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost( current.x, current.y, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED, getPickObserver() );
 			m_sgCamera = (edu.cmu.cs.dennisc.scenegraph.AbstractCamera)pickResult.getSource();
 			edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 			if( sgVisual != null ) {
@@ -112,7 +112,7 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 			this.yDelta = 0.0;
 		} else {
 			if( m_sgDragAcceptor != null ) {
-				edu.cmu.cs.dennisc.math.Ray ray = getOnscreenLookingGlass().getRayAtPixel( current.x, current.y, m_sgCamera );
+				edu.cmu.cs.dennisc.math.Ray ray = getOnscreenRenderTarget().getRayAtPixel( current.x, current.y, m_sgCamera );
 				ray.transform( m_sgCamera.getAbsoluteTransformation() );
 				double t = m_planeInAbsolute.intersect( ray );
 				m_xyzInAbsoluteAtPress = ray.getPointAlong( t );
@@ -171,7 +171,7 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 						xyzInAbsolutePlane.x = t.x;
 						xyzInAbsolutePlane.z = t.z;
 
-						getOnscreenLookingGlass().getRenderFactory().invokeLater( new Runnable() {
+						getOnscreenRenderTarget().getRenderFactory().invokeLater( new Runnable() {
 							@Override
 							public void run() {
 								updateTranslation( m_sgDragAcceptor, xyzInAbsolutePlane, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
@@ -181,7 +181,7 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 				} else {
 					final edu.cmu.cs.dennisc.math.Point3 xyzInAbsolutePlane = getPointInPlane( m_planeInAbsolute, current.x, current.y );
 					xyzInAbsolutePlane.subtract( m_offset );
-					getOnscreenLookingGlass().getRenderFactory().invokeLater( new Runnable() {
+					getOnscreenRenderTarget().getRenderFactory().invokeLater( new Runnable() {
 						@Override
 						public void run() {
 							updateTranslation( m_sgDragAcceptor, xyzInAbsolutePlane, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );

@@ -167,7 +167,7 @@ class TestJointedModel extends SProgram {
 	private int previousY = -1;
 
 	public void test() {
-		final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass();
+		final edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> lg = EmployeesOnly.getImplementation( this ).getOnscreenRenderTarget();
 
 		lg.getAwtComponent().addMouseListener( new java.awt.event.MouseListener() {
 			@Override

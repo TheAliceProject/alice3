@@ -73,7 +73,7 @@ public class MigrateProjects extends Batch {
 		try {
 			org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( inFile );
 
-			final boolean IS_DISPLAY_DESIRED = true;
+			final boolean IS_DISPLAY_DESIRED = false;
 			if( IS_DISPLAY_DESIRED ) {
 				final javax.swing.JFrame frame = new javax.swing.JFrame();
 				frame.setLocation( x, y );
@@ -88,8 +88,8 @@ public class MigrateProjects extends Batch {
 				org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( project.getProgramType() );
 				runProgramContext.initializeInContainer( new org.lgna.story.implementation.ProgramImp.AwtContainerInitializer() {
 					@Override
-					public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel ) {
-						frame.getContentPane().add( onscreenLookingGlass.getAWTComponent() );
+					public void addComponents( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
+						frame.getContentPane().add( onscreenRenderTarget.getAwtComponent() );
 					}
 				} );
 				runProgramContext.setActiveScene();
