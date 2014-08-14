@@ -47,7 +47,7 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
  */
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
 public class ProjectFilePerGalleryModelGeneration {
 	private static void test( java.util.List<Throwable> brokenModels, org.alice.stageide.modelresource.ResourceNode node, Class<? extends org.lgna.story.SJointedModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException, java.io.IOException {
