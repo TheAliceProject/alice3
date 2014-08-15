@@ -42,6 +42,7 @@
  */
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -86,13 +87,13 @@ public final class AssignmentExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			AssignmentExpression other = (AssignmentExpression)o;
-			if( this.expressionType.valueContentEquals( other.expressionType, strictness ) ) {
-				if( this.leftHandSide.valueContentEquals( other.leftHandSide, strictness ) ) {
-					if( this.operator.valueEquals( other.operator ) ) {
-						return this.rightHandSide.valueContentEquals( other.rightHandSide, strictness );
+			if( this.expressionType.valueContentEquals( other.expressionType, strictness, filter ) ) {
+				if( this.leftHandSide.valueContentEquals( other.leftHandSide, strictness, filter ) ) {
+					if( this.operator.valueEquals( other.operator, filter ) ) {
+						return this.rightHandSide.valueContentEquals( other.rightHandSide, strictness, filter );
 					}
 				}
 			}

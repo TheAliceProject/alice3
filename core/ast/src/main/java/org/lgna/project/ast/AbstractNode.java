@@ -79,7 +79,7 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	@Override
-	public boolean contentEquals( Node other, ContentEqualsStrictness strictness ) {
+	public boolean contentEquals( Node other, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
 		if( other != null ) {
 			Class<?> thisCls = this.getClass();
 			Class<?> otherCls = other.getClass();
@@ -87,6 +87,12 @@ public abstract class AbstractNode extends Element implements Node {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public final boolean contentEquals( org.lgna.project.ast.Node other, org.lgna.project.ast.ContentEqualsStrictness strictness ) {
+		edu.cmu.cs.dennisc.property.PropertyFilter filter = null;
+		return this.contentEquals( other, strictness, filter );
 	}
 
 	@Override

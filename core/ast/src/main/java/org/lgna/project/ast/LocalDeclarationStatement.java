@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +57,11 @@ public final class LocalDeclarationStatement extends Statement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			LocalDeclarationStatement other = (LocalDeclarationStatement)o;
-			if( this.local.valueContentEquals( other.local, strictness ) ) {
-				return this.initializer.valueContentEquals( other.initializer, strictness );
+			if( this.local.valueContentEquals( other.local, strictness, filter ) ) {
+				return this.initializer.valueContentEquals( other.initializer, strictness, filter );
 			}
 		}
 		return false;

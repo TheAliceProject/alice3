@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,46 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
-
-import org.lgna.project.ast.localizer.AstLocalizer;
+package edu.cmu.cs.dennisc.property;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ExpressionStatement extends Statement {
-	public ExpressionStatement() {
-	}
-
-	public ExpressionStatement( Expression expression ) {
-		this.expression.setValue( expression );
-	}
-
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ExpressionStatement other = (ExpressionStatement)o;
-			return this.expression.valueContentEquals( other.expression, strictness, filter );
-		}
-		return false;
-	}
-
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		safeAppendRepr( localizer, this.expression.getValue() );
-	}
-
-	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
-		generator.appendExpression( this.expression.getValue() );
-		generator.appendSemicolon();
-	}
-
-	public final ExpressionProperty expression = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			throw new RuntimeException( "todo" );
-		}
-	};
+public interface PropertyFilter {
+	boolean isToBeIgnored( edu.cmu.cs.dennisc.property.InstanceProperty<?> thisInstanceProperty, edu.cmu.cs.dennisc.property.InstanceProperty<?> otherInstanceProperty );
 }

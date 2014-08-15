@@ -60,12 +60,12 @@ public class CountLoop extends AbstractLoop {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			CountLoop other = (CountLoop)o;
-			if( this.variable.valueContentEquals( other.variable, strictness ) ) {
-				if( this.constant.valueContentEquals( other.constant, strictness ) ) {
-					return this.count.valueContentEquals( other.count, strictness );
+			if( this.variable.valueContentEquals( other.variable, strictness, filter ) ) {
+				if( this.constant.valueContentEquals( other.constant, strictness, filter ) ) {
+					return this.count.valueContentEquals( other.count, strictness, filter );
 				}
 			}
 		}

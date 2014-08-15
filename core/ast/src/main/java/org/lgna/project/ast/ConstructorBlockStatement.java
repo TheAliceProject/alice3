@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,10 +58,10 @@ public final class ConstructorBlockStatement extends BlockStatement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			ConstructorBlockStatement other = (ConstructorBlockStatement)o;
-			return this.constructorInvocationStatement.valueContentEquals( other.constructorInvocationStatement, strictness );
+			return this.constructorInvocationStatement.valueContentEquals( other.constructorInvocationStatement, strictness, filter );
 		}
 		return false;
 	}
