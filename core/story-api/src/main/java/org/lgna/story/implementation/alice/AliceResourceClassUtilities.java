@@ -314,7 +314,7 @@ public class AliceResourceClassUtilities {
 			if( parameters.size() == 1 )
 			{
 				JavaConstructorParameter parameter = parameters.get( 0 );
-				JavaType javaType = parameter.getValueTypeDeclaredInJava();
+				JavaType javaType = parameter.getValueType();
 				if( javaType.isAssignableTo( ModelResource.class ) )
 				{
 					return new ConstructorParameterPair( constructor, parameter );

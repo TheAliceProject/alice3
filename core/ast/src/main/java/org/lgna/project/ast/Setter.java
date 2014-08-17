@@ -56,7 +56,7 @@ public class Setter extends AbstractMethodContainedByUserField {
 	}
 
 	@Override
-	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
+	public java.util.List<SetterParameter> getRequiredParameters() {
 		return this.requiredParameters;
 	}
 
