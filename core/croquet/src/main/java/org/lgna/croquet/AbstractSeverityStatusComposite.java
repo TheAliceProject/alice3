@@ -49,15 +49,19 @@ package org.lgna.croquet;
 public abstract class AbstractSeverityStatusComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractComposite<V> {
 	public static final Status IS_GOOD_TO_GO_STATUS = null;
 
-	public static abstract class Status extends AbstractInternalStringValue {
-		private Status( java.util.UUID id, Key key ) {
-			super( id, key );
-		}
+	public static interface Status {
+		boolean isGoodToGo();
 
-		public abstract boolean isGoodToGo();
+		String getText();
 	}
 
-	public static final class WarningStatus extends Status {
+	private static abstract class AbstractStatus extends AbstractInternalStringValue implements Status {
+		private AbstractStatus( java.util.UUID id, Key key ) {
+			super( id, key );
+		}
+	}
+
+	public static final class WarningStatus extends AbstractStatus {
 		private WarningStatus( Key key ) {
 			super( java.util.UUID.fromString( "a1375dce-1d5f-4717-87a1-7d9759a12862" ), key );
 		}
@@ -68,7 +72,7 @@ public abstract class AbstractSeverityStatusComposite<V extends org.lgna.croquet
 		}
 	}
 
-	public static final class ErrorStatus extends Status {
+	public static final class ErrorStatus extends AbstractStatus {
 		private ErrorStatus( Key key ) {
 			super( java.util.UUID.fromString( "e966c721-1a6e-478d-a22f-92725d68552e" ), key );
 		}
