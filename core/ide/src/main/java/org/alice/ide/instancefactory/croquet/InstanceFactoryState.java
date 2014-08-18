@@ -326,7 +326,12 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 													for( org.lgna.project.ast.AbstractMethod parameterMethod : org.lgna.project.ast.AstUtilities.getAllMethods( parameterType ) ) {
 														org.lgna.project.ast.AbstractType<?, ?, ?> parameterMethodReturnType = parameterMethod.getReturnType();
 														if( parameterMethodReturnType.isAssignableTo( org.lgna.story.SThing.class ) ) {
-															methodInvocationBlankChildren.add( InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( parameter, parameterMethod ) ) );
+															methodInvocationBlankChildren.add(
+																	createFillInMenuComboIfNecessary(
+																			InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( parameter, parameterMethod ) ),
+																			apiConfigurationManager.getInstanceFactorySubMenuForParameterAccessMethodInvocation( parameter, parameterMethod )
+																	)
+																	);
 														}
 													}
 												}
