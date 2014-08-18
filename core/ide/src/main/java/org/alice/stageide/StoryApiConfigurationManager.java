@@ -282,7 +282,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 
 	@Override
 	public org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> getInstanceFactorySubMenuForParameterAccessMethodInvocation( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = parameter.getValueType();
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = method.getReturnType();
 		if( org.alice.stageide.ast.JointedTypeInfo.isJointed( type ) ) {
 			return org.alice.stageide.instancefactory.croquet.joint.all.ParameterAccessMethodInvocationJointedTypeMenuModel.getInstance( parameter, method );
 		} else {

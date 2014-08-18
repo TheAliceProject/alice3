@@ -49,7 +49,7 @@ public final class ParameterAccessMethodInvocationJointedTypeMenuModel extends J
 	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, Integer, ParameterAccessMethodInvocationJointedTypeMenuModel> mapToMapToMap = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();
 
 	public static ParameterAccessMethodInvocationJointedTypeMenuModel getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
-		java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( parameter.getValueType() );
+		java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( method.getReturnType() );
 		return getInstance( parameter, method, jointedTypeInfos, 0 );
 	}
 
