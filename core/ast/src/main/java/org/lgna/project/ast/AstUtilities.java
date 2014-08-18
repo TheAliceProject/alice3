@@ -718,4 +718,18 @@ public class AstUtilities {
 			return null;
 		}
 	}
+
+	private static void updateAllMethods( java.util.List<AbstractMethod> allMethods, AbstractType<?, ?, ?> type ) {
+		allMethods.addAll( type.getDeclaredMethods() );
+		AbstractType<?, ?, ?> superType = type.getSuperType();
+		if( superType != null ) {
+			updateAllMethods( allMethods, superType );
+		}
+	}
+
+	public static java.util.List<AbstractMethod> getAllMethods( AbstractType<?, ?, ?> type ) {
+		java.util.List<AbstractMethod> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		updateAllMethods( rv, type );
+		return rv;
+	}
 }
