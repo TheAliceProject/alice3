@@ -61,21 +61,25 @@ class IkProgram extends SProgram {
 	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> linearAngularEnabledListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			IkProgram.this.handleChainChanged();
 		}
 	};
 	private final org.lgna.croquet.event.ValueListener<org.lgna.story.resources.JointId> jointIdListener = new org.lgna.croquet.event.ValueListener<org.lgna.story.resources.JointId>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.story.resources.JointId> e ) {
 			IkProgram.this.handleChainChanged();
 		}
 	};
 	private final org.lgna.croquet.event.ValueListener<org.lgna.ik.Bone> boneListener = new org.lgna.croquet.event.ValueListener<org.lgna.ik.Bone>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.ik.Bone> e ) {
 			IkProgram.this.handleBoneChanged();
 		}
 	};
 	private final edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener targetTransformListener = new edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener() {
+		@Override
 		public void absoluteTransformationChanged( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent ) {
 			IkProgram.this.handleTargetTransformChanged();
 		}
@@ -144,8 +148,8 @@ class IkProgram extends SProgram {
 
 	private void initializeTest() {
 		this.setActiveScene( this.scene );
-		this.modelManipulationDragAdapter.setOnscreenLookingGlass( EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass() );
-		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass() );
+		this.modelManipulationDragAdapter.setOnscreenRenderTarget( EmployeesOnly.getImplementation( this ).getOnscreenRenderTarget() );
+		this.cameraNavigationDragAdapter.setOnscreenRenderTarget( EmployeesOnly.getImplementation( this ).getOnscreenRenderTarget() );
 		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
 		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
 

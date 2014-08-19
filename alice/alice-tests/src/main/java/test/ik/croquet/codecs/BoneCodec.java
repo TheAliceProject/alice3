@@ -49,18 +49,22 @@ package test.ik.croquet.codecs;
 public enum BoneCodec implements org.lgna.croquet.ItemCodec<org.lgna.ik.Bone> {
 	SINGLETON;
 
+	@Override
 	public org.lgna.ik.Bone decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException();
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.ik.Bone value ) {
 		throw new RuntimeException();
 	}
 
+	@Override
 	public java.lang.Class<org.lgna.ik.Bone> getValueClass() {
 		return org.lgna.ik.Bone.class;
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, org.lgna.ik.Bone value ) {
 		sb.append( value );
 	}

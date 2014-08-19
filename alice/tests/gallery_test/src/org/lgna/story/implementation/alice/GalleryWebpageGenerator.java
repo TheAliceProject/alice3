@@ -26,6 +26,7 @@ import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.JavaType;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 
 /*
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
@@ -99,7 +100,7 @@ public class GalleryWebpageGenerator {
 	}
 
 	private static String getHTMLName( ResourceNode node ) {
-		String name = getFilenameForNode( node );
+		String name = getDisplayNameForNode( node );
 		if( name == null ) {
 			if( node instanceof ClassHierarchyBasedResourceNode ) {
 				return "Classes";
@@ -197,7 +198,28 @@ public class GalleryWebpageGenerator {
 		else if( key instanceof EnumConstantResourceKey ) {
 			name = getClassName( node ) + ( (EnumConstantResourceKey)key ).getEnumConstant().toString();
 		}
-		else if( ( key instanceof ThemeTagKey ) || ( key instanceof GroupTagKey ) ) {
+		else if( key instanceof ThemeTagKey ) {
+			name = "theme_" + key.getDisplayText();
+		}
+		else if( key instanceof GroupTagKey ) {
+			name = "group_" + key.getDisplayText();
+		}
+		return name;
+	}
+
+	private static String getDisplayNameForNode( ResourceNode node ) {
+		ResourceKey key = node.getResourceKey();
+		String name = null;
+		if( key instanceof ClassResourceKey ) {
+			name = getClassName( node );
+		}
+		else if( key instanceof EnumConstantResourceKey ) {
+			name = getClassName( node ) + ( (EnumConstantResourceKey)key ).getEnumConstant().toString();
+		}
+		else if( key instanceof ThemeTagKey ) {
+			name = key.getDisplayText();
+		}
+		else if( key instanceof GroupTagKey ) {
 			name = key.getDisplayText();
 		}
 		return name;
@@ -299,7 +321,7 @@ public class GalleryWebpageGenerator {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<table class=\"wrapTable\">\n" );
 		sb.append( "\t<tr>\n" );
-		sb.append( "\t\t<td align=\"center\" class=\"noBorder\">" + getImageLinkForNode( node, relativeTo ) + "</td>\n" );
+		sb.append( "\t\t<td align=\"center\" class=\"noBorder\" width=160 height=120>" + getImageLinkForNode( node, relativeTo ) + "</td>\n" );
 		sb.append( "\t</tr>\n" );
 		sb.append( "\t<tr>\n" );
 		sb.append( "\t\t<td align=\"center\" class=\"noBorder\"><b>" + getLinkForNode( node, relativeTo ) + "</b></td>\n" );
@@ -541,6 +563,46 @@ public class GalleryWebpageGenerator {
 		}
 	}
 
+	public static int getClassCount( ResourceNode currentNode ) {
+		int classCount = 0;
+		ResourceKey key = currentNode.getResourceKey();
+		if( key instanceof ClassResourceKey ) {
+			classCount = 1;
+		}
+		for( ResourceNode childNode : currentNode.getNodeChildren() ) {
+			classCount += getClassCount( childNode );
+		}
+		return classCount;
+	}
+
+	public static int getEnumCount( ResourceNode currentNode ) {
+		int enumCount = 0;
+		ResourceKey key = currentNode.getResourceKey();
+		if( key instanceof EnumConstantResourceKey ) {
+			enumCount = 1;
+		}
+		for( ResourceNode childNode : currentNode.getNodeChildren() ) {
+			enumCount += getEnumCount( childNode );
+		}
+		return enumCount;
+	}
+
+	public static void printGalleryStats( ResourceNode currentNode ) {
+		int classCount = getClassCount( currentNode );
+		int enumCount = getEnumCount( currentNode );
+
+		System.out.println( "Class count: " + classCount );
+		System.out.println( "Enum count: " + enumCount );
+	}
+
+	public static void standAlonePrintGalleryStats() {
+		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde( null );
+		ResourceNode classBasedNode = TreeUtilities.getTreeBasedOnClassHierarchy();
+		printGalleryStats( classBasedNode );
+		usedOnlyForSideEffect = null;
+		System.gc();
+	}
+
 	public static void buildGalleryWebpage( String webpageDir ) {
 		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde( null );
 		//		org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( new org.alice.ide.uricontent.BlankSlateProjectLoader( org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS ) );
@@ -614,6 +676,8 @@ public class GalleryWebpageGenerator {
 			}
 		}
 
+		printGalleryStats( classBasedNode );
+
 		usedOnlyForSideEffect = null;
 		System.gc();
 
@@ -622,15 +686,21 @@ public class GalleryWebpageGenerator {
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
 
-		String webpageDir = "C:/batchOutput/webpage";
-
-		String webpageDirProp = System.getProperty( "org.alice.batch.webpageDir" );
-		if( webpageDirProp != null ) {
-			webpageDir = webpageDirProp;
+		if( SystemUtilities.isPropertyTrue( "org.alice.batch.galleryStatsOnly" ) )
+		{
+			standAlonePrintGalleryStats();
 		}
+		else {
+			String webpageDir = "C:/batchOutput/webpage";
 
-		FileUtilities.delete( webpageDir );
-		GalleryWebpageGenerator.buildGalleryWebpage( webpageDir );
+			String webpageDirProp = System.getProperty( "org.alice.batch.webpageDir" );
+			if( webpageDirProp != null ) {
+				webpageDir = webpageDirProp;
+			}
+
+			FileUtilities.delete( webpageDir );
+			GalleryWebpageGenerator.buildGalleryWebpage( webpageDir );
+		}
 
 	}
 

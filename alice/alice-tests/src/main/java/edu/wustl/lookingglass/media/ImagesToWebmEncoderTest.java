@@ -70,6 +70,7 @@ public class ImagesToWebmEncoderTest {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( file, file.exists() );
 
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				javax.swing.JFrame frame = new javax.swing.JFrame();
 				final edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities.createVideoPlayer();
@@ -80,6 +81,7 @@ public class ImagesToWebmEncoderTest {
 				frame.setVisible( true );
 
 				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					@Override
 					public void run() {
 						videoPlayer.playResume();
 					}

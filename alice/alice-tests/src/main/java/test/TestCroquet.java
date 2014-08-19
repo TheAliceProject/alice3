@@ -84,11 +84,13 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		final TestBooleanState booleanState = new TestBooleanState();
 
 		integerState.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<Integer>() {
+			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<Integer> e ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
 			}
 		} );
 		booleanState.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<Boolean>() {
+			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
 			}
@@ -118,6 +120,7 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		fileSelectionState.addChoosableFileFilter( fileFilter );
 		fileSelectionState.setFileFilter( fileFilter );
 		fileSelectionState.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.io.File>() {
+			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.io.File> e ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e.getNextValue() );
 			}

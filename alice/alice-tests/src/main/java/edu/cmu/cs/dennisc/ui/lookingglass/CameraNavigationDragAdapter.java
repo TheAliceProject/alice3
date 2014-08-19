@@ -68,8 +68,8 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	}
 
 	@Override
-	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		super.setOnscreenLookingGlass( onscreenLookingGlass );
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenLookingGlass ) {
+		super.setOnscreenRenderTarget( onscreenLookingGlass );
 		onscreenLookingGlass.getRenderFactory().addAutomaticDisplayListener( new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
 			@Override
 			public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
@@ -95,7 +95,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	private boolean isMultipleCameraWarningAlreadyDelivered = false;
 
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
-		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = getOnscreenLookingGlass();
+		edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenLookingGlass = getOnscreenRenderTarget();
 		if( onscreenLookingGlass != null ) {
 			int cameraCount = onscreenLookingGlass.getSgCameraCount();
 			if( ( cameraCount > 1 ) && ( this.isMultipleCameraWarningAlreadyDelivered == false ) ) {
@@ -298,7 +298,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 
 		//todo
 
-		this.getOnscreenLookingGlass().getAwtComponent().addMouseWheelListener( this );
+		this.getOnscreenRenderTarget().getAwtComponent().addMouseWheelListener( this );
 		//component.addMouseWheelListener( this );
 	}
 
@@ -308,7 +308,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 
 		//todo
 
-		this.getOnscreenLookingGlass().getAwtComponent().addMouseWheelListener( this );
+		this.getOnscreenRenderTarget().getAwtComponent().addMouseWheelListener( this );
 		//component.removeMouseWheelListener( this );
 	}
 
@@ -332,7 +332,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 
 		startCameraNavigationMode( cameraNavigationMode, current.x, current.y );
 		if( isOriginalAsOpposedToStyleChange ) {
-			getOnscreenLookingGlass().addRenderTargetListener( this );
+			getOnscreenRenderTarget().addRenderTargetListener( this );
 			m_awtCursorPrev = getAWTComponent().getCursor();
 			getAWTComponent().setCursor( new java.awt.Cursor( java.awt.Cursor.CROSSHAIR_CURSOR ) );
 		}
@@ -348,7 +348,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		stopCameraNavigationMode();
 		if( isOriginalAsOpposedToStyleChange ) {
 			getAWTComponent().setCursor( m_awtCursorPrev );
-			getOnscreenLookingGlass().removeRenderTargetListener( this );
+			getOnscreenRenderTarget().removeRenderTargetListener( this );
 		}
 		return rvCurrent;
 	}

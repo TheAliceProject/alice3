@@ -134,11 +134,12 @@ public class ModelResourceExporter {
 	private List<String> forcedOverridingEnumNames = new ArrayList<String>();
 	private Map<String, List<String>> forcedEnumNamesMap = new HashMap<String, List<String>>();
 	private Map<String, String> customArrayNameMap = new HashMap<String, String>();
+	private String[] arrayNamesToSkip = null;
 	private boolean exportGalleryResources = true;
 	private boolean isDeprecated = false;
 	private boolean placeOnGround = false;
 
-	private boolean enableArraySupport = false;
+	private boolean enableArraySupport = true;
 
 	private String attributionName;
 	private String attributionYear;
@@ -210,6 +211,10 @@ public class ModelResourceExporter {
 			this.moveCenterToBottom = false;
 			this.recenterXZ = false;
 		}
+	}
+
+	public void setEnableArrays( boolean enableArrays ) {
+		this.enableArraySupport = enableArrays;
 	}
 
 	public boolean shouldRecenter() {
@@ -401,19 +406,26 @@ public class ModelResourceExporter {
 
 	public static boolean hasArray( String arrayName, List<Tuple2<String, String>> jointList ) {
 		for( Tuple2<String, String> joint : jointList ) {
-			if( arrayName.equals( getArrayNameForJoint( joint.getA(), null ) ) ) {
+			if( arrayName.equals( getArrayNameForJoint( joint.getA(), null, null ) ) ) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public static String getArrayNameForJoint( String jointName, Map<String, String> customArrayNameMap ) {
+	public static String getArrayNameForJoint( String jointName, Map<String, String> customArrayNameMap, String[] namesToSkip ) {
 		Matcher match = arrayPattern.matcher( jointName );
 		if( match.find() ) {
 			String nameStr = jointName.substring( 0, jointName.lastIndexOf( '_' ) );
 			if( ( customArrayNameMap != null ) && customArrayNameMap.containsKey( nameStr ) ) {
 				nameStr = customArrayNameMap.get( nameStr );
+			}
+			if( namesToSkip != null ) {
+				for( String toSkip : namesToSkip ) {
+					if( nameStr.equalsIgnoreCase( toSkip ) ) {
+						return null;
+					}
+				}
 			}
 			return nameStr;
 		}
@@ -429,21 +441,20 @@ public class ModelResourceExporter {
 		return null;
 	}
 
-	public static Map<String, List<String>> getArrayEntriesFromJointList( List<Tuple2<String, String>> jointList, Map<String, String> customArrayNameMap, List<String> jointsToSuppress ) throws DataFormatException {
+	public static Map<String, List<String>> getArrayEntriesFromJointList( List<Tuple2<String, String>> jointList, Map<String, String> customArrayNameMap, List<String> jointsToSuppress, String[] arrayNamesToSkip ) throws DataFormatException {
 		List<String> jointNames = new LinkedList<String>();
 		for( Tuple2<String, String> joint : jointList ) {
 			jointNames.add( joint.getA() );
 		}
-		return getArrayEntries( jointNames, customArrayNameMap, jointsToSuppress );
+		return getArrayEntries( jointNames, customArrayNameMap, jointsToSuppress, arrayNamesToSkip );
 	}
 
-	public static Map<String, List<String>> getArrayEntries( List<String> jointNames, Map<String, String> customArrayNameMap, List<String> jointsToSuppress ) throws DataFormatException {
+	public static Map<String, List<String>> getArrayEntries( List<String> jointNames, Map<String, String> customArrayNameMap, List<String> jointsToSuppress, String[] arrayNamesToSkip ) throws DataFormatException {
 		//Array name, joint name entries
 		Map<String, List<String>> arrayEntries = new HashMap<String, List<String>>();
-
 		for( String jointName : jointNames ) {
 			if( ( jointsToSuppress == null ) || !jointsToSuppress.contains( jointName ) ) {
-				String arrayName = getArrayNameForJoint( jointName, customArrayNameMap );
+				String arrayName = getArrayNameForJoint( jointName, customArrayNameMap, arrayNamesToSkip );
 				if( arrayName != null ) {
 					if( arrayEntries.containsKey( arrayName ) ) {
 						arrayEntries.get( arrayName ).add( jointName );
@@ -1089,7 +1100,7 @@ public class ModelResourceExporter {
 	}
 
 	private String getJointAccessMethodNameForArrayJoint( String jointName ) {
-		String arrayName = getArrayNameForJoint( jointName, null );
+		String arrayName = getArrayNameForJoint( jointName, null, null );
 		return getArrayAccessorMethodName( arrayName );
 	}
 
@@ -1198,7 +1209,13 @@ public class ModelResourceExporter {
 		List<Tuple2<String, String>> trimmedSkeleton = makeCodeReadyTree( this.jointList );
 		if( trimmedSkeleton != null )
 		{
-			Map<String, List<String>> arrayEntries = getArrayEntriesFromJointList( trimmedSkeleton, this.customArrayNameMap, this.jointIdsToSuppress );
+			Map<String, List<String>> arrayEntries;
+			if( this.enableArraySupport ) {
+				arrayEntries = getArrayEntriesFromJointList( trimmedSkeleton, this.customArrayNameMap, this.jointIdsToSuppress, this.arrayNamesToSkip );
+			}
+			else {
+				arrayEntries = new HashMap<String, List<String>>();
+			}
 			List<String> rootJoints = new LinkedList<String>();
 			sb.append( JavaCodeUtilities.LINE_RETURN );
 			for( Tuple2<String, String> entry : trimmedSkeleton )
@@ -1745,6 +1762,10 @@ public class ModelResourceExporter {
 			}
 		}
 		return false;
+	}
+
+	public void setArrayNamesToSkip( String[] arrayNamesToSkip ) {
+		this.arrayNamesToSkip = arrayNamesToSkip;
 	}
 
 	public void addCustomArrayName( String arrayName, String customName ) {

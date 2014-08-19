@@ -59,6 +59,7 @@ class TestPlaceProgram extends SProgram {
 		this.testScene.getGround().setOpacity( 0.7, SetOpacity.duration( 0.0 ) );
 		ogre.setOpacity( 0.7, SetOpacity.duration( 0.0 ) );
 		this.testScene.addSceneActivationListener( new org.lgna.story.event.SceneActivationListener() {
+			@Override
 			public void sceneActivated( org.lgna.story.event.SceneActivationEvent e ) {
 				while( true ) {
 					for( SpatialRelation spatialRelation : SpatialRelation.values() ) {
