@@ -57,9 +57,6 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 	private final Face face;
 
 	private PersonResource( Gender gender, SkinTone skinTone, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
-		if( outfit == null ) {
-			System.err.println( "WAHT?" );
-		}
 		this.gender = gender;
 		this.skinTone = skinTone;
 		this.skinColor = skinColor;
