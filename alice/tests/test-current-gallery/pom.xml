@@ -6,7 +6,7 @@
 		<groupId>org.alice</groupId>
 		<artifactId>core</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../../alice/</relativePath>
+		<relativePath>../../../core/</relativePath>
 	</parent>
 
 	<artifactId>test-current-gallery</artifactId>
