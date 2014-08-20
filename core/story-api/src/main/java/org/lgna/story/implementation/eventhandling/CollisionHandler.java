@@ -63,7 +63,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 /**
  * @author Matt May
  */
-public class CollisionHandler extends TransformationChangedHandler<Object, CollisionEvent> {
+public class CollisionHandler extends AbstractBinaryEventHandler<Object, CollisionEvent> {
 
 	protected final CollisionEventHandler collisionEventHandler = new CollisionEventHandler();
 
@@ -114,15 +114,15 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 					if( check( colList, m, changedEntity ) ) {
 						if( colList instanceof CollisionStartListener ) {
 							if( listenerToGroupAMap.get( colList ).contains( m ) ) {
-								fireEvent( colList, new StartCollisionEvent( m, changedEntity ) );
+								fireEvent( colList, new StartCollisionEvent( m, changedEntity ), m, changedEntity );
 							} else {
-								fireEvent( colList, new StartCollisionEvent( changedEntity, m ) );
+								fireEvent( colList, new StartCollisionEvent( changedEntity, m ), changedEntity, m );
 							}
 						} else if( colList instanceof CollisionEndListener ) {
 							if( listenerToGroupAMap.get( colList ).contains( m ) ) {
-								fireEvent( colList, new EndCollisionEvent( m, changedEntity ) );
+								fireEvent( colList, new EndCollisionEvent( m, changedEntity ), m, changedEntity );
 							} else {
-								fireEvent( colList, new EndCollisionEvent( changedEntity, m ) );
+								fireEvent( colList, new EndCollisionEvent( changedEntity, m ), changedEntity, m );
 							}
 						}
 					}

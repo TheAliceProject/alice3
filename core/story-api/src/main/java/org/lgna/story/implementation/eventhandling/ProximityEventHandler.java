@@ -62,7 +62,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 /**
  * @author Matt May
  */
-public class ProximityEventHandler extends TransformationChangedHandler<Object, ProximityEvent> {
+public class ProximityEventHandler extends AbstractBinaryEventHandler<Object, ProximityEvent> {
 
 	private final ProximityEventManager proximityEventManager = new ProximityEventManager();
 
@@ -110,15 +110,15 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 					if( check( proxList, m, changedEntity, distMap.get( proxList ) ) ) {
 						if( proxList instanceof ProximityEnterListener ) {
 							if( listenerToGroupAMap.get( proxList ).contains( m ) ) {
-								fireEvent( proxList, new EnterProximityEvent( m, changedEntity ) );
+								fireEvent( proxList, new EnterProximityEvent( m, changedEntity ), m, changedEntity );
 							} else {
-								fireEvent( proxList, new EnterProximityEvent( changedEntity, m ) );
+								fireEvent( proxList, new EnterProximityEvent( changedEntity, m ), changedEntity, m );
 							}
 						} else if( proxList instanceof ProximityExitListener ) {
 							if( listenerToGroupAMap.get( proxList ).contains( m ) ) {
-								fireEvent( proxList, new ExitProximityEvent( m, changedEntity ) );
+								fireEvent( proxList, new ExitProximityEvent( m, changedEntity ), m, changedEntity );
 							} else {
-								fireEvent( proxList, new ExitProximityEvent( changedEntity, m ) );
+								fireEvent( proxList, new ExitProximityEvent( changedEntity, m ), changedEntity, m );
 							}
 						}
 					}
