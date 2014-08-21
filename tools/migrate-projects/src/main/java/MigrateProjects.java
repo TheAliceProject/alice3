@@ -47,10 +47,6 @@
 public class MigrateProjects extends Batch {
 	private static final int WIDTH = 200;
 	private static final int HEIGHT = 150 + 40;
-	private int x = 0;
-	private int y = 0;
-
-	private final java.util.List<java.io.File> problematicFiles = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	private void outputProblematicFiles() {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
@@ -59,6 +55,12 @@ public class MigrateProjects extends Batch {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "problematic files:", this.problematicFiles.size() );
 		for( java.io.File problematicFile : this.problematicFiles ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( problematicFile );
+		}
+
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "problematic java fields:", this.problematicJavaFields.size() );
+		for( org.lgna.project.ast.JavaField javaField : this.problematicJavaFields ) {
+			org.lgna.project.ast.FieldReflectionProxy fieldReflectionProxy = javaField.getFieldReflectionProxy();
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( fieldReflectionProxy.getDeclaringClassReflectionProxy().getName() + " " + fieldReflectionProxy.getName() );
 		}
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
@@ -73,7 +75,7 @@ public class MigrateProjects extends Batch {
 		try {
 			org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( inFile );
 
-			final boolean IS_DISPLAY_DESIRED = false;
+			final boolean IS_DISPLAY_DESIRED = true;
 			if( IS_DISPLAY_DESIRED ) {
 				final javax.swing.JFrame frame = new javax.swing.JFrame();
 				frame.setLocation( x, y );
@@ -97,8 +99,24 @@ public class MigrateProjects extends Batch {
 				frame.dispose();
 			}
 
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.FieldAccess> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.FieldAccess.class );
+			project.getProgramType().crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE );
+			for( org.lgna.project.ast.FieldAccess node : crawler.getList() ) {
+				if( node.isValid() ) {
+					//pass
+				} else {
+					org.lgna.project.ast.AbstractField field = node.field.getValue();
+					if( field instanceof org.lgna.project.ast.JavaField ) {
+						org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
+						this.problematicJavaFields.add( javaField );
+					} else {
+						assert false : node;
+					}
+				}
+			}
+
 			if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "success", project );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "success", inFile );
 			}
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
 			throw new RuntimeException( inFile.toString(), vnse );
@@ -115,6 +133,12 @@ public class MigrateProjects extends Batch {
 	protected boolean isSkipExistingOutFilesDesirable() {
 		return false;
 	}
+
+	private int x = 0;
+	private int y = 0;
+
+	private final java.util.List<java.io.File> problematicFiles = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final java.util.List<org.lgna.project.ast.JavaField> problematicJavaFields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	public static void main( String[] args ) {
 		org.lgna.project.Version prevVersion = new org.lgna.project.Version( "3.1.92.0.0" );

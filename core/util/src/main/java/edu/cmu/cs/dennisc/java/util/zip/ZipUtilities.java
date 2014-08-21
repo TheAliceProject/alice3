@@ -144,6 +144,26 @@ public class ZipUtilities {
 		addFileToZipStream( fileToAdd, zos, pathPrefix, new byte[ 1024 ] );
 	}
 
+	public static void addFileToZipStream( java.io.File rootDir, java.io.File fileToAdd, java.util.zip.ZipOutputStream zos, String pathPrefix ) throws java.io.IOException {
+		assert rootDir.isDirectory();
+		byte[] buffer = new byte[ 1024 ];
+
+		String rootPath = rootDir.getAbsolutePath();
+		pathPrefix = pathPrefix.replace( '\\', '/' );
+		if( ( pathPrefix.length() > 0 ) && !pathPrefix.endsWith( "/" ) ) {
+			pathPrefix += "/";
+		}
+		String path = fileToAdd.getAbsolutePath();
+		assert path.startsWith( rootPath );
+		String subPath = path.substring( rootPath.length() + 1, path.length() - fileToAdd.getName().length() );
+		subPath = subPath.replace( '\\', '/' );
+		addFileToZipStream( fileToAdd, zos, pathPrefix + subPath, buffer );
+	}
+
+	public static void addFileToZipStream( java.io.File rootDir, java.io.File fileToAdd, java.util.zip.ZipOutputStream zos ) throws java.io.IOException {
+		addFileToZipStream( rootDir, fileToAdd, zos, "" );
+	}
+
 	private static void addDirToZipStream( java.io.File dirToAdd, java.util.zip.ZipOutputStream zos, String pathPrefix, boolean includeDirName ) throws java.io.IOException {
 		assert dirToAdd.isDirectory();
 		byte[] buffer = new byte[ 1024 ];
