@@ -59,6 +59,7 @@ public abstract class ExpressionCascadeManager {
 		this.addExpressionFillerInner( this.stringFillerInner );
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.AudioResourceFillerInner() );
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.ImageResourceFillerInner() );
+		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.PoseFillerInner() );
 	}
 
 	public void addRelationalTypeToBooleanFillerInner( org.lgna.project.ast.AbstractType<?, ?, ?> operandType ) {
