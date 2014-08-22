@@ -50,6 +50,7 @@ public final class ConstructorMenuModel extends MemberMenuModel<org.lgna.project
 
 	public static ConstructorMenuModel getInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
 		return map.getInitializingIfAbsent( constructor, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserConstructor, ConstructorMenuModel>() {
+			@Override
 			public ConstructorMenuModel initialize( org.lgna.project.ast.NamedUserConstructor key ) {
 				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();

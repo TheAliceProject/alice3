@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,6 +57,7 @@ public abstract class AbstractForEachLoop extends AbstractLoop implements EachIn
 		this.item.setValue( item );
 	}
 
+	@Override
 	public DeclarationProperty<UserLocal> getItemProperty() {
 		return this.item;
 	}
@@ -63,11 +65,11 @@ public abstract class AbstractForEachLoop extends AbstractLoop implements EachIn
 	protected abstract ExpressionProperty getArrayOrIterableProperty();
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			AbstractForEachLoop other = (AbstractForEachLoop)o;
-			if( this.item.valueContentEquals( other.item, strictness ) ) {
-				return this.getArrayOrIterableProperty().valueContentEquals( other.getArrayOrIterableProperty(), strictness );
+			if( this.item.valueContentEquals( other.item, strictness, filter ) ) {
+				return this.getArrayOrIterableProperty().valueContentEquals( other.getArrayOrIterableProperty(), strictness, filter );
 			}
 		}
 		return false;

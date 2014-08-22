@@ -47,6 +47,7 @@ package org.alice.ide.ast.type.merge.help.diffsig.croquet.views;
  */
 public class DifferentSignatureHelpView extends org.alice.ide.ast.type.merge.help.croquet.views.PotentialNameChangerHelpView {
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> valueListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffsig.croquet.DifferentSignatureChoice> e ) {
 			handleTopLevelChanged( e.getNextValue() );
 		}

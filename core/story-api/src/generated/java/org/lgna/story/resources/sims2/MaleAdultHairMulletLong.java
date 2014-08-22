@@ -31,11 +31,13 @@ public enum MaleAdultHairMulletLong implements MaleAdultHair, MaleElderHair {
 	GREY,
 	BLEND_BLOND;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

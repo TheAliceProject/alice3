@@ -50,12 +50,14 @@ public class Getter extends AbstractMethodContainedByUserField {
 		super( field );
 	}
 
+	@Override
 	public AbstractType<?, ?, ?> getReturnType() {
 		UserField field = this.getField();
 		return field.getValueType();
 	}
 
-	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
+	@Override
+	public java.util.List<AbstractParameter> getRequiredParameters() {
 		return java.util.Collections.emptyList();
 	}
 

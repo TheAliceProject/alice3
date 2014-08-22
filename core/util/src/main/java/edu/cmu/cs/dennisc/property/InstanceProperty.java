@@ -57,6 +57,7 @@ public class InstanceProperty<E> implements Property<E> {
 		m_value = value;
 	}
 
+	@Override
 	public String getName() {
 		if( m_name != null ) {
 			//pass
@@ -103,11 +104,13 @@ public class InstanceProperty<E> implements Property<E> {
 		return m_owner;
 	}
 
+	@Override
 	public E getValue( PropertyOwner owner ) {
 		assert m_owner == owner : this;
 		return m_value;
 	}
 
+	@Override
 	public void setValue( PropertyOwner owner, E value ) {
 		assert m_owner == owner;
 		//assert m_isLocked == false;
@@ -151,20 +154,28 @@ public class InstanceProperty<E> implements Property<E> {
 		readValue( ois );
 	}
 
-	public boolean valueEquals( InstanceProperty<E> other ) {
-		E thisValue = this.getValue();
-		E otherValue = other.getValue();
-		if( thisValue != null ) {
-			if( otherValue != null ) {
-				return thisValue.equals( otherValue );
-			} else {
-				return false;
-			}
+	protected boolean isToBeIgnored( InstanceProperty<E> other, PropertyFilter filter ) {
+		return ( filter != null ) && filter.isToBeIgnored( this, other );
+	}
+
+	public boolean valueEquals( InstanceProperty<E> other, PropertyFilter filter ) {
+		if( this.isToBeIgnored( other, filter ) ) {
+			return true;
 		} else {
-			if( otherValue != null ) {
-				return false;
+			E thisValue = this.getValue();
+			E otherValue = other.getValue();
+			if( thisValue != null ) {
+				if( otherValue != null ) {
+					return thisValue.equals( otherValue );
+				} else {
+					return false;
+				}
 			} else {
-				return true;
+				if( otherValue != null ) {
+					return false;
+				} else {
+					return true;
+				}
 			}
 		}
 	}

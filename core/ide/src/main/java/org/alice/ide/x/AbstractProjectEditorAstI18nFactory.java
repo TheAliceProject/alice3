@@ -46,6 +46,8 @@ package org.alice.ide.x;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18nFactory {
+	private static final boolean IS_MUTABLE = true;
+
 	public AbstractProjectEditorAstI18nFactory() {
 		super( org.lgna.croquet.Application.PROJECT_GROUP );
 	}
@@ -55,4 +57,75 @@ public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18n
 		return java.awt.Color.RED;
 	}
 
+	@Override
+	public boolean isSignatureLocked( org.lgna.project.ast.Code code ) {
+		if( IS_MUTABLE ) {
+			return org.alice.stageide.StoryApiConfigurationManager.getInstance().isSignatureLocked( code );
+		} else {
+			return true;
+		}
+	}
+
+	@Override
+	protected float getDeclarationNameFontScale() {
+		if( Float.isNaN( this.declarationNameFontScale ) ) {
+			return super.getDeclarationNameFontScale();
+		} else {
+			return this.declarationNameFontScale;
+		}
+	}
+
+	public boolean isDraggable( org.lgna.project.ast.Statement statement ) {
+		return IS_MUTABLE;
+	}
+
+	@Override
+	protected boolean isDropDownDesiredFor( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		if( IS_MUTABLE ) {
+			return super.isDropDownDesiredFor( expressionProperty );
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.croquet.DragModel dragModel, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
+		if( this.isDraggable( statement ) ) {
+			//pass
+		} else {
+			dragModel = null;
+		}
+		return super.createStatementPane( dragModel, statement, statementListProperty );
+	}
+
+	public org.lgna.croquet.views.SwingComponentView<?> createCodeHeader( org.lgna.project.ast.UserCode code ) {
+		final boolean IS_FORMATTER_READY_FOR_PRIME_TIME = false;
+		if( IS_FORMATTER_READY_FOR_PRIME_TIME ) {
+			org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
+			String headerText = formatter.getHeaderTextForCode( code );
+			if( ( headerText != null ) && ( headerText.length() > 0 ) ) {
+				org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( headerText );
+				this.declarationNameFontScale = 1.8f;
+				try {
+					return this.createComponent( page, code );
+				} finally {
+					this.declarationNameFontScale = Float.NaN;
+				}
+			} else {
+				return null;
+			}
+		} else {
+			if( code instanceof org.lgna.project.ast.UserMethod ) {
+				org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)code;
+				return new org.alice.ide.codeeditor.MethodHeaderPane( this, userMethod, false );
+			} else if( code instanceof org.lgna.project.ast.NamedUserConstructor ) {
+				org.lgna.project.ast.NamedUserConstructor userConstructor = (org.lgna.project.ast.NamedUserConstructor)code;
+				return new org.alice.ide.codeeditor.ConstructorHeaderPane( userConstructor, false );
+			} else {
+				throw new RuntimeException();
+			}
+		}
+	}
+
+	private float declarationNameFontScale = Float.NaN;
 }

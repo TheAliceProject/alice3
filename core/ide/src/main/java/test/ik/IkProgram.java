@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -74,31 +74,38 @@ class IkProgram extends SProgram {
 	private final NiceDragAdapter modelManipulationDragAdapter = new NiceDragAdapter();
 
 	private final org.lgna.croquet.State.ValueListener<Boolean> linearAngularEnabledListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		@Override
 		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.JointId> jointIdListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.JointId>() {
+		@Override
 		public void changing( org.lgna.croquet.State<org.lgna.story.resources.JointId> state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
 			IkProgram.this.handleChainChanging();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<org.lgna.story.resources.JointId> state, org.lgna.story.resources.JointId prevValue, org.lgna.story.resources.JointId nextValue, boolean isAdjusting ) {
 			IkProgram.this.handleChainChanged();
 		}
 	};
 	//SOLVER this is for printing out the chain
 	private final org.lgna.croquet.State.ValueListener<org.lgna.ik.core.solver.Bone> boneListener = new org.lgna.croquet.State.ValueListener<org.lgna.ik.core.solver.Bone>() {
+		@Override
 		public void changing( org.lgna.croquet.State<org.lgna.ik.core.solver.Bone> state, org.lgna.ik.core.solver.Bone prevValue, org.lgna.ik.core.solver.Bone nextValue, boolean isAdjusting ) {
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<org.lgna.ik.core.solver.Bone> state, org.lgna.ik.core.solver.Bone prevValue, org.lgna.ik.core.solver.Bone nextValue, boolean isAdjusting ) {
 			IkProgram.this.handleBoneChanged();
 		}
 	};
 	private final edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener targetTransformListener = new edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener() {
+		@Override
 		public void absoluteTransformationChanged( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent ) {
 			IkProgram.this.handleTargetTransformChanged();
 		}
@@ -206,7 +213,7 @@ class IkProgram extends SProgram {
 
 		if( ( endId != null ) && ( anchorId != null ) ) {
 			if( useTightIkEnforcer ) {
-				//TODO 
+				//TODO
 				//should I remove? depends. when is this called?
 			} else {
 				ikEnforcer.clearChainBetween( anchorId, endId );
@@ -220,7 +227,7 @@ class IkProgram extends SProgram {
 
 		if( ( endId != null ) && ( anchorId != null ) ) {
 			if( useTightIkEnforcer ) {
-				//TODO 
+				//TODO
 			} else {
 				ikEnforcer.setChainBetween( anchorId, endId );
 			}
@@ -241,30 +248,30 @@ class IkProgram extends SProgram {
 	}
 
 	//	private void handleChainChanged_old() {
-	//		//this does not race with the thread. this creates a new one, it might use the old one one more time, which is fine. 
-	//		
+	//		//this does not race with the thread. this creates a new one, it might use the old one one more time, which is fine.
+	//
 	//		if(chain != null) {
 	//			ikEnforcer.removeChain(chain);
 	//		}
 	//		chain = createChain();
-	//		
+	//
 	//		if(chain != null) {
 	//			setDragAdornmentsVisible(true);
 	//			JointImp lastJointImp = chain.getLastJointImp();
-	//			
+	//
 	//			edu.cmu.cs.dennisc.math.AffineMatrix4x4 ltrans = lastJointImp.getTransformation(org.lgna.story.implementation.AsSeenBy.SCENE);
 	//
 	//			edu.cmu.cs.dennisc.math.Point3 eePos = new edu.cmu.cs.dennisc.math.Point3(ltrans.translation);
-	//			eePos.add(edu.cmu.cs.dennisc.math.Point3.createMultiplication(ltrans.orientation.backward, -.2)); //can do something like this to drag fingertips. right now it results in jumping. 
+	//			eePos.add(edu.cmu.cs.dennisc.math.Point3.createMultiplication(ltrans.orientation.backward, -.2)); //can do something like this to drag fingertips. right now it results in jumping.
 	//			chain.setEndEffectorPosition(eePos);
-	//			
+	//
 	//			//assuming that all are parented to scene...
 	//			this.getTargetImp().setLocalTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4(chain.getEndEffectorOrientation(), chain.getEndEffectorPosition()) );
 	//			ikEnforcer.addChain(chain);
 	//		} else {
 	//			setDragAdornmentsVisible(false);
 	//		}
-	//		
+	//
 	//		test.ik.croquet.BonesState.getInstance().setChain( chain );
 	//		this.updateInfo();
 	//	}
@@ -285,13 +292,14 @@ class IkProgram extends SProgram {
 	private void initializeTest() {
 		this.setActiveScene( this.scene );
 		this.modelManipulationDragAdapter.setOnClickRunnable( new Runnable() {
+			@Override
 			public void run() {
 				targetDragStarted();
 			}
 		} );
 
-		this.modelManipulationDragAdapter.setOnscreenLookingGlass( EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass() );
-		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass() );
+		this.modelManipulationDragAdapter.setOnscreenRenderTarget( EmployeesOnly.getImplementation( this ).getOnscreenRenderTarget() );
+		this.cameraNavigationDragAdapter.setOnscreenRenderTarget( EmployeesOnly.getImplementation( this ).getOnscreenRenderTarget() );
 		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
 		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
 
@@ -332,9 +340,9 @@ class IkProgram extends SProgram {
 			@Override
 			public void run() {
 				while( !interrupted() ) {
-					//solver has the chain. can also have multiple chains. 
-					//I can tell solver, for this chain this is the linear target, etc. 
-					//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok. 
+					//solver has the chain. can also have multiple chains.
+					//I can tell solver, for this chain this is the linear target, etc.
+					//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok.
 
 					java.util.Map<org.lgna.ik.core.solver.Bone.Axis, Double> desiredSpeedForAxis = new java.util.HashMap<org.lgna.ik.core.solver.Bone.Axis, Double>();
 
@@ -353,7 +361,7 @@ class IkProgram extends SProgram {
 
 					if( ikEnforcer.hasActiveChain() && ( isLinearEnabled || isAngularEnabled ) ) {
 						//I could make chain setter not race with this
-						//However, racing is fine, as long as the old chain is still valid. It is.  
+						//However, racing is fine, as long as the old chain is still valid. It is.
 
 						edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE );
 						if( isLinearEnabled ) {
@@ -429,9 +437,9 @@ class IkProgram extends SProgram {
 					//					for(PositionConstraint positionConstraint: constraints.activePositionConstraints) {
 					//						//should it be like this, or should constraints read them automatically?
 					//							//IK system reads joint angles automatically anyway
-					//							//but these desired position/orientations are not necessarily tied to scenegraph stuff. I should give them myself like this. 
+					//							//but these desired position/orientations are not necessarily tied to scenegraph stuff. I should give them myself like this.
 					//						positionConstraint.setEeDesiredPosition(targetTransformation.translation);
-					//						
+					//
 					//						//force bone reprint
 					//						//this should be fine even if the chain is not valid anymore.
 					//						//this would prevent me from selecting the list
@@ -441,11 +449,11 @@ class IkProgram extends SProgram {
 					////							}
 					////						});
 					//					}
-					//					
+					//
 					//					for(OrientationConstraint orientationConstraint: constraints.activeOrientationConstraints) {
 					//						System.out.println("orientaiton constraint!");
 					//						orientationConstraint.setEeDesiredOrientation(targetTransformation.orientation);
-					//					} 
+					//					}
 					//perhaps better ways of setting constraint values?
 
 					//this enforces the constraints immediately right now. so, there is no talk about deltatime or speed

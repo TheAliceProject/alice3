@@ -67,7 +67,7 @@ import javax.media.opengl.glu.GLU;
 /**
  * @author Dennis Cosgrove
  */
-public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
+public class Graphics2D extends edu.cmu.cs.dennisc.renderer.Graphics2D {
 	private static edu.cmu.cs.dennisc.math.SineCosineCache s_sineCosineCache = new edu.cmu.cs.dennisc.math.SineCosineCache( 8 );
 
 	private static final java.awt.Paint DEFAULT_PAINT = java.awt.Color.BLACK;
@@ -549,34 +549,43 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 				this.gl = gl;
 			}
 
+			@Override
 			public void begin( int primitiveType ) {
 				this.gl.glBegin( primitiveType );
 			}
 
+			@Override
 			public void beginData( int primitiveType, Object data ) {
 			}
 
+			@Override
 			public void vertex( Object data ) {
 				double[] a = (double[])data;
 				this.gl.glVertex2d( a[ 0 ], a[ 1 ] );
 			}
 
+			@Override
 			public void vertexData( Object arg0, Object arg1 ) {
 			}
 
+			@Override
 			public void end() {
 				this.gl.glEnd();
 			}
 
+			@Override
 			public void endData( Object arg0 ) {
 			}
 
+			@Override
 			public void edgeFlag( boolean value ) {
 			}
 
+			@Override
 			public void edgeFlagData( boolean arg0, Object arg1 ) {
 			}
 
+			@Override
 			public void combine( double[] coords, Object[] data, float[] weight, Object[] outData ) {
 				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: handle combine" );
 				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "coords:", coords );
@@ -592,13 +601,16 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 				outData[ 0 ] = out;
 			}
 
+			@Override
 			public void combineData( double[] arg0, Object[] arg1, float[] arg2, Object[] arg3, Object arg4 ) {
 			}
 
+			@Override
 			public void error( int n ) {
 
 			}
 
+			@Override
 			public void errorData( int n, Object data ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "tesselator error" );
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "\tn:", n );
@@ -929,7 +941,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 		return new java.awt.font.FontRenderContext( getTransform(), isAntiAliased, usesFractionalMetrics );
 	}
 
-	// edu.cmu.cs.dennisc.lookingglass.Graphics2D
+	// edu.cmu.cs.dennisc.renderer.Graphics2D
 
 	private static final class ReferencedObject<E> {
 		private final E object;

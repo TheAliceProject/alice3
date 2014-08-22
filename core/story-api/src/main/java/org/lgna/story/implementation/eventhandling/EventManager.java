@@ -78,10 +78,10 @@ import org.lgna.story.event.WhileProximityListener;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
 import edu.cmu.cs.dennisc.matt.eventscript.InputEventRecorder;
 import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
+import edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
@@ -132,23 +132,26 @@ public class EventManager {
 		}
 
 		public void handleReplayedEvent( MouseEventWrapper e ) {
-			mouseQuoteClickedUnquote( e.getTranslatedPointIfNecessary( scene.getProgram().getOnscreenLookingGlass().getAWTComponent() ), 0 );
+			mouseQuoteClickedUnquote( e.getTranslatedPointIfNecessary( scene.getProgram().getOnscreenRenderTarget().getAwtComponent() ), 0 );
 		}
 	};
 
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
+		@Override
 		public void keyPressed( KeyEvent e ) {
 			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
 			inputRecorder.record( e );
 			keyHandler.handleKeyPress( event );
 		}
 
+		@Override
 		public void keyReleased( KeyEvent e ) {
 			org.lgna.story.event.KeyEvent event = new org.lgna.story.event.KeyEvent( e );
 			inputRecorder.record( e );
 			keyHandler.handleKeyRelease( event );
 		}
 
+		@Override
 		public void keyTyped( java.awt.event.KeyEvent e ) {
 		}
 	};
@@ -181,15 +184,15 @@ public class EventManager {
 		//		this.keyListeners.remove( keyListener );
 	}
 
-	public void addListenersTo( OnscreenLookingGlass onscreenLookingGlass ) {
-		java.awt.Component component = onscreenLookingGlass.getAWTComponent();
+	public void addListenersTo( OnscreenRenderTarget onscreenRenderTarget ) {
+		java.awt.Component component = onscreenRenderTarget.getAwtComponent();
 		component.addMouseListener( this.mouseAdapter );
 		component.addMouseMotionListener( this.mouseAdapter );
 		component.addKeyListener( this.keyAdapter );
 	}
 
-	public void removeListenersFrom( OnscreenLookingGlass onscreenLookingGlass ) {
-		java.awt.Component component = onscreenLookingGlass.getAWTComponent();
+	public void removeListenersFrom( OnscreenRenderTarget onscreenRenderTarget ) {
+		java.awt.Component component = onscreenRenderTarget.getAwtComponent();
 		component.removeMouseListener( this.mouseAdapter );
 		component.removeMouseMotionListener( this.mouseAdapter );
 		component.removeKeyListener( this.keyAdapter );
@@ -219,12 +222,12 @@ public class EventManager {
 		}
 	}
 
-	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
-		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo );
+	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo, MultipleEventPolicy policy ) {
+		collisionHandler.addCollisionListener( collisionListener, groupOne, groupTwo, policy );
 	}
 
-	public void addProximityEventListener( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Number dist ) {
-		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist.doubleValue() );
+	public void addProximityEventListener( Object proximityEventListener, List<SThing> groupOne, List<SThing> groupTwo, Number dist, MultipleEventPolicy policy ) {
+		proxyHandler.addProximityEventListener( proximityEventListener, groupOne, groupTwo, dist.doubleValue(), policy );
 	}
 
 	public void addTimerEventListener( TimeListener timerEventListener, Number frequency, MultipleEventPolicy policy ) {
@@ -243,8 +246,8 @@ public class EventManager {
 		keyHandler.addListener( keyPressListener, policy, ArrowKeyEvent.ARROWS, heldKeyPolicy );
 	}
 
-	public void moveWithArrows( SMovableTurnable entity ) {
-		this.keyHandler.addListener( new MoveWithArrows( entity ), MultipleEventPolicy.COMBINE, ArrowKeyEvent.ARROWS, HeldKeyPolicy.FIRE_MULTIPLE );
+	public void moveWithArrows( SMovableTurnable entity, Double speed ) {
+		MoveWithArrows.createNewAndAddTo( entity, speed, this.keyHandler );
 	}
 
 	public void addMouseClickOnScreenListener( MouseClickOnScreenListener listener, MultipleEventPolicy policy ) {
@@ -267,12 +270,12 @@ public class EventManager {
 	//		this.occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
 	//	}
 
-	public void addComesIntoViewEventListener( ViewEnterListener listener, SModel[] entities ) {
-		this.viewHandler.addViewEventListener( listener, entities );
+	public void addComesIntoViewEventListener( ViewEnterListener listener, SModel[] entities, MultipleEventPolicy policy ) {
+		this.viewHandler.addViewEventListener( listener, entities, policy );
 	}
 
-	public void addLeavesViewEventListener( ViewExitListener listener, SModel[] entities ) {
-		this.viewHandler.addViewEventListener( listener, entities );
+	public void addLeavesViewEventListener( ViewExitListener listener, SModel[] entities, MultipleEventPolicy policy ) {
+		this.viewHandler.addViewEventListener( listener, entities, policy );
 	}
 
 	public void sceneActivated() {
@@ -284,7 +287,7 @@ public class EventManager {
 			//pass
 		} else {
 			this.dragAdapter = new org.alice.interact.RuntimeDragAdapter();
-			OnscreenLookingGlass lookingGlass = this.scene.getProgram().getOnscreenLookingGlass();
+			OnscreenRenderTarget<?> renderTarget = this.scene.getProgram().getOnscreenRenderTarget();
 			SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
 			//			for( int i = 0; i < lookingGlass.getCameraCount(); i++ ) {
 			//				if( lookingGlass.getCameraAt( i ) instanceof SymmetricPerspectiveCamera ) 
@@ -293,7 +296,7 @@ public class EventManager {
 			//					break;
 			//				}
 			//			}
-			this.dragAdapter.setOnscreenLookingGlass( lookingGlass );
+			this.dragAdapter.setOnscreenRenderTarget( renderTarget );
 			this.dragAdapter.addCameraView( CameraView.MAIN, camera, null );
 			this.dragAdapter.makeCameraActive( camera );
 			this.dragAdapter.setAnimator( this.scene.getProgram().getAnimator() );
@@ -319,12 +322,12 @@ public class EventManager {
 		contingent.register( listener, group, frequency, policy );
 	}
 
-	public void addOcclusionEventListener( OcclusionStartListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo ) {
-		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
+	public void addOcclusionEventListener( OcclusionStartListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, MultipleEventPolicy policy ) {
+		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo, policy );
 	}
 
-	public void addOcclusionEventListener( OcclusionEndListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo ) {
-		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo );
+	public void addOcclusionEventListener( OcclusionEndListener occlusionEventListener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, MultipleEventPolicy policy ) {
+		occlusionHandler.addOcclusionEvent( occlusionEventListener, groupOne, groupTwo, policy );
 	}
 
 	public void addSceneActivationListener( SceneActivationListener listener ) {

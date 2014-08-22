@@ -32,11 +32,13 @@ public enum FemaleTeenHairShortCute implements FemaleTeenHair {
 	FROSTY_BLOND,
 	FROSTY_PURPLE;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

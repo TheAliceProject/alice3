@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,10 +51,10 @@ public abstract class Statement extends AbstractNode {
 	protected abstract void appendJavaInternal( JavaCodeGenerator generator );
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			Statement other = (Statement)o;
-			return this.isEnabled.valueEquals( other.isEnabled );
+			return this.isEnabled.valueEquals( other.isEnabled, filter );
 		}
 		return false;
 	}

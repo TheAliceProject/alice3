@@ -49,5 +49,7 @@ package org.lgna.project.annotations;
 @java.lang.annotation.Documented
 @java.lang.annotation.Retention( java.lang.annotation.RetentionPolicy.RUNTIME )
 public @interface ResourceTemplate {
+	boolean isTopLevelResource() default true;
+
 	Class<?> modelClass();
 }

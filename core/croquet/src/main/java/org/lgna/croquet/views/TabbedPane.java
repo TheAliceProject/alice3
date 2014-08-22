@@ -48,12 +48,13 @@ package org.lgna.croquet.views;
  */
 public abstract class TabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends ItemSelectablePanel<E> {
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		@Override
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 			if( e.getValueIsAdjusting() ) {
 				//pass
 			} else {
 				org.lgna.croquet.SingleSelectListState<E> model = getModel();
-				int indexFromSwingModel = model.getSwingModel().getSelectionIndex();
+				int indexFromSwingModel = model.getImp().getSwingModel().getSelectionIndex();
 				int indexFromCroquet = model.getSelectedIndex();
 				final boolean USE_CROQUET_OVER_SWING;
 				if( indexFromSwingModel != indexFromCroquet ) {
@@ -70,7 +71,7 @@ public abstract class TabbedPane<E extends org.lgna.croquet.TabComposite<?>> ext
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( indexFromSwingModel, indexFromCroquet, this );
 					card = model.getItemAt( indexFromCroquet );
 				} else {
-					card = (E)model.getSwingModel().getComboBoxModel().getElementAt( indexFromSwingModel );
+					card = (E)model.getImp().getSwingModel().getComboBoxModel().getElementAt( indexFromSwingModel );
 				}
 				TabbedPane.this.handleValueChanged( card );
 			}
@@ -100,7 +101,7 @@ public abstract class TabbedPane<E extends org.lgna.croquet.TabComposite<?>> ext
 
 	@Override
 	protected void handleDisplayable() {
-		this.getModel().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
+		this.getModel().getImp().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 		this.handleValueChanged( this.getModel().getValue() );
 		super.handleDisplayable();
 	}
@@ -108,7 +109,7 @@ public abstract class TabbedPane<E extends org.lgna.croquet.TabComposite<?>> ext
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();
-		this.getModel().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
+		this.getModel().getImp().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
 	}
 
 	protected abstract void handleValueChanged( E card );

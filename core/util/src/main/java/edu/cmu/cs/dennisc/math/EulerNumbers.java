@@ -75,6 +75,7 @@ public class EulerNumbers implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 		roll = binaryDecoder.decodeDouble();
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( pitch );
 		binaryEncoder.encode( yaw );

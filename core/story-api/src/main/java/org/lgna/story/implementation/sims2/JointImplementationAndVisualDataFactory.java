@@ -43,7 +43,10 @@
 
 package org.lgna.story.implementation.sims2;
 
+import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.resources.JointArrayId;
 
 import edu.cmu.cs.dennisc.nebulous.NebulousJoint;
 
@@ -72,20 +75,30 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		this.resource = resource;
 	}
 
+	@Override
 	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory getFactoryForResource( org.lgna.story.resources.JointedModelResource resource ) {
 		return JointImplementationAndVisualDataFactory.getInstance( resource );
 	}
 
+	@Override
 	public org.lgna.story.resources.JointedModelResource getResource() {
 		return this.resource;
 	}
 
+	@Override
 	public org.lgna.story.implementation.JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
 		assert jointedModelImplementation.getVisualData() instanceof NebulousVisualData;
 		edu.cmu.cs.dennisc.nebulous.Model nebModel = ( (NebulousVisualData<edu.cmu.cs.dennisc.nebulous.Model>)jointedModelImplementation.getVisualData() ).getNebModel();
 		return new JointImplementation( jointedModelImplementation, new NebulousJoint( nebModel, jointId ) );
 	}
 
+	//Not supported on nebulous models
+	@Override
+	public JointImp[] createJointArrayImplementation( JointedModelImp jointedModelImplementation, JointArrayId jointArrayId ) {
+		return null;
+	}
+
+	@Override
 	public org.lgna.story.implementation.JointedModelImp.VisualData createVisualData() {
 		try {
 			if( this.resource instanceof org.lgna.story.resources.sims2.PersonResource ) {
@@ -103,12 +116,15 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 		}
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId ) {
 		return this.getOriginalJointTransformation( jointId ).orientation.createUnitQuaternion();
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointId jointId ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "getOriginalJointTransformation not supported from nebulous factory" );
 		return edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
 	}
+
 }

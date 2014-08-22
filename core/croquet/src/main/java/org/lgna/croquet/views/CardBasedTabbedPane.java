@@ -82,6 +82,7 @@ public abstract class CardBasedTabbedPane<E extends org.lgna.croquet.TabComposit
 					this.cardOwner.addCard( card );
 					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note invoke later showCard", card );
 					javax.swing.SwingUtilities.invokeLater( new Runnable() {
+						@Override
 						public void run() {
 							cardOwner.showCardRefrainingFromActivation( card );
 							repaint();

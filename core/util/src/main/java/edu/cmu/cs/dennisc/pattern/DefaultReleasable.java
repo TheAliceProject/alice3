@@ -52,6 +52,7 @@ public class DefaultReleasable implements Releasable {
 	protected void actuallyRelease() {
 	}
 
+	@Override
 	public final void release() {
 		if( m_releaseListeners.size() > 0 ) {
 			edu.cmu.cs.dennisc.pattern.event.ReleaseListener[] releaseListeners = new edu.cmu.cs.dennisc.pattern.event.ReleaseListener[ m_releaseListeners.size() ];
@@ -70,14 +71,17 @@ public class DefaultReleasable implements Releasable {
 		}
 	}
 
+	@Override
 	public void addReleaseListener( edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener ) {
 		m_releaseListeners.addElement( releaseListener );
 	}
 
+	@Override
 	public void removeReleaseListener( edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener ) {
 		m_releaseListeners.removeElement( releaseListener );
 	}
 
+	@Override
 	public Iterable<edu.cmu.cs.dennisc.pattern.event.ReleaseListener> accessReleaseListeners() {
 		return m_releaseListeners;
 	}

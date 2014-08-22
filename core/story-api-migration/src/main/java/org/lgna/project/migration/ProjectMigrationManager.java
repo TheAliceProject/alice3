@@ -42,7 +42,6 @@
  */
 package org.lgna.project.migration;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -5172,6 +5171,121 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"edu.cmu.cs.dennisc.matt.EndOcclusionEvent",
 					"org.lgna.story.event.EndOcclusionEvent"
 
+			),
+
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.85.0.0" ),
+					new org.lgna.project.Version( "3.1.92.0.0" )
+			),
+
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.92.0.0" ),
+					new org.lgna.project.Version( "3.1.93.0.0" ),
+
+					createMoreSpecificFieldPattern( "WALNUT_DOOR_WALNUT_WALNUT", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "WALNUT_DOOR_WALNUT_LIGHT_WOOD", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "WALNUT_DOOR_WALNUT_ORANGE", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "WALNUT_DOOR_WALNUT_BLUE", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "WALNUT_DOOR_WALNUT_PINK", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "BASIC", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "FANCY", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.BlackCatResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.PandaResource" ),
+
+					"name=\"org.lgna.story.resources.biped.BlackCatResource",
+					"name=\"org.lgna.story.resources.biped.AliceResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.PumpkinHeadResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.PandaResource" ),
+
+					createMoreSpecificFieldPattern( "HEADLESS", "org.lgna.story.resources.biped.PumpkinHeadResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.PandaResource" ),
+
+					"name=\"org.lgna.story.resources.biped.PumpkinHeadResource",
+					"name=\"org.lgna.story.resources.biped.PandaResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TrainEngineResource" ),
+					createMoreSpecificFieldReplacement( "LIMOUSINE", "org.lgna.story.resources.prop.LimousineResource" ),
+
+					"name=\"org.lgna.story.resources.prop.TrainEngineResource",
+					"name=\"org.lgna.story.resources.prop.LimousineResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.GhostResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.ThorResource" ),
+
+					createMoreSpecificFieldPattern( "SHEET_GHOST", "org.lgna.story.resources.biped.GhostResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.ThorResource" ),
+
+					createMoreSpecificFieldPattern( "SHEET_GHOST_SHEET_TRANSPARENT", "org.lgna.story.resources.biped.GhostResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.ThorResource" ),
+
+					"name=\"org.lgna.story.resources.biped.GhostResource",
+					"name=\"org.lgna.story.resources.biped.ThorResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TrainCarResource" ),
+					createMoreSpecificFieldReplacement( "LIMOUSINE", "org.lgna.story.resources.prop.LimousineResource" ),
+
+					"name=\"org.lgna.story.resources.prop.TrainCarResource",
+					"name=\"org.lgna.story.resources.prop.LimousineResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TunnelResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.TentResource" ),
+
+					"name=\"org.lgna.story.resources.prop.TunnelResource",
+					"name=\"org.lgna.story.resources.prop.TentResource",
+
+					createMoreSpecificFieldPattern( "WITH_HAT", "org.lgna.story.resources.biped.SkeletonResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.YetiResource" ),
+
+					createMoreSpecificFieldPattern( "DEFAULT_SKELETON", "org.lgna.story.resources.biped.SkeletonResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.YetiResource" ),
+
+					createMoreSpecificFieldPattern( "DEFAULT_TOP_HAT", "org.lgna.story.resources.biped.SkeletonResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.YetiResource" ),
+
+					"name=\"org.lgna.story.resources.biped.SkeletonResource",
+					"name=\"org.lgna.story.resources.biped.YetiResource",
+
+					createMoreSpecificFieldPattern( "DIFFUSE", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.TreeTrunkResource" ),
+
+					createMoreSpecificFieldPattern( "SKELETON", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.TreeTrunkResource" ),
+
+					createMoreSpecificFieldPattern( "TOP_HAT", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.TreeTrunkResource" ),
+
+					"name=\"org.lgna.story.resources.prop.FirTreeTrunkResource",
+					"name=\"org.lgna.story.resources.prop.TreeTrunkResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.BatResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.YetiResource" ),
+
+					"name=\"org.lgna.story.resources.biped.BatResource",
+					"name=\"org.lgna.story.resources.biped.YetiResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.AsuraResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.AlienResource" ),
+
+					"name=\"org.lgna.story.resources.biped.AsuraResource",
+					"name=\"org.lgna.story.resources.biped.AlienResource",
+
+					createMoreSpecificFieldPattern( "CHEAP", "org.lgna.story.resources.prop.TelevisionRemoteResource" ),
+					createMoreSpecificFieldReplacement( "TELEVISION_REMOTE", "org.lgna.story.resources.prop.TelevisionRemoteResource" )
 			)
 
 			//			, EventAstMigration.getTextMigration() 

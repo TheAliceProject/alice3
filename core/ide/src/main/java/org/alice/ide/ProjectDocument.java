@@ -73,10 +73,12 @@ public class ProjectDocument implements org.lgna.croquet.Document {
 		return this.typeCache;
 	}
 
+	@Override
 	public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
 		return this.transactionHistory;
 	}
 
+	@Override
 	public org.lgna.croquet.undo.UndoHistory getUndoHistory( org.lgna.croquet.Group group ) {
 		return this.projectHistoryManager.getGroupHistory( group );
 	}

@@ -53,6 +53,7 @@ public class DefaultAstLocalizer implements AstLocalizer {
 		this.sb = sb;
 	}
 
+	@Override
 	public void appendDeclaration( Declaration declaration ) {
 		String name = declaration.getName();
 		if( name != null ) {
@@ -62,30 +63,37 @@ public class DefaultAstLocalizer implements AstLocalizer {
 		}
 	}
 
+	@Override
 	public void appendBoolean( boolean value ) {
 		sb.append( value );
 	}
 
+	@Override
 	public void appendChar( char value ) {
 		sb.append( value );
 	}
 
+	@Override
 	public void appendInt( int value ) {
 		sb.append( value );
 	}
 
+	@Override
 	public void appendLong( long value ) {
 		sb.append( value );
 	}
 
+	@Override
 	public void appendFloat( float value ) {
 		sb.append( value );
 	}
 
+	@Override
 	public void appendDouble( double value ) {
 		sb.append( value );
 	}
 
+	@Override
 	public void appendNullLiteral() {
 		sb.append( "null" );
 	}
@@ -101,26 +109,32 @@ public class DefaultAstLocalizer implements AstLocalizer {
 	//				return rv;
 	//			}
 
+	@Override
 	public void appendNull() {
 		sb.append( "null" );
 	}
 
+	@Override
 	public void appendThis() {
 		sb.append( "this" );
 	}
 
+	@Override
 	public void appendSpace() {
 		sb.append( ' ' );
 	}
 
+	@Override
 	public void appendDot() {
 		sb.append( '.' );
 	}
 
+	@Override
 	public void appendText( String text ) {
 		sb.append( text );
 	}
 
+	@Override
 	public void appendLocalizedText( Class<? extends Node> cls, String subKey ) {
 		sb.append( subKey );
 	}

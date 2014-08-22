@@ -42,6 +42,7 @@
  */
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -282,10 +283,10 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			ArithmeticInfixExpression other = (ArithmeticInfixExpression)o;
-			return this.expressionType.valueContentEquals( other.expressionType, strictness );
+			return this.expressionType.valueContentEquals( other.expressionType, strictness, filter );
 		}
 		return false;
 	}
@@ -297,5 +298,5 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 		generator.appendExpression( this.rightOperand.getValue() );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );
 }

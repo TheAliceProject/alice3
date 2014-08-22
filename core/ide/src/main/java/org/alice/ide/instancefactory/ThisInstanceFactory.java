@@ -68,16 +68,19 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 		return new org.lgna.croquet.resolvers.SingletonResolver<ThisInstanceFactory>( this );
 	}
 
+	@Override
 	public org.lgna.project.ast.Expression createTransientExpression() {
 		return createTransientThisExpression();
 	}
 
+	@Override
 	public org.lgna.project.ast.Expression createExpression() {
 		return createThisExpression();
 	}
 
+	@Override
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
-		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
+		return org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().getValue();
 	}
 
 	@Override
@@ -85,6 +88,7 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 		return org.alice.ide.ast.icons.ThisInstanceIconFactory.getInstance();
 	}
 
+	@Override
 	public String getRepr() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "this" );

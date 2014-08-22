@@ -30,11 +30,13 @@ public enum MaleAdultHairShortCenterSpike implements MaleAdultHair, MaleElderHai
 	RED,
 	BLOND;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

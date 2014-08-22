@@ -81,51 +81,62 @@ public class AxisRotation implements Orientation {
 		angle.decode( binaryDecoder );
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		axis.encode( binaryEncoder );
 		angle.encode( binaryEncoder );
 	}
 
+	@Override
 	public OrthogonalMatrix3x3 createOrthogonalMatrix3x3() {
 		return new OrthogonalMatrix3x3( this );
 	}
 
+	@Override
 	public UnitQuaternion createUnitQuaternion() {
 		return new UnitQuaternion( this );
 	}
 
+	@Override
 	public AxisRotation createAxisRotation() {
 		return new AxisRotation( this );
 	}
 
+	@Override
 	public EulerAngles createEulerAngles() {
 		return new EulerAngles( this );
 	}
 
+	@Override
 	public ForwardAndUpGuide createForwardAndUpGuide() {
 		return new ForwardAndUpGuide( this );
 	}
 
+	@Override
 	public OrthogonalMatrix3x3 getValue( OrthogonalMatrix3x3 rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public UnitQuaternion getValue( UnitQuaternion rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public AxisRotation getValue( AxisRotation rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public EulerAngles getValue( EulerAngles rv ) {
 		rv.setValue( this );
 		return rv;
 	}
 
+	@Override
 	public ForwardAndUpGuide getValue( ForwardAndUpGuide rv ) {
 		rv.setValue( this );
 		return rv;
@@ -167,10 +178,12 @@ public class AxisRotation implements Orientation {
 		return setReturnValueToNaN( new AxisRotation() );
 	}
 
+	@Override
 	public void setNaN() {
 		setReturnValueToNaN( this );
 	}
 
+	@Override
 	public boolean isNaN() {
 		return this.axis.isNaN() || this.angle.isNaN();
 	}
@@ -186,10 +199,12 @@ public class AxisRotation implements Orientation {
 		return setReturnValueToIdentity( AxisRotation.createNaN() );
 	}
 
+	@Override
 	public void setIdentity() {
 		setReturnValueToIdentity( this );
 	}
 
+	@Override
 	public boolean isIdentity() {
 		return this.axis.isPositiveXAxis() && ( this.angle.getAsRadians() == 0.0 );
 	}
@@ -291,6 +306,7 @@ public class AxisRotation implements Orientation {
 		}
 	}
 
+	@Override
 	public void setValue( OrthogonalMatrix3x3 m ) {
 		if( m.isNaN() ) {
 			setNaN();
@@ -300,11 +316,13 @@ public class AxisRotation implements Orientation {
 		}
 	}
 
+	@Override
 	public void setValue( AxisRotation other ) {
 		this.axis.set( other.axis );
 		this.angle.set( other.angle );
 	}
 
+	@Override
 	public void setValue( UnitQuaternion q ) {
 		//assert q.isNormalized();
 		assert Math.abs( q.w ) <= 1;
@@ -321,11 +339,13 @@ public class AxisRotation implements Orientation {
 		}
 	}
 
+	@Override
 	public void setValue( EulerAngles ea ) {
 		//todo: convert directly
 		setValue( new OrthogonalMatrix3x3( ea ) );
 	}
 
+	@Override
 	public void setValue( ForwardAndUpGuide faug ) {
 		//todo: convert directly
 		setValue( new OrthogonalMatrix3x3( faug ) );

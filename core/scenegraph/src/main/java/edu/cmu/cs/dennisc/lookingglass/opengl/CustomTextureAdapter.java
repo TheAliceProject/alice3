@@ -54,7 +54,6 @@ public class CustomTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.text
 		return m_element.isAnimated() || super.isDirty();
 	}
 
-	@Override
 	public java.awt.Graphics2D createGraphics() {
 		//		edu.cmu.cs.dennisc.scenegraph.CustomTexture sgCustomTexture = m_sgE;
 		//		if( m_textureRenderer != null ) {
@@ -68,7 +67,6 @@ public class CustomTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.text
 
 	}
 
-	@Override
 	public void commitGraphics( java.awt.Graphics2D g, int x, int y, int width, int height ) {
 		//m_textureRenderer.drawOrthoRect( width, height );
 		//m_textureRenderer.sync( x, y, width, height );
@@ -76,7 +74,6 @@ public class CustomTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.text
 		//m_textureRenderer.endOrthoRendering();
 	}
 
-	@Override
 	public java.awt.Image getImage() {
 		return m_textureRenderer.getImage();
 	}

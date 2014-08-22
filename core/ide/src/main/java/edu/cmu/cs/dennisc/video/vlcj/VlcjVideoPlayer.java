@@ -49,101 +49,129 @@ import uk.co.caprica.vlcj.player.MediaPlayer;
  */
 public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private final uk.co.caprica.vlcj.player.MediaPlayerEventListener mediaPlayerEventListener = new uk.co.caprica.vlcj.player.MediaPlayerEventListener() {
+		@Override
 		public void mediaChanged( MediaPlayer mediaPlayer, uk.co.caprica.vlcj.binding.internal.libvlc_media_t media, String mrl ) {
 			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "mediaChanged", mediaPlayer, media, mrl );
 			//uk.co.caprica.vlcj.player.MediaDetails mediaDetails = mediaPlayer.getMediaDetails();
 			fireMediaChanged();
 		}
 
+		@Override
 		public void opening( MediaPlayer mediaPlayer ) {
 			fireOpening();
 		}
 
+		@Override
 		public void buffering( MediaPlayer mediaPlayer, float newCache ) {
 		}
 
+		@Override
 		public void playing( MediaPlayer mediaPlayer ) {
 			firePlaying();
 		}
 
+		@Override
 		public void paused( MediaPlayer mediaPlayer ) {
 			firePaused();
 		}
 
+		@Override
 		public void stopped( MediaPlayer mediaPlayer ) {
 			fireStopped();
 		}
 
+		@Override
 		public void forward( MediaPlayer mediaPlayer ) {
 		}
 
+		@Override
 		public void backward( MediaPlayer mediaPlayer ) {
 		}
 
+		@Override
 		public void finished( MediaPlayer mediaPlayer ) {
 			fireFinished();
 		}
 
+		@Override
 		public void timeChanged( MediaPlayer mediaPlayer, long newTime ) {
 			//todo
 		}
 
+		@Override
 		public void positionChanged( MediaPlayer mediaPlayer, float newPosition ) {
 			firePositionChanged( newPosition );
 		}
 
+		@Override
 		public void seekableChanged( MediaPlayer mediaPlayer, int newSeekable ) {
 		}
 
+		@Override
 		public void pausableChanged( MediaPlayer mediaPlayer, int newSeekable ) {
 		}
 
+		@Override
 		public void titleChanged( MediaPlayer mediaPlayer, int newTitle ) {
 		}
 
+		@Override
 		public void snapshotTaken( MediaPlayer mediaPlayer, String filename ) {
 		}
 
+		@Override
 		public void lengthChanged( MediaPlayer mediaPlayer, long newLength ) {
 			fireLengthChanged( newLength );
 		}
 
+		@Override
 		public void videoOutput( MediaPlayer mediaPlayer, int newCount ) {
 			fireVideoOutput( newCount );
 		}
 
+		@Override
 		public void error( MediaPlayer mediaPlayer ) {
 			fireError();
 		}
 
+		@Override
 		public void mediaMetaChanged( MediaPlayer mediaPlayer, int metaType ) {
 		}
 
+		@Override
 		public void mediaSubItemAdded( MediaPlayer mediaPlayer, uk.co.caprica.vlcj.binding.internal.libvlc_media_t subItem ) {
 		}
 
+		@Override
 		public void mediaDurationChanged( MediaPlayer mediaPlayer, long newDuration ) {
 		}
 
+		@Override
 		public void mediaParsedChanged( MediaPlayer mediaPlayer, int newStatus ) {
 		}
 
+		@Override
 		public void mediaFreed( MediaPlayer mediaPlayer ) {
 		}
 
+		@Override
 		public void mediaStateChanged( MediaPlayer mediaPlayer, int newState ) {
 		}
 
+		@Override
 		public void newMedia( MediaPlayer mediaPlayer ) {
 			fireNewMedia();
 		}
 
+		@Override
 		public void subItemPlayed( MediaPlayer mediaPlayer, int subItemIndex ) {
 		}
 
+		@Override
 		public void subItemFinished( MediaPlayer mediaPlayer, int subItemIndex ) {
 		}
 
+		@Override
 		public void endOfSubItems( MediaPlayer mediaPlayer ) {
 		}
 
@@ -243,26 +271,32 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 	}
 
+	@Override
 	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
 		this.mediaListeners.add( listener );
 	}
 
+	@Override
 	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
 		this.mediaListeners.add( listener );
 	}
 
+	@Override
 	public java.awt.Component getVideoSurface() {
 		return this.mediaPlayerComponent.getVideoSurface();
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> getPainter() {
 		return this.mediaPlayerComponent.getPainter();
 	}
 
+	@Override
 	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter<edu.cmu.cs.dennisc.video.VideoPlayer> painter ) {
 		this.mediaPlayerComponent.setPainter( painter );
 	}
 
+	@Override
 	public boolean prepareMedia( java.net.URI uri ) {
 		if( uri != null ) {
 			String scheme = uri.getScheme();
@@ -283,24 +317,29 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		return this.isPrepared;
 	}
 
+	@Override
 	public void parse() {
 		this.mediaPlayerComponent.getMediaPlayer().parseMedia();
 	}
 
+	@Override
 	public boolean isPrepared() {
 		return this.isPrepared;
 	}
 
+	@Override
 	public boolean isPlayable() {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		return mediaPlayer.isPlayable();
 	}
 
+	@Override
 	public boolean isPlaying() {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		return mediaPlayer.isPlaying();
 	}
 
+	@Override
 	public void playResume() {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.isPlayable() ) {
@@ -314,6 +353,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 	}
 
+	@Override
 	public void pause() {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.canPause() ) {
@@ -323,6 +363,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 	}
 
+	@Override
 	public void stop() {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		mediaPlayer.stop();
@@ -362,6 +403,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		this.pausedSetTimeInMilliseconds = null;
 	}
 
+	@Override
 	public long getTimeInMilliseconds() {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.canPause() ) {
@@ -379,6 +421,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		return mediaPlayer.getTime();
 	}
 
+	@Override
 	public void setTimeInMilliseconds( long timeInMilliseconds ) {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.canPause() ) {
@@ -392,6 +435,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		mediaPlayer.setTime( timeInMilliseconds );
 	}
 
+	@Override
 	public float getPosition() {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.canPause() ) {
@@ -409,6 +453,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		return mediaPlayer.getPosition();
 	}
 
+	@Override
 	public void setPosition( float position ) {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.isSeekable() ) {
@@ -436,26 +481,31 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 	}
 
+	@Override
 	public long getLengthInMilliseconds() {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		return mediaPlayer.getLength();
 	}
 
+	@Override
 	public float getVolume() {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		return mediaPlayer.getVolume() * 0.01f;
 	}
 
+	@Override
 	public void setVolume( float volume ) {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		mediaPlayer.setVolume( Math.round( volume * 100 ) ); // 200?
 	}
 
+	@Override
 	public boolean isMuted() {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		return mediaPlayer.isMute();
 	}
 
+	@Override
 	public void setMuted( boolean isMuted ) {
 		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 		mediaPlayer.mute( isMuted );
@@ -470,6 +520,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		return mediaPlayer.getTime() * 0.001f;
 	}
 
+	@Override
 	public boolean writeSnapshot( java.io.File file ) {
 		if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
 			try {
@@ -485,6 +536,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 	}
 
+	@Override
 	public java.awt.Image getSnapshot() {
 		if( IS_FFMPEG_SNAPSHOT_IMPLEMENTATION_DESIRED ) {
 			float seconds = this.getTimeInSeconds();
@@ -495,10 +547,12 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 	}
 
+	@Override
 	public void release() {
 		this.mediaPlayerComponent.release();
 	}
 
+	@Override
 	public java.awt.Dimension getVideoSize() {
 		return this.mediaPlayerComponent.getMediaPlayer().getVideoDimension();
 	}

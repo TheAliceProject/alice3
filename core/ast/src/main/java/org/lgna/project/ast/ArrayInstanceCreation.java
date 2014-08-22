@@ -42,6 +42,7 @@
  */
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -96,12 +97,12 @@ public final class ArrayInstanceCreation extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			ArrayInstanceCreation other = (ArrayInstanceCreation)o;
-			if( this.arrayType.valueContentEquals( other.arrayType, strictness ) ) {
-				if( this.lengths.valueEquals( other.lengths ) ) {
-					return this.expressions.valueContentEquals( other.expressions, strictness );
+			if( this.arrayType.valueContentEquals( other.arrayType, strictness, filter ) ) {
+				if( this.lengths.valueEquals( other.lengths, filter ) ) {
+					return this.expressions.valueContentEquals( other.expressions, strictness, filter );
 				}
 			}
 		}
@@ -127,7 +128,7 @@ public final class ArrayInstanceCreation extends Expression {
 		generator.appendChar( '}' );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = DeclarationProperty.createReferenceInstance( this );;
 	public final edu.cmu.cs.dennisc.property.ListProperty<Integer> lengths = new edu.cmu.cs.dennisc.property.ListProperty<Integer>( this );
 	public final ExpressionListProperty expressions = new ExpressionListProperty( this );
 }

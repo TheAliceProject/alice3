@@ -52,6 +52,7 @@ class ExceptionPane extends org.alice.ide.issue.swing.views.AbstractCaughtExcept
 				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
 				if( accountInformation != null ) {
 					return new edu.cmu.cs.dennisc.jira.rpc.Authenticator() {
+						@Override
 						public Object login( redstone.xmlrpc.XmlRpcClient client ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
 							return edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.logIn( client, accountInformation.getID(), accountInformation.getPassword() );
 						}
@@ -66,6 +67,7 @@ class ExceptionPane extends org.alice.ide.issue.swing.views.AbstractCaughtExcept
 				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
 				if( accountInformation != null ) {
 					return new edu.cmu.cs.dennisc.jira.soap.Authenticator() {
+						@Override
 						public String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException {
 							return service.login( accountInformation.getID(), accountInformation.getPassword() );
 						}
@@ -89,6 +91,7 @@ class ExceptionPane extends org.alice.ide.issue.swing.views.AbstractCaughtExcept
 }
 
 class ExceptionHandler implements Thread.UncaughtExceptionHandler {
+	@Override
 	public void uncaughtException( Thread thread, Throwable throwable ) {
 		throwable.printStackTrace();
 		int result = javax.swing.JOptionPane.showConfirmDialog( null, "please upload bug report", "", javax.swing.JOptionPane.OK_CANCEL_OPTION );

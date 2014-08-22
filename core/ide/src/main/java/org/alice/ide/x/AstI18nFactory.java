@@ -57,17 +57,74 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return paint;
 	}
 
+	public boolean isSignatureLocked( org.lgna.project.ast.Code code ) {
+		return true;
+	}
+
+	protected float getDeclarationNameFontScale() {
+		return 1.1f;
+	}
+
+	@Override
+	protected org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+		String methodName = methodInvocationChunk.getMethodName();
+		org.lgna.croquet.views.SwingComponentView<?> rv;
+		if( ( owner instanceof org.lgna.project.ast.AbstractDeclaration ) && methodName.equals( "getName" ) ) {
+			org.lgna.project.ast.AbstractDeclaration declaration = (org.lgna.project.ast.AbstractDeclaration)owner;
+			org.alice.ide.ast.components.DeclarationNameLabel label = new org.alice.ide.ast.components.DeclarationNameLabel( declaration );
+			if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
+				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
+				if( method.getReturnType() == org.lgna.project.ast.JavaType.VOID_TYPE ) {
+					label.scaleFont( this.getDeclarationNameFontScale() );
+					label.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+				}
+			}
+			rv = label;
+		} else if( ( owner instanceof org.lgna.project.ast.SimpleArgument ) && methodName.equals( "getParameterNameText" ) ) {
+			org.lgna.project.ast.SimpleArgument argument = (org.lgna.project.ast.SimpleArgument)owner;
+			rv = new org.alice.ide.ast.components.DeclarationNameLabel( argument.parameter.getValue() );
+		} else if( ( owner instanceof org.lgna.project.ast.AbstractConstructor ) && methodName.equals( "getDeclaringType" ) ) {
+			org.lgna.project.ast.AbstractConstructor constructor = (org.lgna.project.ast.AbstractConstructor)owner;
+			rv = this.createTypeComponent( constructor.getDeclaringType() );
+		} else if( ( owner instanceof org.lgna.project.ast.UserMethod ) && methodName.equals( "getReturnType" ) ) {
+			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)owner;
+			rv = this.createTypeComponent( method.getReturnType() );
+		} else if( ( owner instanceof org.lgna.project.ast.UserCode ) && methodName.equals( "getParameters" ) ) {
+			org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)owner;
+			rv = new org.alice.ide.codeeditor.ParametersPane( this, code );
+		} else {
+			java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( owner.getClass(), methodName );
+			Object o = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( owner, mthd );
+			String s;
+			if( o != null ) {
+				if( o instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
+					s = ( (org.lgna.project.ast.AbstractType<?, ?, ?>)o ).getName();
+				} else {
+					s = o.toString();
+				}
+			} else {
+				s = null;
+			}
+			rv = new org.lgna.croquet.views.Label( s );
+		}
+		return rv;
+	}
+
 	protected org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade getArgumentCascade( org.lgna.project.ast.SimpleArgument simpleArgument ) {
 		return org.alice.ide.croquet.models.ast.cascade.ArgumentCascade.getInstance( simpleArgument );
+	}
+
+	protected boolean isDropDownDesiredFor( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+		org.lgna.project.ast.Expression expression = expressionProperty.getValue();
+		return org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression );
 	}
 
 	public org.lgna.croquet.views.SwingComponentView<?> createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.views.SwingComponentView<?> prefixPane ) {
 		if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
 			org.lgna.project.ast.SimpleArgument simpleArgument = (org.lgna.project.ast.SimpleArgument)argument;
 			org.lgna.project.ast.ExpressionProperty expressionProperty = simpleArgument.expression;
-			org.lgna.project.ast.Expression expression = expressionProperty.getValue();
 			org.lgna.croquet.views.SwingComponentView<?> rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
-			if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
+			if( this.isDropDownDesiredFor( expressionProperty ) ) {
 				org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade model = this.getArgumentCascade( simpleArgument );
 				org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), prefixPane, rv, expressionProperty );
 				rv = expressionPropertyDropDownPane;
@@ -99,8 +156,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return new org.alice.ide.common.GetsPane( isTowardLeadingEdge );
 	}
 
-	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createTypeComponent( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	private org.lgna.croquet.views.SwingComponentView<?> createTypeComponent( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return org.alice.ide.common.TypeComponent.createInstance( type );
 	}
 

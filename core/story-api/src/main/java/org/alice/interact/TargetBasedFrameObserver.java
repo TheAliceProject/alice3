@@ -121,6 +121,7 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 		}
 	}
 
+	@Override
 	public void complete() {
 		synchronized( syncLock ) {
 			this.currentValue = newE( targetValue );
@@ -128,6 +129,7 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 		}
 	}
 
+	@Override
 	public void update( double tCurrent ) {
 		if( Double.isNaN( timeOfLastFrame ) ) {
 			deltaSinceLastFrame = 0.0d;

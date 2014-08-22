@@ -82,9 +82,11 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 	}
 
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
+		@Override
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
 			GatedCommitDialogCoreComposite.this.handleFiredEvent( e );
 		}

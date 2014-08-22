@@ -47,7 +47,7 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class PaintProperty extends Property<org.lgna.story.Paint> {
-	public PaintProperty( EntityImp owner ) {
+	public PaintProperty( PropertyOwnerImp owner ) {
 		super( owner, org.lgna.story.Paint.class );
 	}
 

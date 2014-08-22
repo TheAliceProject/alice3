@@ -54,7 +54,7 @@ public class VideoEncodingProgramContext extends ProgramContext {
 		private edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
 
 		public FrameBasedProgramImp( org.lgna.story.SProgram abstraction ) {
-			super( abstraction, IS_CAPTURE_READY_FOR_PRIME_TIME ? new edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass( SIZE, null ) : edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass() );
+			super( abstraction, IS_CAPTURE_READY_FOR_PRIME_TIME ? new edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass( SIZE, null ) : edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenRenderTarget() );
 		}
 
 		@Override
@@ -120,7 +120,7 @@ public class VideoEncodingProgramContext extends ProgramContext {
 
 	//todo: add String[] args?
 	public void initializeInContainer( java.awt.Container container ) {
-		java.awt.Component awtComponent = this.getProgramImp().getOnscreenLookingGlass().getAWTComponent();
+		java.awt.Component awtComponent = this.getProgramImp().getOnscreenRenderTarget().getAwtComponent();
 		awtComponent.setSize( SIZE );
 		container.add( awtComponent );
 	}

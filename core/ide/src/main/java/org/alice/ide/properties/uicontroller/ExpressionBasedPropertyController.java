@@ -61,6 +61,7 @@ public class ExpressionBasedPropertyController<P> extends BorderPanel implements
 		this.setPropertyAdapter( propertyAdapter );
 	}
 
+	@Override
 	public Class<?> getPropertyType()
 	{
 		return this.propertyAdapter.getPropertyType();
@@ -80,11 +81,13 @@ public class ExpressionBasedPropertyController<P> extends BorderPanel implements
 	{
 	}
 
+	@Override
 	public Panel getPanel()
 	{
 		return this;
 	}
 
+	@Override
 	public AbstractPropertyAdapter<P, ?> getPropertyAdapter()
 	{
 		return this.propertyAdapter;
@@ -100,6 +103,7 @@ public class ExpressionBasedPropertyController<P> extends BorderPanel implements
 		}
 	}
 
+	@Override
 	public void setPropertyAdapter( AbstractPropertyAdapter<P, ?> propertyAdapter )
 	{
 		this.propertyAdapter = propertyAdapter;

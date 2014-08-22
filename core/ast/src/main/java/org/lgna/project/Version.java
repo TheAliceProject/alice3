@@ -94,6 +94,7 @@ public final class Version implements Comparable<Version> {
 		}
 	}
 
+	@Override
 	public int compareTo( org.lgna.project.Version other ) {
 		int[] thisSubNumbers = growIfNecessary( this.subNumbers, other.subNumbers );
 		int[] otherSubNumbers = growIfNecessary( other.subNumbers, this.subNumbers );

@@ -48,4 +48,5 @@ package org.lgna.story.resources;
  */
 public interface JointedModelResource extends ModelResource {
 	public org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory();
+
 }

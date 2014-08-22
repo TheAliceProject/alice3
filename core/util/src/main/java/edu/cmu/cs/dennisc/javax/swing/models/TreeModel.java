@@ -46,8 +46,10 @@ package edu.cmu.cs.dennisc.javax.swing.models;
  * @author Dennis Cosgrove
  */
 public interface TreeModel<E> extends javax.swing.tree.TreeModel {
+	@Override
 	public E getChild( Object parent, int index );
 
+	@Override
 	public E getRoot();
 
 	public javax.swing.tree.TreePath getTreePath( E e );

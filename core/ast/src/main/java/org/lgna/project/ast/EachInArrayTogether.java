@@ -55,6 +55,7 @@ public class EachInArrayTogether extends AbstractEachInTogether implements EachI
 		this.array.setValue( array );
 	}
 
+	@Override
 	public ExpressionProperty getArrayProperty() {
 		return this.array;
 	}

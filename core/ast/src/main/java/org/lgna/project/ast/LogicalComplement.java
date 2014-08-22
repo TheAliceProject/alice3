@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -71,10 +72,10 @@ public final class LogicalComplement extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			LogicalComplement other = (LogicalComplement)o;
-			return this.operand.valueContentEquals( other.operand, strictness );
+			return this.operand.valueContentEquals( other.operand, strictness, filter );
 		}
 		return false;
 	}

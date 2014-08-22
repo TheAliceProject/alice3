@@ -59,10 +59,12 @@ public abstract class AbstractMethodContainedByUserField extends AbstractMethod 
 		return this.field.getDeclaringType();
 	}
 
+	@Override
 	public final AbstractParameter getVariableLengthParameter() {
 		return null;
 	}
 
+	@Override
 	public final AbstractParameter getKeyedParameter() {
 		return null;
 	}
@@ -125,6 +127,11 @@ public abstract class AbstractMethodContainedByUserField extends AbstractMethod 
 	@Override
 	public final AbstractCode getNextShorterInChain() {
 		return null;
+	}
+
+	@Override
+	public boolean isUserAuthored() {
+		return true;
 	}
 
 	private final UserField field;

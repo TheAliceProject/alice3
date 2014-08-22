@@ -46,148 +46,23 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class BooleanState extends SimpleValueState<Boolean> {
-	public static final class InternalMenuItemPrepModelResolver extends IndirectResolver<InternalMenuItemPrepModel, BooleanState> {
-		private InternalMenuItemPrepModelResolver( BooleanState indirect ) {
-			super( indirect );
-		}
-
-		public InternalMenuItemPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalMenuItemPrepModel getDirect( BooleanState indirect ) {
-			return indirect.getMenuItemPrepModel();
-		}
-	}
-
-	public static final class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
-		private final BooleanState booleanState;
-
-		private InternalMenuItemPrepModel( BooleanState booleanState ) {
-			super( java.util.UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );
-			assert booleanState != null;
-			this.booleanState = booleanState;
-		}
-
-		@Override
-		public Iterable<? extends Model> getChildren() {
-			return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( this.booleanState );
-		}
-
-		@Override
-		protected void localize() {
-		}
-
-		public BooleanState getBooleanState() {
-			return this.booleanState;
-		}
-
-		@Override
-		public boolean isEnabled() {
-			return this.booleanState.isEnabled();
-		}
-
-		@Override
-		public void setEnabled( boolean isEnabled ) {
-			this.booleanState.setEnabled( isEnabled );
-		}
-
-		@Override
-		protected InternalMenuItemPrepModelResolver createResolver() {
-			return new InternalMenuItemPrepModelResolver( this.booleanState );
-		}
-
-		@Override
-		public org.lgna.croquet.views.CheckBoxMenuItem createMenuItemAndAddTo( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
-			org.lgna.croquet.views.CheckBoxMenuItem checkBoxMenuItem = new org.lgna.croquet.views.CheckBoxMenuItem( this.getBooleanState() );
-			menuItemContainer.addCheckBoxMenuItem( checkBoxMenuItem );
-			return checkBoxMenuItem;
-		}
-	}
-
-	private InternalMenuItemPrepModel menuPrepModel;
-
-	public synchronized InternalMenuItemPrepModel getMenuItemPrepModel() {
-		if( this.menuPrepModel != null ) {
-			//pass
-		} else {
-			this.menuPrepModel = new InternalMenuItemPrepModel( this );
-		}
-		return this.menuPrepModel;
-	}
-
-	public class SwingModel {
-		private final javax.swing.ButtonModel buttonModel;
-		private final javax.swing.Action action = new javax.swing.AbstractAction() {
-			@Override
-			public Object getValue( String key ) {
-				if( NAME.equals( key ) ) {
-					return BooleanState.this.getTextFor( buttonModel.isSelected() );
-				} else if( SMALL_ICON.equals( key ) ) {
-					return BooleanState.this.getIconFor( buttonModel.isSelected() );
-				} else {
-					return super.getValue( key );
-				}
-			}
-
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				boolean isSelected = buttonModel.isSelected();
-				if( isTextVariable() ) {
-					//this.firePropertyChange( NAME, getTextFor( !isSelected ), getTextFor( isSelected ) );
-					this.putValue( NAME, getTextFor( isSelected ) );
-				}
-				if( isIconVariable() ) {
-					//this.firePropertyChange( SMALL_ICON, getIconFor( !isSelected ), getIconFor( isSelected ) );
-					this.putValue( SMALL_ICON, getIconFor( isSelected ) );
-				}
-			}
-		};
-
-		private SwingModel( javax.swing.ButtonModel buttonModel ) {
-			this.buttonModel = buttonModel;
-		}
-
-		public javax.swing.ButtonModel getButtonModel() {
-			return this.buttonModel;
-		}
-
-		public javax.swing.Action getAction() {
-			return this.action;
-		}
-	}
-
-	private final SwingModel swingModel;
-
-	private String trueText;
-	private String falseText;
-	private javax.swing.Icon trueIcon;
-	private javax.swing.Icon falseIcon;
-
-	private final java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-		public void itemStateChanged( java.awt.event.ItemEvent e ) {
-			BooleanState.this.handleItemStateChanged( e );
-		}
-	};
-
 	protected BooleanState( Group group, java.util.UUID id, boolean initialValue, javax.swing.ButtonModel buttonModel ) {
 		super( group, id, initialValue );
-		this.swingModel = new SwingModel( buttonModel );
-		this.swingModel.buttonModel.setSelected( initialValue );
-		this.swingModel.buttonModel.addItemListener( this.itemListener );
+		this.imp = new org.lgna.croquet.imp.booleanstate.BooleanStateImp( this, initialValue, buttonModel );
+		this.imp.getSwingModel().getButtonModel().addItemListener( this.itemListener );
 	}
 
 	public BooleanState( Group group, java.util.UUID id, boolean initialValue ) {
 		this( group, id, initialValue, new javax.swing.JToggleButton.ToggleButtonModel() );
 	}
 
+	public org.lgna.croquet.imp.booleanstate.BooleanStateImp getImp() {
+		return this.imp;
+	}
+
 	@Override
 	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		if( this.menuPrepModel != null ) {
-			return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.menuPrepModel );
-		} else {
-			return java.util.Collections.emptyList();
-		}
+		return this.imp.getPotentialPrepModelPaths( edit );
 	}
 
 	@Override
@@ -212,19 +87,13 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 
 	@Override
 	public boolean isEnabled() {
-		return this.swingModel.action.isEnabled();
+		return this.imp.isEnabled();
 	}
 
 	@Override
 	public void setEnabled( boolean isEnabled ) {
-		this.swingModel.action.setEnabled( isEnabled );
+		this.imp.setEnabled( isEnabled );
 	}
-
-	public SwingModel getSwingModel() {
-		return this.swingModel;
-	}
-
-	private boolean isItemStateChangedToBeIgnored = false;
 
 	protected void handleItemStateChanged( java.awt.event.ItemEvent e ) {
 		if( this.isItemStateChangedToBeIgnored ) {
@@ -254,38 +123,25 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 	}
 
-	//public javax.swing.KeyStroke getAcceleratorKey() {
-	//	return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
-	//}
-	private void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
-		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
-	}
-
 	@Override
 	protected Boolean getSwingValue() {
-		return this.swingModel.buttonModel.isSelected();
+		javax.swing.ButtonModel buttonModel = this.imp.getSwingModel().getButtonModel();
+		return buttonModel.isSelected();
 	}
 
 	@Override
 	protected void setSwingValue( Boolean nextValue ) {
-		if( this.swingModel.buttonModel.isSelected() == nextValue ) {
+		javax.swing.ButtonModel buttonModel = this.imp.getSwingModel().getButtonModel();
+		if( buttonModel.isSelected() == nextValue ) {
 			//pass
 		} else {
 			this.isItemStateChangedToBeIgnored = true;
 			try {
-				this.swingModel.buttonModel.setSelected( nextValue );
+				buttonModel.setSelected( nextValue );
 			} finally {
 				this.isItemStateChangedToBeIgnored = false;
 			}
 		}
-	}
-
-	private boolean isTextVariable() {
-		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.getTrueText(), this.getFalseText() );
-	}
-
-	private boolean isIconVariable() {
-		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.getTrueIcon(), this.getFalseIcon() );
 	}
 
 	public final String getTextFor( boolean value ) {
@@ -332,8 +188,15 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		this.updateNameAndIcon();
 	}
 
-	public void setShortDescription( String shortDescription ) {
-		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+	//public javax.swing.KeyStroke getAcceleratorKey() {
+	//	return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
+	//}
+	private void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
+		this.imp.getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
+	}
+
+	private void setShortDescription( String shortDescription ) {
+		this.imp.getSwingModel().getAction().putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
 	}
 
 	public void setToolTipText( String toolTipText ) {
@@ -345,27 +208,9 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 	}
 
 	public void updateNameAndIcon() {
-		String name;
-		javax.swing.Icon icon;
 		String possiblyModifiedTrueText = this.getTrueText();
 		String possiblyModifiedFalseText = this.getFalseText();
-		if( this.getValue() ) {
-			name = possiblyModifiedTrueText;
-			icon = this.trueIcon;
-		} else {
-			name = possiblyModifiedFalseText;
-			icon = this.falseIcon;
-		}
-		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
-		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
-		if( this.trueOperation != null ) {
-			this.trueOperation.setName( possiblyModifiedTrueText );
-			this.trueOperation.setButtonIcon( this.trueIcon );
-		}
-		if( this.falseOperation != null ) {
-			this.falseOperation.setName( possiblyModifiedFalseText );
-			this.falseOperation.setButtonIcon( this.falseIcon );
-		}
+		this.imp.updateNameAndIcon( this.getValue(), possiblyModifiedTrueText, this.trueIcon, possiblyModifiedFalseText, this.falseIcon );
 	}
 
 	public org.lgna.croquet.views.RadioButton createRadioButton() {
@@ -389,144 +234,20 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		return new org.lgna.croquet.views.PushButton( this );
 	}
 
-	private static class InternalSelectValueOperation extends ActionOperation {
-		private final BooleanState state;
-		private final boolean value;
-
-		private InternalSelectValueOperation( BooleanState state, boolean value ) {
-			super( state.getGroup(), java.util.UUID.fromString( "ca23dcf0-e00d-439b-b8a2-6c691be8ab5f" ) );
-			assert state != null;
-			this.state = state;
-			this.value = value;
-		}
-
-		@Override
-		protected void initialize() {
-			this.state.initializeIfNecessary();
-			super.initialize();
-		}
-
-		@Override
-		protected void localize() {
-			super.localize();
-			this.setName( this.value ? this.state.getTrueText() : this.state.getFalseText() );
-			this.setButtonIcon( this.value ? this.state.getTrueIcon() : this.state.getFalseIcon() );
-		}
-
-		@Override
-		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-			this.state.setValueTransactionlessly( this.value );
-			step.finish();
-		}
+	public Operation getSetToTrueOperation() {
+		return this.imp.getSetToTrueOperation();
 	}
 
-	private InternalSelectValueOperation trueOperation;
-	private InternalSelectValueOperation falseOperation;
-
-	public synchronized Operation getSetToTrueOperation() {
-		if( this.trueOperation != null ) {
-			//pass
-		} else {
-			this.trueOperation = new InternalSelectValueOperation( this, true );
-		}
-		return this.trueOperation;
+	public Operation getSetToFalseOperation() {
+		return this.imp.getSetToFalseOperation();
 	}
 
-	public synchronized Operation getSetToFalseOperation() {
-		if( this.falseOperation != null ) {
-			//pass
-		} else {
-			this.falseOperation = new InternalSelectValueOperation( this, false );
-		}
-		return this.falseOperation;
+	public MenuModel getMenuModel() {
+		return this.imp.getMenuModel();
 	}
 
-	public static final class InternalMenuModelResolver extends IndirectResolver<InternalMenuModel, BooleanState> {
-		private InternalMenuModelResolver( BooleanState indirect ) {
-			super( indirect );
-		}
-
-		public InternalMenuModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalMenuModel getDirect( BooleanState indirect ) {
-			return indirect.getMenuModel();
-		}
-	}
-
-	private static final class InternalMenuModel<T> extends MenuModel {
-		private BooleanState state;
-
-		public InternalMenuModel( BooleanState state ) {
-			super( java.util.UUID.fromString( "89447818-3c15-4707-9464-79c3f0283262" ), state.getClass() );
-			this.state = state;
-		}
-
-		@Override
-		protected void initialize() {
-			this.state.initializeIfNecessary();
-			super.initialize();
-		}
-
-		@Override
-		protected String getSubKeyForLocalization() {
-			return "menu";
-		}
-
-		public BooleanState getBooleanState() {
-			return this.state;
-		}
-
-		@Override
-		public boolean isEnabled() {
-			return this.state.isEnabled();
-		}
-
-		@Override
-		public void setEnabled( boolean isEnabled ) {
-			this.state.setEnabled( isEnabled );
-		}
-
-		@Override
-		protected InternalMenuModelResolver createResolver() {
-			return new InternalMenuModelResolver( this.state );
-		}
-
-		@Override
-		protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( menuItemContainer, e );
-			super.handleShowing( menuItemContainer, e );
-			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-			for( boolean isTrue : new boolean[] { true, false } ) {
-				Operation operation = isTrue ? this.state.getSetToTrueOperation() : this.state.getSetToFalseOperation();
-				operation.initializeIfNecessary();
-				javax.swing.Action action = operation.getSwingModel().getAction();
-				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem( action );
-				buttonGroup.add( jMenuItem );
-				jMenuItem.setSelected( this.state.getValue() == isTrue );
-				menuItemContainer.getViewController().getAwtComponent().add( jMenuItem );
-			}
-		}
-
-		@Override
-		protected void handleHiding( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-			menuItemContainer.forgetAndRemoveAllMenuItems();
-			super.handleHiding( menuItemContainer, e );
-		}
-	}
-
-	private InternalMenuModel menuModel;
-
-	public synchronized InternalMenuModel getMenuModel() {
-		if( this.menuModel != null ) {
-			//pass
-		} else {
-			this.menuModel = new InternalMenuModel( this );
-		}
-		return this.menuModel;
+	public StandardMenuItemPrepModel getMenuItemPrepModel() {
+		return this.imp.getMenuItemPrepModel();
 	}
 
 	private static final class InternalRadioButton extends org.lgna.croquet.views.OperationButton<javax.swing.JRadioButton, Operation> {
@@ -557,6 +278,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		private final org.lgna.croquet.views.OperationButton<? extends javax.swing.JToggleButton, Operation> falseButton;
 		private final int axis;
 		private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.Boolean> e ) {
 				handleChanged( e.getNextValue() );
 			}
@@ -643,4 +365,19 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 	public org.lgna.croquet.views.Panel createHorizontalToggleButtons() {
 		return this.createHorizontalToggleButtons( true );
 	}
+
+	private final org.lgna.croquet.imp.booleanstate.BooleanStateImp imp;
+	private String trueText;
+	private String falseText;
+	private javax.swing.Icon trueIcon;
+	private javax.swing.Icon falseIcon;
+
+	private boolean isItemStateChangedToBeIgnored = false;
+
+	private final java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+		@Override
+		public void itemStateChanged( java.awt.event.ItemEvent e ) {
+			BooleanState.this.handleItemStateChanged( e );
+		}
+	};
 }

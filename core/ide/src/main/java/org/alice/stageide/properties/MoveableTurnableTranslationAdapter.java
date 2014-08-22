@@ -65,6 +65,7 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
 		if( this.absoluteTransformationListener == null )
 		{
 			this.absoluteTransformationListener = new AbsoluteTransformationListener() {
+				@Override
 				public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent )
 				{
 					MoveableTurnableTranslationAdapter.this.handleInternalValueChanged();

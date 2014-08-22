@@ -54,14 +54,17 @@ public class SnapshotIcon implements javax.swing.Icon {
 		this.image = image;
 	}
 
+	@Override
 	public int getIconWidth() {
 		return WIDTH;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return HEIGHT;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		g.drawImage( this.image, x, y, WIDTH, HEIGHT, c );
 	}

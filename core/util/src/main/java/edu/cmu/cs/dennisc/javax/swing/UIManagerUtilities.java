@@ -59,6 +59,58 @@ public class UIManagerUtilities {
 		setDefaultFontResource( new javax.swing.plaf.FontUIResource( font ) );
 	}
 
+	private static void scaleFontIfApplicable( javax.swing.UIDefaults uiDefaults, Object key, javax.swing.plaf.FontUIResource prevFontUIResource, double scale ) {
+		int prevSize = prevFontUIResource.getSize();
+		int nextSize = (int)( Math.round( prevSize * scale ) );
+		if( prevSize != nextSize ) {
+			javax.swing.plaf.FontUIResource nextFontUIResource = new javax.swing.plaf.FontUIResource( prevFontUIResource.getFamily(), prevFontUIResource.getStyle(), nextSize );
+			uiDefaults.put( key, nextFontUIResource );
+		}
+	}
+
+	private static void scaleFontIfApplicable( javax.swing.UIDefaults uiDefaults, java.util.Map.Entry<Object, Object> entry, double scale ) {
+		Object value = entry.getValue();
+		if( value instanceof javax.swing.UIDefaults.ActiveValue ) {
+			javax.swing.UIDefaults.ActiveValue activeValue = (javax.swing.UIDefaults.ActiveValue)value;
+			value = activeValue.createValue( uiDefaults );
+		}
+		if( value instanceof javax.swing.plaf.FontUIResource ) {
+			scaleFontIfApplicable( uiDefaults, entry.getKey(), (javax.swing.plaf.FontUIResource)value, scale );
+		}
+	}
+
+	public static void scaleFont( double scale ) {
+		javax.swing.UIDefaults uiDefaults = javax.swing.UIManager.getLookAndFeelDefaults();
+		for( java.util.Map.Entry<Object, Object> entry : uiDefaults.entrySet() ) {
+			scaleFontIfApplicable( uiDefaults, entry, scale );
+		}
+	}
+
+	public static void scaleFontIAppropriate() {
+		double scale = getFontScale();
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( scale, 1.0 ) ) {
+			//pass
+		} else {
+			scaleFont( scale );
+		}
+	}
+
+	public static double getFontScale() {
+		return Double.parseDouble( System.getProperty( "uimanager.fontScale", "1.0" ) );
+	}
+
+	public static int getDefaultFontSize() {
+		javax.swing.UIDefaults uiDefaults = javax.swing.UIManager.getDefaults();
+		Object value = uiDefaults.get( "defaultFont" );
+		if( value instanceof javax.swing.plaf.FontUIResource ) {
+			javax.swing.plaf.FontUIResource fontUIResource = (javax.swing.plaf.FontUIResource)value;
+			return fontUIResource.getSize();
+		} else {
+			//todo?
+			return 12;
+		}
+	}
+
 	public static boolean setLookAndFeel( String plafName ) {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( plafName );
 		if( lookAndFeelInfo != null ) {

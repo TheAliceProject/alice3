@@ -49,19 +49,8 @@ package org.lgna.project.ast;
 public abstract class AbstractMember extends AbstractAccessibleDeclaration implements Member {
 	public abstract org.lgna.project.annotations.Visibility getVisibility();
 
+	@Override
 	public AbstractType<?, ?, ?> getDeclaringType() {
 		return this.getFirstAncestorAssignableTo( AbstractType.class );
-	}
-
-	@Override
-	public boolean isUserAuthored() {
-		AbstractType<?, ?, ?> declaringType = getDeclaringType();
-		//assert declaringType != null;
-		if( declaringType != null ) {
-			return declaringType.isUserAuthored();
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "declaring type is null for:", this );
-			return false;
-		}
 	}
 }

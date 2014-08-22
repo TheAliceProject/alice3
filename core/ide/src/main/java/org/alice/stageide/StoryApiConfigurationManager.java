@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -147,6 +147,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 			}
 		}
 
+		@Override
 		public int compare( org.lgna.project.ast.AbstractType<?, ?, ?> typeA, org.lgna.project.ast.AbstractType<?, ?, ?> typeB ) {
 			double valueA = getValue( typeA );
 			double valueB = getValue( typeB );
@@ -280,6 +281,16 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 
 	@Override
+	public org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> getInstanceFactorySubMenuForParameterAccessMethodInvocation( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = method.getReturnType();
+		if( org.alice.stageide.ast.JointedTypeInfo.isJointed( type ) ) {
+			return org.alice.stageide.instancefactory.croquet.joint.all.ParameterAccessMethodInvocationJointedTypeMenuModel.getInstance( parameter, method );
+		} else {
+			return null;
+		}
+	}
+
+	@Override
 	public org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType<?, ?, ?> argumentType ) {
 		java.util.List<org.lgna.project.ast.NamedUserType> types = org.alice.ide.typemanager.TypeManager.getNamedUserTypesFromSuperTypes( getTopLevelGalleryTypes() );
 		for( org.lgna.project.ast.AbstractType<?, ?, ?> type : types ) {
@@ -346,7 +357,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 
 	@Override
-	public boolean isSignatureLocked( org.lgna.project.ast.AbstractCode code ) {
+	public boolean isSignatureLocked( org.lgna.project.ast.Code code ) {
 		//todo: check to see if only referenced from Program and Program type is hidden
 		return super.isSignatureLocked( code ) || org.alice.stageide.ast.BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase( code.getName() );
 	}
@@ -395,6 +406,22 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
 
+	private static String getFieldMethodNameHint( org.lgna.project.ast.AbstractField field ) {
+		if( field instanceof org.lgna.project.ast.JavaField ) {
+			java.lang.reflect.Field fld = ( (org.lgna.project.ast.JavaField)field ).getFieldReflectionProxy().getReification();
+			if( fld != null ) {
+				if( fld.isAnnotationPresent( org.lgna.project.annotations.FieldTemplate.class ) ) {
+					org.lgna.project.annotations.FieldTemplate propertyFieldTemplate = fld.getAnnotation( org.lgna.project.annotations.FieldTemplate.class );
+					String methodNameHint = propertyFieldTemplate.methodNameHint();
+					if( methodNameHint.length() > 0 ) {
+						return methodNameHint;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public org.lgna.project.ast.UserType<?> augmentTypeIfNecessary( org.lgna.project.ast.UserType<?> rv ) {
 		if( JOINTED_MODEL_TYPE.isAssignableFrom( rv ) ) {
@@ -413,11 +440,17 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 				if( resourceType == org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( ancestorType ) ) {
 					//skip
 				} else {
+					org.lgna.project.ast.JavaMethod getJointArrayMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", org.lgna.story.resources.JointId[].class );
+					org.lgna.project.ast.JavaMethod getJointArrayIdMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", org.lgna.story.resources.JointArrayId.class );
 					org.lgna.project.ast.JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJoint", org.lgna.story.resources.JointId.class );
 					for( org.lgna.project.ast.AbstractField field : resourceType.getDeclaredFields() ) {
 						if( field.isStatic() ) {
 							if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointId.class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
-								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" ), org.lgna.story.SJoint.class );
+								String methodName = getFieldMethodNameHint( field );
+								if( methodName == null ) {
+									methodName = org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
+								}
+								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( methodName, org.lgna.story.SJoint.class );
 								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 								org.lgna.project.ast.BlockStatement body = method.body.getValue();
 								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
@@ -426,6 +459,38 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field )
 										);
 								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.SJoint.class, expression ) );
+								rv.methods.add( method );
+							}
+							else if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointId[].class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
+								String methodName = getFieldMethodNameHint( field );
+								if( methodName == null ) {
+									methodName = org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
+								}
+								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( methodName, org.lgna.story.SJoint[].class );
+								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
+								org.lgna.project.ast.BlockStatement body = method.body.getValue();
+								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
+										new org.lgna.project.ast.ThisExpression(),
+										getJointArrayMethod,
+										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field )
+										);
+								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.SJoint[].class, expression ) );
+								rv.methods.add( method );
+							}
+							else if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointArrayId.class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
+								String methodName = getFieldMethodNameHint( field );
+								if( methodName == null ) {
+									methodName = org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
+								}
+								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( methodName, org.lgna.story.SJoint[].class );
+								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
+								org.lgna.project.ast.BlockStatement body = method.body.getValue();
+								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
+										new org.lgna.project.ast.ThisExpression(),
+										getJointArrayIdMethod,
+										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field )
+										);
+								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.SJoint[].class, expression ) );
 								rv.methods.add( method );
 							}
 						}

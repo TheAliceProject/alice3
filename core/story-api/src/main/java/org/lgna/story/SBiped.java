@@ -62,11 +62,13 @@ public class SBiped extends SJointedModel implements Articulable {
 		return this.implementation;
 	}
 
+	@Override
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void walkTo( SThing entity ) {
 		//		implementation.walkTo( entity );
 	}
 
+	@Override
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void touch( SThing entity ) {
 		reachFor( Limb.RIGHT_ARM, entity );

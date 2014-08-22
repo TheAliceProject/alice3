@@ -165,13 +165,13 @@ public class SceneImp extends EntityImp {
 	public void setProgram( ProgramImp program ) {
 		if( this.program != program ) {
 			if( program != null ) {
-				this.eventManager.removeListenersFrom( program.getOnscreenLookingGlass() );
+				this.eventManager.removeListenersFrom( program.getOnscreenRenderTarget() );
 			}
 			//handleOwnerChange( null );
 			this.program = program;
 			//			handleOwnerChange( program );
 			if( program != null ) {
-				this.eventManager.addListenersTo( program.getOnscreenLookingGlass() );
+				this.eventManager.addListenersTo( program.getOnscreenRenderTarget() );
 			}
 		}
 		this.program = program;
@@ -214,7 +214,7 @@ public class SceneImp extends EntityImp {
 			EntityImp entityImp = EntityImp.getInstance( sgCamera );
 			if( entityImp instanceof CameraImp ) {
 				CameraImp cameraImp = (CameraImp)entityImp;
-				program.getOnscreenLookingGlass().addCamera( cameraImp.getSgCamera() );
+				program.getOnscreenRenderTarget().addSgCamera( cameraImp.getSgCamera() );
 			}
 		}
 	}
@@ -224,7 +224,7 @@ public class SceneImp extends EntityImp {
 			EntityImp entityImp = EntityImp.getInstance( sgCamera );
 			if( entityImp instanceof CameraImp ) {
 				CameraImp cameraImp = (CameraImp)entityImp;
-				program.getOnscreenLookingGlass().removeCamera( cameraImp.getSgCamera() );
+				program.getOnscreenRenderTarget().removeSgCamera( cameraImp.getSgCamera() );
 			}
 		}
 	}

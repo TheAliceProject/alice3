@@ -87,10 +87,12 @@ public class ArrayListModel extends javax.swing.AbstractListModel {
 		this( (Object)array );
 	}
 
+	@Override
 	public Object getElementAt( int index ) {
 		return java.lang.reflect.Array.get( this.array, index );
 	}
 
+	@Override
 	public int getSize() {
 		return java.lang.reflect.Array.getLength( this.array );
 	}

@@ -57,6 +57,7 @@ public class ComesOutOfViewEventAdapter extends AbstractAdapter implements ViewE
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void viewExited( ExitViewEvent e ) {
 		invokeEntryPoint( e );
 	}

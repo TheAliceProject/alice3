@@ -103,25 +103,32 @@ public abstract class FrameComposite<V extends org.lgna.croquet.views.Panel> ext
 	private org.lgna.croquet.views.Frame ownerFrameView;
 
 	private final java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
+		@Override
 		public void windowActivated( java.awt.event.WindowEvent e ) {
 		}
 
+		@Override
 		public void windowDeactivated( java.awt.event.WindowEvent e ) {
 		}
 
+		@Override
 		public void windowIconified( java.awt.event.WindowEvent e ) {
 		}
 
+		@Override
 		public void windowDeiconified( java.awt.event.WindowEvent e ) {
 		}
 
+		@Override
 		public void windowOpened( java.awt.event.WindowEvent e ) {
 		}
 
+		@Override
 		public void windowClosing( java.awt.event.WindowEvent e ) {
 			handleWindowClosing( e );
 		}
 
+		@Override
 		public void windowClosed( java.awt.event.WindowEvent e ) {
 		}
 	};

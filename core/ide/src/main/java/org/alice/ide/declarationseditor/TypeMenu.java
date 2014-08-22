@@ -190,6 +190,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		//		models.add( new PoserInputDialogComposite( type ).getOperation().getMenuItemPrepModel() );
 
 		org.lgna.croquet.views.MenuItemContainerUtilities.MenuElementObserver observer = new org.lgna.croquet.views.MenuItemContainerUtilities.MenuElementObserver() {
+			@Override
 			public void update( org.lgna.croquet.views.MenuItemContainer menuItemContainer, org.lgna.croquet.StandardMenuItemPrepModel model, org.lgna.croquet.views.ViewController<?, ?> menuElement ) {
 				if( menuElement != null ) {
 					edu.cmu.cs.dennisc.java.awt.font.TextWeight textWeight = set.contains( model ) ? edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD : edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT;

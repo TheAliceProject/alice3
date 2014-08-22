@@ -48,6 +48,7 @@ package org.alice.ide.common;
  */
 public class SelectedInstanceFactoryExpressionPanel extends org.lgna.croquet.views.LineAxisPanel {
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
 			SelectedInstanceFactoryExpressionPanel.this.refreshLater();
 		}

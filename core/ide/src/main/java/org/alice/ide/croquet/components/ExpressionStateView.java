@@ -50,6 +50,7 @@ public class ExpressionStateView extends org.lgna.croquet.views.BorderPanel {
 	private final org.alice.ide.x.AstI18nFactory factory;
 
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> valueListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
 			ExpressionStateView.this.refreshLater();
 		}

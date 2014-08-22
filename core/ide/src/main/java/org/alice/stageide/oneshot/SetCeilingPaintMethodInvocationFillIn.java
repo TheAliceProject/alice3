@@ -50,6 +50,7 @@ public class SetCeilingPaintMethodInvocationFillIn extends OneShotJavaMethodInvo
 
 	public static SetCeilingPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
 		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, SetCeilingPaintMethodInvocationFillIn>() {
+			@Override
 			public SetCeilingPaintMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
 				return new SetCeilingPaintMethodInvocationFillIn( instanceFactory, method );
 			}

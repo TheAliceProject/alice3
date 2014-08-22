@@ -43,6 +43,8 @@
 
 package org.lgna.story;
 
+import org.lgna.project.annotations.MethodTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,13 +52,36 @@ public class SJoint extends STurnable {
 
 	private static final edu.cmu.cs.dennisc.map.MapToMap<SJointedModel, org.lgna.story.resources.JointId, SJoint> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
+	private static final edu.cmu.cs.dennisc.map.MapToMap<SJointedModel, org.lgna.story.resources.JointId[], SJoint[]> mapToArrayMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
+	private static final edu.cmu.cs.dennisc.map.MapToMap<SJointedModel, org.lgna.story.resources.JointArrayId, SJoint[]> mapToArrayIdMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	/* package-private */static SJoint getJoint( SJointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
 		return mapToMap.getInitializingIfAbsent( jointedModel, jointId, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SJointedModel, org.lgna.story.resources.JointId, SJoint>() {
+			@Override
 			public SJoint initialize( SJointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
 				org.lgna.story.implementation.JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
 				return org.lgna.story.SJoint.getInstance( jointedModelImplementation, jointId );
 			}
 		} );
+	}
+
+	/* package-private */static SJoint[] getJointArray( SJointedModel jointedModel, org.lgna.story.resources.JointId[] jointIdArray ) {
+		return mapToArrayMap.getInitializingIfAbsent( jointedModel, jointIdArray, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SJointedModel, org.lgna.story.resources.JointId[], SJoint[]>() {
+			@Override
+			public SJoint[] initialize( SJointedModel jointedModel, org.lgna.story.resources.JointId[] jointIdArray ) {
+				SJoint[] jointArray = new SJoint[ jointIdArray.length ];
+				for( int i = 0; i < jointIdArray.length; i++ ) {
+					jointArray[ i ] = getJoint( jointedModel, jointIdArray[ i ] );
+				}
+				return jointArray;
+			}
+		} );
+	}
+
+	/* package-private */static SJoint[] getJointArray( SJointedModel jointedModel, org.lgna.story.resources.JointArrayId jointArrayId ) {
+		org.lgna.story.implementation.JointedModelImp jointedModelImplementation = EmployeesOnly.getImplementation( jointedModel );
+		return getJointArray( jointedModel, jointedModelImplementation.getJointIdArray( jointArrayId ) );
 	}
 
 	private static SJoint getInstance( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
@@ -89,4 +114,20 @@ public class SJoint extends STurnable {
 	public void setPivotVisible( Boolean isPivotVisible ) {
 		this.implementation.setPivotVisible( isPivotVisible );
 	}
+
+	@MethodTemplate( )
+	public Double getWidth() {
+		return this.getImplementation().getSize().x;
+	}
+
+	@MethodTemplate( )
+	public Double getHeight() {
+		return this.getImplementation().getSize().y;
+	}
+
+	@MethodTemplate( )
+	public Double getDepth() {
+		return this.getImplementation().getSize().z;
+	}
+
 }

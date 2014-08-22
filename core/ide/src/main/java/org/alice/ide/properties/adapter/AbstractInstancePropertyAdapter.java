@@ -61,9 +61,11 @@ public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractProp
 		{
 			this.propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener()
 			{
+				@Override
 				public void propertyChanging( PropertyEvent e ) {
 				}
 
+				@Override
 				public void propertyChanged( PropertyEvent e ) {
 					handleInternalValueChanged();
 				}

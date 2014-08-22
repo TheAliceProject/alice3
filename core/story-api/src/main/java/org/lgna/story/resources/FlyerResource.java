@@ -42,6 +42,9 @@
  */
 package org.lgna.story.resources;
 
+import org.lgna.project.annotations.FieldTemplate;
+import org.lgna.project.annotations.Visibility;
+
 /**
  * @author dculyba
  * 
@@ -52,9 +55,14 @@ public interface FlyerResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId SPINE_BASE = new org.lgna.story.resources.JointId( ROOT, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId SPINE_MIDDLE = new org.lgna.story.resources.JointId( SPINE_BASE, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId SPINE_UPPER = new org.lgna.story.resources.JointId( SPINE_MIDDLE, FlyerResource.class );
-	public static final org.lgna.story.resources.JointId NECK = new org.lgna.story.resources.JointId( SPINE_UPPER, FlyerResource.class );
-	public static final org.lgna.story.resources.JointId NECK_2 = new org.lgna.story.resources.JointId( NECK, FlyerResource.class );
-	public static final org.lgna.story.resources.JointId HEAD = new org.lgna.story.resources.JointId( NECK_2, FlyerResource.class );
+
+	//Necks are now included as arrays access
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final org.lgna.story.resources.JointId NECK_0 = new org.lgna.story.resources.JointId( SPINE_UPPER, FlyerResource.class );
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final org.lgna.story.resources.JointId NECK_1 = new org.lgna.story.resources.JointId( NECK_0, FlyerResource.class );
+
+	public static final org.lgna.story.resources.JointId HEAD = new org.lgna.story.resources.JointId( NECK_1, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId MOUTH = new org.lgna.story.resources.JointId( HEAD, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_EYE = new org.lgna.story.resources.JointId( HEAD, FlyerResource.class );
@@ -70,9 +78,15 @@ public interface FlyerResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId RIGHT_WING_WRIST = new org.lgna.story.resources.JointId( RIGHT_WING_ELBOW, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId RIGHT_WING_TIP = new org.lgna.story.resources.JointId( RIGHT_WING_WRIST, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId PELVIS_LOWER_BODY = new org.lgna.story.resources.JointId( ROOT, FlyerResource.class );
-	public static final org.lgna.story.resources.JointId TAIL = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, FlyerResource.class );
-	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL, FlyerResource.class );
-	public static final org.lgna.story.resources.JointId TAIL_3 = new org.lgna.story.resources.JointId( TAIL_2, FlyerResource.class );
+
+	//Tails are now included as arrays access
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final org.lgna.story.resources.JointId TAIL_0 = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, FlyerResource.class );
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final org.lgna.story.resources.JointId TAIL_1 = new org.lgna.story.resources.JointId( TAIL_0, FlyerResource.class );
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL_1, FlyerResource.class );
+
 	public static final org.lgna.story.resources.JointId LEFT_HIP = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_KNEE = new org.lgna.story.resources.JointId( LEFT_HIP, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_ANKLE = new org.lgna.story.resources.JointId( LEFT_KNEE, FlyerResource.class );
@@ -84,7 +98,12 @@ public interface FlyerResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId RIGHT_FOOT = new org.lgna.story.resources.JointId( RIGHT_ANKLE, FlyerResource.class );
 	//	public static final org.lgna.story.resources.JointId RIGHT_TOE = new org.lgna.story.resources.JointId( RIGHT_BALL, FlyerResource.class );
 
+	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
+
+	public org.lgna.story.resources.JointId[] getTailArray();
+
+	public org.lgna.story.resources.JointId[] getNeckArray();
 
 	public org.lgna.story.implementation.FlyerImp createImplementation( org.lgna.story.SFlyer abstraction );
 }

@@ -49,7 +49,6 @@ import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.debug.DebugSphere;
 
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.Plane;
@@ -104,16 +103,18 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-public class CameraTiltDragManipulator extends CameraManipulator implements OnScreenLookingGlassInformedManipulator {
+public class CameraTiltDragManipulator extends CameraManipulator implements OnscreenPicturePlaneInformedManipulator {
 
 	private static final boolean SHOW_PICK_POINT = false;
 
-	public OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
+	@Override
+	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
-		this.onscreenLookingGlass = lookingGlass;
+	@Override
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
 	private void addPickPointSphereToScene() {
@@ -156,8 +157,8 @@ public class CameraTiltDragManipulator extends CameraManipulator implements OnSc
 
 	@Override
 	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
-		Ray oldPickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), previousInput.getMouseLocation().x, previousInput.getMouseLocation().y );
-		Ray newPickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
+		Ray oldPickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), previousInput.getMouseLocation().x, previousInput.getMouseLocation().y );
+		Ray newPickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
 		Point3 oldPickPoint = PlaneUtilities.getPointInPlane( this.cameraFacingPickPlane, oldPickRay );
 		Point3 newPickPoint = PlaneUtilities.getPointInPlane( this.cameraFacingPickPlane, newPickRay );
 		if( ( newPickPoint != null ) && ( oldPickPoint != null ) ) {
@@ -227,7 +228,7 @@ public class CameraTiltDragManipulator extends CameraManipulator implements OnSc
 
 			addPickPointSphereToScene();
 
-			Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
+			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 
 			Point3 planePoint = Point3.createAddition( this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward );
 			this.cameraFacingPickPlane = Plane.createInstance( planePoint, this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward );
@@ -250,5 +251,5 @@ public class CameraTiltDragManipulator extends CameraManipulator implements OnSc
 
 	private Plane cameraFacingPickPlane;
 	private Point3 pickPoint = null;
-	private OnscreenLookingGlass onscreenLookingGlass = null;
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
 }

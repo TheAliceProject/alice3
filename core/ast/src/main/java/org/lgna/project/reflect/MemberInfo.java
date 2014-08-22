@@ -60,6 +60,7 @@ public abstract class MemberInfo implements edu.cmu.cs.dennisc.codec.BinaryEncod
 		return this.declaringClassInfo.getCls();
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.declaringClassInfo.getClsName() );
 	}

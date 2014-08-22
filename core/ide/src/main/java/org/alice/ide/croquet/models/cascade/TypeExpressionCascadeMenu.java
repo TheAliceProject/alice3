@@ -50,6 +50,7 @@ public final class TypeExpressionCascadeMenu extends ExpressionCascadeMenu<org.l
 
 	public static TypeExpressionCascadeMenu getInstance( org.lgna.project.ast.AbstractType type ) {
 		return map.getInitializingIfAbsent( type, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractType, TypeExpressionCascadeMenu>() {
+			@Override
 			public TypeExpressionCascadeMenu initialize( org.lgna.project.ast.AbstractType key ) {
 				return new TypeExpressionCascadeMenu( key, null );
 			}

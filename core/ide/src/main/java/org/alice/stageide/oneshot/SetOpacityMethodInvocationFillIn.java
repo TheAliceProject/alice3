@@ -50,6 +50,7 @@ public class SetOpacityMethodInvocationFillIn extends OneShotJavaMethodInvocatio
 
 	public static SetOpacityMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
 		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, SetOpacityMethodInvocationFillIn>() {
+			@Override
 			public SetOpacityMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
 				return new SetOpacityMethodInvocationFillIn( instanceFactory, method );
 			}

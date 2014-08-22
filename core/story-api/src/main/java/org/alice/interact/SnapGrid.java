@@ -214,6 +214,7 @@ public class SnapGrid extends Transformable implements PropertyListener {
 		return new Point3( x, 0, z );
 	}
 
+	@Override
 	public void propertyChanged( PropertyEvent e ) {
 		if( e.getValue() instanceof AffineMatrix4x4 ) {
 			setSnapGridBasedOnCameraPosition();
@@ -222,6 +223,7 @@ public class SnapGrid extends Transformable implements PropertyListener {
 		}
 	}
 
+	@Override
 	public void propertyChanging( PropertyEvent e ) {
 	}
 

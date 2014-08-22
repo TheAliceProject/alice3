@@ -128,13 +128,16 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	private final Details details;
 
 	private static class ValueComponentTypeCustomizer implements ItemStateCustomizer<org.lgna.project.ast.AbstractType> {
+		@Override
 		public org.lgna.croquet.CascadeFillIn getFillInFor( org.lgna.project.ast.AbstractType type ) {
 			return org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type );
 		}
 
+		@Override
 		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
 		}
 
+		@Override
 		public void epilogue() {
 		}
 
@@ -152,6 +155,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			}
 		}
 
+		@Override
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
 			for( org.lgna.project.ast.JavaType type : org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getPrimeTimeSelectableJavaTypes() ) {
 				blankChildren.add( this.getFillInFor( type ) );
@@ -164,7 +168,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			//appendBlankChildren( blankChildren, programType, root );
 
 			blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			blankChildren.add( org.alice.stageide.type.croquet.OtherTypeDialog.getInstance().getValueCreator().getFillIn() );
+			blankChildren.add( org.alice.stageide.type.croquet.OtherTypeDialog.getInstance().getValueCreator( org.lgna.story.SThing.class ).getFillIn() );
 			org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel otherTypesMenuModel = org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel.getInstance();
 			if( otherTypesMenuModel.isEmpty() ) {
 				//pass
@@ -227,6 +231,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	}
 
 	private class InitializerCustomizer implements ItemStateCustomizer<org.lgna.project.ast.Expression> {
+		@Override
 		public org.lgna.croquet.CascadeFillIn getFillInFor( org.lgna.project.ast.Expression value ) {
 			//todo
 			if( value instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
@@ -237,12 +242,15 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			}
 		}
 
+		@Override
 		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
 		}
 
+		@Override
 		public void epilogue() {
 		}
 
+		@Override
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 			org.lgna.project.annotations.ValueDetails valueDetails = null;
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = DeclarationLikeSubstanceComposite.this.getValueType();
@@ -300,6 +308,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		}
 	}
 
+	@Override
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
 		org.lgna.project.ast.AbstractType<?, ?, ?> componentType = this.getValueComponentType();
 		if( componentType != null ) {
@@ -461,24 +470,29 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 
 	private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.project.ast.Expression> mapTypeToInitializer = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final org.lgna.croquet.State.ValueListener<Boolean> isArrayValueTypeListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		@Override
 		public void changing( org.lgna.croquet.State<java.lang.Boolean> state, java.lang.Boolean prevValue, java.lang.Boolean nextValue, boolean isAdjusting ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanging();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<java.lang.Boolean> state, java.lang.Boolean prevValue, java.lang.Boolean nextValue, boolean isAdjusting ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanged();
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.AbstractType> valueComponentTypeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.AbstractType>() {
+		@Override
 		public void changing( org.lgna.croquet.State<org.lgna.project.ast.AbstractType> state, org.lgna.project.ast.AbstractType prevValue, org.lgna.project.ast.AbstractType nextValue, boolean isAdjusting ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanging();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<org.lgna.project.ast.AbstractType> state, org.lgna.project.ast.AbstractType prevValue, org.lgna.project.ast.AbstractType nextValue, boolean isAdjusting ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanged();
 		}
 	};
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> initializerListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
 			DeclarationLikeSubstanceComposite.this.getView().handleInitializerChanged( e.getNextValue() );
 		}

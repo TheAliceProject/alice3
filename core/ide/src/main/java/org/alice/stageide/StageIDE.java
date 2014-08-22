@@ -55,9 +55,10 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 
 	private org.alice.ide.cascade.ExpressionCascadeManager cascadeManager = new org.alice.stageide.cascade.ExpressionCascadeManager();
 
-	public StageIDE( org.alice.ide.IdeConfiguration ideConfiguration ) {
-		super( ideConfiguration );
+	public StageIDE( org.alice.ide.IdeConfiguration ideConfiguration, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
+		super( ideConfiguration, crashDetector );
 		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
+			@Override
 			public void windowStateChanged( java.awt.event.WindowEvent e ) {
 				int oldState = e.getOldState();
 				int newState = e.getNewState();
@@ -93,6 +94,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	}
 
 	private final edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration> declarationFilter = new edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration>() {
+		@Override
 		public boolean accept( org.lgna.project.ast.Declaration declaration ) {
 			return PERFORM_GENERATED_SET_UP_METHOD_NAME.equals( declaration.getName() ) == false;
 		}
@@ -139,7 +141,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 					"The Sims (TM) 2 Art Assets" );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "You must accept the license agreements in order to use Alice 3 and The Sims (TM) 2 Art Assets.  Exiting." )
-			.buildAndShow();
+					.buildAndShow();
 			System.exit( -1 );
 		}
 	}
@@ -323,6 +325,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 		if( type != null ) {
 			//org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( type );
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					final int N = type.fields.size();
 					int i = N;
@@ -401,14 +404,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	@Override
 	public org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod() {
 		org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
-		if( sceneType != null ) {
-			for( org.lgna.project.ast.UserMethod method : sceneType.methods ) {
-				if( PERFORM_GENERATED_SET_UP_METHOD_NAME.equals( method.name.getValue() ) ) {
-					return method;
-				}
-			}
-		}
-		return null;
+		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getPerformEditorGeneratedSetUpMethod( sceneType );
 	}
 
 	private org.alice.ide.instancefactory.InstanceFactory getInstanceFactoryForSceneOrSceneField( org.lgna.project.ast.UserField field ) {
@@ -416,7 +412,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 		if( programType != null ) {
 			org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
-				org.lgna.project.ast.NamedUserType scopeType = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
+				org.lgna.project.ast.NamedUserType scopeType = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().getValue();
 				if( scopeType == sceneType ) {
 					if( field != null ) {
 						return org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );

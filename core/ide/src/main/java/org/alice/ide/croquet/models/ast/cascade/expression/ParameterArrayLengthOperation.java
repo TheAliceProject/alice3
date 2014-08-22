@@ -53,6 +53,7 @@ public class ParameterArrayLengthOperation extends ArrayLengthOperation {
 		assert parameter != null;
 		assert expressionProperty != null;
 		return mapToMap.getInitializingIfAbsent( parameter, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayLengthOperation>() {
+			@Override
 			public ParameterArrayLengthOperation initialize( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 				return new ParameterArrayLengthOperation( parameter, expressionProperty );
 			}

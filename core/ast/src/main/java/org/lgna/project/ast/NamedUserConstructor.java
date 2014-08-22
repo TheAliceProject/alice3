@@ -74,14 +74,17 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 		return value;
 	}
 
+	@Override
 	public org.lgna.project.ast.ManagementLevel getManagementLevel() {
 		return this.managementLevel.getValue();
 	}
 
+	@Override
 	public NodeProperty<ConstructorBlockStatement> getBodyProperty() {
 		return this.body;
 	}
 
+	@Override
 	public NodeListProperty<UserParameter> getRequiredParamtersProperty() {
 		return this.requiredParameters;
 	}
@@ -110,7 +113,8 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 		return this.isSignatureLocked.getValue();
 	}
 
-	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
+	@Override
+	public java.util.List<UserParameter> getRequiredParameters() {
 		return this.requiredParameters.getValue();
 	}
 

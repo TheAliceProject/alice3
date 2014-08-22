@@ -54,9 +54,9 @@ import org.lgna.story.event.WhileContingencyListener;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent;
-import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener;
 import edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory;
+import edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent;
+import edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener;
 
 /**
  * @author Matt May
@@ -72,6 +72,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 	private boolean isActivated = false;
 
 	private final AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
+		@Override
 		public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
 			currentTime = scene.getProgram().getAnimator().getCurrentTime();
 			update();
@@ -123,6 +124,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 		listener.timeElapsed( new TimeEvent( event.getTimeSinceLastFire() + ( currentTime - mostRecentFire.get( listener ) ) ) );
 	}
 
+	@Override
 	public void sceneActivated( SceneActivationEvent e ) {
 		this.isActivated = true;
 	}

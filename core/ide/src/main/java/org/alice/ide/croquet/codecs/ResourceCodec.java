@@ -65,10 +65,12 @@ public class ResourceCodec<R extends org.lgna.common.Resource> implements org.lg
 		this.valueCls = valueCls;
 	}
 
+	@Override
 	public Class<R> getValueClass() {
 		return this.valueCls;
 	}
 
+	@Override
 	public R decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
@@ -80,6 +82,7 @@ public class ResourceCodec<R extends org.lgna.common.Resource> implements org.lg
 		}
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, R value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
@@ -88,6 +91,7 @@ public class ResourceCodec<R extends org.lgna.common.Resource> implements org.lg
 		}
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, R value ) {
 		sb.append( value );
 	}

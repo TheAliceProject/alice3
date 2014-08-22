@@ -62,10 +62,12 @@ public abstract class AbstractAnimation implements Animation {
 	//		initialize();
 	//	}
 
+	@Override
 	public synchronized final void reset() {
 		m_state = State.INITIALIZE_IS_REQUIRED;
 	}
 
+	@Override
 	public synchronized final double update( double tCurrent, AnimationObserver animationObserver ) {
 		double tRemaining = Double.NaN;
 		if( m_state != State.COMPLETED ) {
@@ -106,6 +108,7 @@ public abstract class AbstractAnimation implements Animation {
 		return tRemaining;
 	}
 
+	@Override
 	public synchronized final void complete( AnimationObserver animationObserver ) {
 		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "complete: ", m_state );
 		if( m_state == State.PROLOGUE_IS_REQUIRED ) {

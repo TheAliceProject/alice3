@@ -91,7 +91,7 @@ public class JavaMethodParameter extends JavaParameter {
 	}
 
 	@Override
-	public AbstractType<?, ?, ?> getValueType() {
+	public JavaType getValueType() {
 		return this.valueType;
 	}
 

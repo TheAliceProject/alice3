@@ -42,7 +42,6 @@
  */
 package org.alice.ide.properties.adapter.croquet.edits;
 
-
 /**
  * @author Dennis Cosgrove
  */

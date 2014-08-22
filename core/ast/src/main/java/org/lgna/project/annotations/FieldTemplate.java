@@ -49,4 +49,6 @@ package org.lgna.project.annotations;
 @java.lang.annotation.Retention( java.lang.annotation.RetentionPolicy.RUNTIME )
 public @interface FieldTemplate {
 	Visibility visibility();
+
+	String methodNameHint() default "";
 }

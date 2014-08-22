@@ -61,14 +61,17 @@ public class TextIcon implements javax.swing.Icon {
 		return fm.getStringBounds( this.text, g );
 	}
 
+	@Override
 	public int getIconWidth() {
 		return this.getTextBounds( edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getGraphics() ).getBounds().width;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return this.getTextBounds( edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getGraphics() ).getBounds().height;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 

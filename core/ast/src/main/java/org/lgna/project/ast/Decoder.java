@@ -117,10 +117,6 @@ public class Decoder {
 	//		return rv;
 	//	}
 
-	private final org.lgna.project.Version srcVersion;
-	private final org.lgna.project.Version dstVersion;
-	private final DecodeIdPolicy policy;
-
 	public Decoder( org.lgna.project.Version srcVersion, org.lgna.project.Version dstVersion, DecodeIdPolicy policy ) {
 		this.srcVersion = srcVersion;
 		this.dstVersion = dstVersion;
@@ -208,8 +204,6 @@ public class Decoder {
 		String clsName = xmlClass.getAttribute( "name" );
 		return createClassReflectionProxy( clsName );
 	}
-
-	private final java.util.Map<Integer, Integer> EPIC_HACK_mapArrayTypeKeyToLeafTypeKey = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private UserArrayType decodeUserArrayType( org.w3c.dom.Element xmlElement, java.util.Map<Integer, AbstractDeclaration> map ) {
 		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "leafType" );
@@ -304,8 +298,31 @@ public class Decoder {
 			} else if( clsName.equals( JavaConstructor.class.getName() ) ) {
 				rv = JavaConstructor.getInstance( decodeConstructor( xmlElement, "constructor" ) );
 			} else if( clsName.equals( JavaMethod.class.getName() ) ) {
-				rv = JavaMethod.getInstance( decodeMethod( xmlElement, "method" ) );
+				MethodReflectionProxy methodReflectionProxy = decodeMethod( xmlElement, "method" );
+				MethodReflectionProxy varArgsReplacement = MethodReflectionProxy.getReplacementIfNecessary( methodReflectionProxy );
+				if( varArgsReplacement != null ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "replacing", methodReflectionProxy, "with", varArgsReplacement );
+					methodReflectionProxy = varArgsReplacement;
+				}
+				rv = JavaMethod.getInstance( methodReflectionProxy );
 			} else if( clsName.equals( Getter.class.getName() ) || clsName.equals( Setter.class.getName() ) ) {
+
+				org.w3c.dom.Node xmlFirstChild = xmlElement.getFirstChild();
+				if( xmlFirstChild instanceof org.w3c.dom.Element ) {
+					org.w3c.dom.Element xmlFirstChildElement = (org.w3c.dom.Element)xmlFirstChild;
+					if( xmlFirstChildElement.hasAttribute( CodecConstants.UNIQUE_KEY_ATTRIBUTE ) ) {
+						int getterOrSetterUniqueKey = getUniqueKey( xmlElement );
+						int fieldUniqueKey = getUniqueKey( xmlFirstChildElement );
+						java.util.Map<Integer, Integer> mapToFieldKey;
+						if( clsName.equals( Getter.class.getName() ) ) {
+							mapToFieldKey = EPIC_HACK_mapGetterKeyToFieldKey;
+						} else {
+							mapToFieldKey = EPIC_HACK_mapSetterKeyToFieldKey;
+						}
+						mapToFieldKey.put( getterOrSetterUniqueKey, fieldUniqueKey );
+					}
+				}
+
 				org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
 				assert nodeList.getLength() == 1;
 				org.w3c.dom.Element xmlField = (org.w3c.dom.Element)nodeList.item( 0 );
@@ -399,11 +416,33 @@ public class Decoder {
 					} else {
 						assert false : leafDeclaration;
 					}
+				} else if( EPIC_HACK_mapGetterKeyToFieldKey.containsKey( key ) ) {
+					int fieldKey = EPIC_HACK_mapGetterKeyToFieldKey.get( key );
+					AbstractDeclaration fieldDeclaration = map.get( fieldKey );
+					if( fieldDeclaration instanceof UserField ) {
+						UserField userField = (UserField)fieldDeclaration;
+						rv = userField.getGetter();
+					}
+				} else if( EPIC_HACK_mapSetterKeyToFieldKey.containsKey( key ) ) {
+					int fieldKey = EPIC_HACK_mapSetterKeyToFieldKey.get( key );
+					AbstractDeclaration fieldDeclaration = map.get( fieldKey );
+					if( fieldDeclaration instanceof UserField ) {
+						UserField userField = (UserField)fieldDeclaration;
+						rv = userField.getSetter();
+					}
 				} else {
-					assert false : key;
+					assert false : Integer.toHexString( key ) + " " + map;
 				}
 			}
 		}
 		return rv;
 	}
+
+	private final java.util.Map<Integer, Integer> EPIC_HACK_mapArrayTypeKeyToLeafTypeKey = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Integer, Integer> EPIC_HACK_mapGetterKeyToFieldKey = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Integer, Integer> EPIC_HACK_mapSetterKeyToFieldKey = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+
+	private final org.lgna.project.Version srcVersion;
+	private final org.lgna.project.Version dstVersion;
+	private final DecodeIdPolicy policy;
 }

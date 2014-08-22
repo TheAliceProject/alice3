@@ -47,9 +47,11 @@ package org.lgna.croquet.views;
  */
 public abstract class CustomItemStatePopupButton<T> extends FauxComboBoxPopupButton<T> {
 	private final org.lgna.croquet.State.ValueListener<T> valueListener = new org.lgna.croquet.State.ValueListener<T>() {
+		@Override
 		public void changing( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
 			CustomItemStatePopupButton.this.handleChanged( state, prevValue, nextValue, isAdjusting );
 		}

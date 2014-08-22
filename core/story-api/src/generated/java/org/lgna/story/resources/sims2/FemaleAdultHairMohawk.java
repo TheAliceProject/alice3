@@ -35,11 +35,13 @@ public enum FemaleAdultHairMohawk implements FemaleAdultHair, FemaleElderHair {
 	PLATINUM,
 	PURPLE;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

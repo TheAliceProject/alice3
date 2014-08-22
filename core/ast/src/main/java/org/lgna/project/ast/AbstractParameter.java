@@ -62,6 +62,7 @@ public abstract class AbstractParameter extends AbstractTransient {
 
 	public abstract org.lgna.project.annotations.ValueDetails<?> getDetails();
 
+	@Override
 	public String getValidName( Node context ) {
 		return this.getName();
 	}

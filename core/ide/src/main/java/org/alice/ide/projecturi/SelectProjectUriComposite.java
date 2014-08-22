@@ -157,6 +157,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValu
 	}
 
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.uricontent.UriProjectLoader> metaUriListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.uricontent.UriProjectLoader>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.uricontent.UriProjectLoader> e ) {
 			handleMetaStateValueChanged( e.getNextValue() );
 		}

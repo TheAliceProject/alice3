@@ -27,11 +27,13 @@ public enum MaleAdultHairHatViking implements MaleAdultHair, MaleElderHair {
 	BLACK,
 	WHITE;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return false;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return true;

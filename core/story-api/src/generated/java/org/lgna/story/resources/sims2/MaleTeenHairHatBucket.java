@@ -45,11 +45,13 @@ public enum MaleTeenHairHatBucket implements MaleTeenHair {
 	BLOND_GREY_HAT,
 	BLOND_RED_HAT;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return true;

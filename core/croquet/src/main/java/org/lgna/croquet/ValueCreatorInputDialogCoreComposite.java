@@ -66,6 +66,7 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.cr
 
 	protected abstract T createValue();
 
+	@Override
 	public T createValue( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		final Object[] buffer = { null };
 		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {

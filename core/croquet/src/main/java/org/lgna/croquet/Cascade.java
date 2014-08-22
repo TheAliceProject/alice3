@@ -232,16 +232,20 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 				this.prepStep = prepStep;
 			}
 
+			@Override
 			public void componentShown( java.awt.event.ComponentEvent e ) {
 			}
 
+			@Override
 			public void componentMoved( java.awt.event.ComponentEvent e ) {
 			}
 
+			@Override
 			public void componentResized( java.awt.event.ComponentEvent e ) {
 				org.lgna.croquet.history.TransactionManager.firePopupMenuResized( this.prepStep );
 			}
 
+			@Override
 			public void componentHidden( java.awt.event.ComponentEvent e ) {
 			}
 		};
@@ -340,6 +344,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 
 	private org.lgna.croquet.views.DragComponent dragSource;
 
+	@Override
 	public final void setDragSource( org.lgna.croquet.views.DragComponent dragSource ) {
 		this.dragSource = dragSource;
 	}

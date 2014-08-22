@@ -91,6 +91,7 @@ public abstract class ListData<T> implements Iterable<T> {
 
 	public abstract void internalSetItemAt( int index, T item );
 
+	@Override
 	public abstract java.util.Iterator<T> iterator();
 
 	protected abstract T[] toArray( Class<T> componentType );

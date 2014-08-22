@@ -82,6 +82,7 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 	private class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
 		private java.util.Map<Class<? extends org.lgna.project.ast.Statement>, Integer> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
+		@Override
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable instanceof org.lgna.project.ast.Statement ) {
 				org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
@@ -146,6 +147,7 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 			methodContainingConstructList.add( method );
 		}
 		java.util.Collections.sort( methodContainingConstructList, new Comparator<UserMethod>() {
+			@Override
 			public int compare( UserMethod o1, UserMethod o2 ) {
 				return o1.getName().compareTo( o2.getName() );
 			}

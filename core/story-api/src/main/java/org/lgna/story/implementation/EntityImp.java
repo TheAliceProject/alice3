@@ -49,7 +49,7 @@ import org.lgna.story.implementation.eventhandling.AabbCollisionDetector;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EntityImp implements ReferenceFrame {
+public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFrame {
 	protected static final edu.cmu.cs.dennisc.scenegraph.Element.Key<EntityImp> ENTITY_IMP_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "ENTITY_IMP_KEY" );
 
 	public static EntityImp getInstance( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
@@ -137,10 +137,12 @@ public abstract class EntityImp implements ReferenceFrame {
 
 	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSgComposite();
 
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSgReferenceFrame() {
 		return this.getSgComposite();
 	}
 
+	@Override
 	public EntityImp getActualEntityImplementation( EntityImp ths ) {
 		return this;
 	}
@@ -229,14 +231,15 @@ public abstract class EntityImp implements ReferenceFrame {
 		return vehicle != null ? vehicle.getScene() : null;
 	}
 
-	protected ProgramImp getProgram() {
+	@Override
+	public ProgramImp getProgram() {
 		SceneImp scene = this.getScene();
 		return scene != null ? scene.getProgram() : null;
 	}
 
-	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+	protected edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		ProgramImp program = this.getProgram();
-		return program != null ? program.getOnscreenLookingGlass() : null;
+		return program != null ? program.getOnscreenRenderTarget() : null;
 	}
 
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
@@ -262,40 +265,14 @@ public abstract class EntityImp implements ReferenceFrame {
 	}
 
 	public java.awt.Point transformToAwt( edu.cmu.cs.dennisc.math.Point3 xyz, CameraImp<?> camera ) {
-		return this.getSgComposite().transformToAWT_New( xyz, this.getOnscreenLookingGlass(), camera.getSgCamera() );
+		return this.getSgComposite().transformToAWT_New( xyz, this.getOnscreenRenderTarget(), camera.getSgCamera() );
 	}
 
-	protected static final double RIGHT_NOW = 0.0;
 	protected static final double DEFAULT_DURATION = 1.0;
 	protected static final edu.cmu.cs.dennisc.animation.Style DEFAULT_STYLE = edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY;
 
 	//	public static final Style DEFAULT_SPEED_STYLE = org.alice.apis.moveandturn.TraditionalStyle.BEGIN_AND_END_ABRUPTLY;
 	//	public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.THIS_AND_DESCENDANT_PARTS;
-
-	private double getSimulationSpeedFactor() {
-		ProgramImp programImplementation = this.getProgram();
-		if( programImplementation != null ) {
-			return programImplementation.getSimulationSpeedFactor();
-		} else {
-			return Double.NaN;
-		}
-	}
-
-	protected double adjustDurationIfNecessary( double duration ) {
-		if( duration == RIGHT_NOW ) {
-			//pass
-		} else {
-			double simulationSpeedFactor = this.getSimulationSpeedFactor();
-			if( Double.isNaN( simulationSpeedFactor ) ) {
-				duration = RIGHT_NOW;
-			} else if( Double.isInfinite( simulationSpeedFactor ) ) {
-				duration = RIGHT_NOW;
-			} else {
-				duration = duration / simulationSpeedFactor;
-			}
-		}
-		return duration;
-	}
 
 	public void alreadyAdjustedDelay( double duration ) {
 		if( duration == RIGHT_NOW ) {
@@ -327,25 +304,12 @@ public abstract class EntityImp implements ReferenceFrame {
 		this.perform( new edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation( player ) );
 	}
 
-	protected void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		ProgramImp programImplementation = this.getProgram();
-		if( programImplementation != null ) {
-			programImplementation.perform( animation, animationObserver );
-		} else {
-			animation.complete( animationObserver );
-		}
-	}
-
-	protected final void perform( edu.cmu.cs.dennisc.animation.Animation animation ) {
-		this.perform( animation, null );
-	}
-
 	private java.awt.Component getParentComponent() {
 		SceneImp scene = this.getScene();
 		if( scene != null ) {
-			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
-			if( onscreenLookingGlass != null ) {
-				return onscreenLookingGlass.getAWTComponent();
+			edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+			if( onscreenRenderTarget != null ) {
+				return onscreenRenderTarget.getAwtComponent();
 			}
 		}
 		return null;
@@ -356,13 +320,16 @@ public abstract class EntityImp implements ReferenceFrame {
 		//todo: select all on focus?
 
 		private final javax.swing.event.AncestorListener ancestorListener = new javax.swing.event.AncestorListener() {
+			@Override
 			public void ancestorAdded( javax.swing.event.AncestorEvent event ) {
 				textField.requestFocusInWindow();
 			}
 
+			@Override
 			public void ancestorMoved( javax.swing.event.AncestorEvent event ) {
 			}
 
+			@Override
 			public void ancestorRemoved( javax.swing.event.AncestorEvent event ) {
 			}
 		};
@@ -566,6 +533,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			this.putValue( NAME, "\u2190" );
 		}
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			this.numberModel.deleteLastCharacter();
 		}
@@ -581,6 +549,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			this.putValue( NAME, Short.toString( this.digit ) );
 		}
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			this.numberModel.appendDigit( digit );
 		}
@@ -594,6 +563,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			this.putValue( NAME, "\u00B1" );
 		}
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			this.numberModel.negate();
 		}
@@ -608,6 +578,7 @@ public abstract class EntityImp implements ReferenceFrame {
 			this.putValue( NAME, "" + decimalFormatSymbols.getDecimalSeparator() );
 		}
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			this.numberModel.appendDecimalPoint();
 		}
@@ -729,6 +700,7 @@ public abstract class EntityImp implements ReferenceFrame {
 
 	public void mendSceneGraphIfNecessary() {
 		edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities.inspectAndMendIfNecessary( this.getSgComposite(), new edu.cmu.cs.dennisc.scenegraph.qa.Mender() {
+			@Override
 			public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getMendTransformationFor( edu.cmu.cs.dennisc.scenegraph.Joint sgJoint ) {
 				EntityImp imp = EntityImp.getInstance( sgJoint );
 				if( imp instanceof JointImp ) {

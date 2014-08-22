@@ -80,18 +80,22 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 		}
 	}
 
+	@Override
 	public void clear() {
 		this.setManipulatedObject( null );
 	}
 
+	@Override
 	public void setVisualsShowing( boolean showing ) {
 		//Do nothing
 	}
 
+	@Override
 	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;
 	}
 
+	@Override
 	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter ) {
 		this.setDragAdapter( dragAdapter );
 		if( this.dragAdapter != null ) {
@@ -100,38 +104,47 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 		}
 	}
 
+	@Override
 	public void addToSet( HandleSet set ) {
 		this.handleSet.addSet( set );
 	}
 
+	@Override
 	public HandleSet getHandleSet() {
 		return this.handleSet;
 	}
 
+	@Override
 	public boolean isAlwaysVisible() {
 		return false;
 	}
 
+	@Override
 	public void addToGroup( HandleSet.HandleGroup group ) {
 		this.handleSet.addGroup( group );
 	}
 
+	@Override
 	public void addToGroups( HandleSet.HandleGroup... groups ) {
 		this.handleSet.addGroups( groups );
 	}
 
+	@Override
 	public boolean isMemberOf( HandleSet set ) {
 		return this.handleSet.intersects( set ) || set.intersects( this.handleSet );
 	}
 
+	@Override
 	public boolean isPickable() {
 		return true;
 	}
 
+	@Override
 	public boolean isMemberOf( HandleSet.HandleGroup group ) {
 		return this.handleSet.get( group.ordinal() );
 	}
 
+	@Override
 	public AbstractTransformable getManipulatedObject() {
 		return null;
 	}
@@ -139,30 +152,37 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 	public void setManipulatedObject( AbstractTransformable manipulatedObject ) {
 	}
 
+	@Override
 	public PickHint getPickHint() {
 		return PickHint.PickType.TWO_D_HANDLE.pickHint();
 	}
 
+	@Override
 	public void setManipulation( AbstractManipulator manipulation ) {
 		this.manipulation = manipulation;
 	}
 
+	@Override
 	public AbstractManipulator getManipulation( InputState input ) {
 		return this.manipulation;
 	}
 
+	@Override
 	public void setHandleManager( HandleManager handleManager ) {
 		this.handleManager = handleManager;
 	}
 
+	@Override
 	public HandleManager getHandleManager() {
 		return this.handleManager;
 	}
 
+	@Override
 	public HandleState getHandleStateCopy() {
 		return new HandleState( this.state );
 	}
 
+	@Override
 	public boolean isRenderable() {
 		if( this.isAlwaysVisible() ) {
 			return true;
@@ -174,51 +194,63 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 	protected void updateVisibleState( HandleRenderState renderState ) {
 	}
 
+	@Override
 	public void activate( ManipulationEvent event ) {
 		this.setHandleActive( true );
 	}
 
+	@Override
 	public void deactivate( ManipulationEvent event ) {
 		this.setHandleActive( false );
 	}
 
+	@Override
 	public void setHandleRollover( boolean rollover ) {
 		this.state.setRollover( rollover );
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 
+	@Override
 	public boolean isHandleVisible() {
 		return this.state.isVisible() || this.isAlwaysVisible();
 	}
 
+	@Override
 	public void setHandleVisible( boolean visible ) {
 		this.state.setVisible( visible );
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 
+	@Override
 	public void setHandleActive( boolean active ) {
 		this.state.setActive( active );
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 
+	@Override
 	public void setSelectedObject( AbstractTransformable manipulatedObject ) {
 	}
 
+	@Override
 	public boolean matches( ManipulationEvent event ) {
 		return this.criteriaManager.matches( event );
 	}
 
+	@Override
 	public void addCondition( ManipulationEventCriteria condition ) {
 		this.criteriaManager.addCondition( condition );
 	}
 
+	@Override
 	public void removeCondition( ManipulationEventCriteria condition ) {
 		this.criteriaManager.removeCondition( condition );
 	}
 
+	@Override
 	public void setAnimator( Animator animator ) {
 	}
 
+	@Override
 	public void setCameraPosition( Point3 cameraPosition ) {
 		//Do Nothing
 	}

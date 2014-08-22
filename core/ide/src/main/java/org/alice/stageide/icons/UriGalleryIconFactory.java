@@ -65,6 +65,7 @@ public class UriGalleryIconFactory extends org.lgna.croquet.icon.AbstractIconFac
 		return new UriGalleryIcon( size, this.base.getIcon( this.baseIconSize ) );
 	}
 
+	@Override
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		return this.defaultSize;
 	}

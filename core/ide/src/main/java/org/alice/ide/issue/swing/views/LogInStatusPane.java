@@ -79,6 +79,7 @@ class PasswordPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPa
 
 	public PasswordPane() {
 		checkBox.addActionListener( new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				passwordCardPane.toggle();
 			}

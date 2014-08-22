@@ -44,7 +44,9 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 /**
- * a spot light emits a cone of light; behaving like a point light within its inner beam angle; and falling off exponentially between its inner and outer beam angles.<br>
+ * a spot light emits a cone of light; behaving like a point light within its
+ * inner beam angle; and falling off exponentially between its inner and outer
+ * beam angles.<br>
  * useful in simulating a luxo lamp.<br>
  * 
  * @author Dennis Cosgrove

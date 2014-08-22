@@ -76,30 +76,37 @@ public class FileDialogUtilities {
 			}
 		}
 
+		@Override
 		public String getFile() {
 			return this.awtFileDialog.getFile();
 		}
 
+		@Override
 		public void setFile( String filename ) {
 			this.awtFileDialog.setFile( filename );
 		}
 
+		@Override
 		public String getDirectory() {
 			return this.awtFileDialog.getDirectory();
 		}
 
+		@Override
 		public void setDirectory( String path ) {
 			this.awtFileDialog.setDirectory( path );
 		}
 
+		@Override
 		public java.io.FilenameFilter getFilenameFilter() {
 			return this.awtFileDialog.getFilenameFilter();
 		}
 
+		@Override
 		public void setFilenameFilter( java.io.FilenameFilter filenameFilter ) {
 			this.awtFileDialog.setFilenameFilter( filenameFilter );
 		}
 
+		@Override
 		public void show() {
 			this.awtFileDialog.setVisible( true );
 		}
@@ -118,6 +125,7 @@ public class FileDialogUtilities {
 			this.mode = mode;
 		}
 
+		@Override
 		public String getFile() {
 			if( this.result != javax.swing.JFileChooser.CANCEL_OPTION ) {
 				java.io.File file = this.jFileChooser.getSelectedFile();
@@ -131,10 +139,12 @@ public class FileDialogUtilities {
 			}
 		}
 
+		@Override
 		public void setFile( String filename ) {
 			this.jFileChooser.setSelectedFile( new java.io.File( filename ) );
 		}
 
+		@Override
 		public String getDirectory() {
 			if( this.result != javax.swing.JFileChooser.CANCEL_OPTION ) {
 				java.io.File file = this.jFileChooser.getCurrentDirectory();
@@ -148,21 +158,25 @@ public class FileDialogUtilities {
 			}
 		}
 
+		@Override
 		public void setDirectory( String path ) {
 			if( path != null ) {
 				this.jFileChooser.setCurrentDirectory( new java.io.File( path ) );
 			}
 		}
 
+		@Override
 		public java.io.FilenameFilter getFilenameFilter() {
 			//todo
 			return null;
 		}
 
+		@Override
 		public void setFilenameFilter( java.io.FilenameFilter filenameFilter ) {
 			//todo
 		}
 
+		@Override
 		public void show() {
 			//todo: use this.title
 			this.result = javax.swing.JFileChooser.CANCEL_OPTION;

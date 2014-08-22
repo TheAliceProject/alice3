@@ -65,11 +65,11 @@ public class RunProgramContext extends ProgramContext {
 	public void initializeInContainer( java.awt.Container awtContainer, int width, int height ) {
 		this.disableRendering();
 		this.getProgramImp().initializeInAwtContainer( awtContainer );
-		this.getOnscreenLookingGlass().getAWTComponent().setPreferredSize( new Dimension( width, height ) );
+		this.getOnscreenRenderTarget().getAwtComponent().setPreferredSize( new Dimension( width, height ) );
 	}
 
 	public java.awt.Container getContainer() {
-		return this.getOnscreenLookingGlass().getAWTComponent().getParent();
+		return this.getOnscreenRenderTarget().getAwtComponent().getParent();
 	}
 
 	@Override

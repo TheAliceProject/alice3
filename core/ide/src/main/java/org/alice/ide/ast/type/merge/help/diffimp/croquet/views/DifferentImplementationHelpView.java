@@ -47,6 +47,7 @@ package org.alice.ide.ast.type.merge.help.diffimp.croquet.views;
  */
 public class DifferentImplementationHelpView extends org.alice.ide.ast.type.merge.help.croquet.views.PotentialNameChangerHelpView {
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> valueListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.ast.type.merge.help.diffimp.croquet.DifferentImplementationChoice> e ) {
 			handleTopLevelChanged( e.getNextValue() );
 		}

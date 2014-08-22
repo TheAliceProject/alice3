@@ -93,18 +93,22 @@ public class DefaultNode<T> implements Node<T> {
 		return null;
 	}
 
+	@Override
 	public T getValue() {
 		return this.value;
 	}
 
+	@Override
 	public java.util.List<DefaultNode<T>> getChildren() {
 		return this.children;
 	}
 
+	@Override
 	public boolean contains( T value ) {
 		return get( value ) != null;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.tree.DefaultNode<T> get( T value ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.value, value ) ) {
 			return this;

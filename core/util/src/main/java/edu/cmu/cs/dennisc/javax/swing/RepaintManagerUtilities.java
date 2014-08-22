@@ -67,6 +67,7 @@ public class RepaintManagerUtilities {
 					if( ( visibleRect.width != 0 ) && ( visibleRect.height != 0 ) ) {
 						final java.awt.Rectangle rectAsSeenByStencil = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertRectangle( c, visibleRect, jStencil );
 						javax.swing.SwingUtilities.invokeLater( new Runnable() {
+							@Override
 							public void run() {
 								StencilRepaintManager.super.addDirtyRegion( jStencil, rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height );
 								//jStencil.repaint( rectAsSeenByStencil.x, rectAsSeenByStencil.y, rectAsSeenByStencil.width, rectAsSeenByStencil.height );

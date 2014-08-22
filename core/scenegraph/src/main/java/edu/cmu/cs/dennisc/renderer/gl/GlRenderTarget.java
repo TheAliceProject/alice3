@@ -46,42 +46,49 @@ package edu.cmu.cs.dennisc.renderer.gl;
  * @author Dennis Cosgrove
  */
 public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.RenderTarget {
-	private javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
-		public void init( javax.media.opengl.GLAutoDrawable drawable ) {
-		}
-
-		public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
-		}
-
-		public void display( javax.media.opengl.GLAutoDrawable drawable ) {
-			handleDisplay( drawable );
-		}
-
-		public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
-		}
-	};
-
-	private final edu.cmu.cs.dennisc.renderer.gl.adapters.RenderContext rc = new edu.cmu.cs.dennisc.renderer.gl.adapters.RenderContext();
+	@Override
+	public edu.cmu.cs.dennisc.renderer.RenderFactory getRenderFactory() {
+		return GlRenderFactory.INSTANCE;
+	}
 
 	private void handleDisplay( javax.media.opengl.GLAutoDrawable glDrawable ) {
 		javax.media.opengl.GL gl = glDrawable.getGL();
 		javax.media.opengl.GL2 gl2 = gl.getGL2();
 		rc.gl = gl2;
 		for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : this.sgCameras ) {
-			edu.cmu.cs.dennisc.renderer.gl.adapters.AdapterFactory.getAdapterFor( sgCamera ).performClearAndRenderOffscreen( rc, glDrawable.getWidth(), glDrawable.getHeight() );
+			edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgCamera ).performClearAndRenderOffscreen( rc, glDrawable.getWidth(), glDrawable.getHeight() );
 		}
 	}
 
 	protected abstract javax.media.opengl.GLAutoDrawable getGlAutoDrawable();
 
+	@Override
 	public int getWidth() {
 		return this.getGlAutoDrawable().getWidth();
 	}
 
+	@Override
 	public int getHeight() {
 		return this.getGlAutoDrawable().getHeight();
 	}
 
+	@Override
+	public java.awt.Dimension getSize() {
+		javax.media.opengl.GLAutoDrawable glAutoDrawable = this.getGlAutoDrawable();
+		return new java.awt.Dimension( glAutoDrawable.getWidth(), glAutoDrawable.getHeight() );
+	}
+
+	@Override
+	public String getDescription() {
+		return this.description;
+	}
+
+	@Override
+	public void setDescription( String description ) {
+		this.description = description;
+	}
+
+	@Override
 	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		this.sgCameras.add( sgCamera );
 		if( this.sgCameras.size() == 1 ) {
@@ -89,6 +96,7 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		}
 	}
 
+	@Override
 	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		if( ( this.sgCameras.size() == 1 ) && this.sgCameras.contains( sgCamera ) ) {
 			this.getGlAutoDrawable().removeGLEventListener( this.glEventListener );
@@ -96,6 +104,7 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		this.sgCameras.remove( sgCamera );
 	}
 
+	@Override
 	public void clearSgCameras() {
 		if( this.sgCameras.size() > 0 ) {
 			this.getGlAutoDrawable().removeGLEventListener( this.glEventListener );
@@ -103,75 +112,128 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		this.sgCameras.clear();
 	}
 
+	@Override
+	public int getSgCameraCount() {
+		return this.sgCameras.size();
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index ) {
+		return this.sgCameras.get( index );
+	}
+
+	@Override
 	public java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getSgCameras() {
 		return java.util.Collections.unmodifiableList( this.sgCameras );
 	}
 
+	@Override
 	public void addRenderTargetListener( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener listener ) {
 		this.listeners.remove( listener );
 	}
 
+	@Override
 	public void removeRenderTargetListener( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener listener ) {
 		this.listeners.add( listener );
 	}
 
+	@Override
 	public java.util.List<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener> getRenderTargetListeners() {
 		return java.util.Collections.unmodifiableList( this.listeners );
 	}
 
-	public void captureColorBuffer( edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
-		throw new RuntimeException( "todo" );
+	private java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.renderer.gl.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter ) {
+		return cameraAdapter.getActualViewport( rv, getWidth(), getHeight() );
 	}
 
-	public void captureColorBufferWithTransparencyBasedOnDepthBuffer( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
-		throw new RuntimeException( "todo" );
+	private java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.renderer.gl.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter ) {
+		return this.getActualViewport( new java.awt.Rectangle(), cameraAdapter );
 	}
 
-	public java.awt.Graphics2D createGraphics() {
-		throw new RuntimeException( "todo" );
+	@Override
+	public java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		return this.getActualViewport( rv, edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgCamera ) );
 	}
 
-	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		throw new RuntimeException( "todo" );
+	@Override
+	public final java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		return this.getActualViewport( new java.awt.Rectangle(), sgCamera );
 	}
 
-	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera sgPerspectiveCamera ) {
-		throw new RuntimeException( "todo" );
+	@Override
+	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		edu.cmu.cs.dennisc.renderer.gl.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgCamera );
+		java.awt.Rectangle actualViewport = this.getActualViewport( cameraAdapter );
+		return cameraAdapter.getActualProjectionMatrix( rv, actualViewport );
 	}
 
+	@Override
+	public final edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		return this.getActualProjectionMatrix( new edu.cmu.cs.dennisc.math.Matrix4x4(), sgCamera );
+	}
+
+	@Override
+	public final edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera sgFrustumPerspectiveCamera ) {
+		edu.cmu.cs.dennisc.renderer.gl.FrustumPerspectiveCameraAdapter cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgFrustumPerspectiveCamera );
+		java.awt.Rectangle actualViewport = this.getActualViewport( cameraAdapter );
+		return cameraAdapter.getActualPicturePlane( new edu.cmu.cs.dennisc.math.ClippedZPlane(), actualViewport );
+	}
+
+	@Override
 	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera ) {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.renderer.gl.OrthographicCameraAdapter cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgOrthographicCamera );
+		java.awt.Rectangle actualViewport = this.getActualViewport( cameraAdapter );
+		return cameraAdapter.getActualPicturePlane( new edu.cmu.cs.dennisc.math.ClippedZPlane(), actualViewport );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Angle getActualHorizontalViewingAngle( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera ) {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.renderer.gl.SymmetricPerspectiveCameraAdapter cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgSymmetricPerspectiveCamera );
+		java.awt.Rectangle actualViewport = this.getActualViewport( cameraAdapter );
+		return cameraAdapter.getActualHorizontalViewingAngle( actualViewport );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Angle getActualVerticalViewingAngle( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera ) {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.renderer.gl.SymmetricPerspectiveCameraAdapter cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgSymmetricPerspectiveCamera );
+		java.awt.Rectangle actualViewport = this.getActualViewport( cameraAdapter );
+		return cameraAdapter.getActualVerticalViewingAngle( actualViewport );
 	}
 
-	public java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		throw new RuntimeException( "todo" );
-	}
-
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getCameraAtPixel( int xPixel, int yPixel ) {
-		throw new RuntimeException( "todo" );
+		synchronized( this.sgCameras ) {
+			java.awt.Rectangle actualViewport = new java.awt.Rectangle();
+			for( int i = ( this.sgCameras.size() - 1 ); i >= 0; i-- ) {
+				edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCameraI = this.sgCameras.get( i );
+				this.getActualViewport( actualViewport, sgCameraI );
+				if( actualViewport.contains( xPixel, yPixel ) ) {
+					return sgCameraI;
+				}
+			}
+		}
+		return null;
 	}
 
-	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel ) {
-		throw new RuntimeException( "todo" );
-	}
-
+	@Override
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.renderer.gl.AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgCamera );
+		java.awt.Rectangle actualViewport = this.getActualViewport( cameraAdapter );
+		return cameraAdapter.getRayAtPixel( new edu.cmu.cs.dennisc.math.Ray(), xPixel, yPixel, actualViewport );
 	}
 
-	public java.awt.Rectangle getViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	@Override
+	public final edu.cmu.cs.dennisc.math.Ray getRayAtPixel( int xPixel, int yPixel ) {
+		return this.getRayAtPixel( xPixel, yPixel, this.getCameraAtPixel( xPixel, yPixel ) );
+	}
+
+	@Override
+	public java.awt.Rectangle getSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		return this.mapSgCameraToViewport.get( sgCamera );
 	}
 
-	public void setViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle viewport ) {
+	@Override
+	public void setSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.Rectangle viewport ) {
 		if( viewport != null ) {
 			this.mapSgCameraToViewport.put( sgCamera, viewport );
 		} else {
@@ -181,15 +243,112 @@ public abstract class GlRenderTarget implements edu.cmu.cs.dennisc.renderer.Rend
 		}
 	}
 
-	public void pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickFrontMostObserver observer ) {
+	@Override
+	public boolean isLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
+		return cameraAdapter.isLetterboxedAsOpposedToDistorted();
+	}
+
+	@Override
+	public void setLetterboxedAsOpposedToDistorted( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, boolean isLetterboxedAsOpposedToDistorted ) {
+		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
+		cameraAdapter.setIsLetterboxedAsOpposedToDistorted( isLetterboxedAsOpposedToDistorted );
+	}
+
+	@Override
+	public Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras() {
+		return this.sgCameras;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.SynchronousPicker getSynchronousPicker() {
 		throw new RuntimeException( "todo" );
 	}
 
-	public void pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickAllObserver observer ) {
+	@Override
+	public edu.cmu.cs.dennisc.renderer.AsynchronousPicker getAsynchronousPicker() {
 		throw new RuntimeException( "todo" );
 	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.SynchronousImageCapturer getSynchronousImageCapturer() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer getAsynchronousImageCapturer() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public void forgetAllCachedItems() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public void clearUnusedTextures() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public void release() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public boolean isRenderingEnabled() {
+		return this.isRenderingEnabled;
+	}
+
+	@Override
+	public void setRenderingEnabled( boolean isRenderingEnabled ) {
+		if( this.isRenderingEnabled != isRenderingEnabled ) {
+			this.isRenderingEnabled = isRenderingEnabled;
+			this.repaintIfAppropriate();
+			//			//todo
+			//			if( m_isRenderingEnabled ) {
+			//				if( m_glEventAdapter.isListening() ) {
+			//					//pass
+			//				} else {
+			//					m_glEventAdapter.startListening( getGLAutoDrawable() );
+			//				}
+			//			} else {
+			//				if( m_glEventAdapter.isListening() ) {
+			//					m_glEventAdapter.stopListening( getGLAutoDrawable() );
+			//				} else {
+			//					//pass
+			//				}
+			//			}
+		}
+	}
+
+	protected abstract void repaintIfAppropriate();
+
+	private final javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
+		@Override
+		public void init( javax.media.opengl.GLAutoDrawable drawable ) {
+		}
+
+		@Override
+		public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
+		}
+
+		@Override
+		public void display( javax.media.opengl.GLAutoDrawable drawable ) {
+			handleDisplay( drawable );
+		}
+
+		@Override
+		public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
+		}
+	};
+
+	private final edu.cmu.cs.dennisc.renderer.gl.RenderContext rc = new edu.cmu.cs.dennisc.renderer.gl.RenderContext();
 
 	private final java.util.List<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> sgCameras = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final java.util.Map<edu.cmu.cs.dennisc.scenegraph.AbstractCamera, java.awt.Rectangle> mapSgCameraToViewport = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+
+	private String description;
+	private boolean isRenderingEnabled = true;
 }

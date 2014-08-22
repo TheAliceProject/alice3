@@ -123,6 +123,7 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 		private final java.util.Map<org.lgna.project.ast.UserField, MarkerPopupButton> mapFieldToPopupButton = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 		private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField> selectionListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.UserField>() {
+			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.UserField> e ) {
 				repaint();
 			}
@@ -173,9 +174,11 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 			itemSelectedState.setIconForBothTrueAndFalse( org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities.getIconForMarkerField( item ) );
 
 			item.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+				@Override
 				public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 				}
 
+				@Override
 				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 					itemSelectedState.setTextForBothTrueAndFalse( item.name.getValue() );
 				}
@@ -189,19 +192,24 @@ public abstract class MarkersView extends org.lgna.croquet.views.BorderPanel {
 	}
 
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		@Override
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			unselectMarker();
 		}
 
+		@Override
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
 	};

@@ -58,20 +58,24 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 		return this.imp;
 	}
 
+	@Override
 	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKeyText ) {
 		return this.imp.getLaunchOperation( subKeyText );
 	}
 
+	@Override
 	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
 		return defaultValue;
 	}
 
+	@Override
 	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
 		return text;
 	}
 
 	protected abstract org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
+	@Override
 	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
 			@Override

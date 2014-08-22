@@ -47,6 +47,7 @@ package org.lgna.croquet.views;
  */
 public class HoverPopupView extends SwingComponentView<javax.swing.AbstractButton> {
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		@Override
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 			//javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			//	public void run() {
@@ -55,6 +56,7 @@ public class HoverPopupView extends SwingComponentView<javax.swing.AbstractButto
 			//} );
 		}
 
+		@Override
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 			//javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			//	public void run() {
@@ -63,12 +65,15 @@ public class HoverPopupView extends SwingComponentView<javax.swing.AbstractButto
 			//} );
 		}
 
+		@Override
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
 	};

@@ -30,11 +30,13 @@ public enum MaleAdultHairHatFedoraCasual implements MaleAdultHair, MaleElderHair
 	GREY_BLACK_HAT,
 	RED_BLACK_HAT;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return true;

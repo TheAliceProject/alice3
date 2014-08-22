@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,15 +55,16 @@ public abstract class AbstractStatementWithBody extends Statement implements Sta
 		this.body.setValue( body );
 	}
 
+	@Override
 	public org.lgna.project.ast.NodeProperty<org.lgna.project.ast.BlockStatement> getBodyProperty() {
 		return this.body;
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			AbstractStatementWithBody other = (AbstractStatementWithBody)o;
-			return this.body.valueContentEquals( other.body, strictness );
+			return this.body.valueContentEquals( other.body, strictness, filter );
 		}
 		return false;
 	}

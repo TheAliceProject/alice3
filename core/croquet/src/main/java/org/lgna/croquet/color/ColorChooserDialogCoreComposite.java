@@ -76,6 +76,7 @@ public final class ColorChooserDialogCoreComposite extends org.lgna.croquet.Simp
 	private java.awt.Color preColor;
 
 	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		@Override
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
 			handleStateChanged();
 		}

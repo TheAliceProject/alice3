@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -84,12 +85,12 @@ public final class ArrayAccess extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			ArrayAccess other = (ArrayAccess)o;
-			if( this.arrayType.valueContentEquals( other.arrayType, strictness ) ) {
-				if( this.array.valueContentEquals( other.array, strictness ) ) {
-					return this.index.valueContentEquals( other.index, strictness );
+			if( this.arrayType.valueContentEquals( other.arrayType, strictness, filter ) ) {
+				if( this.array.valueContentEquals( other.array, strictness, filter ) ) {
+					return this.index.valueContentEquals( other.index, strictness, filter );
 				}
 			}
 		}
@@ -104,7 +105,7 @@ public final class ArrayAccess extends Expression {
 		generator.appendChar( ']' );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = DeclarationProperty.createReferenceInstance( this );;
 	public final ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {

@@ -45,10 +45,8 @@ package edu.cmu.cs.dennisc.renderer.gl;
 /**
  * @author Dennis Cosgrove
  */
-public class GlOffscreenRenderTarget extends GlRenderTarget {
-	private final javax.media.opengl.GLPbuffer glPixelBuffer;
-
-	public GlOffscreenRenderTarget( int width, int height ) {
+public class GlOffscreenRenderTarget extends GlRenderTarget implements edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget {
+	public GlOffscreenRenderTarget( int width, int height, edu.cmu.cs.dennisc.renderer.RenderTarget renderTargetToShareContextWith ) {
 		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
 		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice(), glProfile ) ) {
@@ -70,4 +68,15 @@ public class GlOffscreenRenderTarget extends GlRenderTarget {
 	protected javax.media.opengl.GLAutoDrawable getGlAutoDrawable() {
 		return this.glPixelBuffer;
 	}
+
+	@Override
+	public void clearAndRenderOffscreen() {
+		this.glPixelBuffer.display();
+	}
+
+	@Override
+	protected void repaintIfAppropriate() {
+	}
+
+	private final javax.media.opengl.GLPbuffer glPixelBuffer;
 }

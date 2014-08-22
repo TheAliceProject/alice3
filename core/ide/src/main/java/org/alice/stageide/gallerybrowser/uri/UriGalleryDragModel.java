@@ -52,6 +52,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 
 	public static UriGalleryDragModel getInstance( java.net.URI uri ) {
 		return map.getInitializingIfAbsent( uri, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<java.net.URI, UriGalleryDragModel>() {
+			@Override
 			public UriGalleryDragModel initialize( java.net.URI uri ) {
 				return new UriGalleryDragModel( uri );
 			}

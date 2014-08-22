@@ -42,6 +42,7 @@
  */
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -69,10 +70,10 @@ public final class TypeExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			TypeExpression other = (TypeExpression)o;
-			return this.value.valueContentEquals( other.value, strictness );
+			return this.value.valueContentEquals( other.value, strictness, filter );
 		}
 		return false;
 	}
@@ -82,5 +83,5 @@ public final class TypeExpression extends Expression {
 		generator.appendTypeName( this.value.getValue() );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> value = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> value = DeclarationProperty.createReferenceInstance( this );
 }

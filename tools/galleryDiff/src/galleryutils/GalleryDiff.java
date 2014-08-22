@@ -13,6 +13,7 @@ import org.lgna.project.Version;
 import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
 
 /*
@@ -402,14 +403,25 @@ public class GalleryDiff {
 		return null;
 	}
 
-	private static String getMoreSpecificCode(String symbol) {
+	private static String getMoreSpecificCodePattern(String symbol) {
 		String enumSymbol = getResourceEnum(symbol);
 		if (enumSymbol == null) {
 			return null;
 		}
 		String classString = symbol.substring(0, symbol.length() - enumSymbol.length()-1);
 
-		return "createMoreSpecificFieldString( \"" + enumSymbol + "\", \""
+		return "createMoreSpecificFieldPattern( \"" + enumSymbol + "\", \""
+				+ classString + "\" )";
+	}
+	
+	private static String getMoreSpecificCodeReplacement(String symbol) {
+		String enumSymbol = getResourceEnum(symbol);
+		if (enumSymbol == null) {
+			return null;
+		}
+		String classString = symbol.substring(0, symbol.length() - enumSymbol.length()-1);
+
+		return "createMoreSpecificFieldReplacement( \"" + enumSymbol + "\", \""
 				+ classString + "\" )";
 	}
 
@@ -426,8 +438,8 @@ public class GalleryDiff {
 			String firstSymbol = conversionMap.get(i);
 			String secondSymbol = conversionMap.get(i + 1);
 
-			String firstLine = getMoreSpecificCode(firstSymbol);
-			String secondLine = getMoreSpecificCode(secondSymbol);
+			String firstLine = getMoreSpecificCodePattern(firstSymbol);
+			String secondLine = getMoreSpecificCodeReplacement(secondSymbol);
 			if (firstLine == null || secondLine == null) {
 				firstLine = "\"name=\\\"" + firstSymbol + "\"";
 				secondLine = "\"name=\\\"" + secondSymbol + "\"";
@@ -618,8 +630,7 @@ public class GalleryDiff {
 				Class<?> cls = cl.loadClass(className);
 				if (org.lgna.story.resources.ModelResource.class
 						.isAssignableFrom(cls) && cls.isEnum()) {
-					org.lgna.story.resources.ModelResource[] enums = (org.lgna.story.resources.ModelResource[]) cls
-							.getEnumConstants();
+					org.lgna.story.resources.ModelResource[] enums = (org.lgna.story.resources.ModelResource[]) cls.getEnumConstants();
 					for (org.lgna.story.resources.ModelResource resource : enums) {
 						String resourceSymbol = resource.toString();
 						symbols.add(cls.getName() + "." + resourceSymbol);
@@ -689,11 +700,24 @@ public class GalleryDiff {
 		File jarDir = new File(curDir);
 		jarDir = jarDir.getParentFile().getParentFile();
 		jarDir = new File(jarDir, "ide/lib/alice");
-
+//		File aliceJarDir = new File("C:/Users/alice/.m2/repository/org/alice/alice-model-source/2014.07.22");
+//		File nebulousJarDir = new File("C:/Users/alice/.m2/repository/org/alice/nonfree/nebulous-model-source/2014.07.22");
+		
+		File aliceJarDir = new File("C:/batchOutput/mavenFilesZipped/alice/gallery/alice-model-source");
+		File nebulousJarDir = new File("C:/batchOutput/mavenFilesZipped/nonfree/nebulous-model-source");
+		
 		System.out.println(jarDir);
 
-		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
-				.listDescendants(jarDir, "jar");
+//		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
+//				.listDescendants(jarDir, "jar");
+		
+		File[] aliceJarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
+				.listDescendants(aliceJarDir, "jar");
+		File[] nebulousJarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities
+				.listDescendants(nebulousJarDir, "jar");
+		
+		File[] jarFiles = ArrayUtilities.concatArrays(File.class, aliceJarFiles, nebulousJarFiles);
+		
 		final String DATA_LOCATIONS = "C:\\batchOutput\\galleryVersionData\\";
 		final String FILE_NAME = "\\galleryData.txt";
 		
@@ -713,7 +737,8 @@ public class GalleryDiff {
 				// "3.1.29.0.0",
 				// "3.1.46.0.0",
 				// "3.1.47.0.0",
-				"3.1.69.0.0", "3.1.70.0.0" };
+//				"3.1.70.0.0", 
+				"3.1.92.0.0", "3.1.93.0.0" };
 
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < DATA_VERSIONS.length - 1; i++) {

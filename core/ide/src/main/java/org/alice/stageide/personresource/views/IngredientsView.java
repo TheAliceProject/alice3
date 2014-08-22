@@ -97,6 +97,7 @@ public class IngredientsView extends org.lgna.croquet.views.MigPanel {
 				this.value = value;
 			}
 
+			@Override
 			public java.awt.Color call() throws java.lang.Exception {
 				return this.value;
 			}
@@ -108,14 +109,17 @@ public class IngredientsView extends org.lgna.croquet.views.MigPanel {
 		final org.lgna.croquet.views.ToggleButton otherColorButton = otherColorState.createToggleButton();
 		final int SIZE = edu.cmu.cs.dennisc.javax.swing.icons.ColorIcon.DEFAULT_SIZE;
 		class OtherColorIcon implements javax.swing.Icon {
+			@Override
 			public int getIconWidth() {
 				return SIZE;
 			}
 
+			@Override
 			public int getIconHeight() {
 				return SIZE;
 			}
 
+			@Override
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 				java.awt.Color color = otherColorCallable.getValue();
 				if( color != null ) {
@@ -135,6 +139,7 @@ public class IngredientsView extends org.lgna.croquet.views.MigPanel {
 		customColorDialogButton.setClobberText( "Custom Color..." );
 
 		org.lgna.croquet.event.ValueListener<java.awt.Color> colorListener = new org.lgna.croquet.event.ValueListener<java.awt.Color>() {
+			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.awt.Color> e ) {
 				java.awt.Color nextValue = e.getNextValue();
 				boolean isColorMelaninShade = false;

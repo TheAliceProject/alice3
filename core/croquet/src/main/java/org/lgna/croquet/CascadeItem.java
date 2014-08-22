@@ -55,10 +55,12 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 		super( id );
 	}
 
+	@Override
 	public int getItemCount() {
 		return 1;
 	}
 
+	@Override
 	public org.lgna.croquet.CascadeItem<F, B> getItemAt( int index ) {
 		assert index == 0;
 		return this;

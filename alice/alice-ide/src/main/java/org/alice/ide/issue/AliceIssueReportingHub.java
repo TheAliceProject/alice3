@@ -46,10 +46,12 @@ package org.alice.ide.issue;
  * @author Dennis Cosgrove
  */
 public class AliceIssueReportingHub implements org.lgna.issue.IssueReportingHub {
+	@Override
 	public boolean isLoginSupported() {
 		return true;
 	}
 
+	@Override
 	public void checkRemoteUser( java.lang.String username, java.lang.String password, org.lgna.issue.IssueReportingRemoteUserObserver observer ) {
 		com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 		com.atlassian.jira.rpc.soap.client.JiraSoapService service = null;

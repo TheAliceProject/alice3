@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  */
 public class JBrowserHyperlink extends AbstractHyperlink {
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent event ) {
 			String uri = JBrowserHyperlink.this.getURI();
 			try {

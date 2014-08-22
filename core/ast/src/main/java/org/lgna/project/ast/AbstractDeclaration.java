@@ -43,12 +43,14 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDeclaration extends AbstractNode implements Declaration {
 	public abstract boolean isUserAuthored();
 
+	@Override
 	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
 
 	@Override
@@ -57,8 +59,8 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 	}
 
 	@Override
-	public boolean contentEquals( org.lgna.project.ast.Node o, org.lgna.project.ast.ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			AbstractDeclaration other = (AbstractDeclaration)o;
 			if( strictness == ContentEqualsStrictness.DECLARATIONS_EQUAL ) {
 				return this == other;
@@ -77,6 +79,7 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 		return super.fillInDeclarationSet( rv, nodes );
 	}
 
+	@Override
 	public String getName() {
 		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
 		if( nameProperty != null ) {
@@ -86,6 +89,7 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 		}
 	}
 
+	@Override
 	public void setName( String name ) {
 		edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.getNamePropertyIfItExists();
 		if( nameProperty != null ) {

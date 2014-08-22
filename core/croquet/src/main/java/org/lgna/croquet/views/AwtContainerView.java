@@ -97,6 +97,14 @@ public abstract class AwtContainerView<J extends java.awt.Container> extends Awt
 		return rv;
 	}
 
+	public int getComponentZOrder( AwtComponentView<?> component ) {
+		return this.getAwtComponent().getComponentZOrder( component.getAwtComponent() );
+	}
+
+	public void setComponentZOrder( AwtComponentView<?> component, int index ) {
+		this.getAwtComponent().setComponentZOrder( component.getAwtComponent(), index );
+	}
+
 	public int getComponentCount() {
 		return getAwtComponent().getComponentCount();
 	}

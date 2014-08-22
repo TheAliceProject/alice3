@@ -50,6 +50,7 @@ public final class AddParameterComposite extends DeclarationLikeSubstanceComposi
 
 	public static AddParameterComposite getInstance( org.lgna.project.ast.UserCode code ) {
 		return map.getInitializingIfAbsent( code, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserCode, AddParameterComposite>() {
+			@Override
 			public org.alice.ide.ast.declaration.AddParameterComposite initialize( org.lgna.project.ast.UserCode key ) {
 				return new AddParameterComposite( key );
 			}

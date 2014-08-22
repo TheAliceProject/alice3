@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass {
+class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget {
 	private final javax.media.opengl.GLPbuffer glPbuffer;
 
 	/* package-private */OffscreenLookingGlass( LookingGlassFactory lookingGlassFactory, int width, int height, AbstractLookingGlass lookingGlassToShareContextWith ) {
@@ -60,7 +60,8 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 		this.glPbuffer = GlDrawableUtilities.createGlPixelBuffer( GlDrawableUtilities.createGlCapabilities(), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(), width, height, share );
 	}
 
-	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
+	@Override
+	protected java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		if( this.glPbuffer != null ) {
 			rv.setSize( GlDrawableUtilities.getGlDrawableWidth( this.glPbuffer ), GlDrawableUtilities.getGlDrawableHeight( this.glPbuffer ) );
 		} else {
@@ -69,6 +70,7 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 		return rv;
 	}
 
+	@Override
 	public void clearAndRenderOffscreen() {
 		getGLAutoDrawable().display();
 	}

@@ -46,7 +46,6 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.ConstructorBlockStatement;
 import org.lgna.project.ast.ConstructorInvocationStatement;
 import org.lgna.project.ast.FieldAccess;
@@ -57,10 +56,8 @@ import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserConstructor;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.ReturnStatement;
 import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.SuperConstructorInvocationStatement;
-import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserPackage;
 import org.lgna.project.ast.UserParameter;
 import org.lgna.story.resources.ModelResource;
@@ -75,6 +72,18 @@ public class AliceResourceClassUtilities {
 	public static String DEFAULT_PACKAGE = "";
 
 	public static String RESOURCE_SUFFIX = "Resource";
+
+	public static boolean isTopLevelResource( Class<? extends org.lgna.story.resources.ModelResource> resourceClass )
+	{
+		if( resourceClass.isAnnotationPresent( org.lgna.project.annotations.ResourceTemplate.class ) ) {
+			org.lgna.project.annotations.ResourceTemplate resourceTemplate = resourceClass.getAnnotation( org.lgna.project.annotations.ResourceTemplate.class );
+			return resourceTemplate.isTopLevelResource();
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 	public static Class<? extends org.lgna.story.SModel> getModelClassForResourceClass( Class<? extends org.lgna.story.resources.ModelResource> resourceClass )
 	{
@@ -305,7 +314,7 @@ public class AliceResourceClassUtilities {
 			if( parameters.size() == 1 )
 			{
 				JavaConstructorParameter parameter = parameters.get( 0 );
-				JavaType javaType = parameter.getValueTypeDeclaredInJava();
+				JavaType javaType = parameter.getValueType();
 				if( javaType.isAssignableTo( ModelResource.class ) )
 				{
 					return new ConstructorParameterPair( constructor, parameter );
@@ -315,47 +324,4 @@ public class AliceResourceClassUtilities {
 		return null;
 	}
 
-	public static UserMethod getPartAccessorMethod( Field partField )
-	{
-		String methodName = "get" + getAliceMethodNameForEnum( partField.getName() );
-		Class<?> returnClass = org.lgna.story.SJoint.class;
-		UserParameter[] parameters = {};
-		org.lgna.project.ast.JavaType jointIdType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.JointId.class );
-		org.lgna.project.ast.TypeExpression typeExpression = new org.lgna.project.ast.TypeExpression( org.lgna.story.SJoint.class );
-		Class<?>[] methodParameterClasses = { org.lgna.story.SJointedModel.class, org.lgna.story.resources.JointId.class };
-		org.lgna.project.ast.JavaMethod methodExpression = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SJoint.class, "getJoint", methodParameterClasses );
-
-		org.lgna.project.ast.SimpleArgument thisArgument = new org.lgna.project.ast.SimpleArgument( methodExpression.getRequiredParameters().get( 0 ), new org.lgna.project.ast.ThisExpression() );
-
-		org.lgna.project.ast.FieldAccess jointField = new org.lgna.project.ast.FieldAccess(
-				new org.lgna.project.ast.TypeExpression( jointIdType ),
-				org.lgna.project.ast.JavaField.getInstance( partField.getDeclaringClass(), partField.getName() )
-				);
-
-		org.lgna.project.ast.SimpleArgument jointArgument = new org.lgna.project.ast.SimpleArgument( methodExpression.getRequiredParameters().get( 1 ), jointField );
-
-		org.lgna.project.ast.SimpleArgument[] methodArguments = { thisArgument, jointArgument };
-		org.lgna.project.ast.MethodInvocation getJointMethodInvocation = new org.lgna.project.ast.MethodInvocation( typeExpression, methodExpression, methodArguments );
-		ReturnStatement returnStatement = new ReturnStatement( jointIdType, getJointMethodInvocation );
-		UserMethod newMethod = new UserMethod( methodName, returnClass, parameters, new BlockStatement( returnStatement ) );
-		return newMethod;
-	}
-
-	public static UserMethod[] getPartAccessorMethods( Class<? extends org.lgna.story.resources.ModelResource> forClass )
-	{
-		Field[] jointFields = AliceResourceClassUtilities.getFieldsOfType( forClass, org.lgna.story.resources.JointId.class );
-		List<UserMethod> methods = new LinkedList<UserMethod>();
-		for( Field f : jointFields )
-		{
-			boolean visible = true;
-			if( f.isAnnotationPresent( org.lgna.project.annotations.FieldTemplate.class ) ) {
-				org.lgna.project.annotations.FieldTemplate propertyFieldTemplate = f.getAnnotation( org.lgna.project.annotations.FieldTemplate.class );
-				visible = propertyFieldTemplate.visibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN;
-			}
-			if( visible ) {
-				methods.add( getPartAccessorMethod( f ) );
-			}
-		}
-		return methods.toArray( new UserMethod[ methods.size() ] );
-	}
 }

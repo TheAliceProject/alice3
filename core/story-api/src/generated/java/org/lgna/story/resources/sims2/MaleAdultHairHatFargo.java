@@ -50,11 +50,13 @@ public enum MaleAdultHairHatFargo implements MaleAdultHair, MaleElderHair {
 	RED_BLUE_HAT,
 	RED_PINK_HAT;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return true;

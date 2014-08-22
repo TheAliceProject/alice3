@@ -46,5 +46,19 @@ package edu.cmu.cs.dennisc.renderer.event;
  * @author Dennis Cosgrove
  */
 public interface RenderTargetListener {
+	public void initialized( RenderTargetInitializeEvent e );
 
+	public void cleared( RenderTargetRenderEvent e );
+
+	public void rendered( RenderTargetRenderEvent e );
+
+	//todo: add
+	//	public void displaying( RenderTargetEvent e );
+	//	public void displayed( RenderTargetEvent e );
+	//	public void picking( RenderTargetEvent e );
+	//	public void picked( RenderTargetEvent e );
+
+	public void resized( RenderTargetResizeEvent e );
+
+	public void displayChanged( RenderTargetDisplayChangeEvent e );
 }

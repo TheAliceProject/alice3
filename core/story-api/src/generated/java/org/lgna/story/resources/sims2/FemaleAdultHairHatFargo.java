@@ -50,11 +50,13 @@ public enum FemaleAdultHairHatFargo implements FemaleAdultHair, FemaleElderHair 
 	BLOND_BLUE_HAT,
 	BLOND_PINK_HAT;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return true;

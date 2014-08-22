@@ -53,11 +53,14 @@ public abstract class CustomTexture extends Texture {
 		super( binaryDecoder );
 	}
 
+	@Override
 	public abstract edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy getMipMapGenerationPolicy();
 
 	public abstract void layoutIfNecessary( java.awt.Graphics2D g2 );
 
+	@Override
 	public abstract void paint( java.awt.Graphics2D g2, int width, int height );
 
+	@Override
 	public abstract boolean isAnimated();
 }

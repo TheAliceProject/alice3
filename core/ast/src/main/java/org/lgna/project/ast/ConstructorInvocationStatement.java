@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -66,30 +67,34 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 		}
 	}
 
+	@Override
 	public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
 		return this.constructor;
 	}
 
+	@Override
 	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
 		return this.requiredArguments;
 	}
 
+	@Override
 	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;
 	}
 
+	@Override
 	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
 		return this.keyedArguments;
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			ConstructorInvocationStatement other = (ConstructorInvocationStatement)o;
-			if( this.constructor.valueContentEquals( other.constructor, strictness ) ) {
-				if( this.requiredArguments.valueContentEquals( other.requiredArguments, strictness ) ) {
-					if( this.variableArguments.valueContentEquals( other.variableArguments, strictness ) ) {
-						return this.keyedArguments.valueContentEquals( other.keyedArguments, strictness );
+			if( this.constructor.valueContentEquals( other.constructor, strictness, filter ) ) {
+				if( this.requiredArguments.valueContentEquals( other.requiredArguments, strictness, filter ) ) {
+					if( this.variableArguments.valueContentEquals( other.variableArguments, strictness, filter ) ) {
+						return this.keyedArguments.valueContentEquals( other.keyedArguments, strictness, filter );
 					}
 				}
 			}
@@ -97,12 +102,7 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 		return false;
 	}
 
-	public final DeclarationProperty<AbstractConstructor> constructor = new DeclarationProperty<AbstractConstructor>( this ) {
-		@Override
-		public boolean isReference() {
-			return true;
-		}
-	};
+	public final DeclarationProperty<AbstractConstructor> constructor = DeclarationProperty.createReferenceInstance( this );
 	public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
 	public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
 	public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );

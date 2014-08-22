@@ -56,15 +56,18 @@ public class EulerAnglesProperty extends edu.cmu.cs.dennisc.property.InstancePro
 		super.setValue( owner, value );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.EulerAngles getCopy( edu.cmu.cs.dennisc.math.EulerAngles rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		rv.setValue( getValue( owner ) );
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.EulerAngles getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		return getCopy( edu.cmu.cs.dennisc.math.EulerAngles.createNaN(), owner );
 	}
 
+	@Override
 	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.EulerAngles value ) {
 		//todo?
 		setValue( owner, new edu.cmu.cs.dennisc.math.EulerAngles( value ) );

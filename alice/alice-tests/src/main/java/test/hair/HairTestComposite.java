@@ -52,6 +52,7 @@ import org.alice.stageide.personresource.data.HairUtilities;
  */
 public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
 	private final java.awt.event.ActionListener eyeDropperListener = new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			java.awt.PointerInfo pointerInfo = java.awt.MouseInfo.getPointerInfo();
 			java.awt.Point location = pointerInfo.getLocation();

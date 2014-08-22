@@ -63,8 +63,14 @@ public class KeyedArgumentListPropertyView extends ArgumentListPropertyView<org.
 		if( org.lgna.project.ast.AstUtilities.isKeyedArgumentListPropertyComplete( this.getArgumentListProperty() ) ) {
 			//pass
 		} else {
-			this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
-			this.addComponent( new org.lgna.croquet.views.DropDown( org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade.getInstance( this.getArgumentListProperty().getOwner() ).getRoot().getPopupPrepModel() ) );
+			org.alice.ide.x.AstI18nFactory factory = this.getFactory();
+			if( factory instanceof org.alice.ide.x.MutableAstI18nFactory ) {
+				org.alice.ide.x.MutableAstI18nFactory mutableAstI18nFactory = (org.alice.ide.x.MutableAstI18nFactory)factory;
+				if( mutableAstI18nFactory.isKeyedArgumentListMutable( this.getArgumentListProperty() ) ) {
+					this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
+					this.addComponent( new org.lgna.croquet.views.DropDown( org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade.getInstance( this.getArgumentListProperty().getOwner() ).getRoot().getPopupPrepModel() ) );
+				}
+			}
 		}
 	}
 }

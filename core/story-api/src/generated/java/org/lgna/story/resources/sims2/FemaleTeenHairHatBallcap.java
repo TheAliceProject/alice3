@@ -75,11 +75,13 @@ public enum FemaleTeenHairHatBallcap implements FemaleTeenHair {
 	GREY_YELLOW_HAT,
 	GREY_YELLOW_PAPER_HAT;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return true;

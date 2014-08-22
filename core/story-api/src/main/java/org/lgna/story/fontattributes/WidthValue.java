@@ -53,10 +53,12 @@ public class WidthValue implements WidthAttribute {
 		m_value = value;
 	}
 
+	@Override
 	public java.awt.font.TextAttribute getKey() {
 		return java.awt.font.TextAttribute.WIDTH;
 	}
 
+	@Override
 	public Float getValue() {
 		return m_value;
 	}

@@ -50,6 +50,7 @@ public final class MarkerColorIdCascade extends org.lgna.croquet.ImmutableCascad
 
 	public static MarkerColorIdCascade getInstance( org.lgna.project.ast.UserField field ) {
 		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, MarkerColorIdCascade>() {
+			@Override
 			public MarkerColorIdCascade initialize( org.lgna.project.ast.UserField key ) {
 				return new MarkerColorIdCascade( key );
 			}

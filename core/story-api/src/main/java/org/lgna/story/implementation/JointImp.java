@@ -129,6 +129,21 @@ public abstract class JointImp extends AbstractTransformableImp {
 
 	public JointedModelImp<?, ?> getJointedModelImplementation() {
 		return jointedModelImplementation;
+}
+	public edu.cmu.cs.dennisc.math.Dimension3 getSize() {
+		return getAxisAlignedMinimumBoundingBox().getSize();
+	}
+
+	public double getWidth() {
+		return this.getSize().x;
+	}
+
+	public double getHeight() {
+		return this.getSize().y;
+	}
+
+	public double getDepth() {
+		return this.getSize().z;
 	}
 
 	private org.lgna.story.SJoint abstraction;

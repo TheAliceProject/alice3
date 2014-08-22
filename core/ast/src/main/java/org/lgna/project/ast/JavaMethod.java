@@ -52,6 +52,7 @@ public class JavaMethod extends AbstractMethod {
 	public static JavaMethod getInstance( MethodReflectionProxy methodReflectionProxy ) {
 		if( methodReflectionProxy != null ) {
 			return mapReflectionProxyToInstance.getInitializingIfAbsent( methodReflectionProxy, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<MethodReflectionProxy, JavaMethod>() {
+				@Override
 				public org.lgna.project.ast.JavaMethod initialize( org.lgna.project.ast.MethodReflectionProxy key ) {
 					return new JavaMethod( key );
 				}
@@ -78,12 +79,13 @@ public class JavaMethod extends AbstractMethod {
 		} else {
 			N = parameterTypeReflectionProxies.length;
 		}
-		this.requiredParameters = new java.util.ArrayList<JavaMethodParameter>();
-		this.requiredParameters.ensureCapacity( N );
+		java.util.ArrayList<JavaMethodParameter> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( N );
 		java.lang.annotation.Annotation[][] parameterAnnotations = this.methodReflectionProxy.getParameterAnnotations();
 		for( int i = 0; i < N; i++ ) {
-			this.requiredParameters.add( new JavaMethodParameter( this, i, parameterAnnotations[ i ] ) );
+			list.add( new JavaMethodParameter( this, i, parameterAnnotations[ i ] ) );
 		}
+		this.requiredParameters = java.util.Collections.unmodifiableList( list );
+
 		if( this.methodReflectionProxy.isVarArgs() ) {
 			this.variableOrKeyedParameter = new JavaMethodParameter( this, N, parameterAnnotations[ N ] );
 		} else {
@@ -109,6 +111,7 @@ public class JavaMethod extends AbstractMethod {
 		return null;
 	}
 
+	@Override
 	public JavaType getReturnType() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		if( mthd != null ) {
@@ -118,10 +121,12 @@ public class JavaMethod extends AbstractMethod {
 		}
 	}
 
-	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
+	@Override
+	public java.util.List<JavaMethodParameter> getRequiredParameters() {
 		return this.requiredParameters;
 	}
 
+	@Override
 	public JavaMethodParameter getKeyedParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
@@ -134,6 +139,7 @@ public class JavaMethod extends AbstractMethod {
 		}
 	}
 
+	@Override
 	public JavaMethodParameter getVariableLengthParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
@@ -258,7 +264,12 @@ public class JavaMethod extends AbstractMethod {
 		}
 	}
 
+	@Override
+	public boolean isUserAuthored() {
+		return false;
+	}
+
 	private final MethodReflectionProxy methodReflectionProxy;
-	private final java.util.ArrayList<JavaMethodParameter> requiredParameters;
+	private final java.util.List<JavaMethodParameter> requiredParameters;
 	private final JavaMethodParameter variableOrKeyedParameter;
 }

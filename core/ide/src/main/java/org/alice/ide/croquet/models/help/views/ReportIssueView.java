@@ -74,7 +74,7 @@ public class ReportIssueView extends AbstractIssueView {
 			@Override
 			protected void appendRows( List<LabeledFormRow> rows ) {
 				rows.add( new LabeledFormRow( composite.getVisibilityState().getSidekickLabel(), composite.getVisibilityState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP ) );
-				rows.add( new LabeledFormRow( composite.getReportTypeState().getSidekickLabel(), composite.getReportTypeState().getPrepModel().createComboBox(), VerticalAlignment.CENTER, false ) );
+				rows.add( new LabeledFormRow( composite.getReportTypeState().getSidekickLabel(), composite.getReportTypeState().getPrepModel().createComboBoxWithItemCodecListCellRenderer(), VerticalAlignment.CENTER, false ) );
 				rows.add( new LabeledFormRow( composite.getSummaryState().getSidekickLabel(), composite.getSummaryState().createTextField() ) );
 				rows.add( new LabeledFormRow( composite.getDescriptionState().getSidekickLabel(), createScrollPaneTextArea( composite.getDescriptionState() ), VerticalAlignment.TOP ) );
 				rows.add( new LabeledFormRow( composite.getStepsState().getSidekickLabel(), createScrollPaneTextArea( composite.getStepsState() ), VerticalAlignment.TOP ) );

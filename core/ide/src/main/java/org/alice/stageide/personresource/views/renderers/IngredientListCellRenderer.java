@@ -49,28 +49,48 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 
 	private static final java.io.File GALLERY_ROOT = org.lgna.story.resourceutilities.StorytellingResources.getGalleryRootDirectory();
 	private static final java.io.File IMAGE_ROOT = new java.io.File( GALLERY_ROOT, "ide/person" );
+	private static final String DEFAULT_SKIN_TONE_NAME = "GRAY";
 
 	private static final java.util.Map<java.net.URL, javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static final java.util.Map<String, java.net.URL> pathMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
-	public static javax.swing.Icon getIconForPath( int width, int height, String path ) {
-		java.net.URL urlForIcon;
-		java.io.File file = new java.io.File( IMAGE_ROOT, path );
-		if( file.exists() ) {
-			try {
-				urlForIcon = file.toURL();
-			} catch( java.net.MalformedURLException murle ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( murle, file );
+	private static final java.util.Map<String, Boolean> skinToneIconMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+
+	private static boolean hasIconForPath( String path ) {
+		java.net.URL urlForIcon = getURLForPath( path );
+		return urlForIcon != null;
+	}
+
+	public static java.net.URL getURLForPath( String path ) {
+		java.net.URL urlForIcon = null;
+		if( pathMap.containsKey( path ) ) {
+			urlForIcon = pathMap.get( path );
+		}
+		if( urlForIcon == null ) {
+			java.io.File file = new java.io.File( IMAGE_ROOT, path );
+			if( file.exists() ) {
+				try {
+					urlForIcon = file.toURL();
+				} catch( java.net.MalformedURLException murle ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( murle, file );
+					urlForIcon = null;
+				}
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( file );
 				urlForIcon = null;
 			}
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( file );
-			urlForIcon = null;
+			if( urlForIcon != null ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( path );
+			}
+			pathMap.put( path, urlForIcon );
 		}
-		if( urlForIcon != null ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( path );
-		}
+		return urlForIcon;
+	}
+
+	public static javax.swing.Icon getIconForPath( int width, int height, String path ) {
+		java.net.URL urlForIcon = getURLForPath( path );
 		javax.swing.Icon rv = map.get( urlForIcon );
 		if( rv != null ) {
 			//pass
@@ -94,9 +114,9 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 		String clsName = v.getClass().getSimpleName();
 		clsName = this.modifyClsNameIfNecessary( clsName, org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getLifeStageState().getValue(), org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getGenderState().getValue() );
 		String enumConstantName = v.toString();
-		String path = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
-		java.io.File file = new java.io.File( IMAGE_ROOT, path );
-		return file.exists();
+		String path = this.getValidIconPath( baseSkinTone, clsName, enumConstantName );
+
+		return path != null;
 	}
 
 	protected abstract String getSubPath();
@@ -105,11 +125,11 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 		return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getClosestBaseSkinTone();
 	}
 
-	private String getIngredientResourceName( org.lgna.story.resources.sims2.SkinTone skinTone, String clsName, String enumConstantName ) {
+	private String getIngredientResourceName( String skinToneString, String clsName, String enumConstantName ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.getSubPath() );
 		sb.append( "/" );
-		sb.append( skinTone );
+		sb.append( skinToneString );
 		sb.append( "/" );
 		sb.append( clsName );
 		sb.append( "." );
@@ -118,12 +138,44 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 		return sb.toString();
 	}
 
+	private String getIngredientResourceName( org.lgna.story.resources.sims2.SkinTone skinTone, String clsName, String enumConstantName ) {
+		return getIngredientResourceName( skinTone.toString(), clsName, enumConstantName );
+	}
+
 	protected String modifyClsNameIfNecessary( String clsName, org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
 		return clsName;
 	}
 
 	protected Object getValue( E value ) {
 		return value;
+	}
+
+	protected String getValidIconPath( org.lgna.story.resources.sims2.SkinTone baseSkinTone, String clsName, String enumConstantName ) {
+		String path = null;
+
+		boolean lookForSkinToneIcon = true;
+		if( skinToneIconMap.containsKey( clsName ) ) {
+			lookForSkinToneIcon = skinToneIconMap.get( clsName );
+		}
+		if( ( baseSkinTone != null ) && lookForSkinToneIcon ) {
+			path = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
+			//If the clsName isn't in the map, then check to see if there's an icon for this path and remember the results by recording it in the map
+			if( !skinToneIconMap.containsKey( clsName ) ) {
+				if( !hasIconForPath( path ) ) {
+					skinToneIconMap.put( clsName, false );
+					path = this.getIngredientResourceName( DEFAULT_SKIN_TONE_NAME, clsName, enumConstantName );
+				}
+				else {
+					skinToneIconMap.put( clsName, true );
+				}
+			}
+		} else {
+			path = this.getIngredientResourceName( DEFAULT_SKIN_TONE_NAME, clsName, enumConstantName );
+		}
+		if( hasIconForPath( path ) ) {
+			return path;
+		}
+		return null;
 	}
 
 	@Override
@@ -139,16 +191,10 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
 
 			rv.setOpaque( isSelected );
-
 			org.lgna.story.resources.sims2.SkinTone baseSkinTone = this.getSkinTone();
 			javax.swing.Icon icon;
-			if( baseSkinTone != null ) {
-				String path = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
-				icon = getIconForPath( this.width, this.height, path );
-			} else {
-				icon = null;
-			}
-
+			String path = getValidIconPath( baseSkinTone, clsName, enumConstantName );
+			icon = getIconForPath( this.width, this.height, path );
 			if( icon != null ) {
 				rv.setIcon( icon );
 				rv.setText( "" );

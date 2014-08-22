@@ -222,6 +222,7 @@ public class ImageCaptureUtilities {
 
 	public static void main( String[] args ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				final javax.swing.JFrame frame = new javax.swing.JFrame();
 				frame.setTitle( "test image capture" );

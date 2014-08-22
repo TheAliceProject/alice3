@@ -48,6 +48,7 @@ package org.lgna.project.ast.crawlers;
 public abstract class NodePropertyCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
 	protected abstract void visitNodeProperty( org.lgna.project.ast.Node node, edu.cmu.cs.dennisc.property.InstanceProperty<?> property );
 
+	@Override
 	public final void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 		if( crawlable instanceof org.lgna.project.ast.Node ) {
 			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)crawlable;

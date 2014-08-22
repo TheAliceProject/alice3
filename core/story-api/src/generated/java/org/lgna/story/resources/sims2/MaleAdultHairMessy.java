@@ -30,11 +30,13 @@ public enum MaleAdultHairMessy implements MaleAdultHair, MaleElderHair {
 	BROWN,
 	GREY;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

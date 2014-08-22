@@ -48,6 +48,7 @@ package org.alice.stageide.personresource;
  */
 public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.personresource.views.IngredientsView> {
 	private final org.lgna.croquet.Operation randomize = this.createActionOperation( "randomize", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			return createRandomEdit( step );
 		}
@@ -67,109 +68,132 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 
 	private final edu.cmu.cs.dennisc.map.MapToMap<org.lgna.story.resources.sims2.LifeStage, org.lgna.story.resources.sims2.Gender, org.lgna.story.resources.sims2.PersonResource> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.LifeStage> lifeStageListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.LifeStage>() {
+		@Override
 		public void changing( org.lgna.croquet.State<org.lgna.story.resources.sims2.LifeStage> state, org.lgna.story.resources.sims2.LifeStage prevValue, org.lgna.story.resources.sims2.LifeStage nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.LifeStage> state, org.lgna.story.resources.sims2.LifeStage prevValue, org.lgna.story.resources.sims2.LifeStage nextValue, boolean isAdjusting ) {
 			popAtomic();
 			updateCameraPointOfView();
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.Gender> genderListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.Gender>() {
+		@Override
 		public void changing( org.lgna.croquet.State<org.lgna.story.resources.sims2.Gender> state, org.lgna.story.resources.sims2.Gender prevValue, org.lgna.story.resources.sims2.Gender nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.Gender> state, org.lgna.story.resources.sims2.Gender prevValue, org.lgna.story.resources.sims2.Gender nextValue, boolean isAdjusting ) {
 			popAtomic();
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<java.awt.Color> skinColorListener = new org.lgna.croquet.State.ValueListener<java.awt.Color>() {
+		@Override
 		public void changing( org.lgna.croquet.State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue, boolean isAdjusting ) {
 			popAtomic();
 			handleSkinColorChange( nextValue );
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseFace> faceListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseFace>() {
+		@Override
 		public void changing( org.lgna.croquet.State<org.lgna.story.resources.sims2.BaseFace> state, org.lgna.story.resources.sims2.BaseFace prevValue, org.lgna.story.resources.sims2.BaseFace nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.BaseFace> state, org.lgna.story.resources.sims2.BaseFace prevValue, org.lgna.story.resources.sims2.BaseFace nextValue, boolean isAdjusting ) {
 			popAtomic();
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseEyeColor>() {
+		@Override
 		public void changing( org.lgna.croquet.State<org.lgna.story.resources.sims2.BaseEyeColor> state, org.lgna.story.resources.sims2.BaseEyeColor prevValue, org.lgna.story.resources.sims2.BaseEyeColor nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.BaseEyeColor> state, org.lgna.story.resources.sims2.BaseEyeColor prevValue, org.lgna.story.resources.sims2.BaseEyeColor nextValue, boolean isAdjusting ) {
 			popAtomic();
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<org.alice.stageide.personresource.data.HairColorName> hairColorNameListener = new org.lgna.croquet.State.ValueListener<org.alice.stageide.personresource.data.HairColorName>() {
+		@Override
 		public void changing( org.lgna.croquet.State<org.alice.stageide.personresource.data.HairColorName> state, org.alice.stageide.personresource.data.HairColorName prevValue, org.alice.stageide.personresource.data.HairColorName nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<org.alice.stageide.personresource.data.HairColorName> state, org.alice.stageide.personresource.data.HairColorName prevValue, org.alice.stageide.personresource.data.HairColorName nextValue, boolean isAdjusting ) {
 			addHairColorNameToFront( nextValue );
 			popAtomic();
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<org.alice.stageide.personresource.data.HairHatStyle> hairListener = new org.lgna.croquet.State.ValueListener<org.alice.stageide.personresource.data.HairHatStyle>() {
+		@Override
 		public void changing( org.lgna.croquet.State<org.alice.stageide.personresource.data.HairHatStyle> state, org.alice.stageide.personresource.data.HairHatStyle prevValue, org.alice.stageide.personresource.data.HairHatStyle nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<org.alice.stageide.personresource.data.HairHatStyle> state, org.alice.stageide.personresource.data.HairHatStyle prevValue, org.alice.stageide.personresource.data.HairHatStyle nextValue, boolean isAdjusting ) {
 			popAtomic();
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.FullBodyOutfit> fullBodyOutfitListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.FullBodyOutfit>() {
+		@Override
 		public void changing( org.lgna.croquet.State<org.lgna.story.resources.sims2.FullBodyOutfit> state, org.lgna.story.resources.sims2.FullBodyOutfit prevValue, org.lgna.story.resources.sims2.FullBodyOutfit nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.FullBodyOutfit> state, org.lgna.story.resources.sims2.FullBodyOutfit prevValue, org.lgna.story.resources.sims2.FullBodyOutfit nextValue, boolean isAdjusting ) {
 			popAtomic();
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.TopPiece> topPieceListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.TopPiece>() {
+		@Override
 		public void changing( org.lgna.croquet.State<org.lgna.story.resources.sims2.TopPiece> state, org.lgna.story.resources.sims2.TopPiece prevValue, org.lgna.story.resources.sims2.TopPiece nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.TopPiece> state, org.lgna.story.resources.sims2.TopPiece prevValue, org.lgna.story.resources.sims2.TopPiece nextValue, boolean isAdjusting ) {
 			popAtomic();
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BottomPiece> bottomPieceListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BottomPiece>() {
+		@Override
 		public void changing( org.lgna.croquet.State<org.lgna.story.resources.sims2.BottomPiece> state, org.lgna.story.resources.sims2.BottomPiece prevValue, org.lgna.story.resources.sims2.BottomPiece nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.BottomPiece> state, org.lgna.story.resources.sims2.BottomPiece prevValue, org.lgna.story.resources.sims2.BottomPiece nextValue, boolean isAdjusting ) {
 			popAtomic();
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<Double> obesityLevelListener = new org.lgna.croquet.State.ValueListener<Double>() {
+		@Override
 		public void changing( org.lgna.croquet.State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
 
+		@Override
 		public void changed( org.lgna.croquet.State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
 			popAtomic();
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<org.lgna.croquet.SimpleTabComposite<?>> tabListener = new org.lgna.croquet.event.ValueListener<org.lgna.croquet.SimpleTabComposite<?>>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.croquet.SimpleTabComposite<?>> e ) {
 			updateCameraPointOfView();
 			updateLastActiveOutfitTab();
@@ -497,6 +521,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	//	}
 
 	private org.lgna.story.resources.sims2.BaseSkinTone closestBaseSkinTone = null;
+	private final boolean FORCE_GRAY_SKIN_TONE = true;
 
 	private void handleSkinColorChange( java.awt.Color color ) {
 		if( color != null ) {
@@ -519,6 +544,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 
 			this.getHairTab().getHairHatStyleListData().setLifeStageAndGender( lifeStage, gender );
 			this.getHairTab().getHairColorNameData().setHairHatStyle( hairHatStyle );
+			this.getHairTab().getView().repaint();
 
 			this.getHairHatStyleState().setValueTransactionlessly( hairHatStyle );
 			this.getHairColorNameState().setValueTransactionlessly( hairColorName );

@@ -80,10 +80,12 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 			this.expression = expression;
 		}
 
+		@Override
 		public org.lgna.project.ast.Expression getPreviousExpression() {
 			return this.expression;
 		}
 
+		@Override
 		public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 			return null;
 		}
@@ -245,19 +247,24 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 	}
 
 	private java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		@Override
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			expressionList.clearSelection();
 		}
 
+		@Override
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 		}
 
+		@Override
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
 	};

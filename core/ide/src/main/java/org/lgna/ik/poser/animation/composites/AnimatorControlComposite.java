@@ -1,43 +1,43 @@
 /**
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.ik.poser.animation.composites;
@@ -102,21 +102,27 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 
 	private final TimeLineListener timeLineListener = new TimeLineListener() {
 
+		@Override
 		public void selectedKeyFrameChanged( KeyFrameData event ) {
 		}
 
+		@Override
 		public void keyFrameModified( KeyFrameData event ) {
 		}
 
+		@Override
 		public void keyFrameDeleted( KeyFrameData event ) {
 		}
 
+		@Override
 		public void keyFrameAdded( KeyFrameData event ) {
 		}
 
+		@Override
 		public void endTimeChanged( double endTime ) {
 		}
 
+		@Override
 		public void currentTimeChanged( double currentTime, Pose pose ) {
 			parent.setPose( pose );
 		}
@@ -126,9 +132,11 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		super( parent, java.util.UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
 		currentTime.addValueListener( new ValueListener<Double>() {
 
+			@Override
 			public void changing( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
 			}
 
+			@Override
 			public void changed( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
 				tlComposite.getTimeLine().setCurrentTime( nextValue );
 			}
@@ -142,9 +150,11 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 
 	private PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {
 
+		@Override
 		public void fireStart( PoserEvent poserEvent ) {
 		}
 
+		@Override
 		public void fireFinish( PoserEvent poserEvent ) {
 			TimeLine timeLine = tlComposite.getTimeLine();
 			KeyFrameData currentFrame = timeLine.getFrameForCurrentTime();
@@ -164,12 +174,14 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 	};
 	private ActionOperation runAnimationOperation = createActionOperation( "runAnimation", new Action() {
 
+		@Override
 		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			final M model = (M)parent.getModel();
 			final TimeLine timeLine = tlComposite.getTimeLine();
 			final List<KeyFrameData> keyFrames = timeLine.getKeyFrames();
 			ComponentThread thread = new ComponentThread( new Runnable() {
 
+				@Override
 				public void run() {
 					if( keyFrames.size() > 0 ) {
 						model.straightenOutJoints();

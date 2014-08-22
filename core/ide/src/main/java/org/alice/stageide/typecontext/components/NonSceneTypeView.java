@@ -48,6 +48,7 @@ class SelectedTypeView extends org.lgna.croquet.views.BorderPanel {
 	private final org.lgna.croquet.views.Label typeLabel = new org.lgna.croquet.views.Label();
 	private final org.lgna.croquet.views.Label snapshotLabel = new org.lgna.croquet.views.Label();
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
 			SelectedTypeView.this.handleTypeStateChanged( e.getNextValue() );
 		}
@@ -78,12 +79,12 @@ class SelectedTypeView extends org.lgna.croquet.views.BorderPanel {
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		super.handleAddedTo( parent );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addAndInvokeValueListener( this.typeListener );
+		org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().addAndInvokeValueListener( this.typeListener );
 	}
 
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeValueListener( this.typeListener );
+		org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().removeValueListener( this.typeListener );
 		super.handleRemovedFrom( parent );
 	}
 }

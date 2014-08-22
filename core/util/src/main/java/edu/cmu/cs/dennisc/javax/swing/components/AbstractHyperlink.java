@@ -52,22 +52,27 @@ public abstract class AbstractHyperlink extends javax.swing.JLabel {
 
 	public AbstractHyperlink() {
 		this.addMouseListener( new java.awt.event.MouseListener() {
+			@Override
 			public void mouseClicked( java.awt.event.MouseEvent e ) {
 				assert AbstractHyperlink.this.action != null;
 				AbstractHyperlink.this.action.actionPerformed( null );
 			}
 
+			@Override
 			public void mouseEntered( java.awt.event.MouseEvent e ) {
 				AbstractHyperlink.this.setForeground( armedColor );
 			}
 
+			@Override
 			public void mouseExited( java.awt.event.MouseEvent e ) {
 				AbstractHyperlink.this.setForeground( defaultColor );
 			}
 
+			@Override
 			public void mousePressed( java.awt.event.MouseEvent e ) {
 			}
 
+			@Override
 			public void mouseReleased( java.awt.event.MouseEvent e ) {
 			}
 		} );

@@ -64,8 +64,14 @@ public class ObjectMarkerImp extends MarkerImp {
 	}
 
 	@Override
+	protected void initializeData() {
+		this.axisToSGAppearanceMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	}
+
+	@Override
 	protected void createVisuals() {
 		final double scale = 0.3;
+
 		this.axisToSGAppearanceMap.clear();
 		createAxes( 2.0 * scale, scale );
 	}
@@ -138,7 +144,7 @@ public class ObjectMarkerImp extends MarkerImp {
 		return 0.75f;
 	}
 
-	private final java.util.Map<Cylinder.BottomToTopAxis, edu.cmu.cs.dennisc.scenegraph.SimpleAppearance> axisToSGAppearanceMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private java.util.Map<Cylinder.BottomToTopAxis, edu.cmu.cs.dennisc.scenegraph.SimpleAppearance> axisToSGAppearanceMap;
 
 	private edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
 	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance;

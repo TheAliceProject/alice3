@@ -50,6 +50,7 @@ public class TogetherAnimation extends CompositeAnimation {
 		super( animations );
 	}
 
+	@Override
 	public double update( double tCurrent, AnimationObserver animationObserver ) {
 		double tRemainingMax = Double.NEGATIVE_INFINITY;
 		for( Animation animation : getAnimations() ) {

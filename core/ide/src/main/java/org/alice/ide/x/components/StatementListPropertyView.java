@@ -52,7 +52,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 
 	private final org.alice.ide.codeeditor.StatementListBorder statementListBorder;
 
-	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property, int bottom ) {
+	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.StatementListProperty property, int bottom ) {
 		super( factory, property, javax.swing.BoxLayout.PAGE_AXIS );
 
 		org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
@@ -82,7 +82,16 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		} else {
 			alternateListProperty = null;
 		}
-		this.statementListBorder = new org.alice.ide.codeeditor.StatementListBorder( factory, alternateListProperty, insets, ( isDoInOrder || isDoTogether ) ? 1 : 0 );
+
+		boolean isMutable;
+
+		if( factory instanceof org.alice.ide.x.MutableAstI18nFactory ) {
+			org.alice.ide.x.MutableAstI18nFactory mutableFactory = (org.alice.ide.x.MutableAstI18nFactory)factory;
+			isMutable = mutableFactory.isStatementListPropertyMutable( property );
+		} else {
+			isMutable = false;
+		}
+		this.statementListBorder = new org.alice.ide.codeeditor.StatementListBorder( isMutable, alternateListProperty, insets, ( isDoInOrder || isDoTogether ) ? 1 : 0 );
 
 		this.setBorder( this.statementListBorder );
 	}

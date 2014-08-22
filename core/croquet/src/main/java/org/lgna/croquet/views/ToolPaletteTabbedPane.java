@@ -51,18 +51,22 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 	private static class AccordionLayoutManager implements java.awt.LayoutManager {
 		//private final java.util.List<java.awt.Component> awtComponents = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
+		@Override
 		public void addLayoutComponent( String name, java.awt.Component awtComponent ) {
 			//this.awtComponents.add( awtComponent );
 		}
 
+		@Override
 		public void removeLayoutComponent( java.awt.Component awtComponent ) {
 			//this.awtComponents.remove( awtComponent );
 		}
 
+		@Override
 		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
 			return new java.awt.Dimension( 0, 0 );
 		}
 
+		@Override
 		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
 			final int N = parent.getComponentCount();
 			if( ( N % 2 ) == 0 ) {
@@ -87,6 +91,7 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 			}
 		}
 
+		@Override
 		public void layoutContainer( java.awt.Container parent ) {
 			final int N = parent.getComponentCount();
 			if( ( N % 2 ) == 0 ) {

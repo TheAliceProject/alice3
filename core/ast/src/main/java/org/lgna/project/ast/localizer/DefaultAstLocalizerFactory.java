@@ -46,6 +46,7 @@ package org.lgna.project.ast.localizer;
  * @author Dennis Cosgrove
  */
 public class DefaultAstLocalizerFactory implements AstLocalizerFactory {
+	@Override
 	public org.lgna.project.ast.localizer.AstLocalizer createInstance( StringBuilder sb ) {
 		return new DefaultAstLocalizer( sb );
 	}

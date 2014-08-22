@@ -55,21 +55,25 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 	@Override
 	/* package-private */abstract org.lgna.story.implementation.ModelImp getImplementation();
 
+	@Override
 	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 
+	@Override
 	@MethodTemplate( )
 	@GetterTemplate( isPersistent = true )
 	public Paint getPaint() {
 		return this.getImplementation().paint.getValue();
 	}
 
+	@Override
 	@MethodTemplate( )
 	public void setPaint( Paint paint, SetPaint.Detail... details ) {
 		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	@Override
 	@MethodTemplate( )
 	@GetterTemplate( isPersistent = true )
 	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
@@ -77,39 +81,46 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 		return (double)this.getImplementation().opacity.getValue();
 	}
 
+	@Override
 	@MethodTemplate( )
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsBetween0and1( opacity, 0 );
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	@Override
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public Scale getScale() {
 		return Scale.createInstance( this.getImplementation().getScale() );
 	}
 
+	@Override
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void setScale( Scale scale, SetScale.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( scale, 0 );
 		this.getImplementation().animateSetScale( Scale.getInternal( scale ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	@Override
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public Size getSize() {
 		return Size.createInstance( this.getImplementation().getSize() );
 	}
 
+	@Override
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void setSize( Size size, SetSize.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( size, 0 );
 		this.getImplementation().animateSetSize( Size.getInternal( size ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	@Override
 	@MethodTemplate( )
 	public Double getWidth() {
 		return this.getImplementation().getSize().x;
 	}
 
+	@Override
 	@MethodTemplate( )
 	public void setWidth( Number width, SetWidth.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( width, 0 );
@@ -118,11 +129,13 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 		this.getImplementation().animateSetWidth( width.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	@Override
 	@MethodTemplate( )
 	public Double getHeight() {
 		return this.getImplementation().getSize().y;
 	}
 
+	@Override
 	@MethodTemplate( )
 	public void setHeight( Number height, SetHeight.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( height, 0 );
@@ -131,11 +144,13 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 		this.getImplementation().animateSetHeight( height.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	@Override
 	@MethodTemplate( )
 	public Double getDepth() {
 		return this.getImplementation().getSize().z;
 	}
 
+	@Override
 	@MethodTemplate( )
 	public void setDepth( Number depth, SetDepth.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( depth, 0 );
@@ -144,6 +159,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 		this.getImplementation().animateSetDepth( depth.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	@Override
 	@MethodTemplate( )
 	public void resize( Number factor, Resize.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( factor, 0 );
@@ -151,6 +167,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 		this.getImplementation().animateResize( factor.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	@Override
 	@MethodTemplate( )
 	public void resizeWidth( Number factor, ResizeWidth.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( factor, 0 );
@@ -158,6 +175,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 		this.getImplementation().animateResizeWidth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	@Override
 	@MethodTemplate( )
 	public void resizeHeight( Number factor, ResizeHeight.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( factor, 0 );
@@ -165,6 +183,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 		this.getImplementation().animateResizeHeight( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	@Override
 	@MethodTemplate( )
 	public void resizeDepth( Number factor, ResizeDepth.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( factor, 0 );

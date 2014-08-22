@@ -60,6 +60,7 @@ public class SetPointOfViewAction implements edu.cmu.cs.dennisc.pattern.Action {
 		m_redoPOV = redoPOV;
 	}
 
+	@Override
 	public void run() {
 		assert m_undoPOV == null;
 		m_undoPOV = m_sgSubject.getTransformation( m_sgAsSeenBy );
@@ -72,10 +73,12 @@ public class SetPointOfViewAction implements edu.cmu.cs.dennisc.pattern.Action {
 		}
 	}
 
+	@Override
 	public void undo() {
 		animate( m_undoPOV );
 	}
 
+	@Override
 	public void redo() {
 		animate( m_redoPOV );
 	}

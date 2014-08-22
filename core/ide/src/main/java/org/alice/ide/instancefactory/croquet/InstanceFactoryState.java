@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -58,6 +58,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	}
 
 	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {
+		@Override
 		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
 			InstanceFactoryState.this.handleDeclarationChanged( prevValue, nextValue );
 		}
@@ -67,6 +68,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	private InstanceFactory value;
 
 	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+		@Override
 		public void projectChanged() {
 			handleAstChangeThatCouldBeOfInterest();
 		}
@@ -188,11 +190,6 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		} else {
 			isStaticMethod = false;
 		}
-		if( isStaticMethod ) {
-			//pass
-		} else {
-
-		}
 		org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.meta.DeclarationMeta.getType();
 
 		if( isStaticMethod ) {
@@ -210,7 +207,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 			if( isStaticMethod ) {
 				//pass
 			} else {
-				java.util.ArrayList<org.lgna.project.ast.UserField> fields = namedUserType.getDeclaredFields();
+				java.util.List<org.lgna.project.ast.UserField> fields = namedUserType.getDeclaredFields();
 				java.util.List<org.lgna.project.ast.UserField> filteredFields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				for( org.lgna.project.ast.UserField field : fields ) {
 					if( apiConfigurationManager.isInstanceFactoryDesiredForType( field.getValueType() ) ) {
@@ -304,6 +301,53 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 						blankChildren.addAll( locals );
 					}
 					this.parametersVariablesConstantsSeparator.setMenuItemText( sb.toString() );
+				}
+
+				if( userCode instanceof org.lgna.project.ast.UserMethod ) {
+					org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)userCode;
+					if( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( userMethod.getName() ) ) {
+						for( org.lgna.project.ast.Statement statement : userMethod.body.getValue().statements ) {
+							if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
+								org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+								org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+								if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+									org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+									java.util.List<org.lgna.croquet.CascadeBlankChild> methodInvocationBlankChildren = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+
+									for( org.lgna.project.ast.SimpleArgument argument : methodInvocation.requiredArguments ) {
+										org.lgna.project.ast.Expression argumentExpression = argument.expression.getValue();
+										if( argumentExpression instanceof org.lgna.project.ast.LambdaExpression ) {
+											org.lgna.project.ast.LambdaExpression lambdaExpression = (org.lgna.project.ast.LambdaExpression)argumentExpression;
+											org.lgna.project.ast.Lambda lambda = lambdaExpression.value.getValue();
+											if( lambda instanceof org.lgna.project.ast.UserLambda ) {
+												org.lgna.project.ast.UserLambda userLambda = (org.lgna.project.ast.UserLambda)lambda;
+												for( org.lgna.project.ast.UserParameter parameter : userLambda.getRequiredParameters() ) {
+													org.lgna.project.ast.AbstractType<?, ?, ?> parameterType = parameter.getValueType();
+													for( org.lgna.project.ast.AbstractMethod parameterMethod : org.lgna.project.ast.AstUtilities.getAllMethods( parameterType ) ) {
+														org.lgna.project.ast.AbstractType<?, ?, ?> parameterMethodReturnType = parameterMethod.getReturnType();
+														if( parameterMethodReturnType.isAssignableTo( org.lgna.story.SThing.class ) ) {
+															methodInvocationBlankChildren.add(
+																	createFillInMenuComboIfNecessary(
+																			InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( parameter, parameterMethod ) ),
+																			apiConfigurationManager.getInstanceFactorySubMenuForParameterAccessMethodInvocation( parameter, parameterMethod )
+																	)
+																	);
+														}
+													}
+												}
+											}
+										}
+									}
+
+									if( methodInvocationBlankChildren.size() > 0 ) {
+										org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+										blankChildren.add( org.alice.ide.croquet.models.cascade.MethodNameSeparator.getInstance( method ) );
+										blankChildren.addAll( methodInvocationBlankChildren );
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}

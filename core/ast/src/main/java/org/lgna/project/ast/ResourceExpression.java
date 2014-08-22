@@ -42,6 +42,7 @@
  */
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -64,12 +65,12 @@ public final class ResourceExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			ResourceExpression other = (ResourceExpression)o;
-			if( this.type.valueContentEquals( other.type, strictness ) ) {
+			if( this.type.valueContentEquals( other.type, strictness, filter ) ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "resource equals strictness" );
-				return this.resource.valueEquals( other.resource );
+				return this.resource.valueEquals( other.resource, filter );
 			}
 		}
 		return false;
@@ -77,9 +78,9 @@ public final class ResourceExpression extends Expression {
 
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		generator.todo( this );
+		generator.appendResourceExpression( this );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> type = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> type = DeclarationProperty.createReferenceInstance( this );
 	public final org.lgna.project.ast.ResourceProperty resource = new org.lgna.project.ast.ResourceProperty( this );
 }

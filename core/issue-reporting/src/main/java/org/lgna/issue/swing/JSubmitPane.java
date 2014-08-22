@@ -54,6 +54,7 @@ public final class JSubmitPane extends javax.swing.JPanel {
 		this.insightPane = new JInsightPane( thread, originalThrowable, originalThrowableOrTarget );
 		this.toggleButton.setMargin( new java.awt.Insets( 0, 0, 0, 0 ) );
 		javax.swing.Action submitAction = new javax.swing.AbstractAction( config.getSubmitActionName() ) {
+			@Override
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				getConfig().submit( JSubmitPane.this );
 			}
@@ -87,6 +88,7 @@ public final class JSubmitPane extends javax.swing.JPanel {
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( submitButton, 1.6f );
 
 		this.toggleButton.setIcon( new edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon( 12 ) {
+			@Override
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
@@ -131,6 +133,7 @@ public final class JSubmitPane extends javax.swing.JPanel {
 	private final JInsightPane insightPane;
 
 	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		@Override
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
 			Object src = e.getSource();
 			if( src instanceof javax.swing.JToggleButton ) {

@@ -100,11 +100,6 @@ import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.TransformableImp;
 
-import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
-import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
-import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
-import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent;
-import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
@@ -113,6 +108,10 @@ import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent;
+import edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent;
+import edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent;
+import edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
@@ -122,13 +121,15 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
  * @author dculyba
  * 
  */
-public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener {
+public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.cmu.cs.dennisc.renderer.event.RenderTargetListener {
 
 	private class SceneEditorDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
+		@Override
 		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 			return dragModel instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 		}
 
+		@Override
 		public void dragStarted( org.lgna.croquet.history.DragStep step ) {
 			org.lgna.croquet.DragModel model = step.getModel();
 			DragComponent dragSource = step.getDragSource();
@@ -140,6 +141,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			}
 		}
 
+		@Override
 		public void dragEntered( org.lgna.croquet.history.DragStep dragAndDropContext ) {
 		}
 
@@ -151,6 +153,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 		private boolean overLookingGlass = false;
 
+		@Override
 		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep dragStep ) {
 			if( isDropLocationOverLookingGlass( dragStep ) ) {
 				if( !overLookingGlass ) {
@@ -178,17 +181,21 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			return null;
 		}
 
+		@Override
 		public void dragExited( org.lgna.croquet.history.DragStep dragAndDropContext, boolean isDropRecipient ) {
 		}
 
+		@Override
 		public void dragStopped( org.lgna.croquet.history.DragStep dragStep ) {
 			globalDragAdapter.dragExited( dragStep );
 		}
 
+		@Override
 		public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 			return StorytellingSceneEditor.this;
 		}
 
+		@Override
 		public org.lgna.croquet.views.SwingComponentView<?> getViewController() {
 			return StorytellingSceneEditor.this;
 		}
@@ -216,29 +223,40 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private static javax.swing.Icon EXPAND_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/expand.png" ) );
 	private static javax.swing.Icon CONTRACT_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/contract.png" ) );
 
-	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+	private edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
+		@Override
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
 			StorytellingSceneEditor.this.animator.update();
 		}
 	};
 
-	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory
-			.getInstance().createLightweightOnscreenLookingGlass();
+	private edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createLightweightOnscreenRenderTarget();
 
 	private class LookingGlassPanel extends org.lgna.croquet.views.CompassPointSpringPanel {
 		@Override
 		protected javax.swing.JPanel createJPanel() {
-			return StorytellingSceneEditor.this.onscreenLookingGlass.getJPanel();
+			return StorytellingSceneEditor.this.onscreenRenderTarget.getAwtComponent();
+		}
+
+		@Override
+		public void setNorthWestComponent( org.lgna.croquet.views.AwtComponentView<?> northWestComponent ) {
+			super.setNorthWestComponent( northWestComponent );
+			if( northWestComponent != null ) {
+				javax.swing.SpringLayout springLayout = (javax.swing.SpringLayout)this.getAwtComponent().getLayout();
+				springLayout.putConstraint( javax.swing.SpringLayout.SOUTH, northWestComponent.getAwtComponent(), -this.getPad(), javax.swing.SpringLayout.SOUTH, this.getAwtComponent() );
+			}
 		}
 	}
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> showSnapGridListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			StorytellingSceneEditor.this.setShowSnapGrid( e.getNextValue() );
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> snapEnabledListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			if( SnapState.getInstance().isShowSnapGridEnabled() )
 			{
@@ -248,24 +266,28 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	};
 
 	private final org.lgna.croquet.event.ValueListener<Double> snapGridSpacingListener = new org.lgna.croquet.event.ValueListener<Double>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Double> e ) {
 			StorytellingSceneEditor.this.setSnapGridSpacing( e.getNextValue() );
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<UserField> cameraMarkerFieldSelectionListener = new org.lgna.croquet.event.ValueListener<UserField>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<UserField> e ) {
 			StorytellingSceneEditor.this.handleCameraMarkerFieldSelection( e.getNextValue() );
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<UserField> objectMarkerFieldSelectionListener = new org.lgna.croquet.event.ValueListener<UserField>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<UserField> e ) {
 			StorytellingSceneEditor.this.handleObjectMarkerFieldSelection( e.getNextValue() );
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
 			StorytellingSceneEditor.this.selectionIsFromInstanceSelector = true;
 			StorytellingSceneEditor.this.setSelectedInstance( e.getNextValue() );
@@ -299,6 +321,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private View savedSceneEditorViewSelection = null;
 
 	private org.lgna.croquet.event.ValueListener<View> mainCameraViewSelectionObserver = new org.lgna.croquet.event.ValueListener<View>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.stageide.sceneeditor.View> e ) {
 			StorytellingSceneEditor.this.handleMainCameraViewSelection( mainCameraViewTracker.getCameraMarker( e.getNextValue() ) );
 		}
@@ -313,7 +336,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	public static class SceneEditorProgramImp extends ProgramImp {
 		public SceneEditorProgramImp( org.lgna.story.SProgram abstraction ) {
-			super( abstraction, StorytellingSceneEditor.getInstance().onscreenLookingGlass );
+			super( abstraction, StorytellingSceneEditor.getInstance().onscreenRenderTarget );
 		}
 
 		@Override
@@ -523,8 +546,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private void clearCameras()
 	{
 		this.snapGrid.stopTrackingCameras();
-		if( this.onscreenLookingGlass.getCameraCount() > 0 ) {
-			onscreenLookingGlass.clearCameras();
+		if( this.onscreenRenderTarget.getSgCameraCount() > 0 ) {
+			onscreenRenderTarget.clearSgCameras();
 		}
 		this.mainCameraViewTracker.setCameras( null, null );
 		this.globalDragAdapter.clearCameraViews();
@@ -689,8 +712,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private void switchToCamera( AbstractCamera camera ) {
 		assert camera != null;
 		boolean isClearingAndAddingRequired;
-		if( this.onscreenLookingGlass.getCameraCount() == 1 ) {
-			if( onscreenLookingGlass.getCameraAt( 0 ) == camera ) {
+		if( this.onscreenRenderTarget.getSgCameraCount() == 1 ) {
+			if( onscreenRenderTarget.getSgCameraAt( 0 ) == camera ) {
 				isClearingAndAddingRequired = false;
 			} else {
 				isClearingAndAddingRequired = true;
@@ -699,11 +722,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			isClearingAndAddingRequired = true;
 		}
 		if( isClearingAndAddingRequired ) {
-			onscreenLookingGlass.clearCameras();
-			onscreenLookingGlass.addCamera( camera );
+			onscreenRenderTarget.clearSgCameras();
+			onscreenRenderTarget.addSgCamera( camera );
 		}
 		this.snapGrid.setCurrentCamera( camera );
-		this.onscreenLookingGlass.repaint();
+		this.onscreenRenderTarget.repaint();
 		this.revalidateAndRepaint();
 	}
 
@@ -733,8 +756,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionListener );
 
 			this.globalDragAdapter = new org.alice.stageide.sceneeditor.interact.GlobalDragAdapter( this );
-			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
-			this.onscreenLookingGlass.addLookingGlassListener( this );
+			this.globalDragAdapter.setOnscreenRenderTarget( onscreenRenderTarget );
+			this.onscreenRenderTarget.addRenderTargetListener( this );
 			this.globalDragAdapter.setAnimator( animator );
 			if( this.getSelectedField() != null )
 			{
@@ -761,9 +784,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			initializeCameraMarkers();
 
 			this.globalDragAdapter.addSelectionListener( new org.alice.interact.event.SelectionListener() {
+				@Override
 				public void selecting( org.alice.interact.event.SelectionEvent e ) {
 				}
 
+				@Override
 				public void selected( org.alice.interact.event.SelectionEvent e ) {
 					StorytellingSceneEditor.this.handleManipulatorSelection( e );
 				}
@@ -771,6 +796,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			ClickedObjectCondition rightMouseAndInteractive = new ClickedObjectCondition( java.awt.event.MouseEvent.BUTTON3, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ) );
 			ManipulatorClickAdapter rightClickAdapter = new ManipulatorClickAdapter() {
+				@Override
 				public void onClick( InputState clickInput ) {
 					showRightClickMenuForModel( clickInput );
 
@@ -786,13 +812,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			this.mainCameraViewTracker = new CameraMarkerTracker( this, animator );
 
 			this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
+			this.mainCameraViewSelector.setRenderer( new CameraViewCellRenderer( this.mainCameraViewTracker ) );
 			this.mainCameraViewSelector.setFontSize( 15 );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.STARTING_CAMERA_VIEW, this.openingSceneMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.LAYOUT_SCENE_VIEW, this.sceneViewMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.TOP, this.topOrthoMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.SIDE, this.sideOrthoMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.FRONT, this.frontOrthoMarkerImp );
-			this.mainCameraViewSelector.setRenderer( new CameraViewCellRenderer( this.mainCameraViewTracker ) );
 
 			this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener( this.mainCameraViewTracker );
 			this.mainCameraMarkerList.addAndInvokeNewSchoolValueListener( this.mainCameraViewSelectionObserver );
@@ -947,7 +973,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
 		if( ( reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN )
 				|| ( reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK ) ) {
-			this.onscreenLookingGlass.setRenderingEnabled( true );
+			this.onscreenRenderTarget.setRenderingEnabled( true );
 		}
 	}
 
@@ -956,7 +982,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
 		if( ( reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN )
 				|| ( reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK ) ) {
-			this.onscreenLookingGlass.setRenderingEnabled( false );
+			this.onscreenRenderTarget.setRenderingEnabled( false );
 		}
 	}
 
@@ -1120,8 +1146,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	@Override
 	protected void handleProjectOpened( org.lgna.project.Project nextProject ) {
-		if( this.onscreenLookingGlass != null ) {
-			this.onscreenLookingGlass.forgetAllCachedItems();
+		if( this.onscreenRenderTarget != null ) {
+			this.onscreenRenderTarget.forgetAllCachedItems();
 			edu.cmu.cs.dennisc.nebulous.Manager.unloadNebulousModelData();
 		}
 
@@ -1144,21 +1170,21 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().decrementAutomaticDisplayCount();
 	}
 
-	private void paintHorizonLine( Graphics graphics, LightweightOnscreenLookingGlass lookingGlass, OrthographicCamera camera )
+	private void paintHorizonLine( Graphics graphics, edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget renderTarget, OrthographicCamera camera )
 	{
 		AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
 		double dotProd = Vector3.calculateDotProduct( cameraTransform.orientation.up, Vector3.accessPositiveYAxis() );
 		if( ( dotProd == 1 ) || ( dotProd == -1 ) )
 		{
-			Dimension lookingGlassSize = lookingGlass.getSize();
+			Dimension lookingGlassSize = renderTarget.getSize();
 
 			Point3 cameraPosition = camera.getAbsoluteTransformation().translation;
 
-			ClippedZPlane dummyPlane = new ClippedZPlane( camera.picturePlane.getValue(), lookingGlass.getActualViewport( camera ) );
+			ClippedZPlane dummyPlane = new ClippedZPlane( camera.picturePlane.getValue(), renderTarget.getActualViewport( camera ) );
 
 			double lookingGlassHeight = lookingGlassSize.getHeight();
 
-			double yRatio = this.onscreenLookingGlass.getHeight() / dummyPlane.getHeight();
+			double yRatio = this.onscreenRenderTarget.getHeight() / dummyPlane.getHeight();
 			double horizonInCameraSpace = 0.0d - cameraPosition.y;
 			double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
 			int horizonLinePixelVal = (int)( yRatio * distanceFromMaxY );
@@ -1171,23 +1197,28 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 
 	// ######### Begin implementation of edu.cmu.cs.dennisc.lookingglass.event.LookingGlassAdapter
-	public void initialized( LookingGlassInitializeEvent e ) {
+	@Override
+	public void initialized( RenderTargetInitializeEvent e ) {
 	}
 
-	public void cleared( LookingGlassRenderEvent e ) {
+	@Override
+	public void cleared( RenderTargetRenderEvent e ) {
 	}
 
-	public void rendered( LookingGlassRenderEvent e ) {
-		if( ( this.onscreenLookingGlass.getCameraCount() > 0 ) && ( this.onscreenLookingGlass.getCameraAt( 0 ) instanceof OrthographicCamera ) ) {
-			paintHorizonLine( e.getGraphics2D(), this.onscreenLookingGlass, (OrthographicCamera)this.onscreenLookingGlass.getCameraAt( 0 ) );
+	@Override
+	public void rendered( RenderTargetRenderEvent e ) {
+		if( ( this.onscreenRenderTarget.getSgCameraCount() > 0 ) && ( this.onscreenRenderTarget.getSgCameraAt( 0 ) instanceof OrthographicCamera ) ) {
+			paintHorizonLine( e.getGraphics2D(), this.onscreenRenderTarget, (OrthographicCamera)this.onscreenRenderTarget.getSgCameraAt( 0 ) );
 		}
 	}
 
-	public void resized( LookingGlassResizeEvent e ) {
+	@Override
+	public void resized( RenderTargetResizeEvent e ) {
 		// updateCameraMarkers();
 	}
 
-	public void displayChanged( LookingGlassDisplayChangeEvent e ) {
+	@Override
+	public void displayChanged( RenderTargetDisplayChangeEvent e ) {
 	}
 
 	// ######### End implementation of edu.cmu.cs.dennisc.lookingglass.event.LookingGlassAdapter

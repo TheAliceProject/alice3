@@ -149,6 +149,7 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
 							firePolicyMap.get( listener ).put( key, true );
 							final ComponentThread thread = new ComponentThread( new Runnable() {
+								@Override
 								public void run() {
 									while( firePolicyMap.get( listener ).get( key ) ) {
 										fireEvent( listener, event );
@@ -178,6 +179,7 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
 							firePolicyMap.get( listener ).put( key, true );
 							final ComponentThread thread = new ComponentThread( new Runnable() {
+								@Override
 								public void run() {
 									while( firePolicyMap.get( listener ).get( key ) ) {
 										fireEvent( listener, event );

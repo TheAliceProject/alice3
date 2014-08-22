@@ -65,6 +65,7 @@ public abstract class SThing implements Rider {
 		this.getImplementation().setName( name );
 	}
 
+	@Override
 	@GetterTemplate( isPersistent = true )
 	@MethodTemplate( )
 	public SThing getVehicle() {

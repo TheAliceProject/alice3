@@ -61,6 +61,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 
 	private org.alice.ide.capture.views.ImageCaptureRectangleStencilView getImageCaptureRectangleStencilView( org.lgna.croquet.views.AbstractWindow<?> window ) {
 		return mapWindowToStencilView.getInitializingIfAbsent( window, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentHashMap.Initializer<org.lgna.croquet.views.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView>() {
+			@Override
 			public org.alice.ide.capture.views.ImageCaptureRectangleStencilView initialize( org.lgna.croquet.views.AbstractWindow<?> key ) {
 				return new org.alice.ide.capture.views.ImageCaptureRectangleStencilView( key, LAYER_ID, ImageCaptureComposite.this );
 			}
@@ -68,6 +69,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 	}
 
 	private final org.lgna.croquet.Operation captureEntireWindowOperation = this.createActionOperation( "captureEntireWindow", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 			org.lgna.croquet.views.AbstractWindow<?> window = app.peekWindow();
@@ -82,6 +84,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 	} );
 
 	private final org.lgna.croquet.Operation captureEntireContentPaneOperation = this.createActionOperation( "captureEntireContentPane", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 			org.lgna.croquet.views.AbstractWindow<?> window = app.peekWindow();
@@ -95,6 +98,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 	} );
 
 	private final org.lgna.croquet.Operation captureRectangleOperation = this.createActionOperation( "captureRectangle", new Action() {
+		@Override
 		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 			org.lgna.croquet.views.AbstractWindow<?> window = app.peekWindow();
@@ -169,7 +173,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		ImageCaptureComposite.getInstance().getIsFrameShowingState().getSwingModel().getButtonModel().setSelected( true );
+		ImageCaptureComposite.getInstance().getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
 	}
 
 }

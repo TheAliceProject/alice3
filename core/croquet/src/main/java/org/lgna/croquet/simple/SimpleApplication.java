@@ -52,10 +52,12 @@ public class SimpleApplication extends org.lgna.croquet.Application {
 	private final org.lgna.croquet.Document document = new org.lgna.croquet.Document() {
 		private final org.lgna.croquet.history.TransactionHistory transactionHistory = new org.lgna.croquet.history.TransactionHistory();
 
+		@Override
 		public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
 			return this.transactionHistory;
 		}
 
+		@Override
 		public UndoHistory getUndoHistory( Group group ) {
 			// TODO Auto-generated method stub
 			return null;

@@ -49,6 +49,7 @@ package org.lgna.project.ast;
 public abstract class AbstractField extends AbstractMember implements Accessible {
 	public abstract boolean isValid();
 
+	@Override
 	public abstract AbstractType<?, ?, ?> getValueType();
 
 	public abstract boolean isStatic();
@@ -76,10 +77,12 @@ public abstract class AbstractField extends AbstractMember implements Accessible
 		}
 	}
 
+	@Override
 	public String getValidName( Node context ) {
 		return this.getName();
 	}
 
+	@Override
 	@Deprecated
 	public String getValidName() {
 		return this.getValidName( null );

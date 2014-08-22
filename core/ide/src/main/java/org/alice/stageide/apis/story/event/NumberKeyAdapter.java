@@ -10,6 +10,7 @@ public class NumberKeyAdapter extends AbstractAdapter implements org.lgna.story.
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void numberKeyPressed( NumberKeyEvent e ) {
 		invokeEntryPoint( e );
 	}

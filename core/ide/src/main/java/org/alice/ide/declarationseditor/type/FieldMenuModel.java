@@ -50,6 +50,7 @@ public final class FieldMenuModel extends MemberMenuModel<org.lgna.project.ast.U
 
 	public static FieldMenuModel getInstance( org.lgna.project.ast.UserField field ) {
 		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, FieldMenuModel>() {
+			@Override
 			public FieldMenuModel initialize( org.lgna.project.ast.UserField key ) {
 				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				prepModels.add( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( key ).getLaunchOperation().getMenuItemPrepModel() );

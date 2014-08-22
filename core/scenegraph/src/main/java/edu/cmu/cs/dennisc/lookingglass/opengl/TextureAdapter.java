@@ -128,10 +128,4 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 		this.textureBinding.ensureUpToDate( rc, this.textureData );
 		return this.textureBinding;
 	}
-
-	public abstract java.awt.Graphics2D createGraphics();
-
-	public abstract void commitGraphics( java.awt.Graphics2D g, int x, int y, int width, int height );
-
-	public abstract java.awt.Image getImage();
 }

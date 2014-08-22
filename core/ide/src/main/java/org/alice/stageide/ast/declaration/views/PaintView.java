@@ -48,6 +48,7 @@ package org.alice.stageide.ast.declaration.views;
  */
 public class PaintView extends org.lgna.croquet.views.ViewController<javax.swing.JComponent, org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> {
 	private org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression> valueListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Expression>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.Expression> e ) {
 			PaintView.this.repaint();
 		}

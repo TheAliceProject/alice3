@@ -56,6 +56,7 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 	private final N potentialNameChanger;
 
 	private final edu.cmu.cs.dennisc.javax.swing.ColorCustomizer foregroundCustomizer = new edu.cmu.cs.dennisc.javax.swing.ColorCustomizer() {
+		@Override
 		public java.awt.Color changeColorIfAppropriate( java.awt.Color defaultColor ) {
 			if( isRetainBothSelected() ) {
 				return areNamesIdentical() ? org.alice.ide.ast.type.merge.croquet.views.MemberViewUtilities.ACTION_MUST_BE_TAKEN_COLOR : defaultColor;

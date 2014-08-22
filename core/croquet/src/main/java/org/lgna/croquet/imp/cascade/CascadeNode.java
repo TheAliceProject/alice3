@@ -63,6 +63,7 @@ public abstract class CascadeNode<P extends CascadeNode<?, ?>, E extends org.lgn
 		this.elementResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.elementResolver );
 	}

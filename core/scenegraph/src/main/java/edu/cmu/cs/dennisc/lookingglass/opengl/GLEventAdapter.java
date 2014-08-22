@@ -44,6 +44,7 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
+import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 /**
  * @author Dennis Cosgrove
@@ -62,8 +63,8 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	private boolean isDisplayIgnoredDueToPreviousException = false;
 
-	private static class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent {
-		public ReusableLookingGlassRenderEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, Graphics2D g ) {
+	private static class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent {
+		public ReusableLookingGlassRenderEvent( AbstractLookingGlass lookingGlass, Graphics2D g ) {
 			super( lookingGlass, g );
 		}
 
@@ -172,9 +173,9 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 					} finally {
 						this.reusableLookingGlassRenderEvent.epilogue();
 					}
-					if( this.lookingGlass.getCameraCount() > 0 ) {
+					if( this.lookingGlass.getSgCameraCount() > 0 ) {
 						this.renderContext.initialize();
-						Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameras = this.lookingGlass.accessCameras();
+						Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameras = this.lookingGlass.accessSgCameras();
 						synchronized( cameras ) {
 							for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : cameras ) {
 								AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
@@ -348,15 +349,17 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		this.height = GlDrawableUtilities.getGlDrawableHeight( drawable );
 
 		this.renderContext.setGL( gl );
-		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, GlDrawableUtilities.getGlDrawableWidth( this.drawable ), GlDrawableUtilities.getGlDrawableHeight( this.drawable ) ) );
+		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent( this.lookingGlass, GlDrawableUtilities.getGlDrawableWidth( this.drawable ), GlDrawableUtilities.getGlDrawableHeight( this.drawable ) ) );
 	}
 
 	//todo: investigate not being invoked
+	@Override
 	public void init( javax.media.opengl.GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
 		initialize( drawable );
 	}
 
+	@Override
 	public void display( javax.media.opengl.GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
 		assert drawable == this.drawable;
@@ -384,20 +387,22 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		performRender();
 	}
 
+	@Override
 	public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "reshape", drawable, x, y, width, height );
 		assert drawable == this.drawable;
 		this.width = width;
 		this.height = height;
-		this.lookingGlass.fireResized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent( this.lookingGlass, width, height ) );
+		this.lookingGlass.fireResized( new edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent( this.lookingGlass, width, height ) );
 	}
 
 	public void displayChanged( javax.media.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "displayChanged", drawable, modeChanged, deviceChanged );
 		assert drawable == this.drawable;
-		this.lookingGlass.fireDisplayChanged( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent( this.lookingGlass, modeChanged, deviceChanged ) );
+		this.lookingGlass.fireDisplayChanged( new edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent( this.lookingGlass, modeChanged, deviceChanged ) );
 	}
 
+	@Override
 	public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( drawable );
 	}

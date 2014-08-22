@@ -99,6 +99,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			}
 		}
 
+		@Override
 		public boolean accept( Component c ) {
 			return !isHandle( c );
 		}
@@ -217,6 +218,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		return scalable;
 	}
 
+	@Override
 	public void clear() {
 		this.setManipulatedObject( null );
 		this.setParent( null );
@@ -250,14 +252,17 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.resizeToObject();
 	}
 
+	@Override
 	public void setSelectedObject( AbstractTransformable selectedObject ) {
 		this.setManipulatedObject( selectedObject );
 	}
 
+	@Override
 	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;
 	}
 
+	@Override
 	public void setDragAdapterAndAddHandle( AbstractDragAdapter dragAdapter ) {
 		this.setDragAdapter( dragAdapter );
 		if( this.dragAdapter != null ) {
@@ -311,26 +316,32 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.updateCameraRelativeOpacity();
 	}
 
+	@Override
 	public void addToSet( HandleSet set ) {
 		this.handleSet.addSet( set );
 	}
 
+	@Override
 	public HandleSet getHandleSet() {
 		return this.handleSet;
 	}
 
+	@Override
 	public boolean isAlwaysVisible() {
 		return false;
 	}
 
+	@Override
 	public void addToGroup( HandleSet.HandleGroup group ) {
 		this.handleSet.addGroup( group );
 	}
 
+	@Override
 	public void addToGroups( HandleSet.HandleGroup... groups ) {
 		this.handleSet.addGroups( groups );
 	}
 
+	@Override
 	public boolean isMemberOf( HandleSet set ) {
 		if( set == null ) {
 			return false;
@@ -339,10 +350,12 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	}
 
+	@Override
 	public boolean isMemberOf( HandleSet.HandleGroup group ) {
 		return this.handleSet.get( group.ordinal() );
 	}
 
+	@Override
 	public void setAnimator( Animator animator ) {
 		assert animator != null;
 		this.animator = animator;
@@ -356,6 +369,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		return sgFrontFacingAppearance;
 	}
 
+	@Override
 	public AbstractTransformable getManipulatedObject() {
 		return this.manipulatedObject;
 		//		return (Transformable)this.getParent();
@@ -452,22 +466,27 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.animateToColor( targetColor );
 	}
 
+	@Override
 	public boolean matches( ManipulationEvent event ) {
 		return this.criteriaManager.matches( event );
 	}
 
+	@Override
 	public void addCondition( ManipulationEventCriteria condition ) {
 		this.criteriaManager.addCondition( condition );
 	}
 
+	@Override
 	public void removeCondition( ManipulationEventCriteria condition ) {
 		this.criteriaManager.removeCondition( condition );
 	}
 
+	@Override
 	public void activate( ManipulationEvent event ) {
 		this.setHandleActive( true );
 	}
 
+	@Override
 	public void deactivate( ManipulationEvent event ) {
 		this.setHandleActive( false );
 	}
@@ -494,6 +513,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	}
 
+	@Override
 	public void setCameraPosition( Point3 cameraPosition ) {
 		this.setCameraRelativeOpacity( this.calculateCameraRelativeOpacity( cameraPosition ) );
 	}
@@ -552,6 +572,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		return transform;
 	}
 
+	@Override
 	public void setManipulation( AbstractManipulator manipulation ) {
 		this.manipulation = manipulation;
 		if( this.manipulation != null ) {
@@ -559,22 +580,27 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	}
 
+	@Override
 	public AbstractManipulator getManipulation( InputState input ) {
 		return this.manipulation;
 	}
 
+	@Override
 	public void setHandleManager( HandleManager handleManager ) {
 		this.handleManager = handleManager;
 	}
 
+	@Override
 	public HandleManager getHandleManager() {
 		return this.handleManager;
 	}
 
+	@Override
 	public HandleState getHandleStateCopy() {
 		return new HandleState( this.state );
 	}
 
+	@Override
 	public boolean isRenderable() {
 		if( this.manipulatedObject == null ) {
 			return false;
@@ -641,6 +667,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.isPickable = isPickable;
 	}
 
+	@Override
 	public boolean isPickable() {
 		if( this.isPickable ) {
 			return this.state.isVisible();
@@ -649,45 +676,54 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 	}
 
+	@Override
 	public void setHandleActive( boolean active ) {
 		this.state.setActive( active );
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 
+	@Override
 	public void setHandleRollover( boolean rollover ) {
 		this.state.setRollover( rollover );
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 
+	@Override
 	public boolean isHandleVisible() {
 		return this.state.isVisible() || this.isAlwaysVisible();
 	}
 
+	@Override
 	public void setHandleVisible( boolean visible ) {
 		this.state.setVisible( visible );
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}
 
+	@Override
 	public void setVisualsShowing( boolean showing ) {
 		this.getSGVisual().isShowing.setValue( showing );
 	}
 
+	@Override
 	public PickHint getPickHint() {
 		return PickHint.PickType.THREE_D_HANDLE.pickHint();
 	}
 
 	private final PropertyListener scaleListener = new PropertyListener() {
+		@Override
 		public void propertyChanged( PropertyEvent e ) {
 			ManipulationHandle3D.this.setScale( ManipulationHandle3D.this.getObjectScale() );
 			ManipulationHandle3D.this.resizeToObject();
 			ManipulationHandle3D.this.positionRelativeToObject();
 		}
 
+		@Override
 		public void propertyChanging( PropertyEvent e ) {
 		}
 	};
 
 	private final AbsoluteTransformationListener absoluteTransformationListener = new AbsoluteTransformationListener() {
+		@Override
 		public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
 			ManipulationHandle3D.this.updateCameraRelativeOpacity();
 		}

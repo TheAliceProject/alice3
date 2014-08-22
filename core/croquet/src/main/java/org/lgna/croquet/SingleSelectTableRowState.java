@@ -72,6 +72,7 @@ public abstract class SingleSelectTableRowState<T> extends ItemState<T> {
 	}
 
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		@Override
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 			handleListSelectionChanged( e );
 		}

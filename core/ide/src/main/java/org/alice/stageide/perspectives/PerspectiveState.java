@@ -56,8 +56,6 @@ public class PerspectiveState extends org.lgna.croquet.MutableDataSingleSelectLi
 				perspectives );
 	}
 
-	private java.util.Stack<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
-
 	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
 		this.stack.push( reasonToDisableSomeAmountOfRendering );
 		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().disableRendering( reasonToDisableSomeAmountOfRendering );
@@ -71,4 +69,6 @@ public class PerspectiveState extends org.lgna.croquet.MutableDataSingleSelectLi
 			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
 		}
 	}
+
+	private final java.util.Stack<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 }

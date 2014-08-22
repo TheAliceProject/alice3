@@ -58,11 +58,11 @@ public abstract class AbstractArgument extends AbstractNode {
 	protected abstract AbstractType<?, ?, ?> getExpressionTypeForParameterType( AbstractType<?, ?, ?> parameterType );
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			AbstractArgument other = (AbstractArgument)o;
-			if( this.parameter.valueContentEquals( other.parameter, strictness ) ) {
-				return this.expression.valueContentEquals( other.expression, strictness );
+			if( this.parameter.valueContentEquals( other.parameter, strictness, filter ) ) {
+				return this.expression.valueContentEquals( other.expression, strictness, filter );
 			}
 		}
 		return false;
@@ -70,7 +70,7 @@ public abstract class AbstractArgument extends AbstractNode {
 
 	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 
-	public final DeclarationProperty<AbstractParameter> parameter = new DeclarationProperty<AbstractParameter>( this );
+	public final DeclarationProperty<AbstractParameter> parameter = DeclarationProperty.createReferenceInstance( this );
 	public final ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {

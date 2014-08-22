@@ -49,6 +49,7 @@ package org.alice.ide.croquet.components;
 public class InstanceFactoryPopupButton extends org.lgna.croquet.views.CustomItemStatePopupButton<org.alice.ide.instancefactory.InstanceFactory> {
 	// note: for singleton ThisInstanceFactory
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
 			InstanceFactoryPopupButton.this.repaint();
 		}
@@ -133,12 +134,12 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.views.CustomIte
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.refreshLater();
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addValueListener( this.typeListener );
+		org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().addValueListener( this.typeListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeValueListener( this.typeListener );
+		org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().removeValueListener( this.typeListener );
 		super.handleUndisplayable();
 	}
 };

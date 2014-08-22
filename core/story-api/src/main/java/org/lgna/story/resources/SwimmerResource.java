@@ -1,5 +1,7 @@
 package org.lgna.story.resources;
 
+import org.lgna.project.annotations.FieldTemplate;
+
 @org.lgna.project.annotations.ResourceTemplate( modelClass = org.lgna.story.SSwimmer.class )
 public interface SwimmerResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId ROOT = new JointId( null, SwimmerResource.class );
@@ -19,6 +21,7 @@ public interface SwimmerResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId SPINE_MIDDLE = new org.lgna.story.resources.JointId( SPINE_BASE, SwimmerResource.class );
 	public static final org.lgna.story.resources.JointId TAIL = new org.lgna.story.resources.JointId( SPINE_MIDDLE, SwimmerResource.class );
 
+	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
 	public static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
 
 	public org.lgna.story.implementation.SwimmerImp createImplementation( org.lgna.story.SSwimmer abstraction );

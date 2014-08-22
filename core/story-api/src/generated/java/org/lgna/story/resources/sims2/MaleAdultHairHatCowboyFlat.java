@@ -40,11 +40,13 @@ public enum MaleAdultHairHatCowboyFlat implements MaleAdultHair, MaleElderHair {
 	RED_BLACK_HAT,
 	RED_STRAW_HAT;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return true;

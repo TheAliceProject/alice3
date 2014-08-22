@@ -50,11 +50,13 @@ public enum FemaleAdultHairHatCapUp implements FemaleAdultHair, FemaleElderHair 
 	GREY_BLACK_HAT,
 	GREY_GREY_HAT;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return true;

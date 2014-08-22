@@ -46,6 +46,7 @@ package org.alice.ide.frametitle;
  * @author Dennis Cosgrove
  */
 public class AliceIdeFrameTitleGenerator implements IdeFrameTitleGenerator {
+	@Override
 	public String generateTitle( java.net.URI uri, boolean isDocumentUpToDateWithUri ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( org.alice.ide.IDE.getApplicationName() );

@@ -52,6 +52,7 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 
 		}
 
+		@Override
 		public void layoutContainer( java.awt.Container parent ) {
 			JSideBySideScrollPane jSideBySideScrollPane = (JSideBySideScrollPane)parent;
 
@@ -86,10 +87,12 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 			jSideBySideScrollPane.horizontalScrollBar.setBounds( insets.left, y, w, pageEndScrollBarPreferredSize.height );
 		}
 
+		@Override
 		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
 			return new java.awt.Dimension( 0, 0 );
 		}
 
+		@Override
 		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
 			JSideBySideScrollPane jSideBySideScrollPane = (JSideBySideScrollPane)parent;
 			java.awt.Dimension leadingViewportPreferredSize = jSideBySideScrollPane.leadingViewport.getPreferredSize();
@@ -102,9 +105,11 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 					Math.max( leadingViewportPreferredSize.height, trailingViewportPreferredSize.height ) + pageEndScrollBarPreferredSize.height );
 		}
 
+		@Override
 		public void addLayoutComponent( String name, java.awt.Component comp ) {
 		}
 
+		@Override
 		public void removeLayoutComponent( java.awt.Component comp ) {
 		}
 
@@ -301,28 +306,35 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		}
 
 		private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+			@Override
 			public void mouseEntered( java.awt.event.MouseEvent e ) {
 				edu.cmu.cs.dennisc.java.awt.CursorUtilities.pushAndSetPredefinedCursor( e.getComponent(), java.awt.Cursor.E_RESIZE_CURSOR );
 			}
 
+			@Override
 			public void mouseExited( java.awt.event.MouseEvent e ) {
 				edu.cmu.cs.dennisc.java.awt.CursorUtilities.popAndSet( e.getComponent() );
 			}
 
+			@Override
 			public void mousePressed( java.awt.event.MouseEvent e ) {
 			}
 
+			@Override
 			public void mouseReleased( java.awt.event.MouseEvent e ) {
 			}
 
+			@Override
 			public void mouseClicked( java.awt.event.MouseEvent e ) {
 			}
 		};
 
 		private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
+			@Override
 			public void mouseMoved( java.awt.event.MouseEvent e ) {
 			}
 
+			@Override
 			public void mouseDragged( java.awt.event.MouseEvent e ) {
 				handleMouseDragged( e );
 			}
@@ -377,12 +389,14 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 	private final JSideBySideScrollBar horizontalScrollBar = new JSideBySideScrollBar( javax.swing.JScrollBar.HORIZONTAL );
 
 	private final javax.swing.event.ChangeListener viewportListener = new javax.swing.event.ChangeListener() {
+		@Override
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
 			updateScrollBars();
 		}
 	};
 
 	private final javax.swing.event.ChangeListener verticalScrollListener = new javax.swing.event.ChangeListener() {
+		@Override
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
 			javax.swing.BoundedRangeModel model = (javax.swing.BoundedRangeModel)( e.getSource() );
 			int leadingY = model.getValue(); //todo
@@ -392,6 +406,7 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 		}
 	};
 	private final javax.swing.event.ChangeListener horizontalScrollListener = new javax.swing.event.ChangeListener() {
+		@Override
 		public void stateChanged( javax.swing.event.ChangeEvent e ) {
 			javax.swing.BoundedRangeModel model = (javax.swing.BoundedRangeModel)( e.getSource() );
 			int leadingX = model.getValue(); //todo
@@ -402,6 +417,7 @@ public class JSideBySideScrollPane extends javax.swing.JPanel {
 	};
 
 	private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+		@Override
 		public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
 			handleMouseWheelMoved( e );
 		}

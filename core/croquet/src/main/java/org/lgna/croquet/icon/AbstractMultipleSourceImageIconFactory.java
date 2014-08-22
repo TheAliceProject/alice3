@@ -73,6 +73,7 @@ public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIco
 		assert list.contains( null ) == false : this;
 
 		java.util.Collections.sort( list, new java.util.Comparator<javax.swing.ImageIcon>() {
+			@Override
 			public int compare( javax.swing.ImageIcon o1, javax.swing.ImageIcon o2 ) {
 				return compareInts( o1.getIconWidth(), o2.getIconWidth() );
 			}
@@ -103,6 +104,7 @@ public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIco
 		return this.defaultImageIcon.getIconWidth() / (double)this.defaultImageIcon.getIconHeight();
 	}
 
+	@Override
 	public final java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		return new java.awt.Dimension( this.defaultImageIcon.getIconWidth(), this.defaultImageIcon.getIconHeight() );
 	}

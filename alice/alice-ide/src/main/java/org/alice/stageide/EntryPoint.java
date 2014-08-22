@@ -50,10 +50,21 @@ public class EntryPoint {
 	private static final String MENU_BAR_UI_NAME = "MenuBarUI";
 
 	public static void main( final String[] args ) {
+		final edu.cmu.cs.dennisc.crash.CrashDetector crashDetector = new edu.cmu.cs.dennisc.crash.CrashDetector( EntryPoint.class );
+		if( crashDetector.isPreviouslyOpenedButNotSucessfullyClosed() ) {
+			String propertyName = "org.alice.stageide.isCrashDetectionDesired";
+			String isCrashDetectionDesiredText = System.getProperty( propertyName, "true" );
+			if( "true".equals( isCrashDetectionDesiredText.toLowerCase() ) ) {
+				javax.swing.JOptionPane.showMessageDialog( null, "Alice did not successfully close last time." );
+			}
+		}
+		crashDetector.open();
+
 		String text = org.lgna.project.ProjectVersion.getCurrentVersionText()/* + " BETA" */;
 		System.out.println( "version: " + text );
 
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 
 				if( edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.isInstalledLookAndFeelNamed( NIMBUS_LOOK_AND_FEEL_NAME ) ) {
@@ -72,6 +83,9 @@ public class EntryPoint {
 						javax.swing.UIManager.put( MENU_BAR_UI_NAME, macMenuBarUI );
 					}
 				}
+
+				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.scaleFontIAppropriate();
+
 				javax.swing.UIManager.put( "ScrollBar.width", 13 );
 				javax.swing.UIManager.put( "ScrollBar.incrementButtonGap", 0 );
 				javax.swing.UIManager.put( "ScrollBar.decrementButtonGap", 0 );
@@ -122,7 +136,7 @@ public class EntryPoint {
 					rootFrame.setExtendedState( rootFrame.getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
 				}
 
-				org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde();
+				org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde( crashDetector );
 				if( file != null ) {
 					if( file.exists() ) {
 						ide.setProjectFileToLoadOnWindowOpened( file );

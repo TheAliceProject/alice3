@@ -12,6 +12,7 @@ public class StartOcclusionEventAdapter extends AbstractAdapter implements Occlu
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void occlusionStarted( StartOcclusionEvent e ) {
 		invokeEntryPoint( e );
 	}

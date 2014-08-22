@@ -46,7 +46,7 @@ package org.alice.ide.story;
  * @author Dennis Cosgrove
  */
 public class AliceIde extends org.alice.stageide.StageIDE {
-	public AliceIde() {
-		super( new AliceIdeConfiguration() );
+	public AliceIde( edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
+		super( new AliceIdeConfiguration(), crashDetector );
 	}
 }

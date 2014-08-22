@@ -81,10 +81,10 @@ public final class LocalAccess extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			LocalAccess other = (LocalAccess)o;
-			return this.local.valueContentEquals( other.local, strictness );
+			return this.local.valueContentEquals( other.local, strictness, filter );
 		}
 		return false;
 	}
@@ -99,5 +99,5 @@ public final class LocalAccess extends Expression {
 		safeAppendRepr( localizer, this.local.getValue() );
 	}
 
-	public final DeclarationProperty<UserLocal> local = new DeclarationProperty<UserLocal>( this );
+	public final DeclarationProperty<UserLocal> local = DeclarationProperty.createReferenceInstance( this );
 }

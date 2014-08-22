@@ -30,11 +30,13 @@ public enum MaleAdultHairShortGel implements MaleAdultHair, MaleElderHair {
 	BLOND,
 	RED;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

@@ -47,22 +47,22 @@ package org.alice.stageide.sceneeditor;
  * @author Dennis Cosgrove
  */
 public final class ThumbnailGenerator {
-	private final edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
+	private final edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget offscreenRenderTarget;
 
 	public ThumbnailGenerator( int width, int height ) {
-		this.offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( width, height, null );
+		this.offscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenRenderTarget( width, height, null );
 	}
 
 	public java.awt.image.BufferedImage createThumbnail() {
-		synchronized( this.offscreenLookingGlass ) {
+		synchronized( this.offscreenRenderTarget ) {
 			org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = sceneEditor.getSgCameraForCreatingThumbnails();
 			if( sgCamera != null ) {
 				sceneEditor.preScreenCapture();
 
 				boolean isClearingAndAddingRequired;
-				if( offscreenLookingGlass.getCameraCount() == 1 ) {
-					if( offscreenLookingGlass.getCameraAt( 0 ) == sgCamera ) {
+				if( offscreenRenderTarget.getSgCameraCount() == 1 ) {
+					if( offscreenRenderTarget.getSgCameraAt( 0 ) == sgCamera ) {
 						isClearingAndAddingRequired = false;
 					} else {
 						isClearingAndAddingRequired = true;
@@ -71,10 +71,10 @@ public final class ThumbnailGenerator {
 					isClearingAndAddingRequired = true;
 				}
 				if( isClearingAndAddingRequired ) {
-					offscreenLookingGlass.clearCameras();
-					offscreenLookingGlass.addCamera( sgCamera );
+					offscreenRenderTarget.clearSgCameras();
+					offscreenRenderTarget.addSgCamera( sgCamera );
 				}
-				java.awt.image.BufferedImage thumbImage = offscreenLookingGlass.getColorBuffer();
+				java.awt.image.BufferedImage thumbImage = offscreenRenderTarget.getSynchronousImageCapturer().getColorBuffer();
 
 				sceneEditor.postScreenCapture();
 				return thumbImage;
