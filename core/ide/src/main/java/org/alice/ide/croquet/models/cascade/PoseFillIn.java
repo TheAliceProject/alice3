@@ -40,27 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade.fillerinners;
-
-import java.util.List;
-
-import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.ik.core.pose.Pose;
-import org.lgna.project.annotations.ValueDetails;
-import org.lgna.project.ast.Expression;
+package org.alice.ide.croquet.models.cascade;
 
 /**
  * @author Matt May
  */
-public class PoseFillerInner extends ExpressionFillerInner {
-
-	public PoseFillerInner() {
-		super( Pose.class );
-	}
-
-	@Override
-	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		//		IDE.getActiveInstance().
-	}
+public class PoseFillIn {
 
 }
