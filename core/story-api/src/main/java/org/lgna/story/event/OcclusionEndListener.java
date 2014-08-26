@@ -2,6 +2,6 @@ package org.lgna.story.event;
 
 public interface OcclusionEndListener {
 
-	public void occlusionEnded( EndOcclusionEvent e );
+	public void occlusionEnded( EndOcclusionEvent event );
 
 }
