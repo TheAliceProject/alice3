@@ -2,6 +2,6 @@ package org.lgna.story.event;
 
 public interface CollisionStartListener {
 
-	public void collisionStarted( StartCollisionEvent e );
+	public void collisionStarted( StartCollisionEvent event );
 
 }
