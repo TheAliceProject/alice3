@@ -1,4 +1,4 @@
-cd alice/gallery/alice-model-resources
+cd ../alice/gallery/alice-model-resources
 start mvn deploy
 cd ..
 cd alice-model-source
