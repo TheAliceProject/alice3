@@ -90,6 +90,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 	private PoserAnimatorDragAdapter poserAnimatorDragAdapter;
 
 	public AbstractPoserScene( SCamera camera, T ogre ) {
+		System.out.println( "ogre: " + ogre );
 		this.camera = camera;
 		this.camera.setVehicle( this );
 		this.model = ogre;

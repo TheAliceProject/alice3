@@ -89,7 +89,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 			for( MethodInvocation invocation : invocations ) {
 				UserMethod invocationOwner = invocation.getFirstAncestorAssignableTo( UserMethod.class );
 				InvocationCounts invocationCounts = this.getMapMethodToInvocationCounts().get( invocationOwner );
-				if( !invocationOwner.getManagementLevel().isGenerated() && !invocationOwner.getDeclaringType().isAssignableTo( org.lgna.story.SProgram.class ) ) {
+				if( ( invocationOwner != null ) && !invocationOwner.getManagementLevel().isGenerated() && !invocationOwner.getDeclaringType().isAssignableTo( org.lgna.story.SProgram.class ) ) {
 					if( invocationCounts != null ) {
 						//pass
 					} else {

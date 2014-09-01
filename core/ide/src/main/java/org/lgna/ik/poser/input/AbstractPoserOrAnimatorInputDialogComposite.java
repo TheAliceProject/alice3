@@ -246,6 +246,7 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 	public void setType( NamedUserType type ) {
 		this.userType = type;
 		this.model = createInstanceFromType( type );
+		assert model != null : type;
 		if( this.scene != null ) {
 			scene.setNewModel( model );
 		}
