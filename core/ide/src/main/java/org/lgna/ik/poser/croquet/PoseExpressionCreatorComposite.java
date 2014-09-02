@@ -42,8 +42,8 @@
  */
 package org.lgna.ik.poser.croquet;
 
+import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.lgna.ik.poser.input.PoserComposite;
-import org.lgna.project.ast.UserField;
 
 /**
  * @author Matt May
@@ -71,26 +71,6 @@ public final class PoseExpressionCreatorComposite extends org.lgna.croquet.Singl
 
 	}
 
-	//	@Override
-	//	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
-	//		if( getControlComposite().getParent().getUsedJoints().isEmpty() ) {
-	//			return emptyPoseStatus;
-	//		}
-	//		if( validator != null ) {
-	//			//pass
-	//		} else {
-	//			this.validator = new FieldNameValidator( getDeclaringType() );
-	//		}
-	//		String candidate = getControlComposite().getNameState().getValue();
-	//		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-	//		if( explanation != null ) {
-	//			errorStatus.setText( explanation );
-	//			return errorStatus;
-	//		} else {
-	//			return IS_GOOD_TO_GO_STATUS;
-	//		}
-	//	}
-
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( this.poserComposite.isEmptyPose() ) {
@@ -102,8 +82,11 @@ public final class PoseExpressionCreatorComposite extends org.lgna.croquet.Singl
 
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
-		UserField field = this.poserComposite.getControlComposite().createPoseField();
-		return field.initializer.getValue();
+		try {
+			return this.poserComposite.getControlComposite().createPoseExpression();
+		} catch( CannotCreateExpressionException e ) {
+			throw new Error( e );
+		}
 	}
 
 	@Override

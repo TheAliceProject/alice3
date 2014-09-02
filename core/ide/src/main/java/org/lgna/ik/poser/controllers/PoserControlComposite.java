@@ -44,22 +44,16 @@ package org.lgna.ik.poser.controllers;
 
 import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.alice.stageide.ast.ExpressionCreator;
-import org.lgna.croquet.CancelException;
-import org.lgna.croquet.StringState;
 import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
 import org.lgna.ik.poser.croquet.view.PoserControlView;
 import org.lgna.ik.poser.input.AbstractPoserOrAnimatorComposite;
 import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.UserField;
 
 /**
  * @author Matt May
  */
 public class PoserControlComposite extends AbstractPoserControlComposite<PoserControlView> {
-
-	private final StringState nameState = createStringState( "poseName" );
 
 	public PoserControlComposite( AbstractPoserOrAnimatorComposite parent ) {
 		super( parent,
@@ -71,20 +65,22 @@ public class PoserControlComposite extends AbstractPoserControlComposite<PoserCo
 		return new PoserControlView( this );
 	}
 
-	public StringState getNameState() {
-		return this.nameState;
+	public Expression createPoseExpression() throws CannotCreateExpressionException {
+		Pose<?> pose = parent.getPose();
+		return new ExpressionCreator().createExpression( pose );
 	}
 
-	public UserField createPoseField() {
-		try {
-			Pose<?> pose = parent.getPose();
-			Expression rhSide = new ExpressionCreator().createExpression( pose );
-			UserField rv = new UserField( nameState.getValue(), JavaType.getInstance( Pose.class ), rhSide );
-			return rv;
-		} catch( CannotCreateExpressionException e ) {
-			throw new CancelException();
-		}
-	}
+	//
+	//	public UserField createPoseField() {
+	//		try {
+	//			Pose<?> pose = parent.getPose();
+	//			Expression rhSide = new ExpressionCreator().createExpression( pose );
+	//			UserField rv = new UserField( nameState.getValue(), JavaType.getInstance( Pose.class ), rhSide );
+	//			return rv;
+	//		} catch( CannotCreateExpressionException e ) {
+	//			throw new CancelException();
+	//		}
+	//	}
 
 	public AbstractPoserOrAnimatorComposite getParent() {
 		return parent;
