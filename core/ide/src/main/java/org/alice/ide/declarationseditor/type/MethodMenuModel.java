@@ -42,7 +42,6 @@
  */
 package org.alice.ide.declarationseditor.type;
 
-import org.lgna.ik.poser.input.AbstractAnimatorInputDialogComposite;
 
 /**
  * @author Dennis Cosgrove
@@ -59,9 +58,9 @@ public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.
 				prepModels.add( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( key ).getMenuItemPrepModel() );
 				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
 				prepModels.add( tabState.getAlternateLocalizationItemSelectionOperation( org.alice.ide.declarationseditor.CodeComposite.getInstance( key ) ).getMenuItemPrepModel() );
-				AbstractAnimatorInputDialogComposite<?> dialog = AbstractAnimatorInputDialogComposite.getDialogForUserType( method.getDeclaringType(), method );
-				if( dialog != null ) {
-					prepModels.add( dialog.getLaunchOperation().getMenuItemPrepModel() );
+				org.lgna.ik.poser.croquet.ChangeAnimationProcedureDialog changeAnimationProcedureDialog = org.lgna.ik.poser.croquet.ChangeAnimationProcedureDialog.getInstance( method );
+				if( changeAnimationProcedureDialog != null ) {
+					prepModels.add( changeAnimationProcedureDialog.getLaunchOperation().getMenuItemPrepModel() );
 				}
 				return new MethodMenuModel( key, prepModels );
 			}

@@ -50,7 +50,7 @@ import org.lgna.story.SFlyer;
 /**
  * @author Matt May
  */
-public class FlyerPoserInputDialog extends AbstractPoserInputDialogComposite<SFlyer> {
+public class FlyerPoserInputDialog extends PoserComposite<SFlyer> {
 
 	public FlyerPoserInputDialog( NamedUserType valueType ) {
 		super( valueType, java.util.UUID.fromString( "6058e0b2-0c39-417c-806d-613c2aecd523" ) );

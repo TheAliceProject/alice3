@@ -61,9 +61,9 @@ public class AddUnmanagedPoseFieldComposite extends org.alice.ide.ast.declaratio
 		super(
 				java.util.UUID.fromString( "882dc293-d176-48c6-9b42-abc15c734779" ),
 				new FieldDetailsBuilder()
-						.isFinal( ApplicabilityStatus.NOT_APPLICABLE, true )
+						.isFinal( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
 						.valueComponentType( ApplicabilityStatus.DISPLAYED, org.lgna.project.ast.JavaType.getInstance( org.lgna.ik.core.pose.Pose.class ) )
-						.valueIsArrayType( ApplicabilityStatus.NOT_APPLICABLE, false )
+						.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
 						.initializer( ApplicabilityStatus.EDITABLE, null )
 						.build() );
 		this.declaringType = declaringType;
@@ -77,6 +77,15 @@ public class AddUnmanagedPoseFieldComposite extends org.alice.ide.ast.declaratio
 	@Override
 	public org.lgna.project.ast.NamedUserType getDeclaringType() {
 		return this.declaringType;
+	}
+
+	@Override
+	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
+		return this.initializerInitialValue;
+	}
+
+	public void setInitializerInitialValue( org.lgna.project.ast.Expression initializerInitialValue ) {
+		this.initializerInitialValue = initializerInitialValue;
 	}
 
 	@Override
@@ -100,4 +109,5 @@ public class AddUnmanagedPoseFieldComposite extends org.alice.ide.ast.declaratio
 	}
 
 	private final org.lgna.project.ast.NamedUserType declaringType;
+	private org.lgna.project.ast.Expression initializerInitialValue;
 }

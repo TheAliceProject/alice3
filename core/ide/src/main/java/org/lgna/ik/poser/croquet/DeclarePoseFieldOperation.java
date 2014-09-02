@@ -46,8 +46,7 @@ import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
-import org.lgna.ik.poser.input.AbstractPoserInputDialogComposite;
-import org.lgna.ik.poser.input.BipedPoserInputDialog;
+import org.lgna.ik.poser.input.PoserComposite;
 
 /**
  * @author Matt May
@@ -56,7 +55,7 @@ public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
 	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserType, DeclarePoseFieldOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static DeclarePoseFieldOperation getInstance( org.lgna.project.ast.NamedUserType declaringType ) {
-		if( AbstractPoserInputDialogComposite.isPoseable( declaringType ) ) {
+		if( PoserComposite.isPoseable( declaringType ) ) {
 			return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserType, DeclarePoseFieldOperation>() {
 				@Override
 				public DeclarePoseFieldOperation initialize( org.lgna.project.ast.NamedUserType declaringType ) {
@@ -82,9 +81,18 @@ public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
 	protected Model getNext( CompletionStep<?> step, java.util.List<Step<?>> subSteps, Object iteratingData ) {
 		switch( subSteps.size() ) {
 		case 0:
-			return BipedPoserInputDialog.getDialogForUserType( this.declaringType ).getLaunchOperation();
+			return PoseExpressionCreatorComposite.getInstance( this.declaringType ).getValueCreator();
 		case 1:
-			return org.lgna.ik.poser.croquet.AddUnmanagedPoseFieldComposite.getInstance( this.declaringType ).getLaunchOperation();
+			org.lgna.croquet.history.Step<?> prevSubStep = subSteps.get( 0 );
+			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {
+				org.lgna.project.ast.Expression expression = (org.lgna.project.ast.Expression)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
+				org.lgna.ik.poser.croquet.AddUnmanagedPoseFieldComposite addUnmanagedPoseFieldComposite = org.lgna.ik.poser.croquet.AddUnmanagedPoseFieldComposite.getInstance( this.declaringType );
+				addUnmanagedPoseFieldComposite.setInitializerInitialValue( expression );
+				return addUnmanagedPoseFieldComposite.getLaunchOperation();
+			} else {
+				return null;
+			}
+
 		default:
 			throw new Error();
 		}
@@ -98,5 +106,4 @@ public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
 	}
 
 	private final org.lgna.project.ast.NamedUserType declaringType;
-
 }

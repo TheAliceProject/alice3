@@ -71,8 +71,8 @@ import org.lgna.ik.poser.animation.edits.AddKeyFrameToTimeLineEdit;
 import org.lgna.ik.poser.animation.edits.ModifyPoseOnExistingKeyFrameInTimeLineEdit;
 import org.lgna.ik.poser.controllers.PoserEvent;
 import org.lgna.ik.poser.croquet.view.AnimatorControlView;
-import org.lgna.ik.poser.input.AbstractAnimatorInputDialogComposite;
-import org.lgna.ik.poser.input.AbstractPoserOrAnimatorInputDialogComposite;
+import org.lgna.ik.poser.input.AnimatorComposite;
+import org.lgna.ik.poser.input.AbstractPoserOrAnimatorComposite;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.BlockStatement;
@@ -128,7 +128,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		}
 	};
 
-	public AnimatorControlComposite( AbstractPoserOrAnimatorInputDialogComposite parent ) {
+	public AnimatorControlComposite( AbstractPoserOrAnimatorComposite parent ) {
 		super( parent, java.util.UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
 		currentTime.addValueListener( new ValueListener<Double>() {
 
@@ -285,7 +285,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		UserMethod method = ( (AbstractAnimatorInputDialogComposite)parent ).getMethod();
+		UserMethod method = ( (AnimatorComposite)parent ).getMethod();
 		if( method == null ) {
 			tlComposite.getTimeLine().refresh();
 			parent.getModel().straightenOutJoints( new Duration( 0 ) );

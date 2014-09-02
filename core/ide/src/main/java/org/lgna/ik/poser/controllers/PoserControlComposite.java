@@ -49,7 +49,7 @@ import org.lgna.croquet.StringState;
 import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
 import org.lgna.ik.poser.croquet.view.PoserControlView;
-import org.lgna.ik.poser.input.AbstractPoserOrAnimatorInputDialogComposite;
+import org.lgna.ik.poser.input.AbstractPoserOrAnimatorComposite;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.UserField;
@@ -61,7 +61,7 @@ public class PoserControlComposite extends AbstractPoserControlComposite<PoserCo
 
 	private final StringState nameState = createStringState( "poseName" );
 
-	public PoserControlComposite( AbstractPoserOrAnimatorInputDialogComposite parent ) {
+	public PoserControlComposite( AbstractPoserOrAnimatorComposite parent ) {
 		super( parent,
 				java.util.UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
 	}
@@ -75,7 +75,7 @@ public class PoserControlComposite extends AbstractPoserControlComposite<PoserCo
 		return this.nameState;
 	}
 
-	public UserField createPoseField( String value ) {
+	public UserField createPoseField() {
 		try {
 			Pose<?> pose = parent.getPose();
 			Expression rhSide = new ExpressionCreator().createExpression( pose );
@@ -86,7 +86,7 @@ public class PoserControlComposite extends AbstractPoserControlComposite<PoserCo
 		}
 	}
 
-	public AbstractPoserOrAnimatorInputDialogComposite getParent() {
+	public AbstractPoserOrAnimatorComposite getParent() {
 		return parent;
 	}
 

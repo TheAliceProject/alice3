@@ -50,7 +50,7 @@ import org.lgna.story.SQuadruped;
 /**
  * @author Matt May
  */
-public class QuadrupedPoserInputDialog extends AbstractPoserInputDialogComposite<SQuadruped> {
+public class QuadrupedPoserInputDialog extends PoserComposite<SQuadruped> {
 
 	public QuadrupedPoserInputDialog( NamedUserType valueType ) {
 		super( valueType, java.util.UUID.fromString( "b1a11f61-d63c-430b-9b3a-62ffb8fac0d8" ) );

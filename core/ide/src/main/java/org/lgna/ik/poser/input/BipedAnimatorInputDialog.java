@@ -51,7 +51,7 @@ import org.lgna.story.SBiped;
 /**
  * @author Matt May
  */
-public class BipedAnimatorInputDialog extends AbstractAnimatorInputDialogComposite<SBiped> {
+public class BipedAnimatorInputDialog extends AnimatorComposite<SBiped> {
 
 	public BipedAnimatorInputDialog( NamedUserType valueType, UserMethod editedMethod ) {
 		super( valueType, editedMethod, java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ) );

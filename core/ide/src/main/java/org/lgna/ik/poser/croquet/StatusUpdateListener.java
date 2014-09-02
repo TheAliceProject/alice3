@@ -40,31 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.input;
-
-import org.lgna.ik.poser.scene.AbstractPoserScene;
-import org.lgna.ik.poser.scene.FlyerPoserScene;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserMethod;
-import org.lgna.story.SFlyer;
+package org.lgna.ik.poser.croquet;
 
 /**
  * @author Matt May
  */
-public class FlyerAnimatorInputDialog extends AnimatorComposite<SFlyer> {
+public interface StatusUpdateListener {
 
-	public FlyerAnimatorInputDialog( NamedUserType valueType, UserMethod editedMethod ) {
-		super( valueType, editedMethod, java.util.UUID.fromString( "4ac54b7b-1f08-4596-83e0-116122731209" ) );
-	}
-
-	@Override
-	protected AbstractPoserScene<SFlyer> initScene() {
-		return new FlyerPoserScene( getCamera(), getModel() );
-	}
-
-	@Override
-	public Class<SFlyer> getClassForM() {
-		return SFlyer.class;
-	}
+	public void refreshStatus();
 
 }

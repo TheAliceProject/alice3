@@ -40,31 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.input;
+package org.lgna.ik.poser.croquet;
 
-import org.lgna.ik.poser.scene.AbstractPoserScene;
-import org.lgna.ik.poser.scene.FlyerPoserScene;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserMethod;
-import org.lgna.story.SFlyer;
+import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.ik.poser.input.PoserComposite;
 
 /**
  * @author Matt May
  */
-public class FlyerAnimatorInputDialog extends AnimatorComposite<SFlyer> {
+public class DeclareAnimationProcedureDialog extends AnimationProcedureDialog {
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserType, DeclareAnimationProcedureDialog> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
-	public FlyerAnimatorInputDialog( NamedUserType valueType, UserMethod editedMethod ) {
-		super( valueType, editedMethod, java.util.UUID.fromString( "4ac54b7b-1f08-4596-83e0-116122731209" ) );
+	public static DeclareAnimationProcedureDialog getInstance( org.lgna.project.ast.NamedUserType declaringType ) {
+		if( PoserComposite.isPoseable( declaringType ) ) {
+			return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserType, DeclareAnimationProcedureDialog>() {
+				@Override
+				public DeclareAnimationProcedureDialog initialize( org.lgna.project.ast.NamedUserType declaringType ) {
+					return new DeclareAnimationProcedureDialog( declaringType );
+				}
+			} );
+		} else {
+			return null;
+		}
+	}
+
+	private DeclareAnimationProcedureDialog( org.lgna.project.ast.NamedUserType declaringType ) {
+		super( java.util.UUID.fromString( "a403b127-9867-4c04-9878-b78e267b83ee" ), org.lgna.ik.poser.input.AnimatorComposite.getDialogForUserType( declaringType, null ) );
 	}
 
 	@Override
-	protected AbstractPoserScene<SFlyer> initScene() {
-		return new FlyerPoserScene( getCamera(), getModel() );
+	protected AbstractEdit createEdit( CompletionStep<?> completionStep ) {
+		//TODO: mmay
+		//		AnimatorControlComposite<M> controlComposite = this.getControlComposite();
+		//		return new DeclareMethodEdit( completionStep, getDeclaringType(), controlComposite.getNameState().getValue(), org.lgna.project.ast.JavaType.VOID_TYPE, body );
+		return null;
 	}
-
-	@Override
-	public Class<SFlyer> getClassForM() {
-		return SFlyer.class;
-	}
-
 }

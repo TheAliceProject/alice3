@@ -43,7 +43,7 @@
 
 package test.ik;
 
-import org.lgna.ik.poser.input.AbstractPoserOrAnimatorInputDialogComposite;
+import org.lgna.ik.poser.input.AbstractPoserOrAnimatorComposite;
 import org.lgna.ik.poser.input.BipedAnimatorInputDialog;
 import org.lgna.ik.poser.input.BipedPoserInputDialog;
 import org.lgna.story.SBiped;
@@ -85,7 +85,7 @@ public class TestPoser extends SProgram {
 		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userInstance );
 		userInstance.getJavaInstance( SBiped.class );
-		AbstractPoserOrAnimatorInputDialogComposite composite;
+		AbstractPoserOrAnimatorComposite composite;
 
 		if( SHOULD_I_ANIMATE ) {
 			composite = new BipedAnimatorInputDialog( type );

@@ -50,7 +50,7 @@ import org.lgna.story.SBiped;
 /**
  * @author Matt May
  */
-public class BipedPoserInputDialog extends AbstractPoserInputDialogComposite<SBiped> {
+public class BipedPoserInputDialog extends PoserComposite<SBiped> {
 
 	public BipedPoserInputDialog( NamedUserType valueType ) {
 		super( valueType, java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ) );

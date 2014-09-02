@@ -40,42 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.custom;
+package org.lgna.ik.poser.croquet;
 
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.views.CompositeView;
-import org.lgna.ik.poser.input.AbstractPoserInputDialogComposite;
-import org.lgna.project.ast.Expression;
 
 /**
- * @author Matt May
+ * @author Matt Mayy
  */
-public class PoseCustomExpressionCreatorComposite extends CustomExpressionCreatorComposite {
-
-	private AbstractPoserInputDialogComposite composite;
-
-	public PoseCustomExpressionCreatorComposite( AbstractPoserInputDialogComposite composite ) {
-		super( java.util.UUID.fromString( "4fc248f4-0eb4-4b69-8c59-a9467ddac50c" ) );
-		this.composite = composite;
+public abstract class AnimationProcedureDialog extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<org.lgna.croquet.views.Panel> {
+	public AnimationProcedureDialog( java.util.UUID migrationId, org.lgna.ik.poser.input.AnimatorComposite animatorComposite ) {
+		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
+		this.animatorComposite = this.registerSubComposite( animatorComposite );
+		this.animatorComposite.addStatusListener( statusUpdateListener );
 	}
 
 	@Override
-	protected void initializeToPreviousExpression( Expression expression ) {
+	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+		//TODO: mmay
+		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	protected Object createValue() {
-		return composite.getPose();
+	protected org.lgna.croquet.views.Panel createView() {
+		return new org.lgna.croquet.views.BorderPanel.Builder().center( this.animatorComposite.getRootComponent() ).build();
 	}
 
-	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep step ) {
-		return composite.getStatus( step );
-	}
+	private final org.lgna.ik.poser.input.AnimatorComposite<?> animatorComposite;
 
-	@Override
-	protected CompositeView createView() {
-		return composite.getView();
-	}
-
+	private final StatusUpdateListener statusUpdateListener = new StatusUpdateListener() {
+		@Override
+		public void refreshStatus() {
+			AnimationProcedureDialog.this.refreshStatus();
+		}
+	};
 }

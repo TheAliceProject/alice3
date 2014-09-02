@@ -51,7 +51,7 @@ import org.lgna.story.SQuadruped;
 /**
  * @author Matt May
  */
-public class QuadrupedAnimatorInputDialog extends AbstractAnimatorInputDialogComposite<SQuadruped> {
+public class QuadrupedAnimatorInputDialog extends AnimatorComposite<SQuadruped> {
 
 	public QuadrupedAnimatorInputDialog( NamedUserType valueType, UserMethod editedMethod ) {
 		super( valueType, editedMethod, java.util.UUID.fromString( "561a5a2e-c2a0-465f-8560-92a484d0a4ca" ) );

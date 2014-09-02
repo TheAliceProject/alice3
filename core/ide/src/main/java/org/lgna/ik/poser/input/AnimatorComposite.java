@@ -44,16 +44,12 @@ package org.lgna.ik.poser.input;
 
 import java.util.UUID;
 
-import org.alice.ide.croquet.edits.ast.ChangeMethodBodyEdit;
-import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.alice.ide.name.validators.MethodNameValidator;
-import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.CompositeView;
+import org.lgna.croquet.views.Panel;
 import org.lgna.ik.poser.CheckIfAnimationCrawler;
 import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
-import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserMethod;
@@ -67,14 +63,13 @@ import org.lgna.story.SetPose;
 /**
  * @author Matt May
  */
-public abstract class AbstractAnimatorInputDialogComposite<M extends SJointedModel> extends AbstractPoserOrAnimatorInputDialogComposite<AnimatorControlComposite<M>, M> {
+public abstract class AnimatorComposite<M extends SJointedModel> extends AbstractPoserOrAnimatorComposite<AnimatorControlComposite<M>, M> {
 
 	public static final JavaMethod SET_POSE = JavaMethod.getInstance( SBiped.class, "setPose", org.lgna.ik.core.pose.Pose.class, SetPose.Detail[].class );
 	private MethodNameValidator validator;
 	private UserMethod method;
-	private final ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
 
-	public AbstractAnimatorInputDialogComposite( NamedUserType valueType, UserMethod editedMethod, UUID uuid ) {
+	public AnimatorComposite( NamedUserType valueType, UserMethod editedMethod, UUID uuid ) {
 		super( valueType, uuid );
 		this.method = editedMethod;
 	}
@@ -85,35 +80,7 @@ public abstract class AbstractAnimatorInputDialogComposite<M extends SJointedMod
 	}
 
 	@Override
-	protected AbstractEdit createEdit( CompletionStep<?> completionStep ) {
-		AnimatorControlComposite<M> controlComposite = this.getControlComposite();
-		BlockStatement body = controlComposite.createMethodBody();
-		if( method != null ) {
-			return new ChangeMethodBodyEdit( completionStep, method, body );
-		} else {
-			return new DeclareMethodEdit( completionStep, getDeclaringType(), controlComposite.getNameState().getValue(), org.lgna.project.ast.JavaType.VOID_TYPE, body );
-		}
-	}
-
-	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
-		if( validator != null ) {
-			//pass
-		} else {
-			this.validator = new MethodNameValidator( getDeclaringType() );
-		}
-		String candidate = getControlComposite().getNameState().getValue();
-		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-		if( explanation != null ) {
-			errorStatus.setText( explanation );
-			return errorStatus;
-		} else {
-			return IS_GOOD_TO_GO_STATUS;
-		}
-	}
-
-	@Override
-	protected CompositeView createView() {
+	protected Panel createView() {
 		CompositeView splitPane = super.createView();
 		BorderPanel panel = new BorderPanel();
 		panel.addCenterComponent( splitPane );
@@ -139,9 +106,10 @@ public abstract class AbstractAnimatorInputDialogComposite<M extends SJointedMod
 		return this.method;
 	}
 
-	public static AbstractAnimatorInputDialogComposite<?> getDialogForUserType( UserType<?> declaringType, UserMethod method ) {
+	//TODO mmay
+	public static AnimatorComposite<?> getDialogForUserType( UserType<?> declaringType, UserMethod method ) {
 		if( declaringType != null ) {
-			if( ( declaringType instanceof NamedUserType ) && AbstractAnimatorInputDialogComposite.isStrictlyAnimation( method ) ) {
+			if( ( declaringType instanceof NamedUserType ) && AnimatorComposite.isStrictlyAnimation( method ) ) {
 				NamedUserType namedUserType = (NamedUserType)declaringType;
 				if( namedUserType.isAssignableTo( SBiped.class ) ) {
 					return new BipedAnimatorInputDialog( namedUserType, method );
@@ -153,5 +121,14 @@ public abstract class AbstractAnimatorInputDialogComposite<M extends SJointedMod
 			}
 		}
 		return null;
+	}
+
+	public static AnimatorComposite<?> getDialogForUserMethod( UserMethod method ) {
+		return getDialogForUserType( method.getDeclaringType(), method );
+	}
+
+	public static boolean isAnimationMethod( UserMethod method ) {
+		//TODO mmay check to ensure if all statements and strike poses
+		return false;
 	}
 }

@@ -44,13 +44,8 @@ package org.lgna.ik.poser.input;
 
 import java.util.UUID;
 
-import org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit;
-import org.alice.ide.name.validators.FieldNameValidator;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.controllers.PoserControlComposite;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserType;
 import org.lgna.story.SBiped;
 import org.lgna.story.SFlyer;
 import org.lgna.story.SJointedModel;
@@ -59,14 +54,8 @@ import org.lgna.story.SQuadruped;
 /**
  * @author Matt May
  */
-public abstract class AbstractPoserInputDialogComposite<M extends SJointedModel> extends AbstractPoserOrAnimatorInputDialogComposite<PoserControlComposite, M> {
-
-	private FieldNameValidator validator;
-	private final ErrorStatus emptyPoseStatus = this.createErrorStatus( "noPose" );
-	private final ErrorStatus errorStatus = this.createErrorStatus( "errorStatus" );
-	private Object poseChangeListener;
-
-	public AbstractPoserInputDialogComposite( NamedUserType valueType, UUID uuid ) {
+public abstract class PoserComposite<M extends SJointedModel> extends AbstractPoserOrAnimatorComposite<PoserControlComposite, M> {
+	public PoserComposite( NamedUserType valueType, UUID uuid ) {
 		super( valueType, uuid );
 	}
 
@@ -76,38 +65,35 @@ public abstract class AbstractPoserInputDialogComposite<M extends SJointedModel>
 		return rv;
 	}
 
-	@Override
-	protected DeclareNonGalleryFieldEdit createEdit( CompletionStep<?> completionStep ) {
-		UserField field = getControlComposite().createPoseField( getControlComposite().getNameState().getValue() );
-		UserType<?> declaringType = this.getDeclaringType();
-		return new DeclareNonGalleryFieldEdit( completionStep, declaringType, field );
+	public boolean isEmptyPose() {
+		return getControlComposite().getParent().getUsedJoints().isEmpty();
 	}
 
-	@Override
-	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
-		if( getControlComposite().getParent().getUsedJoints().isEmpty() ) {
-			return emptyPoseStatus;
-		}
-		if( validator != null ) {
-			//pass
-		} else {
-			this.validator = new FieldNameValidator( getDeclaringType() );
-		}
-		String candidate = getControlComposite().getNameState().getValue();
-		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
-		if( explanation != null ) {
-			errorStatus.setText( explanation );
-			return errorStatus;
-		} else {
-			return IS_GOOD_TO_GO_STATUS;
-		}
-	}
+	//	@Override
+	//	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	//		if( getControlComposite().getParent().getUsedJoints().isEmpty() ) {
+	//			return emptyPoseStatus;
+	//		}
+	//		if( validator != null ) {
+	//			//pass
+	//		} else {
+	//			this.validator = new FieldNameValidator( getDeclaringType() );
+	//		}
+	//		String candidate = getControlComposite().getNameState().getValue();
+	//		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
+	//		if( explanation != null ) {
+	//			errorStatus.setText( explanation );
+	//			return errorStatus;
+	//		} else {
+	//			return IS_GOOD_TO_GO_STATUS;
+	//		}
+	//	}
 
 	public static boolean isPoseable( org.lgna.project.ast.NamedUserType declaringType ) {
 		return getDialogForUserType( declaringType ) != null;
 	}
 
-	public static AbstractPoserInputDialogComposite<?> getDialogForUserType( org.lgna.project.ast.NamedUserType declaringType ) {
+	public static PoserComposite<?> getDialogForUserType( org.lgna.project.ast.NamedUserType declaringType ) {
 		if( declaringType.isAssignableTo( SBiped.class ) ) {
 			return new BipedPoserInputDialog( declaringType );
 		} else if( declaringType.isAssignableTo( SQuadruped.class ) ) {

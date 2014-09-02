@@ -44,24 +44,15 @@ package org.alice.ide.cascade.fillerinners;
 
 import java.util.List;
 
-import org.alice.ide.custom.PoseCustomExpressionCreatorComposite;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.ik.core.pose.Pose;
-import org.lgna.ik.poser.PoserGenerationException;
-import org.lgna.ik.poser.input.AbstractPoserInputDialogComposite;
-import org.lgna.ik.poser.input.BipedPoserInputDialog;
-import org.lgna.ik.poser.input.FlyerPoserInputDialog;
-import org.lgna.ik.poser.input.QuadrupedPoserInputDialog;
+import org.lgna.ik.poser.croquet.PoseExpressionCreatorComposite;
 import org.lgna.project.annotations.ValueDetails;
-import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.story.SBiped;
-import org.lgna.story.SFlyer;
-import org.lgna.story.SQuadruped;
 
 /**
  * @author Matt May
@@ -74,53 +65,18 @@ public class PoseFillerInner extends ExpressionFillerInner {
 
 	@Override
 	public void appendItems( List<CascadeBlankChild> items, ValueDetails<?> details, boolean isTop, Expression prevExpression ) {
-		//come back to this later, how to fill in more poses for parent classes
-		//		System.out.println( items.size() );
-		//		for( CascadeBlankChild child : items ) {
-		//			System.out.println( child );
-		//			if( child instanceof ParameterNameSeparator ) {
-		//				ParameterNameSeparator sep = (ParameterNameSeparator)child;
-		//				System.out.println( sep.getItemCount() );
-		//				for( int i = 0; i != sep.getItemCount(); ++i ) {
-		//					System.out.println( "  " + sep.getItemAt( i ) );
-		//				}
-		//			}
-		//		}
-		AbstractType<?, ?, ?> type = null;
-		System.out.println( "BOOOGA" );
-		System.out.println( "BOOOGA" );
-		System.out.println( "BOOOGA" );
-		System.out.println( getType() );
+		NamedUserType declaringType;
 		if( prevExpression == null ) {
 			InstanceFactory value = InstanceFactoryState.getInstance().getValue();
-			type = value.getValueType();
+			declaringType = (NamedUserType)value.getValueType();
 		} else {
 			MethodInvocation methodInv = prevExpression.getFirstAncestorAssignableTo( MethodInvocation.class );
-			type = methodInv.expression.getValue().getType();
+			declaringType = (NamedUserType)methodInv.expression.getValue().getType();
 		}
-		System.out.println( type );
-		AbstractPoserInputDialogComposite dialog = getDialogForType( type );
-		dialog.getCommitOperation().getMenuItemPrepModel();
-		dialog.getLaunchOperation().getMenuItemPrepModel();
-		items.add( new PoseCustomExpressionCreatorComposite( dialog ).getValueCreator().getFillIn() );
-	}
 
-	private AbstractPoserInputDialogComposite getDialogForType( AbstractType<?, ?, ?> type ) {
-		AbstractPoserInputDialogComposite rv;
-		if( type instanceof NamedUserType ) {
-			NamedUserType userType = (NamedUserType)type;
-			if( type.isAssignableTo( SBiped.class ) ) {
-				rv = new BipedPoserInputDialog( userType );
-			} else if( type.isAssignableTo( SQuadruped.class ) ) {
-				rv = new QuadrupedPoserInputDialog( userType );
-			} else if( type.isAssignableTo( SFlyer.class ) ) {
-				rv = new FlyerPoserInputDialog( userType );
-			} else {
-				throw new PoserGenerationException( "We don't yet have poses for this type: " + type );
-			}
-		} else {
-			throw new PoserGenerationException( "We only handle NamedUserTypes" );
+		PoseExpressionCreatorComposite poseExpressionCreatorComposite = org.lgna.ik.poser.croquet.PoseExpressionCreatorComposite.getInstance( declaringType );
+		if( poseExpressionCreatorComposite != null ) {
+			items.add( poseExpressionCreatorComposite.getValueCreator().getFillIn() );
 		}
-		return rv;
 	}
 }

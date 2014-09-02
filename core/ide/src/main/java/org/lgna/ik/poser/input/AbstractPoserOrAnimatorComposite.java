@@ -42,19 +42,17 @@
  */
 package org.lgna.ik.poser.input;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.alice.ide.IDE;
-import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.SplitComposite;
-import org.lgna.croquet.views.CompositeView;
+import org.lgna.croquet.views.Panel;
 import org.lgna.croquet.views.SplitPane;
 import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.poser.FieldFinder;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
 import org.lgna.ik.poser.controllers.PoserControllerAdapter;
+import org.lgna.ik.poser.croquet.StatusUpdateListener;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.project.ast.AbstractType;
@@ -77,29 +75,27 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 /**
  * @author Matt May
  */
-public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends AbstractPoserControlComposite, M extends SJointedModel> extends SimpleOperationInputDialogCoreComposite<CompositeView> {
+public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserControlComposite, M extends SJointedModel> extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
 
-	private SProgram poser;
+	private final SProgram poser;
 
-	private SCamera camera = new SCamera();
+	private final SCamera camera = new SCamera();
 	private M model;
 	private final AbstractPoserScene scene;
 	private NamedUserType userType;
-	private T controlComposite;
+	private final T controlComposite;
 	private final List<JointId> usedJoints = Lists.newArrayList();
 	private List<JointedModelResource> resourceList = Lists.newArrayList();
 
 	private final SplitComposite splitComposite;
 
-	private SceneComposite sceneComposite;
+	private final SceneComposite sceneComposite;
 
 	private boolean isInitialized = false;
+	private final java.util.List<StatusUpdateListener> statusUpdateListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
-	//note: this relies on very specific ordering at the moment
-	protected abstract T createControlComposite();
-
-	protected AbstractPoserOrAnimatorInputDialogComposite( NamedUserType userType, UUID uuid ) {
-		super( uuid, IDE.PROJECT_GROUP );
+	protected AbstractPoserOrAnimatorComposite( NamedUserType userType, UUID migrationId ) {
+		super( migrationId );
 		setType( userType );
 		this.scene = initScene();
 		this.poser = new SProgram();
@@ -110,6 +106,9 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 		this.splitComposite = createHorizontalSplitComposite( controlComposite, sceneComposite, 0.25 );
 	}
 
+	//note: this relies on very specific ordering at the moment
+	protected abstract T createControlComposite();
+
 	private PointOfViewChangeListener transformationListener = new PointOfViewChangeListener() {
 
 		@Override
@@ -118,8 +117,11 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 			if( !usedJoints.contains( jointId ) ) {
 				usedJoints.add( jointId );
 			}
-			refreshStatus();
+			for( StatusUpdateListener listener : statusUpdateListeners ) {
+				listener.refreshStatus();
+			}
 		}
+
 	};
 
 	@Override
@@ -185,7 +187,7 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 		}
 	}
 
-	public ArrayList<JointSelectionSphere> getJointSelectionSheres() {
+	public List<JointSelectionSphere> getJointSelectionSheres() {
 		return scene.getJointSelectionSheres();
 	}
 
@@ -214,12 +216,14 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 	}
 
 	@Override
-	protected CompositeView createView() {
+	protected Panel createView() {
+		org.lgna.croquet.views.BorderPanel rv = new org.lgna.croquet.views.BorderPanel();
 		SplitPane view = splitComposite.getView();
-		return view;
+		rv.addCenterComponent( view );
+		return rv;
 	}
 
-	protected T getControlComposite() {
+	public T getControlComposite() {
 		return this.controlComposite;
 	}
 
@@ -250,5 +254,13 @@ public abstract class AbstractPoserOrAnimatorInputDialogComposite<T extends Abst
 		if( this.scene != null ) {
 			scene.setNewModel( model );
 		}
+	}
+
+	public void addStatusListener( StatusUpdateListener statusUpdateListener ) {
+		this.statusUpdateListeners.add( statusUpdateListener );
+	}
+
+	public void removeStatusListener( StatusUpdateListener statusUpdateListener ) {
+		this.statusUpdateListeners.remove( statusUpdateListener );
 	}
 }

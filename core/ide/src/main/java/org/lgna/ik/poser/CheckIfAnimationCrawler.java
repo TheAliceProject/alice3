@@ -42,7 +42,7 @@
  */
 package org.lgna.ik.poser;
 
-import org.lgna.ik.poser.input.AbstractAnimatorInputDialogComposite;
+import org.lgna.ik.poser.input.AnimatorComposite;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
@@ -73,7 +73,7 @@ public class CheckIfAnimationCrawler implements Crawler {
 	public void visit( Crawlable crawlable ) {
 		if( crawlable instanceof MethodInvocation ) {
 			MethodInvocation methodInv = (MethodInvocation)crawlable;
-			if( !methodInv.method.getValue().equals( AbstractAnimatorInputDialogComposite.SET_POSE ) ) {
+			if( !methodInv.method.getValue().equals( AnimatorComposite.SET_POSE ) ) {
 				containsNotSetPose = false;
 			} else {
 				containsSetPose = true;

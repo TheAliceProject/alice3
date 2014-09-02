@@ -69,7 +69,7 @@ import org.lgna.ik.poser.FieldFinder;
 import org.lgna.ik.poser.animation.composites.drops.TypeNodeSelectionState;
 import org.lgna.ik.poser.controllers.PoserControllerAdapter;
 import org.lgna.ik.poser.croquet.view.AbstractPoserControlView;
-import org.lgna.ik.poser.input.AbstractPoserOrAnimatorInputDialogComposite;
+import org.lgna.ik.poser.input.AbstractPoserOrAnimatorComposite;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.ik.poser.jselection.JointSelectionSphereState;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
@@ -105,13 +105,13 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	private final UpdatableRootResourceNodeTreeSelectionState resourceTree;
 	//			createListSelectionState( "chooseResource" ), new RefreshableListData<JointedModelResource>( DefaultItemCodec.createInstance( JointedModelResource.class ) )
 	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( "showHandles", false );
-	protected AbstractPoserOrAnimatorInputDialogComposite parent;
+	protected AbstractPoserOrAnimatorComposite parent;
 	private final PoserControllerAdapter adapter;
 	private final TypeNode typeSelectionRoot;
 	private final TypeNodeSelectionState typeSelectionState;
 	public final boolean typeSwitchingEnabled;
 
-	public AbstractPoserControlComposite( AbstractPoserOrAnimatorInputDialogComposite parent, UUID uid ) {
+	public AbstractPoserControlComposite( AbstractPoserOrAnimatorComposite parent, UUID uid ) {
 		super( uid );
 		this.parent = parent;
 		parent.getJointSelectionSheres();
