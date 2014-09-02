@@ -70,9 +70,9 @@ import org.lgna.ik.poser.animation.TimeLineListener;
 import org.lgna.ik.poser.animation.edits.AddKeyFrameToTimeLineEdit;
 import org.lgna.ik.poser.animation.edits.ModifyPoseOnExistingKeyFrameInTimeLineEdit;
 import org.lgna.ik.poser.controllers.PoserEvent;
-import org.lgna.ik.poser.croquet.view.AnimatorControlView;
-import org.lgna.ik.poser.input.AnimatorComposite;
-import org.lgna.ik.poser.input.AbstractPoserOrAnimatorComposite;
+import org.lgna.ik.poser.croquet.AbstractPoserOrAnimatorComposite;
+import org.lgna.ik.poser.croquet.AnimatorComposite;
+import org.lgna.ik.poser.croquet.views.AnimatorControlView;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.BlockStatement;
@@ -308,5 +308,9 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		for( KeyFrameData frame : frames ) {
 			tlComposite.getTimeLine().addKeyFrameData( frame );
 		}
+	}
+
+	public boolean isEmpty() {
+		return tlComposite.getTimeLine().getKeyFrames().size() == 0;
 	}
 }

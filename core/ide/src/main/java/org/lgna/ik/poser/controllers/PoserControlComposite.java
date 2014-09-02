@@ -46,8 +46,8 @@ import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.alice.stageide.ast.ExpressionCreator;
 import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
-import org.lgna.ik.poser.croquet.view.PoserControlView;
-import org.lgna.ik.poser.input.AbstractPoserOrAnimatorComposite;
+import org.lgna.ik.poser.croquet.AbstractPoserOrAnimatorComposite;
+import org.lgna.ik.poser.croquet.views.PoserControlView;
 import org.lgna.project.ast.Expression;
 
 /**

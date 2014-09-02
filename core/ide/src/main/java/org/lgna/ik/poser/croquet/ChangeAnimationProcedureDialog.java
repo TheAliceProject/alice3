@@ -52,7 +52,7 @@ public class ChangeAnimationProcedureDialog extends AnimationProcedureDialog {
 	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserMethod, ChangeAnimationProcedureDialog> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static ChangeAnimationProcedureDialog getInstance( org.lgna.project.ast.UserMethod method ) {
-		if( org.lgna.ik.poser.input.AnimatorComposite.isAnimationMethod( method ) ) {
+		if( org.lgna.ik.poser.croquet.AnimatorComposite.isStrictlyAnimation( method ) ) {
 			return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserMethod, ChangeAnimationProcedureDialog>() {
 				@Override
 				public ChangeAnimationProcedureDialog initialize( org.lgna.project.ast.UserMethod method ) {
@@ -65,14 +65,11 @@ public class ChangeAnimationProcedureDialog extends AnimationProcedureDialog {
 	}
 
 	private ChangeAnimationProcedureDialog( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "ec6e475b-bff3-4573-a444-37930e5fbe49" ), org.lgna.ik.poser.input.AnimatorComposite.getDialogForUserMethod( method ) );
+		super( java.util.UUID.fromString( "ec6e475b-bff3-4573-a444-37930e5fbe49" ), org.lgna.ik.poser.croquet.AnimatorComposite.getDialogForUserMethod( method ) );
 	}
 
 	@Override
 	protected AbstractEdit createEdit( CompletionStep<?> completionStep ) {
-		//TODO: mmay
-		//		AnimatorControlComposite<M> controlComposite = this.getControlComposite();
-		//		return new ChangeMethodBodyEdit( completionStep, method, body );
-		return null;
+		return new org.alice.ide.croquet.edits.ast.ChangeMethodBodyEdit( completionStep, getAnimatorComposite().getMethod(), getAnimatorComposite().getControlComposite().createMethodBody() );
 	}
 }

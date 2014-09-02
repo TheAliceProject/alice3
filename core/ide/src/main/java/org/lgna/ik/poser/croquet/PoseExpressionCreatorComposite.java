@@ -43,7 +43,6 @@
 package org.lgna.ik.poser.croquet;
 
 import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
-import org.lgna.ik.poser.input.PoserComposite;
 
 /**
  * @author Matt May
@@ -66,7 +65,7 @@ public final class PoseExpressionCreatorComposite extends org.lgna.croquet.Singl
 
 	private PoseExpressionCreatorComposite( org.lgna.project.ast.NamedUserType declaringType ) {
 		super( java.util.UUID.fromString( "4fc4dd4f-b33d-429a-994a-3a5cf13b6903" ) );
-		this.poserComposite = this.registerSubComposite( org.lgna.ik.poser.input.PoserComposite.getDialogForUserType( declaringType ) );
+		this.poserComposite = this.registerSubComposite( org.lgna.ik.poser.croquet.PoserComposite.getDialogForUserType( declaringType ) );
 		this.poserComposite.addStatusListener( this.statusUpdateListener );
 
 	}
@@ -95,7 +94,7 @@ public final class PoseExpressionCreatorComposite extends org.lgna.croquet.Singl
 	}
 
 	private final ErrorStatus isEmptyPoseError = this.createErrorStatus( "isEmptyPoseError" );
-	private final org.lgna.ik.poser.input.PoserComposite<?> poserComposite;
+	private final org.lgna.ik.poser.croquet.PoserComposite<?> poserComposite;
 	private final StatusUpdateListener statusUpdateListener = new StatusUpdateListener() {
 		@Override
 		public void refreshStatus() {

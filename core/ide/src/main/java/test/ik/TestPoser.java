@@ -43,9 +43,9 @@
 
 package test.ik;
 
-import org.lgna.ik.poser.input.AbstractPoserOrAnimatorComposite;
-import org.lgna.ik.poser.input.BipedAnimatorInputDialog;
-import org.lgna.ik.poser.input.BipedPoserInputDialog;
+import org.lgna.ik.poser.croquet.AbstractPoserOrAnimatorComposite;
+import org.lgna.ik.poser.croquet.BipedAnimator;
+import org.lgna.ik.poser.croquet.BipedPoser;
 import org.lgna.story.SBiped;
 import org.lgna.story.SProgram;
 
@@ -88,9 +88,9 @@ public class TestPoser extends SProgram {
 		AbstractPoserOrAnimatorComposite composite;
 
 		if( SHOULD_I_ANIMATE ) {
-			composite = new BipedAnimatorInputDialog( type );
+			composite = new BipedAnimator( type );
 		} else {
-			composite = new BipedPoserInputDialog( type );
+			composite = new BipedPoser( type );
 		}
 		app.getFrame().setMainComposite( composite );
 

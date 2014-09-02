@@ -40,30 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.input;
+package org.lgna.ik.poser.croquet;
 
 import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.ik.poser.scene.BipedPoserScene;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserMethod;
 import org.lgna.story.SBiped;
 
 /**
  * @author Matt May
  */
-public class BipedAnimatorInputDialog extends AnimatorComposite<SBiped> {
+public class BipedPoser extends PoserComposite<SBiped> {
 
-	public BipedAnimatorInputDialog( NamedUserType valueType, UserMethod editedMethod ) {
-		super( valueType, editedMethod, java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ) );
-	}
-
-	public BipedAnimatorInputDialog( NamedUserType type ) {
-		this( type, null );
+	public BipedPoser( NamedUserType valueType ) {
+		super( valueType, java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ) );
 	}
 
 	@Override
 	public AbstractPoserScene<SBiped> initScene() {
-		return new BipedPoserScene( this.getCamera(), this.getModel() );
+		return new BipedPoserScene( getCamera(), getModel() );
 	}
 
 	@Override

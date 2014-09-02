@@ -40,30 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.input;
+package org.lgna.ik.poser.croquet;
 
 import org.lgna.ik.poser.scene.AbstractPoserScene;
-import org.lgna.ik.poser.scene.BipedPoserScene;
+import org.lgna.ik.poser.scene.FlyerPoserScene;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.story.SBiped;
+import org.lgna.story.SFlyer;
 
 /**
  * @author Matt May
  */
-public class BipedPoserInputDialog extends PoserComposite<SBiped> {
+public class FlyerPoser extends PoserComposite<SFlyer> {
 
-	public BipedPoserInputDialog( NamedUserType valueType ) {
-		super( valueType, java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ) );
+	public FlyerPoser( NamedUserType valueType ) {
+		super( valueType, java.util.UUID.fromString( "6058e0b2-0c39-417c-806d-613c2aecd523" ) );
 	}
 
 	@Override
-	public AbstractPoserScene<SBiped> initScene() {
-		return new BipedPoserScene( getCamera(), getModel() );
+	protected AbstractPoserScene<SFlyer> initScene() {
+		return new FlyerPoserScene( getCamera(), getModel() );
 	}
 
 	@Override
-	public Class<SBiped> getClassForM() {
-		return SBiped.class;
+	public Class<SFlyer> getClassForM() {
+		return SFlyer.class;
 	}
 
 }

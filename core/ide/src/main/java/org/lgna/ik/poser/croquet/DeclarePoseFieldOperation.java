@@ -46,7 +46,6 @@ import org.lgna.croquet.Model;
 import org.lgna.croquet.SingleThreadIteratingOperation;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
-import org.lgna.ik.poser.input.PoserComposite;
 
 /**
  * @author Matt May

@@ -42,7 +42,7 @@
  */
 package org.lgna.ik.poser;
 
-import org.lgna.ik.poser.input.AnimatorComposite;
+import org.lgna.ik.poser.croquet.AnimatorComposite;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
@@ -58,7 +58,7 @@ public class CheckIfAnimationCrawler implements Crawler {
 	private UserMethod method;
 	private CrawlPolicy crawlPolicy = CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY;
 	private boolean containsSetPose = false;
-	private boolean containsNotSetPose = true;
+	private boolean containsNotSetPose = false;
 
 	public static boolean initiateAndCheckMethod( UserMethod method ) {
 		CheckIfAnimationCrawler crawler = new CheckIfAnimationCrawler( method );
@@ -74,10 +74,12 @@ public class CheckIfAnimationCrawler implements Crawler {
 		if( crawlable instanceof MethodInvocation ) {
 			MethodInvocation methodInv = (MethodInvocation)crawlable;
 			if( !methodInv.method.getValue().equals( AnimatorComposite.SET_POSE ) ) {
-				containsNotSetPose = false;
+				containsNotSetPose = true;
 			} else {
 				containsSetPose = true;
 			}
+		} else {
+			containsNotSetPose = true;
 		}
 	}
 

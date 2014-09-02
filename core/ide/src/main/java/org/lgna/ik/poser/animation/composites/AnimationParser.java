@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
-import org.lgna.ik.poser.input.AnimatorComposite;
+import org.lgna.ik.poser.croquet.AnimatorComposite;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;

@@ -40,31 +40,68 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.input;
+package org.lgna.ik.poser.croquet;
 
-import org.lgna.ik.poser.scene.AbstractPoserScene;
-import org.lgna.ik.poser.scene.QuadrupedPoserScene;
+import java.util.UUID;
+
+import org.lgna.ik.poser.controllers.PoserControlComposite;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.story.SBiped;
+import org.lgna.story.SFlyer;
+import org.lgna.story.SJointedModel;
 import org.lgna.story.SQuadruped;
 
 /**
  * @author Matt May
  */
-public class QuadrupedAnimatorInputDialog extends AnimatorComposite<SQuadruped> {
-
-	public QuadrupedAnimatorInputDialog( NamedUserType valueType, UserMethod editedMethod ) {
-		super( valueType, editedMethod, java.util.UUID.fromString( "561a5a2e-c2a0-465f-8560-92a484d0a4ca" ) );
+public abstract class PoserComposite<M extends SJointedModel> extends AbstractPoserOrAnimatorComposite<PoserControlComposite, M> {
+	public PoserComposite( NamedUserType valueType, UUID uuid ) {
+		super( valueType, uuid );
 	}
 
 	@Override
-	protected AbstractPoserScene<SQuadruped> initScene() {
-		return new QuadrupedPoserScene( getCamera(), this.getModel() );
+	protected PoserControlComposite createControlComposite() {
+		PoserControlComposite rv = new PoserControlComposite( this );
+		return rv;
 	}
 
-	@Override
-	public Class<SQuadruped> getClassForM() {
-		return SQuadruped.class;
+	public boolean isEmptyPose() {
+		return getControlComposite().getParent().getUsedJoints().isEmpty();
 	}
 
+	//	@Override
+	//	protected Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+	//		if( getControlComposite().getParent().getUsedJoints().isEmpty() ) {
+	//			return emptyPoseStatus;
+	//		}
+	//		if( validator != null ) {
+	//			//pass
+	//		} else {
+	//			this.validator = new FieldNameValidator( getDeclaringType() );
+	//		}
+	//		String candidate = getControlComposite().getNameState().getValue();
+	//		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
+	//		if( explanation != null ) {
+	//			errorStatus.setText( explanation );
+	//			return errorStatus;
+	//		} else {
+	//			return IS_GOOD_TO_GO_STATUS;
+	//		}
+	//	}
+
+	public static boolean isPoseable( org.lgna.project.ast.NamedUserType declaringType ) {
+		return getDialogForUserType( declaringType ) != null;
+	}
+
+	public static PoserComposite<?> getDialogForUserType( org.lgna.project.ast.NamedUserType declaringType ) {
+		if( declaringType.isAssignableTo( SBiped.class ) ) {
+			return new BipedPoser( declaringType );
+		} else if( declaringType.isAssignableTo( SQuadruped.class ) ) {
+			return new QuadrupedPoser( declaringType );
+		} else if( declaringType.isAssignableTo( SFlyer.class ) ) {
+			return new FlyerPoser( declaringType );
+		} else {
+			return null;
+		}
+	}
 }

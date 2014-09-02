@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.input;
+package org.lgna.ik.poser.croquet;
 
 import java.util.List;
 import java.util.UUID;
@@ -52,7 +52,6 @@ import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.poser.FieldFinder;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
 import org.lgna.ik.poser.controllers.PoserControllerAdapter;
-import org.lgna.ik.poser.croquet.StatusUpdateListener;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.project.ast.AbstractType;

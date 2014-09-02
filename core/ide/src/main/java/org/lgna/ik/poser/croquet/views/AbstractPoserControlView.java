@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.croquet.view;
+package org.lgna.ik.poser.croquet.views;
 
 import org.lgna.croquet.views.AbstractLabel;
 import org.lgna.croquet.views.ItemDropDown;

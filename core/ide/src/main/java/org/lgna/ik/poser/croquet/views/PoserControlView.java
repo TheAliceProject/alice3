@@ -40,42 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.croquet.view;
+package org.lgna.ik.poser.croquet.views;
 
-import javax.swing.BorderFactory;
-import javax.swing.border.BevelBorder;
-
-import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
-import org.lgna.ik.poser.animation.views.TimeLineModifierView;
+import org.lgna.ik.poser.controllers.PoserControlComposite;
 
 /**
  * @author Matt May
  */
-public class AnimatorControlView extends AbstractPoserControlView {
+public class PoserControlView extends AbstractPoserControlView {
 
-	public AnimatorControlView( AnimatorControlComposite controlComposite ) {
+	public PoserControlView( PoserControlComposite controlComposite ) {
 		super( controlComposite );
-
-		TimeLineModifierView editView = controlComposite.getEditComposite().getView();
-		editView.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-		//		this.addComponent( controlComposite.getDeselectPoseOperation().createButton(), "grow" );
-		//		this.addComponent( controlComposite.getDeletePoseOperation().createButton(), "grow, wrap" );
-
-		//		org.lgna.croquet.components.DefaultRadioButtons<?> radioButtons = controlComposite.getPosesList().createVerticalDefaultRadioButtons();
-		//		radioButtons.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-		//		this.addComponent( new org.lgna.croquet.components.ScrollPane( radioButtons ), "span 2, grow 100, wrap" );
-
-		//		this.addComponent( controlComposite.getSavePoseOperation().createButton(), "grow" );
-		//		this.addComponent( controlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
-
-		this.addComponent( controlComposite.getRunAnimationOperation().createButton(), "span 2, grow, wrap" );
-		this.addComponent( controlComposite.getNameState().getSidekickLabel().createLabel(), "grow" );
-		this.addComponent( controlComposite.getNameState().createTextField(), "grow, wrap" );
-		this.addComponent( editView, "span 2" );
-
-		//		OuterTimeLineView component = controlComposite.getTimeLine().createView();
-		//		this.addComponent( component, "grow, span 2, wrap" );
-		//		this.addComponent( controlComposite.getCurrentTime().createSpinner(), "growx" );
-		//		this.addComponent( controlComposite.getAppendTimeComposite().getOperation().createButton(), "growx" );
 	}
 }

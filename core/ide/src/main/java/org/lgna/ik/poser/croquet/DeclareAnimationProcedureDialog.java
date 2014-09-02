@@ -42,9 +42,9 @@
  */
 package org.lgna.ik.poser.croquet;
 
+import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.ik.poser.input.PoserComposite;
 
 /**
  * @author Matt May
@@ -66,14 +66,11 @@ public class DeclareAnimationProcedureDialog extends AnimationProcedureDialog {
 	}
 
 	private DeclareAnimationProcedureDialog( org.lgna.project.ast.NamedUserType declaringType ) {
-		super( java.util.UUID.fromString( "a403b127-9867-4c04-9878-b78e267b83ee" ), org.lgna.ik.poser.input.AnimatorComposite.getDialogForUserType( declaringType, null ) );
+		super( java.util.UUID.fromString( "a403b127-9867-4c04-9878-b78e267b83ee" ), org.lgna.ik.poser.croquet.AnimatorComposite.getDialogForUserType( declaringType, null ) );
 	}
 
 	@Override
 	protected AbstractEdit createEdit( CompletionStep<?> completionStep ) {
-		//TODO: mmay
-		//		AnimatorControlComposite<M> controlComposite = this.getControlComposite();
-		//		return new DeclareMethodEdit( completionStep, getDeclaringType(), controlComposite.getNameState().getValue(), org.lgna.project.ast.JavaType.VOID_TYPE, body );
-		return null;
+		return new DeclareMethodEdit( completionStep, getAnimatorComposite().getDeclaringType(), getAnimatorComposite().getControlComposite().getNameState().getValue(), org.lgna.project.ast.JavaType.VOID_TYPE, getAnimatorComposite().getControlComposite().createMethodBody() );
 	}
 }

@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.input;
+package org.lgna.ik.poser.croquet;
 
 import java.util.UUID;
 
@@ -93,9 +93,6 @@ public abstract class AnimatorComposite<M extends SJointedModel> extends Abstrac
 			if( !( candidate.getDeclaringType() instanceof NamedUserType ) ) {
 				return false;
 			}
-			if( !candidate.getDeclaringType().isAssignableTo( SBiped.class ) ) {
-				return false;
-			}
 			return CheckIfAnimationCrawler.initiateAndCheckMethod( candidate );
 		} else {
 			return true;
@@ -106,17 +103,16 @@ public abstract class AnimatorComposite<M extends SJointedModel> extends Abstrac
 		return this.method;
 	}
 
-	//TODO mmay
 	public static AnimatorComposite<?> getDialogForUserType( UserType<?> declaringType, UserMethod method ) {
 		if( declaringType != null ) {
 			if( ( declaringType instanceof NamedUserType ) && AnimatorComposite.isStrictlyAnimation( method ) ) {
 				NamedUserType namedUserType = (NamedUserType)declaringType;
 				if( namedUserType.isAssignableTo( SBiped.class ) ) {
-					return new BipedAnimatorInputDialog( namedUserType, method );
+					return new BipedAnimator( namedUserType, method );
 				} else if( namedUserType.isAssignableTo( SQuadruped.class ) ) {
-					return new QuadrupedAnimatorInputDialog( namedUserType, method );
+					return new QuadrupedAnimator( namedUserType, method );
 				} else if( namedUserType.isAssignableTo( SFlyer.class ) ) {
-					return new FlyerAnimatorInputDialog( namedUserType, method );
+					return new FlyerAnimator( namedUserType, method );
 				}
 			}
 		}
@@ -125,10 +121,5 @@ public abstract class AnimatorComposite<M extends SJointedModel> extends Abstrac
 
 	public static AnimatorComposite<?> getDialogForUserMethod( UserMethod method ) {
 		return getDialogForUserType( method.getDeclaringType(), method );
-	}
-
-	public static boolean isAnimationMethod( UserMethod method ) {
-		//TODO mmay check to ensure if all statements and strike poses
-		return false;
 	}
 }

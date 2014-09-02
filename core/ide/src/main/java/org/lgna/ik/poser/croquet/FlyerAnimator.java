@@ -40,30 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.input;
+package org.lgna.ik.poser.croquet;
 
 import org.lgna.ik.poser.scene.AbstractPoserScene;
-import org.lgna.ik.poser.scene.QuadrupedPoserScene;
+import org.lgna.ik.poser.scene.FlyerPoserScene;
 import org.lgna.project.ast.NamedUserType;
-import org.lgna.story.SQuadruped;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.story.SFlyer;
 
 /**
  * @author Matt May
  */
-public class QuadrupedPoserInputDialog extends PoserComposite<SQuadruped> {
+public class FlyerAnimator extends AnimatorComposite<SFlyer> {
 
-	public QuadrupedPoserInputDialog( NamedUserType valueType ) {
-		super( valueType, java.util.UUID.fromString( "b1a11f61-d63c-430b-9b3a-62ffb8fac0d8" ) );
+	public FlyerAnimator( NamedUserType valueType, UserMethod editedMethod ) {
+		super( valueType, editedMethod, java.util.UUID.fromString( "4ac54b7b-1f08-4596-83e0-116122731209" ) );
 	}
 
 	@Override
-	protected AbstractPoserScene<SQuadruped> initScene() {
-		return new QuadrupedPoserScene( getCamera(), getModel() );
+	protected AbstractPoserScene<SFlyer> initScene() {
+		return new FlyerPoserScene( getCamera(), getModel() );
 	}
 
 	@Override
-	public Class<SQuadruped> getClassForM() {
-		return SQuadruped.class;
+	public Class<SFlyer> getClassForM() {
+		return SFlyer.class;
 	}
 
 }
