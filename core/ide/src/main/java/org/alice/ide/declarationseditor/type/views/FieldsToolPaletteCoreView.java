@@ -42,7 +42,6 @@
  */
 package org.alice.ide.declarationseditor.type.views;
 
-import org.lgna.ik.poser.input.AbstractPoserInputDialogComposite;
 
 /**
  * @author Dennis Cosgrove
@@ -62,9 +61,13 @@ public class FieldsToolPaletteCoreView extends MembersToolPaletteCoreView {
 		}
 		this.addComponent( composite.getMembersComposite().getView() );
 		this.addComponent( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getLaunchOperation().createButton() );
-		AbstractPoserInputDialogComposite<?> dialog = AbstractPoserInputDialogComposite.getDialogForUserType( type );
-		if( dialog != null ) {
-			this.addComponent( dialog.getLaunchOperation().createButton() );
+		org.lgna.ik.poser.croquet.DeclarePoseFieldOperation declarePoseFieldOperation = org.lgna.ik.poser.croquet.DeclarePoseFieldOperation.getInstance( type );
+		if( declarePoseFieldOperation != null ) {
+			this.addComponent( declarePoseFieldOperation.createButton() );
 		}
+		//		AbstractPoserInputDialogComposite<?> dialog = AbstractPoserInputDialogComposite.getDialogForUserType( type );
+		//		if( dialog != null ) {
+		//			this.addComponent( dialog.getLaunchOperation().createButton() );
+		//		}
 	}
 }

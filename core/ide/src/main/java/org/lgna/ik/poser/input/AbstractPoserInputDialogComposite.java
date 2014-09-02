@@ -103,17 +103,19 @@ public abstract class AbstractPoserInputDialogComposite<M extends SJointedModel>
 		}
 	}
 
-	public static AbstractPoserInputDialogComposite<?> getDialogForUserType( UserType<?> declaringType ) {
-		if( ( declaringType instanceof NamedUserType ) ) {
-			NamedUserType namedUserType = (NamedUserType)declaringType;
-			if( namedUserType.isAssignableTo( SBiped.class ) ) {
-				return new BipedPoserInputDialog( namedUserType );
-			} else if( namedUserType.isAssignableTo( SQuadruped.class ) ) {
-				return new QuadrupedPoserInputDialog( namedUserType );
-			} else if( namedUserType.isAssignableTo( SFlyer.class ) ) {
-				return new FlyerPoserInputDialog( namedUserType );
-			}
+	public static boolean isPoseable( org.lgna.project.ast.NamedUserType declaringType ) {
+		return getDialogForUserType( declaringType ) != null;
+	}
+
+	public static AbstractPoserInputDialogComposite<?> getDialogForUserType( org.lgna.project.ast.NamedUserType declaringType ) {
+		if( declaringType.isAssignableTo( SBiped.class ) ) {
+			return new BipedPoserInputDialog( declaringType );
+		} else if( declaringType.isAssignableTo( SQuadruped.class ) ) {
+			return new QuadrupedPoserInputDialog( declaringType );
+		} else if( declaringType.isAssignableTo( SFlyer.class ) ) {
+			return new FlyerPoserInputDialog( declaringType );
+		} else {
+			return null;
 		}
-		return null;
 	}
 }
