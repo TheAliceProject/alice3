@@ -89,11 +89,10 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 	protected final List<PoserSphereManipulatorListener> dragListeners = Lists.newCopyOnWriteArrayList();
 	private PoserAnimatorDragAdapter poserAnimatorDragAdapter;
 
-	public AbstractPoserScene( SCamera camera, T ogre ) {
-		System.out.println( "ogre: " + ogre );
+	public AbstractPoserScene( SCamera camera, T model ) {
 		this.camera = camera;
 		this.camera.setVehicle( this );
-		this.model = ogre;
+		this.model = model;
 
 		addDragListener( sphereDragListener );
 		initializeJointSelectionSpheresAndLimbs();

@@ -60,8 +60,8 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  */
 public class BipedPoserScene extends AbstractPoserScene<SBiped> {
 
-	public BipedPoserScene( SCamera camera, SBiped ogre ) {
-		super( camera, ogre );
+	public BipedPoserScene( SCamera camera, SBiped biped ) {
+		super( camera, biped );
 	}
 
 	@Override

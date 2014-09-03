@@ -60,8 +60,8 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  */
 public class QuadrupedPoserScene extends AbstractPoserScene<SQuadruped> {
 
-	public QuadrupedPoserScene( SCamera camera, SQuadruped ogre ) {
-		super( camera, ogre );
+	public QuadrupedPoserScene( SCamera camera, SQuadruped quadruped ) {
+		super( camera, quadruped );
 	}
 
 	@Override

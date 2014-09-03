@@ -59,8 +59,8 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  */
 public class FlyerPoserScene extends AbstractPoserScene<SFlyer> {
 
-	public FlyerPoserScene( SCamera camera, SFlyer ogre ) {
-		super( camera, ogre );
+	public FlyerPoserScene( SCamera camera, SFlyer flyer ) {
+		super( camera, flyer );
 	}
 
 	@Override
