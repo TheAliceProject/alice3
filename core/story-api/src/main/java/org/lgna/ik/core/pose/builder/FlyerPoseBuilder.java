@@ -43,16 +43,14 @@
 package org.lgna.ik.core.pose.builder;
 
 import org.lgna.ik.core.pose.FlyerPose;
-import org.lgna.ik.core.pose.JointKey;
+import org.lgna.story.SFlyer;
 
 /**
  * @author Matt May
  */
-public class FlyerPoseBuilder extends PoseBuilder<FlyerPose> {
-
+public class FlyerPoseBuilder extends PoseBuilder<SFlyer, FlyerPose> {
 	@Override
-	public FlyerPose build() {
-		return new FlyerPose( getKeys().toArray( new JointKey[ 0 ] ) );
+	protected org.lgna.ik.core.pose.FlyerPose build( org.lgna.ik.core.pose.JointKey[] buffer ) {
+		return new FlyerPose( buffer );
 	}
-
 }

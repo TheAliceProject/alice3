@@ -51,8 +51,10 @@ import org.lgna.story.resources.JointId;
 /**
  * @author Matt May
  */
-public class BipedPose extends Pose<SBiped> {
+public final class BipedPose extends Pose<SBiped> {
 
+	//TODO mmay
+	/*package-private*/
 	public BipedPose( JointKey... pairs ) {
 		super( SBiped.class, BipedResource.class, pairs );
 	}

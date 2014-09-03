@@ -42,17 +42,16 @@
  */
 package org.lgna.ik.core.pose.builder;
 
-import org.lgna.ik.core.pose.JointKey;
 import org.lgna.ik.core.pose.QuadrupedPose;
 
 /**
  * @author Matt May
  */
-public class QuadrupedPoseBuilder extends PoseBuilder<QuadrupedPose> {
+public class QuadrupedPoseBuilder extends PoseBuilder<org.lgna.story.SQuadruped, QuadrupedPose> {
 
 	@Override
-	public QuadrupedPose build() {
-		return new QuadrupedPose( getKeys().toArray( new JointKey[ 0 ] ) );
+	protected org.lgna.ik.core.pose.QuadrupedPose build( org.lgna.ik.core.pose.JointKey[] buffer ) {
+		return new QuadrupedPose( buffer );
 	}
 
 }

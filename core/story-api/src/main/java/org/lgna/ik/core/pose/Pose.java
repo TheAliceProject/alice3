@@ -119,7 +119,7 @@ public abstract class Pose<S extends SJointedModel> {
 		return org.lgna.story.EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion();
 	}
 
-	public abstract PoseBuilder<Pose<S>> getBuilder();
+	public abstract PoseBuilder<S, Pose<S>> getBuilder();
 
 	public void applyToJointedModel( S model ) {
 		for( JointKey key : jointQPairs ) {
@@ -152,7 +152,7 @@ public abstract class Pose<S extends SJointedModel> {
 
 	public static <T extends SJointedModel> Pose<T> createPoseFromT( T model, JointId[] arr ) {
 
-		PoseBuilder<?> builder;
+		PoseBuilder<?, ?> builder;
 		if( model instanceof SBiped ) {
 			builder = new BipedPoseBuilder();
 		} else if( model instanceof SQuadruped ) {
@@ -168,7 +168,7 @@ public abstract class Pose<S extends SJointedModel> {
 			list.add( new JointKey( implementation.getLocalOrientation(), id ) );
 		}
 		for( JointKey key : list ) {
-			builder.addCustom( key.getLGNAOrientation(), key.getJointId() );
+			builder.addJointKey( key );
 		}
 		return (Pose<T>)builder.build();
 	}

@@ -56,19 +56,30 @@ import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 /**
  * @author Matt May
  */
-public abstract class PoseBuilder<P extends Pose<?>> {
+public abstract class PoseBuilder<M extends org.lgna.story.SJointedModel, P extends Pose<M>> {
+	//TODO: mmay 
+	//package-private with EmployeesOnly accessor 
+	public void addJointKey( JointKey jointKey ) {
+		this.keys.add( jointKey );
+	}
 
-	private final List<JointKey> keys = Lists.newArrayList();
-
-	public PoseBuilder<P> addCustom( Orientation orientation, JointId jointid ) {
+	protected void addJointKey( JointId jointid, Orientation orientation ) {
 		edu.cmu.cs.dennisc.math.Orientation mathOrientation = new OrthogonalMatrix3x3( EmployeesOnly.getOrthogonalMatrix3x3( orientation ) );
-		this.keys.add( new JointKey( mathOrientation, jointid ) );
+		this.addJointKey( new JointKey( mathOrientation, jointid ) );
+	}
+
+	public final PoseBuilder<M, P> arbitraryJoint( JointId jointId, org.lgna.story.Orientation orientation ) {
+		this.addJointKey( jointId, orientation );
 		return this;
 	}
 
-	public abstract P build();
+	protected abstract P build( JointKey[] buffer );
 
-	protected List<JointKey> getKeys() {
-		return this.keys;
+	public final P build() {
+		JointKey[] buffer = new JointKey[ this.keys.size() ];
+		this.keys.toArray( buffer );
+		return this.build( buffer );
 	}
+
+	private final List<JointKey> keys = Lists.newLinkedList();
 }

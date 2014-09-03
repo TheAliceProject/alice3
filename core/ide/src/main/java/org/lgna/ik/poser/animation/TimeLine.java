@@ -312,9 +312,9 @@ public class TimeLine {
 			UnitQuaternion rightAnkleUnitQuaternion = UnitQuaternion.createInterpolation( new UnitQuaternion( map.get( joint ).getStartOrientation().createOrthogonalMatrix3x3() ), new UnitQuaternion( map.get( joint ).getEndOrientation().createOrthogonalMatrix3x3() ), k );
 			builderList.add( new JointKey( rightAnkleUnitQuaternion.createOrthogonalMatrix3x3(), joint ) );
 		}
-		PoseBuilder<?> builder = init.getBuilder();
+		PoseBuilder<?, ?> builder = init.getBuilder();
 		for( JointKey key : builderList ) {
-			builder.addCustom( key.getLGNAOrientation(), key.getJointId() );
+			builder.addJointKey( key );
 		}
 		return builder.build();
 	}
@@ -327,7 +327,7 @@ public class TimeLine {
 		}
 		List<JointKey> rvKeys = Lists.newArrayList();
 		List<JointId> unhandledIds = Lists.newArrayList();
-		PoseBuilder<?> builder = key1.getPose().getBuilder();
+		PoseBuilder<?, ?> builder = key1.getPose().getBuilder();
 		for( JointKey jointKey : key2.getPoseActual().getJointKeys() ) {
 			rvKeys.add( jointKey );
 			unhandledIds.add( jointKey.getJointId() );
@@ -342,7 +342,7 @@ public class TimeLine {
 		}
 	}
 
-	private Pose<?> getInitPose( KeyFrameData priorKeyFrame, PoseBuilder<?> builder, List<JointId> unhandledIds, List<JointKey> rvKeys ) {
+	private Pose<?> getInitPose( KeyFrameData priorKeyFrame, PoseBuilder<?, ?> builder, List<JointId> unhandledIds, List<JointKey> rvKeys ) {
 		Pose<?> prevPose = initialPose;
 		if( priorKeyFrame != null ) {
 			prevPose = priorKeyFrame.getPose();
@@ -361,7 +361,7 @@ public class TimeLine {
 		}
 		if( unhandledIds.isEmpty() ) {
 			for( JointKey key : rvKeys ) {
-				builder.addCustom( key.getLGNAOrientation(), key.getJointId() );
+				builder.addJointKey( key );
 			}
 			Pose<?> rv = builder.build();
 			return rv;
@@ -425,12 +425,12 @@ public class TimeLine {
 	private void correctPoseActuals() {
 		Pose<?> prev = initialPose;
 		for( KeyFrameData data : datas ) {
-			PoseBuilder<?> builder = data.getPoseActual().getBuilder();
+			PoseBuilder<?, ?> builder = data.getPoseActual().getBuilder();
 			for( JointId id : usedIds ) {
 				if( contains( data.getPose().getJointKeys(), id ) ) {
-					builder.addCustom( orientationForId( id, data.getPose() ), id );
+					builder.addJointKey( new JointKey( lgnaOrientationForId( id, data.getPose() ), id ) );
 				} else {
-					builder.addCustom( orientationForId( id, initialPose ), id );
+					builder.addJointKey( new JointKey( lgnaOrientationForId( id, initialPose ), id ) );
 					//					builder.addCustom( orientationForId( id, prev ), id );
 					// thought this would be correct changed to other open to either
 				}

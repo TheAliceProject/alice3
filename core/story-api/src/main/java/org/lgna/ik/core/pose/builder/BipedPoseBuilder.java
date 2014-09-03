@@ -43,16 +43,13 @@
 package org.lgna.ik.core.pose.builder;
 
 import org.lgna.ik.core.pose.BipedPose;
-import org.lgna.ik.core.pose.JointKey;
 
 /**
  * @author Matt May
  */
-public class BipedPoseBuilder extends PoseBuilder<BipedPose> {
-
+public class BipedPoseBuilder extends PoseBuilder<org.lgna.story.SBiped, BipedPose> {
 	@Override
-	public BipedPose build() {
-		return new BipedPose( getKeys().toArray( new JointKey[ 0 ] ) );
+	protected org.lgna.ik.core.pose.BipedPose build( org.lgna.ik.core.pose.JointKey[] buffer ) {
+		return new BipedPose( buffer );
 	}
-
 }

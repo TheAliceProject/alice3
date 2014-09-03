@@ -208,7 +208,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 
 	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.ik.core.pose.Pose pose ) throws CannotCreateExpressionException {
 		if( ( pose != null ) && ( pose.getJointKeys().length > 0 ) ) {
-			PoseBuilder<?> builder = pose.getBuilder();
+			PoseBuilder<?, ?> builder = pose.getBuilder();
 			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( builder.getClass() );
 			org.lgna.project.ast.Expression prevExpression = null;
 			for( JointKey key : pose.getJointKeys() ) {
