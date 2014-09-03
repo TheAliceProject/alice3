@@ -46,7 +46,6 @@ import org.lgna.croquet.views.AbstractLabel;
 import org.lgna.croquet.views.ItemDropDown;
 import org.lgna.croquet.views.MigPanel;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
-import org.lgna.ik.poser.animation.composites.drops.ResourceSelectionDropDown;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.ik.poser.jselection.JointSelectionSphereState;
 
@@ -89,11 +88,5 @@ public class AbstractPoserControlView extends MigPanel {
 		this.addComponent( poserControlComposite.getStraightenJointsOperation().createButton(), "wrap, spanx 4, growx" );
 		this.addComponent( poserControlComposite.getJointRotationHandleVisibilityState().createCheckBox(), "wrap" );
 		//		if( poserControlComposite.typeSwitchingEnabled ) {
-		if( false ) {
-			this.addComponent( new ResourceSelectionDropDown( poserControlComposite.getResourceList() ), "wrap" );
-			//		this.addComponent( poserControlComposite.getResourceList().getPrepModel().createComboBox(), "wrap" );
-			this.addComponent( poserControlComposite.getTypeSelectionState().getSidekickLabel().createLabel() );
-			this.addComponent( poserControlComposite.getTypeSelectionState().createDropDown(), "wrap" );
-		}
 	}
 }

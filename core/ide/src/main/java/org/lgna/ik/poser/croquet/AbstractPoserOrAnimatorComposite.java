@@ -42,6 +42,7 @@
  */
 package org.lgna.ik.poser.croquet;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,18 +77,16 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  */
 public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserControlComposite, M extends SJointedModel> extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
 
-	private final SProgram poser;
+	private final SProgram storyProgram;
 
 	private final SCamera camera = new SCamera();
-	private M model;
 	private final AbstractPoserScene scene;
-	private NamedUserType userType;
 	private final T controlComposite;
 	private final List<JointId> usedJoints = Lists.newArrayList();
-	private List<JointedModelResource> resourceList = Lists.newArrayList();
+	private M model;
+	private NamedUserType declaringType;
 
 	private final SplitComposite splitComposite;
-
 	private final SceneComposite sceneComposite;
 
 	private boolean isInitialized = false;
@@ -97,7 +96,7 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 		super( migrationId );
 		setType( userType );
 		this.scene = initScene();
-		this.poser = new SProgram();
+		this.storyProgram = new SProgram();
 		controlComposite = this.createControlComposite();
 		sceneComposite = new SceneComposite();
 		sceneComposite.getView().setMinimumPreferredHeight( 400 );
@@ -126,20 +125,11 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		sceneComposite.getView().initializeInAwtContainer( poser );
-		initializeTest();
-	}
-
-	private M createInstanceFromTypeTwo( NamedUserType type ) {
-		resourceList.clear();
-		org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
-		resourceList = FieldFinder.getInstance().getResourcesForType( type );
-
-		return null;
+		sceneComposite.getView().initializeInAwtContainer( storyProgram );
+		initializeScene();
 	}
 
 	private M createInstanceFromType( NamedUserType type ) {
-		resourceList.clear();
 		org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 
 		org.lgna.project.ast.NamedUserConstructor userConstructor = type.constructors.get( 0 );
@@ -151,7 +141,7 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 		case 1:
 			UserParameter constructorParameter0 = userConstructor.requiredParameters.get( 0 );
 			AbstractType<?, ?, ?> parameter0Type = constructorParameter0.getValueType();
-			resourceList = FieldFinder.getInstance().getResourcesForType( type );
+			ArrayList<JointedModelResource> resourceList = FieldFinder.getInstance().getResourcesForType( type );
 			if( parameter0Type instanceof org.lgna.project.ast.JavaType ) {
 				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)parameter0Type;
 				Class<?> cls = javaType.getClassReflectionProxy().getReification();
@@ -175,9 +165,9 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 
 	public abstract Class<M> getClassForM();
 
-	public void initializeTest() {
+	private void initializeScene() {
 		if( !isInitialized ) {
-			this.poser.setActiveScene( this.scene );
+			this.storyProgram.setActiveScene( this.scene );
 			this.getCamera().move( MoveDirection.BACKWARD, 6, new Duration( 0 ) );
 			this.getCamera().move( MoveDirection.UP, 1, new Duration( 0 ) );
 			this.getModel().turnToFace( getCamera(), new Duration( 0 ) );
@@ -207,11 +197,11 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 	}
 
 	public NamedUserType getDeclaringType() {
-		return userType;
+		return declaringType;
 	}
 
 	public SProgram getProgram() {
-		return this.poser;
+		return this.storyProgram;
 	}
 
 	@Override
@@ -242,12 +232,8 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 		return this.usedJoints;
 	}
 
-	public List<JointedModelResource> getResourceList() {
-		return this.resourceList;
-	}
-
 	public void setType( NamedUserType type ) {
-		this.userType = type;
+		this.declaringType = type;
 		this.model = createInstanceFromType( type );
 		assert model != null : type;
 		if( this.scene != null ) {

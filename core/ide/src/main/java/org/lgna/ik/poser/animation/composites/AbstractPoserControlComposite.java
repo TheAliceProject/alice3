@@ -44,19 +44,10 @@ package org.lgna.ik.poser.animation.composites;
 
 import java.util.UUID;
 
-import org.alice.stageide.modelresource.ClassHierarchyBasedResourceNode;
-import org.alice.stageide.modelresource.ClassResourceKey;
-import org.alice.stageide.modelresource.EnumConstantResourceKey;
-import org.alice.stageide.modelresource.ResourceKey;
-import org.alice.stageide.modelresource.ResourceNode;
-import org.alice.stageide.modelresource.ResourceNodeTreeState;
-import org.alice.stageide.modelresource.RootResourceKey;
-import org.alice.stageide.modelresource.UpdatableRootResourceNodeTreeSelectionState;
 import org.alice.stageide.type.croquet.TypeNode;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
-import org.lgna.croquet.Model;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringValue;
@@ -66,15 +57,12 @@ import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.core.IKCore;
 import org.lgna.ik.core.IKCore.Limb;
 import org.lgna.ik.poser.FieldFinder;
-import org.lgna.ik.poser.animation.composites.drops.TypeNodeSelectionState;
 import org.lgna.ik.poser.controllers.PoserControllerAdapter;
 import org.lgna.ik.poser.croquet.AbstractPoserOrAnimatorComposite;
 import org.lgna.ik.poser.croquet.views.AbstractPoserControlView;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.ik.poser.jselection.JointSelectionSphereState;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
-import org.lgna.project.ast.AbstractType;
-import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.Color;
@@ -84,8 +72,6 @@ import org.lgna.story.SJointedModel;
 import org.lgna.story.SQuadruped;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointedModelResource;
-
-import edu.cmu.cs.dennisc.property.Property;
 
 /**
  * @author Matt May
@@ -102,14 +88,10 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	private final StringValue leftLegLabel = this.createStringValue( "leftLeg" );
 	private final StringValue typeSelectionLabel = this.createStringValue( "typeSelectionLabel" );
 	private final BooleanState isUsingIK = createBooleanState( "isUsingIK", true );
-	private final UpdatableRootResourceNodeTreeSelectionState resourceTree;
 	//			createListSelectionState( "chooseResource" ), new RefreshableListData<JointedModelResource>( DefaultItemCodec.createInstance( JointedModelResource.class ) )
 	private final BooleanState jointRotationHandleVisibilityState = createBooleanState( "showHandles", false );
 	protected AbstractPoserOrAnimatorComposite parent;
 	private final PoserControllerAdapter adapter;
-	private final TypeNode typeSelectionRoot;
-	private final TypeNodeSelectionState typeSelectionState;
-	public final boolean typeSwitchingEnabled;
 
 	public AbstractPoserControlComposite( AbstractPoserOrAnimatorComposite parent, UUID uid ) {
 		super( uid );
@@ -126,20 +108,6 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		leftLegAnchor.getValue().setPaint( Color.GREEN );
 		adapter = new PoserControllerAdapter( this );
 		parent.setAdapter( adapter );
-		typeSwitchingEnabled = FieldFinder.getInstance().isSceneTypeNull();
-		if( typeSwitchingEnabled ) {
-			typeSelectionRoot = initializeRootTypeNode();
-			TypeNode initialValue = getInitialValue( typeSelectionRoot );
-			typeSelectionState = new TypeNodeSelectionState( AnimatorControlComposite.GROUP, initialValue, typeSelectionRoot );
-			typeSelectionState.addNewSchoolValueListener( typeChangedListener );
-			//		resourceList.addNewSchoolValueListener( resourceChangeListener );
-			ResourceNode updateRoot = updateRoot( org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeState.getInstance().getTreeModel().getRoot() );
-			resourceTree = new UpdatableRootResourceNodeTreeSelectionState( updateRoot );
-		} else {
-			resourceTree = null;
-			typeSelectionState = null;
-			typeSelectionRoot = null;
-		}
 	}
 
 	private org.lgna.croquet.event.ValueListener<JointedModelResource> resourceChangeListener = new org.lgna.croquet.event.ValueListener<JointedModelResource>() {
@@ -278,48 +246,6 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		}
 	}
 
-	private ResourceNode updateRoot( ResourceNode node ) {
-		ResourceNode rv = null;
-		if( node instanceof ClassHierarchyBasedResourceNode ) {
-			ClassHierarchyBasedResourceNode chbrNode = (ClassHierarchyBasedResourceNode)node;
-			for( Model o : chbrNode.getChildren() ) {
-				System.out.println( "child " + o.getClass() );
-			}
-		}
-		node.getChildren();
-		ResourceKey resourceKey = node.getResourceKey();
-		if( resourceKey instanceof RootResourceKey ) {
-			for( ResourceNode child : node.getNodeChildren() ) {
-				rv = updateRoot( child );
-				if( rv != null ) {
-					return rv;
-				}
-			}
-		} else if( resourceKey instanceof ClassResourceKey ) {
-			JavaType resourceType = ( (ClassResourceKey)resourceKey ).getType();
-
-			AbstractType<?, ?, ?> type = typeSelectionState.getValue().getType();
-			for( Property<?> o : resourceType.getProperties() ) {
-			}
-			System.out.println( type.getPropertyNamed( "superType" ) );
-			if( type.isAssignableTo( resourceType ) ) {
-				for( ResourceNode child : node.getNodeChildren() ) {
-					rv = updateRoot( child );
-					if( rv != null ) {
-						return rv;
-					}
-				}
-				return node;
-			}
-		} else if( resourceKey instanceof EnumConstantResourceKey ) {
-			//do nothing leafs
-			return null;
-		} else {
-			System.out.println( " ERROR: " + resourceKey.getClass() );
-		}
-		return node;
-	}
-
 	public UserType<?> getDeclaringType() {
 		return parent.getDeclaringType();
 	}
@@ -330,17 +256,6 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 
 	public BooleanState getJointRotationHandleVisibilityState() {
 		return jointRotationHandleVisibilityState;
-	}
-
-	public ResourceNodeTreeState getResourceList() {
-		return this.resourceTree;
-	}
-
-	private void updateResourceRoot() {
-	}
-
-	public TypeNodeSelectionState getTypeSelectionState() {
-		return this.typeSelectionState;
 	}
 
 	public StringValue getTypeSelectionLabel() {
