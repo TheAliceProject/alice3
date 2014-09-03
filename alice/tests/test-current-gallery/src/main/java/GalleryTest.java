@@ -98,9 +98,9 @@ public class GalleryTest {
 			System.err.println();
 			for( int i = 0; i < brokenModels.size(); i++ ) {
 				System.err.println( "BROKEN: " + brokenModelNames.get( i ) );
-				brokenModels.get( i ).printStackTrace();
-				System.err.println();
-				System.err.println();
+				//brokenModels.get( i ).printStackTrace();
+				//System.err.println();
+				//System.err.println();
 			}
 			//			javax.swing.JOptionPane.showMessageDialog( null, brokenModels.size() + " broken models." );
 		}
