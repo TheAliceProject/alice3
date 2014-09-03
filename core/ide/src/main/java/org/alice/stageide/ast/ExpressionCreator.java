@@ -203,7 +203,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		}
 	}
 
-	private static final org.lgna.project.ast.JavaMethod ADD_CUSTOM = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "addCustom", Orientation.class, JointId.class );
+	private static final org.lgna.project.ast.JavaMethod ADD_CUSTOM = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "arbitraryJoint", JointId.class, Orientation.class );
 	private static final org.lgna.project.ast.JavaMethod BUILD = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "build" );
 
 	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.ik.core.pose.Pose pose ) throws CannotCreateExpressionException {
@@ -214,7 +214,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			for( JointKey key : pose.getJointKeys() ) {
 				Orientation orientation = key.getLGNAOrientation();
 				prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation( prevExpression == null ? builderExpression0 : prevExpression, ADD_CUSTOM
-						, this.createOrientationExpression( orientation ), this.createJointIdExpression( key.getJointId() ) );
+						, this.createJointIdExpression( key.getJointId() ), this.createOrientationExpression( orientation ) );
 			}
 			assert prevExpression != null;
 			return org.lgna.project.ast.AstUtilities.createMethodInvocation( prevExpression, BUILD );
