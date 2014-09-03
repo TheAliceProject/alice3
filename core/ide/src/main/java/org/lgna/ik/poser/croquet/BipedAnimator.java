@@ -63,7 +63,7 @@ public class BipedAnimator extends AnimatorComposite<SBiped> {
 
 	@Override
 	public AbstractPoserScene<SBiped> initScene() {
-		return new BipedPoserScene( this.getCamera(), this.getModel() );
+		return new BipedPoserScene( this.getModel() );
 	}
 
 	@Override

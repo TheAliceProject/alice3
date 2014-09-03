@@ -58,7 +58,7 @@ public class BipedPoser extends PoserComposite<SBiped> {
 
 	@Override
 	public AbstractPoserScene<SBiped> initScene() {
-		return new BipedPoserScene( getCamera(), getModel() );
+		return new BipedPoserScene( this.getModel() );
 	}
 
 	@Override

@@ -43,6 +43,7 @@
 package org.lgna.ik.poser.croquet;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,7 +61,6 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserParameter;
 import org.lgna.story.Duration;
 import org.lgna.story.MoveDirection;
-import org.lgna.story.SCamera;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SProgram;
 import org.lgna.story.StraightenOutJoints;
@@ -79,7 +79,6 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 
 	private final SProgram storyProgram;
 
-	private final SCamera camera = new SCamera();
 	private final AbstractPoserScene scene;
 	private final T controlComposite;
 	private final List<JointId> usedJoints = Lists.newArrayList();
@@ -94,7 +93,7 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 
 	protected AbstractPoserOrAnimatorComposite( UUID migrationId, NamedUserType userType ) {
 		super( migrationId );
-		setType( userType );
+		this.setType( userType );
 		this.scene = initScene();
 		this.storyProgram = new SProgram();
 		controlComposite = this.createControlComposite();
@@ -126,6 +125,7 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		sceneComposite.getView().initializeInAwtContainer( storyProgram );
+		scene.addPointOfViewChangeListener( transformationListener, (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] ) );
 		initializeScene();
 	}
 
@@ -168,15 +168,15 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 	private void initializeScene() {
 		if( !isInitialized ) {
 			this.storyProgram.setActiveScene( this.scene );
-			this.getCamera().move( MoveDirection.BACKWARD, 6, new Duration( 0 ) );
-			this.getCamera().move( MoveDirection.UP, 1, new Duration( 0 ) );
-			this.getModel().turnToFace( getCamera(), new Duration( 0 ) );
+			this.scene.getCamera().move( MoveDirection.BACKWARD, 6, new Duration( 0 ) );
+			this.scene.getCamera().move( MoveDirection.UP, 1, new Duration( 0 ) );
+			this.getModel().turnToFace( scene.getCamera(), new Duration( 0 ) );
 			isInitialized = true;
 			scene.addPointOfViewChangeListener( transformationListener, (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] ) );
 		}
 	}
 
-	public List<JointSelectionSphere> getJointSelectionSheres() {
+	public Collection<JointSelectionSphere> getJointSelectionSheres() {
 		return scene.getJointSelectionSheres();
 	}
 
@@ -214,10 +214,6 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 
 	public T getControlComposite() {
 		return this.controlComposite;
-	}
-
-	public SCamera getCamera() {
-		return camera;
 	}
 
 	public M getModel() {

@@ -58,7 +58,7 @@ public class QuadrupedPoser extends PoserComposite<SQuadruped> {
 
 	@Override
 	protected AbstractPoserScene<SQuadruped> initScene() {
-		return new QuadrupedPoserScene( getCamera(), getModel() );
+		return new QuadrupedPoserScene( this.getModel() );
 	}
 
 	@Override

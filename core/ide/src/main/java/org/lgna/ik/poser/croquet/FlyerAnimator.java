@@ -59,7 +59,7 @@ public class FlyerAnimator extends AnimatorComposite<SFlyer> {
 
 	@Override
 	protected AbstractPoserScene<SFlyer> initScene() {
-		return new FlyerPoserScene( getCamera(), getModel() );
+		return new FlyerPoserScene( this.getModel() );
 	}
 
 	@Override

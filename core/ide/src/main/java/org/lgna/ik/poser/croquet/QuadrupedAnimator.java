@@ -59,7 +59,7 @@ public class QuadrupedAnimator extends AnimatorComposite<SQuadruped> {
 
 	@Override
 	protected AbstractPoserScene<SQuadruped> initScene() {
-		return new QuadrupedPoserScene( getCamera(), this.getModel() );
+		return new QuadrupedPoserScene( this.getModel() );
 	}
 
 	@Override

@@ -58,7 +58,7 @@ public class FlyerPoser extends PoserComposite<SFlyer> {
 
 	@Override
 	protected AbstractPoserScene<SFlyer> initScene() {
-		return new FlyerPoserScene( getCamera(), getModel() );
+		return new FlyerPoserScene( this.getModel() );
 	}
 
 	@Override

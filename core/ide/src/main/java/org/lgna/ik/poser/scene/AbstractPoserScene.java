@@ -43,7 +43,7 @@
 package org.lgna.ik.poser.scene;
 
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +63,6 @@ import org.lgna.story.SGround;
 import org.lgna.story.SJoint;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SScene;
-import org.lgna.story.SSun;
 import org.lgna.story.SpatialRelation;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.implementation.JointImp;
@@ -77,31 +76,40 @@ import edu.cmu.cs.dennisc.java.util.Maps;
  * @author Matt May
  */
 public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene {
-	private final SSun sun = new SSun();
 	private final SGround snow = new SGround();
-	public final SCamera camera;
-	public T model;
-	protected ArrayList<JointSelectionSphere> jssArr;
-	protected final ArrayList<JointId> anchorPoints = Lists.newArrayList();
+	private final SCamera camera = new SCamera();
+	protected T model;
+	private final Collection<JointSelectionSphere> allJointSelectionSpheres;
 	private PoserControllerAdapter adapter;
-	protected final Map<IKCore.Limb, List<JointSelectionSphere>> limbToJointMap = Maps.newHashMap();
-	protected final Map<JointImp, IKCore.Limb> jointToLimbMap = Maps.newHashMap();
-	protected final List<PoserSphereManipulatorListener> dragListeners = Lists.newCopyOnWriteArrayList();
+	private final Map<IKCore.Limb, List<JointSelectionSphere>> limbToJointMap;
+	private final Map<JointImp, IKCore.Limb> jointToLimbMap = Maps.newHashMap();
+	private final List<PoserSphereManipulatorListener> dragListeners = Lists.newCopyOnWriteArrayList();
 	private PoserAnimatorDragAdapter poserAnimatorDragAdapter;
 
-	public AbstractPoserScene( SCamera camera, T model ) {
-		this.camera = camera;
+	public AbstractPoserScene( T model ) {
+		assert model != null : this;
 		this.camera.setVehicle( this );
 		this.model = model;
 
 		addDragListener( sphereDragListener );
-		initializeJointSelectionSpheresAndLimbs();
-		initializeLimbAnchors();
+
+		this.limbToJointMap = createJointSelectionSpheresAndLimbs();
+
+		for( IKCore.Limb limb : limbToJointMap.keySet() ) {
+			for( JointSelectionSphere sphere : limbToJointMap.get( limb ) ) {
+				jointToLimbMap.put( sphere.getJoint(), limb );
+				sphere.setOpacity( 0 );
+			}
+		}
+
+		List<JointSelectionSphere> temp = Lists.newLinkedList();
+		for( List<JointSelectionSphere> list : limbToJointMap.values() ) {
+			temp.addAll( list );
+		}
+		this.allJointSelectionSpheres = java.util.Collections.unmodifiableCollection( temp );
 	}
 
-	protected abstract void initializeJointSelectionSpheresAndLimbs();
-
-	protected abstract void initializeLimbAnchors();
+	protected abstract Map<IKCore.Limb, List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs();
 
 	private final ValueListener<Boolean> jointHandleVisibilityListener = new ValueListener<Boolean>() {
 
@@ -153,7 +161,6 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 
 	private void performGeneratedSetup() {
 		this.snow.setVehicle( this );
-		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.model.setVehicle( this );
 
@@ -232,8 +239,8 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		}
 	}
 
-	public ArrayList<JointSelectionSphere> getJointSelectionSheres() {
-		return this.jssArr;
+	public java.util.Collection<JointSelectionSphere> getJointSelectionSheres() {
+		return this.allJointSelectionSpheres;
 	}
 
 	public void setAdapter( PoserControllerAdapter adapter ) {
@@ -245,11 +252,16 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		return limbToJointMap.get( key );
 	}
 
-	public JointSelectionSphere getDefaultAnchorJoint( Limb key ) {
+	protected int getLimbIndex( Limb key ) {
 		if( ( key == Limb.LEFT_ARM ) || ( key == Limb.RIGHT_ARM ) ) {
-			return limbToJointMap.get( key ).get( 1 );
+			return 1;
+		} else {
+			return 0;
 		}
-		return limbToJointMap.get( key ).get( 0 );
+	}
+
+	public final JointSelectionSphere getDefaultAnchorJoint( Limb key ) {
+		return limbToJointMap.get( key ).get( this.getLimbIndex( key ) );
 	}
 
 	public void addDragListener( PoserSphereManipulatorListener sphereDragListener ) {
@@ -260,13 +272,17 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		}
 	}
 
+	public SCamera getCamera() {
+		return this.camera;
+	}
+
 	public void setNewModel( T model ) {
 		this.model.setVehicle( null );
 		this.model = model;
 		this.model.turn( TurnDirection.RIGHT, .5, new Duration( 0 ) );
 		model.setVehicle( this );
 		poserAnimatorDragAdapter.setTarget( model );
-		initializeJointSelectionSpheresAndLimbs();
-		initializeLimbAnchors();
+		createJointSelectionSpheresAndLimbs();
+		//initializeLimbAnchors();
 	}
 }

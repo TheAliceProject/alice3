@@ -42,15 +42,11 @@
  */
 package org.lgna.ik.poser.scene;
 
-import java.util.ArrayList;
+import java.util.Map;
 
-import org.lgna.ik.core.IKCore;
 import org.lgna.ik.core.IKCore.Limb;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
-import org.lgna.story.SCamera;
 import org.lgna.story.SFlyer;
-import org.lgna.story.SJoint;
-import org.lgna.story.implementation.JointImp;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 
@@ -58,50 +54,34 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  * @author Matt May
  */
 public class FlyerPoserScene extends AbstractPoserScene<SFlyer> {
-
-	public FlyerPoserScene( SCamera camera, SFlyer flyer ) {
-		super( camera, flyer );
+	public FlyerPoserScene( SFlyer model ) {
+		super( model );
 	}
 
 	@Override
-	protected void initializeJointSelectionSpheresAndLimbs() {
+	protected Map<Limb, java.util.List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs() {
+		Map<Limb, java.util.List<JointSelectionSphere>> rv = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		JointSelectionSphere a = createJSS( model.getRightHip(), null );
 		JointSelectionSphere b = createJSS( model.getRightKnee(), a );
 		JointSelectionSphere c = createJSS( model.getRightAnkle(), b );
-		limbToJointMap.put( Limb.RIGHT_LEG, Lists.newArrayList( a, b, c ) );
+		rv.put( Limb.RIGHT_LEG, Lists.newArrayList( a, b, c ) );
 		JointSelectionSphere d = createJSS( model.getRightWingShoulder(), null );
 		JointSelectionSphere e = createJSS( model.getRightWingElbow(), d );
 		JointSelectionSphere f = createJSS( model.getRightWingWrist(), e );
-		limbToJointMap.put( Limb.RIGHT_ARM, Lists.newArrayList( d, e, f ) );
+		rv.put( Limb.RIGHT_ARM, Lists.newArrayList( d, e, f ) );
 		JointSelectionSphere g = createJSS( model.getLeftHip(), null );
 		JointSelectionSphere h = createJSS( model.getLeftKnee(), g );
 		JointSelectionSphere i = createJSS( model.getLeftAnkle(), h );
-		limbToJointMap.put( Limb.LEFT_LEG, Lists.newArrayList( g, h, i ) );
+		rv.put( Limb.LEFT_LEG, Lists.newArrayList( g, h, i ) );
 		JointSelectionSphere j = createJSS( model.getLeftWingShoulder(), null );
 		JointSelectionSphere k = createJSS( model.getLeftWingElbow(), j );
 		JointSelectionSphere l = createJSS( model.getLeftWingWrist(), k );
-		limbToJointMap.put( Limb.LEFT_ARM, Lists.newArrayList( j, k, l ) );
-
-		for( IKCore.Limb limb : limbToJointMap.keySet() ) {
-			for( JointSelectionSphere sphere : limbToJointMap.get( limb ) ) {
-				jointToLimbMap.put( sphere.getJoint(), limb );
-				sphere.setOpacity( 0 );
-			}
-		}
-		this.jssArr = Lists.newArrayList( a, b, c, d, e, f, g, g, h, i, j, k, l );
+		rv.put( Limb.LEFT_ARM, Lists.newArrayList( j, k, l ) );
+		return rv;
 	}
 
 	@Override
-	protected void initializeLimbAnchors() {
-		ArrayList<SJoint> sJointList = Lists.newArrayList( model.getRightWingShoulder(), model.getLeftWingShoulder(), model.getRightHip(), model.getLeftHip() );
-		for( SJoint joint : sJointList ) {
-			anchorPoints.add( ( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( joint ) ).getJointId() );
-		}
+	protected int getLimbIndex( org.lgna.ik.core.IKCore.Limb key ) {
+		return 0;
 	}
-
-	@Override
-	public JointSelectionSphere getDefaultAnchorJoint( Limb key ) {
-		return limbToJointMap.get( key ).get( 0 );
-	}
-
 }
