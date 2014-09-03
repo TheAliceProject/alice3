@@ -53,7 +53,7 @@ import org.lgna.story.SQuadruped;
 public class QuadrupedPoser extends PoserComposite<SQuadruped> {
 
 	public QuadrupedPoser( NamedUserType valueType ) {
-		super( valueType, java.util.UUID.fromString( "b1a11f61-d63c-430b-9b3a-62ffb8fac0d8" ) );
+		super( java.util.UUID.fromString( "b1a11f61-d63c-430b-9b3a-62ffb8fac0d8" ), valueType );
 	}
 
 	@Override

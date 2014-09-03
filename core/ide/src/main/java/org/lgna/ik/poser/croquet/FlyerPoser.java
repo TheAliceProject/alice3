@@ -53,7 +53,7 @@ import org.lgna.story.SFlyer;
 public class FlyerPoser extends PoserComposite<SFlyer> {
 
 	public FlyerPoser( NamedUserType valueType ) {
-		super( valueType, java.util.UUID.fromString( "6058e0b2-0c39-417c-806d-613c2aecd523" ) );
+		super( java.util.UUID.fromString( "6058e0b2-0c39-417c-806d-613c2aecd523" ), valueType );
 	}
 
 	@Override

@@ -54,7 +54,7 @@ import org.lgna.story.SFlyer;
 public class FlyerAnimator extends AnimatorComposite<SFlyer> {
 
 	public FlyerAnimator( NamedUserType valueType, UserMethod editedMethod ) {
-		super( valueType, editedMethod, java.util.UUID.fromString( "4ac54b7b-1f08-4596-83e0-116122731209" ) );
+		super( java.util.UUID.fromString( "4ac54b7b-1f08-4596-83e0-116122731209" ), valueType, editedMethod );
 	}
 
 	@Override

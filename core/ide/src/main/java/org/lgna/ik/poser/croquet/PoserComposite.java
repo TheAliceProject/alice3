@@ -55,8 +55,8 @@ import org.lgna.story.SQuadruped;
  * @author Matt May
  */
 public abstract class PoserComposite<M extends SJointedModel> extends AbstractPoserOrAnimatorComposite<PoserControlComposite, M> {
-	public PoserComposite( NamedUserType valueType, UUID uuid ) {
-		super( valueType, uuid );
+	public PoserComposite( UUID migrationID, NamedUserType valueType ) {
+		super( migrationID, valueType );
 	}
 
 	@Override

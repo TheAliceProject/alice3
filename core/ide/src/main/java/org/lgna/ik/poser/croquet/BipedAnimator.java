@@ -54,7 +54,7 @@ import org.lgna.story.SBiped;
 public class BipedAnimator extends AnimatorComposite<SBiped> {
 
 	public BipedAnimator( NamedUserType valueType, UserMethod editedMethod ) {
-		super( valueType, editedMethod, java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ) );
+		super( java.util.UUID.fromString( "170f4252-5b51-41ec-bb9b-98445ff5f2bf" ), valueType, editedMethod );
 	}
 
 	public BipedAnimator( NamedUserType type ) {

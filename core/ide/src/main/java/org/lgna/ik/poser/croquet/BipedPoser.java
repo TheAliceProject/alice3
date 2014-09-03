@@ -53,7 +53,7 @@ import org.lgna.story.SBiped;
 public class BipedPoser extends PoserComposite<SBiped> {
 
 	public BipedPoser( NamedUserType valueType ) {
-		super( valueType, java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ) );
+		super( java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ), valueType );
 	}
 
 	@Override

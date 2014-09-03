@@ -69,8 +69,8 @@ public abstract class AnimatorComposite<M extends SJointedModel> extends Abstrac
 	private MethodNameValidator validator;
 	private UserMethod method;
 
-	public AnimatorComposite( NamedUserType valueType, UserMethod editedMethod, UUID uuid ) {
-		super( valueType, uuid );
+	public AnimatorComposite( UUID migrationId, NamedUserType valueType, UserMethod editedMethod ) {
+		super( migrationId, valueType );
 		this.method = editedMethod;
 	}
 

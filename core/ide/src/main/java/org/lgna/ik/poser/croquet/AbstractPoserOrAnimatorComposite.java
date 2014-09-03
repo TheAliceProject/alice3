@@ -92,7 +92,7 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 	private boolean isInitialized = false;
 	private final java.util.List<StatusUpdateListener> statusUpdateListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
-	protected AbstractPoserOrAnimatorComposite( NamedUserType userType, UUID migrationId ) {
+	protected AbstractPoserOrAnimatorComposite( UUID migrationId, NamedUserType userType ) {
 		super( migrationId );
 		setType( userType );
 		this.scene = initScene();

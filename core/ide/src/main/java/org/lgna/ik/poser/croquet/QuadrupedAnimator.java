@@ -54,7 +54,7 @@ import org.lgna.story.SQuadruped;
 public class QuadrupedAnimator extends AnimatorComposite<SQuadruped> {
 
 	public QuadrupedAnimator( NamedUserType valueType, UserMethod editedMethod ) {
-		super( valueType, editedMethod, java.util.UUID.fromString( "561a5a2e-c2a0-465f-8560-92a484d0a4ca" ) );
+		super( java.util.UUID.fromString( "561a5a2e-c2a0-465f-8560-92a484d0a4ca" ), valueType, editedMethod );
 	}
 
 	@Override
