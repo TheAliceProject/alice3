@@ -40,16 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.core.pose;
+package org.lgna.story;
 
-import org.lgna.ik.core.pose.imp.JointIdQuaternionPair;
-import org.lgna.story.SFlyer;
 
 /**
  * @author Matt May
  */
-public class FlyerPose extends Pose<SFlyer> {
-	/*package-private*/FlyerPose( JointIdQuaternionPair... pairs ) {
-		super( SFlyer.class, pairs );
+public class BipedPoseBuilder extends PoseBuilder<org.lgna.story.SBiped, BipedPose> {
+	@Override
+	protected org.lgna.story.BipedPose build( org.lgna.story.implementation.JointIdQuaternionPair[] buffer ) {
+		return new BipedPose( buffer );
 	}
 }

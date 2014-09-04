@@ -47,7 +47,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.lgna.ik.core.pose.imp.PoseAnimation;
 import org.lgna.ik.core.solver.Bone.Direction;
 import org.lgna.story.SJoint;
 import org.lgna.story.resources.JointId;
@@ -971,7 +970,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		this.displayBubble( bubbleImp, duration );
 	}
 
-	public void setPose( org.lgna.ik.core.pose.Pose<?> pose, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	public void setPose( org.lgna.story.Pose<?> pose, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		this.getProgram().perform( new PoseAnimation( duration, style, this, pose ), null );
 	}
 

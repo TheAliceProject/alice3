@@ -222,7 +222,7 @@ public class SFlyer extends SJointedModel implements Articulable {
 	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_TOE);
 	//	}
 
-	public void setPose( org.lgna.ik.core.pose.Pose<SFlyer> pose, SetPose.Detail... details ) {
+	public void setPose( org.lgna.story.Pose<SFlyer> pose, SetPose.Detail... details ) {
 		double duration = Duration.getValue( details );
 		edu.cmu.cs.dennisc.animation.Style style = AnimationStyle.getValue( details ).getInternal();
 		this.getImplementation().setPose( pose, duration, style );

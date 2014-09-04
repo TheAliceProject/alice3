@@ -59,11 +59,6 @@ import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.NullTrigger;
 import org.lgna.croquet.views.BorderPanel;
 import org.lgna.croquet.views.CompositeView;
-import org.lgna.ik.core.pose.BipedPose;
-import org.lgna.ik.core.pose.FlyerPose;
-import org.lgna.ik.core.pose.Pose;
-import org.lgna.ik.core.pose.QuadrupedPose;
-import org.lgna.ik.core.pose.imp.PoseUtilities;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLine;
@@ -82,12 +77,17 @@ import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.story.AnimationStyle;
+import org.lgna.story.BipedPose;
 import org.lgna.story.Duration;
+import org.lgna.story.FlyerPose;
+import org.lgna.story.Pose;
+import org.lgna.story.QuadrupedPose;
 import org.lgna.story.SBiped;
 import org.lgna.story.SFlyer;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SQuadruped;
 import org.lgna.story.SetPose;
+import org.lgna.story.implementation.PoseUtilities;
 
 /**
  * @author Matt May

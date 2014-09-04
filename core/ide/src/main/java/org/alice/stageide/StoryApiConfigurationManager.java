@@ -526,7 +526,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 		if( "build".equals( method.getName() ) ) {
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = methodInvocation.expression.getExpressionType();
-			if( type.isAssignableTo( org.lgna.ik.core.pose.PoseBuilder.class ) ) {
+			if( type.isAssignableTo( org.lgna.story.PoseBuilder.class ) ) {
 				if( isSpecificPoseBuilderTypeRequired ) {
 					return getSpecificPoseBuilderType( methodInvocation.expression.getValue() );
 				} else {

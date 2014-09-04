@@ -47,12 +47,12 @@ import java.util.List;
 import org.alice.ide.instancefactory.InstanceFactory;
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.poser.croquet.PoseExpressionCreatorComposite;
 import org.lgna.project.annotations.ValueDetails;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserType;
+import org.lgna.story.Pose;
 
 /**
  * @author Matt May

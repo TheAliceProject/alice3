@@ -53,13 +53,13 @@ import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.NullTrigger;
-import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
 import org.lgna.ik.poser.animation.TimeLineListener;
 import org.lgna.ik.poser.animation.edits.DeleteKeyFrameFromTimeLineEdit;
 import org.lgna.ik.poser.animation.edits.ModifyTimeOfExistingKeyFrameInTimeLineEdit;
 import org.lgna.ik.poser.animation.views.TimeLineModifierView;
+import org.lgna.story.Pose;
 
 /**
  * @author Matt May

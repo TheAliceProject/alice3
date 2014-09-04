@@ -44,7 +44,6 @@ package org.lgna.ik.poser.animation.composites;
 
 import java.util.ArrayList;
 
-import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
 import org.lgna.ik.poser.croquet.AnimatorComposite;
@@ -55,6 +54,7 @@ import org.lgna.project.ast.JavaKeyedArgument;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.story.AnimationStyle;
+import org.lgna.story.Pose;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.pattern.Crawlable;

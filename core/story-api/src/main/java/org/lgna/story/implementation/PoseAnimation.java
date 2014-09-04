@@ -40,16 +40,72 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.core.pose;
+package org.lgna.story.implementation;
 
-import org.lgna.story.SFlyer;
+import org.lgna.story.Pose;
+
+import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
+import edu.cmu.cs.dennisc.animation.Style;
 
 /**
  * @author Matt May
  */
-public class FlyerPoseBuilder extends PoseBuilder<SFlyer, FlyerPose> {
-	@Override
-	protected org.lgna.ik.core.pose.FlyerPose build( org.lgna.ik.core.pose.imp.JointIdQuaternionPair[] buffer ) {
-		return new FlyerPose( buffer );
+public class PoseAnimation extends DurationBasedAnimation {
+	private final org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel;
+	private final Pose<?> pose;
+	private transient java.util.List<JointInfo> jointInfos = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+
+	private static class JointInfo {
+		private final org.lgna.story.implementation.JointImp jointImp;
+		private final edu.cmu.cs.dennisc.math.UnitQuaternion q0;
+		private final edu.cmu.cs.dennisc.math.UnitQuaternion q1;
+
+		public JointInfo( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, JointIdQuaternionPair jointKey ) {
+			this.jointImp = jointedModel.getJointImplementation( jointKey.getJointId() );
+			this.q0 = this.jointImp.getLocalOrientation().createUnitQuaternion();
+			this.q1 = jointKey.getQuaternion().createUnitQuaternion();
+		}
+
+		public void setPortion( double portion ) {
+			edu.cmu.cs.dennisc.math.UnitQuaternion q = edu.cmu.cs.dennisc.math.UnitQuaternion.createInterpolation( this.q0, this.q1, portion );
+			jointImp.setLocalOrientation( q.createOrthogonalMatrix3x3() );
+		}
+
+		public void epilogue() {
+			jointImp.setLocalOrientation( this.q1.createOrthogonalMatrix3x3() );
+		}
 	}
+
+	public PoseAnimation( double duration, Style style, org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, Pose pose ) {
+		super( duration, style );
+		this.jointedModel = jointedModel;
+		this.pose = pose;
+	}
+
+	@Override
+	protected void prologue() {
+		this.jointInfos.clear();
+		for( JointIdQuaternionPair jointKey : this.pose.getJointKeys() ) {
+			appendJointInfos( this.jointInfos, this.jointedModel, jointKey );
+		}
+	}
+
+	private static void appendJointInfos( java.util.List<JointInfo> jointInfos, org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, JointIdQuaternionPair jointKey ) {
+		jointInfos.add( new JointInfo( jointedModel, jointKey ) );
+	}
+
+	@Override
+	protected void setPortion( double portion ) {
+		for( JointInfo jointInfo : this.jointInfos ) {
+			jointInfo.setPortion( portion );
+		}
+	}
+
+	@Override
+	protected void epilogue() {
+		for( JointInfo jointInfo : this.jointInfos ) {
+			jointInfo.epilogue();
+		}
+	}
+
 }

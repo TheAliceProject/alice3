@@ -47,11 +47,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import org.lgna.ik.core.pose.Pose;
-import org.lgna.ik.core.pose.PoseBuilder;
-import org.lgna.ik.core.pose.imp.JointIdQuaternionPair;
-import org.lgna.ik.core.pose.imp.PoseUtilities;
 import org.lgna.story.AnimationStyle;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.Pose;
+import org.lgna.story.PoseBuilder;
+import org.lgna.story.implementation.JointIdQuaternionPair;
+import org.lgna.story.implementation.PoseUtilities;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
@@ -314,7 +315,7 @@ public class TimeLine {
 		}
 		PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass( init.getClass() );
 		for( JointIdQuaternionPair key : builderList ) {
-			builder.addJointIdQuaternionPair( key );
+			EmployeesOnly.addJointIdQuaternionPair( builder, key );
 		}
 		return builder.build();
 	}
@@ -361,7 +362,7 @@ public class TimeLine {
 		}
 		if( unhandledIds.isEmpty() ) {
 			for( JointIdQuaternionPair key : rvKeys ) {
-				builder.addJointIdQuaternionPair( key );
+				EmployeesOnly.addJointIdQuaternionPair( builder, key );
 			}
 			Pose<?> rv = builder.build();
 			return rv;
@@ -428,9 +429,9 @@ public class TimeLine {
 			PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass( data.getPoseActual().getClass() );
 			for( JointId id : usedIds ) {
 				if( contains( data.getPose().getJointKeys(), id ) ) {
-					builder.addJointIdQuaternionPair( new JointIdQuaternionPair( id, findQuaternionForJointId( id, data.getPose() ) ) );
+					EmployeesOnly.addJointIdQuaternionPair( builder, new JointIdQuaternionPair( id, findQuaternionForJointId( id, data.getPose() ) ) );
 				} else {
-					builder.addJointIdQuaternionPair( new JointIdQuaternionPair( id, findQuaternionForJointId( id, initialPose ) ) );
+					EmployeesOnly.addJointIdQuaternionPair( builder, new JointIdQuaternionPair( id, findQuaternionForJointId( id, initialPose ) ) );
 					//					builder.addCustom( orientationForId( id, prev ), id );
 					// thought this would be correct changed to other open to either
 				}

@@ -43,10 +43,10 @@
 
 package org.alice.stageide.ast;
 
-import org.lgna.ik.core.pose.PoseBuilder;
-import org.lgna.ik.core.pose.imp.JointIdQuaternionPair;
-import org.lgna.ik.core.pose.imp.PoseUtilities;
 import org.lgna.story.Orientation;
+import org.lgna.story.PoseBuilder;
+import org.lgna.story.implementation.JointIdQuaternionPair;
+import org.lgna.story.implementation.PoseUtilities;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
@@ -209,7 +209,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 	private static final org.lgna.project.ast.JavaMethod ADD_CUSTOM = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "arbitraryJoint", JointId.class, Orientation.class );
 	private static final org.lgna.project.ast.JavaMethod BUILD = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "build" );
 
-	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.ik.core.pose.Pose pose ) throws CannotCreateExpressionException {
+	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.story.Pose pose ) throws CannotCreateExpressionException {
 		if( ( pose != null ) && ( pose.getJointKeys().length > 0 ) ) {
 			Class<?> builderCls = PoseUtilities.getBuilderClassForPoseClass( pose.getClass() );
 			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( builderCls );
@@ -279,8 +279,8 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			return this.createFontExpression( (org.lgna.story.Font)value );
 			//		} else if( value instanceof org.lgna.ik.poser.Pose ) {
 			//			return this.createPoseExpression( (org.lgna.ik.poser.Pose)value );
-		} else if( value instanceof org.lgna.ik.core.pose.Pose<?> ) {
-			return this.createPoseExpression( (org.lgna.ik.core.pose.Pose<?>)value );
+		} else if( value instanceof org.lgna.story.Pose<?> ) {
+			return this.createPoseExpression( (org.lgna.story.Pose<?>)value );
 		} else if( value instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
 			return this.createOutfitExpression( (org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?>)value );
 		} else if( value instanceof org.lgna.story.resources.JointId ) {

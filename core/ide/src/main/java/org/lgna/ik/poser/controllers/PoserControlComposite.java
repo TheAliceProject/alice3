@@ -44,11 +44,11 @@ package org.lgna.ik.poser.controllers;
 
 import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.alice.stageide.ast.ExpressionCreator;
-import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
 import org.lgna.ik.poser.croquet.AbstractPoserOrAnimatorComposite;
 import org.lgna.ik.poser.croquet.views.PoserControlView;
 import org.lgna.project.ast.Expression;
+import org.lgna.story.Pose;
 
 /**
  * @author Matt May

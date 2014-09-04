@@ -62,7 +62,7 @@ public class AddUnmanagedPoseFieldComposite extends org.alice.ide.ast.declaratio
 				java.util.UUID.fromString( "882dc293-d176-48c6-9b42-abc15c734779" ),
 				new FieldDetailsBuilder()
 						.isFinal( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, true )
-						.valueComponentType( ApplicabilityStatus.DISPLAYED, org.lgna.project.ast.JavaType.getInstance( org.lgna.ik.core.pose.Pose.class ) )
+						.valueComponentType( ApplicabilityStatus.DISPLAYED, org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Pose.class ) )
 						.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
 						.initializer( ApplicabilityStatus.EDITABLE, null )
 						.build() );

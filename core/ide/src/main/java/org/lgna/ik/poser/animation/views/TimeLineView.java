@@ -55,10 +55,10 @@ import javax.swing.AbstractButton;
 import javax.swing.JPanel;
 
 import org.lgna.croquet.views.Panel;
-import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.TimeLineListener;
 import org.lgna.ik.poser.animation.composites.TimeLineComposite;
+import org.lgna.story.Pose;
 
 /**
  * @author Matt May

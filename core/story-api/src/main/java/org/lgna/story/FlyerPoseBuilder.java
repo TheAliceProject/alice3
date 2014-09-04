@@ -40,44 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.core.pose;
+package org.lgna.story;
 
-import java.util.List;
-
-import org.lgna.ik.core.pose.imp.JointIdQuaternionPair;
-import org.lgna.story.EmployeesOnly;
-import org.lgna.story.Orientation;
-import org.lgna.story.resources.JointId;
-
-import edu.cmu.cs.dennisc.java.util.Lists;
 
 /**
  * @author Matt May
  */
-public abstract class PoseBuilder<M extends org.lgna.story.SJointedModel, P extends Pose<M>> {
-	//TODO: mmay 
-	//package-private with EmployeesOnly accessor 
-	public void addJointIdQuaternionPair( JointIdQuaternionPair jointIdQuaternionPair ) {
-		this.pairs.add( jointIdQuaternionPair );
+public class FlyerPoseBuilder extends PoseBuilder<SFlyer, FlyerPose> {
+	@Override
+	protected org.lgna.story.FlyerPose build( org.lgna.story.implementation.JointIdQuaternionPair[] buffer ) {
+		return new FlyerPose( buffer );
 	}
-
-	protected void addJointIdQuaternionPair( JointId jointId, Orientation orientation ) {
-		edu.cmu.cs.dennisc.math.UnitQuaternion quaternion = EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion();
-		this.addJointIdQuaternionPair( new JointIdQuaternionPair( jointId, quaternion ) );
-	}
-
-	public final PoseBuilder<M, P> arbitraryJoint( JointId jointId, org.lgna.story.Orientation orientation ) {
-		this.addJointIdQuaternionPair( jointId, orientation );
-		return this;
-	}
-
-	protected abstract P build( JointIdQuaternionPair[] buffer );
-
-	public final P build() {
-		JointIdQuaternionPair[] buffer = new JointIdQuaternionPair[ this.pairs.size() ];
-		this.pairs.toArray( buffer );
-		return this.build( buffer );
-	}
-
-	private final List<JointIdQuaternionPair> pairs = Lists.newLinkedList();
 }

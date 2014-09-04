@@ -185,4 +185,8 @@ public class EmployeesOnly {
 			return argumentValue;
 		}
 	}
+
+	public static void addJointIdQuaternionPair( PoseBuilder<?, ?> poseBuilder, org.lgna.story.implementation.JointIdQuaternionPair jointIdQuaternionPair ) {
+		poseBuilder.addJointIdQuaternionPair( jointIdQuaternionPair );
+	}
 }

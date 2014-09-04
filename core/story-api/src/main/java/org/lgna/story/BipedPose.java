@@ -40,28 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.core.pose;
+package org.lgna.story;
 
-import org.lgna.ik.core.pose.imp.JointIdQuaternionPair;
-import org.lgna.story.SJointedModel;
+import org.lgna.story.implementation.JointIdQuaternionPair;
 
 /**
  * @author Matt May
  */
-public abstract class Pose<M extends SJointedModel> {
-	public Pose( Class<M> modelCls, JointIdQuaternionPair... pairs ) {
-		this.modelCls = modelCls;
-		this.jointQPairs = pairs;
+public final class BipedPose extends Pose<SBiped> {
+	/*package-private*/BipedPose( JointIdQuaternionPair... pairs ) {
+		super( SBiped.class, pairs );
 	}
-
-	/*package-private*/Class<M> getModelClass() {
-		return this.modelCls;
-	}
-
-	public JointIdQuaternionPair[] getJointKeys() {
-		return this.jointQPairs;
-	}
-
-	private final Class<M> modelCls;
-	private final JointIdQuaternionPair[] jointQPairs;
 }

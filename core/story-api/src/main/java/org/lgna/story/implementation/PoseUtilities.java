@@ -40,26 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.core.pose.imp;
+package org.lgna.story.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lgna.ik.core.pose.BipedPose;
-import org.lgna.ik.core.pose.BipedPoseBuilder;
-import org.lgna.ik.core.pose.FlyerPose;
-import org.lgna.ik.core.pose.FlyerPoseBuilder;
-import org.lgna.ik.core.pose.Pose;
-import org.lgna.ik.core.pose.PoseBuilder;
-import org.lgna.ik.core.pose.QuadrupedPose;
-import org.lgna.ik.core.pose.QuadrupedPoseBuilder;
+import org.lgna.story.BipedPose;
+import org.lgna.story.BipedPoseBuilder;
 import org.lgna.story.EmployeesOnly;
+import org.lgna.story.FlyerPose;
+import org.lgna.story.FlyerPoseBuilder;
+import org.lgna.story.Pose;
+import org.lgna.story.PoseBuilder;
+import org.lgna.story.QuadrupedPose;
+import org.lgna.story.QuadrupedPoseBuilder;
 import org.lgna.story.SBiped;
 import org.lgna.story.SFlyer;
 import org.lgna.story.SJoint;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SQuadruped;
-import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.FlyerResource;
 import org.lgna.story.resources.JointId;
@@ -148,7 +147,7 @@ public class PoseUtilities {
 			list.add( new JointIdQuaternionPair( id, implementation.getLocalOrientation().createUnitQuaternion() ) );
 		}
 		for( JointIdQuaternionPair key : list ) {
-			builder.addJointIdQuaternionPair( key );
+			EmployeesOnly.addJointIdQuaternionPair( builder, key );
 		}
 		return (Pose<T>)builder.build();
 	}
