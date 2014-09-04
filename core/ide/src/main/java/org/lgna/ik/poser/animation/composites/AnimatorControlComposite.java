@@ -169,25 +169,49 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 	};
 	private ActionOperation runAnimationOperation = createActionOperation( "runAnimation", new Action() {
 
+		boolean stillRunning = true;
+
 		@Override
 		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			final M model = (M)parent.getModel();
 			final TimeLine timeLine = tlComposite.getTimeLine();
 			final List<KeyFrameData> keyFrames = timeLine.getKeyFrames();
+			final ComponentThread timerThread = new ComponentThread( new Runnable() {
+
+				@Override
+				public void run() {
+					timeLine.disableListeners();
+					timeLine.setCurrentTime( 0 );
+					while( stillRunning ) {
+						try {
+							Thread.sleep( 10 );
+							timeLine.setCurrentTime( timeLine.getCurrentTime() + .01 );
+						} catch( InterruptedException e ) {
+							e.printStackTrace();
+						}
+					}
+					timeLine.setCurrentTime( timeLine.getKeyFrames().get( timeLine.getKeyFrames().size() - 1 ).getEventTime() );
+					timeLine.enableListeners();
+				}
+
+			}, "runAnimation" );
 			ComponentThread thread = new ComponentThread( new Runnable() {
 
 				@Override
 				public void run() {
 					if( keyFrames.size() > 0 ) {
 						model.straightenOutJoints();
+						stillRunning = true;
+						timerThread.start();
 					}
 					for( KeyFrameData data : keyFrames ) {
 						double duration = timeLine.getDurationForKeyFrame( data );
 						AnimationStyle styleForKeyFramePose = timeLine.getStyleForKeyFramePose( data );
 						org.lgna.story.implementation.JointedModelImp imp = EmployeesOnly.getImplementation( model );
 						imp.strikePose( data.getPoseActual(), duration, EmployeesOnly.getInternal( styleForKeyFramePose ) );
-						tlComposite.selectKeyFrame( data );
+						//						tlComposite.selectKeyFrame( data );
 					}
+					stillRunning = false;
 				}
 
 			}, "runAnimation" );

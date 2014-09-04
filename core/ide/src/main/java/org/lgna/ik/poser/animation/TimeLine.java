@@ -71,24 +71,32 @@ public class TimeLine {
 	private List<TimeLineListener> listeners = Lists.newArrayList();
 	private Pose<?> initialPose;
 	private final List<JointId> usedIds = Lists.newCopyOnWriteArrayList();
+	private boolean listenersEnabled = true;
 
 	public void addKeyFrameData( KeyFrameData keyFrameData ) {
 		if( datas.size() == 0 ) {
 			datas.add( keyFrameData );
 			fireKeyFrameAdded( keyFrameData );
 			checkAddingJoints( keyFrameData );
-			return;
-		}
-		for( int i = 0; i != datas.size(); ++i ) {
-			if( datas.get( i ).getEventTime() < keyFrameData.getEventTime() ) {
-				datas.add( i, keyFrameData );
-				fireKeyFrameAdded( keyFrameData );
-				checkAddingJoints( keyFrameData );
-				return;
+		} else if( datas.get( 0 ).getEventTime() > keyFrameData.getEventTime() ) {
+			datas.add( 0, keyFrameData );
+			fireKeyFrameAdded( keyFrameData );
+			checkAddingJoints( keyFrameData );
+		} else {
+			for( int i = 0; i != ( datas.size() - 1 ); ++i ) {
+				if( datas.get( i ).getEventTime() < keyFrameData.getEventTime() ) {
+					if( datas.get( i + 1 ).getEventTime() > keyFrameData.getEventTime() ) {
+						datas.add( i + 1, keyFrameData );
+						fireKeyFrameAdded( keyFrameData );
+						checkAddingJoints( keyFrameData );
+						return;
+					}
+				}
 			}
+			datas.add( keyFrameData );
+			fireKeyFrameAdded( keyFrameData );
+			checkAddingJoints( keyFrameData );
 		}
-		datas.add( keyFrameData );
-		fireKeyFrameAdded( keyFrameData );
 	}
 
 	public void addKeyFrameData( Pose<?> pose, double time ) {
@@ -175,9 +183,11 @@ public class TimeLine {
 	}
 
 	private void fireCurrentTimeChanged( double time ) {
-		Pose<?> pose = calculatePoseForTime( time );
-		for( TimeLineListener listener : listeners ) {
-			listener.currentTimeChanged( time, pose );
+		if( listenersEnabled ) {
+			Pose<?> pose = calculatePoseForTime( time );
+			for( TimeLineListener listener : listeners ) {
+				listener.currentTimeChanged( time, pose );
+			}
 		}
 	}
 
@@ -459,6 +469,14 @@ public class TimeLine {
 
 	public void setInitialPose( Pose<?> pose ) {
 		this.initialPose = pose;
+	}
+
+	public void disableListeners() {
+		this.listenersEnabled = false;
+	}
+
+	public void enableListeners() {
+		this.listenersEnabled = true;
 	}
 
 	private static class BeginAndEndQuaternionPair {
