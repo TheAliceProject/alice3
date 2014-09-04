@@ -43,22 +43,24 @@
 package org.lgna.ik.core.pose;
 
 import org.lgna.story.SJointedModel;
-import org.lgna.story.resources.JointedModelResource;
 
 /**
  * @author Matt May
  */
-public abstract class Pose<S extends SJointedModel> {
-
-	private final JointIdQuaternionPair[] jointQPairs;
-	private final Class<? extends JointedModelResource> defaultResource;
-
-	public Pose( Class<? extends JointedModelResource> resource, JointIdQuaternionPair... pairs ) {
+public abstract class Pose<M extends SJointedModel> {
+	public Pose( Class<M> modelCls, JointIdQuaternionPair... pairs ) {
+		this.modelCls = modelCls;
 		this.jointQPairs = pairs;
-		this.defaultResource = resource;
+	}
+
+	/*package-private*/Class<M> getModelClass() {
+		return this.modelCls;
 	}
 
 	public JointIdQuaternionPair[] getJointKeys() {
 		return this.jointQPairs;
 	}
+
+	private final Class<M> modelCls;
+	private final JointIdQuaternionPair[] jointQPairs;
 }

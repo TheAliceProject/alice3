@@ -80,7 +80,7 @@ public class PoseUtilities {
 		} else if( SFlyer.class.isAssignableFrom( cls ) ) {
 			return FlyerPoseBuilder.class;
 		} else {
-			throw new RuntimeException( "Unhandled Pose Type" );
+			throw new RuntimeException( "Unhandled Model Type: " + cls );
 		}
 	}
 
@@ -92,7 +92,7 @@ public class PoseUtilities {
 		} else if( FlyerPose.class.isAssignableFrom( cls ) ) {
 			return (Class<B>)FlyerPoseBuilder.class;
 		} else {
-			throw new RuntimeException( "Unhandled Pose Type" );
+			throw new RuntimeException( "Unhandled Pose Type: " + cls );
 		}
 	}
 
@@ -106,15 +106,20 @@ public class PoseUtilities {
 		( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).setLocalOrientation( new OrthogonalMatrix3x3( unitQuaternion ) );
 	}
 
-	public static <T extends SJointedModel> Pose<T> createPoseFromT( T model ) {
-		if( model instanceof SBiped ) {
-			return createPoseFromT( model, getDefaultJoints( BipedResource.class ) );
-		} else if( model instanceof SQuadruped ) {
-			return createPoseFromT( model, getDefaultJoints( QuadrupedResource.class ) );
-		} else if( model instanceof SFlyer ) {
-			return createPoseFromT( model, getDefaultJoints( FlyerResource.class ) );
+	public static <R extends JointedModelResource> Class<R> getResourceClassFromModelClass( Class<? extends SJointedModel> modelCls ) {
+		if( SBiped.class.isAssignableFrom( modelCls ) ) {
+			return (Class<R>)BipedResource.class;
+		} else if( SQuadruped.class.isAssignableFrom( modelCls ) ) {
+			return (Class<R>)QuadrupedResource.class;
+		} else if( SFlyer.class.isAssignableFrom( modelCls ) ) {
+			return (Class<R>)FlyerResource.class;
+		} else {
+			throw new RuntimeException( "Unhandled Model Type: " + modelCls );
 		}
-		return null;
+	}
+
+	public static <T extends SJointedModel> Pose<T> createPoseFromT( T model ) {
+		return createPoseFromT( model, getDefaultJoints( getResourceClassFromModelClass( model.getClass() ) ) );
 	}
 
 	public static <T extends SJointedModel> Pose<T> createPoseFromT( T model, JointId[] arr ) {

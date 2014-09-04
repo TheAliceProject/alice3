@@ -43,14 +43,12 @@
 package org.lgna.ik.core.pose;
 
 import org.lgna.story.SQuadruped;
-import org.lgna.story.resources.QuadrupedResource;
 
 /**
  * @author Matt May
  */
 public class QuadrupedPose extends Pose<SQuadruped> {
-
 	/*package-private*/QuadrupedPose( JointIdQuaternionPair... pairs ) {
-		super( QuadrupedResource.class, pairs );
+		super( SQuadruped.class, pairs );
 	}
 }

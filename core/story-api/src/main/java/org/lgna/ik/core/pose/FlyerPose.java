@@ -43,15 +43,12 @@
 package org.lgna.ik.core.pose;
 
 import org.lgna.story.SFlyer;
-import org.lgna.story.resources.FlyerResource;
 
 /**
  * @author Matt May
  */
 public class FlyerPose extends Pose<SFlyer> {
-
 	/*package-private*/FlyerPose( JointIdQuaternionPair... pairs ) {
-		super( FlyerResource.class, pairs );
+		super( SFlyer.class, pairs );
 	}
-
 }

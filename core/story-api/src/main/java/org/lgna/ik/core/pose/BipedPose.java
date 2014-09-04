@@ -43,15 +43,12 @@
 package org.lgna.ik.core.pose;
 
 import org.lgna.story.SBiped;
-import org.lgna.story.resources.BipedResource;
 
 /**
  * @author Matt May
  */
 public final class BipedPose extends Pose<SBiped> {
-
-	//TODO mmay
 	/*package-private*/BipedPose( JointIdQuaternionPair... pairs ) {
-		super( BipedResource.class, pairs );
+		super( SBiped.class, pairs );
 	}
 }

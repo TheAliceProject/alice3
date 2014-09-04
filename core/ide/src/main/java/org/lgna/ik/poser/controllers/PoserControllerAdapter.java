@@ -58,7 +58,7 @@ import org.lgna.story.resources.JointId;
  */
 public class PoserControllerAdapter {
 
-	private AbstractPoserControlComposite controlComposite;
+	private final AbstractPoserControlComposite controlComposite;
 	private JointId rightLegAnchorJointID;
 	private JointId rightArmAnchorJointID;
 	private JointId leftLegAnchorJointID;
@@ -76,7 +76,7 @@ public class PoserControllerAdapter {
 		leftArmAnchorJointID = controlComposite.getLeftArmAnchor().getValue().getJoint().getJointId();
 	}
 
-	ValueListener<JointSelectionSphere> rightArmAnchorJointListener = new ValueListener<JointSelectionSphere>() {
+	private final ValueListener<JointSelectionSphere> rightArmAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
 		@Override
 		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
@@ -89,7 +89,7 @@ public class PoserControllerAdapter {
 			PoserControllerAdapter.this.rightArmAnchorJointID = nextValue.getJoint().getJointId();
 		}
 	};
-	ValueListener<JointSelectionSphere> rightLegAnchorJointListener = new ValueListener<JointSelectionSphere>() {
+	private final ValueListener<JointSelectionSphere> rightLegAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
 		@Override
 		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
@@ -102,7 +102,7 @@ public class PoserControllerAdapter {
 			PoserControllerAdapter.this.rightLegAnchorJointID = nextValue.getJoint().getJointId();
 		}
 	};
-	ValueListener<JointSelectionSphere> leftArmAnchorJointListener = new ValueListener<JointSelectionSphere>() {
+	private final ValueListener<JointSelectionSphere> leftArmAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
 		@Override
 		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
@@ -115,7 +115,7 @@ public class PoserControllerAdapter {
 			PoserControllerAdapter.this.leftArmAnchorJointID = nextValue.getJoint().getJointId();
 		}
 	};
-	ValueListener<JointSelectionSphere> leftLegAnchorJointListener = new ValueListener<JointSelectionSphere>() {
+	private final ValueListener<JointSelectionSphere> leftLegAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
 		@Override
 		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
