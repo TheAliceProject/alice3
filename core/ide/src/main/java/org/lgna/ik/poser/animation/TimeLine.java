@@ -80,9 +80,10 @@ public class TimeLine {
 			return;
 		}
 		for( int i = 0; i != datas.size(); ++i ) {
-			if( datas.get( i ).getEventTime() > keyFrameData.getEventTime() ) {
+			if( datas.get( i ).getEventTime() < keyFrameData.getEventTime() ) {
 				datas.add( i, keyFrameData );
 				fireKeyFrameAdded( keyFrameData );
+				checkAddingJoints( keyFrameData );
 				return;
 			}
 		}
@@ -417,9 +418,7 @@ public class TimeLine {
 				usedIds.add( key.getJointId() );
 			}
 		}
-		//		if( !idsForUpdate.isEmpty() ) {
 		correctPoseActuals();
-		//		}
 	}
 
 	private void correctPoseActuals() {
