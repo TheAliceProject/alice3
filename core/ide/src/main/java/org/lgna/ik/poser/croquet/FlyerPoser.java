@@ -62,7 +62,7 @@ public class FlyerPoser extends PoserComposite<SFlyer> {
 	}
 
 	@Override
-	public Class<SFlyer> getClassForM() {
+	public Class<SFlyer> getModelClass() {
 		return SFlyer.class;
 	}
 

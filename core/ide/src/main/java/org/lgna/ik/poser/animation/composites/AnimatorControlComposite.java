@@ -209,8 +209,8 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 				double duration = tlComposite.getTimeLine().getDurationForKeyFrame( event );
 				AnimationStyle style = tlComposite.getTimeLine().getStyleForKeyFramePose( event );
 
-				Class<? extends Pose> poseCls = PoseUtilities.getPoseClassForModelClass( parent.getClassForM() );
-				org.lgna.project.ast.JavaMethod STRIKE_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( parent.getClassForM(), org.lgna.ik.poser.PoseAstUtilities.STRIKE_POSE_METHOD_NAME, poseCls, StrikePose.Detail[].class );
+				Class<? extends Pose> poseCls = PoseUtilities.getPoseClassForModelClass( parent.getModelClass() );
+				org.lgna.project.ast.JavaMethod STRIKE_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( parent.getModelClass(), org.lgna.ik.poser.PoseAstUtilities.STRIKE_POSE_METHOD_NAME, poseCls, StrikePose.Detail[].class );
 				MethodInvocation methodInv = AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), STRIKE_POSE_METHOD, argumentExpression );
 				org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance(
 						org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );

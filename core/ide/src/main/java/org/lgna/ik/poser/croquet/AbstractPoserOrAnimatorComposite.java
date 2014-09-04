@@ -160,12 +160,12 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 			assert false : N;
 		}
 		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
-		return userInstance.getJavaInstance( getClassForM() );
+		return userInstance.getJavaInstance( getModelClass() );
 	}
 
 	protected abstract AbstractPoserScene initScene();
 
-	public abstract Class<M> getClassForM();
+	public abstract Class<M> getModelClass();
 
 	private void initializeScene() {
 		if( !isInitialized ) {

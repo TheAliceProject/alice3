@@ -62,7 +62,7 @@ public class QuadrupedPoser extends PoserComposite<SQuadruped> {
 	}
 
 	@Override
-	public Class<SQuadruped> getClassForM() {
+	public Class<SQuadruped> getModelClass() {
 		return SQuadruped.class;
 	}
 

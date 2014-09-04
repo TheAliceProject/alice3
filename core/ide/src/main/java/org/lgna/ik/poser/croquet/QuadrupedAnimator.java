@@ -63,7 +63,7 @@ public class QuadrupedAnimator extends AnimatorComposite<SQuadruped> {
 	}
 
 	@Override
-	public Class<SQuadruped> getClassForM() {
+	public Class<SQuadruped> getModelClass() {
 		return SQuadruped.class;
 	}
 

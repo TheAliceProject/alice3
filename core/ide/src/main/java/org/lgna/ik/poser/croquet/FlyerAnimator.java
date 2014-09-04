@@ -63,7 +63,7 @@ public class FlyerAnimator extends AnimatorComposite<SFlyer> {
 	}
 
 	@Override
-	public Class<SFlyer> getClassForM() {
+	public Class<SFlyer> getModelClass() {
 		return SFlyer.class;
 	}
 

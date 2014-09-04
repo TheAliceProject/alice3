@@ -62,7 +62,7 @@ public class BipedPoser extends PoserComposite<SBiped> {
 	}
 
 	@Override
-	public Class<SBiped> getClassForM() {
+	public Class<SBiped> getModelClass() {
 		return SBiped.class;
 	}
 

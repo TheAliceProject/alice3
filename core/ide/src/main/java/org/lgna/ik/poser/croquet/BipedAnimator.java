@@ -67,7 +67,7 @@ public class BipedAnimator extends AnimatorComposite<SBiped> {
 	}
 
 	@Override
-	public Class<SBiped> getClassForM() {
+	public Class<SBiped> getModelClass() {
 		return SBiped.class;
 	}
 
