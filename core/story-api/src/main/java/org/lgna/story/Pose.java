@@ -57,7 +57,7 @@ public abstract class Pose<M extends SJointedModel> {
 		return this.modelCls;
 	}
 
-	public JointIdQuaternionPair[] getJointKeys() {
+	/*package-private*/JointIdQuaternionPair[] getJointIdQuaternionPairs() {
 		return this.jointQPairs;
 	}
 

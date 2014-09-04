@@ -42,6 +42,8 @@
  */
 package org.lgna.story;
 
+import org.lgna.story.implementation.JointIdQuaternionPair;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -189,4 +191,9 @@ public class EmployeesOnly {
 	public static void addJointIdQuaternionPair( PoseBuilder<?, ?> poseBuilder, org.lgna.story.implementation.JointIdQuaternionPair jointIdQuaternionPair ) {
 		poseBuilder.addJointIdQuaternionPair( jointIdQuaternionPair );
 	}
+
+	public static JointIdQuaternionPair[] getJointIdQuaternionPairs( Pose<?> pose ) {
+		return pose.getJointIdQuaternionPairs();
+	}
+
 }

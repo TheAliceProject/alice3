@@ -43,6 +43,7 @@
 
 package org.alice.stageide.ast;
 
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Orientation;
 import org.lgna.story.PoseBuilder;
 import org.lgna.story.implementation.JointIdQuaternionPair;
@@ -210,11 +211,11 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 	private static final org.lgna.project.ast.JavaMethod BUILD = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "build" );
 
 	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.story.Pose pose ) throws CannotCreateExpressionException {
-		if( ( pose != null ) && ( pose.getJointKeys().length > 0 ) ) {
+		if( ( pose != null ) && ( EmployeesOnly.getJointIdQuaternionPairs( pose ).length > 0 ) ) {
 			Class<?> builderCls = PoseUtilities.getBuilderClassForPoseClass( pose.getClass() );
 			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( builderCls );
 			org.lgna.project.ast.Expression prevExpression = null;
-			for( JointIdQuaternionPair key : pose.getJointKeys() ) {
+			for( JointIdQuaternionPair key : EmployeesOnly.getJointIdQuaternionPairs( pose ) ) {
 				UnitQuaternion q = key.getQuaternion();
 				Orientation orientation = new org.lgna.story.Orientation( q.x, q.y, q.z, q.w );
 				prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation(

@@ -42,6 +42,7 @@
  */
 package org.lgna.story.implementation;
 
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Pose;
 
 import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
@@ -85,7 +86,7 @@ public class PoseAnimation extends DurationBasedAnimation {
 	@Override
 	protected void prologue() {
 		this.jointInfos.clear();
-		for( JointIdQuaternionPair jointKey : this.pose.getJointKeys() ) {
+		for( JointIdQuaternionPair jointKey : EmployeesOnly.getJointIdQuaternionPairs( this.pose ) ) {
 			appendJointInfos( this.jointInfos, this.jointedModel, jointKey );
 		}
 	}
