@@ -74,12 +74,24 @@ import edu.cmu.cs.dennisc.math.UnitQuaternion;
  */
 public class PoseUtilities {
 
-	public static <S extends SJointedModel, P extends Pose<S>, B extends PoseBuilder<S, P>> B createBuilderForPoseClass( Class<P> cls ) {
+	public static <M extends SJointedModel, P extends Pose<M>, B extends PoseBuilder<M, P>> B createBuilderForPoseClass( Class<P> cls ) {
 		Class<B> poseBuilderCls = getBuilderClassForPoseClass( cls );
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( poseBuilderCls );
 	}
 
-	public static <S extends SJointedModel> Class<? extends PoseBuilder<?, ?>> getBuilderClassForModelClass( Class<S> cls ) {
+	public static <M extends SJointedModel, P extends Pose<M>> Class<P> getPoseClassForModelClass( Class<M> cls ) {
+		if( SBiped.class.isAssignableFrom( cls ) ) {
+			return (Class<P>)BipedPose.class;
+		} else if( SQuadruped.class.isAssignableFrom( cls ) ) {
+			return (Class<P>)QuadrupedPose.class;
+		} else if( SFlyer.class.isAssignableFrom( cls ) ) {
+			return (Class<P>)FlyerPose.class;
+		} else {
+			throw new RuntimeException( "Unhandled Model Type: " + cls );
+		}
+	}
+
+	public static <M extends SJointedModel> Class<? extends PoseBuilder<?, ?>> getBuilderClassForModelClass( Class<M> cls ) {
 		if( SBiped.class.isAssignableFrom( cls ) ) {
 			return BipedPoseBuilder.class;
 		} else if( SQuadruped.class.isAssignableFrom( cls ) ) {
@@ -91,7 +103,7 @@ public class PoseUtilities {
 		}
 	}
 
-	public static <S extends SJointedModel, P extends Pose<S>, B extends PoseBuilder<S, P>> Class<B> getBuilderClassForPoseClass( Class<P> cls ) {
+	public static <M extends SJointedModel, P extends Pose<M>, B extends PoseBuilder<M, P>> Class<B> getBuilderClassForPoseClass( Class<P> cls ) {
 		if( BipedPose.class.isAssignableFrom( cls ) ) {
 			return (Class<B>)BipedPoseBuilder.class;
 		} else if( QuadrupedPose.class.isAssignableFrom( cls ) ) {
@@ -103,7 +115,7 @@ public class PoseUtilities {
 		}
 	}
 
-	public static <S extends SJointedModel> void applyToJointedModel( Pose<S> pose, S model ) {
+	public static <M extends SJointedModel> void applyToJointedModel( Pose<M> pose, M model ) {
 		for( JointIdQuaternionPair key : EmployeesOnly.getJointIdQuaternionPairs( pose ) ) {
 			setOrientationOnly( model.getJoint( key.getJointId() ), key.getQuaternion() );
 		}

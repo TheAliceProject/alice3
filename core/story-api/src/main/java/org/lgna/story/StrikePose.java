@@ -45,12 +45,12 @@ package org.lgna.story;
 /**
  * @author Matt May
  */
-public class SetPose extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetPose.class )
+public class StrikePose extends DurationAnimationStyleArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = StrikePose.class )
 	public static interface Detail {
 	}
 
-	private SetPose() {
+	private StrikePose() {
 		super();
 	}
 }

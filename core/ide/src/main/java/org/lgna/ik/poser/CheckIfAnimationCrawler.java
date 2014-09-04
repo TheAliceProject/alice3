@@ -42,7 +42,6 @@
  */
 package org.lgna.ik.poser;
 
-import org.lgna.ik.poser.croquet.AnimatorComposite;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
@@ -54,11 +53,10 @@ import edu.cmu.cs.dennisc.pattern.Crawler;
  * @author Matt May
  */
 public class CheckIfAnimationCrawler implements Crawler {
-
 	private UserMethod method;
 	private CrawlPolicy crawlPolicy = CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY;
-	private boolean containsSetPose = false;
-	private boolean containsNotSetPose = false;
+	private boolean containsStrikePose = false;
+	private boolean containsNotStrikePose = false;
 
 	public static boolean initiateAndCheckMethod( UserMethod method ) {
 		CheckIfAnimationCrawler crawler = new CheckIfAnimationCrawler( method );
@@ -73,18 +71,18 @@ public class CheckIfAnimationCrawler implements Crawler {
 	public void visit( Crawlable crawlable ) {
 		if( crawlable instanceof MethodInvocation ) {
 			MethodInvocation methodInv = (MethodInvocation)crawlable;
-			if( !methodInv.method.getValue().equals( AnimatorComposite.SET_POSE ) ) {
-				containsNotSetPose = true;
+			if( PoseAstUtilities.isStrikePoseMethod( methodInv.method.getValue() ) ) {
+				containsStrikePose = true;
 			} else {
-				containsSetPose = true;
+				containsNotStrikePose = true;
 			}
 		} else {
-			containsNotSetPose = true;
+			containsNotStrikePose = true;
 		}
 	}
 
 	private boolean crawl() {
 		method.crawl( this, crawlPolicy );
-		return containsSetPose && !containsNotSetPose;
+		return containsStrikePose && !containsNotStrikePose;
 	}
 }

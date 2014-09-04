@@ -44,9 +44,9 @@ package org.lgna.ik.poser.animation.composites;
 
 import java.util.ArrayList;
 
+import org.lgna.ik.poser.PoseAstUtilities;
 import org.lgna.ik.poser.animation.KeyFrameData;
 import org.lgna.ik.poser.animation.KeyFrameStyles;
-import org.lgna.ik.poser.croquet.AnimatorComposite;
 import org.lgna.project.ast.CrawlPolicy;
 import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
@@ -93,7 +93,7 @@ public class AnimationParser implements Crawler {
 		if( crawlable instanceof MethodInvocation ) {
 
 			MethodInvocation methodInv = (MethodInvocation)crawlable;
-			if( methodInv.method.getValue().equals( AnimatorComposite.SET_POSE ) ) {
+			if( PoseAstUtilities.isStrikePoseMethod( methodInv.method.getValue() ) ) {
 				Pose pose = null;
 				double duration = 0;
 				AnimationStyle style = null;

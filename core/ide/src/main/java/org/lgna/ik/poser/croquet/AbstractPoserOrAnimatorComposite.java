@@ -189,7 +189,7 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 		return PoseUtilities.createPoseFromT( getModel(), usedJoints.toArray( new JointId[ 0 ] ) );
 	}
 
-	public void setPose( Pose pose ) {
+	public void strikePose( Pose pose ) {
 		if( pose != null ) {
 			PoseUtilities.applyToJointedModel( pose, getModel() );
 		} else {

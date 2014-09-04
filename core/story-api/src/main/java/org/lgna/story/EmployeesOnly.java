@@ -134,6 +134,10 @@ public class EmployeesOnly {
 		}
 	}
 
+	public static edu.cmu.cs.dennisc.animation.Style getInternal( AnimationStyle animationStyle ) {
+		return animationStyle.getInternal();
+	}
+
 	private static final java.util.Map<ImagePaint, edu.cmu.cs.dennisc.texture.BufferedImageTexture> mapImagePaintToTexture = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static edu.cmu.cs.dennisc.texture.Texture getTexture( Paint paint, edu.cmu.cs.dennisc.texture.Texture defaultValue ) {

@@ -60,7 +60,7 @@ public enum AnimationStyle implements
 		//JointedModel
 		StraightenOutJoints.Detail,
 		//Biped (for now?)
-		SetPose.Detail,
+		StrikePose.Detail,
 		//Flyer
 		UnfoldWings.Detail,
 		//Room

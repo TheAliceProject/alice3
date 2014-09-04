@@ -970,7 +970,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		this.displayBubble( bubbleImp, duration );
 	}
 
-	public void setPose( org.lgna.story.Pose<?> pose, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+	public void strikePose( org.lgna.story.Pose<?> pose, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 		this.getProgram().perform( new PoseAnimation( duration, style, this, pose ), null );
 	}
 

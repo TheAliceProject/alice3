@@ -50,7 +50,6 @@ import org.lgna.croquet.views.CompositeView;
 import org.lgna.croquet.views.Panel;
 import org.lgna.ik.poser.CheckIfAnimationCrawler;
 import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
-import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
@@ -58,14 +57,11 @@ import org.lgna.story.SBiped;
 import org.lgna.story.SFlyer;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SQuadruped;
-import org.lgna.story.SetPose;
 
 /**
  * @author Matt May
  */
 public abstract class AnimatorComposite<M extends SJointedModel> extends AbstractPoserOrAnimatorComposite<AnimatorControlComposite<M>, M> {
-
-	public static final JavaMethod SET_POSE = JavaMethod.getInstance( SBiped.class, "setPose", org.lgna.story.Pose.class, SetPose.Detail[].class );
 	private MethodNameValidator validator;
 	private UserMethod method;
 

@@ -69,7 +69,6 @@ import org.lgna.ik.poser.controllers.PoserEvent;
 import org.lgna.ik.poser.croquet.AbstractPoserOrAnimatorComposite;
 import org.lgna.ik.poser.croquet.AnimatorComposite;
 import org.lgna.ik.poser.croquet.views.AnimatorControlView;
-import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.Expression;
@@ -77,16 +76,11 @@ import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.story.AnimationStyle;
-import org.lgna.story.BipedPose;
 import org.lgna.story.Duration;
-import org.lgna.story.FlyerPose;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Pose;
-import org.lgna.story.QuadrupedPose;
-import org.lgna.story.SBiped;
-import org.lgna.story.SFlyer;
 import org.lgna.story.SJointedModel;
-import org.lgna.story.SQuadruped;
-import org.lgna.story.SetPose;
+import org.lgna.story.StrikePose;
 import org.lgna.story.implementation.PoseUtilities;
 
 /**
@@ -125,7 +119,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 
 		@Override
 		public void currentTimeChanged( double currentTime, Pose pose ) {
-			parent.setPose( pose );
+			parent.strikePose( pose );
 		}
 	};
 
@@ -190,7 +184,8 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 					for( KeyFrameData data : keyFrames ) {
 						double duration = timeLine.getDurationForKeyFrame( data );
 						AnimationStyle styleForKeyFramePose = timeLine.getStyleForKeyFramePose( data );
-						setPose( model, data.getPoseActual(), new Duration( duration ), styleForKeyFramePose );
+						org.lgna.story.implementation.JointedModelImp imp = EmployeesOnly.getImplementation( model );
+						imp.strikePose( data.getPoseActual(), duration, EmployeesOnly.getInternal( styleForKeyFramePose ) );
 						tlComposite.selectKeyFrame( data );
 					}
 				}
@@ -200,16 +195,6 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 			return null;
 		}
 	} );
-
-	private void setPose( M model, Pose<?> pose, Duration duration, AnimationStyle style ) {
-		if( model instanceof SBiped ) {
-			( (SBiped)model ).setPose( (BipedPose)pose, duration, style );
-		} else if( model instanceof SQuadruped ) {
-			( (SQuadruped)model ).setPose( (QuadrupedPose)pose, duration, style );
-		} else if( model instanceof SFlyer ) {
-			( (SFlyer)model ).setPose( (FlyerPose)pose, duration, style );
-		}
-	}
 
 	public BlockStatement createMethodBody() {
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.stageide.StoryApiConfigurationManager.getInstance();
@@ -223,8 +208,10 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 				Expression argumentExpression = expressionCreator.createExpression( event.getPose() );
 				double duration = tlComposite.getTimeLine().getDurationForKeyFrame( event );
 				AnimationStyle style = tlComposite.getTimeLine().getStyleForKeyFramePose( event );
-				AbstractMethod SET_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( parent.getClassForM(), "setPose", Pose.class, SetPose.Detail[].class );
-				MethodInvocation methodInv = AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), SET_POSE_METHOD, argumentExpression );
+
+				Class<? extends Pose> poseCls = PoseUtilities.getPoseClassForModelClass( parent.getClassForM() );
+				org.lgna.project.ast.JavaMethod STRIKE_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( parent.getClassForM(), org.lgna.ik.poser.PoseAstUtilities.STRIKE_POSE_METHOD_NAME, poseCls, StrikePose.Detail[].class );
+				MethodInvocation methodInv = AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), STRIKE_POSE_METHOD, argumentExpression );
 				org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance(
 						org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
 				methodInv.keyedArguments.add(
