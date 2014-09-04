@@ -57,27 +57,27 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 public abstract class PoseBuilder<M extends org.lgna.story.SJointedModel, P extends Pose<M>> {
 	//TODO: mmay 
 	//package-private with EmployeesOnly accessor 
-	public void addJointKey( JointIdQuaternionPair jointKey ) {
-		this.keys.add( jointKey );
+	public void addJointIdQuaternionPair( JointIdQuaternionPair jointIdQuaternionPair ) {
+		this.pairs.add( jointIdQuaternionPair );
 	}
 
-	protected void addJointKey( JointId jointId, Orientation orientation ) {
+	protected void addJointIdQuaternionPair( JointId jointId, Orientation orientation ) {
 		edu.cmu.cs.dennisc.math.UnitQuaternion quaternion = EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion();
-		this.addJointKey( new JointIdQuaternionPair( jointId, quaternion ) );
+		this.addJointIdQuaternionPair( new JointIdQuaternionPair( jointId, quaternion ) );
 	}
 
 	public final PoseBuilder<M, P> arbitraryJoint( JointId jointId, org.lgna.story.Orientation orientation ) {
-		this.addJointKey( jointId, orientation );
+		this.addJointIdQuaternionPair( jointId, orientation );
 		return this;
 	}
 
 	protected abstract P build( JointIdQuaternionPair[] buffer );
 
 	public final P build() {
-		JointIdQuaternionPair[] buffer = new JointIdQuaternionPair[ this.keys.size() ];
-		this.keys.toArray( buffer );
+		JointIdQuaternionPair[] buffer = new JointIdQuaternionPair[ this.pairs.size() ];
+		this.pairs.toArray( buffer );
 		return this.build( buffer );
 	}
 
-	private final List<JointIdQuaternionPair> keys = Lists.newLinkedList();
+	private final List<JointIdQuaternionPair> pairs = Lists.newLinkedList();
 }

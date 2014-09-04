@@ -314,7 +314,7 @@ public class TimeLine {
 		}
 		PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass( init.getClass() );
 		for( JointIdQuaternionPair key : builderList ) {
-			builder.addJointKey( key );
+			builder.addJointIdQuaternionPair( key );
 		}
 		return builder.build();
 	}
@@ -361,7 +361,7 @@ public class TimeLine {
 		}
 		if( unhandledIds.isEmpty() ) {
 			for( JointIdQuaternionPair key : rvKeys ) {
-				builder.addJointKey( key );
+				builder.addJointIdQuaternionPair( key );
 			}
 			Pose<?> rv = builder.build();
 			return rv;
@@ -428,9 +428,9 @@ public class TimeLine {
 			PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass( data.getPoseActual().getClass() );
 			for( JointId id : usedIds ) {
 				if( contains( data.getPose().getJointKeys(), id ) ) {
-					builder.addJointKey( new JointIdQuaternionPair( id, findQuaternionForJointId( id, data.getPose() ) ) );
+					builder.addJointIdQuaternionPair( new JointIdQuaternionPair( id, findQuaternionForJointId( id, data.getPose() ) ) );
 				} else {
-					builder.addJointKey( new JointIdQuaternionPair( id, findQuaternionForJointId( id, initialPose ) ) );
+					builder.addJointIdQuaternionPair( new JointIdQuaternionPair( id, findQuaternionForJointId( id, initialPose ) ) );
 					//					builder.addCustom( orientationForId( id, prev ), id );
 					// thought this would be correct changed to other open to either
 				}
@@ -439,15 +439,6 @@ public class TimeLine {
 			prev = data.getPoseActual();
 		}
 	}
-
-	//	private static org.lgna.story.Orientation storyOrientationForId( JointId id, Pose<?> pose ) {
-	//		for( JointKey key : pose.getJointKeys() ) {
-	//			if( key.getJointId().equals( id ) ) {
-	//				return key.getLGNAOrientation();
-	//			}
-	//		}
-	//		return null;
-	//	}
 
 	private static UnitQuaternion findQuaternionForJointId( JointId id, Pose<?> pose ) {
 		for( JointIdQuaternionPair key : pose.getJointKeys() ) {

@@ -148,7 +148,7 @@ public class PoseUtilities {
 			list.add( new JointIdQuaternionPair( id, implementation.getLocalOrientation().createUnitQuaternion() ) );
 		}
 		for( JointIdQuaternionPair key : list ) {
-			builder.addJointKey( key );
+			builder.addJointIdQuaternionPair( key );
 		}
 		return (Pose<T>)builder.build();
 	}
