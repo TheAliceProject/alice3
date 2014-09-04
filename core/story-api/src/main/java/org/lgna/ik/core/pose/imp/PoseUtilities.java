@@ -40,11 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.core.pose;
+package org.lgna.ik.core.pose.imp;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lgna.ik.core.pose.BipedPose;
+import org.lgna.ik.core.pose.BipedPoseBuilder;
+import org.lgna.ik.core.pose.FlyerPose;
+import org.lgna.ik.core.pose.FlyerPoseBuilder;
+import org.lgna.ik.core.pose.Pose;
+import org.lgna.ik.core.pose.PoseBuilder;
+import org.lgna.ik.core.pose.QuadrupedPose;
+import org.lgna.ik.core.pose.QuadrupedPoseBuilder;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SBiped;
 import org.lgna.story.SFlyer;

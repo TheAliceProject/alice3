@@ -49,7 +49,7 @@ package org.lgna.ik.core.pose;
 public class QuadrupedPoseBuilder extends PoseBuilder<org.lgna.story.SQuadruped, QuadrupedPose> {
 
 	@Override
-	protected org.lgna.ik.core.pose.QuadrupedPose build( org.lgna.ik.core.pose.JointIdQuaternionPair[] buffer ) {
+	protected org.lgna.ik.core.pose.QuadrupedPose build( org.lgna.ik.core.pose.imp.JointIdQuaternionPair[] buffer ) {
 		return new QuadrupedPose( buffer );
 	}
 

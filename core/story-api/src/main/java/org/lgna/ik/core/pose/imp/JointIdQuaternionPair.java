@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.core.pose;
+package org.lgna.ik.core.pose.imp;
 
 import org.lgna.story.resources.JointId;
 

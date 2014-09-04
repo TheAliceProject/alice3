@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.lgna.ik.core.pose.PoseAnimation;
+import org.lgna.ik.core.pose.imp.PoseAnimation;
 import org.lgna.ik.core.solver.Bone.Direction;
 import org.lgna.story.SJoint;
 import org.lgna.story.resources.JointId;

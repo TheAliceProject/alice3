@@ -48,7 +48,7 @@ package org.lgna.ik.core.pose;
  */
 public class BipedPoseBuilder extends PoseBuilder<org.lgna.story.SBiped, BipedPose> {
 	@Override
-	protected org.lgna.ik.core.pose.BipedPose build( org.lgna.ik.core.pose.JointIdQuaternionPair[] buffer ) {
+	protected org.lgna.ik.core.pose.BipedPose build( org.lgna.ik.core.pose.imp.JointIdQuaternionPair[] buffer ) {
 		return new BipedPose( buffer );
 	}
 }

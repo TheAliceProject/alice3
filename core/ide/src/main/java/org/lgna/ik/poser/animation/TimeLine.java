@@ -47,10 +47,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import org.lgna.ik.core.pose.JointIdQuaternionPair;
 import org.lgna.ik.core.pose.Pose;
 import org.lgna.ik.core.pose.PoseBuilder;
-import org.lgna.ik.core.pose.PoseUtilities;
+import org.lgna.ik.core.pose.imp.JointIdQuaternionPair;
+import org.lgna.ik.core.pose.imp.PoseUtilities;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.resources.JointId;
 

@@ -49,7 +49,7 @@ import org.lgna.story.SFlyer;
  */
 public class FlyerPoseBuilder extends PoseBuilder<SFlyer, FlyerPose> {
 	@Override
-	protected org.lgna.ik.core.pose.FlyerPose build( org.lgna.ik.core.pose.JointIdQuaternionPair[] buffer ) {
+	protected org.lgna.ik.core.pose.FlyerPose build( org.lgna.ik.core.pose.imp.JointIdQuaternionPair[] buffer ) {
 		return new FlyerPose( buffer );
 	}
 }

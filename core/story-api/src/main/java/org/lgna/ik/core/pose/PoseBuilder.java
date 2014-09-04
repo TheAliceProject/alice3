@@ -44,6 +44,7 @@ package org.lgna.ik.core.pose;
 
 import java.util.List;
 
+import org.lgna.ik.core.pose.imp.JointIdQuaternionPair;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Orientation;
 import org.lgna.story.resources.JointId;

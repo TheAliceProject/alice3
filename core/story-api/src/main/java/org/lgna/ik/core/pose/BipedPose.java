@@ -42,6 +42,7 @@
  */
 package org.lgna.ik.core.pose;
 
+import org.lgna.ik.core.pose.imp.JointIdQuaternionPair;
 import org.lgna.story.SBiped;
 
 /**
