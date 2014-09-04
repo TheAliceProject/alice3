@@ -78,7 +78,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene {
 	private final SGround snow = new SGround();
 	private final SCamera camera = new SCamera();
-	protected T model;
+	private T model;
 	private final Collection<JointSelectionSphere> allJointSelectionSpheres;
 	private PoserControllerAdapter adapter;
 	private final Map<IKCore.Limb, List<JointSelectionSphere>> limbToJointMap;
@@ -93,7 +93,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 
 		addDragListener( sphereDragListener );
 
-		this.limbToJointMap = createJointSelectionSpheresAndLimbs();
+		this.limbToJointMap = createJointSelectionSpheresAndLimbs( this.model );
 
 		for( IKCore.Limb limb : limbToJointMap.keySet() ) {
 			for( JointSelectionSphere sphere : limbToJointMap.get( limb ) ) {
@@ -109,7 +109,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		this.allJointSelectionSpheres = java.util.Collections.unmodifiableCollection( temp );
 	}
 
-	protected abstract Map<IKCore.Limb, List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs();
+	protected abstract Map<IKCore.Limb, List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs( T model );
 
 	private final ValueListener<Boolean> jointHandleVisibilityListener = new ValueListener<Boolean>() {
 
@@ -282,7 +282,6 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		this.model.turn( TurnDirection.RIGHT, .5, new Duration( 0 ) );
 		model.setVehicle( this );
 		poserAnimatorDragAdapter.setTarget( model );
-		createJointSelectionSpheresAndLimbs();
-		//initializeLimbAnchors();
+		createJointSelectionSpheresAndLimbs( model );
 	}
 }

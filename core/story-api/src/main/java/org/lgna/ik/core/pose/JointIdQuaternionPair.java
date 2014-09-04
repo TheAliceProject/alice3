@@ -40,16 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.core.pose.builder;
+package org.lgna.ik.core.pose;
 
-import org.lgna.ik.core.pose.BipedPose;
+import org.lgna.story.resources.JointId;
+
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
 
 /**
  * @author Matt May
  */
-public class BipedPoseBuilder extends PoseBuilder<org.lgna.story.SBiped, BipedPose> {
-	@Override
-	protected org.lgna.ik.core.pose.BipedPose build( org.lgna.ik.core.pose.JointKey[] buffer ) {
-		return new BipedPose( buffer );
+public class JointIdQuaternionPair {
+	private final JointId id;
+	private final UnitQuaternion quaternion;
+
+	public JointIdQuaternionPair( JointId id, UnitQuaternion quaternion ) {
+		this.id = id;
+		this.quaternion = quaternion;
+	}
+
+	public JointId getJointId() {
+		return id;
+	}
+
+	public UnitQuaternion getQuaternion() {
+		return this.quaternion;
 	}
 }

@@ -42,29 +42,16 @@
  */
 package org.lgna.ik.core.pose;
 
-import org.lgna.ik.core.pose.builder.FlyerPoseBuilder;
-import org.lgna.ik.core.pose.builder.PoseBuilder;
 import org.lgna.story.SFlyer;
 import org.lgna.story.resources.FlyerResource;
-import org.lgna.story.resources.JointId;
 
 /**
  * @author Matt May
  */
 public class FlyerPose extends Pose<SFlyer> {
 
-	public FlyerPose( JointKey... pairs ) {
-		super( SFlyer.class, FlyerResource.class, pairs );
-	}
-
-	@Override
-	protected JointId[] getJointIdRoots() {
-		return FlyerResource.JOINT_ID_ROOTS;
-	}
-
-	@Override
-	public PoseBuilder getBuilder() {
-		return new FlyerPoseBuilder();
+	/*package-private*/FlyerPose( JointIdQuaternionPair... pairs ) {
+		super( FlyerResource.class, pairs );
 	}
 
 }

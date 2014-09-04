@@ -42,134 +42,23 @@
  */
 package org.lgna.ik.core.pose;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.lgna.ik.core.pose.builder.BipedPoseBuilder;
-import org.lgna.ik.core.pose.builder.FlyerPoseBuilder;
-import org.lgna.ik.core.pose.builder.PoseBuilder;
-import org.lgna.ik.core.pose.builder.QuadrupedPoseBuilder;
-import org.lgna.story.EmployeesOnly;
-import org.lgna.story.SBiped;
-import org.lgna.story.SFlyer;
-import org.lgna.story.SJoint;
 import org.lgna.story.SJointedModel;
-import org.lgna.story.SQuadruped;
-import org.lgna.story.implementation.JointImp;
-import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
-
-import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
 
 /**
  * @author Matt May
  */
 public abstract class Pose<S extends SJointedModel> {
 
-	private final Class<S> cls;
-	private final JointKey[] jointQPairs;
+	private final JointIdQuaternionPair[] jointQPairs;
 	private final Class<? extends JointedModelResource> defaultResource;
 
-	public Pose( Class<S> cls, Class<? extends JointedModelResource> resource, JointKey... pairs ) {
+	public Pose( Class<? extends JointedModelResource> resource, JointIdQuaternionPair... pairs ) {
 		this.jointQPairs = pairs;
-		this.cls = cls;
 		this.defaultResource = resource;
 	}
 
-	public JointKey[] getJointKeys() {
+	public JointIdQuaternionPair[] getJointKeys() {
 		return this.jointQPairs;
-	}
-
-	public JointId[] getDefaultJoints() {
-		ArrayList<JointId> rv = Lists.newArrayList();
-		JointId[] roots = getJointIdRoots();
-		for( JointId id : roots ) {
-			rv.addAll( tunnel( id ) );
-		}
-		return rv.toArray( new JointId[ 0 ] );
-	}
-
-	protected abstract JointId[] getJointIdRoots();
-
-	protected static JointId getIDFor( SJoint sJoint ) {
-		return ( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).getJointId();
-	}
-
-	protected static AffineMatrix4x4 getOrientation( SJoint sJoint ) {
-		return ( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).getLocalTransformation();
-	}
-
-	protected static UnitQuaternion getUnitQuaternion( SJoint sJoint ) {
-		return new UnitQuaternion( ( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).getLocalTransformation().orientation );
-	}
-
-	protected static void setOrientationOnly( SJoint sJoint, OrthogonalMatrix3x3 matrix ) {
-		( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).setLocalOrientation( matrix );
-	}
-
-	protected static void setOrientationOnly( SJoint sJoint, UnitQuaternion unitQuaternion ) {
-		( (JointImp)org.lgna.story.EmployeesOnly.getImplementation( sJoint ) ).setLocalOrientation( new OrthogonalMatrix3x3( unitQuaternion ) );
-	}
-
-	protected static edu.cmu.cs.dennisc.math.UnitQuaternion getQuaternion( org.lgna.story.Orientation orientation ) {
-		//todo: org.lgna.story.Orientation should store the UnitQuaternion?
-		return org.lgna.story.EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion();
-	}
-
-	public abstract PoseBuilder<S, Pose<S>> getBuilder();
-
-	public void applyToJointedModel( S model ) {
-		for( JointKey key : jointQPairs ) {
-			setOrientationOnly( model.getJoint( key.getJointId() ), new UnitQuaternion( key.getOrientation().createOrthogonalMatrix3x3() ) );
-		}
-	}
-
-	protected ArrayList<JointId> tunnel( JointId id ) {
-		ArrayList<JointId> rv = Lists.newArrayList( id );
-		for( JointId child : id.getChildren( defaultResource ) ) {
-			rv.addAll( tunnel( child ) );
-		}
-		return rv;
-	}
-
-	public Class<S> getPosingType() {
-		return cls;
-	}
-
-	public static <T extends SJointedModel> Pose<T> createPoseFromT( T model ) {
-		if( model instanceof SBiped ) {
-			return createPoseFromT( model, new BipedPose().getDefaultJoints() );
-		} else if( model instanceof SQuadruped ) {
-			return createPoseFromT( model, new QuadrupedPose().getDefaultJoints() );
-		} else if( model instanceof SFlyer ) {
-			return createPoseFromT( model, new FlyerPose().getDefaultJoints() );
-		}
-		return null;
-	}
-
-	public static <T extends SJointedModel> Pose<T> createPoseFromT( T model, JointId[] arr ) {
-
-		PoseBuilder<?, ?> builder;
-		if( model instanceof SBiped ) {
-			builder = new BipedPoseBuilder();
-		} else if( model instanceof SQuadruped ) {
-			builder = new QuadrupedPoseBuilder();
-		} else if( model instanceof SFlyer ) {
-			builder = new FlyerPoseBuilder();
-		} else {
-			return null;
-		}
-		List<JointKey> list = Lists.newArrayList();
-		for( JointId id : arr ) {
-			JointImp implementation = EmployeesOnly.getImplementation( model.getJoint( id ) );
-			list.add( new JointKey( implementation.getLocalOrientation(), id ) );
-		}
-		for( JointKey key : list ) {
-			builder.addJointKey( key );
-		}
-		return (Pose<T>)builder.build();
 	}
 }

@@ -42,10 +42,7 @@
  */
 package org.lgna.ik.core.pose;
 
-import org.lgna.ik.core.pose.builder.PoseBuilder;
-import org.lgna.ik.core.pose.builder.QuadrupedPoseBuilder;
 import org.lgna.story.SQuadruped;
-import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.QuadrupedResource;
 
 /**
@@ -53,17 +50,7 @@ import org.lgna.story.resources.QuadrupedResource;
  */
 public class QuadrupedPose extends Pose<SQuadruped> {
 
-	public QuadrupedPose( JointKey... pairs ) {
-		super( SQuadruped.class, QuadrupedResource.class, pairs );
-	}
-
-	@Override
-	protected JointId[] getJointIdRoots() {
-		return QuadrupedResource.JOINT_ID_ROOTS;
-	}
-
-	@Override
-	public PoseBuilder getBuilder() {
-		return new QuadrupedPoseBuilder();
+	/*package-private*/QuadrupedPose( JointIdQuaternionPair... pairs ) {
+		super( QuadrupedResource.class, pairs );
 	}
 }

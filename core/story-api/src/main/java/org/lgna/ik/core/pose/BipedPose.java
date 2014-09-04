@@ -42,11 +42,8 @@
  */
 package org.lgna.ik.core.pose;
 
-import org.lgna.ik.core.pose.builder.BipedPoseBuilder;
-import org.lgna.ik.core.pose.builder.PoseBuilder;
 import org.lgna.story.SBiped;
 import org.lgna.story.resources.BipedResource;
-import org.lgna.story.resources.JointId;
 
 /**
  * @author Matt May
@@ -54,18 +51,7 @@ import org.lgna.story.resources.JointId;
 public final class BipedPose extends Pose<SBiped> {
 
 	//TODO mmay
-	/*package-private*/
-	public BipedPose( JointKey... pairs ) {
-		super( SBiped.class, BipedResource.class, pairs );
-	}
-
-	@Override
-	public PoseBuilder getBuilder() {
-		return new BipedPoseBuilder();
-	}
-
-	@Override
-	protected JointId[] getJointIdRoots() {
-		return BipedResource.JOINT_ID_ROOTS;
+	/*package-private*/BipedPose( JointIdQuaternionPair... pairs ) {
+		super( BipedResource.class, pairs );
 	}
 }

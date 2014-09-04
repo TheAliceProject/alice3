@@ -42,33 +42,41 @@
  */
 package org.lgna.ik.core.pose;
 
+import java.util.List;
+
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.Orientation;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.math.Orientation;
-import edu.cmu.cs.dennisc.math.UnitQuaternion;
+import edu.cmu.cs.dennisc.java.util.Lists;
 
 /**
  * @author Matt May
  */
-public class JointKey {
-	private final JointId id;
-	private final Orientation orientation;
-
-	public JointKey( Orientation orientation, JointId id ) {
-		this.id = id;
-		this.orientation = orientation;
+public abstract class PoseBuilder<M extends org.lgna.story.SJointedModel, P extends Pose<M>> {
+	//TODO: mmay 
+	//package-private with EmployeesOnly accessor 
+	public void addJointKey( JointIdQuaternionPair jointKey ) {
+		this.keys.add( jointKey );
 	}
 
-	public JointId getJointId() {
-		return id;
+	protected void addJointKey( JointId jointId, Orientation orientation ) {
+		edu.cmu.cs.dennisc.math.UnitQuaternion quaternion = EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion();
+		this.addJointKey( new JointIdQuaternionPair( jointId, quaternion ) );
 	}
 
-	public Orientation getOrientation() {
-		return this.orientation;
+	public final PoseBuilder<M, P> arbitraryJoint( JointId jointId, org.lgna.story.Orientation orientation ) {
+		this.addJointKey( jointId, orientation );
+		return this;
 	}
 
-	public org.lgna.story.Orientation getLGNAOrientation() {
-		UnitQuaternion q = orientation.createUnitQuaternion();
-		return new org.lgna.story.Orientation( q.x, q.y, q.z, q.w );
+	protected abstract P build( JointIdQuaternionPair[] buffer );
+
+	public final P build() {
+		JointIdQuaternionPair[] buffer = new JointIdQuaternionPair[ this.keys.size() ];
+		this.keys.toArray( buffer );
+		return this.build( buffer );
 	}
+
+	private final List<JointIdQuaternionPair> keys = Lists.newLinkedList();
 }

@@ -59,7 +59,7 @@ public class QuadrupedPoserScene extends AbstractPoserScene<SQuadruped> {
 	}
 
 	@Override
-	protected Map<Limb, java.util.List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs() {
+	protected Map<Limb, java.util.List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs( SQuadruped model ) {
 		Map<Limb, java.util.List<JointSelectionSphere>> rv = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		JointSelectionSphere a = createJSS( model.getBackRightHip(), null );
 		JointSelectionSphere b = createJSS( model.getBackRightKnee(), a );

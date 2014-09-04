@@ -972,7 +972,6 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	public void setPose( org.lgna.ik.core.pose.Pose<?> pose, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		assert this.getAbstraction().getClass().isAssignableFrom( pose.getPosingType() );
 		this.getProgram().perform( new PoseAnimation( duration, style, this, pose ), null );
 	}
 

@@ -59,7 +59,7 @@ public class BipedPoserScene extends AbstractPoserScene<SBiped> {
 	}
 
 	@Override
-	protected Map<Limb, java.util.List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs() {
+	protected Map<Limb, java.util.List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs( SBiped model ) {
 		Map<Limb, java.util.List<JointSelectionSphere>> rv = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		JointSelectionSphere a = createJSS( model.getRightHip(), null );
 		JointSelectionSphere b = createJSS( model.getRightKnee(), a );

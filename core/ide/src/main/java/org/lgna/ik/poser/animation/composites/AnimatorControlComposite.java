@@ -62,6 +62,7 @@ import org.lgna.croquet.views.CompositeView;
 import org.lgna.ik.core.pose.BipedPose;
 import org.lgna.ik.core.pose.FlyerPose;
 import org.lgna.ik.core.pose.Pose;
+import org.lgna.ik.core.pose.PoseUtilities;
 import org.lgna.ik.core.pose.QuadrupedPose;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.animation.KeyFrameData;
@@ -145,7 +146,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		currentTime.setValueTransactionlessly( tlComposite.getTimeLine().getCurrentTime() );
 
 		tlComposite.getTimeLine().addListener( timeLineListener );
-		tlComposite.setInitialPose( Pose.createPoseFromT( parent.getModel() ) );
+		tlComposite.setInitialPose( PoseUtilities.createPoseFromT( parent.getModel() ) );
 	}
 
 	private PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {

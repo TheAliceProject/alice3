@@ -51,6 +51,7 @@ import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.views.Panel;
 import org.lgna.croquet.views.SplitPane;
 import org.lgna.ik.core.pose.Pose;
+import org.lgna.ik.core.pose.PoseUtilities;
 import org.lgna.ik.poser.FieldFinder;
 import org.lgna.ik.poser.animation.composites.AbstractPoserControlComposite;
 import org.lgna.ik.poser.controllers.PoserControllerAdapter;
@@ -185,12 +186,12 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 	}
 
 	public Pose getPose() {
-		return org.lgna.ik.core.pose.Pose.createPoseFromT( getModel(), usedJoints.toArray( new JointId[ 0 ] ) );
+		return PoseUtilities.createPoseFromT( getModel(), usedJoints.toArray( new JointId[ 0 ] ) );
 	}
 
 	public void setPose( Pose pose ) {
 		if( pose != null ) {
-			pose.applyToJointedModel( getModel() );
+			PoseUtilities.applyToJointedModel( pose, getModel() );
 		} else {
 			getModel().straightenOutJoints( StraightenOutJoints.duration( 0 ) );
 		}

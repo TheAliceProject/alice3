@@ -43,10 +43,13 @@
 
 package org.alice.stageide.ast;
 
-import org.lgna.ik.core.pose.JointKey;
-import org.lgna.ik.core.pose.builder.PoseBuilder;
+import org.lgna.ik.core.pose.JointIdQuaternionPair;
+import org.lgna.ik.core.pose.PoseBuilder;
+import org.lgna.ik.core.pose.PoseUtilities;
 import org.lgna.story.Orientation;
 import org.lgna.story.resources.JointId;
+
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
 
 /**
  * @author Dennis Cosgrove
@@ -208,13 +211,17 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 
 	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.ik.core.pose.Pose pose ) throws CannotCreateExpressionException {
 		if( ( pose != null ) && ( pose.getJointKeys().length > 0 ) ) {
-			PoseBuilder<?, ?> builder = pose.getBuilder();
-			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( builder.getClass() );
+			Class<?> builderCls = PoseUtilities.getBuilderClassForPoseClass( pose.getClass() );
+			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( builderCls );
 			org.lgna.project.ast.Expression prevExpression = null;
-			for( JointKey key : pose.getJointKeys() ) {
-				Orientation orientation = key.getLGNAOrientation();
-				prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation( prevExpression == null ? builderExpression0 : prevExpression, ADD_CUSTOM
-						, this.createJointIdExpression( key.getJointId() ), this.createOrientationExpression( orientation ) );
+			for( JointIdQuaternionPair key : pose.getJointKeys() ) {
+				UnitQuaternion q = key.getQuaternion();
+				Orientation orientation = new org.lgna.story.Orientation( q.x, q.y, q.z, q.w );
+				prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
+						prevExpression == null ? builderExpression0 : prevExpression,
+						ADD_CUSTOM,
+						this.createJointIdExpression( key.getJointId() ),
+						this.createOrientationExpression( orientation ) );
 			}
 			assert prevExpression != null;
 			return org.lgna.project.ast.AstUtilities.createMethodInvocation( prevExpression, BUILD );

@@ -40,46 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.core.pose.builder;
+package org.lgna.ik.core.pose;
 
-import java.util.List;
-
-import org.lgna.ik.core.pose.JointKey;
-import org.lgna.ik.core.pose.Pose;
-import org.lgna.story.EmployeesOnly;
-import org.lgna.story.Orientation;
-import org.lgna.story.resources.JointId;
-
-import edu.cmu.cs.dennisc.java.util.Lists;
-import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 
 /**
  * @author Matt May
  */
-public abstract class PoseBuilder<M extends org.lgna.story.SJointedModel, P extends Pose<M>> {
-	//TODO: mmay 
-	//package-private with EmployeesOnly accessor 
-	public void addJointKey( JointKey jointKey ) {
-		this.keys.add( jointKey );
+public class QuadrupedPoseBuilder extends PoseBuilder<org.lgna.story.SQuadruped, QuadrupedPose> {
+
+	@Override
+	protected org.lgna.ik.core.pose.QuadrupedPose build( org.lgna.ik.core.pose.JointIdQuaternionPair[] buffer ) {
+		return new QuadrupedPose( buffer );
 	}
 
-	protected void addJointKey( JointId jointid, Orientation orientation ) {
-		edu.cmu.cs.dennisc.math.Orientation mathOrientation = new OrthogonalMatrix3x3( EmployeesOnly.getOrthogonalMatrix3x3( orientation ) );
-		this.addJointKey( new JointKey( mathOrientation, jointid ) );
-	}
-
-	public final PoseBuilder<M, P> arbitraryJoint( JointId jointId, org.lgna.story.Orientation orientation ) {
-		this.addJointKey( jointId, orientation );
-		return this;
-	}
-
-	protected abstract P build( JointKey[] buffer );
-
-	public final P build() {
-		JointKey[] buffer = new JointKey[ this.keys.size() ];
-		this.keys.toArray( buffer );
-		return this.build( buffer );
-	}
-
-	private final List<JointKey> keys = Lists.newLinkedList();
 }

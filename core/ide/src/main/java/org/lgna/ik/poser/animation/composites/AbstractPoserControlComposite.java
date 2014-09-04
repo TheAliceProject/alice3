@@ -44,7 +44,6 @@ package org.lgna.ik.poser.animation.composites;
 
 import java.util.UUID;
 
-import org.alice.stageide.type.croquet.TypeNode;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
@@ -52,26 +51,17 @@ import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.AbstractEdit;
-import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.core.IKCore;
 import org.lgna.ik.core.IKCore.Limb;
-import org.lgna.ik.poser.FieldFinder;
 import org.lgna.ik.poser.controllers.PoserControllerAdapter;
 import org.lgna.ik.poser.croquet.AbstractPoserOrAnimatorComposite;
 import org.lgna.ik.poser.croquet.views.AbstractPoserControlView;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.ik.poser.jselection.JointSelectionSphereState;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
-import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.Color;
-import org.lgna.story.SBiped;
-import org.lgna.story.SFlyer;
-import org.lgna.story.SJointedModel;
-import org.lgna.story.SQuadruped;
-import org.lgna.story.implementation.JointedModelImp;
-import org.lgna.story.resources.JointedModelResource;
 
 /**
  * @author Matt May
@@ -108,49 +98,6 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		leftLegAnchor.getValue().setPaint( Color.GREEN );
 		adapter = new PoserControllerAdapter( this );
 		parent.setAdapter( adapter );
-	}
-
-	private org.lgna.croquet.event.ValueListener<JointedModelResource> resourceChangeListener = new org.lgna.croquet.event.ValueListener<JointedModelResource>() {
-		@Override
-		public void valueChanged( ValueEvent<JointedModelResource> e ) {
-			( (JointedModelImp)org.lgna.story.EmployeesOnly.getImplementation( parent.getModel() ) ).setNewResource( e.getNextValue() );
-		}
-	};
-
-	private org.lgna.croquet.event.ValueListener<TypeNode> typeChangedListener = new org.lgna.croquet.event.ValueListener<TypeNode>() {
-		@Override
-		public void valueChanged( ValueEvent<TypeNode> e ) {
-			NamedUserType type = (NamedUserType)e.getNextValue().getType();
-			parent.setType( type );
-		}
-	};
-
-	private TypeNode initializeRootTypeNode() {
-		SJointedModel model = parent.getModel();
-		org.lgna.project.ast.JavaType rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
-		if( model instanceof SBiped ) {
-			rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBiped.class );
-		} else if( model instanceof SQuadruped ) {
-			rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SQuadruped.class );
-		} else if( model instanceof SFlyer ) {
-			rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SFlyer.class );
-		}
-		TypeNode javaRoot = FieldFinder.populateList( rootType );
-		assert !javaRoot.isLeaf();
-		return (TypeNode)javaRoot.getChildAt( 0 );
-	}
-
-	private TypeNode getInitialValue( TypeNode root ) {
-		if( root.getType().equals( parent.getDeclaringType() ) ) {
-			return root;
-		}
-		for( int i = 0; i != root.getChildCount(); ++i ) {
-			TypeNode child = getInitialValue( (TypeNode)root.getChildAt( i ) );
-			if( child != null ) {
-				return child;
-			}
-		}
-		return null;
 	}
 
 	protected ActionOperation straightenJointsOperation = createActionOperation( "straightenJoints", new Action() {
