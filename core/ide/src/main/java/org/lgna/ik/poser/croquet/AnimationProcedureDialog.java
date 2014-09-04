@@ -58,6 +58,9 @@ public abstract class AnimationProcedureDialog extends org.lgna.croquet.SimpleOp
 
 	@Override
 	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+		if( animatorComposite.getControlComposite().isEmpty() ) {
+			return empty;
+		}
 		if( validator != null ) {
 			//pass
 		} else {
@@ -68,9 +71,6 @@ public abstract class AnimationProcedureDialog extends org.lgna.croquet.SimpleOp
 		if( explanation != null ) {
 			errorStatus.setText( explanation );
 			return errorStatus;
-		}
-		if( animatorComposite.getControlComposite().isEmpty() ) {
-			return empty;
 		}
 		return IS_GOOD_TO_GO_STATUS;
 	}

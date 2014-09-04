@@ -126,8 +126,9 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		sceneComposite.getView().initializeInAwtContainer( storyProgram );
-		scene.addPointOfViewChangeListener( transformationListener, (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] ) );
 		initializeScene();
+		//these must be added after scene gets initialized!!! (mmay)
+		scene.addPointOfViewChangeListener( transformationListener, (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] ) );
 	}
 
 	private M createInstanceFromType( NamedUserType type ) {
