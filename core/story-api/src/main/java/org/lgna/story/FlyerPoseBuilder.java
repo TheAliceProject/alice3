@@ -42,11 +42,63 @@
  */
 package org.lgna.story;
 
-
 /**
  * @author Matt May
  */
 public class FlyerPoseBuilder extends PoseBuilder<SFlyer, FlyerPose> {
+	public FlyerPoseBuilder arbitraryJoint( org.lgna.story.resources.JointId jointId, org.lgna.story.Orientation orientation ) {
+		this.addJointIdQuaternionPair( jointId, orientation );
+		return this;
+	}
+
+	public FlyerPoseBuilder rightWingShoulder( Orientation orientation ) {
+		return this.arbitraryJoint( org.lgna.story.resources.FlyerResource.RIGHT_WING_SHOULDER, orientation );
+	}
+
+	public FlyerPoseBuilder rightWingElbow( Orientation orientation ) {
+		return this.arbitraryJoint( org.lgna.story.resources.FlyerResource.RIGHT_WING_ELBOW, orientation );
+	}
+
+	public FlyerPoseBuilder rightWingWrist( Orientation orientation ) {
+		return this.arbitraryJoint( org.lgna.story.resources.FlyerResource.RIGHT_WING_WRIST, orientation );
+	}
+
+	public FlyerPoseBuilder rightHip( Orientation orientation ) {
+		return this.arbitraryJoint( org.lgna.story.resources.FlyerResource.RIGHT_HIP, orientation );
+	}
+
+	public FlyerPoseBuilder rightKnee( Orientation orientation ) {
+		return this.arbitraryJoint( org.lgna.story.resources.FlyerResource.RIGHT_KNEE, orientation );
+	}
+
+	public FlyerPoseBuilder rightAnkle( Orientation orientation ) {
+		return this.arbitraryJoint( org.lgna.story.resources.FlyerResource.RIGHT_ANKLE, orientation );
+	}
+
+	public FlyerPoseBuilder leftWingShoulder( Orientation orientation ) {
+		return this.arbitraryJoint( org.lgna.story.resources.FlyerResource.LEFT_WING_SHOULDER, orientation );
+	}
+
+	public FlyerPoseBuilder leftWingElbow( Orientation orientation ) {
+		return this.arbitraryJoint( org.lgna.story.resources.FlyerResource.LEFT_WING_ELBOW, orientation );
+	}
+
+	public FlyerPoseBuilder leftWingWrist( Orientation orientation ) {
+		return this.arbitraryJoint( org.lgna.story.resources.FlyerResource.LEFT_WING_WRIST, orientation );
+	}
+
+	public FlyerPoseBuilder leftHip( Orientation orientation ) {
+		return this.arbitraryJoint( org.lgna.story.resources.FlyerResource.LEFT_HIP, orientation );
+	}
+
+	public FlyerPoseBuilder leftKnee( Orientation orientation ) {
+		return this.arbitraryJoint( org.lgna.story.resources.FlyerResource.LEFT_KNEE, orientation );
+	}
+
+	public FlyerPoseBuilder leftAnkle( Orientation orientation ) {
+		return this.arbitraryJoint( org.lgna.story.resources.FlyerResource.LEFT_ANKLE, orientation );
+	}
+
 	@Override
 	protected org.lgna.story.FlyerPose build( org.lgna.story.implementation.JointIdQuaternionPair[] buffer ) {
 		return new FlyerPose( buffer );

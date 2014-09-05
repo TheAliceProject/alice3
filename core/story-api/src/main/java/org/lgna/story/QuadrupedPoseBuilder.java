@@ -42,15 +42,75 @@
  */
 package org.lgna.story;
 
+import org.lgna.story.resources.QuadrupedResource;
 
 /**
  * @author Matt May
  */
 public class QuadrupedPoseBuilder extends PoseBuilder<org.lgna.story.SQuadruped, QuadrupedPose> {
+	public QuadrupedPoseBuilder arbitraryJoint( org.lgna.story.resources.JointId jointId, org.lgna.story.Orientation orientation ) {
+		this.addJointIdQuaternionPair( jointId, orientation );
+		return this;
+	}
+
+	public QuadrupedPoseBuilder frontRightClavicle( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.FRONT_RIGHT_CLAVICLE, orientation );
+	}
+
+	public QuadrupedPoseBuilder frontRightShoulder( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.FRONT_RIGHT_SHOULDER, orientation );
+	}
+
+	public QuadrupedPoseBuilder frontRightKnee( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.FRONT_RIGHT_KNEE, orientation );
+	}
+
+	public QuadrupedPoseBuilder frontRightAnkle( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.FRONT_RIGHT_ANKLE, orientation );
+	}
+
+	public QuadrupedPoseBuilder backRightHip( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.BACK_RIGHT_HIP, orientation );
+	}
+
+	public QuadrupedPoseBuilder backRightKnee( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.BACK_RIGHT_KNEE, orientation );
+	}
+
+	public QuadrupedPoseBuilder backRightAnkle( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.BACK_RIGHT_ANKLE, orientation );
+	}
+
+	public QuadrupedPoseBuilder frontLeftClavicle( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.FRONT_LEFT_CLAVICLE, orientation );
+	}
+
+	public QuadrupedPoseBuilder frontLeftShoulder( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.FRONT_LEFT_SHOULDER, orientation );
+	}
+
+	public QuadrupedPoseBuilder frontLeftKnee( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.FRONT_LEFT_KNEE, orientation );
+	}
+
+	public QuadrupedPoseBuilder frontLeftAnkle( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.FRONT_LEFT_ANKLE, orientation );
+	}
+
+	public QuadrupedPoseBuilder backLeftHip( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.BACK_LEFT_HIP, orientation );
+	}
+
+	public QuadrupedPoseBuilder backLeftKnee( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.BACK_LEFT_KNEE, orientation );
+	}
+
+	public QuadrupedPoseBuilder backLeftAnkle( Orientation orientation ) {
+		return this.arbitraryJoint( QuadrupedResource.BACK_LEFT_ANKLE, orientation );
+	}
 
 	@Override
 	protected org.lgna.story.QuadrupedPose build( org.lgna.story.implementation.JointIdQuaternionPair[] buffer ) {
 		return new QuadrupedPose( buffer );
 	}
-
 }

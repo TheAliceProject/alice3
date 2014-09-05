@@ -48,7 +48,6 @@ import org.lgna.story.Orientation;
 import org.lgna.story.PoseBuilder;
 import org.lgna.story.implementation.JointIdQuaternionPair;
 import org.lgna.story.implementation.PoseUtilities;
-import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 
@@ -207,22 +206,39 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		}
 	}
 
-	private static final org.lgna.project.ast.JavaMethod ADD_CUSTOM = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "arbitraryJoint", JointId.class, Orientation.class );
+	//private static final org.lgna.project.ast.JavaMethod ADD_CUSTOM = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "arbitraryJoint", JointId.class, Orientation.class );
 	private static final org.lgna.project.ast.JavaMethod BUILD = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "build" );
 
 	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.story.Pose pose ) throws CannotCreateExpressionException {
 		if( ( pose != null ) && ( EmployeesOnly.getJointIdQuaternionPairs( pose ).length > 0 ) ) {
-			Class<?> builderCls = PoseUtilities.getBuilderClassForPoseClass( pose.getClass() );
+			Class<? extends PoseBuilder> builderCls = PoseUtilities.getBuilderClassForPoseClass( pose.getClass() );
 			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( builderCls );
 			org.lgna.project.ast.Expression prevExpression = null;
-			for( JointIdQuaternionPair key : EmployeesOnly.getJointIdQuaternionPairs( pose ) ) {
-				UnitQuaternion q = key.getQuaternion();
+			for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( pose ) ) {
+				UnitQuaternion q = jqPair.getQuaternion();
 				Orientation orientation = new org.lgna.story.Orientation( q.x, q.y, q.z, q.w );
-				prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
-						prevExpression == null ? builderExpression0 : prevExpression,
-						ADD_CUSTOM,
-						this.createJointIdExpression( key.getJointId() ),
-						this.createOrientationExpression( orientation ) );
+
+				org.lgna.project.ast.Expression callerExpression = prevExpression == null ? builderExpression0 : prevExpression;
+				java.lang.reflect.Method jSpecificMethod = PoseUtilities.getSpecificPoseBuilderMethod( builderCls, jqPair.getJointId() );
+				if( jSpecificMethod != null ) {
+					prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
+							callerExpression,
+							org.lgna.project.ast.JavaMethod.getInstance( jSpecificMethod ),
+							this.createOrientationExpression( orientation ) );
+				} else {
+					java.lang.reflect.Method jCatchAllMethod = PoseUtilities.getCatchAllPoseBuilderMethod( builderCls );
+					if( jCatchAllMethod != null ) {
+						prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
+								callerExpression,
+								org.lgna.project.ast.JavaMethod.getInstance( jCatchAllMethod ),
+								this.createJointIdExpression( jqPair.getJointId() ),
+								this.createOrientationExpression( orientation ) );
+					} else {
+						//should not happen
+						//throw new CannotCreateExpressionException( pose );
+						throw new Error( "cannot find catch all method for pose builder " + pose + " " + builderCls );
+					}
+				}
 			}
 			assert prevExpression != null;
 			return org.lgna.project.ast.AstUtilities.createMethodInvocation( prevExpression, BUILD );

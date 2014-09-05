@@ -53,7 +53,6 @@ import edu.cmu.cs.dennisc.java.util.Lists;
  * @author Matt May
  */
 public abstract class PoseBuilder<M extends org.lgna.story.SJointedModel, P extends Pose<M>> {
-	//TODO: mmay 
 	/*package-private*/void addJointIdQuaternionPair( JointIdQuaternionPair jointIdQuaternionPair ) {
 		this.pairs.add( jointIdQuaternionPair );
 	}
@@ -61,11 +60,6 @@ public abstract class PoseBuilder<M extends org.lgna.story.SJointedModel, P exte
 	protected void addJointIdQuaternionPair( JointId jointId, Orientation orientation ) {
 		edu.cmu.cs.dennisc.math.UnitQuaternion quaternion = EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion();
 		this.addJointIdQuaternionPair( new JointIdQuaternionPair( jointId, quaternion ) );
-	}
-
-	public final PoseBuilder<M, P> arbitraryJoint( JointId jointId, org.lgna.story.Orientation orientation ) {
-		this.addJointIdQuaternionPair( jointId, orientation );
-		return this;
 	}
 
 	protected abstract P build( JointIdQuaternionPair[] buffer );

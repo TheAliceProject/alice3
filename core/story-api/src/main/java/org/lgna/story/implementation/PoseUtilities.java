@@ -192,4 +192,49 @@ public class PoseUtilities {
 		}
 		return rv;
 	}
+
+	public static Class<? extends PoseBuilder> getBuilderClassForModelResourceClass( Class<? extends JointedModelResource> resourceCls ) {
+		if( BipedResource.class.isAssignableFrom( resourceCls ) ) {
+			return BipedPoseBuilder.class;
+		} else if( QuadrupedResource.class.isAssignableFrom( resourceCls ) ) {
+			return QuadrupedPoseBuilder.class;
+		} else if( FlyerResource.class.isAssignableFrom( resourceCls ) ) {
+			return FlyerPoseBuilder.class;
+		} else {
+			return null;
+		}
+	}
+
+	public static java.lang.reflect.Method getSpecificPoseBuilderMethod( Class<? extends PoseBuilder> poseBuilderCls, JointId jointId ) {
+		java.lang.reflect.Field jField = jointId.getPublicStaticFinalFld();
+		if( jField != null ) {
+			String fieldName = jField.getName();
+			String camelCaseName = org.lgna.story.implementation.alice.AliceResourceUtilties.enumToCamelCase( fieldName, true );
+			try {
+				return poseBuilderCls.getMethod( camelCaseName, org.lgna.story.Orientation.class );
+			} catch( NoSuchMethodException nsme ) {
+				//not a problem
+			}
+		}
+		return null;
+	}
+
+	public static java.lang.reflect.Method getCatchAllPoseBuilderMethod( Class<? extends PoseBuilder> poseBuilderCls ) {
+		java.lang.reflect.Method rv = null;
+		for( java.lang.reflect.Method jMethod : poseBuilderCls.getMethods() ) {
+			if( jMethod.getReturnType().equals( poseBuilderCls ) ) {
+				Class<?>[] jParameterTypes = jMethod.getParameterTypes();
+				if( jParameterTypes.length == 2 ) {
+					if( jParameterTypes[ 0 ].equals( JointId.class ) && jParameterTypes[ 1 ].equals( org.lgna.story.Orientation.class ) ) {
+						if( rv != null ) {
+							throw new RuntimeException( "unexpected methods found when only one should have catch all signature: " + rv.getName() + " " + jMethod.getName() );
+						} else {
+							rv = jMethod;
+						}
+					}
+				}
+			}
+		}
+		return rv;
+	}
 }
