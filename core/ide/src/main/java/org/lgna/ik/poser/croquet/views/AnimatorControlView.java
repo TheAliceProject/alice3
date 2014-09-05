@@ -45,6 +45,7 @@ package org.lgna.ik.poser.croquet.views;
 import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
 
+import org.lgna.croquet.views.BorderPanel;
 import org.lgna.ik.poser.animation.composites.AnimatorControlComposite;
 import org.lgna.ik.poser.animation.views.TimeLineModifierView;
 
@@ -68,10 +69,12 @@ public class AnimatorControlView extends AbstractPoserControlView {
 		//		this.addComponent( controlComposite.getSavePoseOperation().createButton(), "grow" );
 		//		this.addComponent( controlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
 
-		this.addComponent( controlComposite.getRunAnimationOperation().createButton(), "span 2, grow, wrap" );
-		this.addComponent( controlComposite.getNameState().getSidekickLabel().createLabel(), "grow" );
-		this.addComponent( controlComposite.getNameState().createTextField(), "grow, wrap" );
+		//		this.addComponent( controlComposite.getRunAnimationOperation().createButton(), "span 2, grow, wrap" );
+		BorderPanel bPanel = new BorderPanel();
+		bPanel.addLineStartComponent( controlComposite.getNameState().getSidekickLabel().createLabel() );
+		bPanel.addCenterComponent( controlComposite.getNameState().createTextField() );
 		this.addComponent( editView, "span 2" );
+		this.addComponent( bPanel, "south" );
 
 		//		OuterTimeLineView component = controlComposite.getTimeLine().createView();
 		//		this.addComponent( component, "grow, span 2, wrap" );

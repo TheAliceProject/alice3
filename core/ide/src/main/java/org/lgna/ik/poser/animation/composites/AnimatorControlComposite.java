@@ -89,39 +89,10 @@ import org.lgna.story.implementation.PoseUtilities;
 public class AnimatorControlComposite<M extends SJointedModel> extends AbstractPoserControlComposite<AnimatorControlView> {
 
 	public static final Group GROUP = Group.getInstance( java.util.UUID.fromString( "813e60bb-77f3-45b5-a319-aa0bc42faffb" ), "AnimatorOperations" );
-	private StringState nameState = createStringState( "nameState" );
-	private TimeLineComposite tlComposite = new TimeLineComposite();
-	private BoundedDoubleState currentTime = createBoundedDoubleState( "currentTime", new BoundedDoubleDetails() );
-	private TimeLineModifierComposite editComposite = new TimeLineModifierComposite( tlComposite );
-	private BlockStatement blockStatement = new BlockStatement();
-
-	private final TimeLineListener timeLineListener = new TimeLineListener() {
-
-		@Override
-		public void selectedKeyFrameChanged( KeyFrameData event ) {
-		}
-
-		@Override
-		public void keyFrameModified( KeyFrameData event ) {
-		}
-
-		@Override
-		public void keyFrameDeleted( KeyFrameData event ) {
-		}
-
-		@Override
-		public void keyFrameAdded( KeyFrameData event ) {
-		}
-
-		@Override
-		public void endTimeChanged( double endTime ) {
-		}
-
-		@Override
-		public void currentTimeChanged( double currentTime, Pose pose ) {
-			parent.strikePose( pose );
-		}
-	};
+	private final StringState nameState = createStringState( "nameState" );
+	private final TimeLineComposite tlComposite = new TimeLineComposite();
+	private final BoundedDoubleState currentTime = createBoundedDoubleState( "currentTime", new BoundedDoubleDetails() );
+	private final TimeLineModifierComposite tlModifierComposite = new TimeLineModifierComposite( tlComposite );
 
 	public AnimatorControlComposite( AbstractPoserOrAnimatorComposite parent ) {
 		super( parent, java.util.UUID.fromString( "09599add-4c1b-4ec6-ab5d-4c35f9053bae" ) );
@@ -143,7 +114,40 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		tlComposite.setInitialPose( PoseUtilities.createPoseFromT( parent.getModel() ) );
 	}
 
-	private PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {
+	private final TimeLineListener timeLineListener = new TimeLineListener() {
+
+		@Override
+		public void selectedKeyFrameChanged( KeyFrameData event ) {
+		}
+
+		@Override
+		public void keyFrameAdded( KeyFrameData event ) {
+			if( tlComposite.getTimeLine().getCurrentTime() == event.getEventTime() ) {
+				tlComposite.selectKeyFrame( event );
+			}
+		}
+
+		@Override
+		public void keyFrameDeleted( KeyFrameData event ) {
+			tlComposite.getTimeLine().setCurrentTime( tlComposite.getTimeLine().getCurrentTime() );//to refire to get interpolation for pose
+		}
+
+		@Override
+		public void keyFrameModified( KeyFrameData event ) {
+			tlComposite.getTimeLine().setCurrentTime( event.getEventTime() );
+		}
+
+		@Override
+		public void endTimeChanged( double endTime ) {
+		}
+
+		@Override
+		public void currentTimeChanged( double currentTime, Pose pose ) {
+			parent.strikePose( pose );
+		}
+	};
+
+	private final PoserSphereManipulatorListener sphereDragListener = new PoserSphereManipulatorListener() {
 
 		@Override
 		public void fireStart( PoserEvent poserEvent ) {
@@ -167,7 +171,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 		public void fireAnchorUpdate( PoserEvent poserEvent ) {
 		}
 	};
-	private ActionOperation runAnimationOperation = createActionOperation( "runAnimation", new Action() {
+	private final ActionOperation runAnimationOperation = createActionOperation( "runAnimation", new Action() {
 
 		boolean stillRunning = true;
 
@@ -257,8 +261,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 			}
 			++i;
 		}
-		blockStatement = new BlockStatement( miArr );
-		return blockStatement;
+		return new BlockStatement( miArr );
 	}
 
 	public ActionOperation getRunAnimationOperation() {
@@ -283,15 +286,11 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 	}
 
 	public TimeLineModifierComposite getEditComposite() {
-		return this.editComposite;
+		return this.tlModifierComposite;
 	}
 
 	public StringState getNameState() {
 		return this.nameState;
-	}
-
-	public Pose getCurrentPose() {
-		return parent.getPose();
 	}
 
 	@Override

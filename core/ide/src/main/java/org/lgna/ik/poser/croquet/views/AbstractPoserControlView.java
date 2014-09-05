@@ -58,11 +58,12 @@ public class AbstractPoserControlView extends MigPanel {
 		//											[			BaseJointHandles		][][ikbool][delete] [radioB] [savePose andRun]
 		super( poserControlComposite, "", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0]" +
 				"[grow 0]" + //straightenOutJoints
-				"[grow 0]" + //handle visibility
-				"[grow 0]" + //delete row
-				"[]10" + //list section
-				"[grow 0]0[grow 0]" + //save and export rows
-				"10[grow 0]" ); //slider component
+				"[grow 0]"// + //handle visibility
+				//				"[grow 0]" + //delete row
+				//				"[]10" + //list section
+				//				"[grow 0]0[grow 0]" + //save and export rows
+				//				"10[grow 0]" 
+		); //slider component
 		AbstractLabel label = poserControlComposite.getRightArmLabel().createLabel();
 		this.addComponent( label );
 		this.addComponent( poserControlComposite.getLeftArmLabel().createLabel(), "wrap" );

@@ -140,7 +140,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 
 		@Override
 		public void changed( State<Double> state, Double prevValue, Double nextValue, boolean isAdjusting ) {
-			assert isAdjusting == ( prevValue == nextValue );
+			//			assert isAdjusting == ( prevValue == nextValue );
 			//			if( isAdjusting ) {
 			//			System.out.println( "time changed" );
 			if( ( selectedKeyFrame != null ) ) {
@@ -148,7 +148,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
 				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
 
-				new ModifyTimeOfExistingKeyFrameInTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame, nextValue, prevValue ).doOrRedo( true );
+				step.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( step, composite.getTimeLine(), selectedKeyFrame, nextValue, prevValue ) );
 			}
 		}
 	};

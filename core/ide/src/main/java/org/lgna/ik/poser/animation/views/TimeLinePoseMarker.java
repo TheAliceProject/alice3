@@ -146,6 +146,9 @@ class JTimeLinePoseMarker extends JToggleButton {
 		this.addMouseListener( listener );
 		this.addMouseMotionListener( motionListener );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		if( data.equals( jView.getComposite().getSelectedKeyFrame() ) ) {
+			setSelected( true );
+		}
 	}
 
 	@Override
@@ -167,28 +170,9 @@ class JTimeLinePoseMarker extends JToggleButton {
 	private final MouseListener listener = new MouseListener() {
 
 		@Override
-		public void mouseReleased( MouseEvent e ) {
-			if( isSliding ) {
-				org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
-
-				double newTime = keyFrameData.getEventTime();
-				if( Math.abs( newTime - prevEventTime ) > 0 ) {
-					step.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( step, parent.getComposite().getTimeLine(), keyFrameData, newTime, prevEventTime ) );
-					JTimeLinePoseMarker.this.setSelected( true );
-				} else {
-					parent.getComposite().getTimeLine().moveExistingKeyFrameData( keyFrameData,
-							prevEventTime );
-				}
-			}
-			isSliding = false;
-		}
-
-		@Override
 		public void mousePressed( MouseEvent e ) {
 			if( JTimeLinePoseMarker.this.isSelected() ) {
-				prevEventTime = keyFrameData.getEventTime();
+				tPressed = keyFrameData.getEventTime();
 				isSliding = true;
 			}
 
@@ -196,7 +180,27 @@ class JTimeLinePoseMarker extends JToggleButton {
 		}
 
 		@Override
-		public void mouseExited( MouseEvent e ) {
+		public void mouseReleased( MouseEvent e ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
+			if( isSliding ) {
+				org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
+				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( null, NullTrigger.createUserInstance() );
+
+				double tCurrent = keyFrameData.getEventTime();
+				final double THRESHOLD = 0.0001;
+				if( Math.abs( tCurrent - tPressed ) > THRESHOLD ) {
+					step.commitAndInvokeDo( new ModifyTimeOfExistingKeyFrameInTimeLineEdit( step, parent.getComposite().getTimeLine(), keyFrameData, tCurrent, tPressed ) );
+					JTimeLinePoseMarker.this.setSelected( true );
+				} else {
+					parent.getComposite().getTimeLine().moveExistingKeyFrameData( keyFrameData, tPressed );
+				}
+			}
+			isSliding = false;
+		}
+
+		@Override
+		public void mouseClicked( MouseEvent e ) {
 		}
 
 		@Override
@@ -204,8 +208,9 @@ class JTimeLinePoseMarker extends JToggleButton {
 		}
 
 		@Override
-		public void mouseClicked( MouseEvent e ) {
+		public void mouseExited( MouseEvent e ) {
 		}
+
 	};
 	private final MouseMotionListener motionListener = new MouseMotionListener() {
 
@@ -216,13 +221,12 @@ class JTimeLinePoseMarker extends JToggleButton {
 		@Override
 		public void mouseDragged( MouseEvent e ) {
 			if( isSliding ) {
-				parent.getComposite().getTimeLine().moveExistingKeyFrameData( keyFrameData,
-						parent.getTime( e ) );
+				parent.getComposite().getTimeLine().moveExistingKeyFrameData( keyFrameData, parent.getTime( e ) );
 				revalidate();
 			}
 
 		}
 	};
 	private boolean isSliding;
-	private double prevEventTime;
+	private double tPressed;
 }

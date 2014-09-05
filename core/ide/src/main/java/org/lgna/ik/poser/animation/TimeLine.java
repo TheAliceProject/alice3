@@ -72,6 +72,7 @@ public class TimeLine {
 	private Pose<?> initialPose;
 	private final List<JointId> usedIds = Lists.newCopyOnWriteArrayList();
 	private boolean listenersEnabled = true;
+	private KeyFrameData selectedKeyFrame;
 
 	public void addKeyFrameData( KeyFrameData keyFrameData ) {
 		if( datas.size() == 0 ) {
@@ -255,10 +256,15 @@ public class TimeLine {
 	}
 
 	public void setSelectedKeyFrame( KeyFrameData keyFrameData ) {
+		selectedKeyFrame = keyFrameData;
 		if( keyFrameData != null ) {
 			this.setCurrentTime( keyFrameData.getEventTime() );
 		}
 		fireSelectedKeyFrameChanged( keyFrameData );
+	}
+
+	public KeyFrameData getSelectedKeyFrame() {
+		return this.selectedKeyFrame;
 	}
 
 	private Pose<?> calculatePoseForTime( double desiredTime ) {

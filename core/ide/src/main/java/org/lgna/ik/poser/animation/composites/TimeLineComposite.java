@@ -55,13 +55,13 @@ public class TimeLineComposite extends SimpleComposite<TimeLineView> {
 
 	private boolean isTimeMutable = true;
 	private final TimeLine timeLine = new TimeLine();
-	private KeyFrameData selected = null;
 
 	public TimeLineComposite() {
 		super( java.util.UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
 	}
 
 	public void selectKeyFrame( KeyFrameData keyFrameData ) {
+		KeyFrameData selected = timeLine.getSelectedKeyFrame();
 		if( selected != null ) {
 			getView().deselect( selected );
 		}
@@ -89,11 +89,11 @@ public class TimeLineComposite extends SimpleComposite<TimeLineView> {
 		return timeLine;
 	}
 
-	public KeyFrameData getSelectedKeyFrame() {
-		return selected;
-	}
-
 	public void setInitialPose( Pose<?> pose ) {
 		this.timeLine.setInitialPose( pose );
+	}
+
+	public KeyFrameData getSelectedKeyFrame() {
+		return timeLine.getSelectedKeyFrame();
 	}
 }
