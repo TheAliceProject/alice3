@@ -61,10 +61,10 @@ public class PoseAnimation extends DurationBasedAnimation {
 		private final edu.cmu.cs.dennisc.math.UnitQuaternion q0;
 		private final edu.cmu.cs.dennisc.math.UnitQuaternion q1;
 
-		public JointInfo( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, JointIdQuaternionPair jointKey ) {
-			this.jointImp = jointedModel.getJointImplementation( jointKey.getJointId() );
+		public JointInfo( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, JointIdQuaternionPair jqPair ) {
+			this.jointImp = jointedModel.getJointImplementation( jqPair.getJointId() );
 			this.q0 = this.jointImp.getLocalOrientation().createUnitQuaternion();
-			this.q1 = jointKey.getQuaternion().createUnitQuaternion();
+			this.q1 = jqPair.getQuaternion().createUnitQuaternion();
 		}
 
 		public void setPortion( double portion ) {
@@ -86,13 +86,13 @@ public class PoseAnimation extends DurationBasedAnimation {
 	@Override
 	protected void prologue() {
 		this.jointInfos.clear();
-		for( JointIdQuaternionPair jointKey : EmployeesOnly.getJointIdQuaternionPairs( this.pose ) ) {
-			appendJointInfos( this.jointInfos, this.jointedModel, jointKey );
+		for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( this.pose ) ) {
+			appendJointInfos( this.jointInfos, this.jointedModel, jqPair );
 		}
 	}
 
-	private static void appendJointInfos( java.util.List<JointInfo> jointInfos, org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, JointIdQuaternionPair jointKey ) {
-		jointInfos.add( new JointInfo( jointedModel, jointKey ) );
+	private static void appendJointInfos( java.util.List<JointInfo> jointInfos, org.lgna.story.implementation.JointedModelImp<?, ?> jointedModel, JointIdQuaternionPair jqPair ) {
+		jointInfos.add( new JointInfo( jointedModel, jqPair ) );
 	}
 
 	@Override

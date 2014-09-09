@@ -116,8 +116,8 @@ public class PoseUtilities {
 	}
 
 	public static <M extends SJointedModel> void applyToJointedModel( Pose<M> pose, M model ) {
-		for( JointIdQuaternionPair key : EmployeesOnly.getJointIdQuaternionPairs( pose ) ) {
-			setOrientationOnly( model.getJoint( key.getJointId() ), key.getQuaternion() );
+		for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( pose ) ) {
+			setOrientationOnly( model.getJoint( jqPair.getJointId() ), jqPair.getQuaternion() );
 		}
 	}
 

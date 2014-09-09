@@ -342,34 +342,34 @@ public class TimeLine {
 		} else {
 			return initialPose;
 		}
-		List<JointIdQuaternionPair> rvKeys = Lists.newArrayList();
+		List<JointIdQuaternionPair> jqPairs = Lists.newArrayList();
 		List<JointId> unhandledIds = Lists.newArrayList();
 		PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass( key1.getPose().getClass() );
-		for( JointIdQuaternionPair jointKey : EmployeesOnly.getJointIdQuaternionPairs( key2.getPoseActual() ) ) {
-			rvKeys.add( jointKey );
-			unhandledIds.add( jointKey.getJointId() );
+		for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( key2.getPoseActual() ) ) {
+			jqPairs.add( jqPair );
+			unhandledIds.add( jqPair.getJointId() );
 		}
-		for( JointIdQuaternionPair jointKey : EmployeesOnly.getJointIdQuaternionPairs( key1.getPoseActual() ) ) {
-			unhandledIds.remove( jointKey.getJointId() );
+		for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( key1.getPoseActual() ) ) {
+			unhandledIds.remove( jqPair.getJointId() );
 		}
 		if( unhandledIds.isEmpty() ) {
 			return key1.getPoseActual();
 		} else {
-			return getInitPose( getPriorKeyFrame( key1 ), builder, unhandledIds, rvKeys );
+			return getInitPose( getPriorKeyFrame( key1 ), builder, unhandledIds, jqPairs );
 		}
 	}
 
-	private Pose<?> getInitPose( KeyFrameData priorKeyFrame, PoseBuilder<?, ?> builder, List<JointId> unhandledIds, List<JointIdQuaternionPair> rvKeys ) {
+	private Pose<?> getInitPose( KeyFrameData priorKeyFrame, PoseBuilder<?, ?> builder, List<JointId> unhandledIds, List<JointIdQuaternionPair> jqPairs ) {
 		Pose<?> prevPose = initialPose;
 		if( priorKeyFrame != null ) {
 			prevPose = priorKeyFrame.getPose();
 		}
 		List<JointId> handledIds = Lists.newArrayList();
 		for( JointId id : unhandledIds ) {
-			for( JointIdQuaternionPair key : EmployeesOnly.getJointIdQuaternionPairs( prevPose ) ) {
-				if( key.getJointId().equals( id ) ) {
+			for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( prevPose ) ) {
+				if( jqPair.getJointId().equals( id ) ) {
 					handledIds.add( id );
-					rvKeys.add( key );
+					jqPairs.add( jqPair );
 				}
 			}
 		}
@@ -377,13 +377,13 @@ public class TimeLine {
 			unhandledIds.remove( id );
 		}
 		if( unhandledIds.isEmpty() ) {
-			for( JointIdQuaternionPair key : rvKeys ) {
-				EmployeesOnly.addJointIdQuaternionPair( builder, key );
+			for( JointIdQuaternionPair jqPair : jqPairs ) {
+				EmployeesOnly.addJointIdQuaternionPair( builder, jqPair );
 			}
 			Pose<?> rv = builder.build();
 			return rv;
 		} else {
-			return getInitPose( getPriorKeyFrame( priorKeyFrame ), builder, unhandledIds, rvKeys );
+			return getInitPose( getPriorKeyFrame( priorKeyFrame ), builder, unhandledIds, jqPairs );
 		}
 	}
 
@@ -412,8 +412,8 @@ public class TimeLine {
 		for( JointId id : usedIds ) {
 			boolean removed = false;
 			for( KeyFrameData data : datas ) {
-				for( JointIdQuaternionPair key : EmployeesOnly.getJointIdQuaternionPairs( data.getPose() ) ) {
-					if( key.getJointId().equals( id ) ) {
+				for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( data.getPose() ) ) {
+					if( jqPair.getJointId().equals( id ) ) {
 						removed = true;
 						unused.remove( id );
 					}
@@ -428,10 +428,10 @@ public class TimeLine {
 
 	private void checkAddingJoints( KeyFrameData keyFrameData ) {
 		//		List<JointId> idsForUpdate = Collections.newArrayList();
-		for( JointIdQuaternionPair key : EmployeesOnly.getJointIdQuaternionPairs( keyFrameData.getPose() ) ) {
-			if( !usedIds.contains( key.getJointId() ) ) {
+		for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( keyFrameData.getPose() ) ) {
+			if( !usedIds.contains( jqPair.getJointId() ) ) {
 				//				idsForUpdate.add( key.getJointId() );
-				usedIds.add( key.getJointId() );
+				usedIds.add( jqPair.getJointId() );
 			}
 		}
 		correctPoseActuals();
@@ -456,16 +456,16 @@ public class TimeLine {
 	}
 
 	private static UnitQuaternion findQuaternionForJointId( JointId id, Pose<?> pose ) {
-		for( JointIdQuaternionPair key : EmployeesOnly.getJointIdQuaternionPairs( pose ) ) {
-			if( key.getJointId().equals( id ) ) {
-				return key.getQuaternion();
+		for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( pose ) ) {
+			if( jqPair.getJointId().equals( id ) ) {
+				return jqPair.getQuaternion();
 			}
 		}
 		return null;
 	}
 
-	private static boolean contains( JointIdQuaternionPair[] jointKeys, JointId id ) {
-		for( JointIdQuaternionPair key : jointKeys ) {
+	private static boolean contains( JointIdQuaternionPair[] jqPairs, JointId id ) {
+		for( JointIdQuaternionPair key : jqPairs ) {
 			if( key.getJointId().equals( id ) ) {
 				return true;
 			}
