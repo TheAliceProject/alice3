@@ -58,6 +58,7 @@ import org.lgna.ik.poser.controllers.PoserEvent;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.story.Duration;
 import org.lgna.story.EmployeesOnly;
+import org.lgna.story.MoveDirection;
 import org.lgna.story.SCamera;
 import org.lgna.story.SGround;
 import org.lgna.story.SJoint;
@@ -71,6 +72,7 @@ import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
  * @author Matt May
@@ -85,6 +87,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 	private final Map<JointImp, IKCore.Limb> jointToLimbMap = Maps.newHashMap();
 	private final List<PoserSphereManipulatorListener> dragListeners = Lists.newCopyOnWriteArrayList();
 	private PoserAnimatorDragAdapter poserAnimatorDragAdapter;
+	private AffineMatrix4x4 cameraOrigin;
 
 	public AbstractPoserScene( T model ) {
 		assert model != null : this;
@@ -283,5 +286,18 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		model.setVehicle( this );
 		poserAnimatorDragAdapter.setTarget( model );
 		createJointSelectionSpheresAndLimbs( model );
+	}
+
+	public void pointCamera() {
+		camera.moveAndOrientTo( model, new Duration( 0.0 ) );
+		camera.turn( TurnDirection.RIGHT, .5, new Duration( 0 ) );
+		camera.move( MoveDirection.BACKWARD, backupAmount(), new Duration( 0 ) );
+		camera.move( MoveDirection.UP, model.getHeight() * .5, new Duration( 0 ) );
+		model.turnToFace( getCamera(), new Duration( 0 ) );
+	}
+
+	private Number backupAmount() {
+		double greaterDimension = model.getWidth() > model.getHeight() ? model.getWidth() : model.getHeight();
+		return greaterDimension * 2.5;
 	}
 }

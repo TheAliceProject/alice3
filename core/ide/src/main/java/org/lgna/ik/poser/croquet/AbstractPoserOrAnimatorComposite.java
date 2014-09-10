@@ -58,8 +58,6 @@ import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserParameter;
-import org.lgna.story.Duration;
-import org.lgna.story.MoveDirection;
 import org.lgna.story.Pose;
 import org.lgna.story.SJointedModel;
 import org.lgna.story.SProgram;
@@ -170,11 +168,11 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 	private void initializeScene() {
 		if( !isInitialized ) {
 			this.storyProgram.setActiveScene( this.scene );
-			this.scene.getCamera().move( MoveDirection.BACKWARD, 6, new Duration( 0 ) );
-			this.scene.getCamera().move( MoveDirection.UP, 1, new Duration( 0 ) );
-			this.getModel().turnToFace( scene.getCamera(), new Duration( 0 ) );
+			this.scene.pointCamera();
 			isInitialized = true;
 			scene.addPointOfViewChangeListener( transformationListener, (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] ) );
+		} else {
+			this.scene.pointCamera();
 		}
 	}
 

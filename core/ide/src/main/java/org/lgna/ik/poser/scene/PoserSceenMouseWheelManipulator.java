@@ -73,11 +73,8 @@ public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipul
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
 		if( isTooClose() ) {
-			System.out.println( "tooClose: " + getDistance() );
-			//			return super.doStartManipulator( startInput );
 			return false;
-		}
-		else {
+		} else {
 			return super.doStartManipulator( startInput );
 		}
 	}
@@ -92,8 +89,6 @@ public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipul
 		Point3 cameraLoc = camera.getAbsoluteTransformation().translation;
 		modelLoc.z = 1;
 		cameraLoc.z = 1;
-		System.out.println( "pointA: " + modelLoc );
-		System.out.println( "pointB: " + cameraLoc );
 		double distance = Point3.calculateDistanceBetween( modelLoc, cameraLoc );
 		return distance;
 	}
@@ -103,11 +98,6 @@ public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipul
 		if( !isTooClose() && !currentInput.isAnyMouseButtonDown() && !( currentInput.getMouseWheelState() < 0 ) ) {
 			super.doDataUpdateManipulator( currentInput, previousInput );
 		}
-	}
-
-	@Override
-	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-		super.doEndManipulator( endInput, previousInput );
 	}
 
 	@Override
@@ -122,11 +112,6 @@ public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipul
 			movementDirection.multiply( getZoomSpeed() );
 			originalTransformation.translation.add( movementDirection );
 			AffineMatrix4x4 targetTransform = new AffineMatrix4x4( orientation, originalTransformation.translation );
-			//			SymmetricPerspectiveCamera sCamera = (SymmetricPerspectiveCamera)camera;
-			//			Point3 targetPosition = getNewPointForX( this.currentX );
-			//			System.out.println( "target: " + targetPosition );
-			//			OrthogonalMatrix3x3 targetOrientation = this.getOrientationTargetForX( this.currentX );
-			//			AffineMatrix4x4 targetTransform = new AffineMatrix4x4( targetOrientation, targetPosition );
 			this.cameraAnimation.setTarget( new QuaternionAndTranslation( targetTransform ) );
 		} else {
 			super.zoomCamera( direction );
@@ -134,7 +119,6 @@ public class PoserSceenMouseWheelManipulator extends CameraZoomMouseWheelManipul
 	}
 
 	private double getZoomSpeed() {
-		System.out.println( "zoomSpeed: " + ( getDistance() / 10 ) );
 		return getDistance() / 10;
 	}
 
