@@ -257,7 +257,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
 		orthoCam.picturePlane.setValue( picturePlane );
 	}
 
-	private void zoomCamera( int direction ) {
+	protected void zoomCamera( int direction ) {
 
 		if( this.camera instanceof SymmetricPerspectiveCamera ) {
 			this.currentX += direction * X_CHANGE_PER_CLICK;
@@ -360,7 +360,7 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
 		//Do Nothing
 	}
 
-	private QuaternionAndTranslationTargetBasedAnimation cameraAnimation = null;
+	protected QuaternionAndTranslationTargetBasedAnimation cameraAnimation = null;
 	private AffineMatrix4x4 originalTransformation;
 	private Animator animator;
 

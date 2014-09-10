@@ -54,11 +54,13 @@ import org.alice.interact.handle.HandleStyle;
 import org.alice.interact.handle.ManipulationHandleIndirection;
 import org.alice.interact.manipulator.CameraOrbitAboutTargetDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateDragManipulator;
-import org.alice.stageide.sceneeditor.interact.manipulators.CameraZoomMouseWheelManipulator;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.scene.AbstractPoserScene;
 import org.lgna.ik.poser.scene.PoserPicturePlaneInteraction;
+import org.lgna.ik.poser.scene.PoserSceenMouseWheelManipulator;
+import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SModel;
+import org.lgna.story.implementation.ModelImp;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
@@ -72,6 +74,7 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 	private PoserPicturePlaneInteraction dragAdapter = null;
 	private final AbstractPoserScene poserScene;
 	private ManipulatorConditionSet selectObject;
+	private PoserSceenMouseWheelManipulator manipulator = new PoserSceenMouseWheelManipulator();
 	private static final CameraOrbitAboutTargetDragManipulator orbiter = new CameraOrbitAboutTargetDragManipulator();
 
 	public PoserAnimatorDragAdapter( AbstractPoserScene poserScene ) {
@@ -109,7 +112,7 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		addHandle( rotateJointAboutYAxis );
 		addHandle( rotateJointAboutZAxis );
 
-		ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet( new CameraZoomMouseWheelManipulator() );
+		ManipulatorConditionSet mouseWheelCameraZoom = new ManipulatorConditionSet( manipulator );
 		MouseWheelCondition mouseWheelCondition = new MouseWheelCondition( new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
 		mouseWheelCameraZoom.addCondition( mouseWheelCondition );
 		this.manipulators.add( mouseWheelCameraZoom );
@@ -162,6 +165,7 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 
 	public final void setTarget( SModel model ) {
 		orbiter.setTarget( model );
+		manipulator.setModel( (ModelImp)EmployeesOnly.getImplementation( model ) );
 	}
 
 	@Override
