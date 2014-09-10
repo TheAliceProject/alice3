@@ -106,12 +106,10 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 			double dist = Point.distance( sphereLocations.get( i ).x, sphereLocations.get( i ).y, e.getPoint().x, e.getPoint().y );
 			if( dist < minDist ) {
 				if( selected != null ) {
-					System.out.println( "two" );
 					if( arr[ i ].getDistanceTo( (STurnable)camera.getAbstraction() ) < selected.getDistanceTo( (STurnable)camera.getAbstraction() ) ) {
 						selected = arr[ i ];
 					}
 				} else {
-					System.out.println( "first" );
 					selected = arr[ i ];
 				}
 				//				minDist = dist;
