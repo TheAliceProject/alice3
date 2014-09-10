@@ -52,6 +52,7 @@ import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.controllers.PoserEvent;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.story.EmployeesOnly;
+import org.lgna.story.STurnable;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.SceneImp;
@@ -104,8 +105,16 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		for( int i = 0; i != arr.length; ++i ) {
 			double dist = Point.distance( sphereLocations.get( i ).x, sphereLocations.get( i ).y, e.getPoint().x, e.getPoint().y );
 			if( dist < minDist ) {
-				selected = arr[ i ];
-				minDist = dist;
+				if( selected != null ) {
+					System.out.println( "two" );
+					if( arr[ i ].getDistanceTo( (STurnable)camera.getAbstraction() ) < selected.getDistanceTo( (STurnable)camera.getAbstraction() ) ) {
+						selected = arr[ i ];
+					}
+				} else {
+					System.out.println( "first" );
+					selected = arr[ i ];
+				}
+				//				minDist = dist;
 			}
 		}
 		if( selected != null ) {
