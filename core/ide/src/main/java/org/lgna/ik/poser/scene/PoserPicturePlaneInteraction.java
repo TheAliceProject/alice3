@@ -93,7 +93,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		this.scene = scene;
 		SceneImp sceneImp = (SceneImp)EmployeesOnly.getImplementation( scene );
 		this.camera = sceneImp.findFirstCamera();
-		doVisualization();
+		//		doVisualization();
 	}
 
 	private void doVisualization() {
