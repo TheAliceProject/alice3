@@ -42,23 +42,33 @@
  */
 package org.lgna.ik.poser.scene;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.poser.controllers.PoserEvent;
 import org.lgna.ik.poser.jselection.JointSelectionSphere;
 import org.lgna.story.EmployeesOnly;
-import org.lgna.story.STurnable;
+import org.lgna.story.SMovableTurnable;
+import org.lgna.story.SSphere;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.SceneImp;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -83,39 +93,93 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		this.scene = scene;
 		SceneImp sceneImp = (SceneImp)EmployeesOnly.getImplementation( scene );
 		this.camera = sceneImp.findFirstCamera();
+		doVisualization();
+	}
+
+	private void doVisualization() {
+		String fileName = "test";
+		OnscreenRenderTarget onscreenPicturePlane = getOnscreenPicturePlane();
+		int width = onscreenPicturePlane.getWidth();
+		int height = onscreenPicturePlane.getHeight();
+
+		BufferedImage image = new BufferedImage( width, height, BufferedImage.TYPE_INT_RGB );
+		for( int x = 0; x != width; ++x ) {
+			for( int y = 0; y != height; ++y ) {
+
+				Color c = getColorForXY( x, y );
+			}
+		}
+		File defaultDirectory = FileUtilities.getDefaultDirectory();
+		String path = defaultDirectory.getPath();
+		File file = null;
+		int i = 0;
+		boolean exists = true;
+		while( exists ) {
+			file = new File( path + fileName + i );
+			if( !file.exists() ) {
+				break;
+			} else {
+				++i;
+			}
+		}
+		try {
+			ImageIO.write( image, "png", file );
+			System.out.println( "SUCCESS" );
+			System.out.println( file.getAbsolutePath() );
+		} catch( IOException e ) {
+			e.printStackTrace();
+		}
+	}
+
+	private Color getColorForXY( int x, int y ) {
+		Transformable pick = pick( new MouseEvent( null, 0, 0, 0, x, y, 0, false, 0 ) );
+
+		return null;
 	}
 
 	@Override
 	protected Transformable pick( MouseEvent e ) {
+		Ray rayAtPixel = this.getOnscreenPicturePlane().getRayAtPixel( e.getX(), e.getY() );
 		ManipulationHandle3D handle = checkIfHandleSelected( e );
 		if( handle != null ) {
 			joint = (Joint)handle.getManipulatedObject();
 			return handle;
 		}
 		ArrayList<Point> sphereLocations = Lists.newArrayList();
-		double minDist = MIN_SELECTION_DISTANCE;
 		JointSelectionSphere[] arr = (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] );
+		double closest = Integer.MAX_VALUE;
 		JointSelectionSphere selected = null;
-		SceneImp sceneImp = EmployeesOnly.getImplementation( scene );
 		for( JointSelectionSphere sphere : arr ) {
-			EntityImp implementation = EmployeesOnly.getImplementation( sphere );
-			Point3 point = implementation.getAbsoluteTransformation().translation;
-			sphereLocations.add( sceneImp.transformToAwt( point, camera ) );
-		}
-		for( int i = 0; i != arr.length; ++i ) {
-			double dist = Point.distance( sphereLocations.get( i ).x, sphereLocations.get( i ).y, e.getPoint().x, e.getPoint().y );
-			if( dist < minDist ) {
-				if( selected != null ) {
-					if( arr[ i ].getDistanceTo( (STurnable)camera.getAbstraction() ) < selected.getDistanceTo( (STurnable)camera.getAbstraction() ) ) {
-						selected = arr[ i ];
-					}
-				} else {
-					selected = arr[ i ];
-				}
-				//				minDist = dist;
+			double rayLength = getSphereRayIntersection( rayAtPixel, sphere );
+			if( ( rayLength > 0 ) && ( rayLength < closest ) ) {
+				System.out.println( "selected(m): " + sphere );
+				System.out.println( "rayLength: " + rayLength );
+				selected = sphere;
+				closest = rayLength;
 			}
 		}
+		//		SceneImp sceneImp = EmployeesOnly.getImplementation( scene );
+		//		for( JointSelectionSphere sphere : arr ) {
+		//			EntityImp implementation = EmployeesOnly.getImplementation( sphere );
+		//			Point3 point = implementation.getAbsoluteTransformation().translation;
+		//			sphereLocations.add( sceneImp.transformToAwt( point, camera ) );
+		//		}
+		//		double selectedDistance = Integer.MAX_VALUE;
+		//		for( int i = 0; i != arr.length; ++i ) {
+		//			double candidateDistance = Point.distance( sphereLocations.get( i ).x, sphereLocations.get( i ).y, e.getPoint().x, e.getPoint().y );
+		//			if( candidateDistance < MIN_SELECTION_DISTANCE ) {
+		//				if( selected != null ) {
+		//					JointSelectionSphere newSel = pickJoint( selected, arr[ i ], selectedDistance, candidateDistance );
+		//					if( newSel != selected ) {
+		//						selectedDistance = candidateDistance;
+		//					}
+		//				} else {
+		//					selected = arr[ i ];
+		//				}
+		//			}
+		//		}
 		if( selected != null ) {
+			System.out.println( "selectedFinal: " + selected.getJoint() );
 			Composite sgComposite = EmployeesOnly.getImplementation( selected ).getSgComposite();
 			if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
 				this.selected = selected;
@@ -126,6 +190,95 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 			return (Transformable)sgComposite;
 		} else {
 			return null;
+		}
+	}
+
+	private double getSphereRayIntersection( Ray ray, SSphere sSphere ) {
+		//this formula comes from ccs.neu.edu
+		EntityImp sphere = EmployeesOnly.getImplementation( sSphere );
+		Point3 center = sphere.getTransformation( camera ).translation;
+		//		center.x = -1 * center.x;
+		//		center.y = -1 * center.y;
+		//		center.z = -1 * center.z;
+		double radius = 1;
+		double dx = ray.getDirection().x - ray.getOrigin().x;
+		double dy = ray.getDirection().y - ray.getOrigin().y;
+		double dz = ray.getDirection().z - ray.getOrigin().z;
+		double a = ( dx * dx ) + ( dy * dy ) + ( dz * dz );
+		double b = ( 2 * dx * ( ray.getOrigin().x - center.x ) ) + ( 2 * dy * ( ray.getOrigin().y - center.y ) ) + ( 2 * dz * ( ray.getOrigin().z - center.z ) );
+		double c = ( ( center.x * center.x ) + ( center.y * center.y ) + ( center.z * center.z ) + ( ray.getOrigin().x * ray.getOrigin().x ) + ( ray.getOrigin().y * ray.getOrigin().y ) + ( ray.getOrigin().z * ray.getOrigin().z )
+				+ ( -2 * ( ( center.x * ray.getOrigin().x ) + ( center.y * ray.getOrigin().y ) + center.z + ray.getOrigin().z ) ) ) - ( radius * radius );
+		double t = ( -b - Math.sqrt( ( b * b ) - ( 4 * a * c ) ) ) / ( 2 * a );
+
+		double intersectionX = ray.getOrigin().x + ( t * dx );
+		double intersectionY = ray.getOrigin().y + ( t * dy );
+		double intersectionZ = ray.getOrigin().z + ( t * dz );
+
+		if( Double.isNaN( t ) ) {
+			//			System.out.println( "Fail(NaN): " + sSphere );
+			return -1;
+		} else if( t < 0 ) {
+			//			System.out.println( "Fail(Neg): " + sSphere );
+			return -1;
+		}
+		double length = Math.sqrt( ( intersectionX * intersectionX ) + ( intersectionY * intersectionY ) + ( intersectionZ * intersectionZ ) );
+		System.out.println( "======" );
+		System.out.println( "t: " + t );
+		System.out.println( sSphere );
+		//		System.out.println( "( " + intersectionX + ", " + intersectionY + ", " + intersectionZ + " )" );
+		System.out.println( "len:" + length );
+		System.out.println( "======" );
+		return length;
+	}
+
+	private JointSelectionSphere pickJoint( JointSelectionSphere one, JointSelectionSphere two, double distOne, double distTwo ) {
+		double oneCameraDistance = one.getDistanceTo( (SMovableTurnable)camera.getAbstraction() );
+		double twoCameraDistance = two.getDistanceTo( (SMovableTurnable)camera.getAbstraction() );
+		double cameraDelta = oneCameraDistance - twoCameraDistance;
+		if( Math.abs( cameraDelta ) > .1 ) {
+			System.out.println( "short" );
+			return oneCameraDistance < twoCameraDistance ? one : two;
+		} else {
+			System.out.println( cameraDelta );
+		}
+		System.out.println( "=============" );
+		System.out.println( one.getJoint() );
+		System.out.println( "oneC:  " + oneCameraDistance );
+		System.out.println( "dist1: " + distOne );
+		System.out.println( "twoC:  " + twoCameraDistance );
+		System.out.println( "dist2: " + distTwo );
+		System.out.println( two.getJoint() );
+		System.out.println( "=============" );
+		if( ( oneCameraDistance < twoCameraDistance ) ) {
+			if( distOne < distTwo ) {
+				System.out.println( "a1" );
+				return one;
+			} else if( ( distTwo * 2 ) < distOne ) {
+				System.out.println( "a2" );
+				return two;
+			} else {
+				System.out.println( "a3" );
+				return one;
+			}
+		} else if( twoCameraDistance < oneCameraDistance ) {
+			if( distTwo < distOne ) {
+				System.out.println( "b1" );
+				return two;
+			} else if( ( distOne * 2 ) < distTwo ) {
+				System.out.println( "b2" );
+				return one;
+			} else {
+				System.out.println( "b3" );
+				return two;
+			}
+		} else {
+			if( distOne < distTwo ) {
+				System.out.println( "c1" );
+				return one;
+			} else {
+				System.out.println( "c2" );
+				return two;
+			}
 		}
 	}
 
@@ -201,5 +354,4 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
 	protected void handleStateChange() {
 	}
-
 }
