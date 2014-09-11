@@ -314,10 +314,12 @@ public class AstUtilities {
 		return createFieldAccess( new TypeExpression( field.getDeclaringType() ), field );
 	}
 
+	public static FieldAccess createStaticFieldAccess( java.lang.reflect.Field fld ) {
+		return createStaticFieldAccess( JavaField.getInstance( fld ) );
+	}
+
 	public static FieldAccess createStaticFieldAccess( Class<?> cls, String fieldName ) {
-		java.lang.reflect.Field fld = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredField( cls, fieldName );
-		JavaField field = JavaField.getInstance( fld );
-		return createStaticFieldAccess( field );
+		return createStaticFieldAccess( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredField( cls, fieldName ) );
 	}
 
 	public static MethodInvocation createNextMethodInvocation( MethodInvocation prevMethodInvocation, Expression expression, AbstractMethod nextMethod ) {

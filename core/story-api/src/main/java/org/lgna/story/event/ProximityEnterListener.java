@@ -47,6 +47,6 @@ package org.lgna.story.event;
  */
 public interface ProximityEnterListener {
 
-	public void proximityEntered( EnterProximityEvent e );
+	public void proximityEntered( EnterProximityEvent event );
 
 }
