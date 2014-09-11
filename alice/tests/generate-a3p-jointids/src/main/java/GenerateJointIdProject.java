@@ -55,6 +55,13 @@ public class GenerateJointIdProject {
 				ClassResourceKey classKey = (ClassResourceKey)key;
 				Class<? extends org.lgna.story.resources.ModelResource> modelResourceCls = classKey.getModelResourceCls();
 				for( java.lang.reflect.Field jField : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicFinalDeclaredFields( modelResourceCls, org.lgna.story.resources.JointId.class ) ) {
+					String name = jField.getName();
+					for( char c : name.toCharArray() ) {
+						if( Character.isLowerCase( c ) ) {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.errln( modelResourceCls.getName(), name );
+							break;
+						}
+					}
 					fields.add( jField );
 				}
 			}
