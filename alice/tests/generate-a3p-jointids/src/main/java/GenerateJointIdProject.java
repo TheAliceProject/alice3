@@ -1,7 +1,5 @@
 import org.alice.stageide.modelresource.ClassResourceKey;
-import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
-import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
@@ -49,30 +47,25 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryTest {
-	private static void test( java.util.List<Throwable> brokenModels, java.util.List<String> brokenModelNames, org.alice.stageide.modelresource.ResourceNode node, Class<? extends org.lgna.story.SModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException {
-		if( node.getResourceKey() instanceof EnumConstantResourceKey ) {
-			EnumConstantResourceKey key = (EnumConstantResourceKey)node.getResourceKey();
-			org.lgna.project.ast.JavaField field = key.getField();
-			java.lang.reflect.Field fld = field.getFieldReflectionProxy().getReification();
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "TESTING:", field.getName(), field.getDeclaringType().getName() );
-			Object resource = fld.get( null );
-			assert parameterClses[ 0 ].isInstance( resource ) : parameterClses[ 0 ] + " " + resource;
-			try {
-				org.lgna.story.SJointedModel jointedModel = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( (Class<? extends org.lgna.story.SJointedModel>)instanceCls, parameterClses, resource );
-				jointedModel.straightenOutJoints();
-			} catch( Throwable t ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
-				brokenModels.add( t );
-				brokenModelNames.add( field.getDeclaringType().getName() + "." + field.getName() );
-			}
-			//			if (jointedModel instanceof org.lgna.story.Swimmer) {
-			//				jointedModel.straightenOutJoints();
-			//			}
-		}
-
+public class GenerateJointIdProject {
+	private static void addAllJointIdFields( java.util.List<java.lang.reflect.Field> fields, org.alice.stageide.modelresource.ResourceNode node ) {
 		for( org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren() ) {
-			test( brokenModels, brokenModelNames, child, instanceCls, parameterClses );
+			ResourceKey key = child.getResourceKey();
+			if( key instanceof ClassResourceKey ) {
+				ClassResourceKey classKey = (ClassResourceKey)key;
+				Class<? extends org.lgna.story.resources.ModelResource> modelResourceCls = classKey.getModelResourceCls();
+				for( java.lang.reflect.Field jField : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicFinalDeclaredFields( modelResourceCls, org.lgna.story.resources.JointId.class ) ) {
+					String name = jField.getName();
+					for( char c : name.toCharArray() ) {
+						if( Character.isLowerCase( c ) ) {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.errln( modelResourceCls.getName(), name );
+							break;
+						}
+					}
+					fields.add( jField );
+				}
+			}
+			addAllJointIdFields( fields, child );
 		}
 	}
 
@@ -80,30 +73,30 @@ public class GalleryTest {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
 		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde( null );
 		org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
-		java.util.List<Throwable> brokenModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.List<String> brokenModelNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
-		for( org.alice.stageide.modelresource.ResourceNode child : rootGalleryNode.getNodeChildren() ) {
-			ResourceKey key = child.getResourceKey();
-			if( key instanceof ClassResourceKey ) {
-				ClassResourceKey classKey = (ClassResourceKey)key;
-				Class<? extends org.lgna.story.SModel> modelClass = AliceResourceClassUtilities.getModelClassForResourceClass( classKey.getModelResourceCls() );
-				test( brokenModels, brokenModelNames, child, modelClass, classKey.getModelResourceCls() );
-			}
+		java.util.List<java.lang.reflect.Field> jFields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		addAllJointIdFields( jFields, rootGalleryNode );
+
+		org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS;
+		org.lgna.project.ast.NamedUserType programType;
+		if( template.isRoom() ) {
+			programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
+		} else {
+			programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
 		}
 
-		if( brokenModels.size() > 0 ) {
-			System.err.println();
-			System.err.println();
-			System.err.println();
-			for( int i = 0; i < brokenModels.size(); i++ ) {
-				System.err.println( "BROKEN: " + brokenModelNames.get( i ) );
-				//brokenModels.get( i ).printStackTrace();
-				//System.err.println();
-				//System.err.println();
-			}
-			//			javax.swing.JOptionPane.showMessageDialog( null, brokenModels.size() + " broken models." );
+		org.lgna.project.ast.UserMethod mainMethod = programType.getDeclaredMethod( "main", String[].class );
+
+		org.lgna.project.ast.BlockStatement body = mainMethod.body.getValue();
+		for( java.lang.reflect.Field jField : jFields ) {
+			body.statements.add( new org.lgna.project.ast.ExpressionStatement(
+					org.lgna.project.ast.AstUtilities.createStaticFieldAccess( jField )
+					) );
 		}
 
+		org.lgna.project.Project project = new org.lgna.project.Project( programType );
+		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/JointIdTest/" + org.lgna.project.ProjectVersion.getCurrentVersionText() + ".a3p";
+
+		org.lgna.project.io.IoUtilities.writeProject( path, project );
 	}
 }
