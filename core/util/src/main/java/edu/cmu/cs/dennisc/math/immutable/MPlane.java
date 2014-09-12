@@ -120,6 +120,5 @@ public final class MPlane {
 
 	public final MPoint3 position;
 	public final MVector3 normal;
-
 	private final double d;
 }

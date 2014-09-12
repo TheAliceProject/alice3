@@ -46,6 +46,48 @@ package edu.cmu.cs.dennisc.math.immutable;
  * @author Dennis Cosgrove
  */
 public final class MPoint3 extends MTuple3 {
+	public static MPoint3 createAddition( MTuple3 a, MTuple3 b ) {
+		return new MPoint3(
+				a.x + b.x,
+				a.y + b.y,
+				a.z + b.z );
+	}
+
+	public static MPoint3 createSubtraction( MTuple3 a, MTuple3 b ) {
+		return new MPoint3(
+				a.x - b.x,
+				a.y - b.y,
+				a.z - b.z );
+	}
+
+	public static MPoint3 createMultiplication( MTuple3 a, MTuple3 b ) {
+		return new MPoint3(
+				a.x * b.x,
+				a.y * b.y,
+				a.z * b.z );
+	}
+
+	public static MPoint3 createMultiplication( MTuple3 v, double d ) {
+		return new MPoint3(
+				v.x * d,
+				v.y * d,
+				v.z * d );
+	}
+
+	public static MPoint3 createDivision( MTuple3 a, MTuple3 b ) {
+		return new MPoint3(
+				a.x / b.x,
+				a.y / b.y,
+				a.z / b.z );
+	}
+
+	public static MPoint3 createDivision( MTuple3 v, double d ) {
+		return new MPoint3(
+				v.x / d,
+				v.y / d,
+				v.z / d );
+	}
+
 	public MPoint3( double x, double y, double z ) {
 		super( x, y, z );
 	}

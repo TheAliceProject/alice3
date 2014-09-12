@@ -46,10 +46,6 @@ package edu.cmu.cs.dennisc.math.immutable;
  * @author Dennis Cosgrove
  */
 public abstract class MAbstractMatrix3x3 {
-	public final MVector3 right;
-	public final MVector3 up;
-	public final MVector3 backward;
-
 	public MAbstractMatrix3x3( MVector3 right, MVector3 up, MVector3 backward ) {
 		this.right = right;
 		this.up = up;
@@ -57,6 +53,10 @@ public abstract class MAbstractMatrix3x3 {
 	}
 
 	public boolean isNaN() {
-		return right.isNaN() || up.isNaN() || backward.isNaN();
+		return this.right.isNaN() || this.up.isNaN() || this.backward.isNaN();
 	}
+
+	public final MVector3 right;
+	public final MVector3 up;
+	public final MVector3 backward;
 }

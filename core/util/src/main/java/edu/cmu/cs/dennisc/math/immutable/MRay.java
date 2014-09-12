@@ -46,9 +46,6 @@ package edu.cmu.cs.dennisc.math.immutable;
  * @author Dennis Cosgrove
  */
 public final class MRay {
-	public final MPoint3 origin;
-	public final MVector3 direction;
-
 	public MRay( MPoint3 origin, MVector3 direction ) {
 		this.origin = origin;
 		this.direction = direction;
@@ -59,7 +56,9 @@ public final class MRay {
 	}
 
 	public MPoint3 calculatePointAlong( double t ) {
-		MVector3 v = MVector3.createAddition( MVector3.createMultiplication( this.direction, t ), this.origin );
-		return new MPoint3( v.x, v.y, v.z );
+		return MPoint3.createAddition( MPoint3.createMultiplication( this.direction, t ), this.origin );
 	}
+
+	public final MPoint3 origin;
+	public final MVector3 direction;
 }
