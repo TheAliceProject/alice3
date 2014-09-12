@@ -147,15 +147,17 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		}
 		ArrayList<Point> sphereLocations = Lists.newArrayList();
 		JointSelectionSphere[] arr = (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] );
-		double closest = Integer.MAX_VALUE;
+		double closest = Double.MAX_VALUE;//Integer.MAX_VALUE;
 		JointSelectionSphere selected = null;
 		for( JointSelectionSphere sphere : arr ) {
 			double rayLength = getSphereRayIntersection( rayAtPixel, sphere );
-			if( ( rayLength > 0 ) && ( rayLength < closest ) ) {
-				System.out.println( "selected(m): " + sphere );
-				System.out.println( "rayLength: " + rayLength );
-				selected = sphere;
-				closest = rayLength;
+			if( Double.isNaN( rayLength ) == false ) {
+				if( ( rayLength > 0 ) && ( rayLength < closest ) ) {
+					System.out.println( "selected(m): " + sphere );
+					System.out.println( "rayLength: " + rayLength );
+					selected = sphere;
+					closest = rayLength;
+				}
 			}
 		}
 		//		SceneImp sceneImp = EmployeesOnly.getImplementation( scene );
@@ -194,41 +196,49 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	}
 
 	private double getSphereRayIntersection( Ray ray, SSphere sSphere ) {
-		//this formula comes from ccs.neu.edu
 		EntityImp sphere = EmployeesOnly.getImplementation( sSphere );
 		Point3 center = sphere.getTransformation( camera ).translation;
-		//		center.x = -1 * center.x;
-		//		center.y = -1 * center.y;
-		//		center.z = -1 * center.z;
-		double radius = 1;
-		double dx = ray.getDirection().x - ray.getOrigin().x;
-		double dy = ray.getDirection().y - ray.getOrigin().y;
-		double dz = ray.getDirection().z - ray.getOrigin().z;
-		double a = ( dx * dx ) + ( dy * dy ) + ( dz * dz );
-		double b = ( 2 * dx * ( ray.getOrigin().x - center.x ) ) + ( 2 * dy * ( ray.getOrigin().y - center.y ) ) + ( 2 * dz * ( ray.getOrigin().z - center.z ) );
-		double c = ( ( center.x * center.x ) + ( center.y * center.y ) + ( center.z * center.z ) + ( ray.getOrigin().x * ray.getOrigin().x ) + ( ray.getOrigin().y * ray.getOrigin().y ) + ( ray.getOrigin().z * ray.getOrigin().z )
-				+ ( -2 * ( ( center.x * ray.getOrigin().x ) + ( center.y * ray.getOrigin().y ) + center.z + ray.getOrigin().z ) ) ) - ( radius * radius );
-		double t = ( -b - Math.sqrt( ( b * b ) - ( 4 * a * c ) ) ) / ( 2 * a );
 
-		double intersectionX = ray.getOrigin().x + ( t * dx );
-		double intersectionY = ray.getOrigin().y + ( t * dy );
-		double intersectionZ = ray.getOrigin().z + ( t * dz );
+		final boolean IS_USING_MATH_CLASSES = true;
+		if( IS_USING_MATH_CLASSES ) {
+			edu.cmu.cs.dennisc.math.immutable.MRay mRayInCameraSpace = ray.createImmutable();
+			edu.cmu.cs.dennisc.math.immutable.MSphere mSphereInCameraSpace = new edu.cmu.cs.dennisc.math.immutable.MSphere( center.createImmutable(), sSphere.getRadius() );
+			return mSphereInCameraSpace.intersect( mRayInCameraSpace );
+		} else {
+			//this formula comes from ccs.neu.edu
+			//		center.x = -1 * center.x;
+			//		center.y = -1 * center.y;
+			//		center.z = -1 * center.z;
+			double radius = sSphere.getRadius();//1;
+			double dx = ray.getDirection().x - ray.getOrigin().x;
+			double dy = ray.getDirection().y - ray.getOrigin().y;
+			double dz = ray.getDirection().z - ray.getOrigin().z;
+			double a = ( dx * dx ) + ( dy * dy ) + ( dz * dz );
+			double b = ( 2 * dx * ( ray.getOrigin().x - center.x ) ) + ( 2 * dy * ( ray.getOrigin().y - center.y ) ) + ( 2 * dz * ( ray.getOrigin().z - center.z ) );
+			double c = ( ( center.x * center.x ) + ( center.y * center.y ) + ( center.z * center.z ) + ( ray.getOrigin().x * ray.getOrigin().x ) + ( ray.getOrigin().y * ray.getOrigin().y ) + ( ray.getOrigin().z * ray.getOrigin().z )
+					+ ( -2 * ( ( center.x * ray.getOrigin().x ) + ( center.y * ray.getOrigin().y ) + ( center.z * ray.getOrigin().z ) ) ) ) - ( radius * radius );
+			double t = ( -b - Math.sqrt( ( b * b ) - ( 4 * a * c ) ) ) / ( 2 * a );
 
-		if( Double.isNaN( t ) ) {
-			//			System.out.println( "Fail(NaN): " + sSphere );
-			return -1;
-		} else if( t < 0 ) {
-			//			System.out.println( "Fail(Neg): " + sSphere );
-			return -1;
+			double intersectionX = ray.getOrigin().x + ( t * dx );
+			double intersectionY = ray.getOrigin().y + ( t * dy );
+			double intersectionZ = ray.getOrigin().z + ( t * dz );
+
+			if( Double.isNaN( t ) ) {
+				//			System.out.println( "Fail(NaN): " + sSphere );
+				return -1;
+			} else if( t < 0 ) {
+				//			System.out.println( "Fail(Neg): " + sSphere );
+				return -1;
+			}
+			double length = Math.sqrt( ( intersectionX * intersectionX ) + ( intersectionY * intersectionY ) + ( intersectionZ * intersectionZ ) );
+			System.out.println( "======" );
+			System.out.println( "t: " + t );
+			System.out.println( sSphere );
+			//		System.out.println( "( " + intersectionX + ", " + intersectionY + ", " + intersectionZ + " )" );
+			System.out.println( "len:" + length );
+			System.out.println( "======" );
+			return length;
 		}
-		double length = Math.sqrt( ( intersectionX * intersectionX ) + ( intersectionY * intersectionY ) + ( intersectionZ * intersectionZ ) );
-		System.out.println( "======" );
-		System.out.println( "t: " + t );
-		System.out.println( sSphere );
-		//		System.out.println( "( " + intersectionX + ", " + intersectionY + ", " + intersectionZ + " )" );
-		System.out.println( "len:" + length );
-		System.out.println( "======" );
-		return length;
 	}
 
 	private JointSelectionSphere pickJoint( JointSelectionSphere one, JointSelectionSphere two, double distOne, double distTwo ) {
