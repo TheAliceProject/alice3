@@ -83,6 +83,10 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		set( right, up, backward );
 	}
 
+	public OrthogonalMatrix3x3( edu.cmu.cs.dennisc.math.immutable.MOrthogonalMatrix3x3 other ) {
+		set( new Vector3( other.right ), new Vector3( other.up ), new Vector3( other.backward ) );
+	}
+
 	@Override
 	public OrthogonalMatrix3x3 createOrthogonalMatrix3x3() {
 		return new OrthogonalMatrix3x3( this );
@@ -515,5 +519,9 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		right.z = 0;
 		up.z = 0;
 		backward.z = 1;
+	}
+
+	public edu.cmu.cs.dennisc.math.immutable.MOrthogonalMatrix3x3 createImmutable() {
+		return new edu.cmu.cs.dennisc.math.immutable.MOrthogonalMatrix3x3( this.right.createImmutable(), this.up.createImmutable(), this.backward.createImmutable() );
 	}
 }

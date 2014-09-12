@@ -57,6 +57,10 @@ public class Vector3 extends Tuple3 {
 		super( x, y, z );
 	}
 
+	public Vector3( edu.cmu.cs.dennisc.math.immutable.MVector3 other ) {
+		this( other.x, other.y, other.z );
+	}
+
 	public static Vector3 createZero() {
 		return (Vector3)setReturnValueToZero( new Vector3() );
 	}
@@ -233,6 +237,10 @@ public class Vector3 extends Tuple3 {
 
 	public boolean isNegativeZAxis() {
 		return this.equals( accessNegativeZAxis() );
+	}
+
+	public edu.cmu.cs.dennisc.math.immutable.MVector3 createImmutable() {
+		return new edu.cmu.cs.dennisc.math.immutable.MVector3( this.x, this.y, this.z );
 	}
 
 	//	

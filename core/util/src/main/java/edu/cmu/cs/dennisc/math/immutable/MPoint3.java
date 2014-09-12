@@ -49,4 +49,23 @@ public final class MPoint3 extends MTuple3 {
 	public MPoint3( double x, double y, double z ) {
 		super( x, y, z );
 	}
+
+	public MPoint3 createTransformed( MAffineMatrix4x4 m ) {
+		double m00 = m.orientation.right.x;
+		double m10 = m.orientation.right.y;
+		double m20 = m.orientation.right.z;
+		double m01 = m.orientation.up.x;
+		double m11 = m.orientation.up.y;
+		double m21 = m.orientation.up.z;
+		double m02 = m.orientation.backward.x;
+		double m12 = m.orientation.backward.y;
+		double m22 = m.orientation.backward.z;
+		double m03 = m.translation.x;
+		double m13 = m.translation.y;
+		double m23 = m.translation.z;
+		double x = ( m00 * this.x ) + ( m01 * this.y ) + ( m02 * this.z ) + m03;
+		double y = ( m10 * this.x ) + ( m11 * this.y ) + ( m12 * this.z ) + m13;
+		double z = ( m20 * this.x ) + ( m21 * this.y ) + ( m22 * this.z ) + m23;
+		return new MPoint3( x, y, z );
+	}
 }

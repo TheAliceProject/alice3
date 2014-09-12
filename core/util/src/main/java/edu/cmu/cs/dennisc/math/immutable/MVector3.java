@@ -111,4 +111,20 @@ public final class MVector3 extends MTuple3 {
 			return this;
 		}
 	}
+
+	public MVector3 createTransformed( MAffineMatrix4x4 m ) {
+		double m00 = m.orientation.right.x;
+		double m10 = m.orientation.right.y;
+		double m20 = m.orientation.right.z;
+		double m01 = m.orientation.up.x;
+		double m11 = m.orientation.up.y;
+		double m21 = m.orientation.up.z;
+		double m02 = m.orientation.backward.x;
+		double m12 = m.orientation.backward.y;
+		double m22 = m.orientation.backward.z;
+		double x = ( m00 * this.x ) + ( m01 * this.y ) + ( m02 * this.z );
+		double y = ( m10 * this.x ) + ( m11 * this.y ) + ( m12 * this.z );
+		double z = ( m20 * this.x ) + ( m21 * this.y ) + ( m22 * this.z );
+		return new MVector3( x, y, z );
+	}
 }

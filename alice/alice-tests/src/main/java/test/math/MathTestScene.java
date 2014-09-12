@@ -81,7 +81,19 @@ public class MathTestScene extends org.lgna.story.SScene {
 		}
 	}
 
-	private final SSphere sphere = new SSphere();
+	public SGround getGround() {
+		return this.ground;
+	}
+
+	public SCamera getCamera() {
+		return this.camera;
+	}
+
+	public SSphere getSphere() {
+		return this.sphere;
+	}
+
 	private final SCamera camera = new SCamera();
 	private final SGround ground = new SGround();
+	private final SSphere sphere = new SSphere();
 }

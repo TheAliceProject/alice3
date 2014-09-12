@@ -49,18 +49,74 @@ public class MathTestProgram extends org.lgna.story.SProgram {
 	private final MathTestScene scene = new MathTestScene();
 
 	public static void main( final String[] args ) {
+		org.lgna.story.SSphere feedback = new org.lgna.story.SSphere();
+		feedback.setRadius( 0.1 );
+		feedback.setPaint( org.lgna.story.Color.RED );
+
 		MathTestProgram mathTestProgram = new MathTestProgram();
 		mathTestProgram.initializeInFrame( args );
 		mathTestProgram.setActiveScene( mathTestProgram.scene );
 
+		final org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( mathTestProgram.scene );
+		final org.lgna.story.implementation.SphereImp feedbackImp = org.lgna.story.EmployeesOnly.getImplementation( feedback );
+		final org.lgna.story.implementation.GroundImp groundImp = org.lgna.story.EmployeesOnly.getImplementation( mathTestProgram.scene.getGround() );
+		final org.lgna.story.implementation.CameraImp<?> cameraImp = org.lgna.story.EmployeesOnly.getImplementation( mathTestProgram.scene.getCamera() );
+
 		org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.EmployeesOnly.getImplementation( mathTestProgram );
 		final edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> renderTarget = programImp.getOnscreenRenderTarget();
 		java.awt.Component awtComponent = renderTarget.getAwtComponent();
+		//		awtComponent.addMouseMotionListener( new java.awt.event.MouseMotionAdapter() {
+		//			@Override
+		//			public void mouseDragged( java.awt.event.MouseEvent e ) {
+		//				edu.cmu.cs.dennisc.math.Ray rayInCameraSpace = renderTarget.getRayAtPixel( e.getX(), e.getY() );
+		//				edu.cmu.cs.dennisc.math.Ray rayInSceneSpace = new edu.cmu.cs.dennisc.math.Ray( rayInCameraSpace );
+		//				rayInSceneSpace.transform( cameraImp.getAbsoluteTransformation() );
+		//
+		//				//edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = groundImp.getTransformation( cameraImp );
+		//				edu.cmu.cs.dennisc.math.Plane plane = edu.cmu.cs.dennisc.math.Plane.createInstance( new edu.cmu.cs.dennisc.math.Point3( 0, 0, 0 ), new edu.cmu.cs.dennisc.math.Vector3( 0, 1, 0 ) );
+		//				//ray.transform( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createInverse( cameraImp.getAbsoluteTransformation() ) );
+		//				double t = plane.intersect( rayInSceneSpace );
+		//				if( Double.isNaN( t ) == false ) {
+		//					edu.cmu.cs.dennisc.math.Point3 pInSceneSpace = rayInSceneSpace.getPointAlong( t );
+		//					edu.cmu.cs.dennisc.math.Point3 pInCameraSpace = rayInCameraSpace.getPointAlong( t );
+		//
+		//					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( ray );
+		//					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( t );
+		//					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( p );
+		//					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( pInGroundSpace );
+		//					feedbackImp.setVehicle( sceneImp );
+		//					//edu.cmu.cs.dennisc.math.Point3 pInGroundSpace = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createInverse( m ).createTransformed( pInCameraSpace );
+		//					feedbackImp.setPositionOnly( cameraImp, pInCameraSpace );
+		//					//feedbackImp.setPositionOnly( sceneImp, pInSceneSpace );
+		//				} else {
+		//					feedbackImp.setVehicle( null );
+		//				}
+		//			}
+		//		} );
 		awtComponent.addMouseMotionListener( new java.awt.event.MouseMotionAdapter() {
 			@Override
 			public void mouseDragged( java.awt.event.MouseEvent e ) {
-				edu.cmu.cs.dennisc.math.Ray ray = renderTarget.getRayAtPixel( e.getX(), e.getY() );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( ray );
+				edu.cmu.cs.dennisc.math.Ray rayInCameraSpace = renderTarget.getRayAtPixel( e.getX(), e.getY() );
+
+				edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4 mCameraAbsoluteTransformation = cameraImp.getAbsoluteTransformation().createImmutable();
+				edu.cmu.cs.dennisc.math.immutable.MRay mRayInCameraSpace = rayInCameraSpace.createImmutable();
+
+				edu.cmu.cs.dennisc.math.immutable.MRay mRayInSceneSpace = mRayInCameraSpace.createTransformed( mCameraAbsoluteTransformation );
+
+				edu.cmu.cs.dennisc.math.immutable.MPlane mPlaneInSceneSpace = edu.cmu.cs.dennisc.math.immutable.MPlane.createInstance( new edu.cmu.cs.dennisc.math.immutable.MPoint3( 0, 0, 0 ), new edu.cmu.cs.dennisc.math.immutable.MVector3( 0, 1, 0 ) );
+				edu.cmu.cs.dennisc.math.immutable.MPlane mPlaneInCameraSpace = mPlaneInSceneSpace.createTransformed( mCameraAbsoluteTransformation.createInverse() );
+
+				//double t = mPlaneInSceneSpace.intersect( mRayInSceneSpace );
+				double t = mPlaneInCameraSpace.intersect( mRayInCameraSpace );
+				if( Double.isNaN( t ) == false ) {
+					edu.cmu.cs.dennisc.math.immutable.MPoint3 mPointInSceneSpace = mRayInSceneSpace.calculatePointAlong( t );
+					edu.cmu.cs.dennisc.math.immutable.MPoint3 mPointInCameraSpace = mRayInCameraSpace.calculatePointAlong( t );
+					feedbackImp.setVehicle( sceneImp );
+					//feedbackImp.setPositionOnly( sceneImp, new edu.cmu.cs.dennisc.math.Point3( mPointInSceneSpace ) );
+					feedbackImp.setPositionOnly( cameraImp, new edu.cmu.cs.dennisc.math.Point3( mPointInCameraSpace ) );
+				} else {
+					feedbackImp.setVehicle( null );
+				}
 			}
 		} );
 	}

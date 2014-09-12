@@ -53,4 +53,13 @@ public final class MRay {
 		this.origin = origin;
 		this.direction = direction;
 	}
+
+	public MRay createTransformed( MAffineMatrix4x4 m ) {
+		return new MRay( this.origin.createTransformed( m ), this.direction.createTransformed( m ) );
+	}
+
+	public MPoint3 calculatePointAlong( double t ) {
+		MVector3 v = MVector3.createAddition( MVector3.createMultiplication( this.direction, t ), this.origin );
+		return new MPoint3( v.x, v.y, v.z );
+	}
 }
