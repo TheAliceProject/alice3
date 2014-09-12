@@ -5510,8 +5510,13 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createJointIdPattern( "FLAG_13", "prop.PrayerFlagsResource" ),
 					createJointIdReplacement( "FLAG_13" ),
 					createJointIdPattern( "FLAG_14", "prop.PrayerFlagsResource" ),
-					createJointIdReplacement( "FLAG_14" )
+					createJointIdReplacement( "FLAG_14" ),
 
+					createJointIdPattern( "TAIL_5", "quadruped.YaliResource" ),
+					createJointIdReplacement_NoLongerExistsCondition( "TAIL_4" ),
+
+					createJointIdPattern( "TAIL_5", "quadruped.DalmatianResource" ),
+					createJointIdReplacement_NoLongerExistsCondition( "TAIL_4" )
 			)
 
 			//			, EventAstMigration.getTextMigration() 
