@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -53,8 +53,8 @@ public class SymmetricPerspectiveCameraAdapter extends AbstractPerspectiveCamera
 	@Override
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
 		double vertical = getActualVerticalViewingAngle( actualViewport ).getAsRadians();
-		double near = m_element.nearClippingPlaneDistance.getValue();
-		double far = m_element.farClippingPlaneDistance.getValue();
+		double near = -m_element.nearClippingPlaneDistance.getValue();
+		double far = -m_element.farClippingPlaneDistance.getValue();
 
 		//todo: investigate (especially x)
 		xPixel = actualViewport.width - xPixel;
@@ -158,80 +158,80 @@ public class SymmetricPerspectiveCameraAdapter extends AbstractPerspectiveCamera
 	//		int yFlipped = actualViewport.height - y;
 	//
 	////		double vertical = getActualVerticalViewingAngle( actualViewport, edu.cmu.cs.dennisc.math.UnitOfAngle.RADIANS );
-	////		
+	////
 	////		double xInWindow = x;
 	////		//todo: account for actualViewport.x
-	////		xInWindow /= actualViewport.width; 
-	////		xInWindow *= 2; 
-	////		xInWindow -= 1; 
+	////		xInWindow /= actualViewport.width;
+	////		xInWindow *= 2;
+	////		xInWindow -= 1;
 	////
 	////		double yInWindow = actualViewport.height - y;
 	////		//todo: account for actualViewport.y
-	////		yInWindow /= actualViewport.height; 
-	////		yInWindow *= 2; 
+	////		yInWindow /= actualViewport.height;
+	////		yInWindow *= 2;
 	////		yInWindow -= 1;
-	////		
+	////
 	//////		xInWindow = 0.0;
 	//////		yInWindow = 0.0;
-	////		
+	////
 	////		edu.cmu.cs.dennisc.math.Matrix4d actualProjection = new edu.cmu.cs.dennisc.math.Matrix4d();
 	////		getActualProjectionMatrix( actualProjection, actualViewport );
-	////		
+	////
 	////		edu.cmu.cs.dennisc.math.Vector4d xyzwNear = new edu.cmu.cs.dennisc.math.Vector4d();
 	////		xyzwNear.x = xInWindow;
 	////		xyzwNear.y = yInWindow;
 	////		xyzwNear.z = 0.0;
 	////		xyzwNear.w = 1.0;
-	////		
+	////
 	////		actualProjection.invert();
 	////		actualProjection.transform( xyzwNear );
-	////		
-	//////		
+	////
+	//////
 	//////		actualProjection.transform( xyzwNear );
 	//////		xyzwNear.scale( 1/xyzwNear.w );
-	////		
+	////
 	//////		edu.cmu.cs.dennisc.math.Vector4d xyzwFar = new edu.cmu.cs.dennisc.math.Vector4d();
 	//////		xyzwFar.x = xInWindow;
 	//////		xyzwFar.y = yInWindow;
 	//////		xyzwFar.z = zFar;
 	//////		xyzwFar.w = 1.0;
-	//////		
+	//////
 	//////		actualProjection.transform( xyzwFar );
-	////		
+	////
 	////		double aspect = actualViewport.width / (double)actualViewport.height;
-	////		
+	////
 	////		double tanHalfVertical = Math.tan( vertical * 0.5 );
 	////		double halfHeightNear = tanHalfVertical * zNear;
 	////		double halfHeightPixelNear = halfHeightNear / actualViewport.height;
-	////		
+	////
 	////		//double halfWidthNear = halfHeightNear * aspect;
 	////		double halfWidthPixelNear = halfHeightPixelNear * aspect;
 	////
 	////		double _x = xyzwNear.x / xyzwNear.w;
 	////		double _y = xyzwNear.y / xyzwNear.w;
-	////		
+	////
 	////		System.err.println( _x + ", " + _y );
 	////		System.err.println( halfWidthPixelNear + ", " + halfHeightPixelNear );
 	////		System.err.println( zNear + " " + ( xyzwNear.z / xyzwNear.w ) );
 	////
-	////		
+	////
 	//
 	//		double halfVertical = getActualVerticalViewingAngle( actualViewport, edu.cmu.cs.dennisc.math.UnitOfAngle.RADIANS ) * 0.5;
 	//		double aspect = actualViewport.width / (double)actualViewport.height;
-	//		
+	//
 	//		double halfVerticalTangent = Math.tan( halfVertical );
 	//		double halfHeightPlaneNear = zNear * halfVerticalTangent;
 	//		double halfHeightPixelNear = halfHeightPlaneNear / actualViewport.height;
 	//
 	//		double halfWidthPlaneNear = halfHeightPlaneNear * aspect;
 	//		double halfWidthPixelNear = halfHeightPixelNear * aspect;
-	//		
+	//
 	//		double left = -halfWidthPlaneNear  + ( x        * halfWidthPixelNear );
 	//		double top  = -halfHeightPlaneNear + ( yFlipped * halfHeightPixelNear );
-	//		
+	//
 	//		double right  = left + halfWidthPixelNear  + halfWidthPixelNear;
 	//		double bottom = top  + halfHeightPixelNear + halfHeightPixelNear;
-	//		
+	//
 	//		pc.gl.glFrustum( left, right, top, bottom, zNear, zFar );
 	//		pc.gl.glViewport( x, yFlipped, 1, 1 );
 	//	}
@@ -243,7 +243,7 @@ public class SymmetricPerspectiveCameraAdapter extends AbstractPerspectiveCamera
 
 		//		double halfVertical = getActualVerticalViewingAngle( actualViewport, edu.cmu.cs.dennisc.math.UnitOfAngle.RADIANS ) * 0.5;
 		//		double aspect = actualViewport.width / (double)actualViewport.height;
-		//		
+		//
 		//		double halfVerticalTangent = Math.tan( halfVertical );
 		//		double yNear = zNear * halfVerticalTangent;
 		//		double xNear = yNear * aspect;
