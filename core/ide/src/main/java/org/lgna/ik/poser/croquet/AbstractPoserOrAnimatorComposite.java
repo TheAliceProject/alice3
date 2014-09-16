@@ -126,7 +126,7 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 		sceneComposite.getView().initializeInAwtContainer( storyProgram );
 		initializeScene();
 		//these must be added after scene gets initialized!!! (mmay)
-		scene.addPointOfViewChangeListener( transformationListener, (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] ) );
+		scene.addPointOfViewChangeListener( transformationListener, (JointSelectionSphere[])scene.getJointSelectionSpheres().toArray( new JointSelectionSphere[ 0 ] ) );
 	}
 
 	private M createInstanceFromType( NamedUserType type ) {
@@ -170,14 +170,14 @@ public abstract class AbstractPoserOrAnimatorComposite<T extends AbstractPoserCo
 			this.storyProgram.setActiveScene( this.scene );
 			this.scene.pointCamera();
 			isInitialized = true;
-			scene.addPointOfViewChangeListener( transformationListener, (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] ) );
+			scene.addPointOfViewChangeListener( transformationListener, (JointSelectionSphere[])scene.getJointSelectionSpheres().toArray( new JointSelectionSphere[ 0 ] ) );
 		} else {
 			this.scene.pointCamera();
 		}
 	}
 
 	public Collection<JointSelectionSphere> getJointSelectionSheres() {
-		return scene.getJointSelectionSheres();
+		return scene.getJointSelectionSpheres();
 	}
 
 	public void setAdapter( PoserControllerAdapter adapter ) {

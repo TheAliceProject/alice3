@@ -42,11 +42,7 @@
  */
 package org.lgna.ik.poser.scene;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.alice.interact.handle.ManipulationHandle3D;
@@ -60,7 +56,6 @@ import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget;
@@ -88,75 +83,54 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		this.scene = scene;
 		SceneImp sceneImp = (SceneImp)EmployeesOnly.getImplementation( scene );
 		this.camera = sceneImp.findFirstCamera();
-		SceneImp implementation = EmployeesOnly.getImplementation( scene );
-		final OnscreenRenderTarget onscreenPicturePlane = getOnscreenPicturePlane();
-		onscreenPicturePlane.addRenderTargetListener( new DebugOverlay( new OverlayFunction() {
 
-			@Override
-			public Color getColorForXY( int x, int y ) {
-				Component awtComponent = onscreenPicturePlane.getAwtComponent();
-				//				System.out.println( "loc: ( " + x + ", " + y + " )" );
-				//				System.out.println( "source: " + awtComponent.getClass() );
-				Transformable pick = pick( new MouseEvent( awtComponent, 0, 0, 0, x, y, 0, false, 0 ) );
-				//				System.out.println( "pick: " + pick );
-				double num = 2 * Math.random();
-				//				if( pick != null ) {
-				if( num > 1 ) {
-					return Color.BLACK;
-				} else {
-					return Color.WHITE;
+		final boolean IS_DEBUG_DESIRED = true;
+		if( IS_DEBUG_DESIRED ) {
+			OnscreenRenderTarget onscreenPicturePlane = getOnscreenPicturePlane();
+			onscreenPicturePlane.addRenderTargetListener( new DebugOverlay( new OverlayFunction() {
+
+				@Override
+				public java.awt.Color getColorForXY( int x, int y ) {
+					JointSelectionSphere jointSelectionSphere = calculateJointSelectionSphereAtPixel( x, y );
+					if( jointSelectionSphere != null ) {
+						return java.awt.Color.RED;
+					} else {
+						return java.awt.Color.BLUE;
+					}
 				}
-			}
-		} ) {
-
-		} );
+			} ) );
+		}
 	}
 
-	@Override
-	protected Transformable pick( MouseEvent e ) {
-		Ray rayAtPixel = this.getOnscreenPicturePlane().getRayAtPixel( e.getX(), e.getY() );
-		ManipulationHandle3D handle = checkIfHandleSelected( e );
-		if( handle != null ) {
-			joint = (Joint)handle.getManipulatedObject();
-			return handle;
-		}
-		ArrayList<Point> sphereLocations = Lists.newArrayList();
-		JointSelectionSphere[] arr = (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] );
+	private JointSelectionSphere calculateJointSelectionSphereAtPixel( int x, int y ) {
+		Ray rayAtPixel = this.getOnscreenPicturePlane().getRayAtPixel( x, y );
 		double closest = Double.MAX_VALUE;//Integer.MAX_VALUE;
 		JointSelectionSphere selected = null;
-		for( JointSelectionSphere sphere : arr ) {
+		List<JointSelectionSphere> spheres = scene.getJointSelectionSpheres();
+		for( JointSelectionSphere sphere : spheres ) {
 			double rayLength = getSphereRayIntersection( rayAtPixel, sphere );
 			if( Double.isNaN( rayLength ) == false ) {
 				if( ( rayLength > 0 ) && ( rayLength < closest ) ) {
-					System.out.println( "selected(m): " + sphere );
-					System.out.println( "rayLength: " + rayLength );
+					//System.out.println( "selected(m): " + sphere );
+					//System.out.println( "rayLength: " + rayLength );
 					selected = sphere;
 					closest = rayLength;
 				}
 			}
 		}
-		//		SceneImp sceneImp = EmployeesOnly.getImplementation( scene );
-		//		for( JointSelectionSphere sphere : arr ) {
-		//			EntityImp implementation = EmployeesOnly.getImplementation( sphere );
-		//			Point3 point = implementation.getAbsoluteTransformation().translation;
-		//			sphereLocations.add( sceneImp.transformToAwt( point, camera ) );
-		//		}
-		//		double selectedDistance = Integer.MAX_VALUE;
-		//		for( int i = 0; i != arr.length; ++i ) {
-		//			double candidateDistance = Point.distance( sphereLocations.get( i ).x, sphereLocations.get( i ).y, e.getPoint().x, e.getPoint().y );
-		//			if( candidateDistance < MIN_SELECTION_DISTANCE ) {
-		//				if( selected != null ) {
-		//					JointSelectionSphere newSel = pickJoint( selected, arr[ i ], selectedDistance, candidateDistance );
-		//					if( newSel != selected ) {
-		//						selectedDistance = candidateDistance;
-		//					}
-		//				} else {
-		//					selected = arr[ i ];
-		//				}
-		//			}
-		//		}
+		return selected;
+	}
+
+	@Override
+	protected Transformable pick( MouseEvent e ) {
+		ManipulationHandle3D handle = checkIfHandleSelected( e );
+		if( handle != null ) {
+			joint = (Joint)handle.getManipulatedObject();
+			return handle;
+		}
+		JointSelectionSphere selected = this.calculateJointSelectionSphereAtPixel( e.getX(), e.getY() );
 		if( selected != null ) {
-			System.out.println( "selectedFinal: " + selected.getJoint() );
+			//System.out.println( "selectedFinal: " + selected.getJoint() );
 			Composite sgComposite = EmployeesOnly.getImplementation( selected ).getSgComposite();
 			if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
 				this.selected = selected;
@@ -300,7 +274,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
 	private void fireMouseReleased( MouseEvent e ) {
 		if( joint != null ) {
-			JointSelectionSphere[] arr = (JointSelectionSphere[])scene.getJointSelectionSheres().toArray( new JointSelectionSphere[ 0 ] );
+			JointSelectionSphere[] arr = (JointSelectionSphere[])scene.getJointSelectionSpheres().toArray( new JointSelectionSphere[ 0 ] );
 			for( JointSelectionSphere sphere : arr ) {
 				if( sphere.getJoint().getSgComposite() == joint ) {
 					selected = sphere;

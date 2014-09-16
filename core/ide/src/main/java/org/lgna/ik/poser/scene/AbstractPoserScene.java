@@ -43,7 +43,6 @@
 package org.lgna.ik.poser.scene;
 
 import java.awt.event.MouseEvent;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +80,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 	private final SGround snow = new SGround();
 	private final SCamera camera = new SCamera();
 	private T model;
-	private final Collection<JointSelectionSphere> allJointSelectionSpheres;
+	private final List<JointSelectionSphere> allJointSelectionSpheres;
 	private PoserControllerAdapter adapter;
 	private final Map<IKCore.Limb, List<JointSelectionSphere>> limbToJointMap;
 	private final Map<JointImp, IKCore.Limb> jointToLimbMap = Maps.newHashMap();
@@ -109,7 +108,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		for( List<JointSelectionSphere> list : limbToJointMap.values() ) {
 			temp.addAll( list );
 		}
-		this.allJointSelectionSpheres = java.util.Collections.unmodifiableCollection( temp );
+		this.allJointSelectionSpheres = java.util.Collections.unmodifiableList( temp );
 	}
 
 	protected abstract Map<IKCore.Limb, List<JointSelectionSphere>> createJointSelectionSpheresAndLimbs( T model );
@@ -242,7 +241,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		}
 	}
 
-	public java.util.Collection<JointSelectionSphere> getJointSelectionSheres() {
+	public java.util.List<JointSelectionSphere> getJointSelectionSpheres() {
 		return this.allJointSelectionSpheres;
 	}
 

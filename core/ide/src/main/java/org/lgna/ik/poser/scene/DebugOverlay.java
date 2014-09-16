@@ -90,33 +90,36 @@ public class DebugOverlay implements RenderTargetListener {
 	public void displayChanged( RenderTargetDisplayChangeEvent e ) {
 	}
 
+	private BufferedImage cache;
+
 	private void drawOverlay( RenderTargetRenderEvent e ) {
-		BufferedImage image = getImage( e );
-		e.getGraphics2D().drawImage( image, 0, 0, null );
+		if( cache != null ) {
+			//pass
+		} else {
+			cache = getImage( e );
+		}
+		e.getGraphics2D().drawImage( cache, 0, 0, null );
 	}
 
 	private BufferedImage getImage( RenderTargetRenderEvent e ) {
 		int width = e.getTypedSource().getWidth();
-		final int height = e.getTypedSource().getHeight();
-		final BufferedImage rv = new BufferedImage( width, height, BufferedImage.TYPE_INT_RGB );
-		int bottom = width * height;
-		int progress = 0;
-		for( int x = 0; x != width; ++x ) {
-			final int finX = x;
-			for( int y = 0; y != height; ++y ) {
-				Color c = function.getColorForXY( finX, y );
+		int height = e.getTypedSource().getHeight();
+		BufferedImage rv = new BufferedImage( width, height, BufferedImage.TYPE_INT_RGB );
+		for( int x = 0; x < width; x += 2 ) {
+			for( int y = 0; y < height; y += 2 ) {
+				Color c = function.getColorForXY( x, y );
 				if( !isPreservingAlpha ) {
 					c = new Color( c.getRed(), c.getGreen(), c.getBlue(), DEFAULT_ALPHA );
 				}
-				++progress;
-				rv.setRGB( finX, y, c.getRGB() );
-				double percent = (double)progress / (double)bottom;
-				System.out.println( percent );
-				System.out.println( width * height );
+				int rgb = c.getRGB();
+
+				//2x2 grid
+				rv.setRGB( x, y, rgb );
+				rv.setRGB( Math.min( width - 1, x + 1 ), y, rgb );
+				rv.setRGB( x, Math.min( height - 1, y + 1 ), rgb );
+				rv.setRGB( Math.min( width - 1, x + 1 ), Math.min( height - 1, y + 1 ), rgb );
 			}
 		}
-		System.out.println( "done" );
 		return rv;
 	}
-
 }
