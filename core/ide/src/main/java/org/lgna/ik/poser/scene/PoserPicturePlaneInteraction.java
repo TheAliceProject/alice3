@@ -43,15 +43,11 @@
 package org.lgna.ik.poser.scene;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import org.alice.interact.handle.ManipulationHandle3D;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
@@ -64,7 +60,6 @@ import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -88,53 +83,33 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	private Joint joint;
 	private boolean started = false;
 
-	public PoserPicturePlaneInteraction( AbstractPoserScene scene, edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> renderTarget ) {
+	public PoserPicturePlaneInteraction( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> renderTarget, AbstractPoserScene scene ) {
 		super( renderTarget, ( (CameraImp)( (SceneImp)EmployeesOnly.getImplementation( scene ) ).findFirstCamera() ).getSgCamera() );
 		this.scene = scene;
 		SceneImp sceneImp = (SceneImp)EmployeesOnly.getImplementation( scene );
 		this.camera = sceneImp.findFirstCamera();
-		//		doVisualization();
-	}
+		SceneImp implementation = EmployeesOnly.getImplementation( scene );
+		final OnscreenRenderTarget onscreenPicturePlane = getOnscreenPicturePlane();
+		onscreenPicturePlane.addRenderTargetListener( new DebugOverlay( new OverlayFunction() {
 
-	private void doVisualization() {
-		String fileName = "test";
-		OnscreenRenderTarget onscreenPicturePlane = getOnscreenPicturePlane();
-		int width = onscreenPicturePlane.getWidth();
-		int height = onscreenPicturePlane.getHeight();
-
-		BufferedImage image = new BufferedImage( width, height, BufferedImage.TYPE_INT_RGB );
-		for( int x = 0; x != width; ++x ) {
-			for( int y = 0; y != height; ++y ) {
-
-				Color c = getColorForXY( x, y );
+			@Override
+			public Color getColorForXY( int x, int y ) {
+				Component awtComponent = onscreenPicturePlane.getAwtComponent();
+				//				System.out.println( "loc: ( " + x + ", " + y + " )" );
+				//				System.out.println( "source: " + awtComponent.getClass() );
+				Transformable pick = pick( new MouseEvent( awtComponent, 0, 0, 0, x, y, 0, false, 0 ) );
+				//				System.out.println( "pick: " + pick );
+				double num = 2 * Math.random();
+				//				if( pick != null ) {
+				if( num > 1 ) {
+					return Color.BLACK;
+				} else {
+					return Color.WHITE;
+				}
 			}
-		}
-		File defaultDirectory = FileUtilities.getDefaultDirectory();
-		String path = defaultDirectory.getPath();
-		File file = null;
-		int i = 0;
-		boolean exists = true;
-		while( exists ) {
-			file = new File( path + fileName + i );
-			if( !file.exists() ) {
-				break;
-			} else {
-				++i;
-			}
-		}
-		try {
-			ImageIO.write( image, "png", file );
-			System.out.println( "SUCCESS" );
-			System.out.println( file.getAbsolutePath() );
-		} catch( IOException e ) {
-			e.printStackTrace();
-		}
-	}
+		} ) {
 
-	private Color getColorForXY( int x, int y ) {
-		Transformable pick = pick( new MouseEvent( null, 0, 0, 0, x, y, 0, false, 0 ) );
-
-		return null;
+		} );
 	}
 
 	@Override

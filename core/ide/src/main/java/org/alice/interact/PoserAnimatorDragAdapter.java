@@ -175,7 +175,7 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 	}
 
 	private void initDragAdapter( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget ) {
-		dragAdapter = new PoserPicturePlaneInteraction( poserScene, onscreenRenderTarget );
+		dragAdapter = new PoserPicturePlaneInteraction( onscreenRenderTarget, poserScene );
 		dragAdapter.startUp();
 	}
 
