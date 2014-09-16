@@ -70,7 +70,7 @@ import examples.math.pictureplane.PicturePlaneInteraction;
 public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
 	private static final double MIN_SELECTION_DISTANCE = 50;
-	private final AbstractPoserScene scene;
+	private final AbstractPoserScene<?> scene;
 	private final CameraImp camera;
 	private final List<PoserSphereManipulatorListener> listeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private JointSelectionSphere selected;
@@ -106,8 +106,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 		Ray rayAtPixel = this.getOnscreenPicturePlane().getRayAtPixel( x, y );
 		double closest = Double.MAX_VALUE;//Integer.MAX_VALUE;
 		JointSelectionSphere selected = null;
-		List<JointSelectionSphere> spheres = scene.getJointSelectionSpheres();
-		for( JointSelectionSphere sphere : spheres ) {
+		for( JointSelectionSphere sphere : scene.getJointSelectionSpheres() ) {
 			double rayLength = getSphereRayIntersection( rayAtPixel, sphere );
 			if( Double.isNaN( rayLength ) == false ) {
 				if( ( rayLength > 0 ) && ( rayLength < closest ) ) {
