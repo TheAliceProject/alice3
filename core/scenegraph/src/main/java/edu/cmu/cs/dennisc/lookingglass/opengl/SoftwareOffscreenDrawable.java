@@ -50,11 +50,13 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 	private jogamp.opengl.GLContextImpl glContext;
 
 	private final Runnable displayAdapter = new Runnable() {
+		@Override
 		public void run() {
 			fireDisplay( glContext.getGL().getGL2() );
 		}
 	};
 	private final Runnable initAdapter = new Runnable() {
+		@Override
 		public void run() {
 		}
 	};

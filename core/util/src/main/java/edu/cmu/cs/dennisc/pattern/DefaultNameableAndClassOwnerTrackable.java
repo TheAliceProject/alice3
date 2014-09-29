@@ -49,10 +49,12 @@ package edu.cmu.cs.dennisc.pattern;
 public class DefaultNameableAndClassOwnerTrackable extends DefaultNameable implements ClassOwnerTrackable {
 	private Class<?> m_clsOwner = null;
 
+	@Override
 	public Class<?> getClassOwner() {
 		return m_clsOwner;
 	}
 
+	@Override
 	public void setClassOwner( Class<?> clsOwner ) {
 		m_clsOwner = clsOwner;
 	}

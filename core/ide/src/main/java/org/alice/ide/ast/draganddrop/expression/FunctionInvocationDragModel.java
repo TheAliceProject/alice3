@@ -51,6 +51,7 @@ public class FunctionInvocationDragModel extends AbstractExpressionDragModel {
 
 	public static FunctionInvocationDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractMethod, FunctionInvocationDragModel>() {
+			@Override
 			public FunctionInvocationDragModel initialize( org.lgna.project.ast.AbstractMethod method ) {
 				return new FunctionInvocationDragModel( method );
 			}

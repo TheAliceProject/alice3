@@ -51,7 +51,7 @@ public class MouseClickAstMigration extends org.lgna.project.migration.ast.Metho
 	}
 
 	@Override
-	protected void migrate( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+	protected void migrate( org.lgna.project.ast.MethodInvocation methodInvocation, org.lgna.project.Project projectIfApplicable ) {
 		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 		if( method instanceof org.lgna.project.ast.JavaMethod ) {
 			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;

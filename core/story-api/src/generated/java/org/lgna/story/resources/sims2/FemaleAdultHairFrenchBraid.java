@@ -30,11 +30,13 @@ public enum FemaleAdultHairFrenchBraid implements FemaleAdultHair, FemaleElderHa
 	BROWN,
 	GREY;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

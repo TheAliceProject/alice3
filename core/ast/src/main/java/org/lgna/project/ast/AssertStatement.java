@@ -67,7 +67,7 @@ public class AssertStatement extends Statement {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+	protected void appendJavaInternal( JavaCodeGenerator generator ) {
 		generator.appendString( "assert " );
 		generator.appendExpression( this.expression.getValue() );
 		Expression messageValue = this.message.getValue();

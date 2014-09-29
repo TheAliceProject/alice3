@@ -118,6 +118,7 @@ public final class HairHatStyle implements Comparable<HairHatStyle> {
 		return thisSplit[ 1 ].compareTo( otherSplit[ 1 ] );
 	}
 
+	@Override
 	public int compareTo( org.alice.stageide.personresource.data.HairHatStyle other ) {
 		Class<? extends org.lgna.story.resources.sims2.Hair> thisHairCls = this.getHairCls();
 		Class<? extends org.lgna.story.resources.sims2.Hair> otherHairCls = other.getHairCls();

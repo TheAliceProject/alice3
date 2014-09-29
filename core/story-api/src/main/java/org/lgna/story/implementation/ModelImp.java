@@ -47,15 +47,18 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.dennisc.scenegraph.scale.Scalable {
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] getResizers() {
 		return new edu.cmu.cs.dennisc.scenegraph.scale.Resizer[] { edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM };
 	}
 
+	@Override
 	public double getValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer ) {
 		assert resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM : resizer;
 		return this.getScale().x;
 	}
 
+	@Override
 	public void setValueForResizer( edu.cmu.cs.dennisc.scenegraph.scale.Resizer resizer, double value ) {
 		assert resizer == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.UNIFORM : resizer;
 		this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, value, value ) );
@@ -136,12 +139,14 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 
 	protected abstract edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties();
 
+	@Override
 	public final void addScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
 		for( edu.cmu.cs.dennisc.property.InstanceProperty property : this.getScaleProperties() ) {
 			property.addPropertyListener( listener );
 		}
 	}
 
+	@Override
 	public final void removeScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener ) {
 		for( edu.cmu.cs.dennisc.property.InstanceProperty property : this.getScaleProperties() ) {
 			property.removePropertyListener( listener );
@@ -381,9 +386,9 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 		this.animateScale( Dimension.FRONT_TO_BACK.getResizeAxis( factor, isVolumePreserved ), duration, style );
 	}
 
-	public void displayBubble( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, Number duration ) {
+	public void displayBubble( org.lgna.story.implementation.overlay.BubbleImp bubbleImp, Number duration ) {
 		if( this.getScene() != null ) {
-			perform( new org.lgna.story.implementation.overlay.BubbleAnimation( this, 0.2, duration.doubleValue(), 0.2, bubble ) );
+			perform( new org.lgna.story.implementation.overlay.BubbleAnimation( 0.2, duration.doubleValue(), 0.2, bubbleImp ) );
 		} else {
 			//todo
 			javax.swing.JOptionPane.showMessageDialog( null, "unable to display bubble" );
@@ -418,12 +423,13 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 
 	protected edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator createOriginator() {
 		return new edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator() {
+			@Override
 			public void calculate(
 					java.awt.geom.Point2D.Float out_originOfTail,
 					java.awt.geom.Point2D.Float out_bodyConnectionLocationOfTail,
 					java.awt.geom.Point2D.Float out_textBoundsOffset,
 					edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble,
-					edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass,
+					edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget,
 					java.awt.Rectangle actualViewport,
 					edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera,
 					java.awt.geom.Dimension2D textSize
@@ -438,7 +444,7 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 				}
 				edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenByCamera = ModelImp.this.getSgComposite().transformTo_New( offsetAsSeenBySubject, sgCamera );
 				//			edu.cmu.cs.dennisc.math.Vector4d offsetAsSeenByViewport = m_camera.transformToViewport( m_lookingGlass, offsetAsSeenByCamera );
-				java.awt.Point p = sgCamera.transformToAWT_New( offsetAsSeenByCamera, lookingGlass );
+				java.awt.Point p = sgCamera.transformToAWT_New( offsetAsSeenByCamera, renderTarget );
 				//			float x = (float)( offsetAsSeenByViewport.x / offsetAsSeenByViewport.w );
 				//			float y = (float)( offsetAsSeenByViewport.y / offsetAsSeenByViewport.w );
 

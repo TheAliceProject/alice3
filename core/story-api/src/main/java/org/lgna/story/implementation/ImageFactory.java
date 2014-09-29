@@ -49,9 +49,11 @@ public final class ImageFactory {
 	private static java.util.Map<org.lgna.common.resources.ImageResource, java.awt.image.BufferedImage> resourceToBufferedImageMap = new java.util.HashMap<org.lgna.common.resources.ImageResource, java.awt.image.BufferedImage>();
 
 	private static org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
+		@Override
 		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
 		}
 
+		@Override
 		public void contentChanged( org.lgna.common.event.ResourceContentEvent e ) {
 			ImageFactory.forget( (org.lgna.common.resources.ImageResource)e.getTypedSource() );
 		}

@@ -58,6 +58,7 @@ public class GroupIconFactory extends org.lgna.croquet.icon.AbstractIconFactory 
 		return new GroupIcon( size, this.iconFactories );
 	}
 
+	@Override
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		if( this.iconFactories.size() > 0 ) {
 			return this.iconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );

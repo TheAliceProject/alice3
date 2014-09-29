@@ -55,14 +55,17 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 		//super( comment.text.getValue() );
 		this.comment = comment;
 		this.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
+			@Override
 			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 				CommentLine.this.handleUpdate();
 			}
 
+			@Override
 			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
 				CommentLine.this.handleUpdate();
 			}
 
+			@Override
 			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
 				CommentLine.this.handleUpdate();
 			}
@@ -73,6 +76,7 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 		this.handleUpdate();
 		if( org.alice.ide.IDE.getActiveInstance().getCommentThatWantsFocus() == this.comment ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					CommentLine.this.requestFocus();
 					org.alice.ide.IDE.getActiveInstance().setCommentThatWantsFocus( null );
@@ -81,25 +85,30 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 		}
 		//todo: remove?
 		this.addKeyListener( new java.awt.event.KeyListener() {
+			@Override
 			public void keyPressed( java.awt.event.KeyEvent e ) {
 				if( e.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE ) {
 					CommentLine.this.transferFocus();
 				}
 			}
 
+			@Override
 			public void keyReleased( java.awt.event.KeyEvent e ) {
 			}
 
+			@Override
 			public void keyTyped( java.awt.event.KeyEvent e ) {
 			}
 		} );
 
 		this.addFocusListener( new java.awt.event.FocusListener() {
+			@Override
 			public void focusGained( java.awt.event.FocusEvent e ) {
 				CommentLine.this.setToolTipText( "Press the escape key to remove focus" );
 				//CommentLine.this.repaint();
 			}
 
+			@Override
 			public void focusLost( java.awt.event.FocusEvent e ) {
 				CommentLine.this.setToolTipText( null );
 				//CommentLine.this.repaint();

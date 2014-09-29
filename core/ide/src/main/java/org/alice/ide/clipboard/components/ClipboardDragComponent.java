@@ -51,6 +51,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.views.DragComponent
 	private class ClipboardDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
 		private org.alice.ide.clipboard.DragReceptorState dragReceptorState = org.alice.ide.clipboard.DragReceptorState.IDLE;
 
+		@Override
 		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 			return dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel;
 		}
@@ -60,15 +61,18 @@ public class ClipboardDragComponent extends org.lgna.croquet.views.DragComponent
 			ClipboardDragComponent.this.repaint();
 		}
 
+		@Override
 		public void dragStarted( org.lgna.croquet.history.DragStep step ) {
 			this.setDragReceptorState( org.alice.ide.clipboard.DragReceptorState.STARTED );
 		}
 
+		@Override
 		public void dragEntered( org.lgna.croquet.history.DragStep step ) {
 			this.setDragReceptorState( org.alice.ide.clipboard.DragReceptorState.ENTERED );
 			//			step.getDragSource().hideDragProxy();
 		}
 
+		@Override
 		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
 			return org.alice.ide.clipboard.Clipboard.SINGLETON.getDropSite();
 		}
@@ -90,19 +94,23 @@ public class ClipboardDragComponent extends org.lgna.croquet.views.DragComponent
 			}
 		}
 
+		@Override
 		public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
 			//			step.getDragSource().showDragProxy();
 			this.setDragReceptorState( DragReceptorState.STARTED );
 		}
 
+		@Override
 		public void dragStopped( org.lgna.croquet.history.DragStep step ) {
 			this.setDragReceptorState( DragReceptorState.IDLE );
 		}
 
+		@Override
 		public org.lgna.croquet.views.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 			return ClipboardDragComponent.this;
 		}
 
+		@Override
 		public org.lgna.croquet.views.SwingComponentView<?> getViewController() {
 			return ClipboardDragComponent.this;
 		}

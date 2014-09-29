@@ -143,25 +143,31 @@ public abstract class Feature {
 	}
 
 	private java.awt.event.HierarchyBoundsListener hierarchyBoundsListener = new java.awt.event.HierarchyBoundsListener() {
+		@Override
 		public void ancestorMoved( java.awt.event.HierarchyEvent e ) {
 			repaintAll();
 		}
 
+		@Override
 		public void ancestorResized( java.awt.event.HierarchyEvent e ) {
 			repaintAll();
 		}
 	};
 	private java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
+		@Override
 		public void componentShown( java.awt.event.ComponentEvent e ) {
 		}
 
+		@Override
 		public void componentHidden( java.awt.event.ComponentEvent e ) {
 		}
 
+		@Override
 		public void componentMoved( java.awt.event.ComponentEvent e ) {
 			repaintAll();
 		}
 
+		@Override
 		public void componentResized( java.awt.event.ComponentEvent e ) {
 			repaintAll();
 		}
@@ -366,6 +372,7 @@ public abstract class Feature {
 									this.connection = connection;
 								}
 
+								@Override
 								public int compareTo( Inset o ) {
 									return o.value - this.value;
 								}

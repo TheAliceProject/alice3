@@ -48,8 +48,20 @@ import java.io.IOException;
  * @author Dennis Cosgrove
  */
 public class CopyDistributionJarsUtilities {
+
+	private static java.io.File getUserDirectory() {
+		java.io.File defaultDirectory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
+		java.io.File rv;
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			rv = defaultDirectory.getParentFile();
+		} else {
+			rv = defaultDirectory;
+		}
+		return rv;
+	}
+
 	public static void copyDistributionJars( java.io.File distributionRootDirectory ) throws java.io.IOException {
-		java.io.File userDirectory = edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory();
+		java.io.File userDirectory = getUserDirectory();
 		java.io.File mavenRepositoryRootDirectory = new java.io.File( userDirectory, ".m2/repository" );
 		java.util.List<java.io.File> jarFiles = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( String pathname : edu.cmu.cs.dennisc.java.lang.SystemUtilities.getClassPath() ) {
@@ -59,6 +71,7 @@ public class CopyDistributionJarsUtilities {
 			} else {
 				if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( file, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "jar" ) ) {
 					if( edu.cmu.cs.dennisc.java.io.FileUtilities.isDescendantOf( file, mavenRepositoryRootDirectory ) ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "++ adding: " + file );
 						jarFiles.add( file );
 					} else {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping non descendant:", file );
@@ -84,7 +97,7 @@ public class CopyDistributionJarsUtilities {
 
 	public static void main( String[] args ) throws Exception {
 		java.io.File userDirectory = edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory();
-		java.io.File distributionRootDirectory = new java.io.File( userDirectory, "Documents/distribution/lib" );
+		java.io.File distributionRootDirectory = new java.io.File( userDirectory, "Documents/aliceBuildProcess/jars/lib" );
 		copyDistributionJars( distributionRootDirectory );
 	}
 }

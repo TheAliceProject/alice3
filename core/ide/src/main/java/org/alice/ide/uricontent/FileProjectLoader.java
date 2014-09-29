@@ -121,18 +121,22 @@ public class FileProjectLoader extends UriProjectLoader {
 			final boolean IS_OBSERVER_DESIRED = true;
 			if( IS_OBSERVER_DESIRED ) {
 				uriProjectPair.getContentOnEventDispatchThread( mutationPlan, new GetContentObserver<org.lgna.project.Project>() {
+					@Override
 					public void workStarted() {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "workStarted" );
 					}
 
+					@Override
 					public void workEnded() {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "workEnded" );
 					}
 
+					@Override
 					public void completed( org.lgna.project.Project project ) {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( project );
 					}
 
+					@Override
 					public void failed( Throwable t ) {
 						t.printStackTrace();
 					}

@@ -50,6 +50,7 @@ public class SetFloorPaintMethodInvocationFillIn extends OneShotJavaMethodInvoca
 
 	public static SetFloorPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
 		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.JavaMethod, SetFloorPaintMethodInvocationFillIn>() {
+			@Override
 			public SetFloorPaintMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.JavaMethod method ) {
 				return new SetFloorPaintMethodInvocationFillIn( instanceFactory, method );
 			}

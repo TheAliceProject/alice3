@@ -30,11 +30,13 @@ public enum FemaleChildHairAcornTuck implements FemaleChildHair {
 	RED,
 	STRAWBERRY;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

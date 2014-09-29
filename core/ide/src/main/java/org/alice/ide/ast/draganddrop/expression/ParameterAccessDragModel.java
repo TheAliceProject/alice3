@@ -51,6 +51,7 @@ public class ParameterAccessDragModel extends AbstractExpressionDragModel {
 
 	public static ParameterAccessDragModel getInstance( org.lgna.project.ast.UserParameter parameter ) {
 		return map.getInitializingIfAbsent( parameter, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserParameter, ParameterAccessDragModel>() {
+			@Override
 			public ParameterAccessDragModel initialize( org.lgna.project.ast.UserParameter parameter ) {
 				return new ParameterAccessDragModel( parameter );
 			}

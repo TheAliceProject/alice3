@@ -59,9 +59,9 @@ public enum HandleRenderState {
 		}
 		HandleState handleState = handle.getHandleStateCopy();
 		if( handleState.isActive() ) {
-			return HandleRenderState.VISIBLE_AND_ACTIVE;
+			return VISIBLE_AND_ACTIVE;
 		} else if( handleState.isRollover() ) {
-			return HandleRenderState.VISIBLE_AND_ROLLOVER;
+			return VISIBLE_AND_ROLLOVER;
 		} else if( handle.isAlwaysVisible() ) {
 			return JUST_VISIBLE;
 		} else if( handleState.isVisible() ) {
@@ -70,8 +70,7 @@ public enum HandleRenderState {
 			} else {
 				return JUST_VISIBLE;
 			}
-		} else
-		{
+		} else {
 			return NOT_VISIBLE;
 		}
 	}

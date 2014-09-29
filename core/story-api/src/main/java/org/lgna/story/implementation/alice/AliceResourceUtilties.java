@@ -233,10 +233,18 @@ public class AliceResourceUtilties {
 		return StorytellingResources.getInstance().getAliceResource( cls.getPackage().getName().replace( ".", "/" ) + "/" + resourceString );
 	}
 
-	public static String enumToCamelCase( String enumName ) {
+	public static String enumToCamelCase( String enumName, boolean startWithLowerCase ) {
 		StringBuilder sb = new StringBuilder();
 		for( int i = 0; i < enumName.length(); i++ ) {
-			if( ( i == 0 ) || ( enumName.charAt( i - 1 ) == '_' ) ) {
+			if( i == 0 ) {
+				if( startWithLowerCase ) {
+					sb.append( Character.toLowerCase( enumName.charAt( i ) ) );
+				}
+				else {
+					sb.append( Character.toUpperCase( enumName.charAt( i ) ) );
+				}
+			}
+			else if( enumName.charAt( i - 1 ) == '_' ) {
 				sb.append( Character.toUpperCase( enumName.charAt( i ) ) );
 			}
 			else if( enumName.charAt( i ) != '_' ) {
@@ -244,6 +252,10 @@ public class AliceResourceUtilties {
 			}
 		}
 		return sb.toString();
+	}
+
+	public static String enumToCamelCase( String enumName ) {
+		return enumToCamelCase( enumName, false );
 	}
 
 	public static String camelCaseToEnum( String name ) {
@@ -324,19 +336,18 @@ public class AliceResourceUtilties {
 	}
 
 	/**
-	 * Visual and Texture info is encoded into the enumeration like this:
-	 * public enum BaseVisualName {
-	 * TEXTURE_NAME_1,
-	 * TEXTURE_NAME_2,
+	 * Visual and Texture info is encoded into the enumeration like this: public
+	 * enum BaseVisualName { TEXTURE_NAME_1, TEXTURE_NAME_2,
 	 * DIFFERENT_VISUAL_NAME_TEXTURE_NAME_1,
-	 * DIFFERENT_VISUAL_NAME_TEXTURE_NAME_2
-	 * }
+	 * DIFFERENT_VISUAL_NAME_TEXTURE_NAME_2 }
 	 * 
-	 * Both 'BaseVisualName' and DIFFERENT_VISUAL_NAME are potentially the names of visual resources.
-	 * If the resource uses the base visual, then the enum name is just the name of the texture
-	 * (like the entries TEXTURE_NAME_1 and TEXTURE_NAME_2)
-	 * If the resource uses a different visual resource, then the visual resource name is the first half of the enum constant
-	 * (like the entries DIFFERENT_VISUAL_NAME_TEXTURE_NAME_1 and DIFFERENT_VISUAL_NAME_TEXTURE_NAME_2)
+	 * Both 'BaseVisualName' and DIFFERENT_VISUAL_NAME are potentially the names
+	 * of visual resources. If the resource uses the base visual, then the enum
+	 * name is just the name of the texture (like the entries TEXTURE_NAME_1 and
+	 * TEXTURE_NAME_2) If the resource uses a different visual resource, then
+	 * the visual resource name is the first half of the enum constant (like the
+	 * entries DIFFERENT_VISUAL_NAME_TEXTURE_NAME_1 and
+	 * DIFFERENT_VISUAL_NAME_TEXTURE_NAME_2)
 	 **/
 
 	private static void findAndStoreResourceNames( Class<?> resourceClass, String resourceName ) {
@@ -407,7 +418,13 @@ public class AliceResourceUtilties {
 		if( !resourceIdentifierToResourceNamesMap.containsKey( identifier ) ) {
 			findAndStoreResourceNames( resourceClass, resourceName );
 		}
-		return resourceIdentifierToResourceNamesMap.get( identifier ).visualName;
+		if( resourceIdentifierToResourceNamesMap.get( identifier ) != null ) {
+			return resourceIdentifierToResourceNamesMap.get( identifier ).visualName;
+		}
+		else {
+			Logger.severe( "Failed to find resource names for '" + resourceClass + "' and '" + resourceName + "'" );
+			return null;
+		}
 	}
 
 	public static String getTextureNameFromClassAndResource( Class<?> resourceClass, String resourceName ) {

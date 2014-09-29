@@ -31,11 +31,13 @@ public enum FemaleAdultHairAcornTuck implements FemaleAdultHair, FemaleElderHair
 	GREY,
 	STRAWBERRY;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

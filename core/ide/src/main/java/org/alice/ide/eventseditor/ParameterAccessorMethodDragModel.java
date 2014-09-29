@@ -85,6 +85,7 @@ public class ParameterAccessorMethodDragModel extends org.alice.ide.ast.dragandd
 
 	public static synchronized ParameterAccessorMethodDragModel getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
 		return mapToMap.getInitializingIfAbsent( parameter, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessorMethodDragModel>() {
+			@Override
 			public ParameterAccessorMethodDragModel initialize( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
 				return new ParameterAccessorMethodDragModel( parameter, method );
 			}

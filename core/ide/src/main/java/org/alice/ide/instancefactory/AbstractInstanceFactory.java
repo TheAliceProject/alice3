@@ -64,6 +64,7 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
 
 	protected abstract <F extends org.alice.ide.instancefactory.InstanceFactory> org.lgna.croquet.resolvers.Resolver<F> createResolver();
 
+	@Override
 	public final <F extends org.alice.ide.instancefactory.InstanceFactory> org.lgna.croquet.resolvers.Resolver<F> getResolver() {
 		if( this.resolver != null ) {
 			//pass
@@ -73,12 +74,14 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
 		return this.resolver;
 	}
 
+	@Override
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<?>[] getMutablePropertiesOfInterest() {
 		return this.mutablePropertiesOfInterest;
 	}
 
 	protected abstract boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code );
 
+	@Override
 	public final boolean isValid() {
 		org.lgna.project.ast.AbstractType<?, ?, ?> type;
 		org.lgna.project.ast.AbstractCode code;
@@ -96,6 +99,7 @@ public abstract class AbstractInstanceFactory implements InstanceFactory {
 		return this.isValid( type, code );
 	}
 
+	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
 		return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( this.getValueType() );
 	}

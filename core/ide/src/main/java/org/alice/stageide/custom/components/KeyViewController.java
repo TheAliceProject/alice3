@@ -47,13 +47,16 @@ package org.alice.stageide.custom.components;
  */
 public class KeyViewController extends org.lgna.croquet.views.ViewController<javax.swing.JLabel, org.alice.stageide.custom.KeyState> {
 	private final java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {
+		@Override
 		public void keyPressed( java.awt.event.KeyEvent e ) {
 			KeyViewController.this.getModel().handleKeyPressed( KeyViewController.this, e );
 		}
 
+		@Override
 		public void keyReleased( java.awt.event.KeyEvent e ) {
 		}
 
+		@Override
 		public void keyTyped( java.awt.event.KeyEvent e ) {
 		}
 	};

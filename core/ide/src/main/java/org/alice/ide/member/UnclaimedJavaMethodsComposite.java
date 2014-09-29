@@ -47,6 +47,7 @@ package org.alice.ide.member;
  */
 public abstract class UnclaimedJavaMethodsComposite extends FilteredJavaMethodsSubComposite {
 	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
+		@Override
 		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
 			return compareMethodNames( methodA, methodB );
 		}

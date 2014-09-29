@@ -50,15 +50,18 @@ public class Matrix3x3Property extends edu.cmu.cs.dennisc.property.InstancePrope
 		super( owner, value );
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Matrix3x3 getCopy( edu.cmu.cs.dennisc.math.Matrix3x3 rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		rv.setValue( getValue( owner ) );
 		return rv;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.math.Matrix3x3 getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		return getCopy( edu.cmu.cs.dennisc.math.Matrix3x3.createNaN(), owner );
 	}
 
+	@Override
 	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Matrix3x3 value ) {
 		//todo?
 		setValue( owner, new edu.cmu.cs.dennisc.math.Matrix3x3( value ) );

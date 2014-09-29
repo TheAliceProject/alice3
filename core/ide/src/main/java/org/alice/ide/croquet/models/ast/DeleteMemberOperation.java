@@ -79,6 +79,7 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 
 	protected abstract boolean isClearToDelete( N node );
 
+	@Override
 	public void doOrRedoInternal( boolean isDo ) {
 		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
 		this.index = owner.indexOf( this.member );
@@ -87,6 +88,7 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 		declarationTabState.removeAllOrphans();
 	}
 
+	@Override
 	public void undoInternal() {
 		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
 		if( this.index == -1 ) {
@@ -95,6 +97,7 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 		owner.add( this.index, member );
 	}
 
+	@Override
 	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>>)edit;
 		DeleteMemberOperation<N> replacement = replacementEdit.getModel();
@@ -102,15 +105,18 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 		retargeter.addKeyValuePair( this.declaringType, replacement.declaringType );
 	}
 
+	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		this.member = retargeter.retarget( this.member );
 		this.declaringType = retargeter.retarget( this.declaringType );
 	}
 
+	@Override
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.AbstractEdit<?> replacementCandidate ) {
 		return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 	}
 
+	@Override
 	public void appendDescription( StringBuilder rv, boolean isDetailed ) {
 		rv.append( "delete: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, member, org.lgna.croquet.Application.getLocale() );

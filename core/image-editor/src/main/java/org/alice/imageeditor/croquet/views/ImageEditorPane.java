@@ -47,8 +47,10 @@ package org.alice.imageeditor.croquet.views;
  */
 public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
 	private final java.awt.event.FocusListener comboBoxEditorFocusListener = new java.awt.event.FocusListener() {
+		@Override
 		public void focusGained( java.awt.event.FocusEvent e ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					javax.swing.ComboBoxEditor editor = getComposite().getJComboBox().getEditor();
 					java.awt.Component editorComponent = editor.getEditorComponent();
@@ -79,29 +81,34 @@ public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
 			} );
 		}
 
+		@Override
 		public void focusLost( java.awt.event.FocusEvent e ) {
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<java.awt.Image> imageListener = new org.lgna.croquet.event.ValueListener<java.awt.Image>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.awt.Image> e ) {
 			repaint();
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<String> pathListener = new org.lgna.croquet.event.ValueListener<String>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
 			updatePathLabel( e.getNextValue() );
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> repaintImageViewListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			jImageView.repaint();
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<Boolean> revalidateImageViewAndResizeWindowIfNecessaryListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			jImageView.revalidate();
 			org.lgna.croquet.views.AbstractWindow<?> window = getRoot();
@@ -122,6 +129,7 @@ public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
 			this.tool = tool;
 		}
 
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			getComposite().getToolState().setValueTransactionlessly( this.tool );
 		}
@@ -250,6 +258,7 @@ public class ImageEditorPane extends org.lgna.croquet.views.MigPanel {
 		awtEditorComponent.addFocusListener( this.comboBoxEditorFocusListener );
 		this.setDefaultButtonToSave();
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
 			public void run() {
 				getComposite().getJComboBox().getEditor().getEditorComponent().requestFocusInWindow();
 			}

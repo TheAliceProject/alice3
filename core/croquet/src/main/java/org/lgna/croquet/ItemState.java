@@ -297,7 +297,7 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 			for( InternalItemSelectedState<T> itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
 				T item = getItem( itemSelectedState.itemCallable );
 				boolean isSelected = edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( item, nextValue );
-				itemSelectedState.getSwingModel().getButtonModel().setSelected( isSelected );
+				itemSelectedState.getImp().getSwingModel().getButtonModel().setSelected( isSelected );
 			}
 		}
 	}

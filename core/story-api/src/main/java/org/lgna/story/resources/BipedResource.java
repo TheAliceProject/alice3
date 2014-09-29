@@ -43,11 +43,15 @@
 
 package org.lgna.story.resources;
 
+import org.lgna.project.annotations.FieldTemplate;
+import org.lgna.project.annotations.Visibility;
+
 /**
  * @author Dennis Cosgrove
  */
 @org.lgna.project.annotations.ResourceTemplate( modelClass = org.lgna.story.SBiped.class )
 public interface BipedResource extends JointedModelResource {
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public static final JointId ROOT = new JointId( null, BipedResource.class );
 
 	public static final JointId PELVIS_LOWER_BODY = new JointId( ROOT, BipedResource.class );
@@ -115,6 +119,7 @@ public interface BipedResource extends JointedModelResource {
 	public static final JointId LEFT_PINKY_FINGER_KNUCKLE = new JointId( LEFT_PINKY_FINGER, BipedResource.class );
 	//	public static final JointId LEFT_PINKY_FINGER_TIP = new JointId( LEFT_PINKY_FINGER_KNUCKLE, BipedResource.class );
 
+	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
 	public org.lgna.story.implementation.BipedImp createImplementation( org.lgna.story.SBiped abstraction );

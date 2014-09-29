@@ -55,6 +55,16 @@ public class JavaCodeGenerator {
 			return this;
 		}
 
+		public Builder isPublicStaticFinalFieldGetterDesired( boolean isPublicStaticFinalFieldGetterDesired ) {
+			this.isPublicStaticFinalFieldGetterDesired = isPublicStaticFinalFieldGetterDesired;
+			return this;
+		}
+
+		public Builder setResourcesTypeWrapper( org.lgna.project.resource.ResourcesTypeWrapper resourcesTypeWrapper ) {
+			this.resourcesTypeWrapper = resourcesTypeWrapper;
+			return this;
+		}
+
 		public Builder addImportOnDemandPackage( Package pckg ) {
 			this.importOnDemandPackages.add( JavaPackage.getInstance( pckg ) );
 			return this;
@@ -72,18 +82,40 @@ public class JavaCodeGenerator {
 		}
 
 		private boolean isLambdaSupported;
+		private boolean isPublicStaticFinalFieldGetterDesired;
+		private org.lgna.project.resource.ResourcesTypeWrapper resourcesTypeWrapper;
 		private final java.util.List<JavaPackage> importOnDemandPackages = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		private final java.util.List<JavaMethod> importStaticMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	};
 
 	protected JavaCodeGenerator( Builder builder ) {
 		this.isLambdaSupported = builder.isLambdaSupported;
+		this.isPublicStaticFinalFieldGetterDesired = builder.isPublicStaticFinalFieldGetterDesired;
+		this.resourcesTypeWrapper = builder.resourcesTypeWrapper;
 		this.packagesMarkedForOnDemandImport = java.util.Collections.unmodifiableList( builder.importOnDemandPackages );
 		this.staticMethodsMarkedForImport = java.util.Collections.unmodifiableList( builder.importStaticMethods );
 	}
 
+	/* package-private */void pushStatementDisabled() {
+		this.statementDisabledCount++;
+		if( this.statementDisabledCount == 1 ) {
+			this.appendString( "\n/* disabled\n" );
+		}
+	}
+
+	/* package-private */void popStatementDisabled() {
+		if( this.statementDisabledCount == 1 ) {
+			this.appendString( "\n*/\n" );
+		}
+		this.statementDisabledCount--;
+	}
+
 	/* package-private */boolean isLambdaSupported() {
 		return this.isLambdaSupported;
+	}
+
+	/* package-private */boolean isPublicStaticFinalFieldGetterDesired() {
+		return this.isPublicStaticFinalFieldGetterDesired;
 	}
 
 	/* package-private */void appendBoolean( boolean b ) {
@@ -131,6 +163,32 @@ public class JavaCodeGenerator {
 
 	/* package-private */void appendString( String s ) {
 		this.codeStringBuilder.append( s );
+	}
+
+	private void appendResource( org.lgna.common.Resource resource ) {
+		this.codeStringBuilder.append( org.lgna.project.resource.ResourcesTypeWrapper.getTypeName() );
+		this.codeStringBuilder.append( "." );
+		this.codeStringBuilder.append( org.lgna.project.resource.ResourcesTypeWrapper.getFixedName( resource ) );
+	}
+
+	/* package-private */void appendResourceExpression( ResourceExpression resourceExpression ) {
+		org.lgna.common.Resource resource = resourceExpression.resource.getValue();
+		if( resource != null ) {
+			if( this.resourcesTypeWrapper != null ) {
+				UserField field = this.resourcesTypeWrapper.getFieldForResource( resource );
+				if( field != null ) {
+					this.codeStringBuilder.append( field.getDeclaringType().getName() );
+					this.codeStringBuilder.append( "." );
+					this.codeStringBuilder.append( field.getName() );
+				} else {
+					this.appendResource( resource );
+				}
+			} else {
+				this.appendResource( resource );
+			}
+		} else {
+			this.codeStringBuilder.append( "null" ); //todo?
+		}
 	}
 
 	/* package-private */void appendTypeName( AbstractType<?, ?, ?> type ) {
@@ -337,8 +395,10 @@ public class JavaCodeGenerator {
 		return type.methods;
 	}
 
-	private final boolean isLambdaSupported;
 	private final StringBuilder codeStringBuilder = new StringBuilder();
+
+	private final boolean isLambdaSupported;
+	private final boolean isPublicStaticFinalFieldGetterDesired;
 	private final java.util.Set<JavaPackage> packagesToImportOnDemand = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 	private final java.util.Set<JavaMethod> methodsToImportStatic = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
@@ -347,4 +407,8 @@ public class JavaCodeGenerator {
 	private final java.util.List<JavaMethod> staticMethodsMarkedForImport;
 
 	private final java.util.Stack<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+
+	private final org.lgna.project.resource.ResourcesTypeWrapper resourcesTypeWrapper;
+
+	private int statementDisabledCount;
 }

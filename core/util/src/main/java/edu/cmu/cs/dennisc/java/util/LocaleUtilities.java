@@ -50,6 +50,7 @@ public abstract class LocaleUtilities {
 	}
 
 	private static java.util.Comparator<java.util.Locale> displayNameComparator = new java.util.Comparator<java.util.Locale>() {
+		@Override
 		public int compare( java.util.Locale o1, java.util.Locale o2 ) {
 			return o1.getDisplayName().compareTo( o2.getDisplayName() );
 		}

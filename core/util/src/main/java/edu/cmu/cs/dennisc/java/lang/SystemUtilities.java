@@ -293,7 +293,7 @@ public class SystemUtilities {
 		return rv;
 	}
 
-	private static final String PATH_SEPARATOR = System.getProperty( "path.separator" );;
+	private static final String PATH_SEPARATOR = System.getProperty( "path.separator" );
 
 	private static String[] parsePath( String propertyName ) {
 		String value = System.getProperty( propertyName );

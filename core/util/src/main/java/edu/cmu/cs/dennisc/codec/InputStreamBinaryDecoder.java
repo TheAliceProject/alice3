@@ -72,6 +72,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 
+	@Override
 	public byte[] readFully( byte[] rv ) {
 		try {
 			m_ois.readFully( rv );
@@ -81,6 +82,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 
+	@Override
 	public byte[] readFully( byte[] rv, int offset, int length ) {
 		try {
 			m_ois.readFully( rv, offset, length );
@@ -90,6 +92,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 
+	@Override
 	public boolean decodeBoolean() {
 		try {
 			return m_ois.readBoolean();
@@ -98,6 +101,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 
+	@Override
 	public byte decodeByte() {
 		try {
 			return m_ois.readByte();
@@ -106,6 +110,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 
+	@Override
 	public char decodeChar() {
 		try {
 			return m_ois.readChar();
@@ -114,6 +119,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 
+	@Override
 	public double decodeDouble() {
 		try {
 			return m_ois.readDouble();
@@ -122,6 +128,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 
+	@Override
 	public float decodeFloat() {
 		try {
 			return m_ois.readFloat();
@@ -130,6 +137,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 
+	@Override
 	public int decodeInt() {
 		try {
 			return m_ois.readInt();
@@ -138,6 +146,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 
+	@Override
 	public long decodeLong() {
 		try {
 			return m_ois.readLong();
@@ -146,6 +155,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 
+	@Override
 	public short decodeShort() {
 		try {
 			return m_ois.readShort();
@@ -154,6 +164,7 @@ public class InputStreamBinaryDecoder extends AbstractBinaryDecoder {
 		}
 	}
 
+	@Override
 	public String decodeString() {
 		try {
 			// todo?

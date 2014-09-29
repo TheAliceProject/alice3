@@ -46,6 +46,15 @@ package org.lgna.project.ast.crawlers;
  * @author Dennis Cosgrove
  */
 public abstract class NodePropertyValueIsInstanceCrawler<T> extends NodePropertyCrawler {
+	public static <T> NodePropertyValueIsInstanceCrawler<T> createInstance( Class<T> cls ) {
+		return new NodePropertyValueIsInstanceCrawler<T>( cls ) {
+			@Override
+			protected boolean isAcceptable( org.lgna.project.ast.Node node, edu.cmu.cs.dennisc.property.InstanceProperty<?> property, T value ) {
+				return true;
+			}
+		};
+	}
+
 	protected NodePropertyValueIsInstanceCrawler( Class<T> cls ) {
 		this.cls = cls;
 	}

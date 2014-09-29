@@ -93,7 +93,8 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 			ReferencesToFieldPreventingDeletionDialog referencesToFieldPreventingDeletionDialog = new ReferencesToFieldPreventingDeletionDialog( field, references );
 			CompletionStep<?> step = referencesToFieldPreventingDeletionDialog.getLaunchOperation().fire();
 			if( step.isSuccessfullyCompleted() ) {
-				org.alice.ide.croquet.models.project.find.croquet.FindComposite.getInstance().getMemberReferencesOperationInstance( field ).fire();
+				org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame();
+				projectDocumentFrame.getFindComposite().getMemberReferencesOperationInstance( field ).fire();
 			}
 			return false;
 		} else {

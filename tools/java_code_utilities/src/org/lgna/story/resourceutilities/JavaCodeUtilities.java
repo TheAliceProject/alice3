@@ -89,7 +89,7 @@ public class JavaCodeUtilities {
 
 	public static void compileJavaFile( File javaFile ) throws IOException
 	{
-		String[] args = new String[] { javaFile.getAbsolutePath(), "-target", "1.6", "-classpath", System.getProperty( "java.class.path" ) };
+		String[] args = new String[] { javaFile.getAbsolutePath(), "-target", "1.6", "-classpath", System.getProperty( "java.class.path" ), "-Xlint:unchecked" };
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PrintWriter pw = new PrintWriter( baos );
 		int status = com.sun.tools.javac.Main.compile( args, pw );

@@ -47,14 +47,17 @@ package org.lgna.croquet;
  */
 public abstract class RefreshableDataSingleSelectListState<T> extends SingleSelectListState<T> {
 	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+		@Override
 		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
 			fireContentsChanged( e.getIndex0(), e.getIndex1() );
 		}
 
+		@Override
 		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
 			fireIntervalAdded( e.getIndex0(), e.getIndex1() );
 		}
 
+		@Override
 		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
 			fireIntervalRemoved( e.getIndex0(), e.getIndex1() );
 		}

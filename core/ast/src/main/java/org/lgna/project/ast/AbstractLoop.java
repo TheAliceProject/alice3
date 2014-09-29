@@ -57,7 +57,7 @@ public abstract class AbstractLoop extends AbstractStatementWithBody {
 	protected abstract void appendJavaLoopPrefix( JavaCodeGenerator generator );
 
 	@Override
-	/* package-private */final void appendJava( JavaCodeGenerator generator ) {
+	protected void appendJavaInternal( JavaCodeGenerator generator ) {
 		this.appendJavaLoopPrefix( generator );
 		this.body.getValue().appendJava( generator );
 	}

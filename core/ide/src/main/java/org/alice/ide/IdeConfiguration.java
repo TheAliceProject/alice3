@@ -46,7 +46,7 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public interface IdeConfiguration {
-	org.lgna.croquet.Operation[] getUploadOperations();
+	org.lgna.croquet.Operation[] createUploadOperations( ProjectDocumentFrame projectDocumentFrame );
 
 	org.lgna.issue.IssueReportingHub getIssueReportingHub();
 }

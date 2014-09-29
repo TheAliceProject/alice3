@@ -42,15 +42,20 @@
  */
 package org.lgna.story.resources;
 
+import org.lgna.project.annotations.FieldTemplate;
+import org.lgna.project.annotations.Visibility;
+
 /**
  * @author Alice Build
  */
 public interface AutomobileResource extends TransportResource {
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public static final JointId ROOT = new JointId( null, AutomobileResource.class );
 	public static final JointId BACK_WHEELS = new JointId( ROOT, AutomobileResource.class );
 	public static final JointId FRONT_RIGHT_WHEEL = new JointId( ROOT, AutomobileResource.class );
 	public static final JointId FRONT_LEFT_WHEEL = new JointId( ROOT, AutomobileResource.class );
 
+	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
 	public static final JointId[] JOINT_ID_ROOTS = { ROOT };
 
 }

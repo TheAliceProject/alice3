@@ -48,10 +48,12 @@ package org.alice.stageide.apis.org.lgna.story.codecs;
  */
 public enum KeyCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.Key> {
 	SINGLETON;
+	@Override
 	public Class<org.lgna.story.Key> getValueClass() {
 		return org.lgna.story.Key.class;
 	}
 
+	@Override
 	public org.lgna.story.Key decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
@@ -62,6 +64,7 @@ public enum KeyCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.Key> {
 		}
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.Key value ) {
 		if( value != null ) {
 			binaryEncoder.encode( true );
@@ -71,6 +74,7 @@ public enum KeyCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.Key> {
 		}
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, org.lgna.story.Key value ) {
 		sb.append( value );
 	}

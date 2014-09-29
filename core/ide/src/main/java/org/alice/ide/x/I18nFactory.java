@@ -49,8 +49,6 @@ package org.alice.ide.x;
 public abstract class I18nFactory {
 	protected abstract org.lgna.croquet.views.SwingComponentView<?> createGetsComponent( boolean isTowardLeadingEdge );
 
-	protected abstract org.lgna.croquet.views.SwingComponentView<?> createTypeComponent( org.lgna.project.ast.AbstractType<?, ?, ?> type );
-
 	protected abstract org.lgna.croquet.views.SwingComponentView<?> createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty<?> property, int underscoreCount );
 
 	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.GetsChunk getsChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
@@ -75,43 +73,7 @@ public abstract class I18nFactory {
 		}
 	}
 
-	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		String methodName = methodInvocationChunk.getMethodName();
-		org.lgna.croquet.views.SwingComponentView<?> rv;
-		if( ( owner instanceof org.lgna.project.ast.AbstractDeclaration ) && methodName.equals( "getName" ) ) {
-			org.lgna.project.ast.AbstractDeclaration declaration = (org.lgna.project.ast.AbstractDeclaration)owner;
-			org.alice.ide.ast.components.DeclarationNameLabel label = new org.alice.ide.ast.components.DeclarationNameLabel( declaration );
-			if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
-				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
-				if( method.getReturnType() == org.lgna.project.ast.JavaType.VOID_TYPE ) {
-					label.scaleFont( 1.1f );
-					label.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-				}
-			}
-			rv = label;
-		} else if( ( owner instanceof org.lgna.project.ast.SimpleArgument ) && methodName.equals( "getParameterNameText" ) ) {
-			org.lgna.project.ast.SimpleArgument argument = (org.lgna.project.ast.SimpleArgument)owner;
-			rv = new org.alice.ide.ast.components.DeclarationNameLabel( argument.parameter.getValue() );
-		} else if( ( owner instanceof org.lgna.project.ast.AbstractConstructor ) && methodName.equals( "getDeclaringType" ) ) {
-			org.lgna.project.ast.AbstractConstructor constructor = (org.lgna.project.ast.AbstractConstructor)owner;
-			rv = this.createTypeComponent( constructor.getDeclaringType() );
-		} else {
-			java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( owner.getClass(), methodName );
-			Object o = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( owner, mthd );
-			String s;
-			if( o != null ) {
-				if( o instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-					s = ( (org.lgna.project.ast.AbstractType<?, ?, ?>)o ).getName();
-				} else {
-					s = o.toString();
-				}
-			} else {
-				s = null;
-			}
-			rv = new org.lgna.croquet.views.Label( s );
-		}
-		return rv;
-	}
+	protected abstract org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner );
 
 	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.Chunk chunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		if( chunk instanceof org.alice.ide.i18n.TextChunk ) {
@@ -141,7 +103,7 @@ public abstract class I18nFactory {
 				rv.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( indentCount * this.getPixelsPerIndent() ) );
 			}
 			for( org.alice.ide.i18n.Chunk chunk : chunks ) {
-				org.lgna.croquet.views.AwtComponentView<?> component = createComponent( chunk, owner );
+				org.lgna.croquet.views.SwingComponentView<?> component = createComponent( chunk, owner );
 				assert component != null : chunk.toString();
 				//				rv.setAlignmentY( 0.5f );
 				rv.addComponent( component );

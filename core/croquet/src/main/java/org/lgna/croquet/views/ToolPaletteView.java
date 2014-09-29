@@ -51,10 +51,12 @@ class ToolPaletteLayout implements java.awt.LayoutManager {
 		this.buttonModel = buttonModel;
 	}
 
+	@Override
 	public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
 		return new java.awt.Dimension( 0, 0 );
 	}
 
+	@Override
 	public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
 		java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
 		if( this.pageStartComponent != null ) {
@@ -72,6 +74,7 @@ class ToolPaletteLayout implements java.awt.LayoutManager {
 		return rv;
 	}
 
+	@Override
 	public void layoutContainer( java.awt.Container parent ) {
 		java.awt.Dimension parentSize = parent.getSize();
 		int y = 0;
@@ -89,6 +92,7 @@ class ToolPaletteLayout implements java.awt.LayoutManager {
 		}
 	}
 
+	@Override
 	public void addLayoutComponent( String name, java.awt.Component comp ) {
 		if( java.awt.BorderLayout.PAGE_START.equals( name ) ) {
 			this.pageStartComponent = comp;
@@ -99,6 +103,7 @@ class ToolPaletteLayout implements java.awt.LayoutManager {
 		}
 	}
 
+	@Override
 	public void removeLayoutComponent( java.awt.Component comp ) {
 		if( this.pageStartComponent == comp ) {
 			this.pageStartComponent = null;
@@ -115,6 +120,7 @@ class ToolPaletteLayout implements java.awt.LayoutManager {
  */
 public final class ToolPaletteView extends Panel {
 	private final org.lgna.croquet.event.ValueListener<Boolean> isCoreShowingListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			ToolPaletteView.this.revalidateAndRepaint();
 		}
@@ -132,7 +138,7 @@ public final class ToolPaletteView extends Panel {
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite)this.getComposite();
-		return new ToolPaletteLayout( composite.getIsExpandedState().getSwingModel().getButtonModel() );
+		return new ToolPaletteLayout( composite.getIsExpandedState().getImp().getSwingModel().getButtonModel() );
 	}
 
 	@Override

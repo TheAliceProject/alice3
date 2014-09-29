@@ -119,6 +119,9 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		if( this.declaration instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.declaration;
 			code = method.generateJavaCode( javaCodeGenerator );
+		} else if( this.declaration instanceof org.lgna.project.ast.UserConstructor ) {
+			org.lgna.project.ast.UserConstructor constructor = (org.lgna.project.ast.UserConstructor)this.declaration;
+			code = constructor.generateJavaCode( javaCodeGenerator );
 		} else if( this.declaration instanceof org.lgna.project.ast.NamedUserType ) {
 			org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)this.declaration;
 			code = type.generateJavaCode( javaCodeGenerator );
@@ -170,15 +173,19 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 	}
 
 	private final org.lgna.croquet.undo.event.HistoryListener historyListener = new org.lgna.croquet.undo.event.HistoryListener() {
+		@Override
 		public void clearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 		}
 
+		@Override
 		public void cleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 		}
 
+		@Override
 		public void insertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 		}
 
+		@Override
 		public void insertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 			//check not necessary
 			//if( e.getTypedSource().getGroup() == org.alice.ide.IDE.PROJECT_GROUP ) {
@@ -186,14 +193,17 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 			//}
 		}
 
+		@Override
 		public void operationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 		}
 
+		@Override
 		public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 		}
 	};
 
 	private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+		@Override
 		public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
 			if( e.isControlDown() ) {
@@ -207,9 +217,11 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		}
 	};
 	private final java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {
+		@Override
 		public void keyPressed( java.awt.event.KeyEvent e ) {
 		}
 
+		@Override
 		public void keyReleased( java.awt.event.KeyEvent e ) {
 			int keyCode = e.getKeyCode();
 			switch( keyCode ) {
@@ -232,13 +244,14 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 			}
 		}
 
+		@Override
 		public void keyTyped( java.awt.event.KeyEvent e ) {
 		}
 	};
 
 	private org.lgna.croquet.undo.UndoHistory undoHistory;
 	private org.lgna.project.ast.AbstractDeclaration declaration;
-	private int fontSize = 14;
+	private int fontSize = edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.getDefaultFontSize();
 
 	private boolean isLambdaSupported = true;
 }

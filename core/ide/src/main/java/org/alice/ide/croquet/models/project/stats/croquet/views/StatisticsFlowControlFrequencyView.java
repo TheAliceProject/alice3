@@ -224,6 +224,7 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 			return ( (StatisticsFlowControlFrequencyComposite)getComposite() ).getCount( method, cls );
 		}
 
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.UserMethod> e ) {
 			update( e.getNextValue() );
 		}

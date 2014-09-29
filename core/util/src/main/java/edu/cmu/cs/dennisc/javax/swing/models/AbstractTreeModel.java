@@ -48,10 +48,12 @@ package edu.cmu.cs.dennisc.javax.swing.models;
 public abstract class AbstractTreeModel<E> implements TreeModel<E> {
 	private java.util.List<javax.swing.event.TreeModelListener> treeModelListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
+	@Override
 	public void addTreeModelListener( javax.swing.event.TreeModelListener treeModelListener ) {
 		this.treeModelListeners.add( 0, treeModelListener );
 	}
 
+	@Override
 	public void removeTreeModelListener( javax.swing.event.TreeModelListener treeModelListener ) {
 		this.treeModelListeners.remove( treeModelListener );
 	}
@@ -84,6 +86,7 @@ public abstract class AbstractTreeModel<E> implements TreeModel<E> {
 		}
 	}
 
+	@Override
 	public void valueForPathChanged( javax.swing.tree.TreePath path, Object newValue ) {
 		throw new RuntimeException( "todo" );
 	}

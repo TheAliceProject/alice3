@@ -51,5 +51,6 @@ import org.lgna.project.ast.UserParameter;
 public class TypedParameterPane extends org.alice.ide.common.TypedDeclarationPane {
 	public TypedParameterPane( NodeListProperty<UserParameter> parametersProperty, org.lgna.project.ast.UserParameter parameter ) {
 		super( org.alice.ide.common.TypeComponent.createInstance( parameter.getValueType() ), new org.alice.ide.common.ParameterPane( parametersProperty, parameter ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 }

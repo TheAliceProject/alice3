@@ -116,7 +116,7 @@ public abstract class AbstractCameraAdapter<E extends edu.cmu.cs.dennisc.scenegr
 		}
 	}
 
-	public void postRender( RenderContext rc, int width, int height, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, edu.cmu.cs.dennisc.lookingglass.Graphics2D g2 ) {
+	public void postRender( RenderContext rc, int width, int height, AbstractLookingGlass lookingGlass, edu.cmu.cs.dennisc.renderer.Graphics2D g2 ) {
 		if( this.m_layerAdapters != null ) {
 			java.awt.Rectangle actualViewport = getActualViewport( new java.awt.Rectangle(), width, height );
 			for( LayerAdapter layerAdapter : this.m_layerAdapters ) {

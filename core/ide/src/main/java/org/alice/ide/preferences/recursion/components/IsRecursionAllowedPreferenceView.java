@@ -97,6 +97,7 @@ public class IsRecursionAllowedPreferenceView extends org.lgna.croquet.views.Bor
 		}
 
 		private org.lgna.croquet.event.ValueListener<Boolean> valueObserver = new org.lgna.croquet.event.ValueListener<Boolean>() {
+			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 				Boolean nextValue = e.getNextValue();
 				if( nextValue ) {

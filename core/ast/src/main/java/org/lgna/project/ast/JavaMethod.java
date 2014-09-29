@@ -52,6 +52,7 @@ public class JavaMethod extends AbstractMethod {
 	public static JavaMethod getInstance( MethodReflectionProxy methodReflectionProxy ) {
 		if( methodReflectionProxy != null ) {
 			return mapReflectionProxyToInstance.getInitializingIfAbsent( methodReflectionProxy, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<MethodReflectionProxy, JavaMethod>() {
+				@Override
 				public org.lgna.project.ast.JavaMethod initialize( org.lgna.project.ast.MethodReflectionProxy key ) {
 					return new JavaMethod( key );
 				}
@@ -109,6 +110,7 @@ public class JavaMethod extends AbstractMethod {
 		return null;
 	}
 
+	@Override
 	public JavaType getReturnType() {
 		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		if( mthd != null ) {
@@ -118,10 +120,12 @@ public class JavaMethod extends AbstractMethod {
 		}
 	}
 
+	@Override
 	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
 		return this.requiredParameters;
 	}
 
+	@Override
 	public JavaMethodParameter getKeyedParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
@@ -134,6 +138,7 @@ public class JavaMethod extends AbstractMethod {
 		}
 	}
 
+	@Override
 	public JavaMethodParameter getVariableLengthParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
@@ -256,6 +261,11 @@ public class JavaMethod extends AbstractMethod {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean isUserAuthored() {
+		return false;
 	}
 
 	private final MethodReflectionProxy methodReflectionProxy;

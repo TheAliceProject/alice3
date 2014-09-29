@@ -1,6 +1,7 @@
 package org.lgna.story.resourceutilities;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class ModelResourceTree {
 	private Map<Object, ModelResourceTreeNode> resourceClassToNodeMap = new HashMap<Object, ModelResourceTreeNode>();
 
 	private final ModelResourceTreeNode galleryTree;
+	private List<ModelResourceTreeNode> smodelBasedClasses = new ArrayList<ModelResourceTreeNode>();
 
 	public ModelResourceTree( List<Class<? extends org.lgna.story.resources.ModelResource>> classes )
 	{
@@ -30,6 +32,10 @@ public class ModelResourceTree {
 	public ModelResourceTreeNode getTree()
 	{
 		return this.galleryTree;
+	}
+
+	public List<ModelResourceTreeNode> getSModelBasedNodes() {
+		return this.smodelBasedClasses;
 	}
 
 	public List<ModelResourceTreeNode> getRootNodes()
@@ -91,44 +97,35 @@ public class ModelResourceTree {
 			//Build a new ModelResourceTreeNode for the current class
 			if( classNode == null )
 			{
+
 				NamedUserType aliceType = null;
 				String aliceClassName = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getAliceClassName( currentClass );
 				UserPackage packageName = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getAlicePackage( currentClass, rootClass );
+
 				UserMethod[] noMethods = {};
 				UserField[] noFields = {};
 				Field[] resourceConstants = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getFieldsOfType( currentClass, org.lgna.story.resources.ModelResource.class );
-				Field[] jointFields = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getFieldsOfType( currentClass, org.lgna.story.resources.JointId.class );
+				Class<? extends org.lgna.story.SModel> modelClass = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getModelClassForResourceClass( currentClass );
 				org.lgna.project.ast.AbstractType parentType = null;
-				ConstructorParameterPair parentConstructorAndParameter = null;
 				if( ( parentNode == null ) || ( parentNode.getUserType() == null ) )
 				{
-					Class<? extends org.lgna.story.SModel> parentClass = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getModelClassForResourceClass( currentClass );
-					parentType = JavaType.getInstance( parentClass );
-					parentConstructorAndParameter = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getConstructorAndParameterForJavaClass( parentClass );
+					parentType = JavaType.getInstance( modelClass );
 				}
 				else
 				{
 					parentType = parentNode.getUserType();
-					parentConstructorAndParameter = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getConstructorAndParameterForAliceClass( parentNode.getUserType() );
 				}
-				NamedUserConstructor constructor = org.lgna.story.implementation.alice.AliceResourceClassUtilities.createConstructorForResourceClass( currentClass, parentConstructorAndParameter );
-				NamedUserConstructor[] constructors = { constructor };
-				UserMethod[] methods = null;
-				if( ( resourceConstants.length != 0 ) && ( jointFields.length != 0 ) )
-				{
-					methods = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getPartAccessorMethods( currentClass );
-				}
-				else
-				{
-					methods = noMethods;
-				}
-				aliceType = new NamedUserType( aliceClassName, packageName, parentType, constructors, noMethods, noFields );
+				NamedUserConstructor[] noConstructors = {};
+				aliceType = new NamedUserType( aliceClassName, packageName, parentType, noConstructors, noMethods, noFields );
 
-				classNode = new ModelResourceTreeNode( aliceType, currentClass );
+				classNode = new ModelResourceTreeNode( aliceType, currentClass, modelClass );
 				resourceClassToNodeMap.put( currentClass, classNode );
 				if( root == null ) //if the root node passed in is null, assign it to be the node from the first class we process
 				{
 					root = classNode;
+				}
+				if( classNode.hasModelClass() ) {
+					this.smodelBasedClasses.add( classNode );
 				}
 				if( resourceConstants.length != 0 )
 				{
@@ -136,12 +133,8 @@ public class ModelResourceTree {
 					{
 						String fieldClassName = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getClassNameFromName( f.getName() ) + aliceClassName;
 						NamedUserType subParentType = classNode.getUserType();
-						ConstructorParameterPair subParentConstructorAndParameter = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getConstructorAndParameterForAliceClass( subParentType );
-						NamedUserConstructor subConstructor = org.lgna.story.implementation.alice.AliceResourceClassUtilities.createConstructorForResourceField( f, subParentConstructorAndParameter );
-						NamedUserConstructor[] subConstructors = { subConstructor };
-
-						NamedUserType fieldType = new NamedUserType( fieldClassName, packageName, subParentType, subConstructors, noMethods, noFields );
-						ModelResourceTreeNode fieldNode = new ModelResourceTreeNode( fieldType, currentClass );
+						NamedUserType fieldType = new NamedUserType( fieldClassName, packageName, subParentType, noConstructors, noMethods, noFields );
+						ModelResourceTreeNode fieldNode = new ModelResourceTreeNode( fieldType, currentClass, null );
 						try
 						{
 							ModelResource resource = (ModelResource)f.get( null );
@@ -166,7 +159,7 @@ public class ModelResourceTree {
 
 	private ModelResourceTreeNode createClassTree( List<Class<? extends org.lgna.story.resources.ModelResource>> classes )
 	{
-		ModelResourceTreeNode topNode = new ModelResourceTreeNode( null, null );
+		ModelResourceTreeNode topNode = new ModelResourceTreeNode( null, null, null );
 
 		for( Class<? extends org.lgna.story.resources.ModelResource> cls : classes )
 		{
@@ -176,8 +169,8 @@ public class ModelResourceTree {
 			while( currentClass != null )
 			{
 				classStack.push( currentClass );
-				Class<? extends org.lgna.story.SModel> modelClass = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getModelClassForResourceClass( currentClass );
-				if( modelClass != null )
+				boolean isTopLevelResource = org.lgna.story.implementation.alice.AliceResourceClassUtilities.isTopLevelResource( currentClass );
+				if( isTopLevelResource )
 				{
 					break;
 				}

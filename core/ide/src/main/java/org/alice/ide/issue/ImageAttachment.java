@@ -54,14 +54,17 @@ public class ImageAttachment implements edu.cmu.cs.dennisc.issue.Attachment {
 		this.fileName = baseName + ".png";
 	}
 
+	@Override
 	public byte[] getBytes() {
 		return this.bytes;
 	}
 
+	@Override
 	public String getMIMEType() {
 		return "image/png";
 	}
 
+	@Override
 	public String getFileName() {
 		return this.fileName;
 	}

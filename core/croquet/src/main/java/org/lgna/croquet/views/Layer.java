@@ -51,15 +51,19 @@ public final class Layer {
 	private final Integer id;
 	private SwingComponentView<?> component;
 	private final java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
+		@Override
 		public void componentShown( java.awt.event.ComponentEvent e ) {
 		}
 
+		@Override
 		public void componentHidden( java.awt.event.ComponentEvent e ) {
 		}
 
+		@Override
 		public void componentMoved( java.awt.event.ComponentEvent e ) {
 		}
 
+		@Override
 		public void componentResized( java.awt.event.ComponentEvent e ) {
 			Layer.this.updateComponentSize();
 		}

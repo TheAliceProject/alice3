@@ -154,6 +154,7 @@ public class TypeIcon implements javax.swing.Icon {
 		return insets.top + insets.bottom + (int)bounds.getHeight();
 	}
 
+	@Override
 	public int getIconWidth() {
 		int rv = this.getBorderWidth();
 		if( this.isIndentForDepthAndMemberCountTextDesired ) {
@@ -170,10 +171,12 @@ public class TypeIcon implements javax.swing.Icon {
 		return rv;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return this.getBorderHeight();
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;

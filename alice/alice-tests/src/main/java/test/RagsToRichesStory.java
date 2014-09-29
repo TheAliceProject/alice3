@@ -240,6 +240,7 @@ class SnowScene extends SScene {
 
 	private void performInitializeEvents() {
 		this.addSceneActivationListener( new SceneActivationListener() {
+			@Override
 			public void sceneActivated( SceneActivationEvent e ) {
 			}
 		} );
@@ -247,6 +248,7 @@ class SnowScene extends SScene {
 		SThing[] groupTwo = { susan };
 		this.addMouseClickOnObjectListener( new MouseClickOnObjectListener() {
 
+			@Override
 			public void mouseClicked( MouseClickOnObjectEvent e ) {
 				e.getModelAtMouseLocation().move( MoveDirection.UP, 1 );
 				e.getModelAtMouseLocation().move( MoveDirection.DOWN, 1 );
@@ -254,6 +256,7 @@ class SnowScene extends SScene {
 		} );
 		this.addCollisionStartListener( new CollisionStartListener() {
 
+			@Override
 			public void collisionStarted( StartCollisionEvent e ) {
 				System.out.println( e.getModels()[ 0 ] );
 				System.out.println( e.getModels()[ 1 ] );
@@ -261,6 +264,7 @@ class SnowScene extends SScene {
 		}, groupOne, groupTwo );
 		this.addKeyPressListener( new KeyPressListener() {
 
+			@Override
 			public void keyPressed( KeyEvent e ) {
 				susan.turn( TurnDirection.RIGHT, .1, new Duration( .1 ) );
 			}
@@ -280,14 +284,17 @@ class SnowScene extends SScene {
 			//			this.armoire.setResource(org.lgna.story.resources.prop.ArmoireResource.LOFT_BLACK_TRIM);
 			this.ogre.getRightShoulder().turn( TurnDirection.LEFT, 0.25 );
 			org.lgna.common.ThreadUtilities.doTogether( new Runnable() {
+				@Override
 				public void run() {
 					SnowScene.this.redCone.move( MoveDirection.UP, 1.0 );
 				}
 			}, new Runnable() {
+				@Override
 				public void run() {
 					SnowScene.this.greenCone.move( MoveDirection.UP, 1.0 );
 				}
 			}, new Runnable() {
+				@Override
 				public void run() {
 					SnowScene.this.blueCone.move( MoveDirection.UP, 1.0 );
 				}
@@ -340,7 +347,7 @@ class RagsToRichesStory extends SProgram {
 			@Override
 			public void run() {
 				ThreadUtilities.sleep( 250 );
-				Component awtComponent = EmployeesOnly.getImplementation( ragsToRichesStory ).getOnscreenLookingGlass().getAWTComponent();
+				Component awtComponent = EmployeesOnly.getImplementation( ragsToRichesStory ).getOnscreenRenderTarget().getAwtComponent();
 				edu.cmu.cs.dennisc.java.awt.ComponentUtilities.getRootFrame( awtComponent ).setSize( 1024, 768 );
 			}
 		}.start();

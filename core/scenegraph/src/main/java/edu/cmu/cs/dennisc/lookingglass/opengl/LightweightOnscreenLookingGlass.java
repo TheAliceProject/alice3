@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass {
+class LightweightOnscreenLookingGlass extends OnscreenLookingGlass<javax.swing.JPanel> implements edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget {
 	class RenderPane extends /* edu.cmu.cs.dennisc. */javax.media.opengl.awt.GLJPanel {
 
 		private Throwable prevThrowable = null;
@@ -89,7 +89,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 		@Override
 		protected void paintComponent( java.awt.Graphics g ) {
 			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
-				if( LightweightOnscreenLookingGlass.this.getCameraCount() > 0 ) {
+				if( LightweightOnscreenLookingGlass.this.getSgCameraCount() > 0 ) {
 					try {
 						super.paintComponent( g );
 						this.prevThrowable = null;
@@ -127,18 +127,17 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 		this.glPanel.setFocusable( true );
 	}
 
-	public javax.swing.JPanel getJPanel() {
+	@Override
+	public javax.swing.JPanel getAwtComponent() {
 		return this.glPanel;
 	}
 
-	public java.awt.Component getAWTComponent() {
-		return getJPanel();
-	}
-
-	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
+	@Override
+	protected java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		return this.glPanel.getSize( rv );
 	}
 
+	@Override
 	public void repaint() {
 		this.glPanel.repaint();
 	}

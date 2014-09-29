@@ -53,7 +53,27 @@ public class HighlightStencil extends org.lgna.croquet.views.LayerStencil {
 	private static final org.lgna.stencil.Painter GLOW_PAINTER = new org.lgna.stencil.GlowPainter( new java.awt.Color( 255, 255, 0, 23 ) );
 	private static final org.lgna.stencil.Painter OUTLINE_PAINTER = new org.lgna.stencil.BasicPainter( new java.awt.BasicStroke( 2.0f ), java.awt.Color.RED );
 
-	private static java.awt.Paint createStencilPaint() {
+	private final java.awt.event.AWTEventListener awtEventListener = new java.awt.event.AWTEventListener() {
+		@Override
+		public void eventDispatched( java.awt.AWTEvent event ) {
+			java.awt.event.MouseEvent e = (java.awt.event.MouseEvent)event;
+			if( e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
+				HighlightStencil.this.hide();
+			}
+		}
+	};
+
+	private final java.awt.Paint stencilPaint = this.createStencilPaint();
+	private final org.lgna.cheshire.simple.ScrollRenderer scrollRenderer = new org.lgna.cheshire.simple.SimpleScrollRenderer();
+	private final org.lgna.stencil.Note note = new org.lgna.stencil.Note();
+
+	public HighlightStencil( org.lgna.croquet.views.AbstractWindow<?> window, Integer layerId ) {
+		super( window, layerId );
+		this.note.setActive( true );
+		this.internalAddComponent( this.note );
+	}
+
+	protected java.awt.Paint createStencilPaint() {
 		int width = 8;
 		int height = 8;
 		java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
@@ -66,26 +86,6 @@ public class HighlightStencil extends org.lgna.croquet.views.LayerStencil {
 		g2.fillRect( 0, 0, 1, 1 );
 		g2.dispose();
 		return new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
-	}
-
-	private static final java.awt.Paint stencilPaint = createStencilPaint();
-
-	private final java.awt.event.AWTEventListener awtEventListener = new java.awt.event.AWTEventListener() {
-		public void eventDispatched( java.awt.AWTEvent event ) {
-			java.awt.event.MouseEvent e = (java.awt.event.MouseEvent)event;
-			if( e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
-				HighlightStencil.this.hide();
-			}
-		}
-	};
-
-	private final org.lgna.cheshire.simple.ScrollRenderer scrollRenderer = new org.lgna.cheshire.simple.SimpleScrollRenderer();
-	private final org.lgna.stencil.Note note = new org.lgna.stencil.Note();
-
-	public HighlightStencil( org.lgna.croquet.views.AbstractWindow<?> window, Integer layerId ) {
-		super( window, layerId );
-		this.note.setActive( true );
-		this.internalAddComponent( this.note );
 	}
 
 	@Override
@@ -175,6 +175,7 @@ public class HighlightStencil extends org.lgna.croquet.views.LayerStencil {
 
 	private static final javax.swing.KeyStroke HIDE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ESCAPE, 0 );
 	private java.awt.event.ActionListener hideAction = new java.awt.event.ActionListener() {
+		@Override
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			hide();
 		}

@@ -67,14 +67,14 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 /**
  * @author Matt May
  */
-public class OcclusionHandler extends TransformationChangedHandler<Object, OcclusionEvent> {
+public class OcclusionHandler extends AbstractBinaryEventHandler<Object, OcclusionEvent> {
 
 	private final OcclusionEventHandler occlusionEventHandler = new OcclusionEventHandler();
 	private CameraImp<?> camera;
 
-	public void addOcclusionEvent( Object occlusionEventListener, List<SModel> groupOne, List<SModel> groupTwo ) {
+	public void addOcclusionEvent( Object occlusionEventListener, List<SModel> groupOne, List<SModel> groupTwo, MultipleEventPolicy policy ) {
 		registerIsFiringMap( occlusionEventListener );
-		registerPolicyMap( occlusionEventListener, MultipleEventPolicy.IGNORE );
+		registerPolicyMap( occlusionEventListener, policy );
 		List<SModel> allObserving = Lists.newCopyOnWriteArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		if( ( groupOne.size() > 0 ) && ( groupOne.get( 0 ) != null ) && ( camera == null ) ) {
@@ -133,9 +133,9 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 									models.add( m );
 								}
 								if( occList instanceof OcclusionStartListener ) {
-									fireEvent( occList, new StartOcclusionEvent( models.get( 0 ), models.get( models.size() - 1 ) ) );
+									fireEvent( occList, new StartOcclusionEvent( models.get( 0 ), models.get( models.size() - 1 ) ), models.get( 0 ), models.get( 1 ) );
 								} else if( occList instanceof OcclusionEndListener ) {
-									fireEvent( occList, new EndOcclusionEvent( models.get( 0 ), models.get( models.size() - 1 ) ) );
+									fireEvent( occList, new EndOcclusionEvent( models.get( 0 ), models.get( models.size() - 1 ) ), models.get( 0 ), models.get( 1 ) );
 								}
 							} else {
 
@@ -159,9 +159,9 @@ public class OcclusionHandler extends TransformationChangedHandler<Object, Occlu
 								models.add( m );
 							}
 							if( occList instanceof OcclusionStartListener ) {
-								fireEvent( occList, new StartOcclusionEvent( models.get( 0 ), models.get( models.size() - 1 ) ) );
+								fireEvent( occList, new StartOcclusionEvent( models.get( 0 ), models.get( models.size() - 1 ) ), models.get( 0 ), models.get( 1 ) );
 							} else if( occList instanceof OcclusionEndListener ) {
-								fireEvent( occList, new EndOcclusionEvent( models.get( 0 ), models.get( models.size() - 1 ) ) );
+								fireEvent( occList, new EndOcclusionEvent( models.get( 0 ), models.get( models.size() - 1 ) ), models.get( 0 ), models.get( 1 ) );
 							}
 						}
 					}

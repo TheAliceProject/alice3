@@ -83,6 +83,7 @@ public class LocaleState extends org.lgna.croquet.preferences.PreferenceMutableD
 				new java.util.Locale( "zh", "TW" ),
 				new java.util.Locale( "ko" ) );
 		this.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
+			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
 				org.alice.ide.croquet.models.information.RestartRequiredOperation.getInstance().fire();
 			}

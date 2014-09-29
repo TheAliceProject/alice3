@@ -73,16 +73,19 @@ public final class SingletonResolver<T> implements Resolver<T> {
 		}
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		Class<T> cls = (Class<T>)this.instance.getClass();
 		String clsName = cls.getName();
 		binaryEncoder.encode( clsName );
 	}
 
+	@Override
 	public T getResolved() {
 		return this.instance;
 	}
 
+	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 	}
 }

@@ -76,10 +76,12 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 		this.setContent( contentType, data );
 	}
 
+	@Override
 	public String getName() {
 		return this.name;
 	}
 
+	@Override
 	public void setName( String name ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.name, name ) ) {
 			edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent = new edu.cmu.cs.dennisc.pattern.event.NameEvent( this, name );
@@ -93,16 +95,19 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 		}
 	}
 
+	@Override
 	public void addNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener ) {
 		assert nameListener != null;
 		this.nameListeners.add( nameListener );
 	}
 
+	@Override
 	public void removeNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener ) {
 		assert nameListener != null;
 		this.nameListeners.remove( nameListener );
 	}
 
+	@Override
 	public Iterable<edu.cmu.cs.dennisc.pattern.event.NameListener> getNameListeners() {
 		return this.nameListeners;
 	}

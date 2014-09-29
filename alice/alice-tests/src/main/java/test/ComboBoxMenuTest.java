@@ -58,6 +58,7 @@ public class ComboBoxMenuTest {
 		javax.swing.JComboBox jComboBox = new javax.swing.JComboBox( model );
 
 		javax.swing.Action action = new javax.swing.AbstractAction() {
+			@Override
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				System.out.println( e );
 			}
@@ -69,6 +70,7 @@ public class ComboBoxMenuTest {
 				.center( new org.lgna.croquet.views.SwingAdapter( new javax.swing.JButton( action ) ) )
 				.build();
 		class ListCellRenderer implements javax.swing.ListCellRenderer {
+			@Override
 			public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 				label.setText( (String)value );
 				return borderPanel.getAwtComponent();

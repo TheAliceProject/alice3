@@ -29,11 +29,13 @@ public enum FemaleTeenHairFrenchBraid implements FemaleTeenHair {
 	BLOND,
 	BROWN;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

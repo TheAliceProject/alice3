@@ -64,6 +64,7 @@ public abstract class SimpleTabComposite<V extends org.lgna.croquet.views.Compos
 		this.isCloseable = isCloseable;
 	}
 
+	@Override
 	public final boolean isCloseable() {
 		return this.isCloseable.value;
 	}

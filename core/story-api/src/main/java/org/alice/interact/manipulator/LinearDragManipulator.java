@@ -55,7 +55,6 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearDragHandle;
 
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -68,11 +67,13 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 /**
  * @author David Culyba
  */
-public class LinearDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
+public class LinearDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnscreenPicturePlaneInformedManipulator {
+	@Override
 	public AbstractCamera getCamera() {
 		return this.camera;
 	}
 
+	@Override
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
 		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) ) {
@@ -80,20 +81,24 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 		}
 	}
 
+	@Override
 	public void setDesiredCameraView( CameraView cameraView ) {
 		//this can only be ACTIVE_VIEW
 	}
 
+	@Override
 	public CameraView getDesiredCameraView() {
 		return CameraView.PICK_CAMERA;
 	}
 
-	public OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
+	@Override
+	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
-		this.onscreenLookingGlass = lookingGlass;
+	@Override
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
 	@Override
@@ -115,7 +120,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	}
 
 	protected double getDistanceAlongAxisBasedOnMouse( Point mouseLocation ) {
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if( pickRay != null ) {
 			Vector3 cameraBack = this.getCamera().getAbsoluteTransformation().orientation.backward;
 			double axisCameraDot = Vector3.calculateDotProduct( this.absoluteDragAxis, cameraBack );
@@ -262,5 +267,5 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	private Plane cameraFacingPlane;
 	private Plane handleAlignedPlane;
 	private AbstractCamera camera = null;
-	private OnscreenLookingGlass onscreenLookingGlass = null;
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
 }

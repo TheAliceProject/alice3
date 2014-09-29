@@ -43,7 +43,6 @@
 
 package org.alice.stageide.sceneeditor.interact.manipulators;
 
-import java.awt.Dimension;
 import java.awt.Point;
 
 import org.alice.interact.InputState;
@@ -87,6 +86,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		this.sgBoundingBoxDecorator.setParent( this.sgDecoratorOffsetTransformable );
 	}
 
+	@Override
 	public AffineMatrix4x4 getTargetTransformation() {
 		return this.sgBoundingBoxOffsetTransformable.getAbsoluteTransformation();
 	}
@@ -118,8 +118,8 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		double dotProd = Vector3.calculateDotProduct( cameraTransform.orientation.up, Vector3.accessPositiveYAxis() );
 		if( ( dotProd == 1 ) || ( dotProd == -1 ) ) {
 			Point3 cameraPosition = orthoCamera.getAbsoluteTransformation().translation;
-			ClippedZPlane dummyPlane = new ClippedZPlane( orthoCamera.picturePlane.getValue(), this.onscreenLookingGlass.getActualViewport( orthoCamera ) );
-			double yRatio = this.onscreenLookingGlass.getHeight() / dummyPlane.getHeight();
+			ClippedZPlane dummyPlane = new ClippedZPlane( orthoCamera.picturePlane.getValue(), this.onscreenRenderTarget.getActualViewport( orthoCamera ) );
+			double yRatio = this.onscreenRenderTarget.getHeight() / dummyPlane.getHeight();
 			double horizonInCameraSpace = 0.0d - cameraPosition.y;
 			double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
 			int horizonLinePixelVal = (int)( yRatio * distanceFromMaxY );
@@ -131,8 +131,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 	private boolean isHorizonInView() {
 		assert this.camera instanceof OrthographicCamera;
 		int horizonLinePixelVal = this.getHorizonPixelLocation();
-		Dimension lookingGlassSize = this.onscreenLookingGlass.getSize();
-		double lookingGlassHeight = lookingGlassSize.getHeight();
+		double lookingGlassHeight = this.onscreenRenderTarget.getHeight();
 		if( ( horizonLinePixelVal >= 0 ) && ( horizonLinePixelVal <= lookingGlassHeight ) ) {
 			return true;
 		}
@@ -141,7 +140,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 
 	@Override
 	protected Point3 getOthographicMovementVector( InputState currentInput, InputState previousInput ) {
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
 		Point3 pickPoint = PlaneUtilities.getPointInPlane( this.orthographicPickPlane, pickRay );
 		if( isHorizonInView() ) {
 			pickPoint.y = 0;

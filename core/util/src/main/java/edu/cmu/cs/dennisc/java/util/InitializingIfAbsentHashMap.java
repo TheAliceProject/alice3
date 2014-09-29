@@ -46,6 +46,7 @@ package edu.cmu.cs.dennisc.java.util;
  * @author Dennis Cosgrove
  */
 public class InitializingIfAbsentHashMap<K, V> extends java.util.HashMap<K, V> implements InitializingIfAbsentMap<K, V> {
+	@Override
 	public synchronized final V getInitializingIfAbsent( K key, Initializer<K, V> initializer ) {
 		if( this.containsKey( key ) ) {
 			return this.get( key );

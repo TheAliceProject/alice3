@@ -46,4 +46,13 @@ package edu.cmu.cs.dennisc.renderer.gl;
  * @author Dennis Cosgrove
  */
 public abstract class GlOnscreenRenderTarget<C extends java.awt.Component> extends GlRenderTarget implements edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<C> {
+	@Override
+	protected void repaintIfAppropriate() {
+		this.repaint();
+	}
+
+	@Override
+	public void repaint() {
+		this.getAwtComponent().repaint();
+	}
 }

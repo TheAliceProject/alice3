@@ -59,12 +59,16 @@ public abstract class Texture extends edu.cmu.cs.dennisc.pattern.AbstractElement
 		return ( getWidth() > 0 ) && ( getHeight() > 0 );
 	}
 
+	@Override
 	public abstract int getWidth();
 
+	@Override
 	public abstract int getHeight();
 
+	@Override
 	public abstract boolean isPotentiallyAlphaBlended();
 
+	@Override
 	public abstract boolean isMipMappingDesired();
 
 	public void addTextureListener( edu.cmu.cs.dennisc.texture.event.TextureListener textureListener ) {

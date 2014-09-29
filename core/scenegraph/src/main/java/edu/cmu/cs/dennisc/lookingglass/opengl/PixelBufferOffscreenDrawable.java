@@ -47,12 +47,15 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  */
 public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 	private final javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
+		@Override
 		public void init( javax.media.opengl.GLAutoDrawable drawable ) {
 		}
 
+		@Override
 		public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
 		}
 
+		@Override
 		public void display( javax.media.opengl.GLAutoDrawable drawable ) {
 			Throwable throwable = null;
 			try {
@@ -73,6 +76,7 @@ public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 			}
 		}
 
+		@Override
 		public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
 		}
 	};

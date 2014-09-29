@@ -12,6 +12,7 @@ public class ComesIntoViewEventAdapter extends AbstractAdapter implements ViewEn
 		super( context, lambda, userInstance );
 	}
 
+	@Override
 	public void viewEntered( EnterViewEvent e ) {
 		invokeEntryPoint( e );
 	}

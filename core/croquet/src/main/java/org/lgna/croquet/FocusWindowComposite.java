@@ -49,9 +49,11 @@ public abstract class FocusWindowComposite extends AbstractComposite<org.lgna.cr
 	private class LaunchFocusWindowOperation extends Operation {
 		private final org.lgna.croquet.views.Frame window = new org.lgna.croquet.views.Frame();
 		private final java.awt.event.WindowFocusListener windowFocusListener = new java.awt.event.WindowFocusListener() {
+			@Override
 			public void windowGainedFocus( java.awt.event.WindowEvent e ) {
 			}
 
+			@Override
 			public void windowLostFocus( java.awt.event.WindowEvent e ) {
 				javax.swing.JFrame window = (javax.swing.JFrame)e.getComponent();
 				if( window.isUndecorated() ) {
@@ -62,6 +64,7 @@ public abstract class FocusWindowComposite extends AbstractComposite<org.lgna.cr
 		};
 
 		private final java.awt.event.ActionListener decoratedListener = new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				window.setUndecorated( window.isUndecorated() == false );
 			}
@@ -99,6 +102,7 @@ public abstract class FocusWindowComposite extends AbstractComposite<org.lgna.cr
 			}
 			window.setVisible( true );
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
 				public void run() {
 					window.getAwtComponent().getRootPane().requestFocus();
 				}

@@ -74,10 +74,12 @@ public abstract class AbstractArrowIcon implements javax.swing.Icon {
 		this.size = size;
 	}
 
+	@Override
 	public int getIconWidth() {
 		return this.size;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return this.size;
 	}

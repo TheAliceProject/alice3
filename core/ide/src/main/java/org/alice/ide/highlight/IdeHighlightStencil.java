@@ -53,6 +53,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 	public void showHighlightOverField( final org.lgna.project.ast.UserField field, String noteText ) {
 		if( field != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+				@Override
 				public org.lgna.croquet.views.TrackableShape getResolved() {
 					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
 					if( declarationComposite != null ) {
@@ -82,6 +83,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 	public void showHighlightOverExpression( final org.lgna.project.ast.Expression expression, String noteText ) {
 		if( expression != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+				@Override
 				public org.lgna.croquet.views.TrackableShape getResolved() {
 					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
 					if( declarationComposite != null ) {
@@ -123,6 +125,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 	public void showHighlightOverStatement( final org.lgna.project.ast.Statement statement, String message ) {
 		if( statement != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+				@Override
 				public org.lgna.croquet.views.TrackableShape getResolved() {
 					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
 					if( declarationComposite != null ) {
@@ -153,6 +156,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 	public void showHighlightOverCroquetViewController( final org.lgna.croquet.Model model, String noteText ) {
 		if( model != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+				@Override
 				public org.lgna.croquet.views.TrackableShape getResolved() {
 					org.lgna.croquet.views.AwtComponentView<?> component = org.lgna.croquet.views.ComponentManager.getFirstComponent( model );
 					if( component != null ) {
@@ -180,6 +184,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 	public void showHighlightOverStatementAndRenderWindow( final org.lgna.project.ast.Statement statement ) {
 		if( statement != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+				@Override
 				public org.lgna.croquet.views.TrackableShape getResolved() {
 					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
 					if( declarationComposite != null ) {
@@ -202,6 +207,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 					return null;
 				}
 			}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+				@Override
 				public org.lgna.croquet.views.TrackableShape getResolved() {
 					return getRenderWindow();
 				}
@@ -213,6 +219,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 
 	public void showHighlightOverCroquetViewControllerAndRenderWindow( final org.lgna.croquet.Model model ) {
 		this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+			@Override
 			public org.lgna.croquet.views.TrackableShape getResolved() {
 				org.lgna.croquet.views.AwtComponentView<?> component = org.lgna.croquet.views.ComponentManager.getFirstComponent( model );
 				if( component != null ) {
@@ -223,6 +230,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 				return component;
 			}
 		}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
+			@Override
 			public org.lgna.croquet.views.TrackableShape getResolved() {
 				return getRenderWindow();
 			}

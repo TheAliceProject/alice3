@@ -31,11 +31,13 @@ public enum FemaleAdultHairBald implements FemaleAdultHair, FemaleElderHair {
 	RED,
 	BARE;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return false;

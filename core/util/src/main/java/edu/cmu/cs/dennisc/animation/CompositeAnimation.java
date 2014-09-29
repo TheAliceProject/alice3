@@ -61,12 +61,14 @@ public abstract class CompositeAnimation implements Animation {
 		return m_animations;
 	}
 
+	@Override
 	public void reset() {
 		for( Animation animation : m_animations ) {
 			animation.reset();
 		}
 	}
 
+	@Override
 	public void complete( AnimationObserver animationObserver ) {
 		for( Animation animation : m_animations ) {
 			animation.complete( animationObserver );

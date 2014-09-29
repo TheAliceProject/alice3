@@ -48,7 +48,7 @@ package org.alice.ide.declarationseditor.code.components;
  */
 public class CodeDeclarationView extends AbstractCodeDeclarationView {
 	public CodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite ) {
-		super( composite, new org.alice.ide.codeeditor.CodeEditor( composite.getDeclaration() ) );
+		super( composite, new org.alice.ide.codeeditor.CodeEditor( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), composite.getDeclaration() ) );
 	}
 
 	@Override

@@ -47,14 +47,15 @@ package org.alice.stageide.modelviewer;
  * @author Dennis Cosgrove
  */
 abstract class Viewer extends org.lgna.croquet.views.BorderPanel {
-	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass();
+	private edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenRenderTarget();
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.lgna.story.implementation.SceneImp scene = new org.lgna.story.implementation.SceneImp( null );
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp camera = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( null );
 	private org.lgna.story.implementation.SunImp sunLight = new org.lgna.story.implementation.SunImp( null );
 
-	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+	private edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
+		@Override
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
 			animator.update();
 		}
 	};
@@ -63,17 +64,17 @@ abstract class Viewer extends org.lgna.croquet.views.BorderPanel {
 		this.camera.setVehicle( this.scene );
 		this.sunLight.setVehicle( this.scene );
 		this.sunLight.applyRotationInRevolutions( edu.cmu.cs.dennisc.math.Vector3.accessNegativeXAxis(), 0.25 );
-		this.getAwtComponent().add( this.onscreenLookingGlass.getAWTComponent(), java.awt.BorderLayout.CENTER );
+		this.getAwtComponent().add( this.onscreenRenderTarget.getAwtComponent(), java.awt.BorderLayout.CENTER );
 	}
 
 	private boolean isInitialized = false;
 
 	protected void initialize() {
-		this.onscreenLookingGlass.addCamera( this.camera.getSgCamera() );
+		this.onscreenRenderTarget.addSgCamera( this.camera.getSgCamera() );
 	}
 
-	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
+	protected edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 
 	protected org.lgna.story.implementation.SceneImp getScene() {

@@ -54,6 +54,7 @@ class ForEachRunnableAdapter<E> implements Runnable {
 		this.value = value;
 	}
 
+	@Override
 	public void run() {
 		this.forEachRunnable.run( this.value );
 	}

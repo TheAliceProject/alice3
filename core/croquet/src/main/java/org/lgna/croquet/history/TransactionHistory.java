@@ -61,6 +61,7 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 		}
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.transactions, Transaction.class ) );
 	}
@@ -114,6 +115,7 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 		this.fireChanged( e );
 	}
 
+	@Override
 	public java.util.Iterator<Transaction> iterator() {
 		return this.transactions.iterator();
 	}

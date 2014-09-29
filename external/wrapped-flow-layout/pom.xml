@@ -13,4 +13,19 @@
 	<version>1.0</version>
 	<packaging>jar</packaging>
 
+	<name>Wrapped Flow Layout</name>
+	<url>http://tips4java.wordpress.com/2008/11/06/wrap-layout/</url>
+
+	<licenses>
+		<license>
+			<name>You can use/modify the code however you wish.</name>
+			<url>http://tips4java.wordpress.com/2008/11/06/wrap-layout/#comment-1284</url>
+			<distribution>repo</distribution>
+			<!-- You can use/modify the code however you wish. -->
+		</license>
+	</licenses>
+
+	<!-- Deploy Command -->
+	<!-- mvn deploy -->
+
 </project>

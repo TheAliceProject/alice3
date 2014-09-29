@@ -127,7 +127,7 @@ public final class ArrayInstanceCreation extends Expression {
 		generator.appendChar( '}' );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = DeclarationProperty.createReferenceInstance( this );;
 	public final edu.cmu.cs.dennisc.property.ListProperty<Integer> lengths = new edu.cmu.cs.dennisc.property.ListProperty<Integer>( this );
 	public final ExpressionListProperty expressions = new ExpressionListProperty( this );
 }

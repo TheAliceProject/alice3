@@ -66,6 +66,7 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 			mapDeriveFont.put( java.awt.font.TextAttribute.WEIGHT, java.awt.font.TextAttribute.WEIGHT_LIGHT );
 		}
 
+		@Override
 		public void paint( java.awt.Graphics2D g2, List<T> listView, int width, int height ) {
 			org.lgna.croquet.SingleSelectListState<T> state = listView.getModel();
 			org.lgna.croquet.PlainStringValue emptyConditionText = state.getEmptyConditionText();
@@ -84,8 +85,8 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 
 	public List( org.lgna.croquet.SingleSelectListState<T> model ) {
 		super( model );
-		this.getAwtComponent().setModel( model.getSwingModel().getComboBoxModel() );
-		this.getAwtComponent().setSelectionModel( model.getSwingModel().getListSelectionModel() );
+		this.getAwtComponent().setModel( model.getImp().getSwingModel().getComboBoxModel() );
+		this.getAwtComponent().setSelectionModel( model.getImp().getSwingModel().getListSelectionModel() );
 	}
 
 	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {

@@ -53,6 +53,7 @@ public class ParameterAccessOperation extends org.alice.ide.croquet.models.ast.c
 		assert parameter != null;
 		assert expressionProperty != null;
 		return mapToMap.getInitializingIfAbsent( parameter, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterAccessOperation>() {
+			@Override
 			public ParameterAccessOperation initialize( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 				return new ParameterAccessOperation( parameter, expressionProperty );
 			}

@@ -66,18 +66,22 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 		}
 	}
 
+	@Override
 	public DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
 		return this.constructor;
 	}
 
+	@Override
 	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
 		return this.requiredArguments;
 	}
 
+	@Override
 	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;
 	}
 
+	@Override
 	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
 		return this.keyedArguments;
 	}
@@ -97,12 +101,7 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 		return false;
 	}
 
-	public final DeclarationProperty<AbstractConstructor> constructor = new DeclarationProperty<AbstractConstructor>( this ) {
-		@Override
-		public boolean isReference() {
-			return true;
-		}
-	};
+	public final DeclarationProperty<AbstractConstructor> constructor = DeclarationProperty.createReferenceInstance( this );
 	public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
 	public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
 	public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );

@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class Statement extends AbstractNode {
-	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
+	protected abstract void appendJavaInternal( JavaCodeGenerator generator );
 
 	@Override
 	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
@@ -56,6 +56,20 @@ public abstract class Statement extends AbstractNode {
 			return this.isEnabled.valueEquals( other.isEnabled );
 		}
 		return false;
+	}
+
+	/* package-private */final void appendJava( JavaCodeGenerator generator ) {
+		boolean isDisabled = this.isEnabled.getValue() == false;
+		if( isDisabled ) {
+			generator.pushStatementDisabled();
+		}
+		try {
+			this.appendJavaInternal( generator );
+		} finally {
+			if( isDisabled ) {
+				generator.popStatementDisabled();
+			}
+		}
 	}
 
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isEnabled = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );

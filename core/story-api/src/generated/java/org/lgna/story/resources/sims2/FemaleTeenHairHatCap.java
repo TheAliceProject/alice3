@@ -45,11 +45,13 @@ public enum FemaleTeenHairHatCap implements FemaleTeenHair {
 	GREY_RED_GREY_HAT,
 	GREY_BLACK_HAT;
 
+	@Override
 	public Boolean hasHair()
 	{
 		return true;
 	}
 
+	@Override
 	public Boolean hasHat()
 	{
 		return true;

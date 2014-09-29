@@ -89,6 +89,7 @@ public class UserLocal extends AbstractTransient {
 		}
 	}
 
+	@Override
 	public final String getValidName( Node context ) {
 		String name = this.name.getValue();
 		if( name != null ) {
@@ -104,6 +105,6 @@ public class UserLocal extends AbstractTransient {
 			return true;
 		}
 	};
-	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> valueType = DeclarationProperty.createReferenceInstance( this );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isFinal = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
 }

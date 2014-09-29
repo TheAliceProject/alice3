@@ -65,10 +65,12 @@ public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposi
 		this.valueCls = valueCls;
 	}
 
+	@Override
 	public Class<C> getValueClass() {
 		return this.valueCls;
 	}
 
+	@Override
 	public C decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
@@ -79,6 +81,7 @@ public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposi
 		}
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, C value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
@@ -87,6 +90,7 @@ public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposi
 		}
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, C value ) {
 		if( value != null ) {
 			value.initializeIfNecessary();

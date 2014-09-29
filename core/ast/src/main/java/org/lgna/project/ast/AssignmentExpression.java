@@ -107,7 +107,7 @@ public final class AssignmentExpression extends Expression {
 		generator.appendExpression( this.rightHandSide.getValue() );
 	}
 
-	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );
 	public final ExpressionProperty leftHandSide = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {

@@ -43,8 +43,6 @@
 
 package org.lgna.story.event;
 
-import org.lgna.story.event.OcclusionEvent;
-
 /**
  * @author Matt May
  */

@@ -53,6 +53,7 @@ public class LocalArrayLengthOperation extends ArrayLengthOperation {
 		assert local != null;
 		assert expressionProperty != null;
 		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayLengthOperation>() {
+			@Override
 			public LocalArrayLengthOperation initialize( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 				return new LocalArrayLengthOperation( local, expressionProperty );
 			}

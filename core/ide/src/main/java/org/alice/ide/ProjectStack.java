@@ -53,17 +53,30 @@ public class ProjectStack {
 
 	private static final java.util.Stack<org.lgna.project.Project> projectStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
-	public static org.lgna.project.Project peekProject() {
+	private static org.lgna.project.Project peekProject( boolean isUpToDate ) {
 		if( projectStack.size() > 0 ) {
 			return projectStack.peek();
 		} else {
 			IDE ide = IDE.getActiveInstance();
 			if( ide != null ) {
-				return ide.getProject();
+				if( isUpToDate ) {
+					return ide.getProject();
+				} else {
+					return ide.getUpToDateProject();
+				}
 			} else {
 				return null;
 			}
 		}
+	}
+
+	//todo?
+	public static org.lgna.project.Project peekProject() {
+		return peekProject( false );
+	}
+
+	public static org.lgna.project.Project peekUpToDateProject() {
+		return peekProject( true );
 	}
 
 	public static void pushProject( org.lgna.project.Project project ) {

@@ -90,18 +90,22 @@ public class ParameterAccessFactory extends AbstractInstanceFactory {
 		return new org.lgna.project.ast.ParameterAccess( this.parameter );
 	}
 
+	@Override
 	public org.lgna.project.ast.ParameterAccess createTransientExpression() {
 		return this.createParameterAccess( new org.alice.ide.ast.CurrentThisExpression() );
 	}
 
+	@Override
 	public org.lgna.project.ast.ParameterAccess createExpression() {
 		return this.createParameterAccess( new org.lgna.project.ast.ThisExpression() );
 	}
 
+	@Override
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
 		return this.parameter.getValueType();
 	}
 
+	@Override
 	public String getRepr() {
 		return this.parameter.getName();
 	}

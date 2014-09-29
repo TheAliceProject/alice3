@@ -76,14 +76,17 @@ public class ColorIcon implements javax.swing.Icon {
 		}
 	}
 
+	@Override
 	public int getIconWidth() {
 		return this.width;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return this.height;
 	}
 
+	@Override
 	public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
 		g.setColor( this.fillColor );
 		g.fillRect( x, y, this.width, this.height );

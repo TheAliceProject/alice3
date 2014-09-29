@@ -62,7 +62,8 @@ public class GroundOpacityAdapter extends AbstractPropertyAdapter<Double, Ground
 		{
 			this.propertyListener = new Listener<Float>()
 			{
-				public void propertyChanged( Float prevValue, Float nextValue ) {
+				@Override
+				public void propertyChanged( org.lgna.story.implementation.Property<Float> property, Float prevValue, Float nextValue ) {
 					handleInternalValueChanged();
 				}
 			};
@@ -126,13 +127,13 @@ public class GroundOpacityAdapter extends AbstractPropertyAdapter<Double, Ground
 
 	protected void addPropertyListener( Listener<Float> propertyListener ) {
 		if( this.property != null ) {
-			property.addPropertyObserver( propertyListener );
+			property.addPropertyListener( propertyListener );
 		}
 	}
 
 	protected void removePropertyListener( Listener<Float> propertyListener ) {
 		if( this.property != null ) {
-			property.removePropertyObserver( propertyListener );
+			property.removePropertyListener( propertyListener );
 		}
 	}
 

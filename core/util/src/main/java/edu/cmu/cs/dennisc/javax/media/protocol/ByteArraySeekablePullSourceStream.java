@@ -55,6 +55,7 @@ public class ByteArraySeekablePullSourceStream implements javax.media.protocol.P
 		this.location = 0;
 	}
 
+	@Override
 	public int read( byte[] buffer, int offset, int length ) throws java.io.IOException {
 		long bytesLeft = ( this.data.length - this.location );
 		if( bytesLeft == 0 ) {
@@ -70,36 +71,44 @@ public class ByteArraySeekablePullSourceStream implements javax.media.protocol.P
 		return toRead;
 	}
 
+	@Override
 	public Object getControl( String controlType ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArraySeekablePullSourceStream getControl", controlType );
 		return null;
 	}
 
+	@Override
 	public Object[] getControls() {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArraySeekablePullSourceStream getControls" );
 		return null;
 	}
 
+	@Override
 	public javax.media.protocol.ContentDescriptor getContentDescriptor() {
 		return RAW_CONTENT_DISCRIPTOR;
 	}
 
+	@Override
 	public boolean endOfStream() {
 		return ( this.location == this.data.length );
 	}
 
+	@Override
 	public long getContentLength() {
 		return this.data.length;
 	}
 
+	@Override
 	public boolean willReadBlock() {
 		return endOfStream();
 	}
 
+	@Override
 	public boolean isRandomAccess() {
 		return true;
 	}
 
+	@Override
 	public long seek( long where ) {
 		if( where > this.data.length ) {
 			this.location = this.data.length;
@@ -109,6 +118,7 @@ public class ByteArraySeekablePullSourceStream implements javax.media.protocol.P
 		return this.location;
 	}
 
+	@Override
 	public long tell() {
 		return this.location;
 	}

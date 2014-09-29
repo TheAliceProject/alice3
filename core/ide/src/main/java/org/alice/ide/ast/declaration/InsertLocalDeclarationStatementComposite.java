@@ -50,6 +50,7 @@ public class InsertLocalDeclarationStatementComposite extends InsertStatementCom
 
 	public static synchronized InsertLocalDeclarationStatementComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return map.getInitializingIfAbsent( blockStatementIndexPair, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertLocalDeclarationStatementComposite>() {
+			@Override
 			public InsertLocalDeclarationStatementComposite initialize( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 				return new InsertLocalDeclarationStatementComposite( blockStatementIndexPair );
 			}

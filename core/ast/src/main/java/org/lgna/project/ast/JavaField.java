@@ -52,6 +52,7 @@ public class JavaField extends AbstractField {
 	public static JavaField getInstance( FieldReflectionProxy fieldReflectionProxy ) {
 		if( fieldReflectionProxy != null ) {
 			return mapReflectionProxyToInstance.getInitializingIfAbsent( fieldReflectionProxy, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<FieldReflectionProxy, JavaField>() {
+				@Override
 				public org.lgna.project.ast.JavaField initialize( org.lgna.project.ast.FieldReflectionProxy key ) {
 					return new JavaField( key );
 				}
@@ -71,6 +72,14 @@ public class JavaField extends AbstractField {
 
 	private JavaField( FieldReflectionProxy fieldReflectionProxy ) {
 		this.fieldReflectionProxy = fieldReflectionProxy;
+		final boolean IS_CHECK_REIFICATION_DESIRED = false;
+		if( IS_CHECK_REIFICATION_DESIRED ) {
+			if( this.fieldReflectionProxy.getReification() != null ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			}
+		}
 	}
 
 	@Override
@@ -187,6 +196,11 @@ public class JavaField extends AbstractField {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean isUserAuthored() {
+		return false;
 	}
 
 	private final FieldReflectionProxy fieldReflectionProxy;

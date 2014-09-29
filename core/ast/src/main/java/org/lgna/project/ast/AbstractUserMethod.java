@@ -66,30 +66,37 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 		return org.lgna.project.annotations.Visibility.PRIME_TIME;
 	}
 
+	@Override
 	public final org.lgna.project.ast.ManagementLevel getManagementLevel() {
 		return this.managementLevel.getValue();
 	}
 
+	@Override
 	public final NodeProperty<BlockStatement> getBodyProperty() {
 		return this.body;
 	}
 
+	@Override
 	public final NodeListProperty<UserParameter> getRequiredParamtersProperty() {
 		return this.requiredParameters;
 	}
 
+	@Override
 	public final AbstractType<?, ?, ?> getReturnType() {
 		return returnType.getValue();
 	}
 
+	@Override
 	public final java.util.List<? extends AbstractParameter> getRequiredParameters() {
 		return requiredParameters.getValue();
 	}
 
+	@Override
 	public final org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
 		return null;
 	}
 
+	@Override
 	public final org.lgna.project.ast.AbstractParameter getKeyedParameter() {
 		return null;
 	}
@@ -129,10 +136,15 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 		return this.isStrictFloatingPoint.getValue();
 	}
 
+	@Override
+	public boolean isUserAuthored() {
+		return true;
+	}
+
 	public final edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isSynchronized = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public final DeclarationProperty<AbstractType<?, ?, ?>> returnType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public final DeclarationProperty<AbstractType<?, ?, ?>> returnType = DeclarationProperty.createReferenceInstance( this );
 	public final NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );
 	public final NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );
 	public final edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel> managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );

@@ -69,14 +69,17 @@ public class IconUtilities {
 			rv = new javax.swing.ImageIcon( image );
 		} else {
 			rv = new javax.swing.Icon() {
+				@Override
 				public int getIconWidth() {
 					return 24;
 				}
 
+				@Override
 				public int getIconHeight() {
 					return 12;
 				}
 
+				@Override
 				public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 				}
 			};

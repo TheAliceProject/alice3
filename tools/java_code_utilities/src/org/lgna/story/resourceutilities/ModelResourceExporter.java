@@ -53,7 +53,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -62,6 +65,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.zip.DataFormatException;
 import java.util.zip.ZipException;
 
 import javax.xml.transform.OutputKeys;
@@ -79,6 +85,7 @@ import org.w3c.dom.Document;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
@@ -88,6 +95,7 @@ public class ModelResourceExporter {
 	private static boolean REMOVE_ROOT_JOINTS = false;
 
 	private static final String ROOT_IDS_FIELD_NAME = "JOINT_ID_ROOTS";
+	private static final String ROOT_IDS_METHOD_NAME = "getRootJointIds";
 
 	private class NamedFile
 	{
@@ -110,6 +118,8 @@ public class ModelResourceExporter {
 	private File xmlFile;
 	private File javaFile;
 	private List<String> jointIdsToSuppress = new ArrayList<String>();
+	private List<String> arraysToExposeFirstElementOf = new ArrayList<String>();
+	private List<String> arraysToHideElementsOf = new ArrayList<String>();
 	private Map<ModelSubResourceExporter, Image> thumbnails = new HashMap<ModelSubResourceExporter, Image>();
 	private Map<String, File> existingThumbnails = null;
 	private List<ModelSubResourceExporter> subResources = new LinkedList<ModelSubResourceExporter>();
@@ -123,9 +133,13 @@ public class ModelResourceExporter {
 	private boolean moveCenterToBottom = true;
 	private List<String> forcedOverridingEnumNames = new ArrayList<String>();
 	private Map<String, List<String>> forcedEnumNamesMap = new HashMap<String, List<String>>();
+	private Map<String, String> customArrayNameMap = new HashMap<String, String>();
+	private String[] arrayNamesToSkip = null;
 	private boolean exportGalleryResources = true;
 	private boolean isDeprecated = false;
 	private boolean placeOnGround = false;
+
+	private boolean enableArraySupport = true;
 
 	private String attributionName;
 	private String attributionYear;
@@ -197,6 +211,10 @@ public class ModelResourceExporter {
 			this.moveCenterToBottom = false;
 			this.recenterXZ = false;
 		}
+	}
+
+	public void setEnableArrays( boolean enableArrays ) {
+		this.enableArraySupport = enableArrays;
 	}
 
 	public boolean shouldRecenter() {
@@ -314,6 +332,38 @@ public class ModelResourceExporter {
 		return false;
 	}
 
+	public void addArrayNamesToExposeFirstElementOf( List<String> arrayNames ) {
+		for( String arrayName : arrayNames ) {
+			if( !this.arraysToExposeFirstElementOf.contains( arrayName ) ) {
+				this.arraysToExposeFirstElementOf.add( arrayName );
+			}
+		}
+	}
+
+	public void addArrayNamesToExposeFirstElementOf( String[] arrayNames ) {
+		for( String arrayName : arrayNames ) {
+			if( !this.arraysToExposeFirstElementOf.contains( arrayName ) ) {
+				this.arraysToExposeFirstElementOf.add( arrayName );
+			}
+		}
+	}
+
+	public void addArrayNamesToHideElementsOf( List<String> arrayNames ) {
+		for( String arrayName : arrayNames ) {
+			if( !this.arraysToHideElementsOf.contains( arrayName ) ) {
+				this.arraysToHideElementsOf.add( arrayName );
+			}
+		}
+	}
+
+	public void addArrayNamesToHideElementsOf( String[] arrayNames ) {
+		for( String arrayName : arrayNames ) {
+			if( !this.arraysToHideElementsOf.contains( arrayName ) ) {
+				this.arraysToHideElementsOf.add( arrayName );
+			}
+		}
+	}
+
 	public void addJointIdsToSuppress( List<String> jointIds ) {
 		for( String jointId : jointIds ) {
 			if( !this.jointIdsToSuppress.contains( jointId ) ) {
@@ -328,6 +378,120 @@ public class ModelResourceExporter {
 				this.jointIdsToSuppress.add( jointId );
 			}
 		}
+	}
+
+	static final Pattern arrayPattern = Pattern.compile( "(_\\d*$)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL );
+
+	public static int getArrayIndexForJoint( String jointName ) {
+		Matcher match = arrayPattern.matcher( jointName );
+		if( match.find() ) {
+			String indexStr = jointName.substring( jointName.lastIndexOf( '_' ) + 1 );
+			//Remove all leading 0s
+			indexStr = indexStr.replaceAll( "^0+", "" );
+			//If we've removed all the leading 0s and ended up with an empty string, return the number 0
+			if( indexStr.length() == 0 ) {
+				return 0;
+			}
+			try {
+				return Integer.decode( indexStr );
+			} catch( NumberFormatException e ) {
+				System.err.println( "Error decoding array index in joint " + jointName );
+				return -1;
+			}
+		}
+		else {
+			return -1;
+		}
+	}
+
+	public static boolean hasArray( String arrayName, List<Tuple2<String, String>> jointList ) {
+		for( Tuple2<String, String> joint : jointList ) {
+			if( arrayName.equals( getArrayNameForJoint( joint.getA(), null, null ) ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static String getArrayNameForJoint( String jointName, Map<String, String> customArrayNameMap, String[] namesToSkip ) {
+		Matcher match = arrayPattern.matcher( jointName );
+		if( match.find() ) {
+			String nameStr = jointName.substring( 0, jointName.lastIndexOf( '_' ) );
+			if( ( customArrayNameMap != null ) && customArrayNameMap.containsKey( nameStr ) ) {
+				nameStr = customArrayNameMap.get( nameStr );
+			}
+			if( namesToSkip != null ) {
+				for( String toSkip : namesToSkip ) {
+					if( nameStr.equalsIgnoreCase( toSkip ) ) {
+						return null;
+					}
+				}
+			}
+			return nameStr;
+		}
+		//		int index = jointName.lastIndexOf( '_' );
+		//		if( index != -1 ) {
+		//			String nameStr = jointName.substring( 0, index );
+		//			if( ( customArrayNameMap != null ) && customArrayNameMap.containsKey( nameStr ) ) {
+		//				nameStr = customArrayNameMap.get( nameStr );
+		//				return nameStr;
+		//			}
+		//
+		//		}
+		return null;
+	}
+
+	public static Map<String, List<String>> getArrayEntriesFromJointList( List<Tuple2<String, String>> jointList, Map<String, String> customArrayNameMap, List<String> jointsToSuppress, String[] arrayNamesToSkip ) throws DataFormatException {
+		List<String> jointNames = new LinkedList<String>();
+		for( Tuple2<String, String> joint : jointList ) {
+			jointNames.add( joint.getA() );
+		}
+		return getArrayEntries( jointNames, customArrayNameMap, jointsToSuppress, arrayNamesToSkip );
+	}
+
+	public static Map<String, List<String>> getArrayEntries( List<String> jointNames, Map<String, String> customArrayNameMap, List<String> jointsToSuppress, String[] arrayNamesToSkip ) throws DataFormatException {
+		//Array name, joint name entries
+		Map<String, List<String>> arrayEntries = new HashMap<String, List<String>>();
+		for( String jointName : jointNames ) {
+			if( ( jointsToSuppress == null ) || !jointsToSuppress.contains( jointName ) ) {
+				String arrayName = getArrayNameForJoint( jointName, customArrayNameMap, arrayNamesToSkip );
+				if( arrayName != null ) {
+					if( arrayEntries.containsKey( arrayName ) ) {
+						arrayEntries.get( arrayName ).add( jointName );
+					}
+					else {
+						List<String> arrayElements = new ArrayList<String>();
+						arrayElements.add( jointName );
+						arrayEntries.put( arrayName, arrayElements );
+					}
+				}
+			}
+		}
+		//How to sort array entry names that are not really comparable?
+		// Like entries with different names (ENGINE_WHEEL_1 vs COAL_BOX_WHEEL_1) but have a clear spatial ordering
+		// We don't handle cases like this 
+		for( Entry<String, List<String>> arrayEntry : arrayEntries.entrySet() ) {
+			try {
+				Collections.sort( arrayEntry.getValue(), new Comparator<String>() {
+					@Override
+					public int compare( String o1, String o2 ) {
+						int index1 = getArrayIndexForJoint( o1 );
+						int index2 = getArrayIndexForJoint( o2 );
+						if( index1 == index2 ) {
+							System.err.println( "ERROR COMPARING ARRAY NAME INDICES: " + o1 + " == " + o2 );
+							//We don't handle cases where the index is the same.
+							throw new RuntimeException( "ERROR COMPARING ARRAY NAME INDICES: " + o1 + " == " + o2 + ". These names resolve to the same index (" + index1 + ") and that is not allowed." );
+						}
+						return index1 - index2;
+					}
+				} );
+			} catch( RuntimeException e ) {
+				e.printStackTrace();
+				throw new DataFormatException( e.toString() );
+			}
+		}
+
+		return arrayEntries;
 	}
 
 	private static List<Tuple2<String, String>> removeEntry( List<Tuple2<String, String>> sourceList, String toRemove ) {
@@ -900,7 +1064,112 @@ public class ModelResourceExporter {
 		return false;
 	}
 
-	public String createJavaCode()
+	private String getArrayNameFromMapForJoint( String jointString, Map<String, List<String>> arrayEntries ) {
+		for( Entry<String, List<String>> entry : arrayEntries.entrySet() ) {
+			if( entry.getValue().contains( jointString ) ) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+
+	private boolean shouldSuppressJointInArray( String jointString, Map<String, List<String>> arrayEntries ) {
+		for( Entry<String, List<String>> entry : arrayEntries.entrySet() ) {
+			//We don't suppress the first element in the array so we can generate an accessor for it in Alice
+			if( entry.getValue().contains( jointString ) ) {
+				if( this.arraysToExposeFirstElementOf.contains( entry.getKey() ) && ( getArrayIndexForJoint( jointString ) == 0 ) ) {
+					return false;
+				}
+				else {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private boolean shouldHideJointInArray( String jointString, Map<String, List<String>> arrayEntries ) {
+		for( Entry<String, List<String>> entry : arrayEntries.entrySet() ) {
+			if( entry.getValue().contains( jointString ) ) {
+				if( this.arraysToHideElementsOf.contains( entry.getKey() ) ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private String getJointAccessMethodNameForArrayJoint( String jointName ) {
+		String arrayName = getArrayNameForJoint( jointName, null, null );
+		return getArrayAccessorMethodName( arrayName );
+	}
+
+	private String getArrayAccessorMethodName( String arrayName ) {
+		return "get" + AliceResourceUtilties.enumToCamelCase( arrayName );
+	}
+
+	//If a parent interface has declared an accessor for a given array, return true
+	// otherwisse return false
+	private boolean needsAccessorMethodForArray( ModelClassData classData, String arrayName ) {
+		String arrayAccessorMethodName = getArrayAccessorMethodName( arrayName );
+		Method m = null;
+		try {
+			m = classData.superClass.getMethod( arrayAccessorMethodName );
+			if( ( m != null ) && m.getDeclaringClass().isInterface() ) {
+				return true;
+			}
+		} catch( NoSuchMethodException me ) {
+		}
+		return false;
+	}
+
+	private List<Method> getMandatoryMethods( Class<?> superClass, Class<?> returnType ) {
+		List<Method> methods = new LinkedList<Method>();
+		for( Method method : superClass.getMethods() ) {
+			if( method.getReturnType().equals( returnType ) && method.getDeclaringClass().isInterface() )
+			{
+				methods.add( method );
+			}
+		}
+		return methods;
+	}
+
+	private List<String> getMandatoryJointArrayNames( Class<?> superClass ) {
+		List<String> methodNames = new LinkedList<String>();
+		for( Method method : getMandatoryMethods( superClass, org.lgna.story.resources.JointId[].class ) ) {
+			methodNames.add( method.getName() );
+		}
+		List<String> arrayNames = new LinkedList<String>();
+		for( String methodName : methodNames ) {
+			int index = methodName.indexOf( "get" );
+			if( ( index == 0 ) ) {
+				if( !methodName.equals( ROOT_IDS_METHOD_NAME ) ) {
+					String newName = methodName.substring( 3 );
+					int arrayIndex = newName.indexOf( "Array" );
+					if( arrayIndex != -1 ) {
+						newName = newName.substring( 0, arrayIndex );
+					}
+					newName = AliceResourceUtilties.makeEnumName( newName );
+					arrayNames.add( newName );
+				}
+			}
+			else {
+				System.err.println( "FROM " + superClass + ": UNABLE TO CONVERT " + methodName + " INTO AN ARRAY NAME." );
+			}
+
+		}
+		return arrayNames;
+	}
+
+	private List<String> getAlreadyDeclaredJointArrayNames( Class<?> superClass ) {
+		List<String> fieldNames = new LinkedList<String>();
+		for( Field field : ReflectionUtilities.getPublicStaticFinalFields( superClass, org.lgna.story.resources.JointArrayId.class ) ) {
+			fieldNames.add( field.getName() );
+		}
+		return fieldNames;
+	}
+
+	public String createJavaCode() throws DataFormatException
 	{
 		StringBuilder sb = new StringBuilder();
 
@@ -940,6 +1209,13 @@ public class ModelResourceExporter {
 		List<Tuple2<String, String>> trimmedSkeleton = makeCodeReadyTree( this.jointList );
 		if( trimmedSkeleton != null )
 		{
+			Map<String, List<String>> arrayEntries;
+			if( this.enableArraySupport ) {
+				arrayEntries = getArrayEntriesFromJointList( trimmedSkeleton, this.customArrayNameMap, this.jointIdsToSuppress, this.arrayNamesToSkip );
+			}
+			else {
+				arrayEntries = new HashMap<String, List<String>>();
+			}
 			List<String> rootJoints = new LinkedList<String>();
 			sb.append( JavaCodeUtilities.LINE_RETURN );
 			for( Tuple2<String, String> entry : trimmedSkeleton )
@@ -950,24 +1226,34 @@ public class ModelResourceExporter {
 				{
 					continue;
 				}
-				if( ( parentString == null ) || ( parentString.length() == 0 ) )
-				{
-					parentString = "null";
-					rootJoints.add( jointString );
-					addedRoots = true;
+				if( !shouldHideJointInArray( jointString, arrayEntries ) ) {
+					if( ( parentString == null ) || ( parentString.length() == 0 ) )
+					{
+						parentString = "null";
+						rootJoints.add( jointString );
+						addedRoots = true;
+					}
+					if( shouldSuppressJoint( jointString ) || shouldSuppressJointInArray( jointString, arrayEntries ) ) {
+						sb.append( "@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)" + JavaCodeUtilities.LINE_RETURN );
+					}
+					else {
+						String arrayName = getArrayNameFromMapForJoint( jointString, arrayEntries );
+						if( arrayName != null ) {
+							sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME, methodNameHint=\"" + getJointAccessMethodNameForArrayJoint( jointString ) + "\")" + JavaCodeUtilities.LINE_RETURN );
+						}
+						else {
+							sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME)" + JavaCodeUtilities.LINE_RETURN );
+						}
+
+					}
+					sb.append( "\tpublic static final org.lgna.story.resources.JointId " + jointString + " = new org.lgna.story.resources.JointId( " + parentString + ", " + this.getJavaClassName() + ".class );" + JavaCodeUtilities.LINE_RETURN );
 				}
-				if( shouldSuppressJoint( jointString ) ) {
-					sb.append( "@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)" + JavaCodeUtilities.LINE_RETURN );
-				}
-				else {
-					sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME)" + JavaCodeUtilities.LINE_RETURN );
-				}
-				sb.append( "\tpublic static final org.lgna.story.resources.JointId " + jointString + " = new org.lgna.story.resources.JointId( " + parentString + ", " + this.getJavaClassName() + ".class );" + JavaCodeUtilities.LINE_RETURN );
 			}
 
 			if( addedRoots )
 			{
-				sb.append( "\n\tpublic static org.lgna.story.resources.JointId[] " + ROOT_IDS_FIELD_NAME + " = { " );
+				sb.append( "\n@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )" );
+				sb.append( "\n\tpublic static final org.lgna.story.resources.JointId[] " + ROOT_IDS_FIELD_NAME + " = { " );
 				for( int i = 0; i < rootJoints.size(); i++ ) {
 					sb.append( rootJoints.get( i ) );
 					if( i < ( rootJoints.size() - 1 ) ) {
@@ -975,6 +1261,69 @@ public class ModelResourceExporter {
 					}
 				}
 				sb.append( " };" + JavaCodeUtilities.LINE_RETURN );
+			}
+			List<String> mandatoryArrayNames = getMandatoryJointArrayNames( classData.superClass );
+			List<String> declaredArrays = getAlreadyDeclaredJointArrayNames( classData.superClass );
+			if( !arrayEntries.isEmpty() || ( mandatoryArrayNames.size() != 0 ) ) {
+				//Loop through and remove any existing arrays from the mandatory array list
+				// This should leave only the mandatory arrays that need an empty list defined
+				for( Entry<String, List<String>> arrayEntry : arrayEntries.entrySet() ) {
+					if( mandatoryArrayNames.contains( arrayEntry.getKey() ) ) {
+						mandatoryArrayNames.remove( arrayEntry.getKey() );
+					}
+				}
+				for( String mandatoryArray : mandatoryArrayNames ) {
+					arrayEntries.put( mandatoryArray, new LinkedList<String>() );
+				}
+				for( Entry<String, List<String>> arrayEntry : arrayEntries.entrySet() ) {
+					List<String> arrayElements = arrayEntry.getValue();
+					String fullArrayName = arrayEntry.getKey() + "_ARRAY";
+
+					if( declaredArrays.contains( fullArrayName ) || declaredArrays.contains( arrayEntry.getKey() ) ) {
+						//If the array is already declared, skip it and trust that the previous declaration will capture the data
+						continue;
+					}
+
+					boolean needsAccessor = needsAccessorMethodForArray( classData, fullArrayName );
+
+					//If an accessor is needed, add a "COMPLETELY_HIDDEN" annotation.
+					// The accessor is used to retrieve the array via a parent class and therefore the array itself is essentially already handled
+					// If there is no accessor, then we want the code generation system to create an Alice level accessor at runtime (which this annotation prevents)
+					if( needsAccessor ) {
+						sb.append( "\n\t@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )" );
+					}
+
+					//If the array is one in the "hide all the elements of this array" list, then declare it as an arrayId rather than an array of joint ids
+					if( this.arraysToHideElementsOf.contains( fullArrayName ) || this.arraysToHideElementsOf.contains( arrayEntry.getKey() ) ) {
+						String firstEntry = arrayElements.get( 0 );
+						String parentString = "null";
+						for( Tuple2<String, String> entry : trimmedSkeleton )
+						{
+							if( entry.getA().equals( firstEntry ) ) {
+								parentString = entry.getB();
+								break;
+							}
+						}
+						sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME)" + JavaCodeUtilities.LINE_RETURN );
+						sb.append( "\tpublic static final org.lgna.story.resources.JointArrayId " + fullArrayName + " = new org.lgna.story.resources.JointArrayId( \"" + arrayEntry.getKey() + "\", " + parentString + ", " + this.getJavaClassName() + ".class );" + JavaCodeUtilities.LINE_RETURN );
+					}
+					else {
+						sb.append( "\n\tpublic static final org.lgna.story.resources.JointId[] " + fullArrayName + " = { " );
+						for( int i = 0; i < arrayElements.size(); i++ ) {
+							sb.append( arrayElements.get( i ) );
+							if( i < ( arrayElements.size() - 1 ) ) {
+								sb.append( ", " );
+							}
+						}
+						sb.append( " };" + JavaCodeUtilities.LINE_RETURN );
+					}
+					if( needsAccessor ) {
+						String arrayAccessorName = getArrayAccessorMethodName( fullArrayName );
+						sb.append( "\tpublic org.lgna.story.resources.JointId[] " + arrayAccessorName + "(){" + JavaCodeUtilities.LINE_RETURN );
+						sb.append( "\t\treturn " + this.getJavaClassName() + "." + fullArrayName + ";" + JavaCodeUtilities.LINE_RETURN );
+						sb.append( "\t}" + JavaCodeUtilities.LINE_RETURN );
+					}
+				}
 			}
 		}
 		sb.append( JavaCodeUtilities.LINE_RETURN );
@@ -987,7 +1336,7 @@ public class ModelResourceExporter {
 		sb.append( "\t}" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
 		if( needsToDefineRootsMethod( this.classData.superClass ) )
 		{
-			sb.append( "\tpublic org.lgna.story.resources.JointId[] getRootJointIds(){" + JavaCodeUtilities.LINE_RETURN );
+			sb.append( "\tpublic org.lgna.story.resources.JointId[] " + ROOT_IDS_METHOD_NAME + "(){" + JavaCodeUtilities.LINE_RETURN );
 			if( addedRoots )
 			{
 				sb.append( "\t\treturn " + this.getJavaClassName() + "." + ROOT_IDS_FIELD_NAME + ";" + JavaCodeUtilities.LINE_RETURN );
@@ -1130,7 +1479,7 @@ public class ModelResourceExporter {
 		return new File( root + filename );
 	}
 
-	private File createJavaCode( String root )
+	private File createJavaCode( String root ) throws DataFormatException
 	{
 		String packageDirectory = JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString );
 		System.out.println( packageDirectory );
@@ -1413,6 +1762,20 @@ public class ModelResourceExporter {
 			}
 		}
 		return false;
+	}
+
+	public void setArrayNamesToSkip( String[] arrayNamesToSkip ) {
+		this.arrayNamesToSkip = arrayNamesToSkip;
+	}
+
+	public void addCustomArrayName( String arrayName, String customName ) {
+		this.customArrayNameMap.put( arrayName, customName );
+	}
+
+	public void addCustomArrayNames( Map<String, String> customArrayNames ) {
+		for( Entry<String, String> entry : customArrayNames.entrySet() ) {
+			this.customArrayNameMap.put( entry.getKey(), entry.getValue() );
+		}
 	}
 
 	public void addForcedEnumNames( String resourceName, List<String> enumNames ) {

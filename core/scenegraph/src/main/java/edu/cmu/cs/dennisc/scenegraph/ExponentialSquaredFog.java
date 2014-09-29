@@ -44,7 +44,8 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 /**
- * exponential squared fog affects visual elements based on their distance from a camera.
+ * exponential squared fog affects visual elements based on their distance from
+ * a camera.
  * 
  * <pre>
  *    z = distance from camera

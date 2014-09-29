@@ -52,11 +52,25 @@ public abstract class UserConstructor extends AbstractConstructor {
 		return (UserType<?>)super.getDeclaringType();
 	}
 
+	@Override
 	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
 		return null;
 	}
 
+	@Override
 	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
 		return null;
+	}
+
+	@Override
+	public boolean isUserAuthored() {
+		return true;
+	}
+
+	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
+
+	public String generateJavaCode( JavaCodeGenerator generator ) {
+		this.appendJava( generator );
+		return generator.getText( false );
 	}
 }

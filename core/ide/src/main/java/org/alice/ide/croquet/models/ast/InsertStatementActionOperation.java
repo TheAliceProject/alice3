@@ -66,11 +66,13 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		};
 	}
 
+	@Override
 	public void doOrRedoInternal( boolean isDo ) {
 		this.blockStatement.statements.add( this.index, this.statement );
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
+	@Override
 	public void undoInternal() {
 		if( this.blockStatement.statements.get( this.index ) == this.statement ) {
 			this.blockStatement.statements.remove( this.index );
@@ -80,6 +82,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		}
 	}
 
+	@Override
 	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>)edit;
 		InsertStatementActionOperation replacement = replacementEdit.getModel();
@@ -91,6 +94,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		//		}
 	}
 
+	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		this.blockStatement = retargeter.retarget( this.blockStatement );
 		org.lgna.project.ast.Statement originalStatement = this.statement;
@@ -101,11 +105,13 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		//		}
 	}
 
+	@Override
 	public void appendDescription( StringBuilder rv, boolean isDetailed ) {
 		rv.append( "create: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
 	}
 
+	@Override
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.AbstractEdit<?> replacementCandidate ) {
 		if( replacementCandidate instanceof org.alice.ide.croquet.edits.DependentEdit ) {
 			return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;

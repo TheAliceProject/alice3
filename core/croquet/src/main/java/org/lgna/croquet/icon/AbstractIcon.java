@@ -52,16 +52,19 @@ public abstract class AbstractIcon implements javax.swing.Icon {
 		this.size = size;
 	}
 
+	@Override
 	public int getIconWidth() {
 		return this.size.width;
 	}
 
+	@Override
 	public int getIconHeight() {
 		return this.size.height;
 	}
 
 	protected abstract void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 );
 
+	@Override
 	public final void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		java.awt.Paint prevPaint = g2.getPaint();

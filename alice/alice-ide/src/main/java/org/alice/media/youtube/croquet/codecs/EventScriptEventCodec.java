@@ -52,18 +52,22 @@ public class EventScriptEventCodec implements org.lgna.croquet.ItemCodec<edu.cmu
 		this.wizard = wizard;
 	}
 
+	@Override
 	public Class<edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent> getValueClass() {
 		return edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent.class;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent value ) {
 		throw new RuntimeException( "todo" );
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent value ) {
 		String eventType = "";
 		if( value.getEvent() instanceof edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper ) {

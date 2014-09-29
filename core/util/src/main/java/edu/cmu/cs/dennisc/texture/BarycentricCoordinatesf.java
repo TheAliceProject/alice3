@@ -77,6 +77,7 @@ public final class BarycentricCoordinatesf implements edu.cmu.cs.dennisc.codec.B
 		this.t2 = binaryDecoder.decodeFloat();
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( t0 );
 		binaryEncoder.encode( t1 );

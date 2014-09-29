@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.java.awt;
  * @author Dennis Cosgrove
  */
 public class ExpandAllToBoundsLayoutManager implements java.awt.LayoutManager {
+	@Override
 	public void layoutContainer( java.awt.Container parent ) {
 		java.awt.Dimension size = parent.getSize();
 		for( java.awt.Component component : parent.getComponents() ) {
@@ -56,6 +57,7 @@ public class ExpandAllToBoundsLayoutManager implements java.awt.LayoutManager {
 		}
 	}
 
+	@Override
 	public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
 		java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
 		for( java.awt.Component component : parent.getComponents() ) {
@@ -66,6 +68,7 @@ public class ExpandAllToBoundsLayoutManager implements java.awt.LayoutManager {
 		return rv;
 	}
 
+	@Override
 	public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
 		java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
 		for( java.awt.Component component : parent.getComponents() ) {
@@ -76,9 +79,11 @@ public class ExpandAllToBoundsLayoutManager implements java.awt.LayoutManager {
 		return rv;
 	}
 
+	@Override
 	public void addLayoutComponent( String name, java.awt.Component comp ) {
 	}
 
+	@Override
 	public void removeLayoutComponent( java.awt.Component comp ) {
 	}
 }

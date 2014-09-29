@@ -46,14 +46,15 @@ package org.alice.ide.story;
  * @author Dennis Cosgrove
  */
 public class AliceIdeConfiguration implements org.alice.ide.IdeConfiguration {
-	public org.lgna.croquet.Operation[] getUploadOperations() {
-		return this.uploadOperations;
+	@Override
+	public org.lgna.croquet.Operation[] createUploadOperations( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
+		return new org.lgna.croquet.Operation[] { new org.alice.ide.youtube.croquet.UploadOperation( projectDocumentFrame ) };
 	}
 
+	@Override
 	public org.lgna.issue.IssueReportingHub getIssueReportingHub() {
 		return this.issueReportingHub;
 	}
 
-	private final org.lgna.croquet.Operation[] uploadOperations = { new org.alice.ide.youtube.croquet.UploadOperation() };
 	private final org.alice.ide.issue.AliceIssueReportingHub issueReportingHub = new org.alice.ide.issue.AliceIssueReportingHub();
 }

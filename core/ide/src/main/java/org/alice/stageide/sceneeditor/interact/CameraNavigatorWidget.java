@@ -43,11 +43,10 @@
 package org.alice.stageide.sceneeditor.interact;
 
 import org.alice.interact.AbstractDragAdapter;
-import org.alice.interact.ModifierMask;
-import org.alice.interact.PickHint;
 import org.alice.interact.AbstractDragAdapter.CameraView;
+import org.alice.interact.ModifierMask;
 import org.alice.interact.ModifierMask.ModifierKey;
-import org.alice.interact.PickHint.PickType;
+import org.alice.interact.PickHint;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
@@ -221,12 +220,12 @@ public class CameraNavigatorWidget extends org.lgna.croquet.views.LineAxisPanel 
 		this.setExpanded( this.isExpanded );
 		javax.swing.JPanel jPanel = this.getAwtComponent();
 		switch( mode ) {
-		case PERSPECTIVE: 
+		case PERSPECTIVE:
 			jPanel.add( this.cameraControlStrafe.getAwtComponent() );
 			jPanel.add( this.cameraDriver.getAwtComponent() );
 			jPanel.add( this.cameraControlUpDown.getAwtComponent() );
 			break;
-		case ORTHOGRAPHIC: 
+		case ORTHOGRAPHIC:
 			jPanel.add( this.orthographicCameraControlStrafe.getAwtComponent() );
 			jPanel.add( this.orthographicCameraControlZoom.getAwtComponent() );
 			break;

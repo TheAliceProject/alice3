@@ -66,10 +66,12 @@ public class ProgressPane extends javax.swing.JPanel {
 
 	public void initializeAndExecuteWorker( ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration ) {
 		this.issueReportWorker = new IssueReportWorker( new WorkerListener() {
+			@Override
 			public void process( java.util.List<String> chunks ) {
 				handleProcess( chunks );
 			}
 
+			@Override
 			public void done( boolean isSuccessful, java.net.URL urlResult ) {
 				handleDone( isSuccessful, urlResult );
 			}

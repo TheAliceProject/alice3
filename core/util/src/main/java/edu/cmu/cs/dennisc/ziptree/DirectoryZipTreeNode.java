@@ -53,6 +53,7 @@ public class DirectoryZipTreeNode extends ZipTreeNode {
 		super( path );
 	}
 
+	@Override
 	public boolean getAllowsChildren() {
 		return true;
 	}
@@ -67,10 +68,12 @@ public class DirectoryZipTreeNode extends ZipTreeNode {
 		return this.children;
 	}
 
+	@Override
 	public java.util.Enumeration<? extends edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> children() {
 		return java.util.Collections.enumeration( this.getSortedChildren() );
 	}
 
+	@Override
 	public java.util.Iterator iterator() {
 		return this.children.iterator();
 	}
@@ -78,18 +81,22 @@ public class DirectoryZipTreeNode extends ZipTreeNode {
 	//	public java.util.Iterator< edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> > iterator() {
 	//		return this.children.iterator();
 	//	}
+	@Override
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt( int childIndex ) {
 		return this.getSortedChildren().get( childIndex );
 	}
 
+	@Override
 	public int getChildCount() {
 		return this.children.size();
 	}
 
+	@Override
 	public boolean isLeaf() {
 		return false;
 	}
 
+	@Override
 	public int getIndex( javax.swing.tree.TreeNode node ) {
 		return this.getSortedChildren().indexOf( node );
 	}

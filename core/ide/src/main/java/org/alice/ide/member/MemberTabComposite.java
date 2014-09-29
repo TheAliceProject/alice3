@@ -92,6 +92,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 			this.isActive = isActive;
 		}
 
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
 			if( e.isAdjusting() ) {
 				//pass
@@ -107,12 +108,14 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 	private final InstanceFactoryListener instanceFactoryListener = new InstanceFactoryListener();
 
 	private final org.lgna.croquet.event.ValueListener<String> sortListener = new org.lgna.croquet.event.ValueListener<String>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
 			MemberTabComposite.this.getView().refreshLater();
 		}
 	};
 
 	private final org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> declarationCompositeListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> e ) {
 			MemberTabComposite.this.refreshContentsLater();
 		}

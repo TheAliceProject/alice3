@@ -13,6 +13,20 @@
 	<artifactId>ffmpeg</artifactId>
 	<packaging>pom</packaging>
 
+	<name>FFmpeg</name>
+	<url>http://www.ffmpeg.org/</url>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License (GPL) version 2</name>
+			<url>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<!-- Deploy Command -->
+	<!-- mvn deploy -->
+
 	<build>
 		<plugins>
 			<plugin>

@@ -75,6 +75,8 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 
 		public JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImplementation, org.lgna.story.resources.JointId jointId );
 
+		public JointImp[] createJointArrayImplementation( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImplementation, org.lgna.story.resources.JointArrayId jointArrayId );
+
 		public VisualData createVisualData();
 
 		public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointId jointId );
@@ -255,6 +257,12 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			}
 		}
 
+		//Handle joint arrays
+		//This makes sure we have JointImps or JointWrappers for the given jointIds and adds them to mapIdToJoint for future retrieval 
+		for( org.lgna.story.resources.JointArrayId arrayId : this.getJointArrayIds() ) {
+			this.createJointImpsAsNeededForJointArrayIds( arrayId, this.mapIdToJoint, true );
+		}
+
 		this.visualData.setSGParent( sgComposite );
 
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
@@ -263,6 +271,62 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.visualData.getSgAppearances() ) {
 			putInstance( sgAppearance );
 		}
+	}
+
+	//JointArrayId support
+	//This is for implicit array support. It iterates through declared joints and puts matching ones into an joint array
+	private void buildJointArrayMapHelper( org.lgna.story.resources.JointId currentJointId, org.lgna.story.resources.JointArrayId jointArrayId, List<org.lgna.story.resources.JointId> arrayList ) {
+		if( jointArrayId.isMemberOf( currentJointId ) ) {
+			arrayList.add( currentJointId );
+		}
+		//If the currentJointId is null, then use the root joints as a starting point for searching for array elements
+		if( currentJointId == null ) {
+			for( org.lgna.story.resources.JointId childId : this.getRootJointIds() ) {
+				buildJointArrayMapHelper( childId, jointArrayId, arrayList );
+			}
+		}
+		else {
+			for( org.lgna.story.resources.JointId childId : currentJointId.getChildren( this.factory.getResource() ) ) {
+				buildJointArrayMapHelper( childId, jointArrayId, arrayList );
+			}
+		}
+	}
+
+	//Makes sure we have JointImps or JointWrappers for the given jointIds and adds them to mapIdToJoint for future retrieval 
+	private <J extends JointImp> void createJointImpsAsNeededForJointArrayIds( org.lgna.story.resources.JointArrayId jointArrayId, java.util.Map<org.lgna.story.resources.JointId, J> jointMap, boolean makeWrappers ) {
+		List<org.lgna.story.resources.JointId> jointIdList = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+		//Look for declared joints for
+		this.buildJointArrayMapHelper( jointArrayId.getRoot(), jointArrayId, jointIdList );
+		//If there aren't any declared joints, look for hidden joints
+		if( jointIdList.isEmpty() ) {
+			JointImp[] jointImpArray = this.factory.createJointArrayImplementation( this, jointArrayId );
+			for( JointImp jointImp : jointImpArray ) {
+				if( makeWrappers ) {
+					jointMap.put( jointImp.getJointId(), (J)( new JointImpWrapper( this, jointImp ) ) );
+				}
+				else {
+					jointMap.put( jointImp.getJointId(), (J)( jointImp ) );
+				}
+			}
+		}
+		else {
+			//If the jointIdList has ids in it, then it means the array is already made up of existing JointImps, so skip making new ones
+		}
+		//Add a map to the jointArrayId for later lookup (see method getJointIdArray)
+		this.mapArrayIdToJointIdArray.put( jointArrayId, jointIdList.toArray( new org.lgna.story.resources.JointId[ jointIdList.size() ] ) );
+	}
+
+	public org.lgna.story.resources.JointId[] getJointIdArray( org.lgna.story.resources.JointArrayId jointArrayId ) {
+		return this.mapArrayIdToJointIdArray.get( jointArrayId );
+	}
+
+	//TODO: Do we need this? Why do we need this.getJointArrayIds()?
+	public org.lgna.story.resources.JointArrayId[] getJointArrayIds() {
+		if( this.jointArrayIds == null ) {
+			java.util.List<org.lgna.story.resources.JointArrayId> jointArrayIdsList = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicStaticFinalInstances( this.getResource().getClass(), org.lgna.story.resources.JointArrayId.class );
+			this.jointArrayIds = jointArrayIdsList.toArray( new org.lgna.story.resources.JointArrayId[ jointArrayIdsList.size() ] );
+		}
+		return this.jointArrayIds;
 	}
 
 	private List<org.lgna.story.resources.JointId> getMissingJoints() {
@@ -283,21 +347,6 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		}
 		return missingJoints;
 	}
-
-	//	public void setNewJointedModelFactory(JointImplementationAndVisualDataFactory< R > factory) {
-	//		if (factory != this.factory) {
-	//			java.util.Map< org.lgna.story.resources.JointId, edu.cmu.cs.dennisc.math.AffineMatrix4x4 > mapIdToOriginalTransform = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	//			for (java.util.Map.Entry< org.lgna.story.resources.JointId, org.lgna.story.implementation.JointImp > jointEntry : this.mapIdToJoint.entrySet()) {
-	//				mapIdToOriginalTransform.put(jointEntry.getKey(), jointEntry.getValue().getOriginalTransformation());
-	//			}
-	//			edu.cmu.cs.dennisc.scenegraph.Composite originalParent = this.visualData.getSGParent();
-	//			this.visualData.setSGParent(null);
-	//			this.factory = factory;
-	//			this.visualData = this.factory.createVisualData( this );
-	//			this.visualData.setSGParent(originalParent);
-	//			matchNewDataToExistingJoints(mapIdToOriginalTransform);
-	//		}
-	//	}
 
 	public void setNewResource( JointedModelResource resource ) {
 		if( resource != this.getResource() ) {
@@ -322,6 +371,12 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 					this.createRegularJointTree( root, this, newJoints );
 				}
 			}
+
+			this.mapArrayIdToJointIdArray.clear();
+			for( org.lgna.story.resources.JointArrayId arrayId : this.getJointArrayIds() ) {
+				this.createJointImpsAsNeededForJointArrayIds( arrayId, newJoints, false );
+			}
+
 			matchNewDataToExistingJoints( mapIdToOriginalRotation, newJoints );
 
 			this.visualData.setSGParent( originalParent );
@@ -349,6 +404,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	public Iterable<JointImp> getJoints() {
 		final java.util.List<JointImp> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		this.treeWalk( new TreeWalkObserver() {
+			@Override
 			public void pushJoint( org.lgna.story.implementation.JointImp joint ) {
 				//todo: remove null check?
 				if( joint != null ) {
@@ -356,9 +412,11 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 				}
 			}
 
+			@Override
 			public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
 			}
 
+			@Override
 			public void popJoint( org.lgna.story.implementation.JointImp joint ) {
 			}
 		} );
@@ -373,21 +431,6 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			if( findJoint( childId, toFind ) )
 			{
 				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean hasJointId( JointId jointId ) {
-		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
-		edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;
-		if( rootIds.length == 0 ) {
-			return false;
-		} else {
-			for( org.lgna.story.resources.JointId root : rootIds ) {
-				if( findJoint( root, jointId ) ) {
-					return true;
-				}
 			}
 		}
 		return false;
@@ -410,10 +453,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	private JointImp createRegularJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent, java.util.Map<org.lgna.story.resources.JointId, JointImp> jointMap ) {
-		JointImp joint = this.createJointImplementation( jointId );
-		if( joint.getSgVehicle() == null ) {
-			joint.setVehicle( parent );
-		}
+		JointImp joint = this.createAndParentJointImp( jointId, parent );
 		jointMap.put( jointId, joint );
 		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
 			JointImp childTree = createRegularJointTree( childId, joint, jointMap );
@@ -421,12 +461,21 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		return joint;
 	}
 
-	private JointImp createWrapperJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent, java.util.Map<org.lgna.story.resources.JointId, JointImpWrapper> jointMap ) {
-		JointImpWrapper joint = new JointImpWrapper( this, this.createJointImplementation( jointId ) );
-		jointMap.put( jointId, joint );
+	private JointImp createAndParentJointImp( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
+		JointImp joint = this.createJointImplementation( jointId );
 		if( joint.getSgVehicle() == null ) {
 			joint.setVehicle( parent );
 		}
+		return joint;
+	}
+
+	private JointImpWrapper createJointWrapper( org.lgna.story.resources.JointId jointId, EntityImp parent ) {
+		return new JointImpWrapper( this, this.createAndParentJointImp( jointId, parent ) );
+	}
+
+	private JointImp createWrapperJointTree( org.lgna.story.resources.JointId jointId, EntityImp parent, java.util.Map<org.lgna.story.resources.JointId, JointImpWrapper> jointMap ) {
+		JointImpWrapper joint = createJointWrapper( jointId, parent );
+		jointMap.put( jointId, joint );
 		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
 			createWrapperJointTree( childId, joint, jointMap );
 		}
@@ -769,15 +818,18 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	private static class StraightenTreeWalkObserver implements TreeWalkObserver {
 		private java.util.List<JointData> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
+		@Override
 		public void pushJoint( JointImp jointImp ) {
 			if( jointImp != null ) {
 				list.add( new JointData( jointImp ) );
 			}
 		}
 
+		@Override
 		public void handleBone( org.lgna.story.implementation.JointImp parent, org.lgna.story.implementation.JointImp child ) {
 		}
 
+		@Override
 		public void popJoint( JointImp joint ) {
 		}
 	};
@@ -832,32 +884,23 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		this.animateStraightenOutJoints( DEFAULT_DURATION );
 	}
 
-	private void initializeBubble( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
-		bubble.font.setValue( font );
-		bubble.textColor.setValue( textColor );
-		bubble.fillColor.setValue( fillColor );
-		bubble.outlineColor.setValue( outlineColor );
-	}
-
 	public void say( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
 		duration = adjustDurationIfNecessary( duration );
-		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble( this.getSpeechBubbleOriginator() );
-		bubble.text.setValue( text );
-		initializeBubble( bubble, font, textColor, fillColor, outlineColor );
-		this.displayBubble( bubble, duration );
+		org.lgna.story.implementation.overlay.BubbleImp bubbleImp = new org.lgna.story.implementation.overlay.SpeechBubbleImp( this, this.getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor );
+		this.displayBubble( bubbleImp, duration );
 	}
 
 	public void think( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
 		duration = adjustDurationIfNecessary( duration );
-		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble( this.getSpeechBubbleOriginator() );
-		bubble.text.setValue( text );
-		initializeBubble( bubble, font, textColor, fillColor, outlineColor );
-		this.displayBubble( bubble, duration );
+		org.lgna.story.implementation.overlay.BubbleImp bubbleImp = new org.lgna.story.implementation.overlay.ThoughtBubbleImp( this, this.getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor );
+		this.displayBubble( bubbleImp, duration );
 	}
 
 	private final A abstraction;
 	private final edu.cmu.cs.dennisc.scenegraph.Scalable sgScalable;
 	private final java.util.Map<org.lgna.story.resources.JointId, JointImpWrapper> mapIdToJoint = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<org.lgna.story.resources.JointArrayId, org.lgna.story.resources.JointId[]> mapArrayIdToJointIdArray = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private org.lgna.story.resources.JointArrayId[] jointArrayIds = null;
 	private JointImplementationAndVisualDataFactory<R> factory;
 	private VisualData visualData;
 }

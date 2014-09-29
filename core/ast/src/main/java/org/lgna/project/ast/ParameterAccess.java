@@ -101,5 +101,5 @@ public final class ParameterAccess extends Expression {
 		generator.appendString( this.parameter.getValue().getName() );
 	}
 
-	public final DeclarationProperty<UserParameter> parameter = new DeclarationProperty<UserParameter>( this );
+	public final DeclarationProperty<UserParameter> parameter = DeclarationProperty.createReferenceInstance( this );
 }

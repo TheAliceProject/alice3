@@ -51,6 +51,7 @@ public class DeleteStatementOperation extends DeleteDeclarationLikeSubstanceOper
 
 	public static DeleteStatementOperation getInstance( org.lgna.project.ast.Statement statement ) {
 		return map.getInitializingIfAbsent( statement, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.Statement, DeleteStatementOperation>() {
+			@Override
 			public DeleteStatementOperation initialize( org.lgna.project.ast.Statement statement ) {
 				return new DeleteStatementOperation( statement );
 			}

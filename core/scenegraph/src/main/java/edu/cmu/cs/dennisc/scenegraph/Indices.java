@@ -147,6 +147,7 @@ public class Indices implements BinaryEncodableAndDecodable
 		this.isInNeedOfIndexAdjustment = false;
 	}
 
+	@Override
 	public void encode( BinaryEncoder binaryEncoder )
 	{
 		this.adjustIndicesIfNecessary();

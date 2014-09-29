@@ -65,6 +65,7 @@ public class DoTogether {
 			final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( runnables.length + 1 );
 			for( final Runnable runnable : runnables ) {
 				new ComponentThread( new Runnable() {
+					@Override
 					public void run() {
 						try {
 							runnable.run();

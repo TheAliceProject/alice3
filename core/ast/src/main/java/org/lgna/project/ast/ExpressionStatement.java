@@ -71,7 +71,7 @@ public final class ExpressionStatement extends Statement {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+	protected void appendJavaInternal( JavaCodeGenerator generator ) {
 		generator.appendExpression( this.expression.getValue() );
 		generator.appendSemicolon();
 	}

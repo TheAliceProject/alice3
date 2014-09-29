@@ -42,6 +42,9 @@
  */
 package org.lgna.story.resources;
 
+import org.lgna.project.annotations.FieldTemplate;
+import org.lgna.project.annotations.Visibility;
+
 /**
  * @author dculyba
  * 
@@ -75,10 +78,17 @@ public interface QuadrupedResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId FRONT_RIGHT_FOOT = new org.lgna.story.resources.JointId( FRONT_RIGHT_ANKLE, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId FRONT_RIGHT_TOE = new org.lgna.story.resources.JointId( FRONT_RIGHT_FOOT, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId PELVIS_LOWER_BODY = new org.lgna.story.resources.JointId( ROOT, QuadrupedResource.class );
-	public static final org.lgna.story.resources.JointId TAIL = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, QuadrupedResource.class );
-	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL, QuadrupedResource.class );
+
+	//Tails are now included as arrays access
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final org.lgna.story.resources.JointId TAIL_0 = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, QuadrupedResource.class );
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final org.lgna.story.resources.JointId TAIL_1 = new org.lgna.story.resources.JointId( TAIL_0, QuadrupedResource.class );
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public static final org.lgna.story.resources.JointId TAIL_2 = new org.lgna.story.resources.JointId( TAIL_1, QuadrupedResource.class );
+	@FieldTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public static final org.lgna.story.resources.JointId TAIL_3 = new org.lgna.story.resources.JointId( TAIL_2, QuadrupedResource.class );
-	public static final org.lgna.story.resources.JointId TAIL_4 = new org.lgna.story.resources.JointId( TAIL_3, QuadrupedResource.class );
+
 	public static final org.lgna.story.resources.JointId BACK_LEFT_HIP = new org.lgna.story.resources.JointId( PELVIS_LOWER_BODY, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_LEFT_KNEE = new org.lgna.story.resources.JointId( BACK_LEFT_HIP, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_LEFT_HOCK = new org.lgna.story.resources.JointId( BACK_LEFT_KNEE, QuadrupedResource.class );
@@ -92,7 +102,10 @@ public interface QuadrupedResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId BACK_RIGHT_FOOT = new org.lgna.story.resources.JointId( BACK_RIGHT_ANKLE, QuadrupedResource.class );
 	public static final org.lgna.story.resources.JointId BACK_RIGHT_TOE = new org.lgna.story.resources.JointId( BACK_RIGHT_FOOT, QuadrupedResource.class );
 
+	@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
 	public static org.lgna.story.resources.JointId[] JOINT_ID_ROOTS = { ROOT };
+
+	public org.lgna.story.resources.JointId[] getTailArray();
 
 	public org.lgna.story.implementation.QuadrupedImp createImplementation( org.lgna.story.SQuadruped abstraction );
 }

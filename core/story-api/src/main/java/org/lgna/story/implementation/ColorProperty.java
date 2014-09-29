@@ -47,7 +47,7 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class ColorProperty extends Property<org.lgna.story.Color> {
-	public ColorProperty( EntityImp owner ) {
+	public ColorProperty( PropertyOwnerImp owner ) {
 		super( owner, org.lgna.story.Color.class );
 	}
 

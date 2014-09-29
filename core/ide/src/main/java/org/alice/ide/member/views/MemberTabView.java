@@ -61,7 +61,7 @@ public abstract class MemberTabView extends org.lgna.croquet.views.MigPanel {
 		} else {
 			this.popupButton = null;
 		}
-		this.comboBox = composite.getSortState().getPrepModel().createComboBox();
+		this.comboBox = composite.getSortState().getPrepModel().createComboBoxWithItemCodecListCellRenderer();
 	}
 
 	private static org.lgna.croquet.views.SwingComponentView<?> createDragView( org.lgna.project.ast.Member member ) {

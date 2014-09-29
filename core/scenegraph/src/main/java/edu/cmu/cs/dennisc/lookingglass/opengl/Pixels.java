@@ -67,6 +67,7 @@ class Pixels implements edu.cmu.cs.dennisc.texture.event.TextureListener {
 		m_texture.addTextureListener( this );
 	}
 
+	@Override
 	public void textureChanged( edu.cmu.cs.dennisc.texture.event.TextureEvent textureEvent ) {
 		if( ( m_texture != null ) && ( m_writableRaster != null ) && ( m_bufferedImage != null ) ) {
 			if( ( m_texture.getWidth() != m_bufferedImage.getWidth() ) || ( m_texture.getHeight() != m_bufferedImage.getHeight() ) ) {

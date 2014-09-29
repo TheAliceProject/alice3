@@ -99,6 +99,7 @@ public class AnonymousUserConstructor extends UserConstructor {
 		return null;
 	}
 
+	@Override
 	public java.util.List<? extends org.lgna.project.ast.AbstractParameter> getRequiredParameters() {
 		return this.parameters;
 	}
@@ -106,6 +107,11 @@ public class AnonymousUserConstructor extends UserConstructor {
 	@Override
 	public org.lgna.project.annotations.Visibility getVisibility() {
 		return null;
+	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		//todo?
 	}
 
 	private final AnonymousUserType type;

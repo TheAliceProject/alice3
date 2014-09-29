@@ -54,7 +54,6 @@ import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Plane;
@@ -67,15 +66,17 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 /**
  * @author David Culyba
  */
-public class ObjectTranslateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
+public class ObjectTranslateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnscreenPicturePlaneInformedManipulator {
 
 	private static final double BAD_ANGLE_THRESHOLD = 2.0d * Math.PI * ( 8.0d / 360.0d );
 	private static final double MIN_BAD_ANGLE_THRESHOLD = 0.0d;
 
+	@Override
 	public AbstractCamera getCamera() {
 		return this.camera;
 	}
 
+	@Override
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
 		if( ( this.camera != null ) && ( this.camera.getParent() instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable ) ) {
@@ -84,20 +85,24 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 
 	}
 
+	@Override
 	public void setDesiredCameraView( CameraView cameraView ) {
 		//this can only be ACTIVE_VIEW
 	}
 
+	@Override
 	public CameraView getDesiredCameraView() {
 		return CameraView.PICK_CAMERA;
 	}
 
-	public OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
+	@Override
+	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass ) {
-		this.onscreenLookingGlass = lookingGlass;
+	@Override
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
 	@Override
@@ -127,7 +132,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	}
 
 	protected Point3 getPositionBasedonOnMouseLocation( Point mouseLocation ) {
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if( pickRay != null ) {
 			Plane toMoveIn = this.movementPlane;
 			double badAngleAmount = this.getBadAngleAmount( this.movementPlane, pickRay );
@@ -241,7 +246,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 			this.movementPlane = createPickPlane( this.initialClickPoint );
 			this.badAnglePlane = createBadAnglePlane( this.initialClickPoint );
 
-			Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
+			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenRenderTarget, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 			if( pickRay != null ) {
 				this.initialClickPoint = PlaneUtilities.getPointInPlane( this.movementPlane, pickRay );
 				this.offsetToOrigin = Point3.createSubtraction( this.manipulatedTransformable.getAbsoluteTransformation().translation, this.initialClickPoint );
@@ -275,5 +280,5 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	private Boolean hasMoved = false;
 
 	private AbstractCamera camera = null;
-	private OnscreenLookingGlass onscreenLookingGlass = null;
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
 }

@@ -49,10 +49,10 @@ import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.AnimatorDependentManipulator;
-import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
+import org.alice.interact.manipulator.OnscreenPicturePlaneInformedManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.lookingglass.PickResult;
+import edu.cmu.cs.dennisc.renderer.PickResult;
 
 /**
  * @author Dennis Cosgrove
@@ -124,26 +124,26 @@ public abstract class BareBonesDragAdapter {
 		return this.manipulators;
 	}
 
-	private java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		if( onscreenLookingGlass != null ) {
-			return onscreenLookingGlass.getAWTComponent();
+	private java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+		if( onscreenRenderTarget != null ) {
+			return onscreenRenderTarget.getAwtComponent();
 		} else {
 			return null;
 		}
 	}
 
-	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
+	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 
-	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		if( this.onscreenLookingGlass != null ) {
-			this.onscreenLookingGlass.getLookingGlassFactory().removeAutomaticDisplayListener( this.automaticDisplayAdapter );
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+		if( this.onscreenRenderTarget != null ) {
+			this.onscreenRenderTarget.getRenderFactory().removeAutomaticDisplayListener( this.automaticDisplayAdapter );
 		}
-		this.onscreenLookingGlass = onscreenLookingGlass;
-		setAWTComponent( getAWTComponentToAddListenersTo( this.onscreenLookingGlass ) );
-		if( this.onscreenLookingGlass != null ) {
-			this.onscreenLookingGlass.getLookingGlassFactory().addAutomaticDisplayListener( this.automaticDisplayAdapter );
+		this.onscreenRenderTarget = onscreenRenderTarget;
+		setAWTComponent( getAWTComponentToAddListenersTo( this.onscreenRenderTarget ) );
+		if( this.onscreenRenderTarget != null ) {
+			this.onscreenRenderTarget.getRenderFactory().addAutomaticDisplayListener( this.automaticDisplayAdapter );
 		}
 	}
 
@@ -174,8 +174,8 @@ public abstract class BareBonesDragAdapter {
 		}
 	}
 
-	public void setLookingGlassOnManipulator( OnScreenLookingGlassInformedManipulator manipulator ) {
-		manipulator.setOnscreenLookingGlass( this.onscreenLookingGlass );
+	public void setLookingGlassOnManipulator( OnscreenPicturePlaneInformedManipulator manipulator ) {
+		manipulator.setOnscreenRenderTarget( this.onscreenRenderTarget );
 	}
 
 	protected abstract void setManipulatorStartState( AbstractManipulator manipulator, InputState startState );
@@ -278,9 +278,9 @@ public abstract class BareBonesDragAdapter {
 	}
 
 	private PickResult pickIntoScene( java.awt.Point mouseLocation ) {
-		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
-		assert onscreenLookingGlass != null;
-		edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = onscreenLookingGlass.getPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.NOT_REQUIRED );
+		edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+		assert onscreenRenderTarget != null;
+		edu.cmu.cs.dennisc.renderer.PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED );
 		return pickResult;
 	}
 
@@ -421,64 +421,76 @@ public abstract class BareBonesDragAdapter {
 
 	}
 
-	protected abstract void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e );
+	protected abstract void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e );
 
-	private final edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+	private final edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
+		@Override
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
 			handleAutomaticDisplayCompleted( e );
 		}
 	};
 
 	private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+		@Override
 		public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
 			handleMouseWheelMoved( e );
 		}
 	};
 	private final java.awt.event.MouseMotionListener mouseMotionListener = new java.awt.event.MouseMotionListener() {
+		@Override
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
 			handleMouseMoved( e );
 		}
 
+		@Override
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 			handleMouseDragged( e );
 		}
 	};
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		@Override
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 			handleMouseEntered( e );
 		}
 
+		@Override
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 			handleMouseExited( e );
 		}
 
+		@Override
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			handleMousePressed( e );
 		}
 
+		@Override
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			handleMouseReleased( e );
 		}
 
+		@Override
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
 	};
 	private final java.awt.event.KeyListener keyListener = new java.awt.event.KeyListener() {
+		@Override
 		public void keyPressed( java.awt.event.KeyEvent e ) {
 			handleKeyPressed( e );
 		}
 
+		@Override
 		public void keyReleased( java.awt.event.KeyEvent e ) {
 			handleKeyReleased( e );
 		}
 
+		@Override
 		public void keyTyped( java.awt.event.KeyEvent e ) {
 		}
 	};
 
 	protected/*private*/final java.util.List<ManipulatorConditionSet> manipulators = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
-	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget;
 	private java.awt.Component lookingGlassComponent = null;
 	private java.awt.Component currentRolloverComponent = null;
 	private edu.cmu.cs.dennisc.animation.Animator animator;

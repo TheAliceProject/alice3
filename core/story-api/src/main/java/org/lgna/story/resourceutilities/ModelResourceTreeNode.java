@@ -57,24 +57,28 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 	private java.util.List<ModelResourceTreeNode> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	private NamedUserType userType;
 	private Class<? extends org.lgna.story.resources.ModelResource> resourceClass;
+
 	private JavaType resourceJavaType;
 
+	private Class<? extends org.lgna.story.SModel> modelClass = null;
 	private JavaField resourceJavaField = null;
 	private ModelResource modelResourceInstance = null;
 	private String name;
 	private boolean isSorted = false;
 
-	public ModelResourceTreeNode( NamedUserType aliceClass, Class<? extends org.lgna.story.resources.ModelResource> resourceClass ) {
+	public ModelResourceTreeNode( NamedUserType aliceClass, Class<? extends org.lgna.story.resources.ModelResource> resourceClass, Class<? extends org.lgna.story.SModel> modelClass ) {
 		this.userType = aliceClass;
 		if( this.userType != null )
 		{
 			this.name = this.userType.getName();
 		}
 		this.resourceClass = resourceClass;
+		this.modelClass = modelClass;
 		this.resourceJavaType = org.lgna.project.ast.JavaType.getInstance( this.resourceClass );
 
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> getParent() {
 		return this.parent;
 	}
@@ -91,6 +95,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		}
 	}
 
+	@Override
 	public boolean getAllowsChildren() {
 		return true;
 	}
@@ -109,26 +114,32 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return this.getSortedChildren();
 	}
 
+	@Override
 	public java.util.Enumeration<? extends ModelResourceTreeNode> children() {
 		return java.util.Collections.enumeration( this.getSortedChildren() );
 	}
 
+	@Override
 	public java.util.Iterator iterator() {
 		return this.children.iterator();
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> getChildAt( int childIndex ) {
 		return this.getSortedChildren().get( childIndex );
 	}
 
+	@Override
 	public int getChildCount() {
 		return this.children.size();
 	}
 
+	@Override
 	public boolean isLeaf() {
 		return this.children.size() == 0;
 	}
 
+	@Override
 	public int getIndex( javax.swing.tree.TreeNode node ) {
 		return this.getSortedChildren().indexOf( node );
 	}
@@ -239,6 +250,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return this.userType;
 	}
 
+	@Override
 	public JavaType getValue() {
 		return this.resourceJavaType;
 	}
@@ -250,6 +262,16 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 	public Class<? extends org.lgna.story.resources.ModelResource> getResourceClass()
 	{
 		return this.resourceClass;
+	}
+
+	public Class<? extends org.lgna.story.SModel> getModelClass()
+	{
+		return this.modelClass;
+	}
+
+	public boolean hasModelClass()
+	{
+		return this.modelClass != null;
 	}
 
 	public JavaType getResourceJavaType()
@@ -277,6 +299,7 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return this.resourceJavaField;
 	}
 
+	@Override
 	public int compareTo( ModelResourceTreeNode other ) {
 		if( this.getAllowsChildren() ) {
 			if( other.getAllowsChildren() ) {

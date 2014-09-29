@@ -61,6 +61,7 @@ public abstract class FileSelectionState extends ItemState<java.io.File> {
 	private final SwingModel swingModel = new SwingModel();
 	private final org.lgna.croquet.views.FileChooser oneAndOnlyOneFileChooser = new org.lgna.croquet.views.FileChooser( this );
 	private final java.beans.PropertyChangeListener propertyChangeListener = new java.beans.PropertyChangeListener() {
+		@Override
 		public void propertyChange( java.beans.PropertyChangeEvent e ) {
 			//java.io.File prevValue = (java.io.File)e.getOldValue();
 			java.io.File nextValue = (java.io.File)e.getNewValue();

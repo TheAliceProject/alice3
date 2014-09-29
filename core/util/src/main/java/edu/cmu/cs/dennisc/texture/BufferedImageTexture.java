@@ -65,6 +65,7 @@ public class BufferedImageTexture extends Texture {
 		}
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		//todo
 		assert m_bufferedImage != null;
@@ -136,14 +137,17 @@ public class BufferedImageTexture extends Texture {
 		}
 	}
 
+	@Override
 	public boolean isAnimated() {
 		return false;
 	}
 
+	@Override
 	public edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy getMipMapGenerationPolicy() {
 		return edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy.PAINT_EACH_INDIVIDUAL_LEVEL;
 	}
 
+	@Override
 	public void paint( java.awt.Graphics2D g, int width, int height ) {
 		g.drawImage( m_bufferedImage, 0, 0, width, height, null );
 	}

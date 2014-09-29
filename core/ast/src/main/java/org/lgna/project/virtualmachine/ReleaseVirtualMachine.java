@@ -64,6 +64,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			this.owner = owner;
 		}
 
+		@Override
 		public Frame getOwner() {
 			return this.owner;
 		}
@@ -72,6 +73,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			return this.mapLocalToValue.containsKey( local );
 		}
 
+		@Override
 		public boolean isValidLocal( org.lgna.project.ast.UserLocal local ) {
 			if( this.contains( local ) ) {
 				return true;
@@ -84,6 +86,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			}
 		}
 
+		@Override
 		public boolean isValidParameter( org.lgna.project.ast.UserParameter parameter ) {
 			if( this.owner != null ) {
 				return this.owner.isValidParameter( parameter );
@@ -92,10 +95,12 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			}
 		}
 
+		@Override
 		public void push( UserLocal local, Object value ) {
 			this.mapLocalToValue.put( local, value );
 		}
 
+		@Override
 		public Object get( UserLocal local ) {
 			if( this.contains( local ) ) {
 				return this.mapLocalToValue.get( local );
@@ -109,6 +114,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			}
 		}
 
+		@Override
 		public void set( UserLocal local, Object value ) {
 			if( this.contains( local ) ) {
 				this.mapLocalToValue.put( local, value );
@@ -117,6 +123,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			}
 		}
 
+		@Override
 		public void pop( UserLocal local ) {
 			assert this.contains( local );
 			synchronized( this.mapLocalToValue ) {
@@ -124,12 +131,15 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			}
 		}
 
+		@Override
 		public abstract UserInstance getThis();
 
+		@Override
 		public abstract Object lookup( UserParameter parameter );
 
 		protected abstract void appendRepr( StringBuilder sb, boolean isFormatted );
 
+		@Override
 		public void appendFormatted( StringBuilder sb ) {
 			this.appendRepr( sb, true );
 		}

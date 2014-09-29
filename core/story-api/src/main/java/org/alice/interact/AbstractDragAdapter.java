@@ -50,7 +50,7 @@ import org.alice.interact.event.SelectionEvent;
 import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
-import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
+import org.alice.interact.manipulator.OnscreenPicturePlaneInformedManipulator;
 import org.lgna.croquet.SingleSelectListState;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraMarkerImp;
@@ -310,8 +310,8 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 
 	@Override
 	protected void setManipulatorStartState( AbstractManipulator manipulator, InputState startState ) {
-		if( manipulator instanceof OnScreenLookingGlassInformedManipulator ) {
-			OnScreenLookingGlassInformedManipulator lookingGlassManipulator = (OnScreenLookingGlassInformedManipulator)manipulator;
+		if( manipulator instanceof OnscreenPicturePlaneInformedManipulator ) {
+			OnscreenPicturePlaneInformedManipulator lookingGlassManipulator = (OnscreenPicturePlaneInformedManipulator)manipulator;
 			this.setLookingGlassOnManipulator( lookingGlassManipulator );
 		}
 		if( manipulator instanceof CameraInformedManipulator ) {
@@ -355,7 +355,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	}
 
 	@Override
-	protected void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+	protected void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getSGCamera();
 		if( sgCamera != null ) {
 			if( !hasSetCameraTransformables )
@@ -374,10 +374,10 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	}
 
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
-		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
-		if( onscreenLookingGlass != null ) {
-			if( this.cameraIndex < onscreenLookingGlass.getCameraCount() ) {
-				return onscreenLookingGlass.getCameraAt( this.cameraIndex );
+		edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+		if( onscreenRenderTarget != null ) {
+			if( this.cameraIndex < onscreenRenderTarget.getSgCameraCount() ) {
+				return onscreenRenderTarget.getSgCameraAt( this.cameraIndex );
 			} else {
 				return null;
 			}
@@ -446,6 +446,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	public abstract void undoRedoEndManipulation( AbstractManipulator manipulator, AffineMatrix4x4 originalTransformation );
 
 	private final AbsoluteTransformationListener cameraTransformationListener = new AbsoluteTransformationListener() {
+		@Override
 		public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
 			if( absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera ) {
 				SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)absoluteTransformationEvent.getSource();

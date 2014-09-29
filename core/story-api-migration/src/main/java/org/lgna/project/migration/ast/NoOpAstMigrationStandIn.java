@@ -44,7 +44,6 @@ package org.lgna.project.migration.ast;
 
 import org.lgna.project.migration.AstMigration;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -54,6 +53,6 @@ public class NoOpAstMigrationStandIn extends AstMigration {
 	}
 
 	@Override
-	public void migrate( org.lgna.project.ast.Node node ) {
+	public void migrate( org.lgna.project.ast.Node node, org.lgna.project.Project projectIfApplicable ) {
 	}
 }

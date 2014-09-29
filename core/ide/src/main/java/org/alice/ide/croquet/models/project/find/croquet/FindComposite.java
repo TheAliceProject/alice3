@@ -46,14 +46,6 @@ package org.alice.ide.croquet.models.project.find.croquet;
  * @author Dennis Cosgrove
  */
 public class FindComposite extends AbstractFindComposite {
-	private static class SingletonHolder {
-		private static FindComposite instance = new FindComposite();
-	}
-
-	public static FindComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	//todo: listen to name changes
 	private class FindMemberReferencesOperation extends org.lgna.croquet.ActionOperation {
 		private final org.lgna.project.ast.Member member;
@@ -93,12 +85,15 @@ public class FindComposite extends AbstractFindComposite {
 		}
 	};
 
-	private FindComposite() {
+	public FindComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ) );
+		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
 	public org.lgna.croquet.Operation getMemberReferencesOperationInstance( org.lgna.project.ast.Member member ) {
 		//todo: cache
 		return new FindMemberReferencesOperation( member );
 	}
+
+	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
 }

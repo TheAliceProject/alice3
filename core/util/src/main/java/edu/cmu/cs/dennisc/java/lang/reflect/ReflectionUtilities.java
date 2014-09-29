@@ -326,9 +326,25 @@ public final class ReflectionUtilities {
 		}
 	}
 
-	private static java.util.List<java.lang.reflect.Field> getFields( Class<?> cls, Class<?> clsAssignable, int modifierMask ) {
+	private static enum InclusionLevel {
+		ALL_DECLARED() {
+			@Override
+			public java.lang.reflect.Field[] getFields( Class<?> cls ) {
+				return cls.getDeclaredFields();
+			}
+		},
+		PUBLIC_INCLUDING_INHERITED {
+			@Override
+			public java.lang.reflect.Field[] getFields( Class<?> cls ) {
+				return cls.getFields();
+			}
+		};
+		public abstract java.lang.reflect.Field[] getFields( Class<?> cls );
+	}
+
+	private static java.util.List<java.lang.reflect.Field> getFields( Class<?> cls, Class<?> clsAssignable, InclusionLevel inclusionLevel, int modifierMask ) {
 		java.util.List<java.lang.reflect.Field> rv = new java.util.LinkedList<java.lang.reflect.Field>();
-		java.lang.reflect.Field[] fields = cls.getFields();
+		java.lang.reflect.Field[] fields = inclusionLevel.getFields( cls );
 		for( java.lang.reflect.Field field : fields ) {
 			if( clsAssignable.isAssignableFrom( field.getType() ) ) {
 				if( ( field.getModifiers() & modifierMask ) == modifierMask ) {
@@ -341,12 +357,22 @@ public final class ReflectionUtilities {
 
 	//todo
 	public static java.util.List<java.lang.reflect.Field> getPublicFinalFields( Class<?> cls, Class<?> clsAssignable ) {
-		return getFields( cls, clsAssignable, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.FINAL );
+		return getFields( cls, clsAssignable, InclusionLevel.PUBLIC_INCLUDING_INHERITED, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.FINAL );
 	}
 
 	//todo
 	public static java.util.List<java.lang.reflect.Field> getPublicStaticFinalFields( Class<?> cls, Class<?> clsAssignable ) {
-		return getFields( cls, clsAssignable, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.STATIC | java.lang.reflect.Modifier.FINAL );
+		return getFields( cls, clsAssignable, InclusionLevel.PUBLIC_INCLUDING_INHERITED, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.STATIC | java.lang.reflect.Modifier.FINAL );
+	}
+
+	//todo
+	public static java.util.List<java.lang.reflect.Field> getPublicFinalDeclaredFields( Class<?> cls, Class<?> clsAssignable ) {
+		return getFields( cls, clsAssignable, InclusionLevel.ALL_DECLARED, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.FINAL );
+	}
+
+	//todo
+	public static java.util.List<java.lang.reflect.Field> getPublicStaticFinalDeclaredFields( Class<?> cls, Class<?> clsAssignable ) {
+		return getFields( cls, clsAssignable, InclusionLevel.ALL_DECLARED, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.STATIC | java.lang.reflect.Modifier.FINAL );
 	}
 
 	private static <E extends Object> java.util.List<E> getInstances( Class<?> cls, Class<E> clsAssignable, int modifierMask ) {

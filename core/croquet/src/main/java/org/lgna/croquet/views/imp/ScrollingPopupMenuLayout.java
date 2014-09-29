@@ -91,21 +91,25 @@ package org.lgna.croquet.views.imp;
 		this.layoutContainer( this.target );
 	}
 
+	@Override
 	public synchronized float getLayoutAlignmentX( java.awt.Container target ) {
 		this.updateRequirementsIfNecessary( target );
 		return this.widthRequirement.alignment;
 	}
 
+	@Override
 	public synchronized float getLayoutAlignmentY( java.awt.Container target ) {
 		this.updateRequirementsIfNecessary( target );
 		return this.heightRequirement.alignment;
 	}
 
+	@Override
 	public void addLayoutComponent( String name, java.awt.Component comp ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, name, comp );
 		this.invalidateLayout( comp.getParent() );
 	}
 
+	@Override
 	public void addLayoutComponent( java.awt.Component comp, Object constraints ) {
 		if( constraints != null ) {
 			//pass
@@ -131,6 +135,7 @@ package org.lgna.croquet.views.imp;
 		this.invalidateLayout( comp.getParent() );
 	}
 
+	@Override
 	public void removeLayoutComponent( java.awt.Component comp ) {
 		this.invalidateLayout( comp.getParent() );
 		if( this.mainItems.contains( comp ) ) {
@@ -149,6 +154,7 @@ package org.lgna.croquet.views.imp;
 		}
 	}
 
+	@Override
 	public synchronized void invalidateLayout( java.awt.Container target ) {
 		this.index0 = 0;
 		this.childWidthRequirements = null;
@@ -199,6 +205,7 @@ package org.lgna.croquet.views.imp;
 		return new java.awt.Dimension( width + insets.left + insets.right + sideWidth, height + insets.top + insets.bottom );
 	}
 
+	@Override
 	public synchronized java.awt.Dimension minimumLayoutSize( java.awt.Container target ) {
 		this.updateRequirementsIfNecessary( target );
 		return this.getInsetSize( this.widthRequirement.minimum, this.heightRequirement.minimum, target );
@@ -208,6 +215,7 @@ package org.lgna.croquet.views.imp;
 		return this.getInsetSize( this.widthRequirement.preferred, this.heightRequirement.preferred, target );
 	}
 
+	@Override
 	public synchronized java.awt.Dimension preferredLayoutSize( java.awt.Container target ) {
 		this.invalidateLayout( target );
 		this.updateRequirementsIfNecessary( target );
@@ -236,6 +244,7 @@ package org.lgna.croquet.views.imp;
 		return rv;
 	}
 
+	@Override
 	public synchronized java.awt.Dimension maximumLayoutSize( java.awt.Container target ) {
 		this.updateRequirementsIfNecessary( target );
 		return this.getInsetSize( this.widthRequirement.maximum, this.heightRequirement.maximum, target );
@@ -255,6 +264,7 @@ package org.lgna.croquet.views.imp;
 		return lastIndex;
 	}
 
+	@Override
 	public synchronized void layoutContainer( java.awt.Container target ) {
 		this.updateRequirementsIfNecessary( target );
 		java.awt.Dimension layoutSize = this.actualPreferredLayoutSize( target );

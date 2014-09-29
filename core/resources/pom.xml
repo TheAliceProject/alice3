@@ -71,21 +71,28 @@
 								<artifactItem>
 									<groupId>org.alice</groupId>
 									<artifactId>alice-model-resources</artifactId>
-									<version>${alice.gallery.version}</version>
+									<version>${alice.model.version}</version>
 									<type>zip</type>
 									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
 									<artifactId>nebulous-model-resources</artifactId>
-									<version>${alice.gallery.version}</version>
+									<version>${nebulous.model.version}</version>
 									<type>zip</type>
 									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
 								</artifactItem>
+									<artifactItem>
+										<groupId>org.alice.nonfree</groupId>
+										<artifactId>nebulous-person-resources</artifactId>
+										<version>${nebulous.person.version}</version>
+										<type>zip</type>
+										<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
+									</artifactItem>
 								<artifactItem>
 									<groupId>org.alice</groupId>
 									<artifactId>sound-gallery</artifactId>
-									<version>${alice.gallery.version}</version>
+									<version>${sound.gallery.version}</version>
 									<type>zip</type>
 									<outputDirectory>${project.resources.sound-gallery.directory}</outputDirectory>
 								</artifactItem>
@@ -117,8 +124,8 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous</artifactId>
-									<version>${nebulous.version}</version>
+									<artifactId>nebulous-natives</artifactId>
+									<version>${nebulous.lib.version}</version>
 									<classifier>linux-amd64</classifier>
 									<type>zip</type>
 									<outputDirectory>${project.resources.platform.directory}/${platform.linux-amd64.label}/${platform.nebulous.label}</outputDirectory>
@@ -141,8 +148,8 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous</artifactId>
-									<version>${nebulous.version}</version>
+									<artifactId>nebulous-natives</artifactId>
+									<version>${nebulous.lib.version}</version>
 									<classifier>linux-i586</classifier>
 									<type>zip</type>
 									<outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.nebulous.label}</outputDirectory>
@@ -165,8 +172,8 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous</artifactId>
-									<version>${nebulous.version}</version>
+									<artifactId>nebulous-natives</artifactId>
+									<version>${nebulous.lib.version}</version>
 									<classifier>macosx</classifier>
 									<type>zip</type>
 									<outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.nebulous.label}</outputDirectory>
@@ -203,8 +210,8 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous</artifactId>
-									<version>${nebulous.version}</version>
+									<artifactId>nebulous-natives</artifactId>
+									<version>${nebulous.lib.version}</version>
 									<classifier>win32</classifier>
 									<type>zip</type>
 									<outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.nebulous.label}</outputDirectory>
@@ -241,8 +248,8 @@
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous</artifactId>
-									<version>${nebulous.version}</version>
+									<artifactId>nebulous-natives</artifactId>
+									<version>${nebulous.lib.version}</version>
 									<classifier>win64</classifier>
 									<type>zip</type>
 									<outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.nebulous.label}</outputDirectory>

@@ -42,7 +42,6 @@
  */
 package org.lgna.project.migration;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -145,6 +144,38 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 	private static String createJointAccessorReplacement( String accessorName, String clsName ) {
 		return createJointAccessorString( accessorName, clsName, REPLACEMENT_WHITESPACE );
 	}
+
+	private static String createJointIdString( String fieldName, String subPackageAndClassName, String whitespace ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "name=\"" );
+		sb.append( fieldName );
+		sb.append( "\">" );
+		sb.append( PATTERN_WHITESPACE );
+		sb.append( "<declaringClass name=\"org.lgna.story.resources." );
+		sb.append( subPackageAndClassName );
+		sb.append( "\"" );
+		return sb.toString();
+	}
+
+	private static String CACHE_FROM_PREVIOUS_CALL_subPackageAndClassName;
+
+	private static String createJointIdPattern( String prevFieldName, String subPackageAndClassName ) {
+		CACHE_FROM_PREVIOUS_CALL_subPackageAndClassName = subPackageAndClassName;
+		return createJointIdString( prevFieldName, subPackageAndClassName, PATTERN_WHITESPACE );
+	}
+
+	private static String createJointIdReplacement( String nextFieldName ) {
+		assert CACHE_FROM_PREVIOUS_CALL_subPackageAndClassName != null : nextFieldName;
+		try {
+			return createJointIdString( nextFieldName, CACHE_FROM_PREVIOUS_CALL_subPackageAndClassName, PATTERN_WHITESPACE );
+		} finally {
+			CACHE_FROM_PREVIOUS_CALL_subPackageAndClassName = null;
+		}
+	}
+
+	//	private static String createJointIdReplacement_NoLongerExistsCondition( String nextFieldNameToUseDespitePotentialProblems ) {
+	//		return createJointIdReplacement( nextFieldNameToUseDespitePotentialProblems );
+	//	}
 
 	private final TextMigration[] textMigrations = {
 			new org.lgna.project.migration.TextMigration(
@@ -5172,6 +5203,345 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"edu.cmu.cs.dennisc.matt.EndOcclusionEvent",
 					"org.lgna.story.event.EndOcclusionEvent"
 
+			),
+
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.85.0.0" ),
+					new org.lgna.project.Version( "3.1.92.0.0" )
+			),
+
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.92.0.0" ),
+					new org.lgna.project.Version( "3.1.93.0.0" ),
+
+					createMoreSpecificFieldPattern( "WALNUT_DOOR_WALNUT_WALNUT", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "WALNUT_DOOR_WALNUT_LIGHT_WOOD", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "WALNUT_DOOR_WALNUT_ORANGE", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "WALNUT_DOOR_WALNUT_BLUE", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "WALNUT_DOOR_WALNUT_PINK", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "BASIC", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "FANCY", "org.lgna.story.resources.prop.BiotechStationResource" ),
+					createMoreSpecificFieldReplacement( "BIOTECH_STATION", "org.lgna.story.resources.prop.BiotechStationResource" ),
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.BlackCatResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.PandaResource" ),
+
+					"name=\"org.lgna.story.resources.biped.BlackCatResource",
+					"name=\"org.lgna.story.resources.biped.AliceResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.PumpkinHeadResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.PandaResource" ),
+
+					createMoreSpecificFieldPattern( "HEADLESS", "org.lgna.story.resources.biped.PumpkinHeadResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.PandaResource" ),
+
+					"name=\"org.lgna.story.resources.biped.PumpkinHeadResource",
+					"name=\"org.lgna.story.resources.biped.PandaResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TrainEngineResource" ),
+					createMoreSpecificFieldReplacement( "LIMOUSINE", "org.lgna.story.resources.prop.LimousineResource" ),
+
+					"name=\"org.lgna.story.resources.prop.TrainEngineResource",
+					"name=\"org.lgna.story.resources.prop.LimousineResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.GhostResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.ThorResource" ),
+
+					createMoreSpecificFieldPattern( "SHEET_GHOST", "org.lgna.story.resources.biped.GhostResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.ThorResource" ),
+
+					createMoreSpecificFieldPattern( "SHEET_GHOST_SHEET_TRANSPARENT", "org.lgna.story.resources.biped.GhostResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.ThorResource" ),
+
+					"name=\"org.lgna.story.resources.biped.GhostResource",
+					"name=\"org.lgna.story.resources.biped.ThorResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TrainCarResource" ),
+					createMoreSpecificFieldReplacement( "LIMOUSINE", "org.lgna.story.resources.prop.LimousineResource" ),
+
+					"name=\"org.lgna.story.resources.prop.TrainCarResource",
+					"name=\"org.lgna.story.resources.prop.LimousineResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TunnelResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.TentResource" ),
+
+					"name=\"org.lgna.story.resources.prop.TunnelResource",
+					"name=\"org.lgna.story.resources.prop.TentResource",
+
+					createMoreSpecificFieldPattern( "WITH_HAT", "org.lgna.story.resources.biped.SkeletonResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.YetiResource" ),
+
+					createMoreSpecificFieldPattern( "DEFAULT_SKELETON", "org.lgna.story.resources.biped.SkeletonResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.YetiResource" ),
+
+					createMoreSpecificFieldPattern( "DEFAULT_TOP_HAT", "org.lgna.story.resources.biped.SkeletonResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.YetiResource" ),
+
+					"name=\"org.lgna.story.resources.biped.SkeletonResource",
+					"name=\"org.lgna.story.resources.biped.YetiResource",
+
+					createMoreSpecificFieldPattern( "DIFFUSE", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.TreeTrunkResource" ),
+
+					createMoreSpecificFieldPattern( "SKELETON", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.TreeTrunkResource" ),
+
+					createMoreSpecificFieldPattern( "TOP_HAT", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.TreeTrunkResource" ),
+
+					"name=\"org.lgna.story.resources.prop.FirTreeTrunkResource",
+					"name=\"org.lgna.story.resources.prop.TreeTrunkResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.BatResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.YetiResource" ),
+
+					"name=\"org.lgna.story.resources.biped.BatResource",
+					"name=\"org.lgna.story.resources.biped.YetiResource",
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.AsuraResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.AlienResource" ),
+
+					"name=\"org.lgna.story.resources.biped.AsuraResource",
+					"name=\"org.lgna.story.resources.biped.AlienResource",
+
+					createMoreSpecificFieldPattern( "CHEAP", "org.lgna.story.resources.prop.TelevisionRemoteResource" ),
+					createMoreSpecificFieldReplacement( "TELEVISION_REMOTE", "org.lgna.story.resources.prop.TelevisionRemoteResource" ),
+
+					createJointIdPattern( "TAIL", "biped.BigBadWolfResource" ),
+					createJointIdReplacement( "TAIL_0" ),
+					createJointIdPattern( "TAIL_2", "biped.BigBadWolfResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "biped.BigBadWolfResource" ),
+					createJointIdReplacement( "TAIL_2" ),
+					createJointIdPattern( "TAIL_4", "biped.BigBadWolfResource" ),
+					createJointIdReplacement( "TAIL_3" ),
+
+					createJointIdPattern( "TAIL", "biped.BunnyResource" ),
+					createJointIdReplacement( "TAIL_0" ),
+					createJointIdPattern( "TAIL_2", "biped.BunnyResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "biped.BunnyResource" ),
+					createJointIdReplacement( "TAIL_2" ),
+
+					createJointIdPattern( "TAIL", "biped.CheshireCatResource" ),
+					createJointIdReplacement( "TAIL_0" ),
+					createJointIdPattern( "TAIL_2", "biped.CheshireCatResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "biped.CheshireCatResource" ),
+					createJointIdReplacement( "TAIL_2" ),
+					createJointIdPattern( "TAIL_4", "biped.CheshireCatResource" ),
+					createJointIdReplacement( "TAIL_3" ),
+					createJointIdPattern( "TAIL_5", "biped.CheshireCatResource" ),
+					createJointIdReplacement( "TAIL_4" ),
+
+					createJointIdPattern( "TAIL", "biped.GoldenMonkeyResource" ),
+					createJointIdReplacement( "TAIL_0" ),
+					createJointIdPattern( "TAIL_2", "biped.GoldenMonkeyResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "biped.GoldenMonkeyResource" ),
+					createJointIdReplacement( "TAIL_2" ),
+					createJointIdPattern( "JOINT_4", "biped.GoldenMonkeyResource" ),
+					createJointIdReplacement( "TAIL_3" ),
+
+					createJointIdPattern( "TAIL", "biped.HareResource" ),
+					createJointIdReplacement( "TAIL_0" ),
+					createJointIdPattern( "TAIL_2", "biped.HareResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+
+					createJointIdPattern( "TAIL", "biped.MandrilResource" ),
+					createJointIdReplacement( "TAIL_0" ),
+					createJointIdPattern( "TAIL_2", "biped.MandrilResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+
+					createJointIdPattern( "TAIL", "biped.MonkeyKingResource" ),
+					createJointIdReplacement( "TAIL_0" ),
+					createJointIdPattern( "TAIL_2", "biped.MonkeyKingResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "biped.MonkeyKingResource" ),
+					createJointIdReplacement( "TAIL_2" ),
+					createJointIdPattern( "TAIL_4", "biped.MonkeyKingResource" ),
+					createJointIdReplacement( "TAIL_3" ),
+
+					createJointIdPattern( "JAW_1", "biped.PandaResource" ),
+					createJointIdReplacement( "MOUTH_TIP" ),
+
+					createJointIdPattern( "TAIL", "biped.StuffedTigerResource" ),
+					createJointIdReplacement( "TAIL_0" ),
+					createJointIdPattern( "TAIL_2", "biped.StuffedTigerResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "biped.StuffedTigerResource" ),
+					createJointIdReplacement( "TAIL_2" ),
+					createJointIdPattern( "TAIL_4", "biped.StuffedTigerResource" ),
+					createJointIdReplacement( "TAIL_3" ),
+					createJointIdPattern( "TAIL_5", "biped.StuffedTigerResource" ),
+					createJointIdReplacement( "TAIL_4" ),
+
+					createJointIdPattern( "NECK", "FlyerResource" ),
+					createJointIdReplacement( "NECK_0" ),
+					createJointIdPattern( "NECK_2", "FlyerResource" ),
+					createJointIdReplacement( "NECK_1" ),
+
+					createJointIdPattern( "TAIL", "FlyerResource" ),
+					createJointIdReplacement( "TAIL_0" ),
+					createJointIdPattern( "TAIL_2", "FlyerResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "FlyerResource" ),
+					createJointIdReplacement( "TAIL_2" ),
+
+					createJointIdPattern( "LEFT_PLUMAGE_1", "flyer.PeacockResource" ),
+					createJointIdReplacement( "PLUMAGE_LEFT_TIP" ),
+
+					createJointIdPattern( "RIGHT_PLUMAGE_1", "flyer.PeacockResource" ),
+					createJointIdReplacement( "PLUMAGE_RIGHT_TIP" ),
+
+					createJointIdPattern( "TAIL", "QuadrupedResource" ),
+					createJointIdReplacement( "TAIL_0" ),
+					createJointIdPattern( "TAIL_2", "QuadrupedResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "QuadrupedResource" ),
+					createJointIdReplacement( "TAIL_2" ),
+					createJointIdPattern( "TAIL_4", "QuadrupedResource" ),
+					createJointIdReplacement( "TAIL_3" ),
+
+					createJointIdPattern( "JAW_1", "quadruped.AbyssinianCatResource" ),
+					createJointIdReplacement( "LOWER_LIP" ),
+					createJointIdPattern( "JAW_1", "quadruped.AlienRobotResource" ),
+					createJointIdReplacement( "MOUTH_TIP" ),
+					createJointIdPattern( "JAW_1", "quadruped.CaimanResource" ),
+					createJointIdReplacement( "MOUTH_TIP" ),
+					createJointIdPattern( "JAW_1", "quadruped.CowResource" ),
+					createJointIdReplacement( "MOUTH_TIP" ),
+					createJointIdPattern( "JAW_1", "quadruped.DragonResource" ),
+					createJointIdReplacement( "MOUTH_TIP" ),
+					createJointIdPattern( "JAW_1", "quadruped.DragonBabyResource" ),
+					createJointIdReplacement( "MOUTH_TIP" ),
+					createJointIdPattern( "JAW_1", "quadruped.PeccaryResource" ),
+					createJointIdReplacement( "MOUTH_TIP" ),
+					createJointIdPattern( "JAW_1", "quadruped.YaliResource" ),
+					createJointIdReplacement( "MOUTH_TIP" ),
+
+					createJointIdPattern( "TONGUE", "quadruped.CoyoteResource" ),
+					createJointIdReplacement( "TONGUE_0" ),
+					createJointIdPattern( "TONGUE_2", "quadruped.CoyoteResource" ),
+					createJointIdReplacement( "TONGUE_1" ),
+					createJointIdPattern( "TONGUE_3", "quadruped.CoyoteResource" ),
+					createJointIdReplacement( "TONGUE_2" ),
+					createJointIdPattern( "TONGUE_4", "quadruped.CoyoteResource" ),
+					createJointIdReplacement( "TONGUE_3" ),
+
+					createJointIdPattern( "TRUNK_1", "quadruped.ElephantResource" ),
+					createJointIdReplacement( "TRUNK_0" ),
+					createJointIdPattern( "TRUNK_2", "quadruped.ElephantResource" ),
+					createJointIdReplacement( "TRUNK_1" ),
+					createJointIdPattern( "TRUNK_3", "quadruped.ElephantResource" ),
+					createJointIdReplacement( "TRUNK_2" ),
+					createJointIdPattern( "TRUNK_4", "quadruped.ElephantResource" ),
+					createJointIdReplacement( "TRUNK_3" ),
+					createJointIdPattern( "TRUNK_5", "quadruped.ElephantResource" ),
+					createJointIdReplacement( "TRUNK_4" ),
+					createJointIdPattern( "TRUNK_6", "quadruped.ElephantResource" ),
+					createJointIdReplacement( "TRUNK_5" ),
+
+					createJointIdPattern( "TONGUE_1", "quadruped.HornedLizardResource" ),
+					createJointIdReplacement( "TONGUE_0" ),
+					createJointIdPattern( "TONGUE_2", "quadruped.HornedLizardResource" ),
+					createJointIdReplacement( "TONGUE_1" ),
+					createJointIdPattern( "TONGUE_3", "quadruped.HornedLizardResource" ),
+					createJointIdReplacement( "TONGUE_2" ),
+					createJointIdPattern( "TONGUE_4", "quadruped.HornedLizardResource" ),
+					createJointIdReplacement( "TONGUE_3" ),
+
+					createJointIdPattern( "TONGUE", "quadruped.YakResource" ),
+					createJointIdReplacement( "TONGUE_0" ),
+					createJointIdPattern( "TONGUE_2", "quadruped.YakResource" ),
+					createJointIdReplacement( "TONGUE_1" ),
+					createJointIdPattern( "TONGUE_3", "quadruped.YakResource" ),
+					createJointIdReplacement( "TONGUE_2" ),
+					createJointIdPattern( "TONGUE_4", "quadruped.YakResource" ),
+					createJointIdReplacement( "TONGUE_3" ),
+
+					createJointIdPattern( "TRUNK", "quadruped.YaliResource" ),
+					createJointIdReplacement( "TRUNK_0" ),
+					createJointIdPattern( "TRUNK_2", "quadruped.YaliResource" ),
+					createJointIdReplacement( "TRUNK_1" ),
+					createJointIdPattern( "TRUNK_3", "quadruped.YaliResource" ),
+					createJointIdReplacement( "TRUNK_2" ),
+					createJointIdPattern( "TRUNK_4", "quadruped.YaliResource" ),
+					createJointIdReplacement( "TRUNK_3" ),
+					createJointIdPattern( "TRUNK_5", "quadruped.YaliResource" ),
+					createJointIdReplacement( "TRUNK_4" ),
+					createJointIdPattern( "TRUNK_6", "quadruped.YaliResource" ),
+					createJointIdReplacement( "TRUNK_5" ),
+
+					createJointIdPattern( "LEFT_1", "prop.NavajoBlanketResource" ),
+					createJointIdReplacement( "LEFT_0" ),
+					createJointIdPattern( "LEFT_2", "prop.NavajoBlanketResource" ),
+					createJointIdReplacement( "LEFT_1" ),
+					createJointIdPattern( "LEFT_3", "prop.NavajoBlanketResource" ),
+					createJointIdReplacement( "LEFT_2" ),
+					createJointIdPattern( "RIGHT_1", "prop.NavajoBlanketResource" ),
+					createJointIdReplacement( "RIGHT_0" ),
+					createJointIdPattern( "RIGHT_2", "prop.NavajoBlanketResource" ),
+					createJointIdReplacement( "RIGHT_1" ),
+					createJointIdPattern( "RIGHT_3", "prop.NavajoBlanketResource" ),
+					createJointIdReplacement( "RIGHT_2" ),
+
+					//createJointIdPattern( "STRING_1", "prop.PrayerFlagsResource" ),
+					//createJointIdReplacement( "STRING_1" ),
+					createJointIdPattern( "FLAG_5", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_05" ),
+					createJointIdPattern( "FLAG_6", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_06" ),
+					createJointIdPattern( "FLAG_7", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_07" ),
+					createJointIdPattern( "FLAG_8", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_08" ),
+					createJointIdPattern( "FLAG_9", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_09" ),
+
+					createJointIdPattern( "STRING_2", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "STRING_0" ),
+					createJointIdPattern( "FLAG", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_00" ),
+					createJointIdPattern( "FLAG_1", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_01" ),
+					createJointIdPattern( "FLAG_2", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_02" ),
+					createJointIdPattern( "FLAG_3", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_03" ),
+					createJointIdPattern( "FLAG_4", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_04" ),
+
+					createJointIdPattern( "STRING_3", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "STRING_2" ),
+					createJointIdPattern( "FLAG_10", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_10" ),
+					createJointIdPattern( "FLAG_11", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_11" ),
+					createJointIdPattern( "FLAG_12", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_12" ),
+					createJointIdPattern( "FLAG_13", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_13" ),
+					createJointIdPattern( "FLAG_14", "prop.PrayerFlagsResource" ),
+					createJointIdReplacement( "FLAG_14" ),
+
+					createJointIdPattern( "TAIL_5", "quadruped.YaliResource" ),
+					createJointIdReplacement( "TAIL_4" ),
+
+					createJointIdPattern( "TAIL_5", "quadruped.DalmatianResource" ),
+					createJointIdReplacement( "TAIL_4" )
 			)
 
 			//			, EventAstMigration.getTextMigration() 

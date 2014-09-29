@@ -47,30 +47,38 @@ package org.alice.ide.croquet.components;
  */
 public abstract class AbstractListPropertyPane<P extends edu.cmu.cs.dennisc.property.ListProperty<T>, T> extends AbstractPropertyPane<P, java.util.ArrayList<T>> {
 	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<T> listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<T>() {
+		@Override
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<T> e ) {
 		}
 
+		@Override
 		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<T> e ) {
 			AbstractListPropertyPane.this.refreshLater();
 		}
 
+		@Override
 		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<T> e ) {
 		}
 
+		@Override
 		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<T> e ) {
 			AbstractListPropertyPane.this.refreshLater();
 		}
 
+		@Override
 		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<T> e ) {
 		}
 
+		@Override
 		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<T> e ) {
 			AbstractListPropertyPane.this.refreshLater();
 		}
 
+		@Override
 		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<T> e ) {
 		}
 
+		@Override
 		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<T> e ) {
 			AbstractListPropertyPane.this.refreshLater();
 		}

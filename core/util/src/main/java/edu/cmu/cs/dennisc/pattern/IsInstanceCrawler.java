@@ -42,27 +42,30 @@
  */
 package edu.cmu.cs.dennisc.pattern;
 
-public class IsInstanceCrawler<T> implements edu.cmu.cs.dennisc.pattern.Crawler {
+public abstract class IsInstanceCrawler<T> implements edu.cmu.cs.dennisc.pattern.Crawler {
 	public static <T> IsInstanceCrawler<T> createInstance( Class<T> cls ) {
-		return new IsInstanceCrawler<T>( cls );
+		return new IsInstanceCrawler<T>( cls ) {
+			@Override
+			protected boolean isAcceptable( T e ) {
+				return true;
+			}
+		};
 	}
-
-	private final Class<T> cls;
-	private final java.util.List<T> list = new java.util.LinkedList<T>();
 
 	protected IsInstanceCrawler( Class<T> cls ) {
 		this.cls = cls;
 	}
 
-	protected boolean isAcceptable( T e ) {
-		return true;
-	}
+	protected abstract boolean isAcceptable( T e );
 
+	@Override
 	public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-		if( this.cls.isAssignableFrom( crawlable.getClass() ) ) {
-			T e = (T)crawlable;
-			if( isAcceptable( e ) ) {
-				this.list.add( e );
+		if( crawlable != null ) {
+			if( this.cls.isAssignableFrom( crawlable.getClass() ) ) {
+				T e = (T)crawlable;
+				if( isAcceptable( e ) ) {
+					this.list.add( e );
+				}
 			}
 		}
 	}
@@ -70,4 +73,7 @@ public class IsInstanceCrawler<T> implements edu.cmu.cs.dennisc.pattern.Crawler 
 	public java.util.List<T> getList() {
 		return this.list;
 	}
+
+	private final Class<T> cls;
+	private final java.util.List<T> list = new java.util.LinkedList<T>();
 }

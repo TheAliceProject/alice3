@@ -61,10 +61,10 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 
 	protected boolean shouldFire = true;
 	protected Integer count = 0;
-	protected Map<Object, MultipleEventPolicy> policyMap = Maps.newConcurrentHashMap();
-	protected Map<Object, Map<Object, Boolean>> isFiringMap = Maps.newConcurrentHashMap();
-	private CopyOnWriteArrayList<E> queue = new CopyOnWriteArrayList<E>();
-	private Object NULL_OBJECT = new Object();
+	protected final Map<Object, MultipleEventPolicy> policyMap = Maps.newConcurrentHashMap();
+	protected final Map<Object, Map<Object, Boolean>> isFiringMap = Maps.newConcurrentHashMap();
+	private final CopyOnWriteArrayList<E> queue = new CopyOnWriteArrayList<E>();
+	protected final Object NULL_OBJECT = new Object();
 	protected SceneImp scene;
 
 	protected void fireEvent( final L listener, final E event, final Object object ) {
@@ -77,6 +77,7 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 		}
 		if( shouldFire ) {
 			ComponentThread thread = new org.lgna.common.ComponentThread( new Runnable() {
+				@Override
 				public void run() {
 					fire( listener, event );
 					if( policyMap.get( listener ).equals( MultipleEventPolicy.ENQUEUE ) ) {
@@ -85,6 +86,10 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 					isFiringMap.get( listener ).put( o, false );
 				}
 			}, "eventThread" );
+			if( listener instanceof org.lgna.story.event.CollisionStartListener ) {
+				System.out.println( "event: " + event );
+				System.out.println( "object: " + o );
+			}
 			if( isFiringMap.get( listener ).get( o ).equals( false ) ) {
 				isFiringMap.get( listener ).put( o, true );
 				thread.start();

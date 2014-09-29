@@ -74,6 +74,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 		this.index = binaryDecoder.decodeInt();
 	}
 
+	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.blockStatement.getId() );
 		binaryEncoder.encode( this.index );
@@ -87,6 +88,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 		return this.index;
 	}
 
+	@Override
 	public BlockStatementIndexPair createReplacement( org.lgna.croquet.Retargeter retargeter ) {
 		BlockStatementIndexPair replacement = retargeter.retarget( this );
 		if( replacement != this ) {
@@ -104,6 +106,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 		}
 	}
 
+	@Override
 	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 		org.lgna.project.ast.AbstractCode code = this.blockStatement.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
 		return org.alice.ide.declarationseditor.CodeComposite.getInstance( code ).getView().getCodePanelWithDropReceptor().getDropReceptor();

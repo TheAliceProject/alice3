@@ -54,6 +54,7 @@ public abstract class CopyableArrayProperty<E> extends ArrayProperty<E> implemen
 
 	protected abstract E createCopy( E e );
 
+	@Override
 	public E[] getCopy( E[] rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		E[] value = getValue();
 		for( int i = 0; i < value.length; i++ ) {
@@ -62,10 +63,12 @@ public abstract class CopyableArrayProperty<E> extends ArrayProperty<E> implemen
 		return rv;
 	}
 
+	@Override
 	public E[] getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		return getCopy( createArray( getLength() ), owner );
 	}
 
+	@Override
 	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, E[] value ) {
 		E[] dst = createArray( value.length );
 		for( int i = 0; i < value.length; i++ ) {

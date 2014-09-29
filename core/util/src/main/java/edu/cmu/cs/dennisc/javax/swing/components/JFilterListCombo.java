@@ -50,10 +50,12 @@ public class JFilterListCombo extends javax.swing.JPanel {
 		private String[] m_data = {};
 		private java.util.List<String> m_filteredData = new java.util.LinkedList<String>();
 
+		@Override
 		public Object getElementAt( int index ) {
 			return m_filteredData.get( index );
 		}
 
+		@Override
 		public int getSize() {
 			return m_filteredData.size();
 		}
@@ -84,14 +86,17 @@ public class JFilterListCombo extends javax.swing.JPanel {
 	public JFilterListCombo() {
 		m_list.setModel( m_model );
 		m_filter.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
+			@Override
 			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 				JFilterListCombo.this.handleFilterChange( e );
 			}
 
+			@Override
 			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
 				JFilterListCombo.this.handleFilterChange( e );
 			}
 
+			@Override
 			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
 				JFilterListCombo.this.handleFilterChange( e );
 			}

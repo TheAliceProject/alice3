@@ -48,19 +48,23 @@ package org.alice.ide.perspectives.codecs;
  */
 public enum IdePerspectiveCodec implements org.lgna.croquet.ItemCodec<org.alice.ide.perspectives.ProjectPerspective> {
 	SINGLETON;
+	@Override
 	public Class<org.alice.ide.perspectives.ProjectPerspective> getValueClass() {
 		return org.alice.ide.perspectives.ProjectPerspective.class;
 	}
 
+	@Override
 	public org.alice.ide.perspectives.ProjectPerspective decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		org.lgna.croquet.resolvers.Resolver<org.alice.ide.perspectives.ProjectPerspective> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		return resolver.getResolved();
 	}
 
+	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.perspectives.ProjectPerspective value ) {
 		binaryEncoder.encode( value.getResolver() );
 	}
 
+	@Override
 	public void appendRepresentation( StringBuilder sb, org.alice.ide.perspectives.ProjectPerspective value ) {
 		sb.append( value );
 	}

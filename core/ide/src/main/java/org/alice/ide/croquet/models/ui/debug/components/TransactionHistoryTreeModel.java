@@ -54,14 +54,17 @@ public class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.
 		this.root = root;
 	}
 
+	@Override
 	public org.lgna.croquet.history.TransactionHistory getRoot() {
 		return this.root;
 	}
 
+	@Override
 	public boolean isLeaf( Object node ) {
 		return node instanceof org.lgna.croquet.history.PrepStep<?>;
 	}
 
+	@Override
 	public int getChildCount( Object parent ) {
 		if( parent instanceof org.lgna.croquet.history.TransactionHistory ) {
 			org.lgna.croquet.history.TransactionHistory transactionHistory = (org.lgna.croquet.history.TransactionHistory)parent;
@@ -83,6 +86,7 @@ public class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.
 		}
 	}
 
+	@Override
 	public Object getChild( Object parent, int index ) {
 		if( parent instanceof org.lgna.croquet.history.TransactionHistory ) {
 			org.lgna.croquet.history.TransactionHistory transactionHistory = (org.lgna.croquet.history.TransactionHistory)parent;
@@ -105,6 +109,7 @@ public class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.
 		}
 	}
 
+	@Override
 	public int getIndexOfChild( Object parent, Object child ) {
 		if( parent instanceof org.lgna.croquet.history.TransactionHistory ) {
 			org.lgna.croquet.history.TransactionHistory transactionHistory = (org.lgna.croquet.history.TransactionHistory)parent;
@@ -153,6 +158,7 @@ public class TransactionHistoryTreeModel extends edu.cmu.cs.dennisc.javax.swing.
 		return rv;
 	}
 
+	@Override
 	public javax.swing.tree.TreePath getTreePath( Object node ) {
 		java.util.List<Object> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		updatePath( list, node );

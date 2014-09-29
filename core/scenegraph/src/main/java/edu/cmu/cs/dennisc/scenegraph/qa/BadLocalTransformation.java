@@ -56,6 +56,7 @@ public class BadLocalTransformation implements Problem {
 		this.isTranslationMendingRequired = isTranslationMendingRequired;
 	}
 
+	@Override
 	public void mend( edu.cmu.cs.dennisc.scenegraph.qa.Mender mender ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 original = sgTransformable.getLocalTransformation();
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 replacement;

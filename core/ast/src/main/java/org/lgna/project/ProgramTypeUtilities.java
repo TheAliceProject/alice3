@@ -87,6 +87,7 @@ public class ProgramTypeUtilities {
 		class ArgumentListCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
 			private final java.util.List<org.lgna.project.ast.SimpleArgumentListProperty> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
+			@Override
 			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
 					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
@@ -139,6 +140,7 @@ public class ProgramTypeUtilities {
 		final org.lgna.project.ast.Node[] buffer = { null };
 		org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 		edu.cmu.cs.dennisc.pattern.Crawler crawler = new edu.cmu.cs.dennisc.pattern.Crawler() {
+			@Override
 			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 				if( crawlable instanceof org.lgna.project.ast.Node ) {
 					org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)crawlable;

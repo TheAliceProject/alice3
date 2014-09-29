@@ -87,6 +87,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 	}
 
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
+		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
 			setRecording( e.getNextValue() );
 		}
@@ -94,6 +95,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 
 	private final ActionOperation restartOperation = createActionOperation( "restartImageRecorder", new Action() {
 
+		@Override
 		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			isRecordingState.setValueTransactionlessly( false );
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
@@ -111,12 +113,14 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 	}
 
 	private final edu.cmu.cs.dennisc.animation.FrameObserver frameListener = new edu.cmu.cs.dennisc.animation.FrameObserver() {
+		@Override
 		public void update( double tCurrent ) {
 			getView().updateTime( tCurrent );
-			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lookingGlass = programContext.getProgramImp().getOnscreenLookingGlass();
-			if( lookingGlass instanceof edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass ) {
-				edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass captureLookingGlass = (edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass)lookingGlass;
+			edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> renderTarget = programContext.getProgramImp().getOnscreenRenderTarget();
+			if( renderTarget instanceof edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass ) {
+				edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass captureLookingGlass = (edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass)renderTarget;
 				captureLookingGlass.captureImage( new edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass.Observer() {
+					@Override
 					public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown ) {
 						if( image != null ) {
 							if( isUpSideDown ) {
@@ -127,17 +131,17 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 					}
 				} );
 			} else {
-				if( ( lookingGlass.getWidth() > 0 ) && ( lookingGlass.getHeight() > 0 ) ) {
+				if( ( renderTarget.getWidth() > 0 ) && ( renderTarget.getHeight() > 0 ) ) {
 					if( image != null ) {
 						//pass
 					} else {
-						image = lookingGlass.createBufferedImageForUseAsColorBuffer();
+						image = renderTarget.getSynchronousImageCapturer().createBufferedImageForUseAsColorBuffer();
 						//					image = new BufferedImage( lookingGlass.getWidth(), lookingGlass.getHeight(), BufferedImage.TYPE_3BYTE_BGR );
 					}
 					if( image != null ) {
 						boolean[] atIsUpsideDown = { false };
 						synchronized( image ) {
-							image = lookingGlass.getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
+							image = renderTarget.getSynchronousImageCapturer().getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
 							if( atIsUpsideDown[ 0 ] ) {
 								handleImage( image, imageCount, atIsUpsideDown[ 0 ] );
 							} else {
@@ -149,11 +153,12 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null" );
 					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", lookingGlass.getWidth(), "height:", lookingGlass.getHeight() );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", renderTarget.getWidth(), "height:", renderTarget.getHeight() );
 				}
 			}
 		}
 
+		@Override
 		public void complete() {
 		}
 	};
@@ -256,7 +261,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		getView().updateTime( 0 );
 		encoder = new WebmRecordingAdapter();
 		frameRateState.setEnabled( true );
-		encoder.setDimension( programContext.getOnscreenLookingGlass().getSize() );
+		encoder.setDimension( programContext.getOnscreenRenderTarget().getSize() );
 		this.encoder.initializeAudioRecording();
 	}
 

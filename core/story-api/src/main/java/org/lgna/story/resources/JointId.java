@@ -170,6 +170,7 @@ public class JointId {
 			return externalIterator;
 		}
 
+		@Override
 		public boolean hasNext() {
 			if( currentIterator != null )
 			{
@@ -178,6 +179,7 @@ public class JointId {
 			return false;
 		}
 
+		@Override
 		public JointId next() {
 			if( currentIterator != null )
 			{
@@ -194,7 +196,7 @@ public class JointId {
 
 		@Override
 		public void remove() {
-			//Not implemented
+			throw new UnsupportedOperationException( "remove" );
 		}
 	}
 
@@ -209,6 +211,7 @@ public class JointId {
 			this.forJoint = forJoint;
 		}
 
+		@Override
 		public java.util.Iterator<JointId> iterator() {
 			return new ExternalChildrenIterator( this.forClass, this.forJoint );
 		}

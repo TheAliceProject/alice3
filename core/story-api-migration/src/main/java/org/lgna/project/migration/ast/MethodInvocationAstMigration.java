@@ -52,15 +52,16 @@ public abstract class MethodInvocationAstMigration extends AstMigration {
 		super( minimumVersion, resultVersion );
 	}
 
-	protected abstract void migrate( org.lgna.project.ast.MethodInvocation methodInvocation );
+	protected abstract void migrate( org.lgna.project.ast.MethodInvocation methodInvocation, org.lgna.project.Project projectIfApplicable );
 
 	@Override
-	public final void migrate( org.lgna.project.ast.Node node ) {
+	public final void migrate( org.lgna.project.ast.Node node, final org.lgna.project.Project projectIfApplicable ) {
 		node.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
+			@Override
 			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
 					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
-					MethodInvocationAstMigration.this.migrate( methodInvocation );
+					MethodInvocationAstMigration.this.migrate( methodInvocation, projectIfApplicable );
 				}
 			}
 		}, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );

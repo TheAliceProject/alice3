@@ -42,7 +42,6 @@
  */
 package org.lgna.project.migration;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -51,5 +50,5 @@ public abstract class AstMigration extends AbstractMigration {
 		super( minimumVersion, resultVersion );
 	}
 
-	public abstract void migrate( org.lgna.project.ast.Node node );
+	public abstract void migrate( org.lgna.project.ast.Node node, org.lgna.project.Project projectIfApplicable );
 }

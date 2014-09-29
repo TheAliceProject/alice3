@@ -125,10 +125,12 @@ public class RigidBodyAnimation implements edu.cmu.cs.dennisc.animation.Animatio
 
 	private double m_tPrev;
 
+	@Override
 	public void reset() {
 		m_tPrev = Double.NaN;
 	}
 
+	@Override
 	public double update( double tCurrent, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		if( Double.isNaN( m_tPrev ) ) {
 			m_function.initialize( m_sgTransformable.getLocalTransformation() );
@@ -141,6 +143,7 @@ public class RigidBodyAnimation implements edu.cmu.cs.dennisc.animation.Animatio
 		return m_function.getEstimatedTimeRemaining();
 	}
 
+	@Override
 	public void complete( edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		m_sgTransformable.setLocalTransformation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( m_orientation1, m_translation1 ) );
 	}

@@ -76,20 +76,24 @@ public abstract class MethodInvocationFactory extends AbstractInstanceFactory {
 				this.method );
 	}
 
+	@Override
 	public final org.lgna.project.ast.MethodInvocation createTransientExpression() {
 		return this.createMethodInvocation( this.createTransientExpressionForMethodInvocation() );
 	}
 
+	@Override
 	public final org.lgna.project.ast.MethodInvocation createExpression() {
 		return this.createMethodInvocation( this.createExpressionForMethodInvocation() );
 	}
 
+	@Override
 	public final org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
 		return this.method.getReturnType();
 	}
 
 	protected abstract StringBuilder addAccessRepr( StringBuilder rv );
 
+	@Override
 	public final String getRepr() {
 		StringBuilder sb = new StringBuilder();
 		this.addAccessRepr( sb );

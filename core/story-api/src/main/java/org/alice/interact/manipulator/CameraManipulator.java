@@ -53,19 +53,23 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author David Culyba
  */
 public abstract class CameraManipulator extends AbstractManipulator implements CameraInformedManipulator {
+	@Override
 	public AbstractCamera getCamera() {
 		return this.camera;
 	}
 
+	@Override
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
 		this.setManipulatedTransformable( this.getManipulatedTransformableFromCamera() );
 	}
 
+	@Override
 	public CameraView getDesiredCameraView() {
 		return this.desiredCameraView;
 	}
 
+	@Override
 	public void setDesiredCameraView( CameraView cameraView ) {
 		this.desiredCameraView = cameraView;
 	}

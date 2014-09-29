@@ -55,6 +55,7 @@ public final class GraphicsContext {
 			rv = edtInstance;
 		} else {
 			rv = map.getInitializingIfAbsent( Thread.currentThread(), new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<Thread, GraphicsContext>() {
+				@Override
 				public edu.cmu.cs.dennisc.java.awt.GraphicsContext initialize( java.lang.Thread key ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note: creating graphics context on thread", key );
 					return new GraphicsContext();
