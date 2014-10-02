@@ -55,6 +55,8 @@ public abstract class ProgramImp {
 	public static void ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( Class<? extends ProgramImp> classForNextInstance, Class<?>[] bonusParameterTypes, Object[] bonusArguments ) {
 		synchronized( ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock ) {
 			assert ACCEPTABLE_HACK_FOR_NOW_classForNextInstance == null : ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
+			assert ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes == null : ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes;
+			assert ACCEPTABLE_HACK_FOR_NOW_bonusArguments == null : ACCEPTABLE_HACK_FOR_NOW_bonusArguments;
 			ACCEPTABLE_HACK_FOR_NOW_classForNextInstance = classForNextInstance;
 			ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes = bonusParameterTypes;
 			ACCEPTABLE_HACK_FOR_NOW_bonusArguments = bonusArguments;
@@ -82,6 +84,8 @@ public abstract class ProgramImp {
 				assert cnstrctr != null : ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
 				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, arguments );
 				ACCEPTABLE_HACK_FOR_NOW_classForNextInstance = null;
+				ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes = null;
+				ACCEPTABLE_HACK_FOR_NOW_bonusArguments = null;
 			} else {
 				rv = new DefaultProgramImp( abstraction );
 			}
