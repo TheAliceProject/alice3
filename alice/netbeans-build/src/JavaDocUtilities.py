@@ -8,17 +8,24 @@ import java
 
 TEMP_LOCATION_FOR_BUILD = java.io.File( FileUtilities.DEFAULT_DIRECTORY, "temp_space_for_build" )
 TEMP_LOCATION_FOR_DOCS = java.io.File( TEMP_LOCATION_FOR_BUILD, "docs" )
-LOCATION_OF_STORY_API_SRC = java.io.File( MavenUtilities.LOCATION_OF_BUILD_ROOT_POM, "core/story-api/src/main/java" )
+
+def _createCoreSrcDirectory( subName ):
+	return java.io.File( MavenUtilities.LOCATION_OF_BUILD_ROOT_POM, "core/" + subName + "/src/main/java" )
+
+LOCATION_OF_STORY_API_SRC = _createCoreSrcDirectory( "story-api" )
 
 def _generateJavaDocs( srcPath ):
 	dstPath = TEMP_LOCATION_FOR_DOCS.getAbsolutePath()
 	TEMP_LOCATION_FOR_DOCS.mkdirs()
 	FileUtilities.clearDir(dstPath)
-	javadocargs = ["-d", dstPath, "-sourcepath", srcPath, "-encoding", "UTF-8", "-docencoding", "UTF-8", "-subpackages", "org.lgna.story"]
+	javadocargs = ["-d", dstPath, "-sourcepath", srcPath, "-encoding", "UTF-8", "-docencoding", "UTF-8", "-subpackages", "org.lgna.story", "-exclude", "org.lgna.story.implementation:org.lgna.story.resourceutilities"]
 	com.sun.tools.javadoc.Main.execute(javadocargs)
 
 def generateJavaDocsZip( dst ):
-	srcPath = LOCATION_OF_STORY_API_SRC.getAbsolutePath()
+	srcPath = ""
+	for subName in [ "util", "scenegraph", "ast", "story-api" ]:
+		srcPath += _createCoreSrcDirectory( subName ).getAbsolutePath()
+		srcPath += ";"
 	dstPath = dst.getAbsolutePath()
 	_generateJavaDocs( srcPath )
-	FileUtilities.zipFilesInDirs( srcPath, [], [], dstPath)
+	FileUtilities.zipFilesInDirs( str( TEMP_LOCATION_FOR_DOCS.getAbsolutePath() ), [], [], str( dstPath ) )
