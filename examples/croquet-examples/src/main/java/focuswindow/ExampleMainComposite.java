@@ -40,41 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package list;
+package focuswindow;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ListDemoComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<list.views.ListDemoView> {
-	private final org.lgna.croquet.ListSelectionState<ZodiacSign> zodiacState = this.createListSelectionStateForEnum( this.createKey( "zodiacState" ), ZodiacSign.class, ZodiacSign.TAURUS );
+public class ExampleMainComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
+	private final ExampleFocusWindowComposite focusWindow = new ExampleFocusWindowComposite();
+	private final org.lgna.croquet.BooleanState questionState = this.createBooleanState( "questionState", true );
 
-	public ListDemoComposite() {
-		super( java.util.UUID.fromString( "f6bf1c33-4682-4d6a-85b9-391f762f5ef9" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+	public ExampleMainComposite() {
+		super( java.util.UUID.fromString( "3807180f-0937-475a-8b5c-827557fb58ad" ) );
 	}
 
-	public org.lgna.croquet.ListSelectionState<ZodiacSign> getZodiacState() {
-		return this.zodiacState;
+	public ExampleFocusWindowComposite getFocusWindow() {
+		return this.focusWindow;
 	}
 
-	@Override
-	protected list.views.ListDemoView createView() {
-		return new list.views.ListDemoView( this );
-	}
-
-	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
+	public org.lgna.croquet.BooleanState getQuestionState() {
+		return this.questionState;
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return null;
+	protected org.lgna.croquet.views.Panel createView() {
+		return new focuswindow.views.ExampleMainPane( this );
 	}
 
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		new ListDemoComposite().getLaunchOperation().fire();
-		System.exit( 0 );
+		app.getFrame().setMainComposite( new ExampleMainComposite() );
+		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
+		app.getFrame().pack();
+		app.getFrame().setVisible( true );
 	}
 }

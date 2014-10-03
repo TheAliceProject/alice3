@@ -45,11 +45,11 @@ package focuswindow.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ExampleFocusWindowPane extends org.lgna.croquet.components.MigPanel {
+public class ExampleFocusWindowPane extends org.lgna.croquet.views.MigPanel {
 	public ExampleFocusWindowPane( focuswindow.ExampleFocusWindowComposite composite ) {
 		super( composite );
 		this.addComponent( composite.getHeaderText().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
-		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "growx, wrap" );
+		this.addComponent( org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(), "growx, wrap" );
 		this.addComponent( composite.getInfoText().createLabel() );
 		this.setBackgroundColor( new java.awt.Color( 221, 221, 191 ) );
 		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 1, 1, 1, 1, java.awt.Color.BLACK ) );

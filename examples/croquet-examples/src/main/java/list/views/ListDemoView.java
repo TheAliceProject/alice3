@@ -40,50 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package rename;
+package list.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameExampleComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<rename.views.RenameExampleView> {
-	private static final String INITIAL_VALUE = "fred";
-
-	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ), INITIAL_VALUE );
-
-	public RenameExampleComposite() {
-		super( java.util.UUID.fromString( "73adadcf-e434-4dfc-a8fd-507b741f5d58" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
-	}
-
-	public org.lgna.croquet.StringState getNameState() {
-		return this.nameState;
-	}
-
-	@Override
-	protected rename.views.RenameExampleView createView() {
-		return new rename.views.RenameExampleView( this );
-	}
-
-	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
-	}
-
-	@Override
-	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return null;
-	}
-
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.nameState.setValueTransactionlessly( INITIAL_VALUE );
-		this.nameState.selectAll();
-		this.nameState.requestFocus();
-	}
-
-	public static void main( String[] args ) {
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		new RenameExampleComposite().getLaunchOperation().fire();
-		System.exit( 0 );
+public class ListDemoView extends org.lgna.croquet.views.BorderPanel {
+	public ListDemoView( list.ListDemoComposite composite ) {
+		super( composite );
+		org.lgna.croquet.SingleSelectListState<list.ZodiacSign> zodiacState = composite.getZodiacState();
+		this.addCenterComponent( zodiacState.createList() );
+		this.addPageStartComponent( zodiacState.createHorizontalDefaultRadioButtons() );
+		this.addLineStartComponent( zodiacState.createVerticalDefaultRadioButtons() );
+		this.addPageEndComponent( zodiacState.getPrepModel().createComboBox() );
 	}
 }

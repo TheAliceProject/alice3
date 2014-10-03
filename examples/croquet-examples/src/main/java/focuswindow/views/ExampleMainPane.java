@@ -40,34 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package focuswindow;
+package focuswindow.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExampleFocusWindowComposite extends org.lgna.croquet.FocusWindowComposite {
-	private final org.lgna.croquet.PlainStringValue headerText = this.createStringValue( this.createKey( "headerText" ) );
-	private final org.lgna.croquet.PlainStringValue infoText = this.createStringValue( this.createKey( "infoText" ) );
-
-	public ExampleFocusWindowComposite() {
-		super( java.util.UUID.fromString( "dcc99461-66aa-4bdf-a3c7-9cd90ca45d04" ) );
-	}
-
-	public org.lgna.croquet.PlainStringValue getHeaderText() {
-		return this.headerText;
-	}
-
-	public org.lgna.croquet.PlainStringValue getInfoText() {
-		return this.infoText;
-	}
-
-	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		return new focuswindow.views.ExampleFocusWindowPane( this );
+public class ExampleMainPane extends org.lgna.croquet.views.MigPanel {
+	public ExampleMainPane( focuswindow.ExampleMainComposite composite ) {
+		super( composite );
+		this.addComponent( composite.getQuestionState().createCheckBox() );
+		org.lgna.croquet.views.Hyperlink hyperlink = composite.getFocusWindow().getLaunchOperation().createHyperlink();
+		hyperlink.setUnderlinedOnlyWhenRolledOver( false );
+		this.addComponent( hyperlink );
 	}
 }

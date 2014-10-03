@@ -40,31 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package number;
+package list;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class NumberDemoComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<number.views.NumberDemoView> {
-	private final org.lgna.croquet.BoundedIntegerState waterTempFahrenheitState = this.createBoundedIntegerState( this.createKey( "waterTempFahrenheitState" ), new BoundedIntegerDetails().minimum( 32 ).maximum( 212 ).initialValue( 70 ) );
-
-	private final org.lgna.croquet.event.ValueListener<Integer> listener = new org.lgna.croquet.event.ValueListener<Integer>() {
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<Integer> e ) {
-			System.out.println( e.getNextValue() );
-		}
-	};
-
-	public NumberDemoComposite() {
-		super( java.util.UUID.fromString( "f2d46859-44a9-4b38-9cce-65c8b8dfaef1" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+public final class ListDemoComposite extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<list.views.ListDemoView> {
+	public ListDemoComposite() {
+		super( java.util.UUID.fromString( "f6bf1c33-4682-4d6a-85b9-391f762f5ef9" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
 	}
 
-	public org.lgna.croquet.BoundedIntegerState getWaterTempFahrenheitState() {
-		return this.waterTempFahrenheitState;
+	public org.lgna.croquet.SingleSelectListState<ZodiacSign> getZodiacState() {
+		return this.zodiacState;
 	}
 
 	@Override
-	protected number.views.NumberDemoView createView() {
-		return new number.views.NumberDemoView( this );
+	protected list.views.ListDemoView createView() {
+		return new list.views.ListDemoView( this );
 	}
 
 	@Override
@@ -73,26 +65,16 @@ public final class NumberDemoComposite extends org.lgna.croquet.OperationInputDi
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected org.lgna.croquet.edits.AbstractEdit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return null;
-	}
-
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.waterTempFahrenheitState.addNewSchoolValueListener( this.listener );
-	}
-
-	@Override
-	public void handlePostDeactivation() {
-		this.waterTempFahrenheitState.removeNewSchoolValueListener( this.listener );
-		super.handlePostDeactivation();
 	}
 
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		new NumberDemoComposite().getLaunchOperation().fire();
+		new ListDemoComposite().getLaunchOperation().fire();
 		System.exit( 0 );
 	}
+
+	private final org.lgna.croquet.SingleSelectListState<ZodiacSign> zodiacState = this.createSingleSelectListStateForEnum( "zodiacState", ZodiacSign.class, ZodiacSign.TAURUS );
 }

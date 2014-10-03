@@ -40,17 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package focuswindow.views;
+package focuswindow;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExampleMainPane extends org.lgna.croquet.components.MigPanel {
-	public ExampleMainPane( focuswindow.ExampleMainComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getQuestionState().createCheckBox() );
-		org.lgna.croquet.components.Hyperlink hyperlink = composite.getFocusWindow().getLaunchOperation().createHyperlink();
-		hyperlink.setUnderlinedOnlyWhenRolledOver( false );
-		this.addComponent( hyperlink );
+public class ExampleFocusWindowComposite extends org.lgna.croquet.FocusWindowComposite {
+	private final org.lgna.croquet.PlainStringValue headerText = this.createStringValue( "headerText" );
+	private final org.lgna.croquet.PlainStringValue infoText = this.createStringValue( "infoText" );
+
+	public ExampleFocusWindowComposite() {
+		super( java.util.UUID.fromString( "dcc99461-66aa-4bdf-a3c7-9cd90ca45d04" ) );
+	}
+
+	public org.lgna.croquet.PlainStringValue getHeaderText() {
+		return this.headerText;
+	}
+
+	public org.lgna.croquet.PlainStringValue getInfoText() {
+		return this.infoText;
+	}
+
+	@Override
+	protected org.lgna.croquet.views.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
+	@Override
+	protected org.lgna.croquet.views.Panel createView() {
+		return new focuswindow.views.ExampleFocusWindowPane( this );
 	}
 }
