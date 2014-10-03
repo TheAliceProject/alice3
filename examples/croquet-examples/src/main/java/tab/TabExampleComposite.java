@@ -45,9 +45,9 @@ package tab;
 /**
  * @author Dennis Cosgrove
  */
-public class TabExampleComposite extends org.lgna.croquet.SimpleOperationInputDialogCoreComposite<tab.views.TabExampleView> {
+public class TabExampleComposite extends org.lgna.croquet.SimpleComposite<tab.views.TabExampleView> {
 	public TabExampleComposite() {
-		super( java.util.UUID.fromString( "8ce6ffd5-a515-429d-a599-e79ff634ca85" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+		super( java.util.UUID.fromString( "8ce6ffd5-a515-429d-a599-e79ff634ca85" ) );
 	}
 
 	public org.lgna.croquet.TabState<AbstractTab> getTabState() {
@@ -57,16 +57,6 @@ public class TabExampleComposite extends org.lgna.croquet.SimpleOperationInputDi
 	@Override
 	protected tab.views.TabExampleView createView() {
 		return new tab.views.TabExampleView( this );
-	}
-
-	@Override
-	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return null;
-	}
-
-	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	private final TabA tabA = new TabA();

@@ -47,9 +47,16 @@ package tab;
  */
 public class TabExample {
 	public static void main( String[] args ) {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		new TabExampleComposite().getLaunchOperation().fire();
-		System.exit( 0 );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
+			public void run() {
+				//edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+				app.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
+				app.getFrame().setMainComposite( new TabExampleComposite() );
+				app.getFrame().pack();
+				app.getFrame().setVisible( true );
+			}
+		} );
 	}
 }
