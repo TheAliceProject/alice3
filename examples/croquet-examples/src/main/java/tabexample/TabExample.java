@@ -50,12 +50,17 @@ public class TabExample {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
-				//edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-				app.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
-				app.getFrame().setMainComposite( new tabexample.croquet.TabExampleComposite() );
-				app.getFrame().pack();
-				app.getFrame().setVisible( true );
+
+				tabexample.croquet.TabExampleComposite tabExampleComposite = new tabexample.croquet.TabExampleComposite();
+
+				org.lgna.croquet.views.Frame frame = app.getFrame();
+				frame.setTitle( "Tab Example" );
+				frame.setMainComposite( tabExampleComposite );
+				frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
+				frame.pack();
+				frame.setVisible( true );
 			}
 		} );
 	}
