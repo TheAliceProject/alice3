@@ -59,7 +59,7 @@ public class TabDebug {
 				tabState.addAndInvokeNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<tabexample.croquet.AbstractTab>() {
 					@Override
 					public void valueChanged( org.lgna.croquet.event.ValueEvent<tabexample.croquet.AbstractTab> e ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e.getPreviousValue(), "->", e.getNextValue() );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( e );
 					}
 				} );
 
