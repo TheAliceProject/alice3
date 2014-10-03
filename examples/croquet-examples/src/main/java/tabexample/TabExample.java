@@ -40,14 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package tab.views;
+package tabexample;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TabExampleView extends org.lgna.croquet.views.BorderPanel {
-	public TabExampleView( tab.TabExampleComposite composite ) {
-		super( composite );
-		this.addCenterComponent( composite.getTabState().createFolderTabbedPane() );
+public class TabExample {
+	public static void main( String[] args ) {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
+			public void run() {
+				//edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+				app.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
+				app.getFrame().setMainComposite( new tabexample.croquet.TabExampleComposite() );
+				app.getFrame().pack();
+				app.getFrame().setVisible( true );
+			}
+		} );
 	}
 }

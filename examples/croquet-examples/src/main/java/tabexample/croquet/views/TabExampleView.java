@@ -40,20 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package tab;
+package tabexample.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TabA extends AbstractTab {
-	public TabA() {
-		super( java.util.UUID.fromString( "150888c5-f938-427a-a6b3-4f1b3e6aaec8" ) );
-	}
-
-	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		org.lgna.croquet.views.Panel rv = super.createView();
-		rv.setBackgroundColor( new java.awt.Color( 255, 255, 191 ) );
-		return rv;
+public class TabExampleView extends org.lgna.croquet.views.BorderPanel {
+	public TabExampleView( tabexample.croquet.TabExampleComposite composite ) {
+		super( composite );
+		this.addCenterComponent( composite.getTabState().createFolderTabbedPane() );
 	}
 }

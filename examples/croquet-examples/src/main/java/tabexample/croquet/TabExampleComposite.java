@@ -40,20 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package tab;
+package tabexample.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TabB extends AbstractTab {
-	public TabB() {
-		super( java.util.UUID.fromString( "c0752e2d-4f71-459b-bcf7-40c8093705c2" ) );
+public class TabExampleComposite extends org.lgna.croquet.SimpleComposite<tabexample.croquet.views.TabExampleView> {
+	public TabExampleComposite() {
+		super( java.util.UUID.fromString( "8ce6ffd5-a515-429d-a599-e79ff634ca85" ) );
+	}
+
+	public org.lgna.croquet.TabState<AbstractTab> getTabState() {
+		return this.tabState;
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		org.lgna.croquet.views.Panel rv = super.createView();
-		rv.setBackgroundColor( new java.awt.Color( 191, 191, 255 ) );
-		return rv;
+	protected tabexample.croquet.views.TabExampleView createView() {
+		return new tabexample.croquet.views.TabExampleView( this );
 	}
+
+	private final TabA tabA = new TabA();
+	private final TabB tabB = new TabB();
+	private final org.lgna.croquet.TabState<AbstractTab> tabState = this.createTabState( "tabState", AbstractTab.class, 0, this.tabA, this.tabB );
+
 }
