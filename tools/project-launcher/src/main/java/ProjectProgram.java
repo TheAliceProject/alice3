@@ -1,4 +1,4 @@
-
+@Deprecated
 public class ProjectProgram extends org.lgna.story.SProgram {
 	private final org.lgna.project.Project project;
 	private final org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
