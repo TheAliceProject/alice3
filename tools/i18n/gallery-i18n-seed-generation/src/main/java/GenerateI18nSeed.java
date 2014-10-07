@@ -88,7 +88,7 @@ public class GenerateI18nSeed {
 	}
 
 	public static void main( String[] args ) throws Exception {
-		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.ide.story.AliceIde( null );
+		Object usedOnlyForSideEffect = new org.alice.ide.story.AliceIde( null );
 		StringBuilder sbNames = new StringBuilder();
 		org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
 		appendGalleryNames( sbNames, rootGalleryNode );
