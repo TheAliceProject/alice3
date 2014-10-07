@@ -46,12 +46,19 @@
  */
 public class LaunchProject {
 	public static void main( String[] args ) throws Exception {
-		String path = args[ 0 ];
-		java.io.File file = new java.io.File( path );
-		assert file.exists() : path;
-		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( file );
+		org.lgna.project.ast.NamedUserType programType;
+		if( args.length > 0 ) {
+			String path = args[ 0 ];
+			java.io.File file = new java.io.File( path );
+			assert file.exists() : path;
+			org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( file );
+			programType = project.getProgramType();
+		} else {
+			org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS;
+			programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
+		}
 
-		org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( project.getProgramType() );
+		org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( programType );
 
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
