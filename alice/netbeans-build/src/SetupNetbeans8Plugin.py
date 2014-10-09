@@ -67,6 +67,9 @@ def _zipProjectTemplate(src, dst):
 	else:
 		srcSourceDirectory.mkdirs()
 
+	srcPrivateDirectory = java.io.File( src, "nbproject/private" )
+	FileUtilities.deleteDir( srcPrivateDirectory.getAbsolutePath() )
+	
 	srcPath = src.getAbsolutePath()
 	dstPath = dst.getAbsolutePath()
 	print srcPath
