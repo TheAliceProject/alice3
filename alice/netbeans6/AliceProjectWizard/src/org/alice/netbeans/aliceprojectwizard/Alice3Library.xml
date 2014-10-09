@@ -10,6 +10,7 @@ and open the template in the editor.
 	<localizing-bundle>org.alice.netbeans.aliceprojectwizard.Bundle</localizing-bundle>
 	<volume>
 		<type>classpath</type>
+
 		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/gluegen-rt-2.1.3.jar!/</resource>
 		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/jogl-all-2.1.3.jar!/</resource>
 

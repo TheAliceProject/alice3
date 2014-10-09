@@ -27,6 +27,8 @@ projectNames = [
 mavenRepoJarPaths = [
 	"org/jogamp/gluegen/gluegen-rt/2.1.3/gluegen-rt-2.1.3.jar",
 	"org/jogamp/jogl/jogl-all/2.1.3/jogl-all-2.1.3.jar",
+	"javax/media/jmf/2.1.1e/jmf-2.1.1e.jar",
+	"com/sun/javamp3/1.0/javamp3-1.0.jar",
 	"org/alice/alice-model-source/2014.08.20/alice-model-source-2014.08.20.jar",
 	"org/alice/nonfree/nebulous-model-source/2014.08.20/nebulous-model-source-2014.08.20.jar",
 ]
@@ -70,7 +72,6 @@ def _zipProjectTemplate(src, dst):
 		Commands.EXEC_METHOD(src, cmdarray)
 	else:
 		raise srcPath
-
 
 def setUpNetbeans8Plugin():
 	#MavenUtilities.runMavenCleanCompilePackage()
