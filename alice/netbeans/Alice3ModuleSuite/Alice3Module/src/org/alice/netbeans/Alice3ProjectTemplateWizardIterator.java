@@ -16,29 +16,24 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeListener;
-import org.alice.netbeans.logging.IoLoggingHandler;
 import org.alice.netbeans.options.Alice3OptionsPanelController;
 import org.alice.netbeans.project.ProjectCodeGenerator;
 import org.lgna.project.VersionNotSupportedException;
 import org.netbeans.api.progress.ProgressHandle;
-import org.netbeans.api.project.ProjectManager;
 import org.netbeans.api.templates.TemplateRegistration;
 import org.netbeans.spi.project.ui.support.ProjectChooser;
 import org.netbeans.spi.project.ui.templates.support.Templates;
 import org.openide.WizardDescriptor;
-import org.openide.cookies.EditorCookie;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.nodes.Node;
@@ -196,7 +191,7 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 			} catch (VersionNotSupportedException vnse) {
 				Logger.throwable(vnse);
 			}
-
+			
 			this.cleanSlateIfAppropriate();
 			return resultSet;
 		} finally {

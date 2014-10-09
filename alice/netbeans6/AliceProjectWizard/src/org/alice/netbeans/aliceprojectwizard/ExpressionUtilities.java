@@ -256,7 +256,6 @@ public class ExpressionUtilities {
 				//pass
 			} else {
 				methodName = "sceneActivated";
-				Logger.severe(type);
 			}
 //			ArrayList<? extends AbstractMethod> methods = type.getDeclaredMethods();
 //			if( methods.size() == 1 ) {
