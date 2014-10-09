@@ -158,7 +158,7 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 	public Set<FileObject> instantiate() throws IOException {
 		return instantiate(null);
 	}
-
+	
 	public Set<FileObject> instantiate(ProgressHandle progressHandle) throws IOException {
 		if (progressHandle != null) {
 			progressHandle.start();
@@ -175,18 +175,6 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 			// Always open top dir as a project:
 			resultSet.add(projectDirectoryObject);
 
-			final boolean IS_POTENTIAL_SUB_PROJECT = false;
-			if (IS_POTENTIAL_SUB_PROJECT) {
-				// Look for nested projects to open as well:
-				Enumeration<? extends FileObject> e = projectDirectoryObject.getFolders(true);
-				while (e.hasMoreElements()) {
-					FileObject subfolder = e.nextElement();
-					if (ProjectManager.getDefault().isProject(subfolder)) {
-						resultSet.add(subfolder);
-					}
-				}
-			}
-
 			File parent = projectDirectory.getParentFile();
 			if (parent != null && parent.exists()) {
 				ProjectChooser.setProjectsFolder(parent);
@@ -196,7 +184,9 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 			File javaSrcDirectory = new File(projectDirectory, "src");
 
 			//open source folder: does not seem to work when there are no existing open projects
-			resultSet.add(FileUtil.toFileObject(javaSrcDirectory));
+			FileObject javaSrcDirectoryFileObject = (FileUtil.toFileObject(javaSrcDirectory));
+			assert javaSrcDirectoryFileObject != null : javaSrcDirectory;
+			resultSet.add(javaSrcDirectoryFileObject);
 
 			try {
 				Collection<FileObject> filesToOpen = ProjectCodeGenerator.generateCode(aliceProjectFile, javaSrcDirectory, progressHandle);
@@ -208,7 +198,6 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 			}
 
 			this.cleanSlateIfAppropriate();
-
 			return resultSet;
 		} finally {
 			if (progressHandle != null) {

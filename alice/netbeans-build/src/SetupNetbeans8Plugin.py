@@ -61,6 +61,12 @@ def _createSrc():
 	FileUtilities.zipFilesInDirs(srcPath, ["org/lgna/story"], [".java"], dstPath)
 
 def _zipProjectTemplate(src, dst):
+	srcSourceDirectory = java.io.File( src, "src" )
+	if srcSourceDirectory.exists():
+		pass
+	else:
+		srcSourceDirectory.mkdirs()
+
 	srcPath = src.getAbsolutePath()
 	dstPath = dst.getAbsolutePath()
 	print srcPath
