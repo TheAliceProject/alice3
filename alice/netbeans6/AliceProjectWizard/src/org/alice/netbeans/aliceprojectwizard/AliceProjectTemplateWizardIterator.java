@@ -443,16 +443,19 @@ public class AliceProjectTemplateWizardIterator implements WizardDescriptor./*Pr
 				jc.putClientProperty("WizardPanel_contentData", steps);
 			}
 		}
-		String path = "/org/alice/stageide/apis/org/lgna/story/classinfos.zip";
-		java.io.InputStream is = AliceProjectTemplateWizardIterator.class.getResourceAsStream(path);
-		if (is != null) {
-			try {
-				org.lgna.project.reflect.ClassInfoManager.addClassInfosFrom(is);
-			} catch (java.io.IOException ioe) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable(ioe);
+		final boolean IS_CLASS_INFO_REQUIRED = false;
+		if( IS_CLASS_INFO_REQUIRED ) {
+			String path = "/org/alice/stageide/apis/org/lgna/story/classinfos.zip";
+			java.io.InputStream is = AliceProjectTemplateWizardIterator.class.getResourceAsStream(path);
+			if (is != null) {
+				try {
+					org.lgna.project.reflect.ClassInfoManager.addClassInfosFrom(is);
+				} catch (java.io.IOException ioe) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable(ioe);
+				}
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe(path);
 			}
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe(path);
 		}
 	}
 

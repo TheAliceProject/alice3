@@ -5,6 +5,7 @@ import FileUtilities
 import MavenUtilities
 import com
 import java
+import os
 
 TEMP_LOCATION_FOR_BUILD = java.io.File( FileUtilities.DEFAULT_DIRECTORY, "temp_space_for_build" )
 TEMP_LOCATION_FOR_DOCS = java.io.File( TEMP_LOCATION_FOR_BUILD, "docs" )
@@ -24,8 +25,8 @@ def _generateJavaDocs( srcPath ):
 def generateJavaDocsZip( dst ):
 	srcPath = ""
 	for subName in [ "util", "scenegraph", "ast", "story-api" ]:
-		srcPath += _createCoreSrcDirectory( subName ).getAbsolutePath()
-		srcPath += ";"
+		srcPath += str( _createCoreSrcDirectory( subName ).getAbsolutePath() )
+		srcPath += os.pathsep
 	dstPath = dst.getAbsolutePath()
 	_generateJavaDocs( srcPath )
 	FileUtilities.zipFilesInDirs( str( TEMP_LOCATION_FOR_DOCS.getAbsolutePath() ), [], [], str( dstPath ) )
