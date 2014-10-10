@@ -113,9 +113,6 @@ public class SQuadruped extends SJointedModel implements Articulable {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.MOUTH );
 	}
 
-	//	public SJoint getJawTip() {
-	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.JAW_TIP);
-	//	}
 	public SJoint getRightEar() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.RIGHT_EAR );
 	}

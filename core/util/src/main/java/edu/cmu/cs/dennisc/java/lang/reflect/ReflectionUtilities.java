@@ -143,6 +143,8 @@ public final class ReflectionUtilities {
 			throw new RuntimeException( cnstrctr.toString(), ie );
 		} catch( IllegalAccessException iae ) {
 			throw new RuntimeException( cnstrctr.toString(), iae );
+		} catch( IllegalArgumentException iae ) {
+			throw new RuntimeException( cnstrctr.toString(), iae );
 		}
 	}
 

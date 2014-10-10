@@ -5251,11 +5251,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					//					"name=\"org.lgna.story.resources.biped.PumpkinHeadResource",
 					//					"name=\"org.lgna.story.resources.biped.PandaResource",
 					//
-					//					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TrainEngineResource" ),
-					//					createMoreSpecificFieldReplacement( "LIMOUSINE", "org.lgna.story.resources.prop.LimousineResource" ),
-					//
-					//					"name=\"org.lgna.story.resources.prop.TrainEngineResource",
-					//					"name=\"org.lgna.story.resources.prop.LimousineResource",
+
+					"name=\"org.lgna.story.resources.prop.TrainEngineResource",
+					"name=\"org.lgna.story.resources.train.TrainEngineResource",
 					//
 					//					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.GhostResource" ),
 					//					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.ThorResource" ),
@@ -5269,11 +5267,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					//					"name=\"org.lgna.story.resources.biped.GhostResource",
 					//					"name=\"org.lgna.story.resources.biped.ThorResource",
 					//
-					//					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TrainCarResource" ),
-					//					createMoreSpecificFieldReplacement( "LIMOUSINE", "org.lgna.story.resources.prop.LimousineResource" ),
-					//
-					//					"name=\"org.lgna.story.resources.prop.TrainCarResource",
-					//					"name=\"org.lgna.story.resources.prop.LimousineResource",
+
+					"name=\"org.lgna.story.resources.prop.TrainCarResource",
+					"name=\"org.lgna.story.resources.train.TrainCarResource",
 					//
 					//					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TunnelResource" ),
 					//					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.TentResource" ),
