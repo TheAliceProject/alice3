@@ -403,6 +403,36 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 	}
 
+	private static final class InternalSingleSelectListState<T> extends SingleSelectListState<T> {
+		private final Key key;
+
+		private InternalSingleSelectListState( org.lgna.croquet.data.ListData<T> data, int selectionIndex, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "4f0640c9-eceb-4801-a8bb-bf8e282cef0f" ), data, selectionIndex );
+			this.key = key;
+		}
+
+		public Key getKey() {
+			return this.key;
+		}
+
+		@Override
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
+		}
+	}
+
 	private static final class InternalImmutableDataSingleSelectListState<T> extends ImmutableDataSingleSelectListState<T> {
 		private final Key key;
 
@@ -895,6 +925,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	private final java.util.Map<Key, InternalPreferenceBooleanState> mapKeyToPreferenceBooleanState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final java.util.Map<Key, InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final java.util.Map<Key, InternalPreferenceStringState> mapKeyToPreferenceStringState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Key, InternalSingleSelectListState> mapKeyToSingleSelectListState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final java.util.Map<Key, InternalImmutableDataSingleSelectListState> mapKeyToImmutableSingleSelectListState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final java.util.Map<Key, InternalRefreshableDataSingleSelectListState> mapKeyToRefreshableSingleSelectListState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final java.util.Map<Key, InternalMutableDataSingleSelectListState> mapKeyToMutableSingleSelectListState = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
@@ -1159,10 +1190,17 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		return this.createSingleSelectListStateForEnum( keyText, valueCls, null, initialValue );
 	}
 
-	protected <T> RefreshableDataSingleSelectListState<T> createSingleSelectListState( String keyText, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
+	protected <T> RefreshableDataSingleSelectListState<T> createRefreshableSingleSelectListState( String keyText, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
 		Key key = this.createKey( keyText );
 		InternalRefreshableDataSingleSelectListState<T> rv = new InternalRefreshableDataSingleSelectListState<T>( data, selectionIndex, key );
 		this.mapKeyToRefreshableSingleSelectListState.put( key, rv );
+		return rv;
+	}
+
+	protected <T> SingleSelectListState<T> createGenericSingleSelectListState( String keyText, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
+		Key key = this.createKey( keyText );
+		InternalSingleSelectListState<T> rv = new InternalSingleSelectListState<T>( data, selectionIndex, key );
+		this.mapKeyToSingleSelectListState.put( key, rv );
 		return rv;
 	}
 

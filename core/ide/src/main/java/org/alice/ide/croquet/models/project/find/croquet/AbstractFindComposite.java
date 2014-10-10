@@ -164,7 +164,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		}
 
 	} );
-	private final SingleSelectListState<SearchResult> searchResultsState = createSingleSelectListState( "searchResultsState", data, -1 );
+	private final SingleSelectListState<SearchResult> searchResultsState = createRefreshableSingleSelectListState( "searchResultsState", data, -1 );
 
 	private void refresh() {
 		if( this.isActive ) {
