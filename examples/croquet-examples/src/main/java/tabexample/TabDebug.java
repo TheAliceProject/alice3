@@ -55,7 +55,7 @@ public class TabDebug {
 
 				tabexample.croquet.TabExampleComposite tabExampleComposite = new tabexample.croquet.TabExampleComposite();
 
-				org.lgna.croquet.TabState<tabexample.croquet.AbstractTab> tabState = tabExampleComposite.getTabState();
+				org.lgna.croquet.ImmutableDataTabState<tabexample.croquet.AbstractTab> tabState = tabExampleComposite.getTabState();
 				tabState.addAndInvokeNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<tabexample.croquet.AbstractTab>() {
 					@Override
 					public void valueChanged( org.lgna.croquet.event.ValueEvent<tabexample.croquet.AbstractTab> e ) {

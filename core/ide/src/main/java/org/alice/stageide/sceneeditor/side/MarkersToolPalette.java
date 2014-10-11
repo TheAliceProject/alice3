@@ -46,7 +46,7 @@ package org.alice.stageide.sceneeditor.side;
  * @author Dennis Cosgrove
  */
 public abstract class MarkersToolPalette<V extends org.alice.stageide.sceneeditor.side.views.MarkersView> extends SideToolPalette<V> {
-	private final org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.UserField> markerListState;
+	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.UserField> markerListState;
 
 	private org.lgna.project.ast.NamedUserType sceneType = null;
 
@@ -94,7 +94,7 @@ public abstract class MarkersToolPalette<V extends org.alice.stageide.sceneedito
 
 	public abstract org.lgna.croquet.Operation getMoveToMarkerOperation();
 
-	public org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.UserField> getMarkerListState() {
+	public org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.UserField> getMarkerListState() {
 		return this.markerListState;
 	}
 

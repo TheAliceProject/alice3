@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croquet.SingleSelectListState<T>> {
+public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croquet.SingleSelectListState<T, ?>> {
 	public enum LayoutOrientation {
 		VERTICAL( javax.swing.JList.VERTICAL ),
 		VERTICAL_WRAP( javax.swing.JList.VERTICAL_WRAP ),
@@ -68,7 +68,7 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 
 		@Override
 		public void paint( java.awt.Graphics2D g2, List<T> listView, int width, int height ) {
-			org.lgna.croquet.SingleSelectListState<T> state = listView.getModel();
+			org.lgna.croquet.SingleSelectListState<T, ?> state = listView.getModel();
 			org.lgna.croquet.PlainStringValue emptyConditionText = state.getEmptyConditionText();
 			String text = emptyConditionText.getText();
 			if( ( text != null ) && ( text.length() > 0 ) ) {
@@ -83,7 +83,7 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 
 	private edu.cmu.cs.dennisc.java.awt.Painter<List<T>> emptyConditionPainter = new DefaultEmptyListPainter<T>();
 
-	public List( org.lgna.croquet.SingleSelectListState<T> model ) {
+	public List( org.lgna.croquet.SingleSelectListState<T, ?> model ) {
 		super( model );
 		this.getAwtComponent().setModel( model.getImp().getSwingModel().getComboBoxModel() );
 		this.getAwtComponent().setSelectionModel( model.getImp().getSwingModel().getListSelectionModel() );

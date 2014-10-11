@@ -50,7 +50,7 @@ public class TabExampleComposite extends org.lgna.croquet.SimpleComposite<tabexa
 		super( java.util.UUID.fromString( "8ce6ffd5-a515-429d-a599-e79ff634ca85" ) );
 	}
 
-	public org.lgna.croquet.TabState<AbstractTab> getTabState() {
+	public org.lgna.croquet.ImmutableDataTabState<AbstractTab> getTabState() {
 		return this.tabState;
 	}
 
@@ -61,6 +61,6 @@ public class TabExampleComposite extends org.lgna.croquet.SimpleComposite<tabexa
 
 	private final TabA tabA = new TabA();
 	private final TabB tabB = new TabB();
-	private final org.lgna.croquet.TabState<AbstractTab> tabState = this.createTabState( "tabState", AbstractTab.class, 0, this.tabA, this.tabB );
+	private final org.lgna.croquet.ImmutableDataTabState<AbstractTab> tabState = this.createTabState( "tabState", AbstractTab.class, 0, this.tabA, this.tabB );
 
 }

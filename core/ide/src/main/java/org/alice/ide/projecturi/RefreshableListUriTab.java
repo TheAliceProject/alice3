@@ -59,7 +59,7 @@ public abstract class RefreshableListUriTab extends ListUriTab {
 	}
 
 	@Override
-	public org.lgna.croquet.SingleSelectListState<java.net.URI> getListSelectionState() {
+	public org.lgna.croquet.RefreshableDataSingleSelectListState<java.net.URI> getListSelectionState() {
 		return this.listState;
 	}
 

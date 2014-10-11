@@ -49,8 +49,8 @@ import org.lgna.croquet.SingleSelectListStateComboBoxPrepModel;
 /**
  * @author Dennis Cosgrove
  */
-public class SingleSelectListStateComboBoxPrepModelResolver<T> extends IndirectResolver<SingleSelectListStateComboBoxPrepModel<T>, SingleSelectListState<T>> {
-	public SingleSelectListStateComboBoxPrepModelResolver( SingleSelectListState<T> indirect ) {
+public class SingleSelectListStateComboBoxPrepModelResolver<T, D extends org.lgna.croquet.data.ListData<T>> extends IndirectResolver<SingleSelectListStateComboBoxPrepModel<T, D>, SingleSelectListState<T, D>> {
+	public SingleSelectListStateComboBoxPrepModelResolver( SingleSelectListState<T, D> indirect ) {
 		super( indirect );
 	}
 
@@ -59,7 +59,7 @@ public class SingleSelectListStateComboBoxPrepModelResolver<T> extends IndirectR
 	}
 
 	@Override
-	protected SingleSelectListStateComboBoxPrepModel<T> getDirect( SingleSelectListState<T> indirect ) {
+	protected SingleSelectListStateComboBoxPrepModel<T, D> getDirect( SingleSelectListState<T, D> indirect ) {
 		return indirect.getPrepModel();
 	}
 }

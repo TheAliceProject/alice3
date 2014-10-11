@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MutableDataTabState<T extends TabComposite<?>> extends TabState<T> {
+public class MutableDataTabState<T extends TabComposite<?>> extends TabState<T, org.lgna.croquet.data.MutableListData<T>> {
 	public MutableDataTabState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex ) {
 		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec ), selectionIndex );
 	}

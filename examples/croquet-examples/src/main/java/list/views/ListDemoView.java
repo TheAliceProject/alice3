@@ -48,7 +48,7 @@ package list.views;
 public class ListDemoView extends org.lgna.croquet.views.BorderPanel {
 	public ListDemoView( list.ListDemoComposite composite ) {
 		super( composite );
-		org.lgna.croquet.SingleSelectListState<list.ZodiacSign> zodiacState = composite.getZodiacState();
+		org.lgna.croquet.ImmutableDataSingleSelectListState<list.ZodiacSign> zodiacState = composite.getZodiacState();
 		this.addCenterComponent( zodiacState.createList() );
 		this.addPageStartComponent( zodiacState.createHorizontalDefaultRadioButtons() );
 		this.addLineStartComponent( zodiacState.createVerticalDefaultRadioButtons() );

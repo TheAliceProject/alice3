@@ -403,7 +403,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 	}
 
-	private static final class InternalSingleSelectListState<T> extends SingleSelectListState<T> {
+	private static final class InternalSingleSelectListState<T> extends SingleSelectListState<T, org.lgna.croquet.data.ListData<T>> {
 		private final Key key;
 
 		private InternalSingleSelectListState( org.lgna.croquet.data.ListData<T> data, int selectionIndex, Key key ) {
@@ -883,11 +883,11 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		this.subComposites.remove( subComposite );
 	}
 
-	protected void registerTabState( TabState<?> tabState ) {
+	protected void registerTabState( TabState<?, ?> tabState ) {
 		this.registeredTabStates.add( tabState );
 	}
 
-	protected void unregisterTabState( TabState<?> tabState ) {
+	protected void unregisterTabState( TabState<?, ?> tabState ) {
 		this.registeredTabStates.remove( tabState );
 	}
 
@@ -898,10 +898,10 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		for( Composite<?> subComposite : this.subComposites ) {
 			subComposite.handlePreActivation();
 		}
-		for( TabState<?> tabSelectionState : this.mapKeyToTabState.values() ) {
+		for( TabState<?, ?> tabSelectionState : this.mapKeyToTabState.values() ) {
 			tabSelectionState.handlePreActivation();
 		}
-		for( TabState<?> tabSelectionState : this.registeredTabStates ) {
+		for( TabState<?, ?> tabSelectionState : this.registeredTabStates ) {
 			tabSelectionState.handlePreActivation();
 		}
 	}
@@ -909,10 +909,10 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	@Override
 	public void handlePostDeactivation() {
 		this.getView().handleCompositePostDeactivation();
-		for( TabState<?> tabSelectionState : this.registeredTabStates ) {
+		for( TabState<?, ?> tabSelectionState : this.registeredTabStates ) {
 			tabSelectionState.handlePostDeactivation();
 		}
-		for( TabState<?> tabSelectionState : this.mapKeyToTabState.values() ) {
+		for( TabState<?, ?> tabSelectionState : this.mapKeyToTabState.values() ) {
 			tabSelectionState.handlePostDeactivation();
 		}
 		for( Composite<?> subComposite : this.subComposites ) {
@@ -1176,6 +1176,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		return rv;
 	}
 
+	protected <T> ImmutableDataSingleSelectListState<T> createImmutableDataSingleSelectListState( String keyText, Class<T> valueCls, org.lgna.croquet.ItemCodec<T> codec, int selectionIndex, T... values ) {
+		Key key = this.createKey( keyText );
+		InternalImmutableDataSingleSelectListState<T> rv = new InternalImmutableDataSingleSelectListState<T>( codec, values, selectionIndex, key );
+		this.mapKeyToImmutableSingleSelectListState.put( key, rv );
+		return rv;
+	}
+
 	protected <T extends Enum<T>> ImmutableDataSingleSelectListState<T> createSingleSelectListStateForEnum( String keyText, Class<T> valueCls, org.lgna.croquet.codecs.EnumCodec.LocalizationCustomizer<T> localizationCustomizer, T initialValue ) {
 		Key key = this.createKey( keyText );
 		T[] constants = valueCls.getEnumConstants();
@@ -1197,22 +1204,22 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		return rv;
 	}
 
-	protected <T> SingleSelectListState<T> createGenericSingleSelectListState( String keyText, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
+	protected <T> SingleSelectListState<T, org.lgna.croquet.data.ListData<T>> createGenericSingleSelectListState( String keyText, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
 		Key key = this.createKey( keyText );
 		InternalSingleSelectListState<T> rv = new InternalSingleSelectListState<T>( data, selectionIndex, key );
 		this.mapKeyToSingleSelectListState.put( key, rv );
 		return rv;
 	}
 
-	protected <C extends SimpleTabComposite<?>> TabState<C> createTabState( String keyText, Class<C> cls, int selectionIndex, C... tabComposites ) {
+	protected <C extends SimpleTabComposite<?>> ImmutableDataTabState<C> createTabState( String keyText, Class<C> cls, int selectionIndex, C... tabComposites ) {
 		Key key = this.createKey( keyText );
 		InternalTabState<C> rv = new InternalTabState<C>( cls, selectionIndex, tabComposites, key );
 		this.mapKeyToTabState.put( key, rv );
 		return rv;
 	}
 
-	protected TabState<SimpleTabComposite<?>> createTabState( String keyText, int selectionIndex, SimpleTabComposite<?>... tabComposites ) {
-		return (TabState)this.createTabState( keyText, SimpleTabComposite.class, selectionIndex, tabComposites );
+	protected ImmutableDataTabState<SimpleTabComposite<?>> createTabState( String keyText, int selectionIndex, SimpleTabComposite<?>... tabComposites ) {
+		return (ImmutableDataTabState)this.createTabState( keyText, SimpleTabComposite.class, selectionIndex, tabComposites );
 	}
 
 	protected SplitComposite createHorizontalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, double resizeWeight ) {

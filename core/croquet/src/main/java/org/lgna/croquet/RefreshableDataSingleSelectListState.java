@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RefreshableDataSingleSelectListState<T> extends SingleSelectListState<T> {
+public abstract class RefreshableDataSingleSelectListState<T> extends SingleSelectListState<T, org.lgna.croquet.data.RefreshableListData<T>> {
 	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
 		@Override
 		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
@@ -66,11 +66,6 @@ public abstract class RefreshableDataSingleSelectListState<T> extends SingleSele
 	public RefreshableDataSingleSelectListState( Group group, java.util.UUID migrationId, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
 		super( group, migrationId, data, selectionIndex );
 		data.addListener( this.listDataListener );
-	}
-
-	@Override
-	public org.lgna.croquet.data.RefreshableListData<T> getData() {
-		return (org.lgna.croquet.data.RefreshableListData<T>)super.getData();
 	}
 
 	//	public final void refresh() {

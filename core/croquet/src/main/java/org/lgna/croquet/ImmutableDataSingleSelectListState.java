@@ -45,13 +45,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImmutableDataSingleSelectListState<T> extends SingleSelectListState<T> {
+public abstract class ImmutableDataSingleSelectListState<T> extends SingleSelectListState<T, org.lgna.croquet.data.ImmutableListData<T>> {
 	public ImmutableDataSingleSelectListState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, T[] values, int selectionIndex ) {
 		super( group, migrationId, new org.lgna.croquet.data.ImmutableListData<T>( itemCodec, values ), selectionIndex );
-	}
-
-	@Override
-	public org.lgna.croquet.data.ImmutableListData<T> getData() {
-		return (org.lgna.croquet.data.ImmutableListData<T>)super.getData();
 	}
 }

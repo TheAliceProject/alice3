@@ -50,7 +50,7 @@ public final class ListDemoComposite extends org.lgna.croquet.SimpleOperationInp
 		super( java.util.UUID.fromString( "f6bf1c33-4682-4d6a-85b9-391f762f5ef9" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
 	}
 
-	public org.lgna.croquet.SingleSelectListState<ZodiacSign> getZodiacState() {
+	public org.lgna.croquet.ImmutableDataSingleSelectListState<ZodiacSign> getZodiacState() {
 		return this.zodiacState;
 	}
 
@@ -76,5 +76,5 @@ public final class ListDemoComposite extends org.lgna.croquet.SimpleOperationInp
 		System.exit( 0 );
 	}
 
-	private final org.lgna.croquet.SingleSelectListState<ZodiacSign> zodiacState = this.createSingleSelectListStateForEnum( "zodiacState", ZodiacSign.class, ZodiacSign.TAURUS );
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<ZodiacSign> zodiacState = this.createSingleSelectListStateForEnum( "zodiacState", ZodiacSign.class, ZodiacSign.TAURUS );
 }

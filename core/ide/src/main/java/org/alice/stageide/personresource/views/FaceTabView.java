@@ -65,7 +65,7 @@ public class FaceTabView extends org.lgna.croquet.views.MigPanel {
 		if( IS_LIST_DESIRED ) {
 			this.addComponent( new HorizontalWrapList( composite.getBaseEyeColorState(), 1 ), "wrap, shrink" );
 		} else {
-			org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.BaseEyeColor> eyeColorState = composite.getBaseEyeColorState();
+			org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.BaseEyeColor> eyeColorState = composite.getBaseEyeColorState();
 			org.lgna.story.resources.sims2.BaseEyeColor[] baseEyeColors = org.lgna.story.resources.sims2.BaseEyeColor.values();
 			String constraint = "split " + baseEyeColors.length;
 			for( org.lgna.story.resources.sims2.BaseEyeColor baseEyeColor : baseEyeColors ) {

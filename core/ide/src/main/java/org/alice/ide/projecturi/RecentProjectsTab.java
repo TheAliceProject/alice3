@@ -54,7 +54,7 @@ public class RecentProjectsTab extends ListUriTab {
 	}
 
 	@Override
-	public org.lgna.croquet.SingleSelectListState<java.net.URI> getListSelectionState() {
+	public RecentProjectsUriSingleSelectListState getListSelectionState() {
 		return this.recentProjectsUriSelectionState;
 	}
 
