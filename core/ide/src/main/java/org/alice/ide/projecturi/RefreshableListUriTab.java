@@ -50,7 +50,7 @@ public abstract class RefreshableListUriTab extends ListUriTab {
 
 	public RefreshableListUriTab( java.util.UUID migrationId, org.lgna.croquet.data.RefreshableListData<java.net.URI> data ) {
 		super( migrationId );
-		this.listState = this.createRefreshableSingleSelectListState( "listState", data, -1 );
+		this.listState = this.createRefreshableListState( "listState", data, -1 );
 	}
 
 	@Override

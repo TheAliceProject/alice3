@@ -61,6 +61,6 @@ public class TabExampleComposite extends org.lgna.croquet.SimpleComposite<tabexa
 
 	private final TabA tabA = new TabA();
 	private final TabB tabB = new TabB();
-	private final org.lgna.croquet.ImmutableDataTabState<AbstractTab> tabState = this.createTabState( "tabState", AbstractTab.class, 0, this.tabA, this.tabB );
+	private final org.lgna.croquet.ImmutableDataTabState<AbstractTab> tabState = this.createImmutableTabState( "tabState", AbstractTab.class, 0, this.tabA, this.tabB );
 
 }

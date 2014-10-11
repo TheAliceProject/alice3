@@ -46,8 +46,8 @@ package org.alice.stageide.personresource;
  * @author Dennis Cosgrove
  */
 public final class FaceTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.FaceTabView> {
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createSingleSelectListStateForEnum( "baseEyeColorState", org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.BaseFace> baseFaceState = this.createSingleSelectListStateForEnum( "baseFaceState", org.lgna.story.resources.sims2.BaseFace.class, org.lgna.story.resources.sims2.BaseFace.getRandom() );
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createImmutableListStateForEnum( "baseEyeColorState", org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.BaseFace> baseFaceState = this.createImmutableListStateForEnum( "baseFaceState", org.lgna.story.resources.sims2.BaseFace.class, org.lgna.story.resources.sims2.BaseFace.getRandom() );
 
 	public FaceTabComposite() {
 		super( java.util.UUID.fromString( "44c44e61-7bcb-4891-a631-2142a49ac73c" ), IsCloseable.FALSE );

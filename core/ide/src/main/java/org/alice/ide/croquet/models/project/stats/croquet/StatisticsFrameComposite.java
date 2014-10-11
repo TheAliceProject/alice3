@@ -70,5 +70,5 @@ public class StatisticsFrameComposite extends FrameComposite<StatisticsFrameView
 
 	private final StatisticsFlowControlFrequencyComposite flowControlFrequencyTab = new StatisticsFlowControlFrequencyComposite();
 	private final StatisticsMethodFrequencyTabComposite methodTab = new StatisticsMethodFrequencyTabComposite();
-	private final org.lgna.croquet.ImmutableDataTabState<SimpleTabComposite<?>> tabState = this.createTabState( "tabState", 0, flowControlFrequencyTab, methodTab );
+	private final org.lgna.croquet.ImmutableDataTabState<SimpleTabComposite<?>> tabState = this.createImmutableTabState( "tabState", 0, flowControlFrequencyTab, methodTab );
 }

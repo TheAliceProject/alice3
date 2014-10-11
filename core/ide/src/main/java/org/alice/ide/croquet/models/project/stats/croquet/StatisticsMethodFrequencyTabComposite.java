@@ -68,7 +68,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 	private final BooleanState showProceduresState = this.createBooleanState( "areProceduresShowing", true );
 	private Map<UserMethod, InvocationCounts> mapMethodToInvocationCounts = Maps.newHashMap();
 
-	private final org.lgna.croquet.MutableDataSingleSelectListState<UserMethod> userMethodListState = createSingleSelectListState( "userMethodList", UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
+	private final org.lgna.croquet.MutableDataSingleSelectListState<UserMethod> userMethodListState = createMutableListState( "userMethodList", UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public static final UserMethod root = new UserMethod();
 	private Integer maximum;
 

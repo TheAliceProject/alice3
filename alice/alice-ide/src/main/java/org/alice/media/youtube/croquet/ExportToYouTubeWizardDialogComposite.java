@@ -60,7 +60,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Simpl
 	private final UploadComposite uploadComposite = new UploadComposite( this );
 	private final StringValue mouseEventName = createStringValue( "mouseEvent" );
 	private final StringValue keyBoardEventName = createStringValue( "keyboardEvent" );
-	private final org.lgna.croquet.MutableDataSingleSelectListState<EventScriptEvent> eventList = createSingleSelectListState( "eventList", EventScriptEvent.class, new EventScriptEventCodec( this ), -1 );
+	private final org.lgna.croquet.MutableDataSingleSelectListState<EventScriptEvent> eventList = createMutableListState( "eventList", EventScriptEvent.class, new EventScriptEventCodec( this ), -1 );
 
 	private org.lgna.project.Project project;
 	private EventScript eventScript;

@@ -57,7 +57,7 @@ public abstract class DifferentImplementationHelpComposite<M extends org.lgna.pr
 		}
 	};
 
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<DifferentImplementationChoice> choiceState = this.createSingleSelectListStateForEnum( "choiceStates", DifferentImplementationChoice.class, this.localizationCustomizer, null );
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<DifferentImplementationChoice> choiceState = this.createImmutableListStateForEnum( "choiceStates", DifferentImplementationChoice.class, this.localizationCustomizer, null );
 
 	private final ErrorStatus noTopLevelError = this.createErrorStatus( "noTopLevelError" );
 

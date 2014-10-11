@@ -76,5 +76,5 @@ public final class ListDemoComposite extends org.lgna.croquet.SimpleOperationInp
 		System.exit( 0 );
 	}
 
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<ZodiacSign> zodiacState = this.createSingleSelectListStateForEnum( "zodiacState", ZodiacSign.class, ZodiacSign.TAURUS );
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<ZodiacSign> zodiacState = this.createImmutableListStateForEnum( "zodiacState", ZodiacSign.class, ZodiacSign.TAURUS );
 }

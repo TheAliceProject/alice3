@@ -55,7 +55,7 @@ public class EnumConstantResourceKeySelectionComposite extends org.lgna.croquet.
 	}
 
 	private final org.alice.stageide.gallerybrowser.enumconstant.data.EnumConstantResourceKeyListData listData = new org.alice.stageide.gallerybrowser.enumconstant.data.EnumConstantResourceKeyListData();
-	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.alice.stageide.modelresource.EnumConstantResourceKey> enumConstantResourceKeyState = this.createRefreshableSingleSelectListState( "enumConstantResourceKeyState", this.listData, -1 );
+	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.alice.stageide.modelresource.EnumConstantResourceKey> enumConstantResourceKeyState = this.createRefreshableListState( "enumConstantResourceKeyState", this.listData, -1 );
 
 	private final ErrorStatus noSelectionErrorStatus = this.createErrorStatus( "noSelectionErrorStatus" );
 

@@ -97,7 +97,7 @@ public class OtherTypeDialog extends org.lgna.croquet.ValueCreatorInputDialogCor
 
 	private final AssignableTab assignableTab = new AssignableTab( this );
 	private final ContainsTab containsTab = new ContainsTab( this );
-	private final org.lgna.croquet.ImmutableDataTabState<?> tabState = this.createTabState( "tabState", 0, this.assignableTab, this.containsTab );
+	private final org.lgna.croquet.ImmutableDataTabState<?> tabState = this.createImmutableTabState( "tabState", 0, this.assignableTab, this.containsTab );
 
 	private final ErrorStatus noSelectionError = this.createErrorStatus( "noSelectionError" );
 	private final Status notAssignableError = new Status() {

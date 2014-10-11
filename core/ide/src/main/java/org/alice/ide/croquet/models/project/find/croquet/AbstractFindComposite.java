@@ -163,7 +163,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		}
 
 	} );
-	private final org.lgna.croquet.RefreshableDataSingleSelectListState<SearchResult> searchResultsState = createRefreshableSingleSelectListState( "searchResultsState", data, -1 );
+	private final org.lgna.croquet.RefreshableDataSingleSelectListState<SearchResult> searchResultsState = createRefreshableListState( "searchResultsState", data, -1 );
 
 	private void refresh() {
 		if( this.isActive ) {

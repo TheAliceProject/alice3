@@ -59,10 +59,10 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private final TopAndBottomOutfitTabComposite topAndBottomTab = new TopAndBottomOutfitTabComposite();
 	private final HairTabComposite hairTab = new HairTabComposite();
 	private final FaceTabComposite faceTab = new FaceTabComposite();
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createSingleSelectListStateForEnum( "lifeStageState", org.lgna.story.resources.sims2.LifeStage.class, org.lgna.story.resources.sims2.LifeStage.getRandom() );
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.Gender> genderState = this.createSingleSelectListStateForEnum( "genderState", org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createImmutableListStateForEnum( "lifeStageState", org.lgna.story.resources.sims2.LifeStage.class, org.lgna.story.resources.sims2.LifeStage.getRandom() );
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<org.lgna.story.resources.sims2.Gender> genderState = this.createImmutableListStateForEnum( "genderState", org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
 	private final SkinColorState skinColorState = new SkinColorState();
-	private final org.lgna.croquet.ImmutableDataTabState<org.lgna.croquet.SimpleTabComposite<?>> bodyHeadHairTabState = this.createTabState( "bodyHeadHairTabState", 0, this.bodyTab, this.topAndBottomTab, null, this.hairTab, null, this.faceTab );
+	private final org.lgna.croquet.ImmutableDataTabState<org.lgna.croquet.SimpleTabComposite<?>> bodyHeadHairTabState = this.createImmutableTabState( "bodyHeadHairTabState", 0, this.bodyTab, this.topAndBottomTab, null, this.hairTab, null, this.faceTab );
 
 	private org.alice.stageide.personresource.OutfitTabComposite<? extends org.alice.stageide.personresource.views.OutfitTabView> lastActiveOutfitTab = null;
 
