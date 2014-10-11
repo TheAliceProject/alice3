@@ -57,8 +57,8 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.SingleValu
 	private final FileSystemTab fileSystemTab = new FileSystemTab();
 	private final org.lgna.croquet.ImmutableDataTabState<SelectUriTab> tabState = this.createImmutableTabState(
 			"tabState",
-			SelectUriTab.class,
 			-1,
+			SelectUriTab.class,
 			//todo:
 			//this.startersTab, 
 			this.templatesTab, this.myProjectsTab, this.recentProjectsTab, this.fileSystemTab );

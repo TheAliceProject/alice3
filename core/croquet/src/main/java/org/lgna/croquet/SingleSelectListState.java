@@ -110,7 +110,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		}
 	}
 
-	public SingleSelectListState( Group group, java.util.UUID id, D data, int selectionIndex ) {
+	public SingleSelectListState( Group group, java.util.UUID id, int selectionIndex, D data ) {
 		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
 		this.dataIndexPair = new DataIndexPair( data, selectionIndex );
 		this.imp = new org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T, D>( this, new org.lgna.croquet.imp.liststate.SingleSelectListStateSwingModel( this.dataIndexPair ) );

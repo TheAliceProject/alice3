@@ -63,8 +63,8 @@ public abstract class RefreshableDataSingleSelectListState<T> extends SingleSele
 		}
 	};
 
-	public RefreshableDataSingleSelectListState( Group group, java.util.UUID migrationId, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
-		super( group, migrationId, data, selectionIndex );
+	public RefreshableDataSingleSelectListState( Group group, java.util.UUID migrationId, int selectionIndex, org.lgna.croquet.data.RefreshableListData<T> data ) {
+		super( group, migrationId, selectionIndex, data );
 		data.addListener( this.listDataListener );
 	}
 

@@ -406,8 +406,8 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	private static final class InternalSingleSelectListState<T> extends SingleSelectListState<T, org.lgna.croquet.data.ListData<T>> {
 		private final Key key;
 
-		private InternalSingleSelectListState( org.lgna.croquet.data.ListData<T> data, int selectionIndex, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "4f0640c9-eceb-4801-a8bb-bf8e282cef0f" ), data, selectionIndex );
+		private InternalSingleSelectListState( int selectionIndex, org.lgna.croquet.data.ListData<T> data, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "4f0640c9-eceb-4801-a8bb-bf8e282cef0f" ), selectionIndex, data );
 			this.key = key;
 		}
 
@@ -436,8 +436,8 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	private static final class InternalImmutableDataSingleSelectListState<T> extends ImmutableDataSingleSelectListState<T> {
 		private final Key key;
 
-		private InternalImmutableDataSingleSelectListState( ItemCodec<T> codec, T[] data, int selectionIndex, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "091d5251-d278-4eb1-8214-a27c154f5378" ), codec, data, selectionIndex );
+		private InternalImmutableDataSingleSelectListState( int selectionIndex, ItemCodec<T> codec, T[] values, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "091d5251-d278-4eb1-8214-a27c154f5378" ), selectionIndex, codec, values );
 			this.key = key;
 		}
 
@@ -466,8 +466,8 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	private static final class InternalRefreshableDataSingleSelectListState<T> extends RefreshableDataSingleSelectListState<T> {
 		private final Key key;
 
-		private InternalRefreshableDataSingleSelectListState( org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "4d7ef91c-a8ae-4b17-9d8a-91ffac4ba12e" ), data, selectionIndex );
+		private InternalRefreshableDataSingleSelectListState( int selectionIndex, org.lgna.croquet.data.RefreshableListData<T> data, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "4d7ef91c-a8ae-4b17-9d8a-91ffac4ba12e" ), selectionIndex, data );
 			this.key = key;
 		}
 
@@ -496,8 +496,8 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	private static final class InternalMutableDataSingleSelectListState<T> extends MutableDataSingleSelectListState<T> {
 		private final Key key;
 
-		private InternalMutableDataSingleSelectListState( ItemCodec<T> codec, int selectionIndex, T[] data, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "6cc16988-0fc8-476b-9026-b19fd15748ea" ), codec, selectionIndex, data );
+		private InternalMutableDataSingleSelectListState( int selectionIndex, org.lgna.croquet.data.MutableListData<T> data, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "6cc16988-0fc8-476b-9026-b19fd15748ea" ), selectionIndex, data );
 			this.key = key;
 		}
 
@@ -526,8 +526,8 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 	private static final class InternalTabState<T extends SimpleTabComposite<?>> extends SimpleTabState<T> {
 		private final Key key;
 
-		public InternalTabState( Class<T> cls, int selectionIndex, T[] data, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "bea99c2f-45ad-40a8-a99c-9c125a72f0be" ), cls, data, selectionIndex );
+		public InternalTabState( int selectionIndex, Class<T> cls, T[] values, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "bea99c2f-45ad-40a8-a99c-9c125a72f0be" ), selectionIndex, cls, values );
 			this.key = key;
 		}
 
@@ -1171,14 +1171,14 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 
 	protected <T> SingleSelectListState<T, org.lgna.croquet.data.ListData<T>> createGenericListState( String keyText, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
 		Key key = this.createKey( keyText );
-		InternalSingleSelectListState<T> rv = new InternalSingleSelectListState<T>( data, selectionIndex, key );
+		InternalSingleSelectListState<T> rv = new InternalSingleSelectListState<T>( selectionIndex, data, key );
 		this.mapKeyToSingleSelectListState.put( key, rv );
 		return rv;
 	}
 
 	protected <T> ImmutableDataSingleSelectListState<T> createImmutableListState( String keyText, Class<T> valueCls, org.lgna.croquet.ItemCodec<T> codec, int selectionIndex, T... values ) {
 		Key key = this.createKey( keyText );
-		InternalImmutableDataSingleSelectListState<T> rv = new InternalImmutableDataSingleSelectListState<T>( codec, values, selectionIndex, key );
+		InternalImmutableDataSingleSelectListState<T> rv = new InternalImmutableDataSingleSelectListState<T>( selectionIndex, codec, values, key );
 		this.mapKeyToImmutableSingleSelectListState.put( key, rv );
 		return rv;
 	}
@@ -1188,7 +1188,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		T[] constants = valueCls.getEnumConstants();
 		int selectionIndex = java.util.Arrays.asList( constants ).indexOf( initialValue );
 		org.lgna.croquet.codecs.EnumCodec<T> enumCodec = localizationCustomizer != null ? org.lgna.croquet.codecs.EnumCodec.createInstance( valueCls, localizationCustomizer ) : org.lgna.croquet.codecs.EnumCodec.getInstance( valueCls );
-		InternalImmutableDataSingleSelectListState<T> rv = new InternalImmutableDataSingleSelectListState<T>( enumCodec, constants, selectionIndex, key );
+		InternalImmutableDataSingleSelectListState<T> rv = new InternalImmutableDataSingleSelectListState<T>( selectionIndex, enumCodec, constants, key );
 		this.mapKeyToImmutableSingleSelectListState.put( key, rv );
 		return rv;
 	}
@@ -1199,27 +1199,27 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 
 	protected <T> RefreshableDataSingleSelectListState<T> createRefreshableListState( String keyText, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
 		Key key = this.createKey( keyText );
-		InternalRefreshableDataSingleSelectListState<T> rv = new InternalRefreshableDataSingleSelectListState<T>( data, selectionIndex, key );
+		InternalRefreshableDataSingleSelectListState<T> rv = new InternalRefreshableDataSingleSelectListState<T>( selectionIndex, data, key );
 		this.mapKeyToRefreshableSingleSelectListState.put( key, rv );
 		return rv;
 	}
 
 	protected <T> MutableDataSingleSelectListState<T> createMutableListState( String keyText, Class<T> valueCls, org.lgna.croquet.ItemCodec<T> codec, int selectionIndex, T... values ) {
 		Key key = this.createKey( keyText );
-		InternalMutableDataSingleSelectListState<T> rv = new InternalMutableDataSingleSelectListState<T>( codec, selectionIndex, values, key );
+		InternalMutableDataSingleSelectListState<T> rv = new InternalMutableDataSingleSelectListState<T>( selectionIndex, new org.lgna.croquet.data.MutableListData<T>( codec, values ), key );
 		this.mapKeyToMutableSingleSelectListState.put( key, rv );
 		return rv;
 	}
 
-	protected <C extends SimpleTabComposite<?>> ImmutableDataTabState<C> createImmutableTabState( String keyText, Class<C> cls, int selectionIndex, C... tabComposites ) {
+	protected <C extends SimpleTabComposite<?>> ImmutableDataTabState<C> createImmutableTabState( String keyText, int selectionIndex, Class<C> cls, C... tabComposites ) {
 		Key key = this.createKey( keyText );
-		InternalTabState<C> rv = new InternalTabState<C>( cls, selectionIndex, tabComposites, key );
+		InternalTabState<C> rv = new InternalTabState<C>( selectionIndex, cls, tabComposites, key );
 		this.mapKeyToTabState.put( key, rv );
 		return rv;
 	}
 
 	protected ImmutableDataTabState<SimpleTabComposite<?>> createImmutableTabState( String keyText, int selectionIndex, SimpleTabComposite<?>... tabComposites ) {
-		return (ImmutableDataTabState)this.createImmutableTabState( keyText, SimpleTabComposite.class, selectionIndex, tabComposites );
+		return (ImmutableDataTabState)this.createImmutableTabState( keyText, selectionIndex, SimpleTabComposite.class, tabComposites );
 	}
 
 	protected SplitComposite createHorizontalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, double resizeWeight ) {
