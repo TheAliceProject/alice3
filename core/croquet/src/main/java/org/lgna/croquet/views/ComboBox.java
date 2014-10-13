@@ -141,6 +141,7 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 	}
 
 	public void setRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setRenderer( listCellRenderer );
 	}
 
@@ -149,6 +150,7 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 	}
 
 	public void setMaximumRowCount( int maximumRowCount ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setMaximumRowCount( maximumRowCount );
 	}
 
@@ -261,6 +263,7 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 	}
 
 	/* package-private */void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setModel( model );
 	}
 

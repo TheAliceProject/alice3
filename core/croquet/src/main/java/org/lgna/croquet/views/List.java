@@ -156,6 +156,7 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 	}
 
 	public void setCellRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setCellRenderer( listCellRenderer );
 	}
 
@@ -164,6 +165,7 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 	}
 
 	public void setVisibleRowCount( int visibleRowCount ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setVisibleRowCount( visibleRowCount );
 	}
 
@@ -172,10 +174,12 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 	}
 
 	public void ensureIndexIsVisible( int index ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().ensureIndexIsVisible( index );
 	}
 
 	public void setLayoutOrientation( LayoutOrientation layoutOrientation ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setLayoutOrientation( layoutOrientation.internal );
 	}
 }
