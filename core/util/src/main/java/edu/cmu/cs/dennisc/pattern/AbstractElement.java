@@ -56,7 +56,7 @@ public abstract class AbstractElement extends DefaultReleasable implements Namea
 
 	@Override
 	public void setName( String name ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( m_name, name ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( m_name, name ) ) {
 			edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent = new edu.cmu.cs.dennisc.pattern.event.NameEvent( this, name );
 			for( edu.cmu.cs.dennisc.pattern.event.NameListener nameListeners : m_nameListeners ) {
 				nameListeners.nameChanging( nameEvent );

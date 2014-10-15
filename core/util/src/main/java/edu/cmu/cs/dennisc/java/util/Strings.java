@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,33 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.equivalence;
+package edu.cmu.cs.dennisc.java.util;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EquivalenceUtilities {
-	public static boolean areEquivalent( Object a, Object b ) {
-		if( a == null ) {
-			return b == null;
+public class Strings {
+	private Strings() {
+		throw new Error();
+	}
+
+	public static boolean equalsIgnoreCase( String a, String b ) {
+		if( a != null ) {
+			return a.equalsIgnoreCase( b );
 		} else {
-			return a.equals( b );
-		}
-	}
-
-	public static boolean areNotEquivalent( Object a, Object b ) {
-		return !areEquivalent( a, b );
-	}
-
-	public static boolean areEquivalent( String a, String b, CaseSensitivityPolicy caseSensitivityPolicy ) {
-		if( a == null ) {
 			return b == null;
-		} else {
-			return a.equals( b );
 		}
-	}
-
-	public static boolean areNotEquivalent( String a, String b, CaseSensitivityPolicy caseSensitivityPolicy ) {
-		return !areEquivalent( a, b, caseSensitivityPolicy );
 	}
 }

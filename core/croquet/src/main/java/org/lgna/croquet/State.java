@@ -171,7 +171,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	protected org.lgna.croquet.edits.StateEdit<T> createEdit( org.lgna.croquet.history.CompletionStep<State<T>> completionStep, T nextValue ) {
 		T prevValue = this.getValue();
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevValue, nextValue ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.equals( prevValue, nextValue ) ) {
 			//			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( nextValue );
 		}
 		return new org.lgna.croquet.edits.StateEdit<T>( completionStep, prevValue, nextValue );
@@ -198,7 +198,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 			boolean isUpdatingSwingValueAppropriate;
 			if( this.isSwingValueValid() ) {
 				T prevSwingValue = this.getSwingValue();
-				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevSwingValue, nextValue ) ) {
+				if( edu.cmu.cs.dennisc.java.util.Objects.equals( prevSwingValue, nextValue ) ) {
 					isUpdatingSwingValueAppropriate = false;
 				} else {
 					isUpdatingSwingValueAppropriate = true;
@@ -294,7 +294,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	private org.lgna.croquet.edits.StateEdit<T> changeValue( T prevValue, T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
 		org.lgna.croquet.edits.StateEdit<T> rv = null;
 		this.updateSwingModelIfAppropriate( nextValue, origin );
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.previousValue, nextValue ) ) {
 			//pass
 		} else {
 			if( this.isInTheMidstOfChange ) {

@@ -55,7 +55,7 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions, boolean isEnveloping ) {
 		super( completionStep, statement );
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromHistoryBlockStatementIndexPair = this.findFirstDropSite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class );
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( blockStatementIndexPair, fromHistoryBlockStatementIndexPair ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.equals( blockStatementIndexPair, fromHistoryBlockStatementIndexPair ) ) {
 			//pass
 		} else {
 			//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( blockStatementIndexPair, fromHistoryBlockStatementIndexPair );
@@ -202,7 +202,7 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 							if( replacementI instanceof org.lgna.project.ast.AbstractValueLiteral ) {
 								Object originalValue = ( (org.lgna.project.ast.AbstractValueLiteral)originalI ).getValueProperty().getValue();
 								Object replacementValue = ( (org.lgna.project.ast.AbstractValueLiteral)replacementI ).getValueProperty().getValue();
-								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( originalValue, replacementValue ) ) {
+								if( edu.cmu.cs.dennisc.java.util.Objects.equals( originalValue, replacementValue ) ) {
 									rv = org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH;
 								} else {
 									StringBuilder sb = new StringBuilder();

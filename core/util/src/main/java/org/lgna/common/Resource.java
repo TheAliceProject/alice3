@@ -83,7 +83,7 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 
 	@Override
 	public void setName( String name ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.name, name ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( this.name, name ) ) {
 			edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent = new edu.cmu.cs.dennisc.pattern.event.NameEvent( this, name );
 			for( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener : this.nameListeners ) {
 				nameListener.nameChanging( nameEvent );

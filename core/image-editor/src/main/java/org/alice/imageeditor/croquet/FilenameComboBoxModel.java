@@ -72,7 +72,7 @@ package org.alice.imageeditor.croquet;
 
 	@Override
 	public void setSelectedItem( Object selectedItem ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.selectedItem, selectedItem ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.selectedItem, selectedItem ) ) {
 			//pass
 		} else {
 			if( ( this.selectedItem != null ) && ( selectedItem != null ) && this.selectedItem.toString().contentEquals( selectedItem.toString() ) ) {

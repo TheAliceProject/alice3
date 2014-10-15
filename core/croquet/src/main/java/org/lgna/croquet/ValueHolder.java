@@ -63,7 +63,7 @@ public final class ValueHolder<T> {
 	}
 
 	public void setValue( T value ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.value, value ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.value, value ) ) {
 			//pass
 		} else {
 			org.lgna.croquet.event.ValueEvent<T> e = org.lgna.croquet.event.ValueEvent.createInstance( this.value, value );

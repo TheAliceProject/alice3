@@ -79,7 +79,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 			}
 			if( o instanceof Key ) {
 				Key key = (Key)o;
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.composite, key.composite ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.localizationKey, key.localizationKey );
+				return edu.cmu.cs.dennisc.java.util.Objects.equals( this.composite, key.composite ) && edu.cmu.cs.dennisc.java.util.Objects.equals( this.localizationKey, key.localizationKey );
 			} else {
 				return false;
 			}

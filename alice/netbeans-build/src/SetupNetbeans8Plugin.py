@@ -82,6 +82,32 @@ def _zipProjectTemplate(src, dst):
 	else:
 		raise srcPath
 
+VERSION = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( java.io.File( MavenUtilities.LOCATION_OF_BUILD_ROOT_POM, "core/ast/src/main/resources/org/lgna/project/Version.txt" ) ).strip()
+
+def _generateManifest6():
+	sb = java.lang.StringBuilder()
+	sb.append( "Manifest-Version: 1.0\n" )
+	sb.append( "OpenIDE-Module: org.alice.netbeans.aliceprojectwizard\n" )
+	sb.append( "OpenIDE-Module-Layer: org/alice/netbeans/aliceprojectwizard/layer.xml\n" )
+	sb.append( "OpenIDE-Module-Install: org/alice/netbeans/aliceprojectwizard/AliceWizardInstaller.class\n" )
+	sb.append( "OpenIDE-Module-Localizing-Bundle: org/alice/netbeans/aliceprojectwizard/Bundle.properties\n" )
+	sb.append( "OpenIDE-Module-Specification-Version: " )
+	sb.append( VERSION )
+	sb.append( "\n" )
+	return sb.toString()
+
+def _generateManifest8():
+	sb = java.lang.StringBuilder()
+	sb.append( "Manifest-Version: 1.0\n" )
+	sb.append( "OpenIDE-Module: org.alice.netbeans\n" )
+	sb.append( "OpenIDE-Module-Install: org/alice/netbeans/installer/Installer.class\n" )
+	sb.append( "OpenIDE-Module-Layer: org/alice/netbeans/layer.xml\n" )
+	sb.append( "OpenIDE-Module-Localizing-Bundle: org/alice/netbeans/Bundle.properties\n" )
+	sb.append( "OpenIDE-Module-Specification-Version: " )
+	sb.append( VERSION )
+	sb.append( "\n" )
+	return sb.toString()
+
 def setUpNetbeans8Plugin():
 	#MavenUtilities.runMavenCleanCompilePackage()
 	#MavenUtilities.runMavenCompilePackage()
@@ -90,7 +116,10 @@ def setUpNetbeans8Plugin():
 	_copyNatives()
 	_createDocs()
 	_createSrc()
+
 	_zipProjectTemplate(LOCATION_OF_PROJECT_TEMPLATE_8, java.io.File(LOCATION_OF_PLUGIN_8, "Alice3Module/src/org/alice/netbeans/ProjectTemplate.zip"))
+
+	edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( java.io.File(LOCATION_OF_PLUGIN_8, "Alice3Module/manifest.mf" ), _generateManifest8() )
 
 setUpNetbeans8Plugin()
 
@@ -106,5 +135,7 @@ def setUpNetbeans6Plugin():
 		dst.mkdirs()
 	FileUtilities.copyDirIgnoreFolders(src.getAbsolutePath(), dst.getAbsolutePath(), [])
 	_zipProjectTemplate(LOCATION_OF_PROJECT_TEMPLATE_6, java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans6/AliceProjectWizard/src/org/alice/netbeans/aliceprojectwizard/AliceProjectTemplateProject.zip"))
+
+	edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans6/AliceProjectWizard/manifest.mf" ), _generateManifest6() )
 
 setUpNetbeans6Plugin()
