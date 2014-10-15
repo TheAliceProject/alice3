@@ -74,7 +74,7 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 		java.net.URI[] uris = RecentProjectsListData.getInstance().toArray();
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( java.net.URI uri : uris ) {
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( uri, currentUri ) ) {
+			if( edu.cmu.cs.dennisc.java.util.Objects.equals( uri, currentUri ) ) {
 				//pass
 			} else {
 				models.add( org.alice.ide.croquet.models.projecturi.OpenRecentProjectOperation.getInstance( uri ).getMenuItemPrepModel() );

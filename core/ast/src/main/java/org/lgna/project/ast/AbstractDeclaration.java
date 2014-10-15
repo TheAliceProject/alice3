@@ -65,7 +65,7 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 			if( strictness == ContentEqualsStrictness.DECLARATIONS_EQUAL ) {
 				return this == other;
 			} else if( strictness == ContentEqualsStrictness.DECLARATIONS_HAVE_SAME_NAME ) {
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getName(), other.getName() );
+				return edu.cmu.cs.dennisc.java.util.Objects.equals( this.getName(), other.getName() );
 			} else {
 				throw new RuntimeException( strictness.name() );
 			}

@@ -674,7 +674,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 				//
 				//				String prevHairColorName = getHairColorName( this.prevPersonResource );
 				//				final String nextHairColorName = this.getHairColorNameState().getValue();
-				//				boolean isHairColorChanged = edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( prevHairColorName, nextHairColorName );
+				//				boolean isHairColorChanged = edu.cmu.cs.dennisc.java.util.Objects.notEquals( prevHairColorName, nextHairColorName );
 				//
 				//				if( isLifeStageChanged || isGenderChanged ) {
 				//					this.updateHair( nextLifeStage, nextGender, null );
