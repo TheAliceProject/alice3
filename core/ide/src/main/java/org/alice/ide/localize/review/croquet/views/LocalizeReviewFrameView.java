@@ -54,12 +54,17 @@ public class LocalizeReviewFrameView extends org.lgna.croquet.views.BorderPanel 
 			public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 				super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
 				java.util.Locale locale = (java.util.Locale)value;
-				this.setText( locale.getDisplayName( locale ) );
+				this.setText( locale.getDisplayName( locale ) + " (" + locale.getDisplayName( java.util.Locale.US ) + ")" );
 				return this;
 			}
 		} );
-		this.addPageStartComponent( comboBox );
-		javax.swing.JTable jTable = new javax.swing.JTable( composite.getTableModel() );
+
+		this.addPageStartComponent( new org.lgna.croquet.views.LineAxisPanel(
+				composite.getLocaleState().getSidekickLabel().createLabel(),
+				comboBox,
+				composite.getIsIncludingUntranslatedState().createCheckBox()
+				) );
+		jTable = new javax.swing.JTable( composite.getTableModel() );
 		javax.swing.table.TableColumnModel tableColumnModel = jTable.getColumnModel();
 		javax.swing.table.TableColumn column0 = tableColumnModel.getColumn( 0 );
 		column0.setHeaderValue( "index" );
@@ -73,18 +78,65 @@ public class LocalizeReviewFrameView extends org.lgna.croquet.views.BorderPanel 
 
 		javax.swing.table.TableColumn columnReview = tableColumnModel.getColumn( 4 );
 		columnReview.setHeaderValue( "Review" );
-		columnReview.setCellRenderer( new javax.swing.table.DefaultTableCellRenderer() {
+
+		final javax.swing.JLabel label = new javax.swing.JLabel( "<html><a href=\"\">review</a> [web]</html>" );
+		columnReview.setCellRenderer( new javax.swing.table.TableCellRenderer() {
 			@Override
 			public java.awt.Component getTableCellRendererComponent( javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column ) {
-				super.getTableCellRendererComponent( table, value, isSelected, hasFocus, row, column );
-				if( value instanceof java.awt.Component ) {
-					return (java.awt.Component)value;
-				} else {
-					return this;
-				}
+				return label;
 			}
 		} );
 		javax.swing.JScrollPane jScrollPane = new javax.swing.JScrollPane( jTable );
 		this.getAwtComponent().add( jScrollPane, java.awt.BorderLayout.CENTER );
 	}
+
+	@Override
+	public void handleCompositePreActivation() {
+		this.jTable.addMouseListener( this.mouseListener );
+		super.handleCompositePreActivation();
+	}
+
+	@Override
+	public void handleCompositePostDeactivation() {
+		super.handleCompositePostDeactivation();
+		this.jTable.removeMouseListener( this.mouseListener );
+	}
+
+	private final javax.swing.JTable jTable;
+	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		@Override
+		public void mousePressed( java.awt.event.MouseEvent e ) {
+		}
+
+		@Override
+		public void mouseReleased( java.awt.event.MouseEvent e ) {
+			java.awt.Point pt = e.getPoint();
+			int columnIndex = jTable.columnAtPoint( pt );
+			if( columnIndex == 4 ) {
+				int rowIndex = jTable.rowAtPoint( pt );
+				if( rowIndex >= 0 ) {
+					final String prefix = "http://alice.andrew.cmu.edu/localize/narro_project_text_list.php?l=ru&p=5&tf=1&st=3&s=";
+					try {
+						java.net.URI uri = new java.net.URI( prefix + jTable.getModel().getValueAt( rowIndex, columnIndex ) );
+						edu.cmu.cs.dennisc.java.awt.DesktopUtilities.browse( uri );
+					} catch( Exception exc ) {
+						throw new RuntimeException( exc );
+					}
+				}
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rowIndex, columnIndex, jTable.getModel().getValueAt( rowIndex, columnIndex ) );
+			}
+		}
+
+		@Override
+		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		}
+
+		@Override
+		public void mouseEntered( java.awt.event.MouseEvent e ) {
+		}
+
+		@Override
+		public void mouseExited( java.awt.event.MouseEvent e ) {
+		}
+	};
 }

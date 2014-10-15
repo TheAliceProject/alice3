@@ -62,13 +62,22 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 	}
 
 	@Override
+	protected void localize() {
+		super.localize();
+		this.localeState.getSidekickLabel().setText( "locale:" );
+		this.isIncludingUntranslatedState.setTextForBothTrueAndFalse( "include untranslated?" );
+	}
+
+	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		this.localeState.addAndInvokeNewSchoolValueListener( this.localeListener );
+		this.isIncludingUntranslatedState.addAndInvokeNewSchoolValueListener( this.isIncludingUntranslatedListener );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
+		this.isIncludingUntranslatedState.removeNewSchoolValueListener( this.isIncludingUntranslatedListener );
 		this.localeState.removeNewSchoolValueListener( this.localeListener );
 		super.handlePostDeactivation();
 	}
@@ -82,21 +91,52 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 		return this.localeState;
 	}
 
+	public org.lgna.croquet.BooleanState getIsIncludingUntranslatedState() {
+		return this.isIncludingUntranslatedState;
+	}
+
 	public javax.swing.table.TableModel getTableModel() {
 		return this.tableModel;
 	}
 
 	private final org.lgna.croquet.ImmutableDataSingleSelectListState<java.util.Locale> localeState = this.createImmutableListState( "localeState", java.util.Locale.class, org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON, 0,
-			new java.util.Locale( "ru" ),
-			new java.util.Locale( "ar" ),
+			new java.util.Locale( "pt" ),
+			new java.util.Locale( "pt", "BR" ),
 			new java.util.Locale( "es" ),
-			new java.util.Locale( "pt" )
+			new java.util.Locale( "fr" ),
+			new java.util.Locale( "fr", "BE" ),
+			new java.util.Locale( "it" ),
+			new java.util.Locale( "nl" ),
+			new java.util.Locale( "de" ),
+			new java.util.Locale( "el" ),
+			new java.util.Locale( "ro" ),
+			new java.util.Locale( "cs" ),
+			new java.util.Locale( "sl" ),
+			new java.util.Locale( "lt" ),
+			new java.util.Locale( "ru" ),
+			new java.util.Locale( "uk" ),
+			new java.util.Locale( "tr" ),
+			new java.util.Locale( "ar" ),
+			new java.util.Locale( "iw" ),
+			new java.util.Locale( "in" ),
+			new java.util.Locale( "zh", "CN" ),
+			new java.util.Locale( "zh", "TW" ),
+			new java.util.Locale( "ko" )
 			);
+
+	private final org.lgna.croquet.BooleanState isIncludingUntranslatedState = this.createBooleanState( "isIncludingUntranslatedState", false );
 
 	private final org.lgna.croquet.event.ValueListener<java.util.Locale> localeListener = new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
 		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
 			tableModel.setLocale( e.getNextValue() );
+		}
+	};
+
+	private final org.lgna.croquet.event.ValueListener<Boolean> isIncludingUntranslatedListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
+		@Override
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Boolean> e ) {
+			tableModel.setIncludingUntranslated( e.getNextValue() );
 		}
 	};
 
@@ -108,21 +148,12 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 				this.bundleName = bundleName;
 				this.key = key;
 				this.defaultValue = defaultValue;
-
-				this.action.putValue( javax.swing.Action.NAME, "review" );
 			}
 
 			private final String bundleName;
 			private final String key;
 			private final String defaultValue;
 			private String localizedValue;
-			private final javax.swing.Action action = new javax.swing.AbstractAction() {
-				@Override
-				public void actionPerformed( java.awt.event.ActionEvent e ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "http://alice.andrew.cmu.edu/localize/narro_project_text_list.php?l=ru&p=5&tf=1&st=3&s=" + key );
-				}
-			};
-			private final javax.swing.JButton button = new javax.swing.JButton( action );
 		}
 
 		public LocalizationTableModel() {
@@ -143,26 +174,51 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 				throw new RuntimeException( ioe );
 			}
 
-			java.util.List<Item> _items = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			java.util.List<Item> _allItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 			for( String classPathEntry : classPathEntries ) {
 				String bundleName = classPathEntry.substring( 0, classPathEntry.length() - SUFFIX.length() );
 				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName );
 				for( String key : resourceBundle.keySet() ) {
-					_items.add( new Item( bundleName, key, resourceBundle.getString( key ) ) );
+					_allItems.add( new Item( bundleName, key, resourceBundle.getString( key ) ) );
 				}
 			}
 
-			this.items = java.util.Collections.unmodifiableList( _items );
-
+			this.allItems = java.util.Collections.unmodifiableList( _allItems );
 		}
 
 		public void setLocale( java.util.Locale locale ) {
-			for( Item item : this.items ) {
+			java.util.List<Item> _translatedItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			for( Item item : this.allItems ) {
 				java.util.ResourceBundle resourceBundleB = java.util.ResourceBundle.getBundle( item.bundleName, locale );
 				item.localizedValue = resourceBundleB.getString( item.key );
 			}
+			this.translatedItems = java.util.Collections.unmodifiableList( _translatedItems );
 			this.fireTableDataChanged();
+		}
+
+		public void setIncludingUntranslated( boolean isIncludingUntranslated ) {
+			if( this.isIncludingUntranslated != isIncludingUntranslated ) {
+				this.isIncludingUntranslated = isIncludingUntranslated;
+				this.fireTableDataChanged();
+			}
+		}
+
+		private java.util.List<Item> getItems() {
+			if( this.isIncludingUntranslated ) {
+				return this.allItems;
+			} else {
+				java.util.List<Item> _translatedItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				for( Item item : this.allItems ) {
+					if( edu.cmu.cs.dennisc.java.util.Objects.equals( item.defaultValue, item.localizedValue ) ) {
+						//pass
+					} else {
+						_translatedItems.add( item );
+					}
+				}
+				this.translatedItems = java.util.Collections.unmodifiableList( _translatedItems );
+				return this.translatedItems;
+			}
 		}
 
 		@Override
@@ -172,38 +228,45 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 
 		@Override
 		public int getRowCount() {
-			return this.items.size();
+			return this.getItems().size();
 		}
 
 		@Override
 		public Object getValueAt( int rowIndex, int columnIndex ) {
+			Item item = this.getItems().get( rowIndex );
 			switch( columnIndex ) {
 			case 0:
 				return rowIndex;
 			case 1:
-				return this.items.get( rowIndex ).key;
+				return item.key;
 			case 2:
-				return this.items.get( rowIndex ).defaultValue;
+				return item.defaultValue;
 			case 3:
-				Item item = this.items.get( rowIndex );
 				if( edu.cmu.cs.dennisc.java.util.Objects.equals( item.defaultValue, item.localizedValue ) ) {
 					return null;
 				} else {
 					return item.localizedValue;
 				}
 			case 4:
-				return this.items.get( rowIndex ).button;
+				return item.key;
 			default:
 				throw new Error();
 			}
 		}
 
-		private final java.util.List<Item> items;
+		private final java.util.List<Item> allItems;
+		private java.util.List<Item> translatedItems;
+		private boolean isIncludingUntranslated;
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		LocalizeReviewFrame.getInstance().getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
+			public void run() {
+				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+				LocalizeReviewFrame.getInstance().getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
+			}
+		} );
 	}
 }
