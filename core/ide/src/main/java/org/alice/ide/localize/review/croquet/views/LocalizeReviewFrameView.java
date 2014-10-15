@@ -51,7 +51,7 @@ public class LocalizeReviewFrameView extends org.lgna.croquet.views.BorderPanel 
 		org.lgna.croquet.views.ComboBox<java.util.Locale> comboBox = composite.getLocaleState().getPrepModel().createComboBox();
 		comboBox.setRenderer( new javax.swing.DefaultListCellRenderer() {
 			@Override
-			public java.awt.Component getListCellRendererComponent( javax.swing.JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+			public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 				super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
 				java.util.Locale locale = (java.util.Locale)value;
 				this.setText( locale.getDisplayName( locale ) );

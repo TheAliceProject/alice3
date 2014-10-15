@@ -186,7 +186,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 				return this.items.get( rowIndex ).defaultValue;
 			case 3:
 				Item item = this.items.get( rowIndex );
-				if( java.util.Objects.equals( item.defaultValue, item.localizedValue ) ) {
+				if( edu.cmu.cs.dennisc.java.util.Objects.equals( item.defaultValue, item.localizedValue ) ) {
 					return null;
 				} else {
 					return item.localizedValue;
