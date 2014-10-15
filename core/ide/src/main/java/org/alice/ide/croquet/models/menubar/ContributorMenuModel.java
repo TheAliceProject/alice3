@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,36 +45,16 @@ package org.alice.ide.croquet.models.menubar;
 /**
  * @author Dennis Cosgrove
  */
-public class WindowMenuModel extends org.lgna.croquet.StaticMenuModel {
-	private static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createModels( org.alice.stageide.perspectives.PerspectiveState perspectiveState ) {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		if( perspectiveState != null ) {
-			rv.add( perspectiveState.getMenuModel() );
-			rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		}
-		rv.add( org.alice.ide.croquet.models.history.ProjectHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
-		rv.add( org.alice.ide.croquet.models.ui.MemoryUsageComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
-		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( PreferencesMenuModel.getInstance() );
-		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( ContributorMenuModel.getInstance() );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
-			rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			rv.add( InternalTestingMenuModel.getInstance() );
-		}
-		return rv;
+public class ContributorMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+	private static class SingletonHolder {
+		private static ContributorMenuModel instance = new ContributorMenuModel();
 	}
 
-	public WindowMenuModel( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ) );
-		this.projectDocumentFrame = projectDocumentFrame;
+	public static ContributorMenuModel getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	@Override
-	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
-		org.alice.stageide.perspectives.PerspectiveState perspectiveState = this.projectDocumentFrame != null ? this.projectDocumentFrame.getPerspectiveState() : null;
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( createModels( perspectiveState ), org.lgna.croquet.StandardMenuItemPrepModel.class );
+	private ContributorMenuModel() {
+		super( java.util.UUID.fromString( "4215bc20-55ec-4b7e-9dc0-d573501ea985" ), org.alice.ide.localize.review.croquet.LocalizeReviewFrame.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
 	}
-
-	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
 }

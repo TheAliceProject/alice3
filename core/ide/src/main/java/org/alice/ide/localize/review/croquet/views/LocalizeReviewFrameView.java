@@ -66,9 +66,9 @@ public class LocalizeReviewFrameView extends org.lgna.croquet.views.BorderPanel 
 				) );
 		jTable = new javax.swing.JTable( composite.getTableModel() );
 		javax.swing.table.TableColumnModel tableColumnModel = jTable.getColumnModel();
-		javax.swing.table.TableColumn column0 = tableColumnModel.getColumn( 0 );
-		column0.setHeaderValue( "index" );
-		column0.setMaxWidth( 64 );
+		javax.swing.table.TableColumn columnIndex = tableColumnModel.getColumn( 0 );
+		columnIndex.setHeaderValue( "index" );
+		columnIndex.setMaxWidth( 64 );
 		javax.swing.table.TableColumn columnContext = tableColumnModel.getColumn( 1 );
 		columnContext.setHeaderValue( "Context" );
 		javax.swing.table.TableColumn columnOriginal = tableColumnModel.getColumn( 2 );
