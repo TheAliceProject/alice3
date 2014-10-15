@@ -78,7 +78,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 		return new org.alice.ide.localize.review.croquet.views.LocalizeReviewFrameView( this );
 	}
 
-	public org.lgna.croquet.SingleSelectListState<java.util.Locale> getLocaleState() {
+	public org.lgna.croquet.ImmutableDataSingleSelectListState<java.util.Locale> getLocaleState() {
 		return this.localeState;
 	}
 
@@ -86,7 +86,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 		return this.tableModel;
 	}
 
-	private final org.lgna.croquet.SingleSelectListState<java.util.Locale> localeState = this.createSingleSelectListState( "localeState", java.util.Locale.class, org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON, 0,
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<java.util.Locale> localeState = this.createImmutableListState( "localeState", java.util.Locale.class, org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON, 0,
 			new java.util.Locale( "ru" ),
 			new java.util.Locale( "ar" ),
 			new java.util.Locale( "es" ),
