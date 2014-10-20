@@ -5251,10 +5251,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.biped.PandaResource",
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TrainEngineResource" ),
-					createMoreSpecificFieldReplacement( "LIMOUSINE", "org.lgna.story.resources.prop.LimousineResource" ),
+					createMoreSpecificFieldReplacement( "MODERATE_BLUE_STRIPES_WOOD_FRAME", "org.lgna.story.resources.prop.BedSingleResource" ),
 
 					"name=\"org.lgna.story.resources.prop.TrainEngineResource",
-					"name=\"org.lgna.story.resources.prop.LimousineResource",
+					"name=\"org.lgna.story.resources.prop.BedSingleResource",
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.GhostResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.ThorResource" ),
@@ -5269,10 +5269,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.biped.ThorResource",
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TrainCarResource" ),
-					createMoreSpecificFieldReplacement( "LIMOUSINE", "org.lgna.story.resources.prop.LimousineResource" ),
+					createMoreSpecificFieldReplacement( "BASIC_GRAY_WOOD_FRAME", "org.lgna.story.resources.prop.BedDoubleResource" ),
 
 					"name=\"org.lgna.story.resources.prop.TrainCarResource",
-					"name=\"org.lgna.story.resources.prop.LimousineResource",
+					"name=\"org.lgna.story.resources.prop.BedDoubleResource",
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TunnelResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.TentResource" ),
