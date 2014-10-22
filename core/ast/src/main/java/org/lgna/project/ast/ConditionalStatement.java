@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +57,11 @@ public final class ConditionalStatement extends Statement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			ConditionalStatement other = (ConditionalStatement)o;
-			if( this.booleanExpressionBodyPairs.valueContentEquals( other.booleanExpressionBodyPairs, strictness ) ) {
-				return this.elseBody.valueContentEquals( other.elseBody, strictness );
+			if( this.booleanExpressionBodyPairs.valueContentEquals( other.booleanExpressionBodyPairs, strictness, filter ) ) {
+				return this.elseBody.valueContentEquals( other.elseBody, strictness, filter );
 			}
 		}
 		return false;

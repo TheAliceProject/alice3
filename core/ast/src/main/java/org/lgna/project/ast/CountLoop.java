@@ -60,12 +60,12 @@ public class CountLoop extends AbstractLoop {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			CountLoop other = (CountLoop)o;
-			if( this.variable.valueContentEquals( other.variable, strictness ) ) {
-				if( this.constant.valueContentEquals( other.constant, strictness ) ) {
-					return this.count.valueContentEquals( other.count, strictness );
+			if( this.variable.valueContentEquals( other.variable, strictness, filter ) ) {
+				if( this.constant.valueContentEquals( other.constant, strictness, filter ) ) {
+					return this.count.valueContentEquals( other.count, strictness, filter );
 				}
 			}
 		}
@@ -83,8 +83,9 @@ public class CountLoop extends AbstractLoop {
 	@Override
 	protected void appendJavaLoopPrefix( JavaCodeGenerator generator ) {
 		Expression countValue = this.count.getValue();
-		String variableName = this.variable.getValue().getValidName();
-		String constantName = this.constant.getValue().getValidName();
+		String[] a = generator.getVariableAndConstantNameForCountLoop( this );
+		String variableName = a[ 0 ];
+		String constantName = a[ 1 ];
 		boolean isInline;
 		if( countValue instanceof IntegerLiteral ) {
 			isInline = true;
@@ -100,12 +101,16 @@ public class CountLoop extends AbstractLoop {
 			//todo?
 			isInline = true;
 		} else {
+			isInline = false;
+		}
+		if( isInline ) {
+			//pass
+		} else {
 			generator.appendString( "final int " );
 			generator.appendString( constantName );
 			generator.appendString( "=" );
 			generator.appendExpression( countValue );
 			generator.appendSemicolon();
-			isInline = false;
 		}
 		generator.appendString( "for(Integer " );
 		generator.appendString( variableName );

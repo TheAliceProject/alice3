@@ -714,10 +714,10 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		} else {
 			if( o instanceof Matrix4x4 ) {
 				Matrix4x4 other = (Matrix4x4)o;
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.right, other.right )
-						&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.up, other.up )
-						&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.backward, other.backward )
-						&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.translation, other.translation );
+				return edu.cmu.cs.dennisc.java.util.Objects.equals( this.right, other.right )
+						&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.up, other.up )
+						&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.backward, other.backward )
+						&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.translation, other.translation );
 			} else {
 				return false;
 			}

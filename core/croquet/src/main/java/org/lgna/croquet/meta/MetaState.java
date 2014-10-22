@@ -69,7 +69,7 @@ public abstract class MetaState<T> {
 
 	protected void checkValueAndFireIfAppropriate() {
 		T nextValue = this.getValue();
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValue, nextValue ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.prevValue, nextValue ) ) {
 			//todo: pass?
 			this.prevValue = nextValue;
 		} else {

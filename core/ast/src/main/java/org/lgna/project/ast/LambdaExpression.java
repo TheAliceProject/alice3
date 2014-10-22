@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -65,10 +66,10 @@ public final class LambdaExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			LambdaExpression other = (LambdaExpression)o;
-			return this.value.valueContentEquals( other.value, strictness );
+			return this.value.valueContentEquals( other.value, strictness, filter );
 		}
 		return false;
 	}

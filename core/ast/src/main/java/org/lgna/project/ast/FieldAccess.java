@@ -97,11 +97,11 @@ public final class FieldAccess extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			FieldAccess other = (FieldAccess)o;
-			if( this.expression.valueContentEquals( other.expression, strictness ) ) {
-				return this.field.valueContentEquals( other.field, strictness );
+			if( this.expression.valueContentEquals( other.expression, strictness, filter ) ) {
+				return this.field.valueContentEquals( other.field, strictness, filter );
 			}
 		}
 		return false;

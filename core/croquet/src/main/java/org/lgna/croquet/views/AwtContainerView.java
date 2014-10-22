@@ -102,6 +102,7 @@ public abstract class AwtContainerView<J extends java.awt.Container> extends Awt
 	}
 
 	public void setComponentZOrder( AwtComponentView<?> component, int index ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setComponentZOrder( component.getAwtComponent(), index );
 	}
 
@@ -116,6 +117,7 @@ public abstract class AwtContainerView<J extends java.awt.Container> extends Awt
 	protected final void internalAddComponent( AwtComponentView<?> component ) {
 		assert component != null : this;
 		assert component != this : this;
+		this.checkEventDispatchThread();
 		this.checkTreeLock();
 		this.getAwtComponent().add( component.getAwtComponent() );
 	}
@@ -123,6 +125,7 @@ public abstract class AwtContainerView<J extends java.awt.Container> extends Awt
 	protected final void internalAddComponent( AwtComponentView<?> component, Object constraints ) {
 		assert component != null : this;
 		assert component != this : this;
+		this.checkEventDispatchThread();
 		this.checkTreeLock();
 		this.getAwtComponent().add( component.getAwtComponent(), constraints );
 	}
@@ -130,6 +133,7 @@ public abstract class AwtContainerView<J extends java.awt.Container> extends Awt
 	private void internalRemoveComponent( AwtComponentView<?> component, boolean isReleaseDesired ) {
 		assert component != null : this;
 		assert component != this : this;
+		this.checkEventDispatchThread();
 		this.checkTreeLock();
 		this.getAwtComponent().remove( component.getAwtComponent() );
 		//		if( component.getAwtComponent().isDisplayable() ) {

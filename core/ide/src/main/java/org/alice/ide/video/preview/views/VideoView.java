@@ -402,7 +402,7 @@ public class VideoView extends org.lgna.croquet.views.BorderPanel {
 	}
 
 	public void setUri( java.net.URI uri ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.uri, uri ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.uri, uri ) ) {
 			//pass
 		} else {
 			this.uri = uri;

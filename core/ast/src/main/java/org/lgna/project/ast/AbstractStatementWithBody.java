@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,10 +61,10 @@ public abstract class AbstractStatementWithBody extends Statement implements Sta
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			AbstractStatementWithBody other = (AbstractStatementWithBody)o;
-			return this.body.valueContentEquals( other.body, strictness );
+			return this.body.valueContentEquals( other.body, strictness, filter );
 		}
 		return false;
 	}

@@ -49,7 +49,7 @@ import org.alice.ide.ast.type.merge.help.croquet.PotentialNameChangerHelpComposi
  * @author Dennis Cosgrove
  */
 public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project.ast.Member> extends PotentialNameChangerHelpComposite<org.alice.ide.ast.type.merge.help.diffsig.croquet.views.DifferentSignatureHelpView, M, DifferentSignature<M>> {
-	private final org.lgna.croquet.SingleSelectListState<DifferentSignatureChoice> choiceState = this.createSingleSelectListStateForEnum( "choiceState", DifferentSignatureChoice.class, null );
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<DifferentSignatureChoice> choiceState = this.createImmutableListStateForEnum( "choiceState", DifferentSignatureChoice.class, null );
 
 	private final org.lgna.croquet.event.ValueListener<DifferentSignatureChoice> topLevelListener = new org.lgna.croquet.event.ValueListener<DifferentSignatureChoice>() {
 		@Override
@@ -87,7 +87,7 @@ public abstract class DifferentSignatureHelpComposite<M extends org.lgna.project
 		this.getHeader().setText( text );
 	}
 
-	public org.lgna.croquet.SingleSelectListState<DifferentSignatureChoice> getChoiceState() {
+	public org.lgna.croquet.ImmutableDataSingleSelectListState<DifferentSignatureChoice> getChoiceState() {
 		return this.choiceState;
 	}
 

@@ -63,7 +63,7 @@ public class DefaultRadioButtons<E> extends AbstractRadioButtons<E> {
 	}
 	private final boolean isVertical;
 
-	public DefaultRadioButtons( org.lgna.croquet.SingleSelectListState<E> model, boolean isVertical ) {
+	public DefaultRadioButtons( org.lgna.croquet.SingleSelectListState<E, ?> model, boolean isVertical ) {
 		super( model );
 		this.isVertical = isVertical;
 		this.setMaximumSizeClampedToPreferredSize( true );

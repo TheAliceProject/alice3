@@ -10,6 +10,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
 import javax.swing.text.BadLocationException;
@@ -20,12 +21,15 @@ import org.lgna.project.ast.JavaCodeGenerator;
 import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.io.IoUtilities;
+import org.lgna.project.resource.ResourcesTypeWrapper;
 import org.lgna.story.SProgram;
 import org.lgna.story.SScene;
 import org.lgna.story.ast.JavaCodeUtilities;
 import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.modules.editor.indent.api.Reformat;
 import org.openide.cookies.EditorCookie;
+import org.openide.filesystems.FileAlreadyLockedException;
+import org.openide.filesystems.FileLock;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
@@ -52,6 +56,41 @@ public class ProjectCodeGenerator {
 		List<FileObject> filesToOpen = Lists.newLinkedList();
 		List<FileObject> fileObjectsToFormat = Lists.newLinkedList();
 		java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes = aliceProject.getNamedUserTypes();
+		final java.util.Set<org.lgna.common.Resource> resources = aliceProject.getResources();
+		if (resources.isEmpty()) {
+			//pass
+		} else {
+			ResourcesTypeWrapper resourcesTypeWrapper = new ResourcesTypeWrapper(aliceProject);
+			namedUserTypes.add( resourcesTypeWrapper.getType() );
+
+			FileObject javaSrcDirectoryFileObject = (FileUtil.toFileObject(javaSrcDirectory));
+			FileObject resourcesDirectory = javaSrcDirectoryFileObject.createFolder("resources");
+			for (org.lgna.common.Resource resource : resources) {
+				final String dstPath = resource.getName();
+				FileObject f;
+				try {
+					f = resourcesDirectory.createData(dstPath);
+				} catch (Exception e) {
+					f = resourcesDirectory.getFileObject(dstPath);
+				}
+
+				FileLock lock;
+				try {
+					lock = f.lock();
+				} catch (FileAlreadyLockedException fale) {
+					throw new RuntimeException(fale);
+				}
+				try {
+					OutputStream os = f.getOutputStream(lock);
+					os.write(resource.getData());
+					os.flush();
+					os.close();
+				} finally {
+					lock.releaseLock();
+				}
+			}
+		}
+
 		if (progressHandle != null) {
 			progressHandle.switchToDeterminate(namedUserTypes.size());
 		}

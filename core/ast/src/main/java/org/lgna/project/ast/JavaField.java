@@ -72,6 +72,14 @@ public class JavaField extends AbstractField {
 
 	private JavaField( FieldReflectionProxy fieldReflectionProxy ) {
 		this.fieldReflectionProxy = fieldReflectionProxy;
+		final boolean IS_CHECK_REIFICATION_DESIRED = false;
+		if( IS_CHECK_REIFICATION_DESIRED ) {
+			if( this.fieldReflectionProxy.getReification() != null ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
+			}
+		}
 	}
 
 	@Override

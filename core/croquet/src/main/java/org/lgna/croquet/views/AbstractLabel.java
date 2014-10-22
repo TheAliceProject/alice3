@@ -51,6 +51,7 @@ public abstract class AbstractLabel extends SwingComponentView<javax.swing.JLabe
 	}
 
 	public void setText( String text ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setText( text );
 	}
 
@@ -59,22 +60,27 @@ public abstract class AbstractLabel extends SwingComponentView<javax.swing.JLabe
 	}
 
 	public void setIcon( javax.swing.Icon icon ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setIcon( icon );
 	}
 
 	public void setHorizontalTextPosition( HorizontalTextPosition horizontalTextPosition ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
 	}
 
 	public void setVerticalTextPosition( VerticalTextPosition verticalTextPosition ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setVerticalTextPosition( verticalTextPosition.getInternal() );
 	}
 
 	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
 	}
 
 	public void setVerticalAlignment( VerticalAlignment verticalAlignment ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setVerticalAlignment( verticalAlignment.getInternal() );
 	}
 }
