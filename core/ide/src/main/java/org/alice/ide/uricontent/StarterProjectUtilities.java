@@ -45,39 +45,37 @@ package org.alice.ide.uricontent;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriProjectLoader extends UriContentLoader<org.lgna.project.Project> {
-	public static UriProjectLoader createInstance( java.net.URI uri ) {
-		if( uri != null ) {
-			String scheme = uri.getScheme();
-			if( "file".equalsIgnoreCase( scheme ) ) {
-				java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
-				return new org.alice.ide.uricontent.FileProjectLoader( file );
-			} else if( "starterfile".equalsIgnoreCase( scheme ) ) {
-				return new StarterProjectFileLoader( uri );
-			} else if( org.alice.stageide.openprojectpane.models.TemplateUriState.Template.isValidUri( uri ) ) {
-				org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.getSurfaceAppearance( uri );
-				return new org.alice.ide.uricontent.BlankSlateProjectLoader( template );
-			} else {
-				return null;
-			}
-		} else {
-			return null;
+public class StarterProjectUtilities {
+	private StarterProjectUtilities() {
+		throw new AssertionError();
+	}
+
+	private static final String PREFIX = "starter";
+
+	public static java.net.URI toUri( java.io.File file ) {
+		java.net.URI fileUri = file.toURI();
+		String str = PREFIX + fileUri.toString();
+		try {
+			return new java.net.URI( str );
+		} catch( java.net.URISyntaxException urise ) {
+			throw new RuntimeException( str, urise );
 		}
 	}
 
-	protected abstract boolean isCacheAndCopyStyle();
-
-	@Override
-	protected boolean isWorkerCachingAppropriate( org.alice.ide.uricontent.UriContentLoader.MutationPlan intention ) {
-		return this.isCacheAndCopyStyle() || super.isWorkerCachingAppropriate( intention );
+	public static java.net.URI toFileUriFromStarterUri( java.net.URI starterUri ) {
+		try {
+			return new java.net.URI( starterUri.toString().substring( PREFIX.length() ) );
+		} catch( java.net.URISyntaxException urise ) {
+			throw new RuntimeException( urise );
+		}
 	}
 
-	@Override
-	protected org.lgna.project.Project createCopyIfNecessary( org.lgna.project.Project value ) {
-		if( this.isCacheAndCopyStyle() ) {
-			return org.lgna.project.CopyUtilities.createCopy( value );
-		} else {
-			return value;
+	public static java.io.File toFile( java.net.URI uri ) {
+		String str = uri.toString().substring( PREFIX.length() );
+		try {
+			return new java.io.File( new java.net.URI( str ) );
+		} catch( java.net.URISyntaxException urise ) {
+			throw new RuntimeException( str, urise );
 		}
 	}
 }

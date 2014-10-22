@@ -45,39 +45,16 @@ package org.alice.ide.uricontent;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriProjectLoader extends UriContentLoader<org.lgna.project.Project> {
-	public static UriProjectLoader createInstance( java.net.URI uri ) {
-		if( uri != null ) {
-			String scheme = uri.getScheme();
-			if( "file".equalsIgnoreCase( scheme ) ) {
-				java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
-				return new org.alice.ide.uricontent.FileProjectLoader( file );
-			} else if( "starterfile".equalsIgnoreCase( scheme ) ) {
-				return new StarterProjectFileLoader( uri );
-			} else if( org.alice.stageide.openprojectpane.models.TemplateUriState.Template.isValidUri( uri ) ) {
-				org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.getSurfaceAppearance( uri );
-				return new org.alice.ide.uricontent.BlankSlateProjectLoader( template );
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	protected abstract boolean isCacheAndCopyStyle();
-
-	@Override
-	protected boolean isWorkerCachingAppropriate( org.alice.ide.uricontent.UriContentLoader.MutationPlan intention ) {
-		return this.isCacheAndCopyStyle() || super.isWorkerCachingAppropriate( intention );
+public class StarterProjectFileLoader extends AbstractFileProjectLoader {
+	public StarterProjectFileLoader( java.net.URI uri ) {
+		super( StarterProjectUtilities.toFile( uri ) );
+		this.uri = uri;
 	}
 
 	@Override
-	protected org.lgna.project.Project createCopyIfNecessary( org.lgna.project.Project value ) {
-		if( this.isCacheAndCopyStyle() ) {
-			return org.lgna.project.CopyUtilities.createCopy( value );
-		} else {
-			return value;
-		}
+	public java.net.URI getUri() {
+		return this.uri;
 	}
+
+	private final java.net.URI uri;
 }
