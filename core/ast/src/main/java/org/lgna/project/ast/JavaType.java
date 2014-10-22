@@ -505,6 +505,33 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 						handleMthd( mthd, methods );
 					}
 				}
+
+				//update value templates for setters
+				for( JavaMethod method : methods ) {
+					java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
+					org.lgna.project.annotations.GetterTemplate propertyGetterTemplate = mthd.getAnnotation( org.lgna.project.annotations.GetterTemplate.class );
+					if( propertyGetterTemplate != null ) {
+						java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( mthd );
+						JavaMethod setter;
+						if( sttr != null ) {
+							setter = (JavaMethod)JavaMethod.getInstance( sttr ).getLongestInChain();
+						} else {
+							setter = null;
+						}
+						if( setter != null ) {
+							org.lgna.project.annotations.ValueTemplate valueTemplate = mthd.getAnnotation( org.lgna.project.annotations.ValueTemplate.class );
+							if( valueTemplate != null ) {
+								JavaMethod m = setter;
+								while( m != null ) {
+									JavaMethodParameter parameter0 = (JavaMethodParameter)m.getRequiredParameters().get( 0 );
+									parameter0.setValueTemplate( valueTemplate );
+									m = m.getNextShorterInChain();
+								}
+							}
+						}
+					}
+				}
+
 				return java.util.Collections.unmodifiableList( methods );
 			} else {
 				return java.util.Collections.emptyList();
@@ -544,17 +571,6 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 							setter = null;
 						}
 						getterSetterPairs.add( new JavaGetterSetterPair( method, setter ) );
-						if( setter != null ) {
-							org.lgna.project.annotations.ValueTemplate valueTemplate = mthd.getAnnotation( org.lgna.project.annotations.ValueTemplate.class );
-							if( valueTemplate != null ) {
-								JavaMethod m = setter;
-								while( m != null ) {
-									JavaMethodParameter parameter0 = (JavaMethodParameter)m.getRequiredParameters().get( 0 );
-									parameter0.setValueTemplate( valueTemplate );
-									m = m.getNextShorterInChain();
-								}
-							}
-						}
 					}
 				}
 				return java.util.Collections.unmodifiableList( getterSetterPairs );
