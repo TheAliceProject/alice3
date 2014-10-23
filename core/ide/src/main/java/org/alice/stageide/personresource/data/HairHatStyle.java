@@ -78,8 +78,8 @@ public final class HairHatStyle implements Comparable<HairHatStyle> {
 		//		String hatName = this.getHatName();
 		//		for( org.lgna.story.resources.sims2.Hair hair : hairCls.getEnumConstants() ) {
 		//			String[] hairColorNameAndHatName = HairUtilities.getHairColorNameAndHatName( hair );
-		//			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( hairColorName.name(), hairColorNameAndHatName[ 0 ] ) ) {
-		//				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( hatName, hairColorNameAndHatName[ 1 ] ) ) {
+		//			if( edu.cmu.cs.dennisc.java.util.Objects.equals( hairColorName.name(), hairColorNameAndHatName[ 0 ] ) ) {
+		//				if( edu.cmu.cs.dennisc.java.util.Objects.equals( hatName, hairColorNameAndHatName[ 1 ] ) ) {
 		//					return hair;
 		//				}
 		//			}

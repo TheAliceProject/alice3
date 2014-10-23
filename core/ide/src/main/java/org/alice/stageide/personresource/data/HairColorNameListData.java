@@ -57,7 +57,7 @@ public class HairColorNameListData extends org.lgna.croquet.data.RefreshableList
 	}
 
 	public void setHairHatStyle( HairHatStyle hairHatStyle ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.hairHatStyle, hairHatStyle ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.hairHatStyle, hairHatStyle ) ) {
 			//pass
 		} else {
 			this.hairHatStyle = hairHatStyle;

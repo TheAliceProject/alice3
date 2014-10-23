@@ -551,10 +551,10 @@ public class AstUtilities {
 		return rv;
 	}
 
-	public static AbstractMethod getSingleAbstractMethod( AbstractType<?, ?, ?> type ) {
-		java.util.List<? extends AbstractMethod> methods = type.getDeclaredMethods();
+	public static <M extends AbstractMethod> M getSingleAbstractMethod( AbstractType<?, M, ?> type ) {
+		java.util.List<M> methods = type.getDeclaredMethods();
 		assert methods.size() == 1 : type;
-		AbstractMethod singleAbstractMethod = methods.get( 0 );
+		M singleAbstractMethod = methods.get( 0 );
 		assert singleAbstractMethod.isAbstract() : singleAbstractMethod;
 		return singleAbstractMethod;
 	}
@@ -719,5 +719,19 @@ public class AstUtilities {
 		} else {
 			return null;
 		}
+	}
+
+	private static void updateAllMethods( java.util.List<AbstractMethod> allMethods, AbstractType<?, ?, ?> type ) {
+		allMethods.addAll( type.getDeclaredMethods() );
+		AbstractType<?, ?, ?> superType = type.getSuperType();
+		if( superType != null ) {
+			updateAllMethods( allMethods, superType );
+		}
+	}
+
+	public static java.util.List<AbstractMethod> getAllMethods( AbstractType<?, ?, ?> type ) {
+		java.util.List<AbstractMethod> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		updateAllMethods( rv, type );
+		return rv;
 	}
 }

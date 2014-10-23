@@ -54,6 +54,7 @@ public class ImmutableTextField extends ImmutableTextComponent<javax.swing.JText
 	//		return HorizontalAlignment.valueOf( this.getAwtComponent().getHorizontalAlignment() );
 	//	}
 	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
 	}
 

@@ -91,7 +91,7 @@ public class JavaMethodParameter extends JavaParameter {
 	}
 
 	@Override
-	public AbstractType<?, ?, ?> getValueType() {
+	public JavaType getValueType() {
 		return this.valueType;
 	}
 
@@ -104,7 +104,7 @@ public class JavaMethodParameter extends JavaParameter {
 	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof JavaMethodParameter ) {
 			JavaMethodParameter otherJMP = (JavaMethodParameter)other;
-			return this.method.equals( otherJMP.method ) && ( this.index == otherJMP.index ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.name, otherJMP.name ) && this.valueType.equals( otherJMP.valueType );
+			return this.method.equals( otherJMP.method ) && ( this.index == otherJMP.index ) && edu.cmu.cs.dennisc.java.util.Objects.equals( this.name, otherJMP.name ) && this.valueType.equals( otherJMP.valueType );
 		} else {
 			return false;
 		}

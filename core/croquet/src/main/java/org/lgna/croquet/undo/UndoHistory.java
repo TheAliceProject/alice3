@@ -64,7 +64,7 @@ public class UndoHistory {
 	}
 
 	public void push( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroup(), this.group ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.equals( edit.getGroup(), this.group ) ) {
 			org.lgna.croquet.undo.event.HistoryPushEvent historyPushEvent = new org.lgna.croquet.undo.event.HistoryPushEvent( this, edit );
 			this.fireOperationPushing( historyPushEvent );
 			this.stack.setSize( this.insertionIndex );

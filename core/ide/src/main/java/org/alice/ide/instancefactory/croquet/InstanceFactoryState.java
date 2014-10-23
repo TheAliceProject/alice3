@@ -190,11 +190,6 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		} else {
 			isStaticMethod = false;
 		}
-		if( isStaticMethod ) {
-			//pass
-		} else {
-
-		}
 		org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.meta.DeclarationMeta.getType();
 
 		if( isStaticMethod ) {
@@ -204,7 +199,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 					createFillInMenuComboIfNecessary(
 							InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ),
 							apiConfigurationManager.getInstanceFactorySubMenuForThis( type )
-							)
+					)
 					);
 		}
 		if( type instanceof org.lgna.project.ast.NamedUserType ) {
@@ -260,7 +255,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 								createFillInMenuComboIfNecessary(
 										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessFactory.getInstance( parameter ) ),
 										apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess( parameter )
-										)
+								)
 								);
 					}
 				}
@@ -276,7 +271,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 								createFillInMenuComboIfNecessary(
 										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessFactory.getInstance( local ) ),
 										apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess( local )
-										)
+								)
 								);
 					}
 				}
@@ -306,6 +301,53 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 						blankChildren.addAll( locals );
 					}
 					this.parametersVariablesConstantsSeparator.setMenuItemText( sb.toString() );
+				}
+
+				if( userCode instanceof org.lgna.project.ast.UserMethod ) {
+					org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)userCode;
+					if( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( userMethod.getName() ) ) {
+						for( org.lgna.project.ast.Statement statement : userMethod.body.getValue().statements ) {
+							if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
+								org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+								org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+								if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
+									org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
+									java.util.List<org.lgna.croquet.CascadeBlankChild> methodInvocationBlankChildren = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+
+									for( org.lgna.project.ast.SimpleArgument argument : methodInvocation.requiredArguments ) {
+										org.lgna.project.ast.Expression argumentExpression = argument.expression.getValue();
+										if( argumentExpression instanceof org.lgna.project.ast.LambdaExpression ) {
+											org.lgna.project.ast.LambdaExpression lambdaExpression = (org.lgna.project.ast.LambdaExpression)argumentExpression;
+											org.lgna.project.ast.Lambda lambda = lambdaExpression.value.getValue();
+											if( lambda instanceof org.lgna.project.ast.UserLambda ) {
+												org.lgna.project.ast.UserLambda userLambda = (org.lgna.project.ast.UserLambda)lambda;
+												for( org.lgna.project.ast.UserParameter parameter : userLambda.getRequiredParameters() ) {
+													org.lgna.project.ast.AbstractType<?, ?, ?> parameterType = parameter.getValueType();
+													for( org.lgna.project.ast.AbstractMethod parameterMethod : org.lgna.project.ast.AstUtilities.getAllMethods( parameterType ) ) {
+														org.lgna.project.ast.AbstractType<?, ?, ?> parameterMethodReturnType = parameterMethod.getReturnType();
+														if( parameterMethodReturnType.isAssignableTo( org.lgna.story.SThing.class ) ) {
+															methodInvocationBlankChildren.add(
+																	createFillInMenuComboIfNecessary(
+																			InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( parameter, parameterMethod ) ),
+																			apiConfigurationManager.getInstanceFactorySubMenuForParameterAccessMethodInvocation( parameter, parameterMethod )
+																	)
+																	);
+														}
+													}
+												}
+											}
+										}
+									}
+
+									if( methodInvocationBlankChildren.size() > 0 ) {
+										org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+										blankChildren.add( org.alice.ide.croquet.models.cascade.MethodNameSeparator.getInstance( method ) );
+										blankChildren.addAll( methodInvocationBlankChildren );
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}

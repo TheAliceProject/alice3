@@ -53,12 +53,12 @@ public abstract class UserConstructor extends AbstractConstructor {
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
+	public AbstractParameter getVariableLengthParameter() {
 		return null;
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
+	public AbstractParameter getKeyedParameter() {
 		return null;
 	}
 

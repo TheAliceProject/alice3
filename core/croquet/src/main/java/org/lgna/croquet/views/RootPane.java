@@ -69,6 +69,7 @@ public class RootPane extends SwingComponentView<javax.swing.JRootPane> {
 	}
 
 	public void setGlassPane( AwtComponentView<?> component ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setGlassPane( component != null ? component.getAwtComponent() : null );
 	}
 }

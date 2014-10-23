@@ -59,7 +59,7 @@ public class ValueCallable<T> implements java.util.concurrent.Callable<T> {
 		}
 		if( obj instanceof ValueCallable ) {
 			ValueCallable other = (ValueCallable)obj;
-			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.value, other.value );
+			return edu.cmu.cs.dennisc.java.util.Objects.equals( this.value, other.value );
 		} else {
 			return false;
 		}

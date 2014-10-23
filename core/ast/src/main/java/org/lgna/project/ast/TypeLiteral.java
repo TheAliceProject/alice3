@@ -44,6 +44,8 @@ package org.lgna.project.ast;
 
 import org.lgna.project.ast.localizer.AstLocalizer;
 
+import edu.cmu.cs.dennisc.property.PropertyFilter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -71,9 +73,9 @@ public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?
 	}
 
 	@Override
-	protected boolean valuePropertyContentEquals( AbstractValueLiteral<AbstractType<?, ?, ?>> other, ContentEqualsStrictness strictness ) {
+	protected boolean valuePropertyContentEquals( AbstractValueLiteral<AbstractType<?, ?, ?>> other, ContentEqualsStrictness strictness, PropertyFilter filter ) {
 		TypeLiteral otherTypeLiteral = (TypeLiteral)other;
-		return this.value.valueContentEquals( otherTypeLiteral.value, strictness );
+		return this.value.valueContentEquals( otherTypeLiteral.value, strictness, filter );
 	}
 
 	@Override

@@ -142,12 +142,12 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		if( obj instanceof PersonResource ) {
 			PersonResource other = (PersonResource)obj;
 			if( this.getClass() == other.getClass() ) {
-				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.gender, other.gender ) ) {
-					if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.skinTone, other.skinTone ) ) {
-						if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.eyeColor, other.eyeColor ) ) {
-							if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.hair, other.hair ) ) {
-								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.face, other.face ) ) {
-									if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.outfit, other.outfit ) ) {
+				if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.gender, other.gender ) ) {
+					if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.skinTone, other.skinTone ) ) {
+						if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.eyeColor, other.eyeColor ) ) {
+							if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.hair, other.hair ) ) {
+								if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.face, other.face ) ) {
+									if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.outfit, other.outfit ) ) {
 										return this.obesityLevel == other.obesityLevel;
 									}
 								}

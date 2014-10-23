@@ -93,8 +93,8 @@ public abstract class ToolBarView extends MigPanel {
 				}
 				button.tightenUpMargin();
 				component = button;
-			} else if( element instanceof org.lgna.croquet.SingleSelectListState<?> ) {
-				org.lgna.croquet.SingleSelectListState<?> listSelectionState = (org.lgna.croquet.SingleSelectListState<?>)element;
+			} else if( element instanceof org.lgna.croquet.SingleSelectListState<?, ?> ) {
+				org.lgna.croquet.SingleSelectListState<?, ?> listSelectionState = (org.lgna.croquet.SingleSelectListState<?, ?>)element;
 				ComboBox<?> comboBox = listSelectionState.getPrepModel().createComboBoxWithItemCodecListCellRenderer();
 				component = comboBox;
 			} else if( element instanceof org.lgna.croquet.Composite<?> ) {

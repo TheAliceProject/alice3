@@ -83,10 +83,10 @@ public final class ParameterAccess extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			ParameterAccess other = (ParameterAccess)o;
-			return this.parameter.valueContentEquals( other.parameter, strictness );
+			return this.parameter.valueContentEquals( other.parameter, strictness, filter );
 		}
 		return false;
 	}

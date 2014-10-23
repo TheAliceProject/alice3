@@ -47,12 +47,19 @@ package org.alice.ide.uricontent;
  */
 public abstract class UriProjectLoader extends UriContentLoader<org.lgna.project.Project> {
 	public static UriProjectLoader createInstance( java.net.URI uri ) {
-		java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
-		if( file != null ) {
-			return new org.alice.ide.uricontent.FileProjectLoader( file );
-		} else if( org.alice.stageide.openprojectpane.models.TemplateUriState.Template.isValidUri( uri ) ) {
-			org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.getSurfaceAppearance( uri );
-			return new org.alice.ide.uricontent.BlankSlateProjectLoader( template );
+		if( uri != null ) {
+			String scheme = uri.getScheme();
+			if( "file".equalsIgnoreCase( scheme ) ) {
+				java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
+				return new org.alice.ide.uricontent.FileProjectLoader( file );
+			} else if( "starterfile".equalsIgnoreCase( scheme ) ) {
+				return new StarterProjectFileLoader( uri );
+			} else if( org.alice.stageide.openprojectpane.models.TemplateUriState.Template.isValidUri( uri ) ) {
+				org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.getSurfaceAppearance( uri );
+				return new org.alice.ide.uricontent.BlankSlateProjectLoader( template );
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}

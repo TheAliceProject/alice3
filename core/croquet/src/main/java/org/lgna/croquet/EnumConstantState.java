@@ -47,6 +47,6 @@ package org.lgna.croquet;
  */
 public class EnumConstantState<T extends Enum<T>> extends org.lgna.croquet.ImmutableDataSingleSelectListState<T> {
 	public EnumConstantState( org.lgna.croquet.Group group, java.util.UUID id, int selectionIndex, Class<T> cls ) {
-		super( group, id, org.lgna.croquet.codecs.EnumCodec.getInstance( cls ), cls.getEnumConstants(), selectionIndex );
+		super( group, id, selectionIndex, org.lgna.croquet.codecs.EnumCodec.getInstance( cls ), cls.getEnumConstants() );
 	}
 }

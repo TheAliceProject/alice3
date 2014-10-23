@@ -57,8 +57,8 @@ public class LocaleState extends org.lgna.croquet.preferences.PreferenceMutableD
 	private LocaleState() {
 		super(
 				org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "b9ed4d66-2eef-4d7d-b816-55451b437721" ),
-				org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON,
 				0,
+				org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON,
 				new java.util.Locale( "en", "US" ),
 				new java.util.Locale( "pt" ),
 				new java.util.Locale( "pt", "BR" ),

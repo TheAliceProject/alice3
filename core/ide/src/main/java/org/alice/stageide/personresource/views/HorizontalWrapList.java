@@ -47,7 +47,7 @@ package org.alice.stageide.personresource.views;
  * @author Dennis Cosgrove
  */
 public class HorizontalWrapList<T> extends org.lgna.croquet.views.List<T> {
-	public HorizontalWrapList( org.lgna.croquet.SingleSelectListState<T> model, int visibleRowCount, javax.swing.ListCellRenderer cellRenderer ) {
+	public HorizontalWrapList( org.lgna.croquet.SingleSelectListState<T, ?> model, int visibleRowCount, javax.swing.ListCellRenderer cellRenderer ) {
 		super( model );
 		this.setLayoutOrientation( org.lgna.croquet.views.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.setVisibleRowCount( visibleRowCount );
@@ -56,7 +56,7 @@ public class HorizontalWrapList<T> extends org.lgna.croquet.views.List<T> {
 		this.getAwtComponent().setEnabled( model.isEnabled() );
 	}
 
-	public HorizontalWrapList( org.lgna.croquet.SingleSelectListState<T> model, int visibleRowCount ) {
+	public HorizontalWrapList( org.lgna.croquet.SingleSelectListState<T, ?> model, int visibleRowCount ) {
 		this( model, visibleRowCount, org.alice.stageide.personresource.views.renderers.SimpleListCellRenderer.SINGLETON );
 	}
 }

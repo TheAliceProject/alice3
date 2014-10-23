@@ -49,8 +49,8 @@ import org.lgna.croquet.SingleSelectListState;
 /**
  * @author Dennis Cosgrove
  */
-public class SingleSelectListStateMenuModelResolver<T> extends IndirectResolver<MenuModel, SingleSelectListState<T>> {
-	/*package-private*/SingleSelectListStateMenuModelResolver( SingleSelectListState<T> indirect ) {
+public class SingleSelectListStateMenuModelResolver<T, D extends org.lgna.croquet.data.ListData<T>> extends IndirectResolver<MenuModel, SingleSelectListState<T, D>> {
+	/*package-private*/SingleSelectListStateMenuModelResolver( SingleSelectListState<T, D> indirect ) {
 		super( indirect );
 	}
 
@@ -59,7 +59,7 @@ public class SingleSelectListStateMenuModelResolver<T> extends IndirectResolver<
 	}
 
 	@Override
-	protected MenuModel getDirect( SingleSelectListState<T> indirect ) {
+	protected MenuModel getDirect( SingleSelectListState<T, D> indirect ) {
 		return indirect.getMenuModel();
 	}
 }
