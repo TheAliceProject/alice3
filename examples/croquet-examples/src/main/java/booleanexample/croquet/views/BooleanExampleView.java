@@ -46,8 +46,21 @@ package booleanexample.croquet.views;
  * @author Dennis Cosgrove
  */
 public class BooleanExampleView extends org.lgna.croquet.views.BorderPanel {
-	public BooleanExampleView( booleanexample.croquet.BooleanExampleComposite composite ) {
+	public BooleanExampleView( final booleanexample.croquet.BooleanExampleComposite composite ) {
 		super( composite );
 		this.addCenterComponent( composite.getIsAliveState().createCheckBox() );
+
+		final boolean IS_DEBUG = true;
+		if( IS_DEBUG ) {
+			javax.swing.Action action = new javax.swing.AbstractAction() {
+				@Override
+				public void actionPerformed( java.awt.event.ActionEvent e ) {
+					composite.getIsAliveState().setValueTransactionlessly( composite.getIsAliveState().getValue() == false );
+				}
+			};
+			action.putValue( javax.swing.Action.NAME, "setValueTransactionlessly" );
+			this.getAwtComponent().add( new javax.swing.JButton( action ), java.awt.BorderLayout.PAGE_END );
+		}
+
 	}
 }
