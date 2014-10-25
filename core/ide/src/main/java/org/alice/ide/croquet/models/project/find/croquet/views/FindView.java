@@ -62,7 +62,6 @@ import org.alice.ide.croquet.models.project.find.croquet.tree.FindReferencesTree
 import org.alice.ide.croquet.models.project.find.croquet.tree.nodes.SearchTreeNode;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchReferencesTreeCellRenderer;
 import org.alice.ide.croquet.models.project.find.croquet.views.renderers.SearchResultListCellRenderer;
-import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.event.ValueEvent;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.views.BorderPanel;
@@ -89,7 +88,7 @@ public class FindView extends BorderPanel {
 	private final Map<SearchResult, Map<Integer, Boolean>> searchResultToExpandParentsMap = Maps.newHashMap();
 	private final Map<SearchResult, TwoDimensionalTreeCoordinate> searchResultToLastTreeCoordinatesMap = Maps.newHashMap();
 	private final FindReferencesTreeState referenceResults;
-	private final SingleSelectListState<SearchResult> searchResults;
+	private final org.lgna.croquet.RefreshableDataSingleSelectListState<SearchResult> searchResults;
 	boolean listIsSelected = true;
 
 	public FindView( AbstractFindComposite composite ) {
@@ -153,7 +152,7 @@ public class FindView extends BorderPanel {
 
 		@Override
 		public void treeExpanded( TreeExpansionEvent event ) {
-			SingleSelectListState<SearchResult> searchResults = getComposite().getSearchResults();
+			org.lgna.croquet.RefreshableDataSingleSelectListState<SearchResult> searchResults = getComposite().getSearchResults();
 			TreePath path = event.getPath();
 			if( searchResultToExpandParentsMap.get( searchResults.getValue() ) == null ) {
 				searchResultToExpandParentsMap.put( searchResults.getValue(), new HashMap<Integer, Boolean>() );
@@ -163,7 +162,7 @@ public class FindView extends BorderPanel {
 
 		@Override
 		public void treeCollapsed( TreeExpansionEvent event ) {
-			SingleSelectListState<SearchResult> searchResults = getComposite().getSearchResults();
+			org.lgna.croquet.RefreshableDataSingleSelectListState<SearchResult> searchResults = getComposite().getSearchResults();
 			TreePath path = event.getPath();
 			if( searchResultToExpandParentsMap.get( searchResults.getValue() ) == null ) {
 				searchResultToExpandParentsMap.put( searchResults.getValue(), new HashMap<Integer, Boolean>() );

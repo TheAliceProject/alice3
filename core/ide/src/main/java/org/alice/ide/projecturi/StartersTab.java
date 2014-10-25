@@ -45,14 +45,39 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class StartersTab extends DirectoryUriListTab {
-	private static java.io.File getDefaultDirectory() {
-		java.io.File rv = new java.io.File( org.alice.ide.IDE.getActiveInstance().getMyProjectsDirectory().getParentFile(), "Starters" );
-		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( new java.io.File( rv, "unused" ) );
-		return rv;
+public class StartersTab extends ListUriTab {
+	public StartersTab() {
+		super( java.util.UUID.fromString( "e31ab4b2-c305-4d04-8dcc-5de8cbb6facf" ) );
+		java.io.File starterProjectsDirectory = org.lgna.story.implementation.StoryApiDirectoryUtilities.getStarterProjectsDirectory();
+		java.io.File[] files = edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( starterProjectsDirectory, "a3p" );
+		java.net.URI[] uris = new java.net.URI[ files.length ];
+		int i = 0;
+		java.util.Arrays.sort( files );
+		for( java.io.File file : files ) {
+			uris[ i ] = org.alice.ide.uricontent.StarterProjectUtilities.toUri( file );
+			i++;
+		}
+		this.listState = this.createImmutableListState( "listState", java.net.URI.class, org.alice.ide.croquet.codecs.UriCodec.SINGLETON, -1, uris );
 	}
 
-	public StartersTab() {
-		super( java.util.UUID.fromString( "e31ab4b2-c305-4d04-8dcc-5de8cbb6facf" ), getDefaultDirectory() );
+	@Override
+	protected void refresh() {
 	}
+
+	@Override
+	public org.lgna.croquet.ImmutableDataSingleSelectListState<java.net.URI> getListSelectionState() {
+		return this.listState;
+	}
+
+	@Override
+	public final String getTextForZeroProjects() {
+		return "there are no starter projects.";
+	}
+
+	@Override
+	protected org.alice.ide.projecturi.views.ListContentPanel createView() {
+		return new org.alice.ide.projecturi.views.ListContentPanel( this );
+	}
+
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<java.net.URI> listState;
 }

@@ -147,7 +147,7 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 	protected <S extends Step<? super M>, M extends org.lgna.croquet.Model> S findStepOfEquivalentModel( M model, Class<S> stepCls, boolean isThisIncludedInSearch ) {
 		S step = this.findNodeAssignableTo( stepCls, isThisIncludedInSearch );
 		if( step != null ) {
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( step.getModel(), model ) ) {
+			if( edu.cmu.cs.dennisc.java.util.Objects.equals( step.getModel(), model ) ) {
 				return step;
 			} else {
 				return step.findStepOfEquivalentModel( model, stepCls, false );

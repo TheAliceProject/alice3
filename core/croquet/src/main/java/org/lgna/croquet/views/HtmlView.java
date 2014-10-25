@@ -55,6 +55,7 @@ public class HtmlView extends org.lgna.croquet.views.SwingComponentView<edu.cmu.
 	}
 
 	public void setText( String text ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setText( text );
 	}
 
@@ -63,6 +64,7 @@ public class HtmlView extends org.lgna.croquet.views.SwingComponentView<edu.cmu.
 	}
 
 	public void setCaret( javax.swing.text.Caret caret ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setCaret( caret );
 	}
 

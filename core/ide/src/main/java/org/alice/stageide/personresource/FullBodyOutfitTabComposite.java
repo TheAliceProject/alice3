@@ -48,7 +48,7 @@ package org.alice.stageide.personresource;
  */
 public class FullBodyOutfitTabComposite extends OutfitTabComposite<org.alice.stageide.personresource.views.FullBodyOutfitTabView> {
 	private final org.alice.stageide.personresource.data.FullBodyOutfitData fullBodyOutfitData = new org.alice.stageide.personresource.data.FullBodyOutfitData();
-	private final org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.FullBodyOutfit> fullBodyOutfitState = this.createSingleSelectListState( "fullBodyOutfitState", this.fullBodyOutfitData, -1 );
+	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.story.resources.sims2.FullBodyOutfit> fullBodyOutfitState = this.createRefreshableListState( "fullBodyOutfitState", this.fullBodyOutfitData, -1 );
 
 	public FullBodyOutfitTabComposite() {
 		super( java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ) );
@@ -68,7 +68,7 @@ public class FullBodyOutfitTabComposite extends OutfitTabComposite<org.alice.sta
 		return this.fullBodyOutfitData;
 	}
 
-	public org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.FullBodyOutfit> getFullBodyOutfitState() {
+	public org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.story.resources.sims2.FullBodyOutfit> getFullBodyOutfitState() {
 		return this.fullBodyOutfitState;
 	}
 

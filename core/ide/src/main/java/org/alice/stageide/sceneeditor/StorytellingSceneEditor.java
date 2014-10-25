@@ -69,7 +69,6 @@ import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActi
 import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.views.InstanceFactorySelectionPanel;
 import org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel;
-import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.views.ComboBox;
 import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.SpringPanel.Horizontal;
@@ -229,7 +228,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			StorytellingSceneEditor.this.animator.update();
 		}
 	};
-
 	private edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createLightweightOnscreenRenderTarget();
 
 	private class LookingGlassPanel extends org.lgna.croquet.views.CompassPointSpringPanel {
@@ -327,7 +325,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		}
 	};
 
-	private SingleSelectListState<View> mainCameraMarkerList = org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState.getInstance();
+	private org.lgna.croquet.ImmutableDataSingleSelectListState<View> mainCameraMarkerList = org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState.getInstance();
 
 	private boolean selectionIsFromInstanceSelector = false;
 	private boolean selectionIsFromMain = false;
@@ -643,12 +641,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 
 	public void setSelectedObjectMarker( UserField objectMarkerField ) {
-		org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.UserField> markerList = SideComposite.getInstance().getObjectMarkersTab().getMarkerListState();
+		org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.UserField> markerList = SideComposite.getInstance().getObjectMarkersTab().getMarkerListState();
 		markerList.setSelectedIndex( markerList.indexOf( objectMarkerField ) );
 	}
 
 	public void setSelectedCameraMarker( UserField cameraMarkerField ) {
-		org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.UserField> markerList = SideComposite.getInstance().getCameraMarkersTab().getMarkerListState();
+		org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.UserField> markerList = SideComposite.getInstance().getCameraMarkersTab().getMarkerListState();
 		markerList.setSelectedIndex( markerList.indexOf( cameraMarkerField ) );
 	}
 

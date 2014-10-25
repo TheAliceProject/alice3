@@ -58,7 +58,7 @@ public class MembersComposite extends org.lgna.croquet.SimpleComposite<org.alice
 	private final org.alice.ide.member.ProcedureTabComposite procedureTabComposite = new org.alice.ide.member.ProcedureTabComposite();
 	private final org.alice.ide.member.FunctionTabComposite functionTabComposite = new org.alice.ide.member.FunctionTabComposite();
 	private final org.alice.ide.member.ControlFlowTabComposite controlStructureTabComposite;
-	private final org.lgna.croquet.TabState<org.alice.ide.member.MemberOrControlFlowTabComposite<?>> tabState;
+	private final org.lgna.croquet.ImmutableDataTabState<org.alice.ide.member.MemberOrControlFlowTabComposite<?>> tabState;
 
 	private MembersComposite() {
 		super( java.util.UUID.fromString( "10225a3f-f05d-42f3-baaf-f6bd0f8a7c68" ) );
@@ -70,10 +70,10 @@ public class MembersComposite extends org.lgna.croquet.SimpleComposite<org.alice
 			this.controlStructureTabComposite = new org.alice.ide.member.ControlFlowTabComposite();
 			tabComposites = new org.alice.ide.member.MemberOrControlFlowTabComposite[] { this.procedureTabComposite, this.functionTabComposite, this.controlStructureTabComposite };
 		}
-		this.tabState = (org.lgna.croquet.TabState)this.createTabState( "tabState", org.alice.ide.member.MemberOrControlFlowTabComposite.class, 0, tabComposites );
+		this.tabState = (org.lgna.croquet.ImmutableDataTabState)this.createImmutableTabState( "tabState", 0, org.alice.ide.member.MemberOrControlFlowTabComposite.class, tabComposites );
 	}
 
-	public org.lgna.croquet.TabState<org.alice.ide.member.MemberOrControlFlowTabComposite<?>> getTabState() {
+	public org.lgna.croquet.ImmutableDataTabState<org.alice.ide.member.MemberOrControlFlowTabComposite<?>> getTabState() {
 		return this.tabState;
 	}
 

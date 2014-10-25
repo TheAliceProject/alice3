@@ -43,7 +43,6 @@
 
 package org.lgna.project.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -70,6 +69,9 @@ public final class LocalDeclarationStatement extends Statement {
 	@Override
 	protected void appendJavaInternal( JavaCodeGenerator generator ) {
 		UserLocal localValue = this.local.getValue();
+		if( localValue.isFinal.getValue() ) {
+			generator.appendString( "final " );
+		}
 		generator.appendTypeName( localValue.getValueType() );
 		generator.appendSpace();
 		generator.appendString( localValue.getValidName() );

@@ -51,6 +51,7 @@ public class StoryApiDirectoryUtilities {
 	private static final String MODEL_GALLERY_PREFRENCE_KEY = "MODEL_GALLERY_PREFRENCE_KEY";
 	private static final String MODEL_GALLERY_NAME = "application/gallery";
 	private static final String SOUND_GALLERY_NAME = "application/sound-gallery";
+	private static final String STARTER_PROJECTS_NAME = "application/starter-projects";
 
 	private StoryApiDirectoryUtilities() {
 		throw new AssertionError();
@@ -141,6 +142,24 @@ public class StoryApiDirectoryUtilities {
 				}
 			} else {
 				throw new NullPointerException(); //fallback
+			}
+		} catch( Throwable t ) {
+			return getFallbackDirectory();
+		}
+	}
+
+	public static java.io.File getStarterProjectsDirectory() {
+		try {
+			java.io.File installDirectory = getInstallDirectory();
+			if( installDirectory != null ) {
+				java.io.File starterProjectsDirectory = new java.io.File( installDirectory, STARTER_PROJECTS_NAME );
+				if( starterProjectsDirectory.isDirectory() ) {
+					return starterProjectsDirectory;
+				} else {
+					throw new RuntimeException();
+				}
+			} else {
+				throw new NullPointerException();
 			}
 		} catch( Throwable t ) {
 			return getFallbackDirectory();

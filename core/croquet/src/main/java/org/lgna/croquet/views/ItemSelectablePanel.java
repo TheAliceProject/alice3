@@ -46,7 +46,7 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.JPanel, E, org.lgna.croquet.SingleSelectListState<E>> {
+public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.JPanel, E, org.lgna.croquet.SingleSelectListState<E, ?>> {
 	private final java.util.Map<E, BooleanStateButton<?>> mapItemToButton = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private E[] prevItems;
@@ -67,7 +67,7 @@ public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.
 		}
 	};
 
-	public ItemSelectablePanel( org.lgna.croquet.SingleSelectListState<E> model ) {
+	public ItemSelectablePanel( org.lgna.croquet.SingleSelectListState<E, ?> model ) {
 		super( model );
 	}
 

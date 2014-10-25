@@ -231,7 +231,7 @@ public class StaticAnalysisUtilities {
 			if( resources != null ) {
 				for( org.lgna.common.Resource resource : resources ) {
 					if( ( resource != null ) && ( resource != self ) ) {
-						if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( name, resource.getName(), edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE ) ) {
+						if( edu.cmu.cs.dennisc.java.util.Strings.equalsIgnoreCase( name, resource.getName() ) ) {
 							return false;
 						}
 					}

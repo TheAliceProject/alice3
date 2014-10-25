@@ -56,7 +56,6 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.FrameComposite;
-import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.codecs.DefaultItemCodec;
 import org.lgna.croquet.data.RefreshableListData;
@@ -164,7 +163,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		}
 
 	} );
-	private final SingleSelectListState<SearchResult> searchResultsState = createSingleSelectListState( "searchResultsState", data, -1 );
+	private final org.lgna.croquet.RefreshableDataSingleSelectListState<SearchResult> searchResultsState = createRefreshableListState( "searchResultsState", data, -1 );
 
 	private void refresh() {
 		if( this.isActive ) {
@@ -211,7 +210,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 		return this.searchState;
 	}
 
-	public SingleSelectListState<SearchResult> getSearchResults() {
+	public org.lgna.croquet.RefreshableDataSingleSelectListState<SearchResult> getSearchResults() {
 		return this.searchResultsState;
 	}
 
