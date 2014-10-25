@@ -69,7 +69,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 	private TimeLineComposite composite;
 	private KeyFrameData selectedKeyFrame;
 	private final BoundedDoubleState currentTime;
-	private final SingleSelectListState<KeyFrameStyles> styleSelectionState = this.createSingleSelectListStateForEnum( "styleState", KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
+	private final SingleSelectListState<KeyFrameStyles, ?> styleSelectionState = this.createImmutableListStateForEnum( "styleState", KeyFrameStyles.class, KeyFrameStyles.ARRIVE_AND_EXIT_GENTLY );
 
 	public TimeLineModifierComposite( TimeLineComposite composite ) {
 		super( java.util.UUID.fromString( "b2c9fe7b-4566-4368-a5cc-2458b24a2375" ) );
@@ -184,7 +184,7 @@ public class TimeLineModifierComposite extends SimpleComposite<TimeLineModifierV
 		return this.deletePoseOperation;
 	}
 
-	public SingleSelectListState<KeyFrameStyles> getStyleSelectionState() {
+	public SingleSelectListState<KeyFrameStyles, ?> getStyleSelectionState() {
 		return this.styleSelectionState;
 	}
 

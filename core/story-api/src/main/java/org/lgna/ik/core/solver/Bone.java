@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 /**
  * @author Dennis Cosgrove
  */
-//this is per-chain. related to the calculation, not the structure. 
+//this is per-chain. related to the calculation, not the structure.
 public class Bone {
 
 	public enum Direction {
@@ -56,7 +56,7 @@ public class Bone {
 		UPSTREAM
 	}
 
-	// Axis does not know whether the joint is reverse or not. it just is an axis. it knows which bone and which index in joint it is, it contains the corrected axis for this chain. 
+	// Axis does not know whether the joint is reverse or not. it just is an axis. it knows which bone and which index in joint it is, it contains the corrected axis for this chain.
 	public static class Axis {
 		private final edu.cmu.cs.dennisc.math.Vector3 axis;
 
@@ -67,7 +67,7 @@ public class Bone {
 		private final int originalIndexInJoint;
 
 		//this is the speed that will be used during simulation
-		//TODO this should not be here. someone else should take care of this. 
+		//TODO this should not be here. someone else should take care of this.
 		private double desiredAngleSpeed;
 
 		public Axis( Bone bone, int originalIndexInJoint ) {
@@ -126,15 +126,15 @@ public class Bone {
 			if( o instanceof Axis ) {
 				Axis ua = (Axis)o;
 				return ( this.originalIndexInJoint == ua.originalIndexInJoint ) &&
-						edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.bone.getA(), ua.bone.getA() );
+						edu.cmu.cs.dennisc.java.util.Objects.equals( this.bone.getA(), ua.bone.getA() );
 			} else {
 				return false;
 			}
 		}
 
 		public void applyRotation( double angleInRadians ) {
-			//it's nicer to rotate around one axis once using Bone.applyLocalRotation(angle, axis) 
-			//get the original axis 
+			//it's nicer to rotate around one axis once using Bone.applyLocalRotation(angle, axis)
+			//get the original axis
 			edu.cmu.cs.dennisc.math.Vector3 originalAxis = getLocalAxis();
 			//turn the joint around the original local vector
 			bone.getA().applyRotationInRadians( originalAxis, angleInRadians );
@@ -307,7 +307,7 @@ public class Bone {
 		//get anchor
 		anchor.set( getA().getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE ).translation );
 
-		//get axes 
+		//get axes
 		//		if( !isABallJoint() ) {
 		org.lgna.story.implementation.JointImp a = getA();
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 atrans = a.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE );
@@ -332,7 +332,7 @@ public class Bone {
 		}
 		//		}
 
-		//the comments below are done above. leaving in for reference. 
+		//the comments below are done above. leaving in for reference.
 
 		//get position and axes from joint
 		//get position
@@ -340,7 +340,7 @@ public class Bone {
 		//if joint is ball, then get three orthogonal axes (prolly parallel to world axes)
 		//if the chain is using the joint reverse, flip the axis
 		//do I need to do this for ball? not sure. possibly. think hard pls.
-		//YES! because the same rotation affects two ends of the joint differently! 
+		//YES! because the same rotation affects two ends of the joint differently!
 
 		//these axes HAVE TO BE INVERTED if joint is not in the right direction (not downstream)
 		//		throw new RuntimeException("todo invert axes if chain is reverse");
