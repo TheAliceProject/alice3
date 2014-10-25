@@ -23,11 +23,12 @@ public class Alice3CompletionItem implements CompletionItem {
 	private static final ImageIcon fieldIcon = new ImageIcon(ImageUtilities.loadImage("org/alice/netbeans/aliceIcon.png"));
 	private static final Color fieldColor = Color.decode("0x0000B2");
 
-	public Alice3CompletionItem(String searchText, String completionText, int startOffset, int caretOffset) {
+	public Alice3CompletionItem(String searchText, String completionText, int startOffset, int caretOffset, int sortPriority) {
 		this.searchText = searchText;
 		this.completionText = completionText;
 		this.startOffset = startOffset;
 		this.caretOffset = caretOffset;
+		this.sortPriority = sortPriority;
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class Alice3CompletionItem implements CompletionItem {
 
 	@Override
 	public int getSortPriority() {
-		return 0;
+		return this.sortPriority;
 	}
 
 	@Override
@@ -92,4 +93,5 @@ public class Alice3CompletionItem implements CompletionItem {
 	private final String completionText;
 	private final int startOffset;
 	private final int caretOffset;
+	private final int sortPriority;
 }

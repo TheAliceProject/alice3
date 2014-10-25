@@ -91,7 +91,7 @@ public class ExpressionPropertyDropSite implements org.lgna.croquet.DropSite {
 		}
 		if( o instanceof ExpressionPropertyDropSite ) {
 			ExpressionPropertyDropSite epds = (ExpressionPropertyDropSite)o;
-			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.expressionProperty, epds.expressionProperty );
+			return edu.cmu.cs.dennisc.java.util.Objects.equals( this.expressionProperty, epds.expressionProperty );
 		} else {
 			return false;
 		}

@@ -110,7 +110,7 @@ public class DefaultNode<T> implements Node<T> {
 
 	@Override
 	public edu.cmu.cs.dennisc.tree.DefaultNode<T> get( T value ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.value, value ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.value, value ) ) {
 			return this;
 		} else {
 			for( DefaultNode<T> child : this.children ) {

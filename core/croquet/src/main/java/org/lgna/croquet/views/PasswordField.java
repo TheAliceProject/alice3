@@ -87,6 +87,7 @@ public class PasswordField extends AbstractTextField<edu.cmu.cs.dennisc.javax.sw
 	}
 
 	public void setExposed( boolean isExposed ) {
+		this.checkEventDispatchThread();
 		char c = isExposed ? EXPOSE_CHAR : '*';
 		this.getAwtComponent().setEchoChar( c );
 	}

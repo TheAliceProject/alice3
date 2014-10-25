@@ -57,7 +57,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 
 public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<StatisticsFlowControlFrequencyView> {
 	private final Map<UserMethod, List<Statement>> methodToConstructMap = Maps.newHashMap();
-	private final SingleSelectListState<UserMethod> userMethodList = createSingleSelectListState( "userMethodList", UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
+	private final SingleSelectListState<UserMethod, ?> userMethodList = createMutableListState( "userMethodList", UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public final static UserMethod root = new UserMethod();
 
 	public StatisticsFlowControlFrequencyComposite() {
@@ -75,7 +75,7 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 		return this.methodToConstructMap;
 	}
 
-	public SingleSelectListState<UserMethod> getUserMethodList() {
+	public SingleSelectListState<UserMethod, ?> getUserMethodList() {
 		return this.userMethodList;
 	}
 

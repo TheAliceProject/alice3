@@ -173,9 +173,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 		}
 	}
 
-	private static String createJointIdReplacement_NoLongerExistsCondition( String nextFieldNameToUseDespitePotentialProblems ) {
-		return createJointIdReplacement( nextFieldNameToUseDespitePotentialProblems );
-	}
+	//	private static String createJointIdReplacement_NoLongerExistsCondition( String nextFieldNameToUseDespitePotentialProblems ) {
+	//		return createJointIdReplacement( nextFieldNameToUseDespitePotentialProblems );
+	//	}
 
 	private final TextMigration[] textMigrations = {
 			new org.lgna.project.migration.TextMigration(
@@ -5092,27 +5092,6 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					new org.lgna.project.Version( "3.1.68.0.0" ),
 					new org.lgna.project.Version( "3.1.69.0.0" ),
 
-					"name=\"org.lgna.story.resources.prop.HelicopterResource",
-					"name=\"org.lgna.story.resources.prop.HelicopterPropResource",
-
-					createMoreSpecificFieldPattern( "UFO", "org.lgna.story.resources.prop.UFOResource" ),
-					createMoreSpecificFieldReplacement( "U_F_O_PROP", "org.lgna.story.resources.prop.UFOPropResource" ),
-
-					//added for older projects
-					//todo: do others require this?
-					"name=\"org.lgna.story.resources.prop.UFOResource",
-					"name=\"org.lgna.story.resources.prop.UFOPropResource",
-					//
-
-					"name=\"org.lgna.story.resources.prop.PirateShipResource",
-					"name=\"org.lgna.story.resources.prop.PirateShipPropResource",
-
-					"name=\"org.lgna.story.resources.prop.FishingBoatResource",
-					"name=\"org.lgna.story.resources.prop.FishingBoatPropResource",
-
-					"name=\"org.lgna.story.resources.prop.SubmarineResource",
-					"name=\"org.lgna.story.resources.prop.SubmarinePropResource",
-
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.CaveResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT_UNDERWATER", "org.lgna.story.resources.prop.CaveResource" ),
 
@@ -5188,6 +5167,30 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					new org.lgna.project.Version( "3.1.70.0.0" ),
 					new org.lgna.project.Version( "3.1.85.0.0" ),
 
+					//<note: moved from 68 - 69 migration when a world with the UFO discovered with old resource>
+					"name=\"org.lgna.story.resources.prop.HelicopterResource",
+					"name=\"org.lgna.story.resources.prop.HelicopterPropResource",
+
+					createMoreSpecificFieldPattern( "UFO", "org.lgna.story.resources.prop.UFOResource" ),
+					createMoreSpecificFieldReplacement( "U_F_O_PROP", "org.lgna.story.resources.prop.UFOPropResource" ),
+
+					//added for older projects
+					//todo: do others require this?
+					"name=\"org.lgna.story.resources.prop.UFOResource",
+					"name=\"org.lgna.story.resources.prop.UFOPropResource",
+					//
+
+					"name=\"org.lgna.story.resources.prop.PirateShipResource",
+					"name=\"org.lgna.story.resources.prop.PirateShipPropResource",
+
+					"name=\"org.lgna.story.resources.prop.FishingBoatResource",
+					"name=\"org.lgna.story.resources.prop.FishingBoatPropResource",
+
+					"name=\"org.lgna.story.resources.prop.SubmarineResource",
+					"name=\"org.lgna.story.resources.prop.SubmarinePropResource",
+
+					//</note>
+
 					"org.lgna.story.event.ComesIntoViewEvent",
 					"org.lgna.story.event.EnterViewEvent",
 
@@ -5251,10 +5254,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.biped.PandaResource",
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TrainEngineResource" ),
-					createMoreSpecificFieldReplacement( "LIMOUSINE", "org.lgna.story.resources.prop.LimousineResource" ),
+					createMoreSpecificFieldReplacement( "MODERATE_BLUE_STRIPES_WOOD_FRAME", "org.lgna.story.resources.prop.BedSingleResource" ),
 
 					"name=\"org.lgna.story.resources.prop.TrainEngineResource",
-					"name=\"org.lgna.story.resources.prop.LimousineResource",
+					"name=\"org.lgna.story.resources.prop.BedSingleResource",
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.GhostResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.ThorResource" ),
@@ -5269,10 +5272,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.biped.ThorResource",
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TrainCarResource" ),
-					createMoreSpecificFieldReplacement( "LIMOUSINE", "org.lgna.story.resources.prop.LimousineResource" ),
+					createMoreSpecificFieldReplacement( "BASIC_GRAY_WOOD_FRAME", "org.lgna.story.resources.prop.BedDoubleResource" ),
 
 					"name=\"org.lgna.story.resources.prop.TrainCarResource",
-					"name=\"org.lgna.story.resources.prop.LimousineResource",
+					"name=\"org.lgna.story.resources.prop.BedDoubleResource",
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TunnelResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.TentResource" ),
@@ -5321,66 +5324,84 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					createJointIdPattern( "TAIL", "biped.BigBadWolfResource" ),
 					createJointIdReplacement( "TAIL_0" ),
-
+					createJointIdPattern( "TAIL_2", "biped.BigBadWolfResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "biped.BigBadWolfResource" ),
+					createJointIdReplacement( "TAIL_2" ),
 					createJointIdPattern( "TAIL_4", "biped.BigBadWolfResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "TAIL_3" ),
+					createJointIdReplacement( "TAIL_3" ),
 
 					createJointIdPattern( "TAIL", "biped.BunnyResource" ),
 					createJointIdReplacement( "TAIL_0" ),
-
+					createJointIdPattern( "TAIL_2", "biped.BunnyResource" ),
+					createJointIdReplacement( "TAIL_1" ),
 					createJointIdPattern( "TAIL_3", "biped.BunnyResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "TAIL_2" ),
+					createJointIdReplacement( "TAIL_2" ),
 
 					createJointIdPattern( "TAIL", "biped.CheshireCatResource" ),
 					createJointIdReplacement( "TAIL_0" ),
-
+					createJointIdPattern( "TAIL_2", "biped.CheshireCatResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "biped.CheshireCatResource" ),
+					createJointIdReplacement( "TAIL_2" ),
+					createJointIdPattern( "TAIL_4", "biped.CheshireCatResource" ),
+					createJointIdReplacement( "TAIL_3" ),
 					createJointIdPattern( "TAIL_5", "biped.CheshireCatResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "TAIL_4" ),
+					createJointIdReplacement( "TAIL_4" ),
 
 					createJointIdPattern( "TAIL", "biped.GoldenMonkeyResource" ),
 					createJointIdReplacement( "TAIL_0" ),
-
+					createJointIdPattern( "TAIL_2", "biped.GoldenMonkeyResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "biped.GoldenMonkeyResource" ),
+					createJointIdReplacement( "TAIL_2" ),
 					createJointIdPattern( "JOINT_4", "biped.GoldenMonkeyResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "TAIL_3" ),
+					createJointIdReplacement( "TAIL_3" ),
 
 					createJointIdPattern( "TAIL", "biped.HareResource" ),
 					createJointIdReplacement( "TAIL_0" ),
-
 					createJointIdPattern( "TAIL_2", "biped.HareResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "TAIL_1" ),
+					createJointIdReplacement( "TAIL_1" ),
 
 					createJointIdPattern( "TAIL", "biped.MandrilResource" ),
 					createJointIdReplacement( "TAIL_0" ),
-
 					createJointIdPattern( "TAIL_2", "biped.MandrilResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "TAIL_1" ),
+					createJointIdReplacement( "TAIL_1" ),
 
 					createJointIdPattern( "TAIL", "biped.MonkeyKingResource" ),
 					createJointIdReplacement( "TAIL_0" ),
-
+					createJointIdPattern( "TAIL_2", "biped.MonkeyKingResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "biped.MonkeyKingResource" ),
+					createJointIdReplacement( "TAIL_2" ),
 					createJointIdPattern( "TAIL_4", "biped.MonkeyKingResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "TAIL_3" ),
+					createJointIdReplacement( "TAIL_3" ),
 
 					createJointIdPattern( "JAW_1", "biped.PandaResource" ),
 					createJointIdReplacement( "MOUTH_TIP" ),
 
 					createJointIdPattern( "TAIL", "biped.StuffedTigerResource" ),
 					createJointIdReplacement( "TAIL_0" ),
-
+					createJointIdPattern( "TAIL_2", "biped.StuffedTigerResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "biped.StuffedTigerResource" ),
+					createJointIdReplacement( "TAIL_2" ),
+					createJointIdPattern( "TAIL_4", "biped.StuffedTigerResource" ),
+					createJointIdReplacement( "TAIL_3" ),
 					createJointIdPattern( "TAIL_5", "biped.StuffedTigerResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "TAIL_4" ),
+					createJointIdReplacement( "TAIL_4" ),
 
 					createJointIdPattern( "NECK", "FlyerResource" ),
 					createJointIdReplacement( "NECK_0" ),
-
 					createJointIdPattern( "NECK_2", "FlyerResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "NECK_1" ),
+					createJointIdReplacement( "NECK_1" ),
 
 					createJointIdPattern( "TAIL", "FlyerResource" ),
 					createJointIdReplacement( "TAIL_0" ),
-
+					createJointIdPattern( "TAIL_2", "FlyerResource" ),
+					createJointIdReplacement( "TAIL_1" ),
 					createJointIdPattern( "TAIL_3", "FlyerResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "TAIL_2" ),
+					createJointIdReplacement( "TAIL_2" ),
 
 					createJointIdPattern( "LEFT_PLUMAGE_1", "flyer.PeacockResource" ),
 					createJointIdReplacement( "PLUMAGE_LEFT_TIP" ),
@@ -5390,9 +5411,12 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					createJointIdPattern( "TAIL", "QuadrupedResource" ),
 					createJointIdReplacement( "TAIL_0" ),
-
+					createJointIdPattern( "TAIL_2", "QuadrupedResource" ),
+					createJointIdReplacement( "TAIL_1" ),
+					createJointIdPattern( "TAIL_3", "QuadrupedResource" ),
+					createJointIdReplacement( "TAIL_2" ),
 					createJointIdPattern( "TAIL_4", "QuadrupedResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "TAIL_3" ),
+					createJointIdReplacement( "TAIL_3" ),
 
 					createJointIdPattern( "JAW_1", "quadruped.AbyssinianCatResource" ),
 					createJointIdReplacement( "LOWER_LIP" ),
@@ -5413,8 +5437,12 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					createJointIdPattern( "TONGUE", "quadruped.CoyoteResource" ),
 					createJointIdReplacement( "TONGUE_0" ),
+					createJointIdPattern( "TONGUE_2", "quadruped.CoyoteResource" ),
+					createJointIdReplacement( "TONGUE_1" ),
+					createJointIdPattern( "TONGUE_3", "quadruped.CoyoteResource" ),
+					createJointIdReplacement( "TONGUE_2" ),
 					createJointIdPattern( "TONGUE_4", "quadruped.CoyoteResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "TONGUE_3" ),
+					createJointIdReplacement( "TONGUE_3" ),
 
 					createJointIdPattern( "TRUNK_1", "quadruped.ElephantResource" ),
 					createJointIdReplacement( "TRUNK_0" ),
@@ -5513,10 +5541,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createJointIdReplacement( "FLAG_14" ),
 
 					createJointIdPattern( "TAIL_5", "quadruped.YaliResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "TAIL_4" ),
+					createJointIdReplacement( "TAIL_4" ),
 
 					createJointIdPattern( "TAIL_5", "quadruped.DalmatianResource" ),
-					createJointIdReplacement_NoLongerExistsCondition( "TAIL_4" )
+					createJointIdReplacement( "TAIL_4" )
 			)
 
 			//			, EventAstMigration.getTextMigration() 

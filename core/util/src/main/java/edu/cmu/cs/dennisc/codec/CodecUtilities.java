@@ -92,7 +92,7 @@ public abstract class CodecUtilities {
 	}
 
 	public static <E extends BinaryEncodableAndDecodable> E decodeBinary( String path, Class<E> cls ) {
-		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
+		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, "zip" ) ) {
 			return decodeZippedBinary( path, DEFAULT_ZIP_ENTRY_NAME, cls );
 		} else {
 			return decodeBinary( new java.io.File( path ), cls );
@@ -212,7 +212,7 @@ public abstract class CodecUtilities {
 	}
 
 	public static void encodeBinary( BinaryEncodableAndDecodable binaryEncodableAndDecodable, String path ) {
-		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
+		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, "zip" ) ) {
 			encodeZippedBinary( binaryEncodableAndDecodable, path, DEFAULT_ZIP_ENTRY_NAME );
 		} else {
 			encodeBinary( binaryEncodableAndDecodable, new java.io.File( path ) );
@@ -283,7 +283,7 @@ public abstract class CodecUtilities {
 	}
 
 	public static <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinary( String path, Class<E> cls ) {
-		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
+		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, "zip" ) ) {
 			return decodeZippedReferenceableBinary( path, DEFAULT_ZIP_ENTRY_NAME, cls );
 		} else {
 			return decodeReferenceableBinary( new java.io.File( path ), cls );
@@ -340,7 +340,7 @@ public abstract class CodecUtilities {
 
 	@Deprecated
 	public static ReferenceableBinaryEncodableAndDecodable decodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable rv, String path ) {
-		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
+		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, "zip" ) ) {
 			return decodeZippedReferenceableBinary( rv, path, DEFAULT_ZIP_ENTRY_NAME );
 		} else {
 			return decodeReferenceableBinary( rv, new java.io.File( path ) );

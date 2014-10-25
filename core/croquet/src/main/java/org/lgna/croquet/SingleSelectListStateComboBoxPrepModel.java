@@ -45,8 +45,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class SingleSelectListStateComboBoxPrepModel<T> extends AbstractPrepModel {
-	/*package-private*/SingleSelectListStateComboBoxPrepModel( SingleSelectListState<T> listSelectionState ) {
+public final class SingleSelectListStateComboBoxPrepModel<T, D extends org.lgna.croquet.data.ListData<T>> extends AbstractPrepModel {
+	/*package-private*/SingleSelectListStateComboBoxPrepModel( SingleSelectListState<T, D> listSelectionState ) {
 		super( java.util.UUID.fromString( "c4b634e1-cd4f-465d-b0af-ab8d76cc7842" ) );
 		assert listSelectionState != null;
 		this.listSelectionState = listSelectionState;
@@ -66,7 +66,7 @@ public final class SingleSelectListStateComboBoxPrepModel<T> extends AbstractPre
 		throw new RuntimeException();
 	}
 
-	public SingleSelectListState<T> getListSelectionState() {
+	public SingleSelectListState<T, D> getListSelectionState() {
 		return this.listSelectionState;
 	}
 
@@ -81,8 +81,8 @@ public final class SingleSelectListStateComboBoxPrepModel<T> extends AbstractPre
 	}
 
 	@Override
-	protected org.lgna.croquet.imp.liststate.SingleSelectListStateComboBoxPrepModelResolver<T> createResolver() {
-		return new org.lgna.croquet.imp.liststate.SingleSelectListStateComboBoxPrepModelResolver<T>( this.listSelectionState );
+	protected org.lgna.croquet.imp.liststate.SingleSelectListStateComboBoxPrepModelResolver<T, D> createResolver() {
+		return new org.lgna.croquet.imp.liststate.SingleSelectListStateComboBoxPrepModelResolver<T, D>( this.listSelectionState );
 	}
 
 	public org.lgna.croquet.views.ComboBox<T> createComboBox() {
@@ -95,5 +95,5 @@ public final class SingleSelectListStateComboBoxPrepModel<T> extends AbstractPre
 		return rv;
 	}
 
-	private final SingleSelectListState<T> listSelectionState;
+	private final SingleSelectListState<T, D> listSelectionState;
 }

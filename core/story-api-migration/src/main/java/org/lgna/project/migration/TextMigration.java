@@ -78,7 +78,7 @@ public class TextMigration extends AbstractMigration {
 		}
 
 		public boolean isReplacementEqual( Pair other ) {
-			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.replacement, other.replacement );
+			return edu.cmu.cs.dennisc.java.util.Objects.equals( this.replacement, other.replacement );
 		}
 
 		@Override

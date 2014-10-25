@@ -63,7 +63,7 @@ public class ImmutableBrowserOperation extends BrowserOperation {
 		this.setName( spec );
 		super.localize();
 		String name = this.getName();
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( spec, name ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.equals( spec, name ) ) {
 			//pass
 		} else {
 			this.setToolTipText( spec );
