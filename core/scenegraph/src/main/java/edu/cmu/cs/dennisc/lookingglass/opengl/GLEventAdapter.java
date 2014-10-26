@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 /**
  * @author Dennis Cosgrove
  */
-class GLEventAdapter implements javax.media.opengl.GLEventListener {
+public class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	private final AbstractLookingGlass lookingGlass;
 	private final RenderContext renderContext = new RenderContext();
 
@@ -385,7 +385,16 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			}
 		}
 		this.renderContext.setGL( gl );
+
 		performRender();
+
+		synchronized( this.displayTasks ) {
+			if( this.displayTasks.size() > 0 ) {
+				for( DisplayTask displayTask : this.displayTasks ) {
+					displayTask.handleDisplay( this.lookingGlass, drawable, gl );
+				}
+			}
+		}
 	}
 
 	@Override
@@ -419,4 +428,13 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			this.renderContext.clearUnusedTextures();
 		}
 	}
+
+	/*package-private*/void addDisplayTask( DisplayTask displayTask ) {
+		synchronized( this.displayTasks ) {
+			this.displayTasks.add( displayTask );
+		}
+	}
+
+	private final java.util.List<DisplayTask> displayTasks = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+
 }
