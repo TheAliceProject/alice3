@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models;
  * @author Dennis Cosgrove
  */
 public abstract class FilteredListPropertySingleSelectListState<E> extends org.lgna.croquet.RefreshableDataSingleSelectListState<E> {
-	public FilteredListPropertySingleSelectListState( org.lgna.croquet.Group group, java.util.UUID id, org.alice.ide.ast.data.FilteredListPropertyData<E> data, int selectionIndex ) {
-		super( group, id, data, selectionIndex );
+	public FilteredListPropertySingleSelectListState( org.lgna.croquet.Group group, java.util.UUID id, int selectionIndex, org.alice.ide.ast.data.FilteredListPropertyData<E> data ) {
+		super( group, id, selectionIndex, data );
 		//this.updateData();
 	}
 }

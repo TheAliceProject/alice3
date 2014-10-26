@@ -395,6 +395,20 @@ public class JavaCodeGenerator {
 		return type.methods;
 	}
 
+	public String[] getVariableAndConstantNameForCountLoop( CountLoop countLoop ) {
+		UserCode code = countLoop.getFirstAncestorAssignableTo( UserCode.class );
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<CountLoop> countLoopCrawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( CountLoop.class );
+		code.crawl( countLoopCrawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY, null );
+		int index = countLoopCrawler.getList().indexOf( countLoop );
+		char c;
+		if( index != -1 ) {
+			c = (char)( ( (int)'A' ) + index );
+		} else {
+			c = '_';
+		}
+		return new String[] { "index" + c, "COUNT_" + c };
+	}
+
 	private final StringBuilder codeStringBuilder = new StringBuilder();
 
 	private final boolean isLambdaSupported;

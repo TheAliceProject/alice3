@@ -1,8 +1,10 @@
 package org.alice.netbeans.completion;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import java.util.Locale;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.EditorKit;
 import javax.swing.text.Element;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledDocument;
@@ -12,6 +14,7 @@ import org.netbeans.spi.editor.completion.CompletionResultSet;
 import org.netbeans.spi.editor.completion.CompletionTask;
 import org.netbeans.spi.editor.completion.support.AsyncCompletionQuery;
 import org.netbeans.spi.editor.completion.support.AsyncCompletionTask;
+import org.openide.text.CloneableEditorSupport;
 import org.openide.util.Exceptions;
 
 /**
@@ -21,9 +24,35 @@ import org.openide.util.Exceptions;
 public class Alice3CompletionProvider implements CompletionProvider {
 
 	private static final Alice3CompletionItemBuilder[] completionItemBuilders = {
-		new Alice3CompletionItemBuilder()
-				.searchText("doTogether")
-				.completionText("doTogether(() -> {\n\t    //TODO: Code goes here\n\t}, () -> {\n\t    //TODO: Code goes here\n\t}, () -> {\n\t    //TODO: Code goes here\n\t});")
+				new Alice3CompletionItemBuilder()
+						.searchText("doTogether")
+						.completionText("doTogether(() -> {\n\t    //TODO: Code goes here\n\t}, () -> {\n\t    //TODO: Code goes here\n\t}, () -> {\n\t    //TODO: Code goes here\n\t});")
+						.sortPriority(0)
+//		,
+//		new Alice3CompletionItemBuilder()
+//			.searchText("<font color=\"#C0C0C0\"><em>add detail: </em></font><font color=\"#000000\">Move.<strong>asSeenBy</strong>(SThing asSeenBy)</font>")
+//			.completionText("Move.asSeenBy()")
+//			.sortPriority(1),
+//		new Alice3CompletionItemBuilder()
+//			.searchText("<font color=\"#C0C0C0\"><em>add detail: </em></font><font color=\"#000000\">Move.<strong>duration</strong>(Number duration)</font>")
+//			.completionText("Move.duration()")
+//			.sortPriority(2),
+//		new Alice3CompletionItemBuilder()
+//			.searchText("<font color=\"#C0C0C0\"><em>add detail: </em></font><font color=\"#000000\">AnimationStyle.</font><font color=\"#007000\"><strong>BEGIN_AND_END_GENTLY</strong></font>")
+//			.completionText("AnimationStyle.BEGIN_AND_END_GENTLY")
+//			.sortPriority(3),
+//		new Alice3CompletionItemBuilder()
+//			.searchText("<font color=\"#C0C0C0\"><em>add detail: </em></font><font color=\"#000000\">AnimationStyle.</font><font color=\"#007000\"><strong>BEGIN_GENTLY_AND_END_ABRUPTLY</strong></font>")
+//			.completionText("AnimationStyle.BEGIN_GENTLY_AND_END_ABRUPTLY")
+//			.sortPriority(4),
+//		new Alice3CompletionItemBuilder()
+//			.searchText("<font color=\"#C0C0C0\"><em>add detail: </em></font><font color=\"#000000\">AnimationStyle.</font><font color=\"#007000\"><strong>BEGIN_ABRUPTLY_AND_END_GENTLY</strong></font>")
+//			.completionText("AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY")
+//			.sortPriority(5),
+//		new Alice3CompletionItemBuilder()
+//			.searchText("<font color=\"#C0C0C0\"><em>add detail: </em></font><font color=\"#000000\">AnimationStyle.</font><font color=\"#007000\"><strong>BEGIN_AND_END_ABRUPTLY</strong></font>")
+//			.completionText("AnimationStyle.BEGIN_AND_END_ABRUPTLY")
+//			.sortPriority(6)
 	};
 
 	private static int getRowFirstNonWhite(StyledDocument doc, int offset) throws BadLocationException {
@@ -54,6 +83,8 @@ public class Alice3CompletionProvider implements CompletionProvider {
 	}
 
 	public Alice3CompletionProvider() {
+		//EditorKit editorKit = CloneableEditorSupport.getEditorKit("text/x-java");
+		//org.netbeans.modules.editor.java.JavaKit
 	}
 
 	@Override

@@ -128,7 +128,7 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 
 	//	private E card;
 
-	public ToolPaletteTabbedPane( org.lgna.croquet.TabState<E> model ) {
+	public ToolPaletteTabbedPane( org.lgna.croquet.TabState<E, ?> model ) {
 		super( model );
 	}
 

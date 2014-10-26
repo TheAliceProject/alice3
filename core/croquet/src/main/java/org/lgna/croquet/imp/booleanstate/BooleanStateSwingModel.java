@@ -61,11 +61,11 @@ public class BooleanStateSwingModel {
 	}
 
 	private boolean isTextVariable() {
-		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.state.getTrueText(), this.state.getFalseText() );
+		return edu.cmu.cs.dennisc.java.util.Objects.notEquals( this.state.getTrueText(), this.state.getFalseText() );
 	}
 
 	private boolean isIconVariable() {
-		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.state.getTrueIcon(), this.state.getFalseIcon() );
+		return edu.cmu.cs.dennisc.java.util.Objects.notEquals( this.state.getTrueIcon(), this.state.getFalseIcon() );
 	}
 
 	private final org.lgna.croquet.BooleanState state;

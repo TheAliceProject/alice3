@@ -45,20 +45,20 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MutableDataTabState<T extends TabComposite<?>> extends TabState<T> {
-	public MutableDataTabState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex ) {
-		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec ), selectionIndex );
+public class MutableDataTabState<T extends TabComposite<?>> extends TabState<T, org.lgna.croquet.data.MutableListData<T>> {
+	public MutableDataTabState( Group group, java.util.UUID migrationId, int selectionIndex, org.lgna.croquet.data.MutableListData<T> data ) {
+		super( group, migrationId, selectionIndex, data );
+	}
+
+	public MutableDataTabState( Group group, java.util.UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, java.util.Collection<T> values ) {
+		this( group, migrationId, selectionIndex, new org.lgna.croquet.data.MutableListData<T>( itemCodec, values ) );
+	}
+
+	public MutableDataTabState( Group group, java.util.UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, T... values ) {
+		this( group, migrationId, selectionIndex, new org.lgna.croquet.data.MutableListData<T>( itemCodec, values ) );
 	}
 
 	public MutableDataTabState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec ) {
-		this( group, migrationId, itemCodec, -1 );
-	}
-
-	public MutableDataTabState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, java.util.Collection<T> data ) {
-		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
-	}
-
-	public MutableDataTabState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, T... data ) {
-		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
+		this( group, migrationId, -1, new org.lgna.croquet.data.MutableListData<T>( itemCodec ) );
 	}
 }

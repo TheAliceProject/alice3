@@ -45,8 +45,8 @@ package org.lgna.croquet.imp.liststate;
 /**
  * @author Dennis Cosgrove
  */
-public class SingleSelectListStateImp<T> {
-	public SingleSelectListStateImp( org.lgna.croquet.SingleSelectListState<T> state, SingleSelectListStateSwingModel swingModel ) {
+public class SingleSelectListStateImp<T, D extends org.lgna.croquet.data.ListData<T>> {
+	public SingleSelectListStateImp( org.lgna.croquet.SingleSelectListState<T, D> state, SingleSelectListStateSwingModel swingModel ) {
 		this.state = state;
 		this.swingModel = swingModel;
 	}
@@ -59,12 +59,12 @@ public class SingleSelectListStateImp<T> {
 		if( this.menuModel != null ) {
 			//pass
 		} else {
-			this.menuModel = new SingleSelectListStateMenuModel<T>( this.state );
+			this.menuModel = new SingleSelectListStateMenuModel<T, D>( this.state );
 		}
 		return this.menuModel;
 	}
 
-	private final org.lgna.croquet.SingleSelectListState<T> state;
+	private final org.lgna.croquet.SingleSelectListState<T, D> state;
 	private final SingleSelectListStateSwingModel swingModel;
-	private SingleSelectListStateMenuModel<T> menuModel;
+	private SingleSelectListStateMenuModel<T, D> menuModel;
 }

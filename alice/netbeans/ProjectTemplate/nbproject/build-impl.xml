@@ -84,10 +84,7 @@ is divided into following sections:
                 <not>
                     <istrue value="${jar.archive.disabled}"/>
                 </not>
-                <and>
-                    <istrue value="${jar.archive.disabled}"/>
-                    <istrue value="${not.archive.disabled}"/>
-                </and>
+                <istrue value="${not.archive.disabled}"/>
             </or>
         </condition>
         <condition property="do.mkdist">
@@ -1205,11 +1202,14 @@ is divided into following sections:
                 </not>
             </and>
         </condition>
-        <javadoc additionalparam="${javadoc.additionalparam}" author="${javadoc.author}" charset="UTF-8" destdir="${dist.javadoc.dir}" docencoding="UTF-8" encoding="${javadoc.encoding.used}" failonerror="true" noindex="${javadoc.noindex}" nonavbar="${javadoc.nonavbar}" notree="${javadoc.notree}" private="${javadoc.private}" source="${javac.source}" splitindex="${javadoc.splitindex}" use="${javadoc.use}" useexternalfile="true" version="${javadoc.version}" windowtitle="${javadoc.windowtitle}">
+        <condition else="" property="bug5101868workaround" value="*.java">
+            <matches pattern="1\.[56](\..*)?" string="${java.version}"/>
+        </condition>
+        <javadoc additionalparam="-J-Dfile.encoding=${file.encoding} ${javadoc.additionalparam}" author="${javadoc.author}" charset="UTF-8" destdir="${dist.javadoc.dir}" docencoding="UTF-8" encoding="${javadoc.encoding.used}" failonerror="true" noindex="${javadoc.noindex}" nonavbar="${javadoc.nonavbar}" notree="${javadoc.notree}" private="${javadoc.private}" source="${javac.source}" splitindex="${javadoc.splitindex}" use="${javadoc.use}" useexternalfile="true" version="${javadoc.version}" windowtitle="${javadoc.windowtitle}">
             <classpath>
                 <path path="${javac.classpath}"/>
             </classpath>
-            <fileset dir="${src.dir}" excludes="*.java,${excludes}" includes="${includes}">
+            <fileset dir="${src.dir}" excludes="${bug5101868workaround},${excludes}" includes="${includes}">
                 <filename name="**/*.java"/>
             </fileset>
             <fileset dir="${build.generated.sources.dir}" erroronmissingdir="false">

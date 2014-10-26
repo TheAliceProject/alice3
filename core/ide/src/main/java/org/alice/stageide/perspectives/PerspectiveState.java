@@ -51,8 +51,8 @@ public class PerspectiveState extends org.lgna.croquet.MutableDataSingleSelectLi
 		super(
 				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
 				java.util.UUID.fromString( "9daef1a1-fd63-4069-8431-25126032ec1f" ),
-				org.alice.ide.perspectives.codecs.IdePerspectiveCodec.SINGLETON,
 				0,
+				org.alice.ide.perspectives.codecs.IdePerspectiveCodec.SINGLETON,
 				perspectives );
 	}
 

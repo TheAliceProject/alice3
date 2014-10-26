@@ -221,11 +221,11 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	//		}
 	//	}
 
-	protected abstract SingleSelectListState<org.alice.interact.handle.HandleStyle> getHandleStyleState();
+	protected abstract SingleSelectListState<org.alice.interact.handle.HandleStyle, ?> getHandleStyleState();
 
 	@Override
 	protected void updateHandleSelection( AbstractTransformableImp selected ) {
-		SingleSelectListState<org.alice.interact.handle.HandleStyle> handleStyleListSelectionState = this.getHandleStyleState();
+		SingleSelectListState<org.alice.interact.handle.HandleStyle, ?> handleStyleListSelectionState = this.getHandleStyleState();
 		if( handleStyleListSelectionState != null ) {
 			org.alice.interact.handle.HandleStyle currentHandleStyle = handleStyleListSelectionState.getValue();
 			InteractionGroup selectedState = this.mapHandleStyleToInteractionGroup.get( currentHandleStyle );
