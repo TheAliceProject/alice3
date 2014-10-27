@@ -52,7 +52,7 @@ public class ColorBufferImageCaptureDisplayTask extends ImageCaptureDisplayTask 
 	}
 
 	@Override
-	public void handleDisplay( AbstractLookingGlass glrRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
+	public void handleDisplay( GlrRenderTarget glrRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
 		synchronized( this.glrColorBuffer.getImageLock() ) {
 			int width = glrRenderTarget.getWidth();
 			int height = glrRenderTarget.getHeight();

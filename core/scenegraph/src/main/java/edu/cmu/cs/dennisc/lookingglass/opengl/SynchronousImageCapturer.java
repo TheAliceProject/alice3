@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public class SynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.SynchronousImageCapturer {
-	public SynchronousImageCapturer( AbstractLookingGlass lookingGlass ) {
+	public SynchronousImageCapturer( GlrRenderTarget lookingGlass ) {
 		this.lookingGlass = lookingGlass;
 	}
 
@@ -100,5 +100,5 @@ public class SynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.Syn
 		return getColorBufferWithTransparencyBasedOnDepthBuffer( createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer(), createFloatBufferForUseAsDepthBuffer() );
 	}
 
-	private final AbstractLookingGlass lookingGlass;
+	private final GlrRenderTarget lookingGlass;
 }

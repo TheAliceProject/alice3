@@ -93,9 +93,9 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 		return SingletonHolder.instance;
 	}
 
-	private final java.util.List<LightweightOnscreenLookingGlass> lightweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<HeavyweightOnscreenLookingGlass> heavyweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<OffscreenLookingGlass> offscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.List<GlrLightweightOnscreenRenderTarget> lightweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.List<GlrHeavyweightOnscreenRenderTarget> heavyweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.List<GlrOffscreenRenderTarget> offscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private final java.util.List<edu.cmu.cs.dennisc.pattern.Releasable> toBeReleased = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 	private final java.util.Queue<Runnable> runnables = edu.cmu.cs.dennisc.java.util.Queues.newConcurrentLinkedQueue();
@@ -134,7 +134,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 	//todo: just force start and stop? or rename methods
 	private int automaticDisplayCount = 0;
 
-	private static boolean isDisplayDesired( OnscreenLookingGlass lg ) {
+	private static boolean isDisplayDesired( GlrOnscreenRenderTarget lg ) {
 		if( lg.isRenderingEnabled() ) {
 			java.awt.Component component = lg.getAwtComponent();
 			if( component.isVisible() && component.isValid() && ( component.getWidth() > 0 ) && ( component.getHeight() > 0 ) ) {
@@ -150,17 +150,17 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 		Animator.ThreadDeferenceAction rv = Animator.ThreadDeferenceAction.SLEEP;
 		synchronized( this.toBeReleased ) {
 			for( edu.cmu.cs.dennisc.pattern.Releasable releasable : this.toBeReleased ) {
-				if( releasable instanceof OnscreenLookingGlass ) {
-					OnscreenLookingGlass onscreenLookingGlass = (OnscreenLookingGlass)releasable;
-					if( onscreenLookingGlass instanceof HeavyweightOnscreenLookingGlass ) {
+				if( releasable instanceof GlrOnscreenRenderTarget ) {
+					GlrOnscreenRenderTarget onscreenLookingGlass = (GlrOnscreenRenderTarget)releasable;
+					if( onscreenLookingGlass instanceof GlrHeavyweightOnscreenRenderTarget ) {
 						this.heavyweightOnscreenLookingGlasses.remove( onscreenLookingGlass );
-					} else if( onscreenLookingGlass instanceof LightweightOnscreenLookingGlass ) {
+					} else if( onscreenLookingGlass instanceof GlrLightweightOnscreenRenderTarget ) {
 						this.lightweightOnscreenLookingGlasses.remove( onscreenLookingGlass );
 					} else {
 						assert false;
 					}
 					//this.animator.remove( onscreenLookingGlass.getGLAutoDrawable() );
-				} else if( releasable instanceof OffscreenLookingGlass ) {
+				} else if( releasable instanceof GlrOffscreenRenderTarget ) {
 					this.offscreenLookingGlasses.remove( releasable );
 				} else {
 					assert false;
@@ -173,7 +173,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 			acquireRenderingLock();
 			try {
 				ChangeHandler.pushRenderingMode();
-				for( OnscreenLookingGlass lg : this.heavyweightOnscreenLookingGlasses ) {
+				for( GlrOnscreenRenderTarget lg : this.heavyweightOnscreenLookingGlasses ) {
 					if( isDisplayDesired( lg ) ) {
 						//lg.getGLAutoDrawable().display();
 						lg.repaint();
@@ -185,7 +185,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 					if( ChangeHandler.getEventCountSinceLastReset() > 0 /* || isJustCreatedOnscreenLookingGlassAccountedFor == false */) {
 						ChangeHandler.resetEventCount();
 						//isJustCreatedOnscreenLookingGlassAccountedFor = true;
-						for( OnscreenLookingGlass lg : this.lightweightOnscreenLookingGlasses ) {
+						for( GlrOnscreenRenderTarget lg : this.lightweightOnscreenLookingGlasses ) {
 							if( isDisplayDesired( lg ) ) {
 								//lg.getGLAutoDrawable().display();
 								lg.repaint();
@@ -260,7 +260,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
-		HeavyweightOnscreenLookingGlass holg = new HeavyweightOnscreenLookingGlass( this );
+		GlrHeavyweightOnscreenRenderTarget holg = new GlrHeavyweightOnscreenRenderTarget( this );
 		holg.addReleaseListener( this );
 		this.heavyweightOnscreenLookingGlasses.add( holg );
 		return holg;
@@ -268,7 +268,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
-		LightweightOnscreenLookingGlass lolg = new LightweightOnscreenLookingGlass( this );
+		GlrLightweightOnscreenRenderTarget lolg = new GlrLightweightOnscreenRenderTarget( this );
 		lolg.addReleaseListener( this );
 		this.lightweightOnscreenLookingGlasses.add( lolg );
 		return lolg;
@@ -276,8 +276,8 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, edu.cmu.cs.dennisc.renderer.RenderTarget renderTargetToShareContextWith ) {
-		assert ( renderTargetToShareContextWith == null ) || ( renderTargetToShareContextWith instanceof AbstractLookingGlass );
-		OffscreenLookingGlass olg = new OffscreenLookingGlass( this, width, height, (AbstractLookingGlass)renderTargetToShareContextWith );
+		assert ( renderTargetToShareContextWith == null ) || ( renderTargetToShareContextWith instanceof GlrRenderTarget );
+		GlrOffscreenRenderTarget olg = new GlrOffscreenRenderTarget( this, width, height, (GlrRenderTarget)renderTargetToShareContextWith );
 		olg.addReleaseListener( this );
 		this.offscreenLookingGlasses.add( olg );
 		return olg;

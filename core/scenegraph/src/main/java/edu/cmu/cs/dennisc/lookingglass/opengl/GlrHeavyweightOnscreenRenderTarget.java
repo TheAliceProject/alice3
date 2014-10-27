@@ -46,13 +46,52 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-abstract class OnscreenLookingGlass<C extends java.awt.Component> extends AbstractLookingGlass implements edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<C> {
-	protected OnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
+class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<java.awt.Component> implements edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget {
+	private javax.media.opengl.awt.GLCanvas m_glCanvas;
+
+	/* package-private */GlrHeavyweightOnscreenRenderTarget( LookingGlassFactory lookingGlassFactory ) {
 		super( lookingGlassFactory );
+		m_glCanvas = GlDrawableUtilities.createGLCanvas();
+		//m_glCanvas.getChosenGLCapabilities().getDepthBits();
+		//m_glCanvas.setAutoSwapBufferMode( false );
+		m_glCanvas.addComponentListener( new java.awt.event.ComponentListener() {
+			@Override
+			public void componentShown( java.awt.event.ComponentEvent e ) {
+			}
+
+			@Override
+			public void componentHidden( java.awt.event.ComponentEvent e ) {
+			}
+
+			@Override
+			public void componentMoved( java.awt.event.ComponentEvent e ) {
+			}
+
+			@Override
+			public void componentResized( java.awt.event.ComponentEvent e ) {
+				m_glCanvas.setMinimumSize( new java.awt.Dimension( 0, 0 ) );
+				m_glCanvas.repaint();
+			}
+		} );
 	}
 
 	@Override
-	protected void repaintIfAppropriate() {
-		this.repaint();
+	public void repaint() {
+		getAwtComponent().repaint();
+	}
+
+	@Override
+	public java.awt.Component getAwtComponent() {
+		return m_glCanvas;
+	}
+
+	@Override
+	protected java.awt.Dimension getSize( java.awt.Dimension rv ) {
+		return m_glCanvas.getSize( rv );
+	}
+
+	@Override
+	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
+		return m_glCanvas;
 	}
 }

@@ -67,7 +67,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultReleasable implements edu.cmu.cs.dennisc.renderer.RenderTarget {
+abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasable implements edu.cmu.cs.dennisc.renderer.RenderTarget {
 	private static java.awt.Rectangle s_actualViewportBufferForReuse = new java.awt.Rectangle();
 	private static java.awt.Dimension s_sizeBufferForReuse = new java.awt.Dimension();
 
@@ -89,7 +89,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	private final GlrAsynchronousPicker glrAsynchronousPicker = new GlrAsynchronousPicker( this );
 	private final GlrAsynchronousImageCapturer glrAsynchronousImageCapturer = new GlrAsynchronousImageCapturer( this );
 
-	protected AbstractLookingGlass( LookingGlassFactory lookingGlassFactory ) {
+	protected GlrRenderTarget( LookingGlassFactory lookingGlassFactory ) {
 		m_lookingGlassFactory = lookingGlassFactory;
 	}
 

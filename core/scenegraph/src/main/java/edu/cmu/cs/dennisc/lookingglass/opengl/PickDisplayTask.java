@@ -61,7 +61,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 	protected abstract void fireDone( edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters );
 
 	@Override
-	public final void handleDisplay( AbstractLookingGlass glrRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
+	public final void handleDisplay( GlrRenderTarget glrRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
 		this.pickContext.gl = gl;
 
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = glrRenderTarget.getCameraAtPixel( this.x, this.y );

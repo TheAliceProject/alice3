@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-class LightweightOnscreenLookingGlass extends OnscreenLookingGlass<javax.swing.JPanel> implements edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget {
+class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.swing.JPanel> implements edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget {
 	class RenderPane extends /* edu.cmu.cs.dennisc. */javax.media.opengl.awt.GLJPanel {
 
 		private Throwable prevThrowable = null;
@@ -58,7 +58,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass<javax.swing.J
 
 		@Override
 		public void display() {
-			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
+			if( GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled() ) {
 				super.display();
 			}
 		}
@@ -79,7 +79,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass<javax.swing.J
 
 		@Override
 		public void paint( java.awt.Graphics g ) {
-			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
+			if( GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled() ) {
 				super.paint( g );
 			} else {
 				this.paintRenderingDisabledMessage( g );
@@ -88,8 +88,8 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass<javax.swing.J
 
 		@Override
 		protected void paintComponent( java.awt.Graphics g ) {
-			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
-				if( LightweightOnscreenLookingGlass.this.getSgCameraCount() > 0 ) {
+			if( GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled() ) {
+				if( GlrLightweightOnscreenRenderTarget.this.getSgCameraCount() > 0 ) {
 					try {
 						super.paintComponent( g );
 						this.prevThrowable = null;
@@ -122,7 +122,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass<javax.swing.J
 	private RenderPane glPanel = new RenderPane();
 
 	//	private javax.media.opengl.GLJPanel glPanel = new javax.media.opengl.GLJPanel();
-	/* package-private */LightweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
+	/* package-private */GlrLightweightOnscreenRenderTarget( LookingGlassFactory lookingGlassFactory ) {
 		super( lookingGlassFactory );
 		this.glPanel.setFocusable( true );
 	}

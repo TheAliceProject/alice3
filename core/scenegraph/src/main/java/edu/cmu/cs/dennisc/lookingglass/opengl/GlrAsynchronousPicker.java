@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 /*package-private*/class GlrAsynchronousPicker implements edu.cmu.cs.dennisc.renderer.AsynchronousPicker {
-	public GlrAsynchronousPicker( AbstractLookingGlass glrRenderTarget ) {
+	public GlrAsynchronousPicker( GlrRenderTarget glrRenderTarget ) {
 		this.glrRenderTarget = glrRenderTarget;
 	}
 
@@ -60,5 +60,5 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new PickFrontMostDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
 	}
 
-	private final AbstractLookingGlass glrRenderTarget;
+	private final GlrRenderTarget glrRenderTarget;
 }

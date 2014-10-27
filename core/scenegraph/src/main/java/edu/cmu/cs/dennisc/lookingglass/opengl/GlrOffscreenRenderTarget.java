@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget {
+class GlrOffscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget {
 	private final javax.media.opengl.GLOffscreenAutoDrawable glPbuffer;
 
-	/* package-private */OffscreenLookingGlass( LookingGlassFactory lookingGlassFactory, int width, int height, AbstractLookingGlass lookingGlassToShareContextWith ) {
+	/* package-private */GlrOffscreenRenderTarget( LookingGlassFactory lookingGlassFactory, int width, int height, GlrRenderTarget lookingGlassToShareContextWith ) {
 		super( lookingGlassFactory );
 		javax.media.opengl.GLContext share;
 		if( lookingGlassToShareContextWith != null ) {

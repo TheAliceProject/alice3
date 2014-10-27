@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<javax.swing.JPanel> {
+public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<javax.swing.JPanel> {
 	public static interface Observer {
 		public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown );
 	}
@@ -102,7 +102,7 @@ public class CaptureFauxOnscreenLookingGlass extends AbstractLookingGlass implem
 	private boolean[] atIsUpSideDown = { false };
 	private java.awt.image.BufferedImage image;
 
-	public CaptureFauxOnscreenLookingGlass( java.awt.Dimension size, AbstractLookingGlass lookingGlassToShareContextWith ) {
+	public GlrCaptureFauxOnscreenRenderTarget( java.awt.Dimension size, GlrRenderTarget lookingGlassToShareContextWith ) {
 		super( LookingGlassFactory.getInstance() );
 		this.size = size;
 		javax.media.opengl.GLContext share;

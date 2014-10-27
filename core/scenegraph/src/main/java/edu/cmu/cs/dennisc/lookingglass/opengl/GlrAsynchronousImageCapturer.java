@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 /*package-private*/class GlrAsynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer {
-	public GlrAsynchronousImageCapturer( AbstractLookingGlass glrRenderTarget ) {
+	public GlrAsynchronousImageCapturer( GlrRenderTarget glrRenderTarget ) {
 		this.glrRenderTarget = glrRenderTarget;
 	}
 
@@ -60,5 +60,5 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( (GlrColorAndDepthBuffers)colorAndDepthBuffers, observer ) );
 	}
 
-	private final AbstractLookingGlass glrRenderTarget;
+	private final GlrRenderTarget glrRenderTarget;
 }

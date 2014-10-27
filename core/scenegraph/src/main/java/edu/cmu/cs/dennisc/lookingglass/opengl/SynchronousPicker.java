@@ -73,7 +73,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.renderer.Sync
 			this.glShareContext = null;
 		}
 
-		public void setPickParameters( AbstractLookingGlass lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
+		public void setPickParameters( GlrRenderTarget lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
 			this.pickParameters = new PickParameters( lookingGlass, sgCamera, x, y, isSubElementRequired, pickObserver );
 		}
 
@@ -126,7 +126,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.renderer.Sync
 				this.pickContext.gl.glRenderMode( javax.media.opengl.GL2.GL_SELECT );
 				this.pickContext.gl.glInitNames();
 
-				AbstractLookingGlass lookingGlass = pickParameters.getLookingGlass();
+				GlrRenderTarget lookingGlass = pickParameters.getLookingGlass();
 				java.awt.Rectangle actualViewport = lookingGlass.getActualViewport( sgCamera );
 				this.pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
 				cameraAdapter.performPick( this.pickContext, pickParameters, actualViewport );
@@ -239,7 +239,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.renderer.Sync
 			}
 		}
 
-		private edu.cmu.cs.dennisc.renderer.PickResult pickFrontMost( AbstractLookingGlass lookingGlass, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
+		private edu.cmu.cs.dennisc.renderer.PickResult pickFrontMost( GlrRenderTarget lookingGlass, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = lookingGlass.getCameraAtPixel( xPixel, yPixel );
 			OffscreenDrawable impl = this.getOffscreenDrawable();
 			if( impl != null ) {
@@ -257,7 +257,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.renderer.Sync
 			}
 		}
 
-		private java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> pickAll( AbstractLookingGlass lookingGlass, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
+		private java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> pickAll( GlrRenderTarget lookingGlass, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = lookingGlass.getCameraAtPixel( xPixel, yPixel );
 			OffscreenDrawable impl = this.getOffscreenDrawable();
 			if( impl != null ) {
@@ -278,9 +278,9 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.renderer.Sync
 
 	private static ActualPicker sharedActualPicker = new ActualPicker();
 
-	private final AbstractLookingGlass lookingGlass;
+	private final GlrRenderTarget lookingGlass;
 
-	public SynchronousPicker( AbstractLookingGlass lookingGlass ) {
+	public SynchronousPicker( GlrRenderTarget lookingGlass ) {
 		this.lookingGlass = lookingGlass;
 	}
 

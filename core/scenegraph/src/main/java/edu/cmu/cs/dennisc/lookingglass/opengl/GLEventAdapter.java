@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
  * @author Dennis Cosgrove
  */
 public class GLEventAdapter implements javax.media.opengl.GLEventListener {
-	private final AbstractLookingGlass lookingGlass;
+	private final GlrRenderTarget lookingGlass;
 	private final RenderContext renderContext = new RenderContext();
 
 	private javax.media.opengl.GLAutoDrawable drawable;
@@ -64,7 +64,7 @@ public class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	private boolean isDisplayIgnoredDueToPreviousException = false;
 
 	private static class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent {
-		public ReusableLookingGlassRenderEvent( AbstractLookingGlass lookingGlass, Graphics2D g ) {
+		public ReusableLookingGlassRenderEvent( GlrRenderTarget lookingGlass, Graphics2D g ) {
 			super( lookingGlass, g );
 		}
 
@@ -84,7 +84,7 @@ public class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	private final ReusableLookingGlassRenderEvent reusableLookingGlassRenderEvent;
 
-	public GLEventAdapter( AbstractLookingGlass lookingGlass ) {
+	public GLEventAdapter( GlrRenderTarget lookingGlass ) {
 		this.lookingGlass = lookingGlass;
 		this.reusableLookingGlassRenderEvent = new ReusableLookingGlassRenderEvent( this.lookingGlass, new Graphics2D( this.renderContext ) );
 	}
