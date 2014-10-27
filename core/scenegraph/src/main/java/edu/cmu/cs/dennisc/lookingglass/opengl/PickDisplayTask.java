@@ -61,11 +61,11 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 	protected abstract void fireDone( edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters );
 
 	@Override
-	public final void handleDisplay( AbstractLookingGlass glrtRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
+	public final void handleDisplay( AbstractLookingGlass glrRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
 		this.pickContext.gl = gl;
 
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = glrtRenderTarget.getCameraAtPixel( this.x, this.y );
-		edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters = new edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters( glrtRenderTarget, sgCamera, this.x, this.y, this.pickSubElementPolicy == edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.REQUIRED, null );
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = glrRenderTarget.getCameraAtPixel( this.x, this.y );
+		edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters = new edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters( glrRenderTarget, sgCamera, this.x, this.y, this.pickSubElementPolicy == edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.REQUIRED, null );
 
 		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
 
@@ -75,7 +75,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 		this.pickContext.gl.glRenderMode( javax.media.opengl.GL2.GL_SELECT );
 		this.pickContext.gl.glInitNames();
 
-		java.awt.Rectangle actualViewport = glrtRenderTarget.getActualViewport( sgCamera );
+		java.awt.Rectangle actualViewport = glrRenderTarget.getActualViewport( sgCamera );
 		this.pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
 		cameraAdapter.performPick( this.pickContext, pickParameters, actualViewport );
 		this.pickContext.gl.glFlush();
