@@ -15,7 +15,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.alice</groupId>
-			<artifactId>alice-ide</artifactId>
+			<artifactId>ide</artifactId>
 		</dependency>
 	</dependencies>
 
