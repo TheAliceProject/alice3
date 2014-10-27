@@ -45,20 +45,23 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class GlAsynchronousPicker implements edu.cmu.cs.dennisc.renderer.AsynchronousPicker {
-	public GlAsynchronousPicker( edu.cmu.cs.dennisc.lookingglass.opengl.GLEventAdapter glEventAdapter ) {
-		this.glEventAdapter = glEventAdapter;
+public class ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask extends ImageCaptureDisplayTask {
+	public ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
+		this.colorAndDepthBuffers = colorAndDepthBuffers;
+		this.observer = observer;
 	}
 
 	@Override
-	public void pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickAllObserver observer ) {
-		this.glEventAdapter.addDisplayTask( new PickAllDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
+	public void handleDisplay( AbstractLookingGlass glrtRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
+		synchronized( this.colorAndDepthBuffers.getImageLock() ) {
+			java.awt.image.BufferedImage rvColor = this.colorAndDepthBuffers.getImage();
+			java.nio.FloatBuffer rvDepth = this.colorAndDepthBuffers.getDepthBuffer();
+			boolean[] atIsUpsideDown = null; //TODO
+			this.handleDisplay( gl, rvColor, rvDepth, atIsUpsideDown );
+			this.observer.done( this.colorAndDepthBuffers );
+		}
 	}
 
-	@Override
-	public void pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickFrontMostObserver observer ) {
-		this.glEventAdapter.addDisplayTask( new PickFrontMostDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
-	}
-
-	private final edu.cmu.cs.dennisc.lookingglass.opengl.GLEventAdapter glEventAdapter;
+	private final edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers;
+	private final edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer;
 }

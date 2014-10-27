@@ -45,6 +45,20 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public interface DisplayTask {
-	void handleDisplay( AbstractLookingGlass glrtRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl );
+public class GlRtAsynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer {
+	public GlRtAsynchronousImageCapturer( AbstractLookingGlass glrtRenderTarget ) {
+		this.glrtRenderTarget = glrtRenderTarget;
+	}
+
+	@Override
+	public void captureColorBuffer( edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
+		this.glrtRenderTarget.getGlEventAdapter().addDisplayTask( new ColorBufferImageCaptureDisplayTask( colorBuffer, observer ) );
+	}
+
+	@Override
+	public void captureColorBufferWithTransparencyBasedOnDepthBuffer( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
+		this.glrtRenderTarget.getGlEventAdapter().addDisplayTask( new ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( colorAndDepthBuffers, observer ) );
+	}
+
+	private final AbstractLookingGlass glrtRenderTarget;
 }

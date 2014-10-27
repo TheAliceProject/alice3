@@ -45,6 +45,23 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public interface DisplayTask {
-	void handleDisplay( AbstractLookingGlass glrtRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl );
+public class ColorBufferImageCaptureDisplayTask extends ImageCaptureDisplayTask {
+	public ColorBufferImageCaptureDisplayTask( edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
+		this.colorBuffer = colorBuffer;
+		this.observer = observer;
+	}
+
+	@Override
+	public void handleDisplay( AbstractLookingGlass glrtRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
+		synchronized( this.colorBuffer.getImageLock() ) {
+			java.awt.image.BufferedImage rvColor = this.colorBuffer.getImage();
+			java.nio.FloatBuffer rvDepth = null;
+			boolean[] atIsUpsideDown = null; //TODO
+			this.handleDisplay( gl, rvColor, rvDepth, atIsUpsideDown );
+			this.observer.done( this.colorBuffer );
+		}
+	}
+
+	private final edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer;
+	private final edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer;
 }

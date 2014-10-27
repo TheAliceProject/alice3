@@ -86,7 +86,8 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	private final SynchronousPicker synchronousPicker = new SynchronousPicker( this );
 	private final SynchronousImageCapturer synchronousImageCapturer = new SynchronousImageCapturer( this );
 
-	private final GlAsynchronousPicker asynchronousPicker = new GlAsynchronousPicker( this.m_glEventAdapter );
+	private final GlRtAsynchronousPicker glrtAsynchronousPicker = new GlRtAsynchronousPicker( this );
+	private final GlRtAsynchronousImageCapturer glrtAsynchronousImageCapturer = new GlRtAsynchronousImageCapturer( this );
 
 	protected AbstractLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		m_lookingGlassFactory = lookingGlassFactory;
@@ -113,12 +114,12 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.AsynchronousPicker getAsynchronousPicker() {
-		return this.asynchronousPicker;
+		return this.glrtAsynchronousPicker;
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer getAsynchronousImageCapturer() {
-		throw new UnsupportedOperationException();
+		return this.glrtAsynchronousImageCapturer;
 	}
 
 	//	private com.sun.opengl.util.j2d.Overlay m_glOverlay;
