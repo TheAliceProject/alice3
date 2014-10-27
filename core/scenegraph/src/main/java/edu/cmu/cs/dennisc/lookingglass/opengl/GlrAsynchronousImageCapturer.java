@@ -45,20 +45,20 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class GlRtAsynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer {
-	public GlRtAsynchronousImageCapturer( AbstractLookingGlass glrtRenderTarget ) {
-		this.glrtRenderTarget = glrtRenderTarget;
+/*package-private*/class GlrAsynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer {
+	public GlrAsynchronousImageCapturer( AbstractLookingGlass glrRenderTarget ) {
+		this.glrRenderTarget = glrRenderTarget;
 	}
 
 	@Override
 	public void captureColorBuffer( edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
-		this.glrtRenderTarget.getGlEventAdapter().addDisplayTask( new ColorBufferImageCaptureDisplayTask( colorBuffer, observer ) );
+		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new ColorBufferImageCaptureDisplayTask( (GlrColorBuffer)colorBuffer, observer ) );
 	}
 
 	@Override
 	public void captureColorBufferWithTransparencyBasedOnDepthBuffer( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
-		this.glrtRenderTarget.getGlEventAdapter().addDisplayTask( new ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( colorAndDepthBuffers, observer ) );
+		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( (GlrColorAndDepthBuffers)colorAndDepthBuffers, observer ) );
 	}
 
-	private final AbstractLookingGlass glrtRenderTarget;
+	private final AbstractLookingGlass glrRenderTarget;
 }

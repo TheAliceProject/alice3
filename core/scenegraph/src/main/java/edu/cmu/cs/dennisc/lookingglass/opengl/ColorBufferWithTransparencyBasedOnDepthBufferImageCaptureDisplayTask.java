@@ -46,22 +46,29 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public class ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask extends ImageCaptureDisplayTask {
-	public ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
+	public ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( GlrColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
 		this.colorAndDepthBuffers = colorAndDepthBuffers;
 		this.observer = observer;
 	}
 
 	@Override
-	public void handleDisplay( AbstractLookingGlass glrtRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
+	public void handleDisplay( AbstractLookingGlass glrRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
 		synchronized( this.colorAndDepthBuffers.getImageLock() ) {
-			java.awt.image.BufferedImage rvColor = this.colorAndDepthBuffers.getImage();
-			java.nio.FloatBuffer rvDepth = this.colorAndDepthBuffers.getDepthBuffer();
-			boolean[] atIsUpsideDown = null; //TODO
-			this.handleDisplay( gl, rvColor, rvDepth, atIsUpsideDown );
+			int width = glrRenderTarget.getWidth();
+			int height = glrRenderTarget.getHeight();
+			java.awt.image.BufferedImage rvColor = this.colorAndDepthBuffers.acquireImage( width, height, true );
+			java.nio.FloatBuffer rvDepth = this.colorAndDepthBuffers.acquireFloatBuffer( width, height );
+			try {
+				boolean[] atIsUpsideDown = null; //TODO
+				this.handleDisplay( gl, rvColor, rvDepth, atIsUpsideDown );
+			} finally {
+				this.colorAndDepthBuffers.releaseImage( true );
+				this.colorAndDepthBuffers.releaseFloatBuffer();
+			}
 			this.observer.done( this.colorAndDepthBuffers );
 		}
 	}
 
-	private final edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers;
+	private final GlrColorAndDepthBuffers colorAndDepthBuffers;
 	private final edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer;
 }

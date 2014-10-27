@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public interface DisplayTask {
-	void handleDisplay( AbstractLookingGlass glrtRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl );
+	void handleDisplay( AbstractLookingGlass glrRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl );
 }

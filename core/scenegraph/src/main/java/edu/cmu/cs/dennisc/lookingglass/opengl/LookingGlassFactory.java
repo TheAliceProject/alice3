@@ -121,6 +121,16 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 	private LookingGlassFactory() {
 	}
 
+	@Override
+	public edu.cmu.cs.dennisc.renderer.ColorBuffer createColorBuffer() {
+		return new edu.cmu.cs.dennisc.lookingglass.opengl.GlrColorBuffer();
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers createColorAndDepthBuffers() {
+		return new edu.cmu.cs.dennisc.lookingglass.opengl.GlrColorAndDepthBuffers();
+	}
+
 	//todo: just force start and stop? or rename methods
 	private int automaticDisplayCount = 0;
 

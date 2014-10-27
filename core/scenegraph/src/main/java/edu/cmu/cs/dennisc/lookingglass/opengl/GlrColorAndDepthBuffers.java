@@ -40,48 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer;
+package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 /**
  * @author Dennis Cosgrove
  */
+public class GlrColorAndDepthBuffers extends GlrColorBuffer implements edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers {
+	private java.nio.FloatBuffer depthBuffer;
 
-public interface RenderFactory {
-	ColorBuffer createColorBuffer();
+	/*package-private*/java.nio.FloatBuffer acquireFloatBuffer( int width, int height ) {
+		int capacity = width * height;
+		if( this.depthBuffer != null ) {
+			if( this.depthBuffer.capacity() == capacity ) {
+				//pass
+			} else {
+				this.depthBuffer = null;
+			}
+		}
+		if( this.depthBuffer != null ) {
+			//pass
+		} else {
+			this.depthBuffer = java.nio.FloatBuffer.allocate( capacity );
+		}
+		return this.depthBuffer;
+	}
 
-	ColorAndDepthBuffers createColorAndDepthBuffers();
-
-	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget();
-
-	LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget();
-
-	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith );
-
-	Iterable<? extends HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets();
-
-	Iterable<? extends LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets();
-
-	Iterable<? extends OffscreenRenderTarget> getOffscreenRenderTargets();
-
-	void acquireRenderingLock();
-
-	void releaseRenderingLock();
-
-	void addAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener );
-
-	void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener );
-
-	Iterable<edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener> getAutomaticDisplayListeners();
-
-	int getAutomaticDisplayCount();
-
-	void incrementAutomaticDisplayCount();
-
-	void decrementAutomaticDisplayCount();
-
-	void invokeLater( Runnable runnable );
-
-	void invokeAndWait( Runnable runnable ) throws InterruptedException, java.lang.reflect.InvocationTargetException;
-
-	void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable );
+	/*package-private*/void releaseFloatBuffer() {
+	}
 }

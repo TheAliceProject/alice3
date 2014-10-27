@@ -40,48 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer;
+package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 /**
  * @author Dennis Cosgrove
  */
+public class GlrColorBuffer implements edu.cmu.cs.dennisc.renderer.ColorBuffer {
+	@Override
+	public Object getImageLock() {
+		return this.imageLock;
+	}
 
-public interface RenderFactory {
-	ColorBuffer createColorBuffer();
+	/*package-private*/java.awt.image.BufferedImage acquireImage( int width, int height, boolean isAlphaChannelDesired ) {
+		int imageType = isAlphaChannelDesired ? java.awt.image.BufferedImage.TYPE_3BYTE_BGR : java.awt.image.BufferedImage.TYPE_4BYTE_ABGR;
+		if( this.image != null ) {
+			if( ( this.image.getWidth() == width ) && ( this.image.getHeight() == height ) && ( this.image.getType() == imageType ) ) {
+				//pass
+			} else {
+				this.image = null;
+			}
+		}
+		if( this.image != null ) {
+			//pass
+		} else {
+			this.image = new java.awt.image.BufferedImage( width, height, imageType );
+		}
+		return this.image;
+	}
 
-	ColorAndDepthBuffers createColorAndDepthBuffers();
+	/*package-private*/void releaseImage( boolean isRightSideUp ) {
+		this.isRightSideUp = true;
+	}
 
-	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget();
+	@Override
+	public java.awt.image.BufferedImage getImage() {
+		return this.image;
+	}
 
-	LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget();
+	@Override
+	public boolean isRightSideUp() {
+		return this.isRightSideUp;
+	}
 
-	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith );
-
-	Iterable<? extends HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets();
-
-	Iterable<? extends LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets();
-
-	Iterable<? extends OffscreenRenderTarget> getOffscreenRenderTargets();
-
-	void acquireRenderingLock();
-
-	void releaseRenderingLock();
-
-	void addAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener );
-
-	void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener );
-
-	Iterable<edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener> getAutomaticDisplayListeners();
-
-	int getAutomaticDisplayCount();
-
-	void incrementAutomaticDisplayCount();
-
-	void decrementAutomaticDisplayCount();
-
-	void invokeLater( Runnable runnable );
-
-	void invokeAndWait( Runnable runnable ) throws InterruptedException, java.lang.reflect.InvocationTargetException;
-
-	void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable );
+	private final Object imageLock = "imageLock";
+	private java.awt.image.BufferedImage image;
+	private boolean isRightSideUp;
 }

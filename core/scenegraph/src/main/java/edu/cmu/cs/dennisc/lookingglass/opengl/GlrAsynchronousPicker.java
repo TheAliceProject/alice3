@@ -45,20 +45,20 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class GlRtAsynchronousPicker implements edu.cmu.cs.dennisc.renderer.AsynchronousPicker {
-	public GlRtAsynchronousPicker( AbstractLookingGlass glrtRenderTarget ) {
-		this.glrtRenderTarget = glrtRenderTarget;
+/*package-private*/class GlrAsynchronousPicker implements edu.cmu.cs.dennisc.renderer.AsynchronousPicker {
+	public GlrAsynchronousPicker( AbstractLookingGlass glrRenderTarget ) {
+		this.glrRenderTarget = glrRenderTarget;
 	}
 
 	@Override
 	public void pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickAllObserver observer ) {
-		this.glrtRenderTarget.getGlEventAdapter().addDisplayTask( new PickAllDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
+		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new PickAllDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
 	}
 
 	@Override
 	public void pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickFrontMostObserver observer ) {
-		this.glrtRenderTarget.getGlEventAdapter().addDisplayTask( new PickFrontMostDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
+		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new PickFrontMostDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
 	}
 
-	private final AbstractLookingGlass glrtRenderTarget;
+	private final AbstractLookingGlass glrRenderTarget;
 }

@@ -46,5 +46,4 @@ package edu.cmu.cs.dennisc.renderer;
  * @author Dennis Cosgrove
  */
 public interface ColorAndDepthBuffers extends ColorBuffer {
-	java.nio.FloatBuffer getDepthBuffer();
 }
