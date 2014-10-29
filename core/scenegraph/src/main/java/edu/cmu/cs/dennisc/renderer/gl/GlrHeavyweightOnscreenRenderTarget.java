@@ -86,7 +86,7 @@ class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<java.aw
 	}
 
 	@Override
-	protected java.awt.Dimension getSize( java.awt.Dimension rv ) {
+	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
 		return m_glCanvas.getSize( rv );
 	}
 

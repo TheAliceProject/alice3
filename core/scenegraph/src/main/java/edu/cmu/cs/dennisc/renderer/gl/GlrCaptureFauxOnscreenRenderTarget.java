@@ -115,7 +115,7 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 	}
 
 	@Override
-	protected java.awt.Dimension getSize( java.awt.Dimension rv ) {
+	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
 		rv.setSize( this.size );
 		return rv;
 	}

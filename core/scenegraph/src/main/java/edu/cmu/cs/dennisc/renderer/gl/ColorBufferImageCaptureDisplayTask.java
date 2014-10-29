@@ -54,9 +54,8 @@ public class ColorBufferImageCaptureDisplayTask extends ImageCaptureDisplayTask 
 	@Override
 	public void handleDisplay( GlrRenderTarget glrRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
 		synchronized( this.glrColorBuffer.getImageLock() ) {
-			int width = glrRenderTarget.getWidth();
-			int height = glrRenderTarget.getHeight();
-			java.awt.image.BufferedImage rvColor = this.glrColorBuffer.acquireImage( width, height, false );
+			java.awt.Dimension surfaceSize = glrRenderTarget.getSurfaceSize();
+			java.awt.image.BufferedImage rvColor = this.glrColorBuffer.acquireImage( surfaceSize.width, surfaceSize.height, false );
 			try {
 				boolean[] atIsUpsideDown = null; //TODO
 				this.handleDisplay( gl, rvColor, null, atIsUpsideDown );

@@ -54,10 +54,9 @@ public class ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTas
 	@Override
 	public void handleDisplay( GlrRenderTarget glrRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
 		synchronized( this.colorAndDepthBuffers.getImageLock() ) {
-			int width = glrRenderTarget.getWidth();
-			int height = glrRenderTarget.getHeight();
-			java.awt.image.BufferedImage rvColor = this.colorAndDepthBuffers.acquireImage( width, height, true );
-			java.nio.FloatBuffer rvDepth = this.colorAndDepthBuffers.acquireFloatBuffer( width, height );
+			java.awt.Dimension surfaceSize = glrRenderTarget.getSurfaceSize();
+			java.awt.image.BufferedImage rvColor = this.colorAndDepthBuffers.acquireImage( surfaceSize.width, surfaceSize.height, true );
+			java.nio.FloatBuffer rvDepth = this.colorAndDepthBuffers.acquireFloatBuffer( surfaceSize.width, surfaceSize.height );
 			try {
 				boolean[] atIsUpsideDown = null; //TODO
 				this.handleDisplay( gl, rvColor, rvDepth, atIsUpsideDown );

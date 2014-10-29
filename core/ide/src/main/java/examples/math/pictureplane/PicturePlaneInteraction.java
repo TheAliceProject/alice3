@@ -136,7 +136,7 @@ public abstract class PicturePlaneInteraction {
 	private void planeDrag( java.awt.event.MouseEvent e ) {
 		//todo: account for viewport
 		int x = e.getX();
-		int y = this.onscreenRenderTarget.getHeight() - e.getY();
+		int y = this.onscreenRenderTarget.getSurfaceHeight() - e.getY();
 
 		edu.cmu.cs.dennisc.math.Vector4 xyzwInViewportSpace = new edu.cmu.cs.dennisc.math.Vector4( x, y, this.planeZ0, 1.0 );
 

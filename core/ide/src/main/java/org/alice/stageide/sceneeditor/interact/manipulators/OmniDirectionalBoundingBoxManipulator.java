@@ -119,7 +119,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		if( ( dotProd == 1 ) || ( dotProd == -1 ) ) {
 			Point3 cameraPosition = orthoCamera.getAbsoluteTransformation().translation;
 			ClippedZPlane dummyPlane = new ClippedZPlane( orthoCamera.picturePlane.getValue(), this.onscreenRenderTarget.getActualViewport( orthoCamera ) );
-			double yRatio = this.onscreenRenderTarget.getHeight() / dummyPlane.getHeight();
+			double yRatio = this.onscreenRenderTarget.getSurfaceHeight() / dummyPlane.getHeight();
 			double horizonInCameraSpace = 0.0d - cameraPosition.y;
 			double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
 			int horizonLinePixelVal = (int)( yRatio * distanceFromMaxY );
@@ -131,7 +131,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 	private boolean isHorizonInView() {
 		assert this.camera instanceof OrthographicCamera;
 		int horizonLinePixelVal = this.getHorizonPixelLocation();
-		double lookingGlassHeight = this.onscreenRenderTarget.getHeight();
+		double lookingGlassHeight = this.onscreenRenderTarget.getSurfaceHeight();
 		if( ( horizonLinePixelVal >= 0 ) && ( horizonLinePixelVal <= lookingGlassHeight ) ) {
 			return true;
 		}

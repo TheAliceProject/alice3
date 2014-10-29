@@ -70,19 +70,18 @@ public class IsInViewDetector {
 	}
 
 	private static boolean isInView( CameraImp camera, Point[] awtPoints, Point3[] relativeToCamera ) {
-		int width = camera.getScene().getProgram().getOnscreenRenderTarget().getWidth();
-		int height = camera.getScene().getProgram().getOnscreenRenderTarget().getWidth();
+		java.awt.Dimension surfaceSize = camera.getScene().getProgram().getOnscreenRenderTarget().getSurfaceSize();
 		boolean leftOf = false;
 		boolean rightOf = false;
 		boolean above = false;
 		boolean below = false;
 		for( int i = 0; i != awtPoints.length; ++i ) {
-			if( ( awtPoints[ i ].x < width ) && ( awtPoints[ i ].x > 0 ) && ( awtPoints[ i ].y < height ) && ( awtPoints[ i ].y > 0 ) ) {
+			if( ( awtPoints[ i ].x < surfaceSize.width ) && ( awtPoints[ i ].x > 0 ) && ( awtPoints[ i ].y < surfaceSize.height ) && ( awtPoints[ i ].y > 0 ) ) {
 				if( relativeToCamera[ i ].z < 0 ) {
 					return true;
 				}
 			} else {
-				if( awtPoints[ i ].x > width ) {
+				if( awtPoints[ i ].x > surfaceSize.width ) {
 					if( relativeToCamera[ i ].z < 0 ) {
 						rightOf = true;
 					}
@@ -92,7 +91,7 @@ public class IsInViewDetector {
 						leftOf = true;
 					}
 				}
-				if( awtPoints[ i ].y > height ) {
+				if( awtPoints[ i ].y > surfaceSize.height ) {
 					if( relativeToCamera[ i ].z < 0 ) {
 						above = true;
 					}

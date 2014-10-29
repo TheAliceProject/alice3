@@ -75,7 +75,7 @@ public class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		}
 
 		private void prologue() {
-			( (Graphics2D)getGraphics2D() ).initialize( getTypedSource().getWidth(), getTypedSource().getHeight() );
+			( (Graphics2D)getGraphics2D() ).initialize( getTypedSource().getSurfaceSize() );
 		}
 
 		private void epilogue() {
@@ -164,7 +164,7 @@ public class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			if( this.isDisplayIgnoredDueToPreviousException ) {
 				//pass
 			} else if( ( this.width == 0 ) || ( this.height == 0 ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, this.lookingGlass.getSize() );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, this.lookingGlass.getSurfaceSize() );
 			} else {
 				try {
 					//todo: separate clearing and rendering

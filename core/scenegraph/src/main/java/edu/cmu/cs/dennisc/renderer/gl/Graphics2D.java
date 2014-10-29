@@ -116,10 +116,10 @@ public class Graphics2D extends edu.cmu.cs.dennisc.renderer.Graphics2D {
 		this.setRenderingHints( map );
 	}
 
-	public void initialize( int width, int height ) {
+	public void initialize( java.awt.Dimension surfaceSize ) {
 		assert this.renderContext.gl != null;
-		this.width = width;
-		this.height = height;
+		this.width = surfaceSize.width;
+		this.height = surfaceSize.height;
 
 		setPaint( DEFAULT_PAINT );
 		setBackground( DEFAULT_BACKGROUND );

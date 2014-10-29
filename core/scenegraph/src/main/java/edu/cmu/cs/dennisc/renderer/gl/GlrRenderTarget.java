@@ -324,26 +324,25 @@ abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasa
 		return java.util.Collections.unmodifiableList( m_lookingGlassListeners );
 	}
 
-	protected abstract java.awt.Dimension getSize( java.awt.Dimension rv );
+	protected abstract java.awt.Dimension getSurfaceSize( java.awt.Dimension rv );
 
 	@Override
-	public final java.awt.Dimension getSize() {
-		return getSize( new java.awt.Dimension() );
-
+	public final java.awt.Dimension getSurfaceSize() {
+		return getSurfaceSize( new java.awt.Dimension() );
 	}
 
 	@Override
-	public final int getWidth() {
+	public final int getSurfaceWidth() {
 		synchronized( s_sizeBufferForReuse ) {
-			getSize( s_sizeBufferForReuse );
+			getSurfaceSize( s_sizeBufferForReuse );
 			return s_sizeBufferForReuse.width;
 		}
 	}
 
 	@Override
-	public final int getHeight() {
+	public final int getSurfaceHeight() {
 		synchronized( s_sizeBufferForReuse ) {
-			getSize( s_sizeBufferForReuse );
+			getSurfaceSize( s_sizeBufferForReuse );
 			return s_sizeBufferForReuse.height;
 		}
 	}
@@ -361,7 +360,8 @@ abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasa
 	}
 
 	public java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter ) {
-		return cameraAdapter.getActualViewport( rv, getWidth(), getHeight() );
+		java.awt.Dimension surfaceSize = this.getSurfaceSize();
+		return cameraAdapter.getActualViewport( rv, surfaceSize.width, surfaceSize.height );
 	}
 
 	@Override

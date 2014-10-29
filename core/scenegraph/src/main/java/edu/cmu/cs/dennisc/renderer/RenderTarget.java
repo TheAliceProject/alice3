@@ -48,11 +48,11 @@ package edu.cmu.cs.dennisc.renderer;
 public interface RenderTarget {
 	RenderFactory getRenderFactory();
 
-	int getWidth();
+	int getSurfaceWidth();
 
-	int getHeight();
+	int getSurfaceHeight();
 
-	java.awt.Dimension getSize();
+	java.awt.Dimension getSurfaceSize();
 
 	String getDescription();
 

@@ -1174,7 +1174,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		double dotProd = Vector3.calculateDotProduct( cameraTransform.orientation.up, Vector3.accessPositiveYAxis() );
 		if( ( dotProd == 1 ) || ( dotProd == -1 ) )
 		{
-			Dimension lookingGlassSize = renderTarget.getSize();
+			Dimension lookingGlassSize = renderTarget.getSurfaceSize();
 
 			Point3 cameraPosition = camera.getAbsoluteTransformation().translation;
 
@@ -1182,7 +1182,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			double lookingGlassHeight = lookingGlassSize.getHeight();
 
-			double yRatio = this.onscreenRenderTarget.getHeight() / dummyPlane.getHeight();
+			double yRatio = this.onscreenRenderTarget.getSurfaceHeight() / dummyPlane.getHeight();
 			double horizonInCameraSpace = 0.0d - cameraPosition.y;
 			double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
 			int horizonLinePixelVal = (int)( yRatio * distanceFromMaxY );

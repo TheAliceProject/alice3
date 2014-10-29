@@ -133,7 +133,7 @@ class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.s
 	}
 
 	@Override
-	protected java.awt.Dimension getSize( java.awt.Dimension rv ) {
+	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
 		return this.glPanel.getSize( rv );
 	}
 
