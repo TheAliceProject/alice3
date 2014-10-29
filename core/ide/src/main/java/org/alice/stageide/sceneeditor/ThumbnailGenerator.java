@@ -50,7 +50,7 @@ public final class ThumbnailGenerator {
 	private final edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget offscreenRenderTarget;
 
 	public ThumbnailGenerator( int width, int height ) {
-		this.offscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenRenderTarget( width, height, null );
+		this.offscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.GlrRenderer.getInstance().createOffscreenRenderTarget( width, height, null );
 	}
 
 	public java.awt.image.BufferedImage createThumbnail() {

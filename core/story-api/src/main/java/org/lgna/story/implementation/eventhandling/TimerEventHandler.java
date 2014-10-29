@@ -54,7 +54,7 @@ import org.lgna.story.event.WhileContingencyListener;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory;
+import edu.cmu.cs.dennisc.lookingglass.opengl.GlrRenderer;
 import edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener;
 
@@ -81,12 +81,12 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 
 	public void enable() {
 		isEnabled = true;
-		LookingGlassFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
+		GlrRenderer.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
 	public void disable() {
 		isEnabled = false;
-		LookingGlassFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
+		GlrRenderer.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
 	public void addListener( TimeListener timerEventListener, Double frequency, MultipleEventPolicy policy ) {

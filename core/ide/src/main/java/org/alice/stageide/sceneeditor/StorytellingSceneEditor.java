@@ -228,7 +228,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			StorytellingSceneEditor.this.animator.update();
 		}
 	};
-	private edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createLightweightOnscreenRenderTarget();
+	private edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.GlrRenderer.getInstance().createLightweightOnscreenRenderTarget();
 
 	private class LookingGlassPanel extends org.lgna.croquet.views.CompassPointSpringPanel {
 		@Override
@@ -1157,15 +1157,15 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 
 	public void handleShowing() {
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().incrementAutomaticDisplayCount();
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.lookingglass.opengl.GlrRenderer.getInstance().incrementAutomaticDisplayCount();
+		edu.cmu.cs.dennisc.lookingglass.opengl.GlrRenderer.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
 		this.showLookingGlassPanel();
 	}
 
 	public void handleHiding() {
 		this.hideLookingGlassPanel();
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().decrementAutomaticDisplayCount();
+		edu.cmu.cs.dennisc.lookingglass.opengl.GlrRenderer.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.lookingglass.opengl.GlrRenderer.getInstance().decrementAutomaticDisplayCount();
 	}
 
 	private void paintHorizonLine( Graphics graphics, edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget renderTarget, OrthographicCamera camera )

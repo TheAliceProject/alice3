@@ -122,7 +122,7 @@ class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.s
 	private RenderPane glPanel = new RenderPane();
 
 	//	private javax.media.opengl.GLJPanel glPanel = new javax.media.opengl.GLJPanel();
-	/* package-private */GlrLightweightOnscreenRenderTarget( LookingGlassFactory lookingGlassFactory ) {
+	/* package-private */GlrLightweightOnscreenRenderTarget( GlrRenderer lookingGlassFactory ) {
 		super( lookingGlassFactory );
 		this.glPanel.setFocusable( true );
 	}

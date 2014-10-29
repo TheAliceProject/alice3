@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 class GlrOffscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget {
 	private final javax.media.opengl.GLOffscreenAutoDrawable glPbuffer;
 
-	/* package-private */GlrOffscreenRenderTarget( LookingGlassFactory lookingGlassFactory, int width, int height, GlrRenderTarget lookingGlassToShareContextWith ) {
+	/* package-private */GlrOffscreenRenderTarget( GlrRenderer lookingGlassFactory, int width, int height, GlrRenderTarget lookingGlassToShareContextWith ) {
 		super( lookingGlassFactory );
 		javax.media.opengl.GLContext share;
 		if( lookingGlassToShareContextWith != null ) {

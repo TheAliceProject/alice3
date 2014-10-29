@@ -99,7 +99,7 @@ public abstract class AbstractThumbnailMaker {
 		this.sgCamera.farClippingPlaneDistance.setValue( 1000.0 );
 		this.sgCamera.nearClippingPlaneDistance.setValue( .1 );
 		this.sgCamera.setParent( this.sgCameraVehicle );
-		this.offscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenRenderTarget( this.width * this.antAliasFactor, this.height * this.antAliasFactor, null );
+		this.offscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.GlrRenderer.getInstance().createOffscreenRenderTarget( this.width * this.antAliasFactor, this.height * this.antAliasFactor, null );
 		setUpCamera( this.offscreenRenderTarget );
 	}
 

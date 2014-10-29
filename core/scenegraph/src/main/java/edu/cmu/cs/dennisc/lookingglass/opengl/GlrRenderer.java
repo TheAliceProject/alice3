@@ -80,45 +80,20 @@ class WaitingRunnable implements Runnable {
 /**
  * @author Dennis Cosgrove
  */
-public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFactory, edu.cmu.cs.dennisc.pattern.event.ReleaseListener {
+public class GlrRenderer implements edu.cmu.cs.dennisc.renderer.RenderFactory {
 	static {
 		edu.cmu.cs.dennisc.renderer.RendererNativeLibraryLoader.initializeIfNecessary();
 	}
 
 	private static class SingletonHolder {
-		private static LookingGlassFactory instance = new LookingGlassFactory();
+		private static GlrRenderer instance = new GlrRenderer();
 	}
 
-	public static LookingGlassFactory getInstance() {
+	public static GlrRenderer getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private final java.util.List<GlrLightweightOnscreenRenderTarget> lightweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<GlrHeavyweightOnscreenRenderTarget> heavyweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<GlrOffscreenRenderTarget> offscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-
-	private final java.util.List<edu.cmu.cs.dennisc.pattern.Releasable> toBeReleased = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.Queue<Runnable> runnables = edu.cmu.cs.dennisc.java.util.Queues.newConcurrentLinkedQueue();
-
-	private final java.util.concurrent.Semaphore renderingLock = new java.util.concurrent.Semaphore( 1 );
-
-	private static class ReusableAutomaticDisplayEvent extends edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent {
-		public ReusableAutomaticDisplayEvent( LookingGlassFactory lookingGlassFactory ) {
-			super( lookingGlassFactory );
-		}
-
-		@Override
-		public boolean isReservedForReuse() {
-			return true;
-		}
-	};
-
-	private final ReusableAutomaticDisplayEvent reusableAutomaticDisplayEvent = new ReusableAutomaticDisplayEvent( this );
-	private final java.util.List<edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener> automaticDisplayListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-
-	private Animator animator = null;
-
-	private LookingGlassFactory() {
+	private GlrRenderer() {
 	}
 
 	@Override
@@ -203,7 +178,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 		} else {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.automaticDisplayCount", this.automaticDisplayCount );
 		}
-		LookingGlassFactory.this.handleDisplayed();
+		GlrRenderer.this.handleDisplayed();
 		return rv;
 	}
 
@@ -235,7 +210,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 			this.animator = new Animator() {
 				@Override
 				protected ThreadDeferenceAction step() {
-					return LookingGlassFactory.this.step();
+					return GlrRenderer.this.step();
 				}
 			};
 			this.animator.start();
@@ -248,20 +223,9 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 	}
 
 	@Override
-	public void releasing( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
-	}
-
-	@Override
-	public void released( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
-		synchronized( this.toBeReleased ) {
-			this.toBeReleased.add( releaseEvent.getTypedSource() );
-		}
-	}
-
-	@Override
 	public edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
 		GlrHeavyweightOnscreenRenderTarget holg = new GlrHeavyweightOnscreenRenderTarget( this );
-		holg.addReleaseListener( this );
+		holg.addReleaseListener( this.releaseListener );
 		this.heavyweightOnscreenLookingGlasses.add( holg );
 		return holg;
 	}
@@ -269,7 +233,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 	@Override
 	public edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
 		GlrLightweightOnscreenRenderTarget lolg = new GlrLightweightOnscreenRenderTarget( this );
-		lolg.addReleaseListener( this );
+		lolg.addReleaseListener( this.releaseListener );
 		this.lightweightOnscreenLookingGlasses.add( lolg );
 		return lolg;
 	}
@@ -278,7 +242,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 	public edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, edu.cmu.cs.dennisc.renderer.RenderTarget renderTargetToShareContextWith ) {
 		assert ( renderTargetToShareContextWith == null ) || ( renderTargetToShareContextWith instanceof GlrRenderTarget );
 		GlrOffscreenRenderTarget olg = new GlrOffscreenRenderTarget( this, width, height, (GlrRenderTarget)renderTargetToShareContextWith );
-		olg.addReleaseListener( this );
+		olg.addReleaseListener( this.releaseListener );
 		this.offscreenLookingGlasses.add( olg );
 		return olg;
 	}
@@ -351,4 +315,42 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.renderer.RenderFa
 			throw new RuntimeException( ie );
 		}
 	}
+
+	private final edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener = new edu.cmu.cs.dennisc.pattern.event.ReleaseListener() {
+		@Override
+		public void releasing( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
+		}
+
+		@Override
+		public void released( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent releaseEvent ) {
+			synchronized( toBeReleased ) {
+				toBeReleased.add( releaseEvent.getTypedSource() );
+			}
+		}
+	};
+
+	private final java.util.List<GlrLightweightOnscreenRenderTarget> lightweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.List<GlrHeavyweightOnscreenRenderTarget> heavyweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.List<GlrOffscreenRenderTarget> offscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+
+	private final java.util.List<edu.cmu.cs.dennisc.pattern.Releasable> toBeReleased = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final java.util.Queue<Runnable> runnables = edu.cmu.cs.dennisc.java.util.Queues.newConcurrentLinkedQueue();
+
+	private final java.util.concurrent.Semaphore renderingLock = new java.util.concurrent.Semaphore( 1 );
+
+	private static class ReusableAutomaticDisplayEvent extends edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent {
+		public ReusableAutomaticDisplayEvent( GlrRenderer lookingGlassFactory ) {
+			super( lookingGlassFactory );
+		}
+
+		@Override
+		public boolean isReservedForReuse() {
+			return true;
+		}
+	};
+
+	private final ReusableAutomaticDisplayEvent reusableAutomaticDisplayEvent = new ReusableAutomaticDisplayEvent( this );
+	private final java.util.List<edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener> automaticDisplayListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+
+	private Animator animator = null;
 }

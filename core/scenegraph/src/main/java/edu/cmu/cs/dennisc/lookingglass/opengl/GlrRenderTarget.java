@@ -84,7 +84,7 @@ abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasa
 
 	protected abstract javax.media.opengl.GLAutoDrawable getGLAutoDrawable();
 
-	private LookingGlassFactory m_lookingGlassFactory;
+	private GlrRenderer m_lookingGlassFactory;
 
 	private boolean m_isRenderingEnabled = true;
 
@@ -94,7 +94,7 @@ abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasa
 	private final GlrAsynchronousPicker glrAsynchronousPicker = new GlrAsynchronousPicker( this );
 	private final GlrAsynchronousImageCapturer glrAsynchronousImageCapturer = new GlrAsynchronousImageCapturer( this );
 
-	protected GlrRenderTarget( LookingGlassFactory lookingGlassFactory ) {
+	protected GlrRenderTarget( GlrRenderer lookingGlassFactory ) {
 		m_lookingGlassFactory = lookingGlassFactory;
 	}
 

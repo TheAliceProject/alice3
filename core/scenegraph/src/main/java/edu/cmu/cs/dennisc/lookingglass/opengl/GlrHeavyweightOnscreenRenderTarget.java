@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<java.awt.Component> implements edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget {
 	private javax.media.opengl.awt.GLCanvas m_glCanvas;
 
-	/* package-private */GlrHeavyweightOnscreenRenderTarget( LookingGlassFactory lookingGlassFactory ) {
+	/* package-private */GlrHeavyweightOnscreenRenderTarget( GlrRenderer lookingGlassFactory ) {
 		super( lookingGlassFactory );
 		m_glCanvas = GlDrawableUtilities.createGLCanvas();
 		//m_glCanvas.getChosenGLCapabilities().getDepthBits();

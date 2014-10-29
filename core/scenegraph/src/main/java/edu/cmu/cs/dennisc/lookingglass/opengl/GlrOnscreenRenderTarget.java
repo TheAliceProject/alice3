@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 abstract class GlrOnscreenRenderTarget<C extends java.awt.Component> extends GlrRenderTarget implements edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<C> {
-	protected GlrOnscreenRenderTarget( LookingGlassFactory lookingGlassFactory ) {
+	protected GlrOnscreenRenderTarget( GlrRenderer lookingGlassFactory ) {
 		super( lookingGlassFactory );
 	}
 

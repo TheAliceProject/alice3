@@ -55,7 +55,7 @@ public class IconRenderTest {
 
 		java.awt.Dimension size = new java.awt.Dimension( 512, 512 );
 
-		edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance();
+		edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = edu.cmu.cs.dennisc.lookingglass.opengl.GlrRenderer.getInstance();
 
 		final edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget offscreenRenderTarget = renderFactory.createOffscreenRenderTarget( size.width, size.height, null );
 
