@@ -1,6 +1,6 @@
 package edu.cmu.cs.dennisc.nebulous;
 
-import edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.VisualAdapter;
 
 /**
  * @author Dennis Cosgrove
@@ -42,7 +42,7 @@ public class ModelAdapter<E extends Model> extends GenericModelAdapter<E> {
 			rv.setNaN();
 		} else {
 			direction.normalize();
-			edu.cmu.cs.dennisc.lookingglass.opengl.GeometryAdapter.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, direction.x, 0, direction.z );
+			edu.cmu.cs.dennisc.lookingglass.opengl.adapters.GeometryAdapter.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, direction.x, 0, direction.z );
 		}
 		return rv;
 	}

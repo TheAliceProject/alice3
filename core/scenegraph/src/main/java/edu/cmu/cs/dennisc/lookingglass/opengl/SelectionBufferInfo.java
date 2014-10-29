@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.VisualAdapter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -100,7 +102,7 @@ public class SelectionBufferInfo {
 
 	public edu.cmu.cs.dennisc.scenegraph.Visual getSGVisual() {
 		if( this.visualAdapter != null ) {
-			return this.visualAdapter.m_element;
+			return this.visualAdapter.getElement();
 		} else {
 			return null;
 		}

@@ -43,6 +43,12 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.ComponentAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.CompositeAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.ElementAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.LayerAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.TextureAdapter;
+
 /**
  * @author Dennis Cosgrove
  */

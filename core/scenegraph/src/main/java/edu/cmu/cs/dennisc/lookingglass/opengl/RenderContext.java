@@ -66,6 +66,9 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_NORMALIZE;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.GeometryAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.MultipleAppearanceAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.TextureAdapter;
 
 /**
  * @author Dennis Cosgrove
@@ -591,7 +594,7 @@ public class RenderContext extends Context {
 		}
 	}
 
-	protected void renderVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
+	public void renderVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
 		if( this.currDiffuseColorTextureAdapter != null ) {
 			if( vertex.textureCoordinate0.isNaN() == false ) {
 				float u = this.currDiffuseColorTextureAdapter.mapU( vertex.textureCoordinate0.u );

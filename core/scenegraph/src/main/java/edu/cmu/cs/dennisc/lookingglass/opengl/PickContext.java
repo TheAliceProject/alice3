@@ -44,6 +44,9 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.SceneAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.VisualAdapter;
 
 /**
  * @author Dennis Cosgrove
@@ -75,7 +78,7 @@ public class PickContext extends Context {
 	protected void disableNormalize() {
 	}
 
-	protected void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
+	public void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
 		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
 	}
 

@@ -43,6 +43,28 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.AbstractElementAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.AppearanceAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.BackgroundAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.BufferedImageTextureAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.ComponentAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.CompositeAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.ElementAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.FrustumPerspectiveCameraAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.GeometryAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.GhostAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.GraphicAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.LayerAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.MultipleAppearanceAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.OrthographicCameraAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.ProjectionCameraAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.SceneAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.SymmetricPerspectiveCameraAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.TextureAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.TexturedAppearanceAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.TransformableAdapter;
+
 //public class AdapterFactory {
 //	private static AdapterFactory s_singleton = new AdapterFactory();
 //	private AdapterFactory() {
@@ -65,7 +87,7 @@ public abstract class AdapterFactory {
 	private static final String SCENEGRAPH_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.Element.class.getPackage().getName();
 	private static final String RENDERER_PACKAGE_NAME = ElementAdapter.class.getPackage().getName();
 	private static final String SCENEGRAPH_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.graphics.Text.class.getPackage().getName();
-	private static final String RENDERER_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.lookingglass.opengl.graphics.TextAdapter.class.getPackage().getName();
+	private static final String RENDERER_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.lookingglass.opengl.adapters.graphics.TextAdapter.class.getPackage().getName();
 
 	static {
 		register( edu.cmu.cs.dennisc.texture.BufferedImageTexture.class, BufferedImageTextureAdapter.class );
@@ -145,7 +167,7 @@ public abstract class AdapterFactory {
 						// not create rv for: " + sgElement );
 					}
 				} else {
-					if( rv.m_element == null ) {
+					if( rv.getElement() == null ) {
 						rv = null;
 						// todo
 						// edu.cmu.cs.dennisc.pattern.AbstractElement.warnln( sgElement + "'s

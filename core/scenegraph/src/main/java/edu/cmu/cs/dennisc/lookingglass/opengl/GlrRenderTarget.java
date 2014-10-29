@@ -43,6 +43,11 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.FrustumPerspectiveCameraAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.OrthographicCameraAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.SymmetricPerspectiveCameraAdapter;
+
 //class TextureGraphicsCommit {
 //	private TextureAdapter m_textureAdapter;
 //	private java.awt.Graphics2D m_g;
