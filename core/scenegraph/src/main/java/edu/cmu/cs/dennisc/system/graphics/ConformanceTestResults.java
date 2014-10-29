@@ -56,8 +56,8 @@ import static javax.media.opengl.GL2.GL_RENDER;
 import static javax.media.opengl.GL2.GL_SELECT;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
-import edu.cmu.cs.dennisc.lookingglass.opengl.GetUtilities;
-import edu.cmu.cs.dennisc.lookingglass.opengl.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.GetUtilities;
+import edu.cmu.cs.dennisc.renderer.gl.PickContext;
 
 /**
  * @author Dennis Cosgrove

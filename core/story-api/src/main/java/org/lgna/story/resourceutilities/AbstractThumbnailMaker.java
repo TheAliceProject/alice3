@@ -48,14 +48,14 @@ import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
-import edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory;
-import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.AbstractCameraAdapter;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Hexahedron;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.renderer.gl.AdapterFactory;
+import edu.cmu.cs.dennisc.renderer.gl.adapters.AbstractCameraAdapter;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -99,7 +99,7 @@ public abstract class AbstractThumbnailMaker {
 		this.sgCamera.farClippingPlaneDistance.setValue( 1000.0 );
 		this.sgCamera.nearClippingPlaneDistance.setValue( .1 );
 		this.sgCamera.setParent( this.sgCameraVehicle );
-		this.offscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.GlrRenderer.getInstance().createOffscreenRenderTarget( this.width * this.antAliasFactor, this.height * this.antAliasFactor, null );
+		this.offscreenRenderTarget = edu.cmu.cs.dennisc.renderer.gl.GlrRenderer.getInstance().createOffscreenRenderTarget( this.width * this.antAliasFactor, this.height * this.antAliasFactor, null );
 		setUpCamera( this.offscreenRenderTarget );
 	}
 
@@ -110,8 +110,8 @@ public abstract class AbstractThumbnailMaker {
 			synchronized( cameras ) {
 				for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : cameras ) {
 					AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
-					edu.cmu.cs.dennisc.lookingglass.opengl.adapters.SceneAdapter sceneAdapter = cameraAdapterI.getSceneAdapter();
-					edu.cmu.cs.dennisc.lookingglass.opengl.adapters.ComponentAdapter<?> componentAdapter = AdapterFactory.getAdapterFor( sgComponent );
+					edu.cmu.cs.dennisc.renderer.gl.adapters.SceneAdapter sceneAdapter = cameraAdapterI.getSceneAdapter();
+					edu.cmu.cs.dennisc.renderer.gl.adapters.ComponentAdapter<?> componentAdapter = AdapterFactory.getAdapterFor( sgComponent );
 					if( componentAdapter != null ) {
 						sceneAdapter.removeDescendant( componentAdapter );
 					}

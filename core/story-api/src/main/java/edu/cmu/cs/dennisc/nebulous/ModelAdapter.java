@@ -1,6 +1,6 @@
 package edu.cmu.cs.dennisc.nebulous;
 
-import edu.cmu.cs.dennisc.lookingglass.opengl.adapters.VisualAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.adapters.VisualAdapter;
 
 /**
  * @author Dennis Cosgrove
@@ -18,12 +18,12 @@ public class ModelAdapter<E extends Model> extends GenericModelAdapter<E> {
 	}
 
 	@Override
-	protected void pickGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, boolean isSubElementRequired ) {
+	protected void pickGeometry( edu.cmu.cs.dennisc.renderer.gl.PickContext pc, boolean isSubElementRequired ) {
 		m_element.synchronizedPick();
 	}
 
 	@Override
-	protected void renderGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, VisualAdapter.RenderType renderType ) {
+	protected void renderGeometry( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc, VisualAdapter.RenderType renderType ) {
 		//		if( rc.isGLChanged() ) {
 		//			m_element.forget();
 		//		}
@@ -42,7 +42,7 @@ public class ModelAdapter<E extends Model> extends GenericModelAdapter<E> {
 			rv.setNaN();
 		} else {
 			direction.normalize();
-			edu.cmu.cs.dennisc.lookingglass.opengl.adapters.GeometryAdapter.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, direction.x, 0, direction.z );
+			edu.cmu.cs.dennisc.renderer.gl.adapters.GeometryAdapter.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, direction.x, 0, direction.z );
 		}
 		return rv;
 	}

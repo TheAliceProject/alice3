@@ -9,7 +9,7 @@ package edu.cmu.cs.dennisc.nebulous;
  */
 public class Person extends Model {
 	static {
-		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( Person.class, PersonAdapter.class );
+		edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.register( Person.class, PersonAdapter.class );
 	}
 
 	private final Object o;

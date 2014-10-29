@@ -116,9 +116,9 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		public void update( double tCurrent ) {
 			getView().updateTime( tCurrent );
 			edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> renderTarget = programContext.getProgramImp().getOnscreenRenderTarget();
-			if( renderTarget instanceof edu.cmu.cs.dennisc.lookingglass.opengl.GlrCaptureFauxOnscreenRenderTarget ) {
-				edu.cmu.cs.dennisc.lookingglass.opengl.GlrCaptureFauxOnscreenRenderTarget captureLookingGlass = (edu.cmu.cs.dennisc.lookingglass.opengl.GlrCaptureFauxOnscreenRenderTarget)renderTarget;
-				captureLookingGlass.captureImage( new edu.cmu.cs.dennisc.lookingglass.opengl.GlrCaptureFauxOnscreenRenderTarget.Observer() {
+			if( renderTarget instanceof edu.cmu.cs.dennisc.renderer.gl.GlrCaptureFauxOnscreenRenderTarget ) {
+				edu.cmu.cs.dennisc.renderer.gl.GlrCaptureFauxOnscreenRenderTarget captureLookingGlass = (edu.cmu.cs.dennisc.renderer.gl.GlrCaptureFauxOnscreenRenderTarget)renderTarget;
+				captureLookingGlass.captureImage( new edu.cmu.cs.dennisc.renderer.gl.GlrCaptureFauxOnscreenRenderTarget.Observer() {
 					@Override
 					public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown ) {
 						if( image != null ) {
