@@ -76,7 +76,7 @@ public class FieldDeclarationPane extends org.lgna.croquet.views.LineAxisPanel {
 		}
 		this.addComponent( TypeComponent.createInstance( field.getValueType() ) );
 		this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
-		org.lgna.croquet.views.Label nameLabel = this.createNameLabel();
+		org.lgna.croquet.views.AwtComponentView<?> nameLabel = this.createNameLabel();
 		nameLabel.scaleFont( 1.5f );
 		this.addComponent( nameLabel );
 		this.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
@@ -91,8 +91,8 @@ public class FieldDeclarationPane extends org.lgna.croquet.views.LineAxisPanel {
 		this.addComponent( component );
 	}
 
-	protected org.lgna.croquet.views.Label createNameLabel() {
-		return new org.alice.ide.ast.components.DeclarationNameLabel( this.field );
+	protected org.lgna.croquet.views.AwtComponentView<?> createNameLabel() {
+		return this.factory.createNameView( this.field );
 	}
 
 	private void updateFinalLabel() {

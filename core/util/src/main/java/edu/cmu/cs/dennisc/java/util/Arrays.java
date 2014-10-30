@@ -40,21 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package stringexample.croquet.views;
+package edu.cmu.cs.dennisc.java.util;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringExampleView extends org.lgna.croquet.views.BorderPanel {
-	public StringExampleView( stringexample.croquet.StringExampleComposite composite ) {
-		super( composite );
-		this.addLineStartComponent( composite.getNameState().getSidekickLabel().createLabel() );
+public class Arrays {
+	public Arrays() {
+		throw new AssertionError();
+	}
 
-		org.lgna.croquet.views.TextField textField = composite.getNameState().createTextField();
-		textField.setMinimumPreferredWidth( 200 );
-		this.addCenterComponent( textField );
+	public static int indexOf( Object[] array, Object item ) {
+		int i = 0;
+		for( Object o : array ) {
+			if( o == item ) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
 
-		org.lgna.croquet.views.SubduedTextField subtleTextField = composite.getNameState().createSubduedTextField();
-		this.addPageEndComponent( subtleTextField );
+	public static boolean contains( Object[] array, Object item ) {
+		return indexOf( array, item ) != -1;
 	}
 }

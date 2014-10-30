@@ -40,21 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package stringexample.croquet.views;
+package org.lgna.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringExampleView extends org.lgna.croquet.views.BorderPanel {
-	public StringExampleView( stringexample.croquet.StringExampleComposite composite ) {
-		super( composite );
-		this.addLineStartComponent( composite.getNameState().getSidekickLabel().createLabel() );
+public class SubduedTextField extends AbstractTextField<edu.cmu.cs.dennisc.javax.swing.components.JSubdudeTextField> {
+	public SubduedTextField( org.lgna.croquet.StringState model ) {
+		super( model, null );
+	}
 
-		org.lgna.croquet.views.TextField textField = composite.getNameState().createTextField();
-		textField.setMinimumPreferredWidth( 200 );
-		this.addCenterComponent( textField );
+	@Override
+	public void updateTextForBlankCondition( String textForBlankCondition ) {
+		this.getAwtComponent().setTextForBlankCondition( textForBlankCondition );
+	}
 
-		org.lgna.croquet.views.SubduedTextField subtleTextField = composite.getNameState().createSubduedTextField();
-		this.addPageEndComponent( subtleTextField );
+	@Override
+	protected edu.cmu.cs.dennisc.javax.swing.components.JSubdudeTextField createAwtComponent() {
+		return new edu.cmu.cs.dennisc.javax.swing.components.JSubdudeTextField();
 	}
 }

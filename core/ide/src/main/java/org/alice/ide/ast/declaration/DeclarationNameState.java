@@ -40,21 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package stringexample.croquet.views;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringExampleView extends org.lgna.croquet.views.BorderPanel {
-	public StringExampleView( stringexample.croquet.StringExampleComposite composite ) {
-		super( composite );
-		this.addLineStartComponent( composite.getNameState().getSidekickLabel().createLabel() );
+public class DeclarationNameState extends org.lgna.croquet.StringState {
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractDeclaration, DeclarationNameState> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
-		org.lgna.croquet.views.TextField textField = composite.getNameState().createTextField();
-		textField.setMinimumPreferredWidth( 200 );
-		this.addCenterComponent( textField );
+	public static DeclarationNameState getInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		if( declaration.getNamePropertyIfItExists() != null ) {
+			return map.getInitializingIfAbsent( declaration, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractDeclaration, DeclarationNameState>() {
+				@Override
+				public DeclarationNameState initialize( org.lgna.project.ast.AbstractDeclaration declaration ) {
+					return new DeclarationNameState( declaration );
+				}
+			} );
+		} else {
+			//todo: return disabled?
+			return null;
+		}
+	}
 
-		org.lgna.croquet.views.SubduedTextField subtleTextField = composite.getNameState().createSubduedTextField();
-		this.addPageEndComponent( subtleTextField );
+	private DeclarationNameState( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "068c5a03-ab10-4173-95b0-2cc163686f3c" ), declaration.getName() );
 	}
 }

@@ -48,6 +48,7 @@ package stringexample.croquet;
 public class StringExampleComposite extends org.lgna.croquet.SimpleComposite<stringexample.croquet.views.StringExampleView> {
 	public StringExampleComposite() {
 		super( java.util.UUID.fromString( "eacc4043-77b9-4cdc-aa2c-d91c16eee7a7" ) );
+		this.nameState.setValueTransactionlessly( "myFirstProcedure" );
 	}
 
 	public org.lgna.croquet.StringState getNameState() {
