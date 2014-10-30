@@ -45,24 +45,71 @@ package edu.cmu.cs.dennisc.javax.swing;
 /**
  * @author Dennis Cosgrove
  */
-public class UrlAsynchronousIcon extends AsynchronousWorkerIcon {
-	public UrlAsynchronousIcon( int iconWidthFallback, int iconHeightFallback, java.net.URL url ) {
-		super( iconWidthFallback, iconHeightFallback );
-		this.url = url;
+public abstract class AsynchronousWorkerIcon extends AsynchronousIcon {
+	private class IconWorker extends edu.cmu.cs.dennisc.worker.Worker<javax.swing.Icon> {
+		@Override
+		protected javax.swing.Icon do_onBackgroundThread() throws java.lang.Exception {
+			return AsynchronousWorkerIcon.this.do_onBackgroundThread();
+		}
+
+		@Override
+		protected void handleDone_onEventDispatchThread( javax.swing.Icon value ) {
+			AsynchronousWorkerIcon.this.handleDone_onEventDispatchThread( value );
+		}
+	}
+
+	public AsynchronousWorkerIcon( int iconWidthFallback, int iconHeightFallback ) {
+		this.iconWidthFallback = iconWidthFallback;
+		this.iconHeightFallback = iconHeightFallback;
 	}
 
 	@Override
-	protected void paintIconFallback( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		if( c.isOpaque() ) {
-			g.setColor( c.getBackground() );
-			g.fillRect( x, y, this.getIconWidthFallback(), this.getIconHeightFallback() );
+	protected int getIconWidthFallback() {
+		return this.iconWidthFallback;
+	}
+
+	@Override
+	protected int getIconHeightFallback() {
+		return this.iconHeightFallback;
+	}
+
+	private javax.swing.Icon getIconFromDoneWorker() {
+		try {
+			return this.worker.get_obviouslyLockingCurrentThreadUntilDone();
+		} catch( InterruptedException ie ) {
+			throw new Error( ie );
+		} catch( java.util.concurrent.ExecutionException ee ) {
+			throw new Error( ee );
 		}
 	}
 
 	@Override
-	protected javax.swing.Icon do_onBackgroundThread() throws java.lang.Exception {
-		return IconUtilities.createImageIcon( this.url );
+	protected javax.swing.Icon getResult( boolean isPaint ) {
+		if( this.worker != null ) {
+			if( this.worker.isDone() ) {
+				return this.getIconFromDoneWorker();
+			} else {
+				return null;
+			}
+		} else {
+			if( isPaint ) {
+				this.worker = new IconWorker();
+				this.worker.execute();
+				if( this.worker.isDone() ) {
+					return this.getIconFromDoneWorker();
+				}
+			}
+			return null;
+		}
 	}
 
-	private final java.net.URL url;
+	protected abstract javax.swing.Icon do_onBackgroundThread() throws java.lang.Exception;
+
+	private void handleDone_onEventDispatchThread( javax.swing.Icon value ) {
+		this.repaintComponentsIfNecessary();
+	}
+
+	private final int iconWidthFallback;
+	private final int iconHeightFallback;
+	private IconWorker worker;
 }
