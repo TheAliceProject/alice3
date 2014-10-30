@@ -61,6 +61,10 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return true;
 	}
 
+	public org.lgna.croquet.views.SwingComponentView<?> createNameView( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		return new org.alice.ide.ast.components.DeclarationNameLabel( declaration );
+	}
+
 	protected float getDeclarationNameFontScale() {
 		return 1.1f;
 	}

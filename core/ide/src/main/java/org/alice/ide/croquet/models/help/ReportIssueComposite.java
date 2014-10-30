@@ -42,8 +42,6 @@
  */
 package org.alice.ide.croquet.models.help;
 
-import java.awt.Color;
-
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.StringState;
@@ -78,7 +76,6 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 		super( java.util.UUID.fromString( "96e23d44-c8b1-4da1-8d59-aea9f7ee7b42" ), false );
 		this.reportTypeState = createImmutableListStateForEnum( "reportTypeState", edu.cmu.cs.dennisc.issue.IssueType.class, null );
 		this.registerSubComposite( logInOutComposite );
-		logInOutComposite.getLogOutCard().getUsernameLabel().getAwtComponent().setForeground( Color.WHITE );
 		this.reportBugLaunchOperation = this.getImp().createAndRegisterLaunchOperation( "reportBug", new IssueTypeInitializer( edu.cmu.cs.dennisc.issue.IssueType.BUG ) );
 		this.requestNewFeatureLaunchOperation = this.getImp().createAndRegisterLaunchOperation( "requestNewFeature", new IssueTypeInitializer( edu.cmu.cs.dennisc.issue.IssueType.NEW_FEATURE ) );
 		this.suggestImprovementLaunchOperation = this.getImp().createAndRegisterLaunchOperation( "suggestImprovement", new IssueTypeInitializer( edu.cmu.cs.dennisc.issue.IssueType.IMPROVEMENT ) );

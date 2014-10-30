@@ -40,26 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.croquet.views;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodHubHeaderView extends org.alice.ide.codeeditor.MethodHeaderPane {
-	private final org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> methodHub;
+public class DeclarationNameState extends org.lgna.croquet.StringState {
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractDeclaration, DeclarationNameState> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
-	public MethodHubHeaderView( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> methodHub ) {
-		super( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), methodHub.getMember(), true );
-		this.methodHub = methodHub;
+	public static DeclarationNameState getInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		if( declaration.getNamePropertyIfItExists() != null ) {
+			return map.getInitializingIfAbsent( declaration, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractDeclaration, DeclarationNameState>() {
+				@Override
+				public DeclarationNameState initialize( org.lgna.project.ast.AbstractDeclaration declaration ) {
+					return new DeclarationNameState( declaration );
+				}
+			} );
+		} else {
+			//todo: return disabled?
+			return null;
+		}
 	}
 
-	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createNameLabel() {
-		if( this.methodHub instanceof org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> ) {
-			org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> methodHubWithNameState = (org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?>)methodHub;
-			return new MemberHubNameLabel( methodHubWithNameState );
-		} else {
-			return super.createNameLabel();
-		}
+	private DeclarationNameState( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "068c5a03-ab10-4173-95b0-2cc163686f3c" ), declaration.getName() );
 	}
 }

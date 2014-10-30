@@ -40,26 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.croquet.views;
+package stringexample;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodHubHeaderView extends org.alice.ide.codeeditor.MethodHeaderPane {
-	private final org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> methodHub;
+public class StringExample {
+	public static void main( String[] args ) {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
+			public void run() {
+				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 
-	public MethodHubHeaderView( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> methodHub ) {
-		super( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), methodHub.getMember(), true );
-		this.methodHub = methodHub;
-	}
+				stringexample.croquet.StringExampleComposite composite = new stringexample.croquet.StringExampleComposite();
 
-	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createNameLabel() {
-		if( this.methodHub instanceof org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> ) {
-			org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> methodHubWithNameState = (org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?>)methodHub;
-			return new MemberHubNameLabel( methodHubWithNameState );
-		} else {
-			return super.createNameLabel();
-		}
+				org.lgna.croquet.views.Frame frame = app.getFrame();
+				frame.setTitle( "String Example" );
+				frame.setMainComposite( composite );
+				frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
+				frame.pack();
+				frame.setVisible( true );
+			}
+		} );
 	}
 }

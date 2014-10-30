@@ -40,26 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.croquet.views;
+package edu.cmu.cs.dennisc.java.util;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodHubHeaderView extends org.alice.ide.codeeditor.MethodHeaderPane {
-	private final org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> methodHub;
-
-	public MethodHubHeaderView( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> methodHub ) {
-		super( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), methodHub.getMember(), true );
-		this.methodHub = methodHub;
+public class Arrays {
+	public Arrays() {
+		throw new AssertionError();
 	}
 
-	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createNameLabel() {
-		if( this.methodHub instanceof org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> ) {
-			org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> methodHubWithNameState = (org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?>)methodHub;
-			return new MemberHubNameLabel( methodHubWithNameState );
-		} else {
-			return super.createNameLabel();
+	public static int indexOf( Object[] array, Object item ) {
+		int i = 0;
+		for( Object o : array ) {
+			if( o == item ) {
+				return i;
+			}
+			i++;
 		}
+		return -1;
+	}
+
+	public static boolean contains( Object[] array, Object item ) {
+		return indexOf( array, item ) != -1;
 	}
 }

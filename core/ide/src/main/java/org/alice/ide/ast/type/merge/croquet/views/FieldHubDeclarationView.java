@@ -54,7 +54,7 @@ public class FieldHubDeclarationView extends org.alice.ide.common.FieldDeclarati
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Label createNameLabel() {
+	protected org.lgna.croquet.views.AwtComponentView<?> createNameLabel() {
 		if( this.fieldHub instanceof org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> ) {
 			org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> fieldHubWithNameState = (org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?>)fieldHub;
 			return new MemberHubNameLabel( fieldHubWithNameState );

@@ -40,26 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.type.merge.croquet.views;
+package org.lgna.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodHubHeaderView extends org.alice.ide.codeeditor.MethodHeaderPane {
-	private final org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> methodHub;
-
-	public MethodHubHeaderView( org.alice.ide.ast.type.merge.croquet.MemberHub<org.lgna.project.ast.UserMethod> methodHub ) {
-		super( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), methodHub.getMember(), true );
-		this.methodHub = methodHub;
+public class SubduedTextField extends AbstractTextField<edu.cmu.cs.dennisc.javax.swing.components.JSubdudeTextField> {
+	public SubduedTextField( org.lgna.croquet.StringState model ) {
+		super( model, null );
 	}
 
 	@Override
-	protected org.lgna.croquet.views.SwingComponentView<?> createNameLabel() {
-		if( this.methodHub instanceof org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> ) {
-			org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> methodHubWithNameState = (org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?>)methodHub;
-			return new MemberHubNameLabel( methodHubWithNameState );
-		} else {
-			return super.createNameLabel();
-		}
+	public void updateTextForBlankCondition( String textForBlankCondition ) {
+		this.getAwtComponent().setTextForBlankCondition( textForBlankCondition );
+	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.javax.swing.components.JSubdudeTextField createAwtComponent() {
+		return new edu.cmu.cs.dennisc.javax.swing.components.JSubdudeTextField();
 	}
 }
