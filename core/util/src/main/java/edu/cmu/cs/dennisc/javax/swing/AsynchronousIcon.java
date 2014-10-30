@@ -45,71 +45,74 @@ package edu.cmu.cs.dennisc.javax.swing;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AsynchronousWorkerIcon extends AsynchronousIcon {
-	private class IconWorker extends edu.cmu.cs.dennisc.worker.Worker<javax.swing.Icon> {
-		@Override
-		protected javax.swing.Icon do_onBackgroundThread() throws java.lang.Exception {
-			return AsynchronousWorkerIcon.this.do_onBackgroundThread();
-		}
-
-		@Override
-		protected void handleDone_onEventDispatchThread( javax.swing.Icon value ) {
-			AsynchronousWorkerIcon.this.handleDone_onEventDispatchThread( value );
-		}
-	}
-
-	public AsynchronousWorkerIcon( int iconWidthFallback, int iconHeightFallback ) {
-		this.iconWidthFallback = iconWidthFallback;
-		this.iconHeightFallback = iconHeightFallback;
-	}
-
-	@Override
-	protected int getIconWidthFallback() {
-		return this.iconWidthFallback;
-	}
-
-	@Override
-	protected int getIconHeightFallback() {
-		return this.iconHeightFallback;
-	}
-
-	private javax.swing.Icon getIconFromDoneWorker() {
-		try {
-			return this.worker.get_obviouslyLockingCurrentThreadUntilDone();
-		} catch( InterruptedException ie ) {
-			throw new Error( ie );
-		} catch( java.util.concurrent.ExecutionException ee ) {
-			throw new Error( ee );
-		}
-	}
-
-	@Override
-	protected javax.swing.Icon getResult( boolean isPaint ) {
-		if( this.worker != null ) {
-			if( this.worker.isDone() ) {
-				return this.getIconFromDoneWorker();
-			} else {
-				return null;
-			}
+public abstract class AsynchronousIcon implements javax.swing.Icon {
+	protected static java.awt.Component getComponentToRepaint( java.awt.Component c ) {
+		java.awt.Container parent = c.getParent();
+		if( parent instanceof javax.swing.CellRendererPane ) {
+			java.awt.Container grandparent = parent.getParent();
+			return grandparent;
 		} else {
-			if( isPaint ) {
-				this.worker = new IconWorker();
-				this.worker.execute();
-				if( this.worker.isDone() ) {
-					return this.getIconFromDoneWorker();
-				}
-			}
-			return null;
+			return c;
 		}
 	}
 
-	protected abstract javax.swing.Icon do_onBackgroundThread() throws java.lang.Exception;
+	protected abstract int getIconWidthFallback();
 
-	private void handleDone_onEventDispatchThread( javax.swing.Icon value ) {
-		this.repaintComponentsIfNecessary();
+	protected abstract int getIconHeightFallback();
+
+	protected abstract void paintIconFallback( java.awt.Component c, java.awt.Graphics g, int x, int y );
+
+	protected abstract javax.swing.Icon getResult( boolean isPaint );
+
+	@Override
+	public final int getIconWidth() {
+		javax.swing.Icon icon = this.getResult( false );
+		if( icon != null ) {
+			return icon.getIconWidth();
+		} else {
+			return this.getIconWidthFallback();
+		}
 	}
 
-	private final int iconWidthFallback;
-	private final int iconHeightFallback;
-	private IconWorker worker;
+	@Override
+	public final int getIconHeight() {
+		javax.swing.Icon icon = this.getResult( false );
+		if( icon != null ) {
+			return icon.getIconHeight();
+		} else {
+			return this.getIconHeightFallback();
+		}
+	}
+
+	@Override
+	public final void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		javax.swing.Icon icon = this.getResult( true );
+		if( icon != null ) {
+			icon.paintIcon( c, g, x, y );
+		} else {
+			java.awt.Component componentToRepaint = getComponentToRepaint( c );
+			if( this.componentsToRepaint != null ) {
+				if( this.componentsToRepaint.contains( componentToRepaint ) ) {
+					//pass
+				} else {
+					this.componentsToRepaint.add( componentToRepaint );
+				}
+			} else {
+				this.componentsToRepaint = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( componentToRepaint );
+				//this.worker.execute();
+			}
+			this.paintIconFallback( c, g, x, y );
+		}
+	}
+
+	protected void repaintComponentsIfNecessary() {
+		if( this.componentsToRepaint != null ) {
+			for( java.awt.Component component : this.componentsToRepaint ) {
+				component.repaint();
+			}
+			this.componentsToRepaint = null;
+		}
+	}
+
+	private java.util.List<java.awt.Component> componentsToRepaint;
 }

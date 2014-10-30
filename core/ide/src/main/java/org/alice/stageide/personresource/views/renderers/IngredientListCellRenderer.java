@@ -79,11 +79,11 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( file );
 				urlForIcon = null;
 			}
-			if( urlForIcon != null ) {
-				//pass
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( path );
-			}
+			//			if( urlForIcon != null ) {
+			//				//pass
+			//			} else {
+			//				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( path );
+			//			}
 			pathMap.put( path, urlForIcon );
 		}
 		return urlForIcon;
