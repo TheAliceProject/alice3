@@ -76,7 +76,7 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 					urlForIcon = null;
 				}
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( file );
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( file );
 				urlForIcon = null;
 			}
 			//			if( urlForIcon != null ) {
