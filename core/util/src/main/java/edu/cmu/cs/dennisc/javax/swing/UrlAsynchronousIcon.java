@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.javax.swing;
 /**
  * @author Dennis Cosgrove
  */
-public class UrlAsynchronousIcon extends AsynchronousIcon {
+public class UrlAsynchronousIcon extends AsynchronousWorkerIcon {
 	public UrlAsynchronousIcon( int width, int height, java.net.URL url ) {
 		super( width, height );
 		this.url = url;

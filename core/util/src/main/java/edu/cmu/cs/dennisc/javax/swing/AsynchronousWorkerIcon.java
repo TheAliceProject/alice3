@@ -45,20 +45,20 @@ package edu.cmu.cs.dennisc.javax.swing;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AsynchronousIcon implements javax.swing.Icon {
+public abstract class AsynchronousWorkerIcon implements javax.swing.Icon {
 	private class IconWorker extends edu.cmu.cs.dennisc.worker.Worker<javax.swing.Icon> {
 		@Override
 		protected javax.swing.Icon do_onBackgroundThread() throws java.lang.Exception {
-			return AsynchronousIcon.this.do_onBackgroundThread();
+			return AsynchronousWorkerIcon.this.do_onBackgroundThread();
 		}
 
 		@Override
 		protected void handleDone_onEventDispatchThread( javax.swing.Icon value ) {
-			AsynchronousIcon.this.handleDone_onEventDispatchThread( value );
+			AsynchronousWorkerIcon.this.handleDone_onEventDispatchThread( value );
 		}
 	}
 
-	public AsynchronousIcon( int width, int height ) {
+	public AsynchronousWorkerIcon( int width, int height ) {
 		this.width = width;
 		this.height = height;
 	}
