@@ -42,6 +42,8 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import java.awt.Color;
+
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.views.Label;
@@ -66,6 +68,7 @@ public final class LogOutCard extends org.lgna.croquet.SimpleComposite<org.lgna.
 
 	@Override
 	protected org.lgna.croquet.views.Panel createView() {
+		this.usernameLabel.getAwtComponent().setForeground( Color.WHITE );
 		updateWelcomeString( "" );
 		return new org.lgna.croquet.views.FlowPanel(
 				this,
