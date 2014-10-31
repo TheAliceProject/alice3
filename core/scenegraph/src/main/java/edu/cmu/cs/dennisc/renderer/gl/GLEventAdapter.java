@@ -44,7 +44,7 @@
 package edu.cmu.cs.dennisc.renderer.gl;
 
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 /**

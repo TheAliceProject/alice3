@@ -43,11 +43,11 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import edu.cmu.cs.dennisc.renderer.gl.adapters.ComponentAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.CompositeAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.ElementAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.LayerAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.TextureAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.ComponentAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.CompositeAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.ElementAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.LayerAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.TextureAdapter;
 
 /**
  * @author Dennis Cosgrove

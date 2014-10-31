@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import edu.cmu.cs.dennisc.renderer.gl.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 /**

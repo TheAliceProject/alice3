@@ -44,9 +44,9 @@
 package edu.cmu.cs.dennisc.renderer.gl;
 
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.AbstractCameraAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.SceneAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.VisualAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.SceneAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.VisualAdapter;
 
 /**
  * @author Dennis Cosgrove

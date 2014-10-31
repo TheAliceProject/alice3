@@ -44,7 +44,7 @@ package edu.cmu.cs.dennisc.nebulous;
 
 import edu.cmu.cs.dennisc.renderer.gl.ForgettableBinding;
 import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.TextureAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.TextureAdapter;
 
 /**
  * @author alice

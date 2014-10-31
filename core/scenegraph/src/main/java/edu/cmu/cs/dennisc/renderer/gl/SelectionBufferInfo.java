@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import edu.cmu.cs.dennisc.renderer.gl.adapters.VisualAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.VisualAdapter;
 
 /**
  * @author Dennis Cosgrove

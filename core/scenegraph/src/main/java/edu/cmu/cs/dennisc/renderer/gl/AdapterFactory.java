@@ -43,27 +43,27 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
-import edu.cmu.cs.dennisc.renderer.gl.adapters.AbstractCameraAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.AbstractElementAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.AppearanceAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.BackgroundAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.BufferedImageTextureAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.ComponentAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.CompositeAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.ElementAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.FrustumPerspectiveCameraAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.GeometryAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.GhostAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.GraphicAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.LayerAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.MultipleAppearanceAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.OrthographicCameraAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.ProjectionCameraAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.SceneAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.SymmetricPerspectiveCameraAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.TextureAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.TexturedAppearanceAdapter;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.TransformableAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractElementAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AppearanceAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.BackgroundAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.BufferedImageTextureAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.ComponentAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.CompositeAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.ElementAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.FrustumPerspectiveCameraAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.GeometryAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.GhostAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.GraphicAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.LayerAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.MultipleAppearanceAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.OrthographicCameraAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.ProjectionCameraAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.SceneAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.SymmetricPerspectiveCameraAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.TextureAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.TexturedAppearanceAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.TransformableAdapter;
 
 //public class AdapterFactory {
 //	private static AdapterFactory s_singleton = new AdapterFactory();
@@ -87,7 +87,7 @@ public abstract class AdapterFactory {
 	private static final String SCENEGRAPH_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.Element.class.getPackage().getName();
 	private static final String RENDERER_PACKAGE_NAME = ElementAdapter.class.getPackage().getName();
 	private static final String SCENEGRAPH_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.graphics.Text.class.getPackage().getName();
-	private static final String RENDERER_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.renderer.gl.adapters.graphics.TextAdapter.class.getPackage().getName();
+	private static final String RENDERER_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.renderer.gl.imp.adapters.graphics.TextAdapter.class.getPackage().getName();
 
 	static {
 		register( edu.cmu.cs.dennisc.texture.BufferedImageTexture.class, BufferedImageTextureAdapter.class );

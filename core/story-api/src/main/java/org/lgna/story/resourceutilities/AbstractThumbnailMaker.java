@@ -55,7 +55,7 @@ import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.renderer.gl.AdapterFactory;
-import edu.cmu.cs.dennisc.renderer.gl.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -108,8 +108,8 @@ public abstract class AbstractThumbnailMaker {
 		if( this.offscreenRenderTarget.getSgCameraCount() > 0 ) {
 			for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : this.offscreenRenderTarget.getSgCameras() ) {
 				AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
-				edu.cmu.cs.dennisc.renderer.gl.adapters.SceneAdapter sceneAdapter = cameraAdapterI.getSceneAdapter();
-				edu.cmu.cs.dennisc.renderer.gl.adapters.ComponentAdapter<?> componentAdapter = AdapterFactory.getAdapterFor( sgComponent );
+				edu.cmu.cs.dennisc.renderer.gl.imp.adapters.SceneAdapter sceneAdapter = cameraAdapterI.getSceneAdapter();
+				edu.cmu.cs.dennisc.renderer.gl.imp.adapters.ComponentAdapter<?> componentAdapter = AdapterFactory.getAdapterFor( sgComponent );
 				if( componentAdapter != null ) {
 					sceneAdapter.removeDescendant( componentAdapter );
 				}
