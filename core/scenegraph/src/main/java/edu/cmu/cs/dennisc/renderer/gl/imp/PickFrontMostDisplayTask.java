@@ -40,25 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
+
+import edu.cmu.cs.dennisc.renderer.gl.PickParameters;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class GlrAsynchronousPicker implements edu.cmu.cs.dennisc.renderer.AsynchronousPicker {
-	public GlrAsynchronousPicker( GlrRenderTarget glrRenderTarget ) {
-		this.glrRenderTarget = glrRenderTarget;
+/*package-private*/class PickFrontMostDisplayTask extends edu.cmu.cs.dennisc.renderer.gl.imp.PickDisplayTask {
+	public PickFrontMostDisplayTask( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickFrontMostObserver observer ) {
+		super( xPixel, yPixel, pickSubElementPolicy, criterion );
+		this.observer = observer;
 	}
 
 	@Override
-	public void pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickAllObserver observer ) {
-		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new PickAllDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
+	protected void fireDone( edu.cmu.cs.dennisc.renderer.gl.PickParameters pickParameters ) {
+		this.observer.done( pickParameters.accessFrontMostPickResult() );
 	}
 
-	@Override
-	public void pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickFrontMostObserver observer ) {
-		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new PickFrontMostDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
-	}
-
-	private final GlrRenderTarget glrRenderTarget;
+	private final edu.cmu.cs.dennisc.renderer.PickFrontMostObserver observer;
 }

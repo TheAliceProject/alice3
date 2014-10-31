@@ -41,9 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
 
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
+import edu.cmu.cs.dennisc.renderer.gl.AdapterFactory;
+import edu.cmu.cs.dennisc.renderer.gl.GlrRenderTarget;
+import edu.cmu.cs.dennisc.renderer.gl.Graphics2D;
+import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
@@ -51,19 +55,6 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
  * @author Dennis Cosgrove
  */
 public class GLEventAdapter implements javax.media.opengl.GLEventListener {
-	private final GlrRenderTarget lookingGlass;
-	private final RenderContext renderContext = new RenderContext();
-
-	private javax.media.opengl.GLAutoDrawable drawable;
-	private int width;
-	private int height;
-
-	private java.awt.image.BufferedImage rvColorBuffer = null;
-	private java.nio.FloatBuffer rvDepthBuffer = null;
-	private boolean[] atIsUpsideDown = null;
-
-	private boolean isDisplayIgnoredDueToPreviousException = false;
-
 	private static class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent {
 		public ReusableLookingGlassRenderEvent( GlrRenderTarget lookingGlass, Graphics2D g ) {
 			super( lookingGlass, g );
@@ -83,11 +74,9 @@ public class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		}
 	}
 
-	private final ReusableLookingGlassRenderEvent reusableLookingGlassRenderEvent;
-
-	public GLEventAdapter( GlrRenderTarget lookingGlass ) {
-		this.lookingGlass = lookingGlass;
-		this.reusableLookingGlassRenderEvent = new ReusableLookingGlassRenderEvent( this.lookingGlass, new Graphics2D( this.renderContext ) );
+	public GLEventAdapter( RenderTargetImp rtImp ) {
+		this.rtImp = rtImp;
+		this.reusableLookingGlassRenderEvent = new ReusableLookingGlassRenderEvent( this.rtImp.getRenderTarget(), new Graphics2D( this.renderContext ) );
 	}
 
 	private boolean isListening;
@@ -158,30 +147,31 @@ public class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	//	}
 
 	private void performRender() {
-		if( this.lookingGlass.isRenderingEnabled() ) {
+		edu.cmu.cs.dennisc.renderer.RenderTarget rt = this.rtImp.getRenderTarget();
+		if( rt.isRenderingEnabled() ) {
 			this.renderContext.actuallyForgetTexturesIfNecessary();
 			this.renderContext.actuallyForgetDisplayListsIfNecessary();
 			if( this.isDisplayIgnoredDueToPreviousException ) {
 				//pass
 			} else if( ( this.width == 0 ) || ( this.height == 0 ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, this.lookingGlass.getSurfaceSize() );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, rt.getSurfaceSize() );
 			} else {
 				try {
 					//todo: separate clearing and rendering
 					this.reusableLookingGlassRenderEvent.prologue();
 					try {
-						this.lookingGlass.fireCleared( this.reusableLookingGlassRenderEvent );
+						this.rtImp.fireCleared( this.reusableLookingGlassRenderEvent );
 					} finally {
 						this.reusableLookingGlassRenderEvent.epilogue();
 					}
-					if( this.lookingGlass.getSgCameraCount() > 0 ) {
+					if( rt.getSgCameraCount() > 0 ) {
 						this.renderContext.initialize();
-						for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : this.lookingGlass.accessSgCameras() ) {
+						for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : this.rtImp.accessSgCameras() ) {
 							AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
 							cameraAdapterI.performClearAndRenderOffscreen( this.renderContext, this.width, this.height );
 							this.reusableLookingGlassRenderEvent.prologue();
 							try {
-								cameraAdapterI.postRender( this.renderContext, this.width, this.height, this.lookingGlass, this.reusableLookingGlassRenderEvent.getGraphics2D() );
+								cameraAdapterI.postRender( this.renderContext, this.width, this.height, rt, this.reusableLookingGlassRenderEvent.getGraphics2D() );
 							} finally {
 								this.reusableLookingGlassRenderEvent.epilogue();
 							}
@@ -193,7 +183,7 @@ public class GLEventAdapter implements javax.media.opengl.GLEventListener {
 					}
 					this.reusableLookingGlassRenderEvent.prologue();
 					try {
-						this.lookingGlass.fireRendered( this.reusableLookingGlassRenderEvent );
+						this.rtImp.fireRendered( this.reusableLookingGlassRenderEvent );
 					} finally {
 						this.reusableLookingGlassRenderEvent.epilogue();
 					}
@@ -348,7 +338,7 @@ public class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		this.height = GlDrawableUtilities.getGlDrawableHeight( drawable );
 
 		this.renderContext.setGL( gl );
-		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent( this.lookingGlass, GlDrawableUtilities.getGlDrawableWidth( this.drawable ), GlDrawableUtilities.getGlDrawableHeight( this.drawable ) ) );
+		this.rtImp.fireInitialized( new edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent( this.rtImp.getRenderTarget(), GlDrawableUtilities.getGlDrawableWidth( this.drawable ), GlDrawableUtilities.getGlDrawableHeight( this.drawable ) ) );
 	}
 
 	//todo: investigate not being invoked
@@ -386,13 +376,7 @@ public class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 		performRender();
 
-		synchronized( this.displayTasks ) {
-			if( this.displayTasks.size() > 0 ) {
-				for( DisplayTask displayTask : this.displayTasks ) {
-					displayTask.handleDisplay( this.lookingGlass, drawable, gl );
-				}
-			}
-		}
+		this.rtImp.performDisplayTasks( drawable, gl );
 	}
 
 	@Override
@@ -401,13 +385,13 @@ public class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		assert drawable == this.drawable;
 		this.width = width;
 		this.height = height;
-		this.lookingGlass.fireResized( new edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent( this.lookingGlass, width, height ) );
+		this.rtImp.fireResized( new edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent( this.rtImp.getRenderTarget(), width, height ) );
 	}
 
 	public void displayChanged( javax.media.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "displayChanged", drawable, modeChanged, deviceChanged );
 		assert drawable == this.drawable;
-		this.lookingGlass.fireDisplayChanged( new edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent( this.lookingGlass, modeChanged, deviceChanged ) );
+		this.rtImp.fireDisplayChanged( new edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent( this.rtImp.getRenderTarget(), modeChanged, deviceChanged ) );
 	}
 
 	@Override
@@ -427,12 +411,17 @@ public class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		}
 	}
 
-	/*package-private*/void addDisplayTask( DisplayTask displayTask ) {
-		synchronized( this.displayTasks ) {
-			this.displayTasks.add( displayTask );
-		}
-	}
+	private final RenderTargetImp rtImp;
+	private final RenderContext renderContext = new RenderContext();
 
-	private final java.util.List<DisplayTask> displayTasks = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private javax.media.opengl.GLAutoDrawable drawable;
+	private int width;
+	private int height;
 
+	private java.awt.image.BufferedImage rvColorBuffer = null;
+	private java.nio.FloatBuffer rvDepthBuffer = null;
+	private boolean[] atIsUpsideDown = null;
+
+	private boolean isDisplayIgnoredDueToPreviousException = false;
+	private final ReusableLookingGlassRenderEvent reusableLookingGlassRenderEvent;
 }

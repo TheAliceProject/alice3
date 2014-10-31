@@ -40,34 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ColorBufferImageCaptureDisplayTask extends ImageCaptureDisplayTask {
-	public ColorBufferImageCaptureDisplayTask( GlrColorBuffer glrColorBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
-		this.glrColorBuffer = glrColorBuffer;
-		this.imageOrientationRequirement = imageOrientationRequirement;
-		this.observer = observer;
+/*package-private*/class GlrAsynchronousPicker implements edu.cmu.cs.dennisc.renderer.AsynchronousPicker {
+	public GlrAsynchronousPicker( RenderTargetImp rtImp ) {
+		this.rtImp = rtImp;
 	}
 
 	@Override
-	public void handleDisplay( GlrRenderTarget glrRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
-		synchronized( this.glrColorBuffer.getImageLock() ) {
-			java.awt.Dimension surfaceSize = glrRenderTarget.getSurfaceSize();
-			java.awt.image.BufferedImage rvColor = this.glrColorBuffer.acquireImage( surfaceSize.width, surfaceSize.height, false );
-			boolean[] atIsRightSideUp = new boolean[ 1 ];
-			try {
-				this.handleDisplay( gl, rvColor, null, this.imageOrientationRequirement, atIsRightSideUp );
-			} finally {
-				this.glrColorBuffer.releaseImage( atIsRightSideUp[ 0 ] );
-			}
-			this.observer.done( this.glrColorBuffer );
-		}
+	public void pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickAllObserver observer ) {
+		this.rtImp.addDisplayTask( new PickAllDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
 	}
 
-	private final GlrColorBuffer glrColorBuffer;
-	private final edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement;
-	private final edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer;
+	@Override
+	public void pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickFrontMostObserver observer ) {
+		this.rtImp.addDisplayTask( new PickFrontMostDisplayTask( xPixel, yPixel, pickSubElementPolicy, criterion, observer ) );
+	}
+
+	private final RenderTargetImp rtImp;
 }

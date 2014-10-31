@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
+import edu.cmu.cs.dennisc.renderer.gl.imp.GlDrawableUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -91,7 +93,7 @@ class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<java.aw
 	}
 
 	@Override
-	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
 		return m_glCanvas;
 	}
 }

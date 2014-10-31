@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
+import edu.cmu.cs.dennisc.renderer.gl.imp.GlDrawableUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -84,7 +86,7 @@ class GlrOffscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.den
 	}
 
 	@Override
-	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
 		if( this.glPbuffer != null ) {
 			return this.glPbuffer;
 		} else {

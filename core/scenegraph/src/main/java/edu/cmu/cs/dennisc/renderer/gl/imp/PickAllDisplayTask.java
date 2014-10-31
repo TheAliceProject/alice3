@@ -40,25 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
+
+import edu.cmu.cs.dennisc.renderer.gl.PickParameters;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class GlrAsynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer {
-	public GlrAsynchronousImageCapturer( GlrRenderTarget glrRenderTarget ) {
-		this.glrRenderTarget = glrRenderTarget;
+/*package-private*/final class PickAllDisplayTask extends PickDisplayTask {
+	public PickAllDisplayTask( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickAllObserver observer ) {
+		super( xPixel, yPixel, pickSubElementPolicy, criterion );
+		this.observer = observer;
 	}
 
 	@Override
-	public void captureColorBuffer( edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
-		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new ColorBufferImageCaptureDisplayTask( (GlrColorBuffer)colorBuffer, imageOrientationRequirement, observer ) );
+	protected void fireDone( edu.cmu.cs.dennisc.renderer.gl.PickParameters pickParameters ) {
+		this.observer.done( pickParameters.accessAllPickResults() );
 	}
 
-	@Override
-	public void captureColorBufferWithTransparencyBasedOnDepthBuffer( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
-		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( (GlrColorAndDepthBuffers)colorAndDepthBuffers, imageOrientationRequirement, observer ) );
-	}
-
-	private final GlrRenderTarget glrRenderTarget;
+	private final edu.cmu.cs.dennisc.renderer.PickAllObserver observer;
 }

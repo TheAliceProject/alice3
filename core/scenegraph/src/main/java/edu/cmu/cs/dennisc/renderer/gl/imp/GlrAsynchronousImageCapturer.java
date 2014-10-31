@@ -40,21 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/final class PickAllDisplayTask extends PickDisplayTask {
-	public PickAllDisplayTask( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion, edu.cmu.cs.dennisc.renderer.PickAllObserver observer ) {
-		super( xPixel, yPixel, pickSubElementPolicy, criterion );
-		this.observer = observer;
+/*package-private*/class GlrAsynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer {
+	public GlrAsynchronousImageCapturer( RenderTargetImp rtImp ) {
+		this.rtImp = rtImp;
 	}
 
 	@Override
-	protected void fireDone( edu.cmu.cs.dennisc.renderer.gl.PickParameters pickParameters ) {
-		this.observer.done( pickParameters.accessAllPickResults() );
+	public void captureColorBuffer( edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
+		this.rtImp.addDisplayTask( new ColorBufferImageCaptureDisplayTask( (edu.cmu.cs.dennisc.renderer.gl.imp.GlrColorBuffer)colorBuffer, imageOrientationRequirement, observer ) );
 	}
 
-	private final edu.cmu.cs.dennisc.renderer.PickAllObserver observer;
+	@Override
+	public void captureColorBufferWithTransparencyBasedOnDepthBuffer( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
+		this.rtImp.addDisplayTask( new ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( (edu.cmu.cs.dennisc.renderer.gl.imp.GlrColorAndDepthBuffers)colorAndDepthBuffers, imageOrientationRequirement, observer ) );
+	}
+
+	private final RenderTargetImp rtImp;
 }

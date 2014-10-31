@@ -41,8 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
 
+import edu.cmu.cs.dennisc.renderer.gl.AdapterFactory;
+import edu.cmu.cs.dennisc.renderer.gl.ChangeHandler;
+import edu.cmu.cs.dennisc.renderer.gl.GlrRenderTarget;
+import edu.cmu.cs.dennisc.renderer.gl.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.PickParameters;
+import edu.cmu.cs.dennisc.renderer.gl.SelectionBufferInfo;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
@@ -240,11 +246,11 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.renderer.Sync
 			}
 		}
 
-		private edu.cmu.cs.dennisc.renderer.PickResult pickFrontMost( GlrRenderTarget lookingGlass, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = lookingGlass.getCameraAtPixel( xPixel, yPixel );
+		private edu.cmu.cs.dennisc.renderer.PickResult pickFrontMost( RenderTargetImp rtImp, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
+			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = rtImp.getCameraAtPixel( xPixel, yPixel );
 			OffscreenDrawable impl = this.getOffscreenDrawable();
 			if( impl != null ) {
-				this.setPickParameters( lookingGlass, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
+				this.setPickParameters( rtImp.getRenderTarget(), sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
 				try {
 					if( sgCamera != null ) {
 						impl.display();
@@ -258,11 +264,11 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.renderer.Sync
 			}
 		}
 
-		private java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> pickAll( GlrRenderTarget lookingGlass, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = lookingGlass.getCameraAtPixel( xPixel, yPixel );
+		private java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> pickAll( RenderTargetImp rtImp, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
+			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = rtImp.getCameraAtPixel( xPixel, yPixel );
 			OffscreenDrawable impl = this.getOffscreenDrawable();
 			if( impl != null ) {
-				this.setPickParameters( lookingGlass, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
+				this.setPickParameters( rtImp.getRenderTarget(), sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
 				try {
 					if( sgCamera != null ) {
 						impl.display();
@@ -279,10 +285,8 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.renderer.Sync
 
 	private static ActualPicker sharedActualPicker = new ActualPicker();
 
-	private final GlrRenderTarget lookingGlass;
-
-	public SynchronousPicker( GlrRenderTarget lookingGlass ) {
-		this.lookingGlass = lookingGlass;
+	public SynchronousPicker( RenderTargetImp rtImp ) {
+		this.rtImp = rtImp;
 	}
 
 	@Override
@@ -293,7 +297,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.renderer.Sync
 	@Override
 	public java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> pickAll( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
 		synchronized( sharedActualPicker ) {
-			return sharedActualPicker.pickAll( this.lookingGlass, xPixel, yPixel, pickSubElementPolicy == edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.REQUIRED, pickObserver );
+			return sharedActualPicker.pickAll( this.rtImp, xPixel, yPixel, pickSubElementPolicy == edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.REQUIRED, pickObserver );
 		}
 	}
 
@@ -305,7 +309,9 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.renderer.Sync
 	@Override
 	public edu.cmu.cs.dennisc.renderer.PickResult pickFrontMost( int xPixel, int yPixel, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
 		synchronized( sharedActualPicker ) {
-			return sharedActualPicker.pickFrontMost( this.lookingGlass, xPixel, yPixel, pickSubElementPolicy == edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.REQUIRED, pickObserver );
+			return sharedActualPicker.pickFrontMost( this.rtImp, xPixel, yPixel, pickSubElementPolicy == edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.REQUIRED, pickObserver );
 		}
 	}
+
+	private final RenderTargetImp rtImp;
 }

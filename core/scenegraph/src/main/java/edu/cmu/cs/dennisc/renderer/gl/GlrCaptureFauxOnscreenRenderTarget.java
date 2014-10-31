@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.renderer.gl;
 
+import edu.cmu.cs.dennisc.renderer.gl.imp.GlDrawableUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -121,7 +123,7 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 	}
 
 	@Override
-	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
 		return this.glPixelBuffer;
 	}
 

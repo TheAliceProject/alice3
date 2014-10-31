@@ -40,59 +40,59 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.SynchronousImageCapturer {
-	public SynchronousImageCapturer( GlrRenderTarget lookingGlass ) {
-		this.lookingGlass = lookingGlass;
+	public SynchronousImageCapturer( RenderTargetImp rtImp ) {
+		this.rtImp = rtImp;
 	}
 
 	@Override
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer() {
-		return this.lookingGlass.getGlEventAdapter().createBufferedImageForUseAsColorBuffer();
+		return this.rtImp.getGlEventAdapter().createBufferedImageForUseAsColorBuffer();
 	}
 
 	@Override
 	public java.awt.image.BufferedImage getColorBufferNotBotheringToFlipVertically( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown ) {
-		return this.lookingGlass.getGlEventAdapter().getColorBuffer( rv, atIsUpsideDown );
+		return this.rtImp.getGlEventAdapter().getColorBuffer( rv, atIsUpsideDown );
 	}
 
 	@Override
 	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
-		return this.lookingGlass.getGlEventAdapter().getColorBuffer( rv, null );
+		return this.rtImp.getGlEventAdapter().getColorBuffer( rv, null );
 	}
 
 	@Override
 	public final java.awt.image.BufferedImage getColorBuffer() {
-		return getColorBuffer( createBufferedImageForUseAsColorBuffer() );
+		return this.getColorBuffer( createBufferedImageForUseAsColorBuffer() );
 	}
 
 	@Override
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
-		return this.lookingGlass.getGlEventAdapter().createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
+		return this.rtImp.getGlEventAdapter().createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
 	}
 
 	@Override
 	public java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer() {
-		return this.lookingGlass.getGlEventAdapter().createFloatBufferForUseAsDepthBuffer();
+		return this.rtImp.getGlEventAdapter().createFloatBufferForUseAsDepthBuffer();
 	}
 
 	@Override
 	public java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv ) {
-		return this.lookingGlass.getGlEventAdapter().getDepthBuffer( rv );
+		return this.rtImp.getGlEventAdapter().getDepthBuffer( rv );
 	}
 
 	@Override
 	public final java.nio.FloatBuffer getDepthBuffer() {
-		return getDepthBuffer( createFloatBufferForUseAsDepthBuffer() );
+		return this.getDepthBuffer( createFloatBufferForUseAsDepthBuffer() );
 	}
 
 	@Override
 	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer ) {
-		return this.lookingGlass.getGlEventAdapter().getColorBufferWithTransparencyBasedOnDepthBuffer( rv, depthBuffer, null );
+		return this.rtImp.getGlEventAdapter().getColorBufferWithTransparencyBasedOnDepthBuffer( rv, depthBuffer, null );
 	}
 
 	@Override
@@ -100,5 +100,5 @@ public class SynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.Syn
 		return getColorBufferWithTransparencyBasedOnDepthBuffer( createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer(), createFloatBufferForUseAsDepthBuffer() );
 	}
 
-	private final GlrRenderTarget lookingGlass;
+	private final RenderTargetImp rtImp;
 }

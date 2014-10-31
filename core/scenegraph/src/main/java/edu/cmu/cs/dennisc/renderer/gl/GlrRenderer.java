@@ -98,12 +98,12 @@ public class GlrRenderer implements edu.cmu.cs.dennisc.renderer.RenderFactory {
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.ColorBuffer createColorBuffer() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlrColorBuffer();
+		return new edu.cmu.cs.dennisc.renderer.gl.imp.GlrColorBuffer();
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers createColorAndDepthBuffers() {
-		return new edu.cmu.cs.dennisc.renderer.gl.GlrColorAndDepthBuffers();
+		return new edu.cmu.cs.dennisc.renderer.gl.imp.GlrColorAndDepthBuffers();
 	}
 
 	//todo: just force start and stop? or rename methods

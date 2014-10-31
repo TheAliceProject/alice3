@@ -46,78 +46,34 @@ package edu.cmu.cs.dennisc.renderer.gl;
 /**
  * @author Dennis Cosgrove
  */
-abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasable implements edu.cmu.cs.dennisc.renderer.RenderTarget {
-	public GlrRenderTarget( GlrRenderer lookingGlassFactory ) {
-		glrRenderer = lookingGlassFactory;
-	}
-
-	/*package-private*/GLEventAdapter getGlEventAdapter() {
-		return m_glEventAdapter;
+public abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasable implements edu.cmu.cs.dennisc.renderer.RenderTarget {
+	public GlrRenderTarget( GlrRenderer glrRenderer ) {
+		this.glrRenderer = glrRenderer;
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.RenderFactory getRenderFactory() {
-		return glrRenderer;
+		return this.glrRenderer;
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.SynchronousPicker getSynchronousPicker() {
-		return this.synchronousPicker;
+		return this.imp.getSynchronousPicker();
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.SynchronousImageCapturer getSynchronousImageCapturer() {
-		return this.synchronousImageCapturer;
+		return this.imp.getSynchronousImageCapturer();
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.AsynchronousPicker getAsynchronousPicker() {
-		return this.glrAsynchronousPicker;
+		return this.imp.getAsynchronousPicker();
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.renderer.AsynchronousImageCapturer getAsynchronousImageCapturer() {
-		return this.glrAsynchronousImageCapturer;
-	}
-
-	/* package-private */void fireInitialized( edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent e ) {
-		synchronized( m_lookingGlassListeners ) {
-			for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener lookingGlassListener : m_lookingGlassListeners ) {
-				lookingGlassListener.initialized( e );
-			}
-		}
-	}
-
-	/* package-private */void fireCleared( edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent e ) {
-		synchronized( m_lookingGlassListeners ) {
-			for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener lookingGlassListener : m_lookingGlassListeners ) {
-				lookingGlassListener.cleared( e );
-			}
-		}
-	}
-
-	/* package-private */void fireRendered( edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent e ) {
-		synchronized( m_lookingGlassListeners ) {
-			for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener lookingGlassListener : m_lookingGlassListeners ) {
-				lookingGlassListener.rendered( e );
-			}
-		}
-	}
-
-	/* package-private */void fireResized( edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent e ) {
-		synchronized( m_lookingGlassListeners ) {
-			for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener lookingGlassListener : m_lookingGlassListeners ) {
-				lookingGlassListener.resized( e );
-			}
-		}
-	}
-
-	/* package-private */void fireDisplayChanged( edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent e ) {
-		synchronized( m_lookingGlassListeners ) {
-			for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener lookingGlassListener : m_lookingGlassListeners ) {
-				lookingGlassListener.displayChanged( e );
-			}
-		}
+		return this.imp.getAsynchronousImageCapturer();
 	}
 
 	@Override
@@ -132,88 +88,52 @@ abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasa
 
 	@Override
 	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		assert sgCamera != null : this;
-		this.sgCameras.add( sgCamera );
-		if( m_glEventAdapter.isListening() ) {
-			//pass
-		} else {
-			javax.media.opengl.GLAutoDrawable glAutoDrawable = this.getGLAutoDrawable();
-			m_glEventAdapter.startListening( glAutoDrawable );
-		}
+		this.imp.addSgCamera( sgCamera );
 	}
 
 	@Override
-	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
-		assert camera != null;
-		this.sgCameras.remove( camera );
-		if( m_glEventAdapter.isListening() ) {
-			if( this.sgCameras.isEmpty() ) {
-				m_glEventAdapter.stopListening( getGLAutoDrawable() );
-			}
-		}
+	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		this.imp.removeSgCamera( sgCamera );
 	}
 
 	@Override
 	public void clearSgCameras() {
-		if( this.sgCameras.size() > 0 ) {
-			this.sgCameras.clear();
-		}
-		if( m_glEventAdapter.isListening() ) {
-			m_glEventAdapter.stopListening( getGLAutoDrawable() );
-		}
+		this.imp.clearSgCameras();
 	}
 
 	@Override
 	public int getSgCameraCount() {
-		return this.sgCameras.size();
+		return this.imp.getSgCameraCount();
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSgCameraAt( int index ) {
-		return this.sgCameras.get( index );
+		return this.imp.getSgCameraAt( index );
 	}
 
 	@Override
 	public java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getSgCameras() {
-		return java.util.Collections.unmodifiableList( this.sgCameras );
-	}
-
-	/*package-private*/java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras() {
-		return this.sgCameras;
+		return this.imp.getSgCameras();
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getCameraAtPixel( int xPixel, int yPixel ) {
-		java.util.ListIterator<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> iterator = this.sgCameras.listIterator( this.sgCameras.size() );
-		while( iterator.hasPrevious() ) {
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = iterator.previous();
-			synchronized( s_actualViewportBufferForReuse ) {
-				getActualViewport( s_actualViewportBufferForReuse, sgCamera );
-				if( s_actualViewportBufferForReuse.contains( xPixel, yPixel ) ) {
-					return sgCamera;
-				}
-			}
-		}
-		return null;
+		return this.imp.getCameraAtPixel( xPixel, yPixel );
 	}
 
 	@Override
 	public void addRenderTargetListener( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener listener ) {
-		synchronized( m_lookingGlassListeners ) {
-			m_lookingGlassListeners.add( listener );
-		}
+		this.imp.addRenderTargetListener( listener );
 	}
 
 	@Override
 	public void removeRenderTargetListener( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener listener ) {
-		synchronized( m_lookingGlassListeners ) {
-			m_lookingGlassListeners.remove( listener );
-		}
+		this.imp.removeRenderTargetListener( listener );
 	}
 
 	@Override
 	public java.util.List<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener> getRenderTargetListeners() {
-		return java.util.Collections.unmodifiableList( m_lookingGlassListeners );
+		return this.imp.getRenderTargetListeners();
 	}
 
 	protected abstract java.awt.Dimension getSurfaceSize( java.awt.Dimension rv );
@@ -438,35 +358,22 @@ abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasa
 
 	@Override
 	public void forgetAllCachedItems() {
-		if( m_glEventAdapter != null ) {
-			m_glEventAdapter.forgetAllCachedItems();
-		}
+		this.imp.forgetAllCachedItems();
 	}
 
 	@Override
 	public void clearUnusedTextures() {
-		if( m_glEventAdapter != null ) {
-			m_glEventAdapter.clearUnusedTextures();
-		}
+		this.imp.clearUnusedTextures();
 	}
 
 	private final GlrRenderer glrRenderer;
-	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> sgCameras = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-
-	private GLEventAdapter m_glEventAdapter = new GLEventAdapter( this );
+	private final edu.cmu.cs.dennisc.renderer.gl.imp.RenderTargetImp imp = new edu.cmu.cs.dennisc.renderer.gl.imp.RenderTargetImp( this );
 
 	private String m_description = new String();
-	private java.util.Vector<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener> m_lookingGlassListeners = new java.util.Vector<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener>();
 
-	protected abstract javax.media.opengl.GLAutoDrawable getGLAutoDrawable();
+	public abstract javax.media.opengl.GLAutoDrawable getGLAutoDrawable();
 
 	private boolean m_isRenderingEnabled = true;
-
-	private final SynchronousPicker synchronousPicker = new SynchronousPicker( this );
-	private final SynchronousImageCapturer synchronousImageCapturer = new SynchronousImageCapturer( this );
-
-	private final GlrAsynchronousPicker glrAsynchronousPicker = new GlrAsynchronousPicker( this );
-	private final GlrAsynchronousImageCapturer glrAsynchronousImageCapturer = new GlrAsynchronousImageCapturer( this );
 
 	//
 	private static java.awt.Rectangle s_actualViewportBufferForReuse = new java.awt.Rectangle();

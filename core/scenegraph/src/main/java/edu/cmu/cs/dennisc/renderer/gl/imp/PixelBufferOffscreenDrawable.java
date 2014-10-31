@@ -40,11 +40,86 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public interface DisplayTask {
-	void handleDisplay( GlrRenderTarget glrRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl );
+public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
+	private final javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
+		@Override
+		public void init( javax.media.opengl.GLAutoDrawable drawable ) {
+		}
+
+		@Override
+		public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
+		}
+
+		@Override
+		public void display( javax.media.opengl.GLAutoDrawable drawable ) {
+			Throwable throwable = null;
+			try {
+				drawable.getGL();
+				drawable.getContext().makeCurrent();
+			} catch( Throwable t ) {
+				throwable = t;
+			}
+			if( throwable != null ) {
+				if( throwable instanceof NullPointerException ) {
+					NullPointerException nullPointerException = (NullPointerException)throwable;
+					edu.cmu.cs.dennisc.java.util.logging.Logger.info( nullPointerException );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( throwable );
+				}
+			} else {
+				fireDisplay( drawable.getGL().getGL2() );
+			}
+		}
+
+		@Override
+		public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
+		}
+	};
+
+	private javax.media.opengl.GLOffscreenAutoDrawable glPixelBuffer;
+
+	public PixelBufferOffscreenDrawable( DisplayCallback callback ) {
+		super( callback );
+	}
+
+	@Override
+	protected javax.media.opengl.GLOffscreenAutoDrawable getGlDrawable() {
+		return this.glPixelBuffer;
+	}
+
+	@Override
+	public void initialize( javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
+		if( this.glPixelBuffer != null ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		} else {
+			this.glPixelBuffer = GlDrawableUtilities.createGlPixelBuffer( glRequestedCapabilities, glCapabilitiesChooser, width, height, glShareContext );
+			if( this.getCallback() != null ) {
+				this.glPixelBuffer.addGLEventListener( glEventListener );
+			}
+		}
+	}
+
+	@Override
+	public void destroy() {
+		if( this.glPixelBuffer != null ) {
+			this.glPixelBuffer.destroy();
+			this.glPixelBuffer = null;
+		}
+	}
+
+	@Override
+	public void display() {
+		this.glPixelBuffer.display();
+	}
+
+	@Override
+	public boolean isHardwareAccelerated() {
+		return true;
+	}
 }

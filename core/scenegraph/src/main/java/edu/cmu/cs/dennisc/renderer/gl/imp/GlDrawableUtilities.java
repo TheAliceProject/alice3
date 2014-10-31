@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
 
 /**
  * @author Dennis Cosgrove
@@ -171,7 +171,7 @@ public class GlDrawableUtilities {
 	}
 
 	//private GLCapabilities glCapabilities;
-	/* package-private */static javax.media.opengl.GLCapabilities createGlCapabilities() {
+	public static javax.media.opengl.GLCapabilities createGlCapabilities() {
 		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
 
 		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities( profile );
@@ -187,7 +187,7 @@ public class GlDrawableUtilities {
 		return rv;
 	}
 
-	/* package-private */static javax.media.opengl.GLCapabilities createGlCapabilitiesForLightweightComponent() {
+	public static javax.media.opengl.GLCapabilities createGlCapabilitiesForLightweightComponent() {
 		javax.media.opengl.GLCapabilities rv = createGlCapabilities();
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
 			//pass
@@ -197,7 +197,7 @@ public class GlDrawableUtilities {
 		return rv;
 	}
 
-	/* package-private */static javax.media.opengl.GLCapabilitiesChooser getPerhapsMultisampledGlCapabilitiesChooser() {
+	public static javax.media.opengl.GLCapabilitiesChooser getPerhapsMultisampledGlCapabilitiesChooser() {
 		if( glMultisampleCapabilitiesChooser != null ) {
 			return glMultisampleCapabilitiesChooser;
 		} else {
@@ -205,25 +205,25 @@ public class GlDrawableUtilities {
 		}
 	}
 
-	/* package-private */static javax.media.opengl.GLCapabilitiesChooser getNotMultisampledGlCapabilitiesChooser() {
+	public static javax.media.opengl.GLCapabilitiesChooser getNotMultisampledGlCapabilitiesChooser() {
 		return glDefaultCapabilitiesChooser;
 	}
 
-	/* package-private */static javax.media.opengl.awt.GLCanvas createGLCanvas() {
+	public static javax.media.opengl.awt.GLCanvas createGLCanvas() {
 		return new javax.media.opengl.awt.GLCanvas( createGlCapabilities(), getPerhapsMultisampledGlCapabilitiesChooser(), null );
 	}
 
-	/* package-private */static javax.media.opengl.awt.GLJPanel createGLJPanel() {
+	public static javax.media.opengl.awt.GLJPanel createGLJPanel() {
 		return new javax.media.opengl.awt.GLJPanel( createGlCapabilitiesForLightweightComponent(), getPerhapsMultisampledGlCapabilitiesChooser() );
 	}
 
-	/* package-private */static boolean canCreateExternalGLDrawable() {
+	public static boolean canCreateExternalGLDrawable() {
 		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
 		return glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() );
 	}
 
-	/* package-private */static javax.media.opengl.GLDrawable createExternalGLDrawable() {
+	public static javax.media.opengl.GLDrawable createExternalGLDrawable() {
 		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
 		if( glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() ) ) {
@@ -233,7 +233,7 @@ public class GlDrawableUtilities {
 		}
 	}
 
-	/* package-private */javax.media.opengl.GLContext createExternalGLContext() {
+	public javax.media.opengl.GLContext createExternalGLContext() {
 		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
 		if( glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() ) ) {
@@ -243,13 +243,13 @@ public class GlDrawableUtilities {
 		}
 	}
 
-	/* package-private */static boolean canCreateGlPixelBuffer() {
+	public static boolean canCreateGlPixelBuffer() {
 		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
 		return glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice(), glProfile );
 	}
 
-	/* package-private */static javax.media.opengl.GLOffscreenAutoDrawable createGlPixelBuffer( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height, javax.media.opengl.GLContext share ) {
+	public static javax.media.opengl.GLOffscreenAutoDrawable createGlPixelBuffer( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height, javax.media.opengl.GLContext share ) {
 		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
 		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice(), glProfile ) ) {
@@ -269,13 +269,13 @@ public class GlDrawableUtilities {
 		}
 	}
 
-	/* package-private */static jogamp.opengl.GLDrawableImpl createOffscreenDrawable( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height ) {
+	public static jogamp.opengl.GLDrawableImpl createOffscreenDrawable( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height ) {
 		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
 		return (jogamp.opengl.GLDrawableImpl)glDrawableFactory.createOffscreenDrawable( null, glCapabilities, glCapabilitiesChooser, width, height );
 	}
 
-	/* package-private */static int getGlDrawableWidth( javax.media.opengl.GLDrawable drawable ) {
+	public static int getGlDrawableWidth( javax.media.opengl.GLDrawable drawable ) {
 		// Bug in linux opengl, getWidth ALWAYS returns 0
 		int width = drawable.getSurfaceWidth();
 		if( width == 0 ) {
@@ -292,7 +292,7 @@ public class GlDrawableUtilities {
 		return width;
 	}
 
-	/* package-private */static int getGlDrawableHeight( javax.media.opengl.GLDrawable drawable ) {
+	public static int getGlDrawableHeight( javax.media.opengl.GLDrawable drawable ) {
 		// Bug in linux opengl, getHeight ALWAYS returns 0
 		int height = drawable.getSurfaceHeight();
 		if( height == 0 ) {

@@ -40,36 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask extends ImageCaptureDisplayTask {
-	public ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( GlrColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
-		this.colorAndDepthBuffers = colorAndDepthBuffers;
-		this.imageOrientationRequirement = imageOrientationRequirement;
-		this.observer = observer;
+public class GlrColorBuffer implements edu.cmu.cs.dennisc.renderer.ColorBuffer {
+	@Override
+	public Object getImageLock() {
+		return this.imageLock;
+	}
+
+	/*package-private*/java.awt.image.BufferedImage acquireImage( int width, int height, boolean isAlphaChannelDesired ) {
+		//TODO
+		//int imageType = isAlphaChannelDesired ? java.awt.image.BufferedImage.TYPE_4BYTE_ABGR : java.awt.image.BufferedImage.TYPE_3BYTE_BGR;
+		int imageType = java.awt.image.BufferedImage.TYPE_4BYTE_ABGR;
+		if( this.image != null ) {
+			if( ( this.image.getWidth() == width ) && ( this.image.getHeight() == height ) && ( this.image.getType() == imageType ) ) {
+				//pass
+			} else {
+				this.image = null;
+			}
+		}
+		if( this.image != null ) {
+			//pass
+		} else {
+			this.image = new java.awt.image.BufferedImage( width, height, imageType );
+		}
+		return this.image;
+	}
+
+	/*package-private*/void releaseImage( boolean isRightSideUp ) {
+		this.isRightSideUp = true;
 	}
 
 	@Override
-	public void handleDisplay( GlrRenderTarget glrRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
-		synchronized( this.colorAndDepthBuffers.getImageLock() ) {
-			java.awt.Dimension surfaceSize = glrRenderTarget.getSurfaceSize();
-			java.awt.image.BufferedImage rvImage = this.colorAndDepthBuffers.acquireImage( surfaceSize.width, surfaceSize.height, true );
-			java.nio.FloatBuffer rvDepth = this.colorAndDepthBuffers.acquireFloatBuffer( surfaceSize.width, surfaceSize.height );
-			boolean[] atIsRightSideUp = new boolean[ 1 ];
-			try {
-				this.handleDisplay( gl, rvImage, rvDepth, this.imageOrientationRequirement, atIsRightSideUp );
-			} finally {
-				this.colorAndDepthBuffers.releaseImage( atIsRightSideUp[ 0 ] );
-				this.colorAndDepthBuffers.releaseFloatBuffer();
-			}
-			this.observer.done( this.colorAndDepthBuffers );
-		}
+	public java.awt.image.BufferedImage getImage() {
+		return this.image;
 	}
 
-	private final GlrColorAndDepthBuffers colorAndDepthBuffers;
-	private final edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement;
-	private final edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer;
+	@Override
+	public boolean isRightSideUp() {
+		return this.isRightSideUp;
+	}
+
+	private final Object imageLock = "imageLock";
+	private java.awt.image.BufferedImage image;
+	private boolean isRightSideUp;
 }
