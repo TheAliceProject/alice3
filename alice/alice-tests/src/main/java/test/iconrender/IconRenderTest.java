@@ -71,6 +71,7 @@ public class IconRenderTest {
 			icon = org.alice.stageide.icons.TorusIconFactory.getInstance().getIcon( size );
 			label.setIcon( icon );
 
+			edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement = edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED;
 			final boolean IS_TESTING_ALPHA = true;
 			if( IS_TESTING_ALPHA ) {
 
@@ -79,7 +80,7 @@ public class IconRenderTest {
 				scene.getGround().setOpacity( 0.0 );
 
 				edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers rColorAndDepthBuffers = renderFactory.createColorAndDepthBuffers();
-				offscreenRenderTarget.getAsynchronousImageCapturer().captureColorBufferWithTransparencyBasedOnDepthBuffer( rColorAndDepthBuffers, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers>() {
+				offscreenRenderTarget.getAsynchronousImageCapturer().captureColorBufferWithTransparencyBasedOnDepthBuffer( rColorAndDepthBuffers, imageOrientationRequirement, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers>() {
 					@Override
 					public void done( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers result ) {
 						//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
@@ -89,7 +90,7 @@ public class IconRenderTest {
 				} );
 			} else {
 				edu.cmu.cs.dennisc.renderer.ColorBuffer rColorBuffer = renderFactory.createColorBuffer();
-				offscreenRenderTarget.getAsynchronousImageCapturer().captureColorBuffer( rColorBuffer, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer>() {
+				offscreenRenderTarget.getAsynchronousImageCapturer().captureColorBuffer( rColorBuffer, imageOrientationRequirement, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer>() {
 					@Override
 					public void done( edu.cmu.cs.dennisc.renderer.ColorBuffer result ) {
 						//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );

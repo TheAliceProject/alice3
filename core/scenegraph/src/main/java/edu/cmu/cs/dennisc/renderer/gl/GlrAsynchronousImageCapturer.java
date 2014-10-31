@@ -51,13 +51,13 @@ package edu.cmu.cs.dennisc.renderer.gl;
 	}
 
 	@Override
-	public void captureColorBuffer( edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
-		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new ColorBufferImageCaptureDisplayTask( (GlrColorBuffer)colorBuffer, observer ) );
+	public void captureColorBuffer( edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
+		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new ColorBufferImageCaptureDisplayTask( (GlrColorBuffer)colorBuffer, imageOrientationRequirement, observer ) );
 	}
 
 	@Override
-	public void captureColorBufferWithTransparencyBasedOnDepthBuffer( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
-		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( (GlrColorAndDepthBuffers)colorAndDepthBuffers, observer ) );
+	public void captureColorBufferWithTransparencyBasedOnDepthBuffer( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
+		this.glrRenderTarget.getGlEventAdapter().addDisplayTask( new ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( (GlrColorAndDepthBuffers)colorAndDepthBuffers, imageOrientationRequirement, observer ) );
 	}
 
 	private final GlrRenderTarget glrRenderTarget;

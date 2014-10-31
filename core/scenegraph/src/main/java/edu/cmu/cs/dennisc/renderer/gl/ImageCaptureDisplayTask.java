@@ -52,11 +52,11 @@ import static javax.media.opengl.GL2ES2.GL_DEPTH_COMPONENT;
  * @author Dennis Cosgrove
  */
 public abstract class ImageCaptureDisplayTask implements DisplayTask {
-	protected void handleDisplay( javax.media.opengl.GL2 gl, java.awt.image.BufferedImage rvColor, java.nio.FloatBuffer rvDepth, boolean[] atIsUpsideDown ) {
-		if( rvColor != null ) {
-			int width = rvColor.getWidth();
-			int height = rvColor.getHeight();
-			java.awt.image.DataBuffer dataBuffer = rvColor.getRaster().getDataBuffer();
+	protected void handleDisplay( javax.media.opengl.GL2 gl, java.awt.image.BufferedImage rvImage, java.nio.FloatBuffer rvDepth, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, boolean[] atIsRightSideUp ) {
+		if( rvImage != null ) {
+			int width = rvImage.getWidth();
+			int height = rvImage.getHeight();
+			java.awt.image.DataBuffer dataBuffer = rvImage.getRaster().getDataBuffer();
 			if( rvDepth != null ) {
 				byte[] color = ( (java.awt.image.DataBufferByte)dataBuffer ).getData();
 				java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap( color );
@@ -115,10 +115,9 @@ public abstract class ImageCaptureDisplayTask implements DisplayTask {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to capture back buffer:", description );
 				}
 			}
-			if( atIsUpsideDown != null ) {
-				atIsUpsideDown[ 0 ] = true;
-			} else {
-				com.jogamp.opengl.util.awt.ImageUtil.flipImageVertically( rvColor );
+			atIsRightSideUp[ 0 ] = imageOrientationRequirement == edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED;
+			if( atIsRightSideUp[ 0 ] ) {
+				com.jogamp.opengl.util.awt.ImageUtil.flipImageVertically( rvImage );
 			}
 		} else {
 			throw new RuntimeException( "todo" );

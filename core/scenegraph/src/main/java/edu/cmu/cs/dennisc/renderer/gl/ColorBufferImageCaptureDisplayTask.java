@@ -46,8 +46,9 @@ package edu.cmu.cs.dennisc.renderer.gl;
  * @author Dennis Cosgrove
  */
 public class ColorBufferImageCaptureDisplayTask extends ImageCaptureDisplayTask {
-	public ColorBufferImageCaptureDisplayTask( GlrColorBuffer glrColorBuffer, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
+	public ColorBufferImageCaptureDisplayTask( GlrColorBuffer glrColorBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
 		this.glrColorBuffer = glrColorBuffer;
+		this.imageOrientationRequirement = imageOrientationRequirement;
 		this.observer = observer;
 	}
 
@@ -56,16 +57,17 @@ public class ColorBufferImageCaptureDisplayTask extends ImageCaptureDisplayTask 
 		synchronized( this.glrColorBuffer.getImageLock() ) {
 			java.awt.Dimension surfaceSize = glrRenderTarget.getSurfaceSize();
 			java.awt.image.BufferedImage rvColor = this.glrColorBuffer.acquireImage( surfaceSize.width, surfaceSize.height, false );
+			boolean[] atIsRightSideUp = new boolean[ 1 ];
 			try {
-				boolean[] atIsUpsideDown = null; //TODO
-				this.handleDisplay( gl, rvColor, null, atIsUpsideDown );
+				this.handleDisplay( gl, rvColor, null, this.imageOrientationRequirement, atIsRightSideUp );
 			} finally {
-				this.glrColorBuffer.releaseImage( true );
+				this.glrColorBuffer.releaseImage( atIsRightSideUp[ 0 ] );
 			}
 			this.observer.done( this.glrColorBuffer );
 		}
 	}
 
 	private final GlrColorBuffer glrColorBuffer;
+	private final edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement;
 	private final edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer;
 }

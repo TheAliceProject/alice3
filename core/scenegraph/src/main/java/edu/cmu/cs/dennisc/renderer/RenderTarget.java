@@ -125,8 +125,5 @@ public interface RenderTarget {
 	java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 
 	//todo: remove?
-	Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> accessSgCameras();
-
-	//todo: remove?
 	void release();
 }

@@ -82,7 +82,7 @@ class WaitingRunnable implements Runnable {
  */
 public class GlrRenderer implements edu.cmu.cs.dennisc.renderer.RenderFactory {
 	static {
-		edu.cmu.cs.dennisc.renderer.RendererNativeLibraryLoader.initializeIfNecessary();
+		edu.cmu.cs.dennisc.renderer.gl.RendererNativeLibraryLoader.initializeIfNecessary();
 	}
 
 	private static class SingletonHolder {

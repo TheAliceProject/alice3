@@ -176,17 +176,14 @@ public class GLEventAdapter implements javax.media.opengl.GLEventListener {
 					}
 					if( this.lookingGlass.getSgCameraCount() > 0 ) {
 						this.renderContext.initialize();
-						Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameras = this.lookingGlass.accessSgCameras();
-						synchronized( cameras ) {
-							for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : cameras ) {
-								AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
-								cameraAdapterI.performClearAndRenderOffscreen( this.renderContext, this.width, this.height );
-								this.reusableLookingGlassRenderEvent.prologue();
-								try {
-									cameraAdapterI.postRender( this.renderContext, this.width, this.height, this.lookingGlass, this.reusableLookingGlassRenderEvent.getGraphics2D() );
-								} finally {
-									this.reusableLookingGlassRenderEvent.epilogue();
-								}
+						for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : this.lookingGlass.accessSgCameras() ) {
+							AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
+							cameraAdapterI.performClearAndRenderOffscreen( this.renderContext, this.width, this.height );
+							this.reusableLookingGlassRenderEvent.prologue();
+							try {
+								cameraAdapterI.postRender( this.renderContext, this.width, this.height, this.lookingGlass, this.reusableLookingGlassRenderEvent.getGraphics2D() );
+							} finally {
+								this.reusableLookingGlassRenderEvent.epilogue();
 							}
 						}
 						this.renderContext.renderLetterboxingIfNecessary( this.width, this.height );

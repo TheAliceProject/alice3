@@ -106,15 +106,12 @@ public abstract class AbstractThumbnailMaker {
 	protected void removeComponent( edu.cmu.cs.dennisc.scenegraph.Component sgComponent )
 	{
 		if( this.offscreenRenderTarget.getSgCameraCount() > 0 ) {
-			Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameras = this.offscreenRenderTarget.accessSgCameras();
-			synchronized( cameras ) {
-				for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : cameras ) {
-					AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
-					edu.cmu.cs.dennisc.renderer.gl.adapters.SceneAdapter sceneAdapter = cameraAdapterI.getSceneAdapter();
-					edu.cmu.cs.dennisc.renderer.gl.adapters.ComponentAdapter<?> componentAdapter = AdapterFactory.getAdapterFor( sgComponent );
-					if( componentAdapter != null ) {
-						sceneAdapter.removeDescendant( componentAdapter );
-					}
+			for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : this.offscreenRenderTarget.getSgCameras() ) {
+				AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
+				edu.cmu.cs.dennisc.renderer.gl.adapters.SceneAdapter sceneAdapter = cameraAdapterI.getSceneAdapter();
+				edu.cmu.cs.dennisc.renderer.gl.adapters.ComponentAdapter<?> componentAdapter = AdapterFactory.getAdapterFor( sgComponent );
+				if( componentAdapter != null ) {
+					sceneAdapter.removeDescendant( componentAdapter );
 				}
 			}
 		}

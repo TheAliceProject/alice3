@@ -45,8 +45,7 @@ package edu.cmu.cs.dennisc.renderer;
 /**
  * @author Dennis Cosgrove
  */
-public interface AsynchronousImageCapturer {
-	void captureColorBuffer( ColorBuffer colorBuffer, ImageOrientationRequirement imageOrientationRequirement, Observer<ColorBuffer> observer );
-
-	void captureColorBufferWithTransparencyBasedOnDepthBuffer( ColorAndDepthBuffers colorAndDepthBuffers, ImageOrientationRequirement imageOrientationRequirement, Observer<ColorAndDepthBuffers> observer );
+public enum ImageOrientationRequirement {
+	UPSIDE_DOWN_IS_ACCEPTABLE,
+	RIGHT_SIDE_UP_REQUIRED
 }

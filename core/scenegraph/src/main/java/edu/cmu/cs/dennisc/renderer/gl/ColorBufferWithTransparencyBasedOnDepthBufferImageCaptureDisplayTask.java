@@ -46,8 +46,9 @@ package edu.cmu.cs.dennisc.renderer.gl;
  * @author Dennis Cosgrove
  */
 public class ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask extends ImageCaptureDisplayTask {
-	public ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( GlrColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
+	public ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( GlrColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
 		this.colorAndDepthBuffers = colorAndDepthBuffers;
+		this.imageOrientationRequirement = imageOrientationRequirement;
 		this.observer = observer;
 	}
 
@@ -55,13 +56,13 @@ public class ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTas
 	public void handleDisplay( GlrRenderTarget glrRenderTarget, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
 		synchronized( this.colorAndDepthBuffers.getImageLock() ) {
 			java.awt.Dimension surfaceSize = glrRenderTarget.getSurfaceSize();
-			java.awt.image.BufferedImage rvColor = this.colorAndDepthBuffers.acquireImage( surfaceSize.width, surfaceSize.height, true );
+			java.awt.image.BufferedImage rvImage = this.colorAndDepthBuffers.acquireImage( surfaceSize.width, surfaceSize.height, true );
 			java.nio.FloatBuffer rvDepth = this.colorAndDepthBuffers.acquireFloatBuffer( surfaceSize.width, surfaceSize.height );
+			boolean[] atIsRightSideUp = new boolean[ 1 ];
 			try {
-				boolean[] atIsUpsideDown = null; //TODO
-				this.handleDisplay( gl, rvColor, rvDepth, atIsUpsideDown );
+				this.handleDisplay( gl, rvImage, rvDepth, this.imageOrientationRequirement, atIsRightSideUp );
 			} finally {
-				this.colorAndDepthBuffers.releaseImage( true );
+				this.colorAndDepthBuffers.releaseImage( atIsRightSideUp[ 0 ] );
 				this.colorAndDepthBuffers.releaseFloatBuffer();
 			}
 			this.observer.done( this.colorAndDepthBuffers );
@@ -69,5 +70,6 @@ public class ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTas
 	}
 
 	private final GlrColorAndDepthBuffers colorAndDepthBuffers;
+	private final edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement;
 	private final edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer;
 }
