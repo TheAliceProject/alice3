@@ -72,10 +72,13 @@ public class SFlyer extends SJointedModel implements Articulable {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: touch" );
 	}
 
-	//	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
-	//	public void unfoldWings( UnfoldWings.Detail... details ) {
-	//		this.getImplementation().animateUnfoldWings( Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
-	//	}
+	public void spreadWings( StrikePose.Detail... details ) {
+		this.strikePose( this.getImplementation().getResource().getSpreadWingsPose(), details );
+	}
+
+	public void foldWings( StrikePose.Detail... details ) {
+		this.strikePose( this.getImplementation().getResource().getFoldWingsPose(), details );
+	}
 
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public SJoint getRoot() {

@@ -47,7 +47,7 @@ import org.lgna.story.implementation.JointIdQuaternionPair;
 /**
  * @author Matt May
  */
-public abstract class Pose<M extends SJointedModel> {
+public class Pose<M extends SJointedModel> {
 	public Pose( Class<M> modelCls, JointIdQuaternionPair... pairs ) {
 		this.modelCls = modelCls;
 		this.jointQPairs = pairs;

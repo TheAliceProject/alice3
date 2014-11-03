@@ -43,71 +43,77 @@
 package org.lgna.story;
 
 import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.JointId;
 
 /**
  * @author Matt May
  */
 public class BipedPoseBuilder extends PoseBuilder<org.lgna.story.SBiped, BipedPose> {
 
-	public BipedPoseBuilder arbitraryJoint( org.lgna.story.resources.JointId jointId, org.lgna.story.Orientation orientation ) {
+	public BipedPoseBuilder joint( org.lgna.story.resources.JointId jointId, org.lgna.story.Orientation orientation ) {
 		this.addJointIdQuaternionPair( jointId, orientation );
 		return this;
 	}
 
+	public BipedPoseBuilder joint( JointId jointId, Number x, Number y, Number z, Number w ) {
+		this.addJointIdQuaternionPair( jointId, new Orientation( x, y, z, w ) );
+		return this;
+	}
+
 	public BipedPoseBuilder rightClavicle( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.RIGHT_CLAVICLE, orientation );
+		return this.joint( BipedResource.RIGHT_CLAVICLE, orientation );
 	}
 
 	public BipedPoseBuilder rightShoulder( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.RIGHT_SHOULDER, orientation );
+		return this.joint( BipedResource.RIGHT_SHOULDER, orientation );
 	}
 
 	public BipedPoseBuilder rightElbow( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.RIGHT_ELBOW, orientation );
+		return this.joint( BipedResource.RIGHT_ELBOW, orientation );
 	}
 
 	public BipedPoseBuilder rightWrist( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.RIGHT_WRIST, orientation );
+		return this.joint( BipedResource.RIGHT_WRIST, orientation );
 	}
 
 	public BipedPoseBuilder rightHip( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.RIGHT_HIP, orientation );
+		return this.joint( BipedResource.RIGHT_HIP, orientation );
 	}
 
 	public BipedPoseBuilder rightKnee( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.RIGHT_KNEE, orientation );
+		return this.joint( BipedResource.RIGHT_KNEE, orientation );
 	}
 
 	public BipedPoseBuilder rightAnkle( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.RIGHT_ANKLE, orientation );
+		return this.joint( BipedResource.RIGHT_ANKLE, orientation );
 	}
 
 	public BipedPoseBuilder leftClavicle( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.LEFT_CLAVICLE, orientation );
+		return this.joint( BipedResource.LEFT_CLAVICLE, orientation );
 	}
 
 	public BipedPoseBuilder leftShoulder( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.LEFT_SHOULDER, orientation );
+		return this.joint( BipedResource.LEFT_SHOULDER, orientation );
 	}
 
 	public BipedPoseBuilder leftElbow( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.LEFT_ELBOW, orientation );
+		return this.joint( BipedResource.LEFT_ELBOW, orientation );
 	}
 
 	public BipedPoseBuilder leftWrist( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.LEFT_WRIST, orientation );
+		return this.joint( BipedResource.LEFT_WRIST, orientation );
 	}
 
 	public BipedPoseBuilder leftHip( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.LEFT_HIP, orientation );
+		return this.joint( BipedResource.LEFT_HIP, orientation );
 	}
 
 	public BipedPoseBuilder leftKnee( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.LEFT_KNEE, orientation );
+		return this.joint( BipedResource.LEFT_KNEE, orientation );
 	}
 
 	public BipedPoseBuilder leftAnkle( Orientation orientation ) {
-		return this.arbitraryJoint( BipedResource.LEFT_ANKLE, orientation );
+		return this.joint( BipedResource.LEFT_ANKLE, orientation );
 	}
 
 	@Override
