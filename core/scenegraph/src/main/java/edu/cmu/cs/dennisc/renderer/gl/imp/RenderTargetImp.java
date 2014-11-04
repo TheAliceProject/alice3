@@ -165,37 +165,38 @@ public class RenderTargetImp {
 		}
 	}
 
-	/* package-private */void fireInitialized( edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent e ) {
+	private void fireInitialized( edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent e ) {
 		for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener rtListener : this.renderTargetListeners ) {
 			rtListener.initialized( e );
 		}
 	}
 
-	/* package-private */void fireCleared( edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent e ) {
+	private void fireCleared( edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent e ) {
 		for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener rtListener : this.renderTargetListeners ) {
 			rtListener.cleared( e );
 		}
 	}
 
-	/* package-private */void fireRendered( edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent e ) {
+	private void fireRendered( edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent e ) {
 		for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener rtListener : this.renderTargetListeners ) {
 			rtListener.rendered( e );
 		}
 	}
 
-	/* package-private */void fireResized( edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent e ) {
+	private void fireResized( edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent e ) {
 		for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener rtListener : this.renderTargetListeners ) {
 			rtListener.resized( e );
 		}
 	}
 
-	/* package-private */void fireDisplayChanged( edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent e ) {
+	//todo:
+	private void fireDisplayChanged( edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent e ) {
 		for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener rtListener : this.renderTargetListeners ) {
 			rtListener.displayChanged( e );
 		}
 	}
 
-	/*package-private*/void performDisplayTasks( javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
+	private void performDisplayTasks( javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
 		synchronized( this.displayTasks ) {
 			if( this.displayTasks.size() > 0 ) {
 				for( DisplayTask displayTask : this.displayTasks ) {
