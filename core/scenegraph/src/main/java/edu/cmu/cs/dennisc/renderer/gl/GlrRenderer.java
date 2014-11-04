@@ -97,8 +97,8 @@ public class GlrRenderer implements edu.cmu.cs.dennisc.renderer.RenderFactory {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.renderer.ImageBuffer createImageBuffer( boolean isAlphaChannelRequired ) {
-		return new edu.cmu.cs.dennisc.renderer.gl.imp.GlrImageBuffer( isAlphaChannelRequired );
+	public edu.cmu.cs.dennisc.renderer.ImageBuffer createImageBuffer( edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement imageAlphaChannelRequirement ) {
+		return new edu.cmu.cs.dennisc.renderer.gl.imp.GlrImageBuffer( imageAlphaChannelRequirement == edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement.ALPHA_CHANNEL_REQUIRED );
 	}
 
 	//todo: just force start and stop? or rename methods

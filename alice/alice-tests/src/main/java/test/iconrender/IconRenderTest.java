@@ -72,19 +72,19 @@ public class IconRenderTest {
 		final javax.swing.JFrame frame = new javax.swing.JFrame();
 		final javax.swing.JLabel label = new javax.swing.JLabel();
 
-		final boolean IS_ASYNC = false;
+		label.setOpaque( true );
+		label.setBackground( java.awt.Color.RED );
+		scene.getGround().setOpacity( 0.0 );
+
+		final boolean IS_ASYNC = true;
 		javax.swing.Icon icon;
 		if( IS_ASYNC ) {
 			icon = org.alice.stageide.icons.TorusIconFactory.getInstance().getIcon( size );
 			label.setIcon( icon );
 
 			edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement = edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED;
-			final boolean IS_TESTING_ALPHA = false;
-			label.setOpaque( true );
-			label.setBackground( java.awt.Color.RED );
-			scene.getGround().setOpacity( 0.0 );
 
-			edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = renderFactory.createImageBuffer( IS_TESTING_ALPHA );
+			edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = renderFactory.createImageBuffer( edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement.ALPHA_CHANNEL_REQUIRED );
 			renderTarget.getAsynchronousImageCapturer().captureImageBuffer( rImageBuffer, imageOrientationRequirement, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer>() {
 				@Override
 				public void done( edu.cmu.cs.dennisc.renderer.ImageBuffer result ) {
@@ -94,7 +94,7 @@ public class IconRenderTest {
 				}
 			} );
 		} else {
-			java.awt.image.BufferedImage image = renderTarget.getSynchronousImageCapturer().getColorBuffer();
+			java.awt.image.BufferedImage image = renderTarget.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer();
 			icon = new javax.swing.ImageIcon( image );
 			label.setIcon( icon );
 		}

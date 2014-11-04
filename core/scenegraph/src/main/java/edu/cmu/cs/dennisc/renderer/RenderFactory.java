@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.renderer;
  */
 
 public interface RenderFactory {
-	ImageBuffer createImageBuffer( boolean isAlphaChannelRequired );
+	ImageBuffer createImageBuffer( ImageAlphaChannelRequirement imageAlphaChannelRequirement );
 
 	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget();
 

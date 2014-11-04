@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.renderer;
 /**
  * @author Dennis Cosgrove
  */
-public enum ImageOrientationRequirement {
-	UPSIDE_DOWN_ACCEPTABLE,
-	RIGHT_SIDE_UP_REQUIRED
+public enum ImageAlphaChannelRequirement {
+	ALPHA_CHANNEL_REQUIRED,
+	NO_ALPHA_CHANNEL
 }
