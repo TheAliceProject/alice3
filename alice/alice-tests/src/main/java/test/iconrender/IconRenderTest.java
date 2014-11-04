@@ -48,19 +48,25 @@ package test.iconrender;
 public class IconRenderTest {
 	public static void main( String[] args ) {
 		org.lgna.story.SSphere sphere = new org.lgna.story.SSphere();
-		test.story.TestScene scene = new test.story.TestScene( sphere );
+		org.lgna.story.SCone cone = new org.lgna.story.SCone();
+
+		sphere.setPaint( org.lgna.story.Color.YELLOW );
+		cone.setPaint( org.lgna.story.Color.GREEN );
+
+		test.story.TestScene scene = new test.story.TestScene( cone, sphere );
+
 		org.lgna.story.SProgram program = new org.lgna.story.SProgram();
 		program.initializeInFrame( args );
 		program.setActiveScene( scene );
 
-		java.awt.Dimension size = new java.awt.Dimension( 512, 512 );
-
+		scene.getGround().setOpacity( 0.0 );
 		edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance();
 
 		final edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget;
-		final boolean IS_USING_OFFSCREEN_RENDER_TARGET = true;
+		final boolean IS_USING_OFFSCREEN_RENDER_TARGET = false;
 
 		if( IS_USING_OFFSCREEN_RENDER_TARGET ) {
+			java.awt.Dimension size = new java.awt.Dimension( 512, 512 );
 			renderTarget = renderFactory.createOffscreenRenderTarget( size.width, size.height, null );
 			org.lgna.story.implementation.CameraImp<?> impCamera = org.lgna.story.EmployeesOnly.getImplementation( scene.getCamera() );
 			renderTarget.addSgCamera( impCamera.getSgCamera() );
@@ -74,15 +80,21 @@ public class IconRenderTest {
 
 		label.setOpaque( true );
 		label.setBackground( java.awt.Color.RED );
-		scene.getGround().setOpacity( 0.0 );
 
 		final boolean IS_ASYNC = true;
 		javax.swing.Icon icon;
 		if( IS_ASYNC ) {
-			icon = org.alice.stageide.icons.TorusIconFactory.getInstance().getIcon( size );
+			java.awt.Dimension surfaceSize = renderTarget.getSurfaceSize();
+			surfaceSize.width /= 2;
+			surfaceSize.height /= 2;
+			icon = org.alice.stageide.icons.TorusIconFactory.getInstance().getIcon( surfaceSize );
 			label.setIcon( icon );
 			edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = renderFactory.createImageBuffer( edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement.ALPHA_CHANNEL_REQUIRED );
-			renderTarget.getAsynchronousImageCapturer().captureImageBuffer( rImageBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer>() {
+			renderTarget.getAsynchronousImageCapturer().captureImageBuffer( new edu.cmu.cs.dennisc.renderer.RenderTask() {
+				@Override
+				public void render( Object context ) {
+				}
+			}, new java.awt.Rectangle( surfaceSize.width, surfaceSize.height, surfaceSize.width, surfaceSize.height ), rImageBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer>() {
 				@Override
 				public void done( edu.cmu.cs.dennisc.renderer.ImageBuffer result ) {
 					//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
