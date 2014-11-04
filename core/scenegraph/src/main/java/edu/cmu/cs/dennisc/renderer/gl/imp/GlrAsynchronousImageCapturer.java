@@ -51,23 +51,13 @@ package edu.cmu.cs.dennisc.renderer.gl.imp;
 	}
 
 	@Override
-	public final void captureColorBuffer( edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
-		this.captureColorBuffer( null, null, colorBuffer, imageOrientationRequirement, observer );
+	public void captureImageBuffer( Runnable render, java.awt.Rectangle viewport, edu.cmu.cs.dennisc.renderer.ImageBuffer imageBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer> observer ) {
+		this.rtImp.addDisplayTask( new ImageCaptureDisplayTask( render, viewport, (edu.cmu.cs.dennisc.renderer.gl.imp.GlrImageBuffer)imageBuffer, imageOrientationRequirement, observer ) );
 	}
 
 	@Override
-	public final void captureColorBufferWithTransparencyBasedOnDepthBuffer( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
-		this.captureColorBufferWithTransparencyBasedOnDepthBuffer( null, null, colorAndDepthBuffers, imageOrientationRequirement, observer );
-	}
-
-	@Override
-	public void captureColorBuffer( Runnable render, java.awt.Rectangle viewport, edu.cmu.cs.dennisc.renderer.ColorBuffer colorBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
-		this.rtImp.addDisplayTask( new ColorBufferImageCaptureDisplayTask( render, viewport, (edu.cmu.cs.dennisc.renderer.gl.imp.GlrColorBuffer)colorBuffer, imageOrientationRequirement, observer ) );
-	}
-
-	@Override
-	public void captureColorBufferWithTransparencyBasedOnDepthBuffer( Runnable render, java.awt.Rectangle viewport, edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
-		this.rtImp.addDisplayTask( new ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( render, viewport, (edu.cmu.cs.dennisc.renderer.gl.imp.GlrColorAndDepthBuffers)colorAndDepthBuffers, imageOrientationRequirement, observer ) );
+	public final void captureImageBuffer( edu.cmu.cs.dennisc.renderer.ImageBuffer imageBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer> observer ) {
+		this.captureImageBuffer( null, null, imageBuffer, imageOrientationRequirement, observer );
 	}
 
 	private final RenderTargetImp rtImp;

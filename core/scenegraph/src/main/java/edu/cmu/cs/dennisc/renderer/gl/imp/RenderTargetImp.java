@@ -160,9 +160,11 @@ public class RenderTargetImp {
 	}
 
 	/*package-private*/void addDisplayTask( DisplayTask displayTask ) {
+		displayTask.setRtImp( this );
 		synchronized( this.displayTasks ) {
 			this.displayTasks.add( displayTask );
 		}
+		this.drawable.display();
 	}
 
 	private void fireInitialized( edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent e ) {

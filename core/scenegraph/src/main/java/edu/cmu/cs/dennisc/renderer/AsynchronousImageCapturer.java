@@ -46,11 +46,7 @@ package edu.cmu.cs.dennisc.renderer;
  * @author Dennis Cosgrove
  */
 public interface AsynchronousImageCapturer {
-	void captureColorBuffer( Runnable render, java.awt.Rectangle viewport, ColorBuffer colorBuffer, ImageOrientationRequirement imageOrientationRequirement, Observer<ColorBuffer> observer );
+	void captureImageBuffer( Runnable render, java.awt.Rectangle viewport, ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, Observer<ImageBuffer> observer );
 
-	void captureColorBufferWithTransparencyBasedOnDepthBuffer( Runnable render, java.awt.Rectangle viewport, ColorAndDepthBuffers colorAndDepthBuffers, ImageOrientationRequirement imageOrientationRequirement, Observer<ColorAndDepthBuffers> observer );
-
-	void captureColorBuffer( ColorBuffer colorBuffer, ImageOrientationRequirement imageOrientationRequirement, Observer<ColorBuffer> observer );
-
-	void captureColorBufferWithTransparencyBasedOnDepthBuffer( ColorAndDepthBuffers colorAndDepthBuffers, ImageOrientationRequirement imageOrientationRequirement, Observer<ColorAndDepthBuffers> observer );
+	void captureImageBuffer( ImageBuffer imageBuffer, ImageOrientationRequirement imageOrientationRequirement, Observer<ImageBuffer> observer );
 }

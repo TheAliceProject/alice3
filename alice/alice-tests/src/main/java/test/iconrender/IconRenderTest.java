@@ -72,40 +72,27 @@ public class IconRenderTest {
 		final javax.swing.JFrame frame = new javax.swing.JFrame();
 		final javax.swing.JLabel label = new javax.swing.JLabel();
 
-		final boolean IS_ASYNC = true;
+		final boolean IS_ASYNC = false;
 		javax.swing.Icon icon;
 		if( IS_ASYNC ) {
 			icon = org.alice.stageide.icons.TorusIconFactory.getInstance().getIcon( size );
 			label.setIcon( icon );
 
 			edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement = edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED;
-			final boolean IS_TESTING_ALPHA = true;
-			if( IS_TESTING_ALPHA ) {
+			final boolean IS_TESTING_ALPHA = false;
+			label.setOpaque( true );
+			label.setBackground( java.awt.Color.RED );
+			scene.getGround().setOpacity( 0.0 );
 
-				label.setOpaque( true );
-				label.setBackground( java.awt.Color.RED );
-				scene.getGround().setOpacity( 0.0 );
-
-				edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers rColorAndDepthBuffers = renderFactory.createColorAndDepthBuffers();
-				renderTarget.getAsynchronousImageCapturer().captureColorBufferWithTransparencyBasedOnDepthBuffer( rColorAndDepthBuffers, imageOrientationRequirement, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers>() {
-					@Override
-					public void done( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers result ) {
-						//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
-						label.setIcon( new javax.swing.ImageIcon( result.getImage() ) );
-						frame.pack();
-					}
-				} );
-			} else {
-				edu.cmu.cs.dennisc.renderer.ColorBuffer rColorBuffer = renderFactory.createColorBuffer();
-				renderTarget.getAsynchronousImageCapturer().captureColorBuffer( rColorBuffer, imageOrientationRequirement, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer>() {
-					@Override
-					public void done( edu.cmu.cs.dennisc.renderer.ColorBuffer result ) {
-						//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
-						label.setIcon( new javax.swing.ImageIcon( result.getImage() ) );
-						frame.pack();
-					}
-				} );
-			}
+			edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = renderFactory.createImageBuffer( IS_TESTING_ALPHA );
+			renderTarget.getAsynchronousImageCapturer().captureImageBuffer( rImageBuffer, imageOrientationRequirement, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer>() {
+				@Override
+				public void done( edu.cmu.cs.dennisc.renderer.ImageBuffer result ) {
+					//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
+					label.setIcon( new javax.swing.ImageIcon( result.getImage() ) );
+					frame.pack();
+				}
+			} );
 		} else {
 			java.awt.image.BufferedImage image = renderTarget.getSynchronousImageCapturer().getColorBuffer();
 			icon = new javax.swing.ImageIcon( image );

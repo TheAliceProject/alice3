@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.renderer;
 /**
  * @author Dennis Cosgrove
  */
-public interface ColorBuffer {
+public interface ImageBuffer {
 	Object getImageLock();
 
 	java.awt.image.BufferedImage getImage();

@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class PickDisplayTask implements DisplayTask {
+/*package-private*/abstract class PickDisplayTask extends DisplayTask {
 	public PickDisplayTask( int x, int y, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy pickSubElementPolicy, edu.cmu.cs.dennisc.renderer.VisualInclusionCriterion criterion ) {
 		this.x = x;
 		this.y = y;

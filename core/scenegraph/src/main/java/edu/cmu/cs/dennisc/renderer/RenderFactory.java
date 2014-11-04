@@ -47,9 +47,7 @@ package edu.cmu.cs.dennisc.renderer;
  */
 
 public interface RenderFactory {
-	ColorBuffer createColorBuffer();
-
-	ColorAndDepthBuffers createColorAndDepthBuffers();
+	ImageBuffer createImageBuffer( boolean isAlphaChannelRequired );
 
 	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget();
 

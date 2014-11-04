@@ -51,7 +51,31 @@ import static javax.media.opengl.GL2ES2.GL_DEPTH_COMPONENT;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ImageCaptureDisplayTask implements DisplayTask {
+public final class ImageCaptureDisplayTask extends DisplayTask {
+	public ImageCaptureDisplayTask( Runnable render, java.awt.Rectangle viewport, GlrImageBuffer imageBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer> observer ) {
+		this.render = render;
+		this.viewport = viewport;
+		this.imageBuffer = imageBuffer;
+		this.imageOrientationRequirement = imageOrientationRequirement;
+		this.observer = observer;
+	}
+
+	@Override
+	/*package-private*/final void handleDisplay( edu.cmu.cs.dennisc.renderer.gl.imp.RenderTargetImp rtImp, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
+		synchronized( this.imageBuffer.getImageLock() ) {
+			java.awt.Dimension surfaceSize = rtImp.getRenderTarget().getSurfaceSize();
+			java.awt.image.BufferedImage rvImage = this.imageBuffer.acquireImage( surfaceSize.width, surfaceSize.height );
+			java.nio.FloatBuffer rvDepth = this.imageBuffer.acquireFloatBuffer( surfaceSize.width, surfaceSize.height );
+			boolean[] atIsRightSideUp = new boolean[ 1 ];
+			try {
+				this.handleDisplay( gl, rvImage, rvDepth, this.imageOrientationRequirement, atIsRightSideUp );
+			} finally {
+				this.imageBuffer.releaseImageAndFloatBuffer( atIsRightSideUp[ 0 ] );
+			}
+			this.observer.done( this.imageBuffer );
+		}
+	}
+
 	protected void handleDisplay( javax.media.opengl.GL2 gl, java.awt.image.BufferedImage rvImage, java.nio.FloatBuffer rvDepth, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, boolean[] atIsRightSideUp ) {
 		if( rvImage != null ) {
 			int width = rvImage.getWidth();
@@ -123,4 +147,10 @@ public abstract class ImageCaptureDisplayTask implements DisplayTask {
 			throw new RuntimeException( "todo" );
 		}
 	}
+
+	private final Runnable render;
+	private final java.awt.Rectangle viewport;
+	private final GlrImageBuffer imageBuffer;
+	private final edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement;
+	private final edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer> observer;
 }
