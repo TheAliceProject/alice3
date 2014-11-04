@@ -56,7 +56,7 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener;
-import edu.cmu.cs.dennisc.renderer.gl.GlrRenderer;
+import edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory;
 
 /**
  * @author Matt May
@@ -81,12 +81,12 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 
 	public void enable() {
 		isEnabled = true;
-		GlrRenderer.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
+		GlrRenderFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
 	public void disable() {
 		isEnabled = false;
-		GlrRenderer.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
+		GlrRenderFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
 	public void addListener( TimeListener timerEventListener, Double frequency, MultipleEventPolicy policy ) {

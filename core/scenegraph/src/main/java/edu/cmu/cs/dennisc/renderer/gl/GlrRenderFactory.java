@@ -80,20 +80,20 @@ class WaitingRunnable implements Runnable {
 /**
  * @author Dennis Cosgrove
  */
-public class GlrRenderer implements edu.cmu.cs.dennisc.renderer.RenderFactory {
+public class GlrRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFactory {
 	static {
 		edu.cmu.cs.dennisc.renderer.gl.RendererNativeLibraryLoader.initializeIfNecessary();
 	}
 
 	private static class SingletonHolder {
-		private static GlrRenderer instance = new GlrRenderer();
+		private static GlrRenderFactory instance = new GlrRenderFactory();
 	}
 
-	public static GlrRenderer getInstance() {
+	public static GlrRenderFactory getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private GlrRenderer() {
+	private GlrRenderFactory() {
 	}
 
 	@Override
@@ -173,7 +173,7 @@ public class GlrRenderer implements edu.cmu.cs.dennisc.renderer.RenderFactory {
 		} else {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.automaticDisplayCount", this.automaticDisplayCount );
 		}
-		GlrRenderer.this.handleDisplayed();
+		GlrRenderFactory.this.handleDisplayed();
 		return rv;
 	}
 
@@ -205,7 +205,7 @@ public class GlrRenderer implements edu.cmu.cs.dennisc.renderer.RenderFactory {
 			this.animator = new Animator() {
 				@Override
 				protected ThreadDeferenceAction step() {
-					return GlrRenderer.this.step();
+					return GlrRenderFactory.this.step();
 				}
 			};
 			this.animator.start();
@@ -334,7 +334,7 @@ public class GlrRenderer implements edu.cmu.cs.dennisc.renderer.RenderFactory {
 	private final java.util.concurrent.Semaphore renderingLock = new java.util.concurrent.Semaphore( 1 );
 
 	private static class ReusableAutomaticDisplayEvent extends edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent {
-		public ReusableAutomaticDisplayEvent( GlrRenderer lookingGlassFactory ) {
+		public ReusableAutomaticDisplayEvent( GlrRenderFactory lookingGlassFactory ) {
 			super( lookingGlassFactory );
 		}
 

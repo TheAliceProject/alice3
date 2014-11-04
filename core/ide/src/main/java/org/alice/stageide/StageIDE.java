@@ -64,10 +64,10 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 				int newState = e.getNewState();
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "windowStateChanged", oldState, newState, java.awt.Frame.ICONIFIED );
 				if( ( oldState & java.awt.Frame.ICONIFIED ) == java.awt.Frame.ICONIFIED ) {
-					edu.cmu.cs.dennisc.renderer.gl.GlrRenderer.getInstance().incrementAutomaticDisplayCount();
+					edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance().incrementAutomaticDisplayCount();
 				}
 				if( ( newState & java.awt.Frame.ICONIFIED ) == java.awt.Frame.ICONIFIED ) {
-					edu.cmu.cs.dennisc.renderer.gl.GlrRenderer.getInstance().decrementAutomaticDisplayCount();
+					edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance().decrementAutomaticDisplayCount();
 				}
 			}
 		} );

@@ -47,7 +47,7 @@ package org.alice.stageide.modelviewer;
  * @author Dennis Cosgrove
  */
 abstract class Viewer extends org.lgna.croquet.views.BorderPanel {
-	private edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.renderer.gl.GlrRenderer.getInstance().createHeavyweightOnscreenRenderTarget();
+	private edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance().createHeavyweightOnscreenRenderTarget();
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.lgna.story.implementation.SceneImp scene = new org.lgna.story.implementation.SceneImp( null );
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp camera = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( null );
@@ -98,14 +98,14 @@ abstract class Viewer extends org.lgna.croquet.views.BorderPanel {
 			this.initialize();
 			this.isInitialized = true;
 		}
-		edu.cmu.cs.dennisc.renderer.gl.GlrRenderer.getInstance().incrementAutomaticDisplayCount();
-		edu.cmu.cs.dennisc.renderer.gl.GlrRenderer.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance().incrementAutomaticDisplayCount();
+		edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		edu.cmu.cs.dennisc.renderer.gl.GlrRenderer.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
-		edu.cmu.cs.dennisc.renderer.gl.GlrRenderer.getInstance().decrementAutomaticDisplayCount();
+		edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance().decrementAutomaticDisplayCount();
 		super.handleUndisplayable();
 	}
 

@@ -105,7 +105,7 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 	private java.awt.image.BufferedImage image;
 
 	public GlrCaptureFauxOnscreenRenderTarget( java.awt.Dimension size, GlrRenderTarget lookingGlassToShareContextWith ) {
-		super( GlrRenderer.getInstance() );
+		super( GlrRenderFactory.getInstance() );
 		this.size = size;
 		javax.media.opengl.GLContext share;
 		if( lookingGlassToShareContextWith != null ) {

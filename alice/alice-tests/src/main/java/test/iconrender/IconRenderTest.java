@@ -55,7 +55,7 @@ public class IconRenderTest {
 
 		java.awt.Dimension size = new java.awt.Dimension( 512, 512 );
 
-		edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = edu.cmu.cs.dennisc.renderer.gl.GlrRenderer.getInstance();
+		edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance();
 
 		final edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget;
 		final boolean IS_USING_OFFSCREEN_RENDER_TARGET = true;
@@ -81,11 +81,8 @@ public class IconRenderTest {
 		if( IS_ASYNC ) {
 			icon = org.alice.stageide.icons.TorusIconFactory.getInstance().getIcon( size );
 			label.setIcon( icon );
-
-			edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement = edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED;
-
 			edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = renderFactory.createImageBuffer( edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement.ALPHA_CHANNEL_REQUIRED );
-			renderTarget.getAsynchronousImageCapturer().captureImageBuffer( rImageBuffer, imageOrientationRequirement, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer>() {
+			renderTarget.getAsynchronousImageCapturer().captureImageBuffer( rImageBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer>() {
 				@Override
 				public void done( edu.cmu.cs.dennisc.renderer.ImageBuffer result ) {
 					//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );

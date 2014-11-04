@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.renderer.gl;
  * @author Dennis Cosgrove
  */
 public abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasable implements edu.cmu.cs.dennisc.renderer.RenderTarget {
-	public GlrRenderTarget( GlrRenderer glrRenderer ) {
+	public GlrRenderTarget( GlrRenderFactory glrRenderer ) {
 		this.glrRenderer = glrRenderer;
 	}
 
@@ -366,7 +366,7 @@ public abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.Default
 		this.imp.clearUnusedTextures();
 	}
 
-	private final GlrRenderer glrRenderer;
+	private final GlrRenderFactory glrRenderer;
 	private final edu.cmu.cs.dennisc.renderer.gl.imp.RenderTargetImp imp = new edu.cmu.cs.dennisc.renderer.gl.imp.RenderTargetImp( this );
 
 	private String m_description = new String();
