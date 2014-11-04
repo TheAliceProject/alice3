@@ -46,7 +46,9 @@ package edu.cmu.cs.dennisc.renderer.gl.imp;
  * @author Dennis Cosgrove
  */
 public class ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask extends ImageCaptureDisplayTask {
-	public ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( GlrColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
+	public ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTask( Runnable render, java.awt.Rectangle viewport, GlrColorAndDepthBuffers colorAndDepthBuffers, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer ) {
+		this.render = render;
+		this.viewport = viewport;
 		this.colorAndDepthBuffers = colorAndDepthBuffers;
 		this.imageOrientationRequirement = imageOrientationRequirement;
 		this.observer = observer;
@@ -69,6 +71,8 @@ public class ColorBufferWithTransparencyBasedOnDepthBufferImageCaptureDisplayTas
 		}
 	}
 
+	private final Runnable render;
+	private final java.awt.Rectangle viewport;
 	private final GlrColorAndDepthBuffers colorAndDepthBuffers;
 	private final edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement;
 	private final edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers> observer;

@@ -57,10 +57,17 @@ public class IconRenderTest {
 
 		edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = edu.cmu.cs.dennisc.renderer.gl.GlrRenderer.getInstance();
 
-		final edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget offscreenRenderTarget = renderFactory.createOffscreenRenderTarget( size.width, size.height, null );
+		final edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget;
+		final boolean IS_USING_OFFSCREEN_RENDER_TARGET = true;
 
-		org.lgna.story.implementation.CameraImp<?> impCamera = org.lgna.story.EmployeesOnly.getImplementation( scene.getCamera() );
-		offscreenRenderTarget.addSgCamera( impCamera.getSgCamera() );
+		if( IS_USING_OFFSCREEN_RENDER_TARGET ) {
+			renderTarget = renderFactory.createOffscreenRenderTarget( size.width, size.height, null );
+			org.lgna.story.implementation.CameraImp<?> impCamera = org.lgna.story.EmployeesOnly.getImplementation( scene.getCamera() );
+			renderTarget.addSgCamera( impCamera.getSgCamera() );
+		} else {
+			org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.EmployeesOnly.getImplementation( program );
+			renderTarget = programImp.getOnscreenRenderTarget();
+		}
 
 		final javax.swing.JFrame frame = new javax.swing.JFrame();
 		final javax.swing.JLabel label = new javax.swing.JLabel();
@@ -80,7 +87,7 @@ public class IconRenderTest {
 				scene.getGround().setOpacity( 0.0 );
 
 				edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers rColorAndDepthBuffers = renderFactory.createColorAndDepthBuffers();
-				offscreenRenderTarget.getAsynchronousImageCapturer().captureColorBufferWithTransparencyBasedOnDepthBuffer( rColorAndDepthBuffers, imageOrientationRequirement, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers>() {
+				renderTarget.getAsynchronousImageCapturer().captureColorBufferWithTransparencyBasedOnDepthBuffer( rColorAndDepthBuffers, imageOrientationRequirement, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers>() {
 					@Override
 					public void done( edu.cmu.cs.dennisc.renderer.ColorAndDepthBuffers result ) {
 						//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
@@ -90,7 +97,7 @@ public class IconRenderTest {
 				} );
 			} else {
 				edu.cmu.cs.dennisc.renderer.ColorBuffer rColorBuffer = renderFactory.createColorBuffer();
-				offscreenRenderTarget.getAsynchronousImageCapturer().captureColorBuffer( rColorBuffer, imageOrientationRequirement, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer>() {
+				renderTarget.getAsynchronousImageCapturer().captureColorBuffer( rColorBuffer, imageOrientationRequirement, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer>() {
 					@Override
 					public void done( edu.cmu.cs.dennisc.renderer.ColorBuffer result ) {
 						//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
@@ -99,10 +106,8 @@ public class IconRenderTest {
 					}
 				} );
 			}
-			offscreenRenderTarget.clearAndRenderOffscreen();
-
 		} else {
-			java.awt.image.BufferedImage image = offscreenRenderTarget.getSynchronousImageCapturer().getColorBuffer();
+			java.awt.image.BufferedImage image = renderTarget.getSynchronousImageCapturer().getColorBuffer();
 			icon = new javax.swing.ImageIcon( image );
 			label.setIcon( icon );
 		}

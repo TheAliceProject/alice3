@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.renderer.gl.imp;
  * @author Dennis Cosgrove
  */
 public class ColorBufferImageCaptureDisplayTask extends ImageCaptureDisplayTask {
-	public ColorBufferImageCaptureDisplayTask( GlrColorBuffer glrColorBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
+	public ColorBufferImageCaptureDisplayTask( Runnable render, java.awt.Rectangle viewport, GlrColorBuffer glrColorBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ColorBuffer> observer ) {
 		this.glrColorBuffer = glrColorBuffer;
 		this.imageOrientationRequirement = imageOrientationRequirement;
 		this.observer = observer;

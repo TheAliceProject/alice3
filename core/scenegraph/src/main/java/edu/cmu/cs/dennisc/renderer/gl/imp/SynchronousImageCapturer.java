@@ -52,17 +52,17 @@ public class SynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.Syn
 
 	@Override
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer() {
-		return this.rtImp.getGlEventAdapter().createBufferedImageForUseAsColorBuffer();
+		return this.rtImp.createBufferedImageForUseAsColorBuffer();
 	}
 
 	@Override
 	public java.awt.image.BufferedImage getColorBufferNotBotheringToFlipVertically( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown ) {
-		return this.rtImp.getGlEventAdapter().getColorBuffer( rv, atIsUpsideDown );
+		return this.rtImp.getColorBuffer( rv, atIsUpsideDown );
 	}
 
 	@Override
 	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
-		return this.rtImp.getGlEventAdapter().getColorBuffer( rv, null );
+		return this.rtImp.getColorBuffer( rv, null );
 	}
 
 	@Override
@@ -72,17 +72,17 @@ public class SynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.Syn
 
 	@Override
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
-		return this.rtImp.getGlEventAdapter().createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
+		return this.rtImp.createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
 	}
 
 	@Override
 	public java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer() {
-		return this.rtImp.getGlEventAdapter().createFloatBufferForUseAsDepthBuffer();
+		return this.rtImp.createFloatBufferForUseAsDepthBuffer();
 	}
 
 	@Override
 	public java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv ) {
-		return this.rtImp.getGlEventAdapter().getDepthBuffer( rv );
+		return this.rtImp.getDepthBuffer( rv );
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class SynchronousImageCapturer implements edu.cmu.cs.dennisc.renderer.Syn
 
 	@Override
 	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer ) {
-		return this.rtImp.getGlEventAdapter().getColorBufferWithTransparencyBasedOnDepthBuffer( rv, depthBuffer, null );
+		return this.rtImp.getColorBufferWithTransparencyBasedOnDepthBuffer( rv, depthBuffer, null );
 	}
 
 	@Override
