@@ -55,7 +55,8 @@ package edu.cmu.cs.dennisc.renderer.gl.imp;
 	@Override
 	public boolean run( javax.media.opengl.GLAutoDrawable drawable ) {
 		this.handleDisplay( this.rtImp, drawable, drawable.getGL().getGL2() );
-		return true;
+		//frame buffer not intact
+		return false;
 	}
 
 	private RenderTargetImp rtImp;

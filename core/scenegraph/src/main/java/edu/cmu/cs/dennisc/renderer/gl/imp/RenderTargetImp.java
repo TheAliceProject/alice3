@@ -161,10 +161,7 @@ public class RenderTargetImp {
 
 	/*package-private*/void addDisplayTask( DisplayTask displayTask ) {
 		displayTask.setRtImp( this );
-		synchronized( this.displayTasks ) {
-			this.displayTasks.add( displayTask );
-		}
-		this.drawable.display();
+		this.drawable.invoke( false, displayTask );
 	}
 
 	private void fireInitialized( edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent e ) {
@@ -195,16 +192,6 @@ public class RenderTargetImp {
 	private void fireDisplayChanged( edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent e ) {
 		for( edu.cmu.cs.dennisc.renderer.event.RenderTargetListener rtListener : this.renderTargetListeners ) {
 			rtListener.displayChanged( e );
-		}
-	}
-
-	private void performDisplayTasks( javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
-		synchronized( this.displayTasks ) {
-			if( this.displayTasks.size() > 0 ) {
-				for( DisplayTask displayTask : this.displayTasks ) {
-					displayTask.handleDisplay( this, drawable, gl );
-				}
-			}
 		}
 	}
 
@@ -521,8 +508,6 @@ public class RenderTargetImp {
 		this.renderContext.setGL( gl );
 
 		performRender();
-
-		this.performDisplayTasks( drawable, gl );
 	}
 
 	private void handleReshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
@@ -567,7 +552,6 @@ public class RenderTargetImp {
 	private final java.util.List<edu.cmu.cs.dennisc.renderer.event.RenderTargetListener> renderTargetListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> sgCameras = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<DisplayTask> displayTasks = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	//
 	private static java.awt.Rectangle s_actualViewportBufferForReuse = new java.awt.Rectangle();

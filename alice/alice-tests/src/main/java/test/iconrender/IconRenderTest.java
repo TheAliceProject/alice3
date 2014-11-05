@@ -42,76 +42,135 @@
  */
 package test.iconrender;
 
+import static javax.media.opengl.GL.GL_DEPTH_TEST;
+
 /**
  * @author Dennis Cosgrove
  */
 public class IconRenderTest {
-	public static void main( String[] args ) {
+	public static void main( final String[] args ) {
 		org.lgna.story.SSphere sphere = new org.lgna.story.SSphere();
 		org.lgna.story.SCone cone = new org.lgna.story.SCone();
+
+		cone.move( org.lgna.story.MoveDirection.LEFT, 2.0 );
 
 		sphere.setPaint( org.lgna.story.Color.YELLOW );
 		cone.setPaint( org.lgna.story.Color.GREEN );
 
-		test.story.TestScene scene = new test.story.TestScene( cone, sphere );
+		final test.story.TestScene scene = new test.story.TestScene( sphere, cone );
 
-		org.lgna.story.SProgram program = new org.lgna.story.SProgram();
+		final org.lgna.story.SProgram program = new org.lgna.story.SProgram();
 		program.initializeInFrame( args );
-		program.setActiveScene( scene );
 
-		scene.getGround().setOpacity( 0.0 );
-		edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance();
+		org.lgna.story.implementation.SphereImp sphereImp = org.lgna.story.EmployeesOnly.getImplementation( sphere );
+		org.lgna.story.implementation.ConeImp coneImp = org.lgna.story.EmployeesOnly.getImplementation( cone );
+		final edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = sphereImp.getSgComposite();
+		org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( scene );
+		final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
 
-		final edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget;
-		final boolean IS_USING_OFFSCREEN_RENDER_TARGET = false;
+		sceneImp.setGlobalLightBrightnessAnimationDesired( false );
 
-		if( IS_USING_OFFSCREEN_RENDER_TARGET ) {
-			java.awt.Dimension size = new java.awt.Dimension( 512, 512 );
-			renderTarget = renderFactory.createOffscreenRenderTarget( size.width, size.height, null );
-			org.lgna.story.implementation.CameraImp<?> impCamera = org.lgna.story.EmployeesOnly.getImplementation( scene.getCamera() );
-			renderTarget.addSgCamera( impCamera.getSgCamera() );
-		} else {
-			org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.EmployeesOnly.getImplementation( program );
-			renderTarget = programImp.getOnscreenRenderTarget();
-		}
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
+			public void run() {
 
-		final javax.swing.JFrame frame = new javax.swing.JFrame();
-		final javax.swing.JLabel label = new javax.swing.JLabel();
+				program.setActiveScene( scene );
 
-		label.setOpaque( true );
-		label.setBackground( java.awt.Color.RED );
+				edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance();
 
-		final boolean IS_ASYNC = true;
-		javax.swing.Icon icon;
-		if( IS_ASYNC ) {
-			java.awt.Dimension surfaceSize = renderTarget.getSurfaceSize();
-			surfaceSize.width /= 2;
-			surfaceSize.height /= 2;
-			icon = org.alice.stageide.icons.TorusIconFactory.getInstance().getIcon( surfaceSize );
-			label.setIcon( icon );
-			edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = renderFactory.createImageBuffer( edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement.ALPHA_CHANNEL_REQUIRED );
-			renderTarget.getAsynchronousImageCapturer().captureImageBuffer( new edu.cmu.cs.dennisc.renderer.RenderTask() {
-				@Override
-				public void render( Object context ) {
+				final edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget;
+				final boolean IS_USING_OFFSCREEN_RENDER_TARGET = false;
+
+				if( IS_USING_OFFSCREEN_RENDER_TARGET ) {
+					java.awt.Dimension size = new java.awt.Dimension( 512, 512 );
+					renderTarget = renderFactory.createOffscreenRenderTarget( size.width, size.height, null );
+					org.lgna.story.implementation.CameraImp<?> impCamera = org.lgna.story.EmployeesOnly.getImplementation( scene.getCamera() );
+					renderTarget.addSgCamera( impCamera.getSgCamera() );
+				} else {
+					org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.EmployeesOnly.getImplementation( program );
+					renderTarget = programImp.getOnscreenRenderTarget();
 				}
-			}, new java.awt.Rectangle( surfaceSize.width, surfaceSize.height, surfaceSize.width, surfaceSize.height ), rImageBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer>() {
-				@Override
-				public void done( edu.cmu.cs.dennisc.renderer.ImageBuffer result ) {
-					//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
-					label.setIcon( new javax.swing.ImageIcon( result.getImage() ) );
-					frame.pack();
+
+				final javax.swing.JFrame frame = new javax.swing.JFrame();
+				final javax.swing.JLabel label = new javax.swing.JLabel();
+
+				label.setOpaque( true );
+				label.setBackground( java.awt.Color.RED );
+
+				final boolean IS_ASYNC = true;
+				javax.swing.Icon icon;
+				if( IS_ASYNC ) {
+					java.awt.Dimension surfaceSize = renderTarget.getSurfaceSize();
+					surfaceSize.width /= 2;
+					surfaceSize.height /= 2;
+					icon = org.alice.stageide.icons.TorusIconFactory.getInstance().getIcon( surfaceSize );
+					label.setIcon( icon );
+
+					final edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement imageAlphaChannelRequirement = edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement.ALPHA_CHANNEL_REQUIRED;
+					edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = renderFactory.createImageBuffer( imageAlphaChannelRequirement );
+					renderTarget.getAsynchronousImageCapturer().captureImageBuffer( new edu.cmu.cs.dennisc.renderer.RenderTask() {
+						@Override
+						public void render( Object context ) {
+							edu.cmu.cs.dennisc.renderer.gl.imp.GlrRenderContext glrRenderContext = (edu.cmu.cs.dennisc.renderer.gl.imp.GlrRenderContext)context;
+							javax.media.opengl.GL2 gl = glrRenderContext.getDrawable().getGL().getGL2();
+							java.awt.Rectangle viewport = glrRenderContext.getViewport();
+							final boolean IS_ALPHA = imageAlphaChannelRequirement == edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement.ALPHA_CHANNEL_REQUIRED;
+							int clearMask;
+							if( IS_ALPHA ) {
+								clearMask = javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
+							} else {
+								gl.glClearColor( 1.0f, 1.0f, 1.0f, 1.0f );
+								clearMask = javax.media.opengl.GL.GL_COLOR_BUFFER_BIT | javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
+							}
+							gl.glEnable( javax.media.opengl.GL.GL_SCISSOR_TEST );
+							gl.glScissor( viewport.x, viewport.y, viewport.width, viewport.height );
+							gl.glClear( clearMask );
+							gl.glDisable( javax.media.opengl.GL.GL_SCISSOR_TEST );
+
+							gl.glViewport( viewport.x, viewport.y, viewport.width, viewport.height );
+
+							javax.media.opengl.glu.GLU glu = new javax.media.opengl.glu.GLU();
+							gl.glMatrixMode( javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION );
+							gl.glLoadIdentity();
+
+							glu.gluPerspective( 45.0, viewport.width / (double)viewport.height, 0.1, 100.0 );
+
+							edu.cmu.cs.dennisc.math.Point3 p = sgTransformable.getAbsoluteTransformation().translation;
+
+							edu.cmu.cs.dennisc.renderer.gl.imp.adapters.TransformableAdapter<?> transformableAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgTransformable );
+							edu.cmu.cs.dennisc.renderer.gl.RenderContext rc = new edu.cmu.cs.dennisc.renderer.gl.RenderContext();
+							rc.setGL( gl );
+							rc.initialize();
+
+							gl.glMatrixMode( javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW );
+							gl.glLoadIdentity();
+							glu.gluLookAt( p.x + 2, p.y + 2, p.z - 2, p.x, p.y, p.z, 0, 1, 0 );
+
+							edu.cmu.cs.dennisc.renderer.gl.imp.adapters.SceneAdapter sceneAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgScene );
+							sceneAdapter.setup( rc );
+							gl.glEnable( GL_DEPTH_TEST );
+							transformableAdapter.renderOpaque( rc );
+							gl.glDisable( GL_DEPTH_TEST );
+						}
+					}, new java.awt.Rectangle( surfaceSize.width, surfaceSize.height, surfaceSize.width, surfaceSize.height ), rImageBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer>() {
+						@Override
+						public void done( edu.cmu.cs.dennisc.renderer.ImageBuffer result ) {
+							//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
+							label.setIcon( new javax.swing.ImageIcon( result.getImage() ) );
+							frame.pack();
+						}
+					} );
+				} else {
+					java.awt.image.BufferedImage image = renderTarget.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer();
+					icon = new javax.swing.ImageIcon( image );
+					label.setIcon( icon );
 				}
-			} );
-		} else {
-			java.awt.image.BufferedImage image = renderTarget.getSynchronousImageCapturer().getColorBufferWithTransparencyBasedOnDepthBuffer();
-			icon = new javax.swing.ImageIcon( image );
-			label.setIcon( icon );
-		}
 
-		frame.getContentPane().add( label );
-		frame.setLocation( 1000, 0 );
-		frame.pack();
-		frame.setVisible( true );
-
+				frame.getContentPane().add( label );
+				frame.setLocation( 1000, 0 );
+				frame.pack();
+				frame.setVisible( true );
+			}
+		} );
 	}
 }

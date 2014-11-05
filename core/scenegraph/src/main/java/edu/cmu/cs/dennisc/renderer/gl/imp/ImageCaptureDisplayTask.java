@@ -65,7 +65,7 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
 		synchronized( this.imageBuffer.getImageLock() ) {
 
 			if( this.renderTask != null ) {
-				this.renderTask.render( drawable );
+				this.renderTask.render( new GlrRenderContext( this.viewport, drawable ) );
 			}
 
 			int x;
