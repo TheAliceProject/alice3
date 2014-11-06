@@ -1294,4 +1294,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			this.snapGrid.setSpacing( gridSpacing );
 		}
 	}
+
+	public edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
+	}
 }

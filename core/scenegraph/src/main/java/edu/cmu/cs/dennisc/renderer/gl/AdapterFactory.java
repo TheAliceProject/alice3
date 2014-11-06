@@ -45,6 +45,7 @@ package edu.cmu.cs.dennisc.renderer.gl;
 
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractElementAdapter;
+import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractTransformableAdapter;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AppearanceAdapter;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.BackgroundAdapter;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.BufferedImageTextureAdapter;
@@ -231,6 +232,10 @@ public abstract class AdapterFactory {
 
 	public static SceneAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Scene sgScene ) {
 		return (SceneAdapter)getAdapterForElement( sgScene );
+	}
+
+	public static AbstractTransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable ) {
+		return (AbstractTransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable>)getAdapterForElement( sgTransformable );
 	}
 
 	public static TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable ) {

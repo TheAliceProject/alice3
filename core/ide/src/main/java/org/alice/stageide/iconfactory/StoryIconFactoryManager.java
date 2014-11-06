@@ -40,26 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.story;
+package org.alice.stageide.iconfactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AliceIdeConfiguration implements org.alice.ide.IdeConfiguration {
-	@Override
-	public org.lgna.croquet.Operation[] createUploadOperations( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		return new org.lgna.croquet.Operation[] { new org.alice.ide.youtube.croquet.UploadOperation( projectDocumentFrame ) };
+public class StoryIconFactoryManager implements org.alice.ide.iconfactory.IconFactoryManager {
+	public StoryIconFactoryManager() {
 	}
 
 	@Override
-	public org.lgna.issue.IssueReportingHub getIssueReportingHub() {
-		return this.issueReportingHub;
+	public org.lgna.croquet.icon.IconFactory getIconFactory( org.lgna.project.ast.UserField field, org.lgna.croquet.icon.IconFactory fallbackIconFactory ) {
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
+		if( type.isAssignableTo( org.lgna.story.SShape.class ) ) {
+			synchronized( this.mapFieldToIconFactory ) {
+				org.lgna.croquet.icon.IconFactory iconFactory = this.mapFieldToIconFactory.get( field );
+				if( iconFactory != null ) {
+					//pass
+				} else {
+					iconFactory = new FieldIconFactory( field, fallbackIconFactory );
+					this.mapFieldToIconFactory.put( field, iconFactory );
+				}
+				return iconFactory;
+			}
+		} else {
+			return fallbackIconFactory;
+		}
 	}
 
-	@Override
-	public org.alice.ide.iconfactory.IconFactoryManager createIconFactoryManager() {
-		return new org.alice.stageide.iconfactory.StoryIconFactoryManager();
-	}
-
-	private final org.alice.ide.issue.AliceIssueReportingHub issueReportingHub = new org.alice.ide.issue.AliceIssueReportingHub();
+	private final java.util.Map<org.lgna.project.ast.UserField, org.lgna.croquet.icon.IconFactory> mapFieldToIconFactory = edu.cmu.cs.dennisc.java.util.Maps.newWeakHashMap();
 }

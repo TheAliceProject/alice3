@@ -40,26 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.story;
+package org.alice.stageide.iconfactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AliceIdeConfiguration implements org.alice.ide.IdeConfiguration {
-	@Override
-	public org.lgna.croquet.Operation[] createUploadOperations( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		return new org.lgna.croquet.Operation[] { new org.alice.ide.youtube.croquet.UploadOperation( projectDocumentFrame ) };
+/*package-private*/class FieldIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
+	public FieldIconFactory( org.lgna.project.ast.UserField field, org.lgna.croquet.icon.IconFactory fallbackIconFactory ) {
+		super( IsCachingDesired.TRUE );
+		this.field = field;
+		this.fallbackIconFactory = fallbackIconFactory;
 	}
 
 	@Override
-	public org.lgna.issue.IssueReportingHub getIssueReportingHub() {
-		return this.issueReportingHub;
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new FieldIcon( this.field, this.fallbackIconFactory.getIcon( size ) );
 	}
 
 	@Override
-	public org.alice.ide.iconfactory.IconFactoryManager createIconFactoryManager() {
-		return new org.alice.stageide.iconfactory.StoryIconFactoryManager();
+	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+		return sizeIfResolutionIndependent;
 	}
 
-	private final org.alice.ide.issue.AliceIssueReportingHub issueReportingHub = new org.alice.ide.issue.AliceIssueReportingHub();
+	private final org.lgna.project.ast.UserField field;
+	private final org.lgna.croquet.icon.IconFactory fallbackIconFactory;
 }

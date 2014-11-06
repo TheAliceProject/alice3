@@ -40,26 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.story;
+package org.alice.ide.iconfactory;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AliceIdeConfiguration implements org.alice.ide.IdeConfiguration {
-	@Override
-	public org.lgna.croquet.Operation[] createUploadOperations( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		return new org.lgna.croquet.Operation[] { new org.alice.ide.youtube.croquet.UploadOperation( projectDocumentFrame ) };
-	}
-
-	@Override
-	public org.lgna.issue.IssueReportingHub getIssueReportingHub() {
-		return this.issueReportingHub;
-	}
-
-	@Override
-	public org.alice.ide.iconfactory.IconFactoryManager createIconFactoryManager() {
-		return new org.alice.stageide.iconfactory.StoryIconFactoryManager();
-	}
-
-	private final org.alice.ide.issue.AliceIssueReportingHub issueReportingHub = new org.alice.ide.issue.AliceIssueReportingHub();
+public interface IconFactoryManager {
+	org.lgna.croquet.icon.IconFactory getIconFactory( org.lgna.project.ast.UserField field, org.lgna.croquet.icon.IconFactory defaultIconFactory );
 }

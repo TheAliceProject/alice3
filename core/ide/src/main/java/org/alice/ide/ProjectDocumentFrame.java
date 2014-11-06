@@ -57,6 +57,7 @@ public class ProjectDocumentFrame {
 		this.setupScenePerspective = new org.alice.stageide.perspectives.SetupScenePerspective( this, aliceMenuBar );
 		this.perspectiveState.addItem( this.codePerspective );
 		this.perspectiveState.addItem( this.setupScenePerspective );
+		this.iconFactoryManager = ideConfiguration.createIconFactoryManager();
 	}
 
 	public org.lgna.croquet.Operation[] getUploadOperations() {
@@ -99,6 +100,10 @@ public class ProjectDocumentFrame {
 		return this.typeMetaState;
 	}
 
+	public org.alice.ide.iconfactory.IconFactoryManager getIconFactoryManager() {
+		return this.iconFactoryManager;
+	}
+
 	private org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> typeMetaState;
 
 	private final org.lgna.croquet.Operation[] uploadOperations;
@@ -109,4 +114,6 @@ public class ProjectDocumentFrame {
 	private final org.alice.stageide.perspectives.SetupScenePerspective setupScenePerspective;
 
 	private final org.alice.stageide.perspectives.PerspectiveState perspectiveState;
+
+	private final org.alice.ide.iconfactory.IconFactoryManager iconFactoryManager;
 }

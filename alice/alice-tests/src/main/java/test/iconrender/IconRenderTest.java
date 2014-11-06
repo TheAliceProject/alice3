@@ -42,8 +42,6 @@
  */
 package test.iconrender;
 
-import static javax.media.opengl.GL.GL_DEPTH_TEST;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -148,9 +146,14 @@ public class IconRenderTest {
 
 							edu.cmu.cs.dennisc.renderer.gl.imp.adapters.SceneAdapter sceneAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( sgScene );
 							sceneAdapter.setup( rc );
-							gl.glEnable( GL_DEPTH_TEST );
+							gl.glEnable( javax.media.opengl.GL.GL_DEPTH_TEST );
+							//							gl.glDisable( javax.media.opengl.GL.GL_BLEND );
 							transformableAdapter.renderOpaque( rc );
-							gl.glDisable( GL_DEPTH_TEST );
+							//							gl.glEnable( javax.media.opengl.GL.GL_BLEND );
+							//							gl.glBlendFunc( javax.media.opengl.GL.GL_SRC_ALPHA, javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA );
+							//							transformableAdapter.renderAlphaBlended( rc );
+							//							gl.glDisable( javax.media.opengl.GL.GL_BLEND );
+							gl.glDisable( javax.media.opengl.GL.GL_DEPTH_TEST );
 						}
 					}, new java.awt.Rectangle( surfaceSize.width, surfaceSize.height, surfaceSize.width, surfaceSize.height ), rImageBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer>() {
 						@Override
