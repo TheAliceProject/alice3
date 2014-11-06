@@ -50,13 +50,12 @@ package edu.cmu.cs.dennisc.renderer.gl.imp;
 		this.rtImp = rtImp;
 	}
 
-	abstract void handleDisplay( RenderTargetImp rtImp, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl );
+	abstract IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl );
 
 	@Override
 	public boolean run( javax.media.opengl.GLAutoDrawable drawable ) {
-		this.handleDisplay( this.rtImp, drawable, drawable.getGL().getGL2() );
-		//frame buffer not intact
-		return false;
+		IsFrameBufferIntact isFrameBufferIntact = this.handleDisplay( this.rtImp, drawable, drawable.getGL().getGL2() );
+		return isFrameBufferIntact == IsFrameBufferIntact.TRUE;
 	}
 
 	private RenderTargetImp rtImp;

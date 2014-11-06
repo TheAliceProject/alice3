@@ -61,7 +61,7 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
 	}
 
 	@Override
-	/*package-private*/void handleDisplay( edu.cmu.cs.dennisc.renderer.gl.imp.RenderTargetImp rtImp, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
+	/*package-private*/IsFrameBufferIntact handleDisplay( edu.cmu.cs.dennisc.renderer.gl.imp.RenderTargetImp rtImp, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
 		synchronized( this.imageBuffer.getImageLock() ) {
 
 			if( this.renderTask != null ) {
@@ -158,6 +158,7 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
 			}
 			this.observer.done( this.imageBuffer );
 		}
+		return IsFrameBufferIntact.FALSE;
 	}
 
 	private final edu.cmu.cs.dennisc.renderer.RenderTask renderTask;

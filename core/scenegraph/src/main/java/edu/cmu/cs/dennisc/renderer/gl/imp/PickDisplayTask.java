@@ -66,7 +66,7 @@ import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
 	protected abstract void fireDone( edu.cmu.cs.dennisc.renderer.gl.PickParameters pickParameters );
 
 	@Override
-	public final void handleDisplay( RenderTargetImp rtImp, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
+	public final IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
 		this.pickContext.gl = gl;
 
 		edu.cmu.cs.dennisc.renderer.gl.GlrRenderTarget glrRenderTarget = rtImp.getRenderTarget();
@@ -189,6 +189,7 @@ import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
 		}
 
 		this.fireDone( pickParameters );
+		return IsFrameBufferIntact.TRUE;
 	}
 
 	private final int x;
