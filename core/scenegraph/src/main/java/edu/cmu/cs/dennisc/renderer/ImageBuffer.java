@@ -48,6 +48,8 @@ package edu.cmu.cs.dennisc.renderer;
 public interface ImageBuffer {
 	Object getImageLock();
 
+	edu.cmu.cs.dennisc.color.Color4f getBackgroundColor();
+
 	java.awt.image.BufferedImage getImage();
 
 	boolean isRightSideUp();

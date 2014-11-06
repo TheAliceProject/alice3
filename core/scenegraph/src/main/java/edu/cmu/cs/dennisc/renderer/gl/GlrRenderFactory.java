@@ -97,8 +97,13 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFacto
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.renderer.ImageBuffer createImageBuffer( edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement imageAlphaChannelRequirement ) {
-		return new edu.cmu.cs.dennisc.renderer.gl.imp.GlrImageBuffer( imageAlphaChannelRequirement == edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement.ALPHA_CHANNEL_REQUIRED );
+	public edu.cmu.cs.dennisc.renderer.ImageBuffer createImageBuffer( edu.cmu.cs.dennisc.color.Color4f backgroundColor ) {
+		return new edu.cmu.cs.dennisc.renderer.gl.imp.GlrImageBuffer( backgroundColor );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.renderer.ImageBuffer createTransparentBackgroundImageBuffer() {
+		return this.createImageBuffer( null );
 	}
 
 	//todo: just force start and stop? or rename methods

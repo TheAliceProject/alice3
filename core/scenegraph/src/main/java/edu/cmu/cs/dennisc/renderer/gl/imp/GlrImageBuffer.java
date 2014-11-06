@@ -46,13 +46,22 @@ package edu.cmu.cs.dennisc.renderer.gl.imp;
  * @author Dennis Cosgrove
  */
 public final class GlrImageBuffer implements edu.cmu.cs.dennisc.renderer.ImageBuffer {
-	public GlrImageBuffer( boolean isAlphaChannelRequired ) {
-		this.isAlphaRequired = isAlphaChannelRequired;
+	public GlrImageBuffer( edu.cmu.cs.dennisc.color.Color4f backgroundColor ) {
+		this.backgroundColor = backgroundColor;
 	}
 
 	@Override
 	public Object getImageLock() {
 		return this.imageLock;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.color.Color4f getBackgroundColor() {
+		return this.backgroundColor;
+	}
+
+	private boolean isAlphaRequired() {
+		return this.backgroundColor == null;
 	}
 
 	/*package-private*/java.awt.image.BufferedImage acquireImage( int width, int height ) {
@@ -79,7 +88,7 @@ public final class GlrImageBuffer implements edu.cmu.cs.dennisc.renderer.ImageBu
 	}
 
 	/*package-private*/java.nio.FloatBuffer acquireFloatBuffer( int width, int height ) {
-		if( this.isAlphaRequired ) {
+		if( this.isAlphaRequired() ) {
 			int capacity = width * height;
 			if( this.depthBuffer != null ) {
 				if( this.depthBuffer.capacity() == capacity ) {
@@ -110,7 +119,7 @@ public final class GlrImageBuffer implements edu.cmu.cs.dennisc.renderer.ImageBu
 	}
 
 	private final Object imageLock = "imageLock";
-	private final boolean isAlphaRequired;
+	private final edu.cmu.cs.dennisc.color.Color4f backgroundColor;
 	private java.awt.image.BufferedImage image;
 	private boolean isRightSideUp;
 	private java.nio.FloatBuffer depthBuffer;

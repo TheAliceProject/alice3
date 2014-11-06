@@ -104,20 +104,21 @@ public class IconRenderTest {
 					icon = org.alice.stageide.icons.TorusIconFactory.getInstance().getIcon( surfaceSize );
 					label.setIcon( icon );
 
-					final edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement imageAlphaChannelRequirement = edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement.ALPHA_CHANNEL_REQUIRED;
-					edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = renderFactory.createImageBuffer( imageAlphaChannelRequirement );
+					edu.cmu.cs.dennisc.color.Color4f backgroundColor = true ? null : edu.cmu.cs.dennisc.color.Color4f.WHITE;
+					final edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance().createImageBuffer( backgroundColor );
 					renderTarget.getAsynchronousImageCapturer().captureImageBuffer( new edu.cmu.cs.dennisc.renderer.RenderTask() {
 						@Override
 						public void render( Object context ) {
 							edu.cmu.cs.dennisc.renderer.gl.imp.GlrRenderContext glrRenderContext = (edu.cmu.cs.dennisc.renderer.gl.imp.GlrRenderContext)context;
 							javax.media.opengl.GL2 gl = glrRenderContext.getDrawable().getGL().getGL2();
 							java.awt.Rectangle viewport = glrRenderContext.getViewport();
-							final boolean IS_ALPHA = imageAlphaChannelRequirement == edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement.ALPHA_CHANNEL_REQUIRED;
+							edu.cmu.cs.dennisc.color.Color4f backgroundColor = rImageBuffer.getBackgroundColor();
+							final boolean IS_ALPHA = backgroundColor == null;
 							int clearMask;
 							if( IS_ALPHA ) {
 								clearMask = javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
 							} else {
-								gl.glClearColor( 1.0f, 1.0f, 1.0f, 1.0f );
+								gl.glClearColor( backgroundColor.red, backgroundColor.green, backgroundColor.blue, backgroundColor.alpha );
 								clearMask = javax.media.opengl.GL.GL_COLOR_BUFFER_BIT | javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
 							}
 							gl.glEnable( javax.media.opengl.GL.GL_SCISSOR_TEST );

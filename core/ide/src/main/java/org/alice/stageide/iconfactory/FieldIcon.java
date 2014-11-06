@@ -76,8 +76,9 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 			} else {
 				this.isStarted = true;
 				java.awt.Rectangle viewport = new java.awt.Rectangle( 0, 0, this.getIconWidth(), this.getIconHeight() );
-				final edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement imageAlphaChannelRequirement = edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement.ALPHA_CHANNEL_REQUIRED;
-				edu.cmu.cs.dennisc.renderer.ImageBuffer imageBuffer = edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance().createImageBuffer( imageAlphaChannelRequirement );
+
+				edu.cmu.cs.dennisc.color.Color4f backgroundColor = true ? null : edu.cmu.cs.dennisc.color.Color4f.WHITE;
+				final edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance().createImageBuffer( backgroundColor );
 				org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
 
 				org.lgna.story.implementation.AbstractTransformableImp fieldImp = sceneEditor.getImplementation( field );
@@ -99,12 +100,13 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 								edu.cmu.cs.dennisc.renderer.gl.imp.GlrRenderContext glrRenderContext = (edu.cmu.cs.dennisc.renderer.gl.imp.GlrRenderContext)context;
 								javax.media.opengl.GL2 gl = glrRenderContext.getDrawable().getGL().getGL2();
 								java.awt.Rectangle viewport = glrRenderContext.getViewport();
-								final boolean IS_ALPHA = imageAlphaChannelRequirement == edu.cmu.cs.dennisc.renderer.ImageAlphaChannelRequirement.ALPHA_CHANNEL_REQUIRED;
+								edu.cmu.cs.dennisc.color.Color4f backgroundColor = rImageBuffer.getBackgroundColor();
+								final boolean IS_ALPHA = backgroundColor == null;
 								int clearMask;
 								if( IS_ALPHA ) {
 									clearMask = javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
 								} else {
-									gl.glClearColor( 1.0f, 1.0f, 1.0f, 1.0f );
+									gl.glClearColor( backgroundColor.red, backgroundColor.green, backgroundColor.blue, backgroundColor.alpha );
 									clearMask = javax.media.opengl.GL.GL_COLOR_BUFFER_BIT | javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
 								}
 								gl.glEnable( javax.media.opengl.GL.GL_SCISSOR_TEST );
@@ -144,14 +146,14 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 							}
 						},
 						viewport,
-						imageBuffer,
+						rImageBuffer,
 						edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED,
 						new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer>() {
 							@Override
 							public void done( edu.cmu.cs.dennisc.renderer.ImageBuffer result ) {
 								imageIcon = new javax.swing.ImageIcon( result.getImage() );
 								repaintComponentsIfNecessary();
-								edu.cmu.cs.dennisc.java.util.logging.Logger.severe( result );
+								//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( result );
 							}
 						} );
 			}
