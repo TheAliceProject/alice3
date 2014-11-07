@@ -49,42 +49,35 @@ import edu.cmu.cs.dennisc.renderer.gl.imp.GlDrawableUtilities;
  * @author Dennis Cosgrove
  */
 class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.swing.JPanel> implements edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget {
-	class RenderPane extends /* edu.cmu.cs.dennisc. */javax.media.opengl.awt.GLJPanel {
+	private static final boolean IS_IMAGE_TRACKING_READY_FOR_PRIME_TIME = false;
 
-		private Throwable prevThrowable = null;
+	private class RenderPane extends javax.media.opengl.awt.GLJPanel {
+		private java.awt.Image mostRecentDrawnImage;
+		private java.awt.Image disabledImage;
+
+		private class ImageTrackingProxyGraphics extends edu.cmu.cs.dennisc.java.awt.ProxyGraphics2D {
+			@Override
+			public java.awt.Graphics create() {
+				ImageTrackingProxyGraphics rv = new ImageTrackingProxyGraphics();
+				rv.setOther( (java.awt.Graphics2D)super.create() );
+				return rv;
+			}
+
+			@Override
+			public boolean drawImage( java.awt.Image img, int x, int y, int width, int height, java.awt.image.ImageObserver observer ) {
+				mostRecentDrawnImage = img;
+				return super.drawImage( img, x, y, width, height, observer );
+			}
+		}
 
 		public RenderPane() {
 			super( GlDrawableUtilities.createGlCapabilitiesForLightweightComponent(), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser() );
-			//			edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( this, 1.5f );
 		}
 
 		@Override
 		public void display() {
 			if( GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled() ) {
 				super.display();
-			}
-		}
-
-		private void paintRenderingDisabledMessage( java.awt.Graphics g ) {
-			java.awt.Dimension size = this.getSize();
-			g.setColor( java.awt.Color.GRAY );
-			g.fillRect( 0, 0, size.width, size.height );
-			String text = "rendering disabled for performance considerations";
-			g.setColor( java.awt.Color.BLACK );
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, text, size );
-			g.setColor( java.awt.Color.YELLOW );
-			g.translate( -1, -1 );
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, text, size );
-			g.translate( 1, 1 );
-			g.dispose();
-		}
-
-		@Override
-		public void paint( java.awt.Graphics g ) {
-			if( GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled() ) {
-				super.paint( g );
-			} else {
-				this.paintRenderingDisabledMessage( g );
 			}
 		}
 
@@ -112,18 +105,51 @@ class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.s
 					g.setColor( java.awt.Color.DARK_GRAY );
 					g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 				}
-				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "paintComponent" );
-				////					java.awt.image.BufferedImage offscreenImage = this.getOffscreenImage();
-				////					if( offscreenImage != null ) {
-				////						g.drawImage( offscreenImage, 0, 0, this );
-				////					}
 			}
 		}
+
+		@Override
+		public void paint( java.awt.Graphics g ) {
+			if( GlrLightweightOnscreenRenderTarget.this.isRenderingEnabled() ) {
+				if( imageTrackingProxyGraphics != null ) {
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					imageTrackingProxyGraphics.setOther( g2 );
+					mostRecentDrawnImage = null;
+					disabledImage = null;
+					super.paint( imageTrackingProxyGraphics );
+					imageTrackingProxyGraphics.setOther( null );
+				} else {
+					super.paint( g );
+				}
+			} else {
+				if( disabledImage != null ) {
+					//pass
+				} else {
+					if( mostRecentDrawnImage != null ) {
+						disabledImage = javax.swing.GrayFilter.createDisabledImage( mostRecentDrawnImage );
+					}
+				}
+				java.awt.Dimension size = this.getSize();
+				if( disabledImage != null ) {
+					g.drawImage( disabledImage, 0, 0, this );
+				} else {
+					g.setColor( java.awt.Color.GRAY );
+					g.fillRect( 0, 0, size.width, size.height );
+				}
+				String text = "rendering disabled for performance considerations";
+				g.setColor( java.awt.Color.BLACK );
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, text, size );
+				g.setColor( java.awt.Color.YELLOW );
+				g.translate( -1, -1 );
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, text, size );
+				g.translate( 1, 1 );
+			}
+		}
+
+		private final ImageTrackingProxyGraphics imageTrackingProxyGraphics = IS_IMAGE_TRACKING_READY_FOR_PRIME_TIME ? new ImageTrackingProxyGraphics() : null;
+		private Throwable prevThrowable = null;
 	}
 
-	private RenderPane glPanel = new RenderPane();
-
-	//	private javax.media.opengl.GLJPanel glPanel = new javax.media.opengl.GLJPanel();
 	/* package-private */GlrLightweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory ) {
 		super( lookingGlassFactory );
 		this.glPanel.setFocusable( true );
@@ -148,4 +174,6 @@ class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.s
 	public javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
 		return this.glPanel;
 	}
+
+	private final javax.media.opengl.awt.GLJPanel glPanel = new RenderPane();
 }
