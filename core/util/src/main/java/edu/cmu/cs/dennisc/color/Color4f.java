@@ -63,11 +63,6 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 	public static final Color4f PURPLE = new Color4f( 128 / 255.0f, 0.0f, 128 / 255.0f, 1.0f );
 	public static final Color4f BROWN = new Color4f( 162 / 255.0f, 42 / 255.0f, 42 / 255.0f, 1.0f );
 
-	public final float red;
-	public final float green;
-	public final float blue;
-	public final float alpha;
-
 	public Color4f( float red, float green, float blue, float alpha ) {
 		this.red = red;
 		this.green = green;
@@ -113,8 +108,8 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 	@Override
 	public boolean equals( Object obj ) {
 		if( obj instanceof Color4f ) {
-			Color4f color = (Color4f)obj;
-			return ( red == color.red ) && ( green == color.green ) && ( blue == color.blue ) && ( alpha == color.alpha );
+			Color4f other = (Color4f)obj;
+			return ( this.red == other.red ) && ( this.green == other.green ) && ( this.blue == other.blue ) && ( this.alpha == other.alpha );
 		} else {
 			return false;
 		}
@@ -131,27 +126,41 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 	}
 
 	public boolean isNaN() {
-		return Float.isNaN( red ) || Float.isNaN( green ) || Float.isNaN( blue ) || Float.isNaN( alpha );
+		return Float.isNaN( this.red ) || Float.isNaN( this.green ) || Float.isNaN( this.blue ) || Float.isNaN( this.alpha );
 	}
 
 	public java.awt.Color getAsAWTColor() {
 		if( this.isNaN() ) {
 			return null;
 		} else {
-			return new java.awt.Color( red, green, blue, alpha );
+			return new java.awt.Color( this.red, this.green, this.blue, this.alpha );
 		}
 	}
 
 	public float[] getAsArray( float[] rv ) {
-		rv[ 0 ] = red;
-		rv[ 1 ] = green;
-		rv[ 2 ] = blue;
-		rv[ 3 ] = alpha;
+		rv[ 0 ] = this.red;
+		rv[ 1 ] = this.green;
+		rv[ 2 ] = this.blue;
+		rv[ 3 ] = this.alpha;
 		return rv;
 	}
 
 	public float[] getAsArray() {
 		return getAsArray( new float[ 4 ] );
+	}
+
+	public java.nio.FloatBuffer getAsFloatBuffer( java.nio.FloatBuffer rv ) {
+		rv.rewind();
+		rv.put( this.red );
+		rv.put( this.green );
+		rv.put( this.blue );
+		rv.put( this.alpha );
+		rv.rewind();
+		return rv;
+	}
+
+	public java.nio.FloatBuffer getAsFloatBuffer() {
+		return this.getAsFloatBuffer( java.nio.FloatBuffer.allocate( 4 ) );
 	}
 
 	@Override
@@ -169,4 +178,9 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 		sb.append( "]" );
 		return sb.toString();
 	}
+
+	public final float red;
+	public final float green;
+	public final float blue;
+	public final float alpha;
 }
