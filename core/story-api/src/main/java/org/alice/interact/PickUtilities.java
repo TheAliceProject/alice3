@@ -71,7 +71,7 @@ public class PickUtilities {
 		return getFirstClassFromComponent( object.getParent() );
 	}
 
-	public static PickHint getPickType( edu.cmu.cs.dennisc.renderer.PickResult pickObject ) {
+	public static PickHint getPickType( edu.cmu.cs.dennisc.render.PickResult pickObject ) {
 		boolean isNull = ( pickObject == null ) || ( pickObject.getGeometry() == null ) || ( pickObject.getVisual() == null );
 		if( isNull ) {
 			return PickHint.PickType.NOTHING.pickHint();

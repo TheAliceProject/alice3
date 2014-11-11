@@ -51,7 +51,7 @@ import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.renderer.PickSubElementPolicy;
+import edu.cmu.cs.dennisc.render.PickSubElementPolicy;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
@@ -70,7 +70,7 @@ public class MouseClickEventImp {
 		this.scene = scene;
 	}
 
-	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		if( this.scene != null ) {
 			SceneImp sceneImp = EmployeesOnly.getImplementation( this.scene );
 			ProgramImp programImp = sceneImp.getProgram();
@@ -85,7 +85,7 @@ public class MouseClickEventImp {
 		if( this.viewport != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
+			edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
 			//todo: search through cameras for the one that contains mouse point, or default to [0] if outside
 			AbstractCamera sgCamera = rt.getSgCameraAt( 0 );
 			this.viewport = rt.getActualViewport( sgCamera );
@@ -98,9 +98,9 @@ public class MouseClickEventImp {
 			//pass
 		} else {
 			if( this.scene != null ) {
-				edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
+				edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
 				if( rt != null ) {
-					edu.cmu.cs.dennisc.renderer.PickResult pickResult = rt.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
+					edu.cmu.cs.dennisc.render.PickResult pickResult = rt.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), PickSubElementPolicy.NOT_REQUIRED );
 					if( pickResult != null ) {
 						edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 						if( sgVisual != null ) {

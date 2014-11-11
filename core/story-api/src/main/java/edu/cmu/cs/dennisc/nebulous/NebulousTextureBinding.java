@@ -42,13 +42,13 @@
  */
 package edu.cmu.cs.dennisc.nebulous;
 
-import edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext;
+import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 /**
  * @author alice
  * 
  */
-public final class NebulousTextureBinding implements edu.cmu.cs.dennisc.renderer.gl.ForgettableBinding {
+public final class NebulousTextureBinding implements edu.cmu.cs.dennisc.render.gl.ForgettableBinding {
 	public void bind( RenderContext rc, NebulousTexture texture ) {
 		texture.doSetup( rc.gl );
 	}

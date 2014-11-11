@@ -95,12 +95,12 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
@@ -387,5 +387,5 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 	protected boolean hidCursor = false;
 
 	protected AbstractCamera camera = null;
-	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
+	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
 }

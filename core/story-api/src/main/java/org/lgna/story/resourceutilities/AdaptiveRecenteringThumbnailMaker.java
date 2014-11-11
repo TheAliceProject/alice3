@@ -73,12 +73,12 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 	}
 
 	private final double searchFactor;
-	private final edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget testImageOffscreenRenderTarget;
+	private final edu.cmu.cs.dennisc.render.OffscreenRenderTarget testImageOffscreenRenderTarget;
 
 	private AdaptiveRecenteringThumbnailMaker( int width, int height ) {
 		super( width, height, AbstractThumbnailMaker.DEFAULT_ANTI_ALIAS_FACTOR );
 		this.searchFactor = DEFAULT_SEARCH_FACTOR;
-		this.testImageOffscreenRenderTarget = edu.cmu.cs.dennisc.renderer.RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget( (int)( this.getWidth() * this.searchFactor ), (int)( this.getHeight() * this.searchFactor ), null );
+		this.testImageOffscreenRenderTarget = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget( (int)( this.getWidth() * this.searchFactor ), (int)( this.getHeight() * this.searchFactor ), null );
 		setUpCamera( this.testImageOffscreenRenderTarget );
 	}
 
@@ -119,7 +119,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 
 		AffineMatrix4x4 cameraTransform = getSGCameraVehicle().getAbsoluteTransformation();
 
-		edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget testImageRT = testImageOffscreenRenderTarget;
+		edu.cmu.cs.dennisc.render.OffscreenRenderTarget testImageRT = testImageOffscreenRenderTarget;
 		java.awt.image.BufferedImage testImage = testImageRT.getSynchronousImageCapturer().createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer();
 		java.nio.FloatBuffer depthBuffer = testImageRT.getSynchronousImageCapturer().createFloatBufferForUseAsDepthBuffer();
 

@@ -51,7 +51,7 @@ public abstract class PicturePlaneInteraction {
 		RAY
 	}
 
-	private final edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
+	private final edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
 	private final edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera;
 	private edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable;
 
@@ -89,12 +89,12 @@ public abstract class PicturePlaneInteraction {
 		}
 	};
 
-	public PicturePlaneInteraction( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+	public PicturePlaneInteraction( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 		this.sgCamera = this.onscreenRenderTarget.getSgCameraAt( 0 ); //todo
 	}
 
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenPicturePlane() {
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenPicturePlane() {
 		return this.onscreenRenderTarget;
 	}
 

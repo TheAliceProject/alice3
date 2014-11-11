@@ -78,7 +78,7 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 				java.awt.Rectangle viewport = new java.awt.Rectangle( 0, 0, this.getIconWidth(), this.getIconHeight() );
 
 				edu.cmu.cs.dennisc.color.Color4f backgroundColor = true ? null : edu.cmu.cs.dennisc.color.Color4f.WHITE;
-				final edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = edu.cmu.cs.dennisc.renderer.RenderUtils.getDefaultRenderFactory().createImageBuffer( backgroundColor );
+				final edu.cmu.cs.dennisc.render.ImageBuffer rImageBuffer = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createImageBuffer( backgroundColor );
 				org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
 
 				org.lgna.story.implementation.AbstractTransformableImp fieldImp = sceneEditor.getImplementation( field );
@@ -92,12 +92,12 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 				org.lgna.story.implementation.SceneImp sceneImp = sceneEditor.getActiveSceneImplementation();
 				final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
 
-				edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> renderTarget = sceneEditor.getOnscreenRenderTarget();
+				edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> renderTarget = sceneEditor.getOnscreenRenderTarget();
 				renderTarget.getAsynchronousImageCapturer().captureImageBuffer(
-						new edu.cmu.cs.dennisc.renderer.RenderTask() {
+						new edu.cmu.cs.dennisc.render.RenderTask() {
 							@Override
 							public void render( Object context ) {
-								edu.cmu.cs.dennisc.renderer.gl.imp.GlrRenderContext glrRenderContext = (edu.cmu.cs.dennisc.renderer.gl.imp.GlrRenderContext)context;
+								edu.cmu.cs.dennisc.render.gl.imp.GlrRenderContext glrRenderContext = (edu.cmu.cs.dennisc.render.gl.imp.GlrRenderContext)context;
 								javax.media.opengl.GL2 gl = glrRenderContext.getDrawable().getGL().getGL2();
 								java.awt.Rectangle viewport = glrRenderContext.getViewport();
 								edu.cmu.cs.dennisc.color.Color4f backgroundColor = rImageBuffer.getBackgroundColor();
@@ -122,8 +122,8 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 
 								glu.gluPerspective( 45.0, viewport.width / (double)viewport.height, 0.1, 100.0 );
 
-								edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractTransformableAdapter<?> transformableAdapter = edu.cmu.cs.dennisc.renderer.gl.imp.AdapterFactory.getAdapterFor( sgTransformable );
-								edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext rc = new edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext();
+								edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractTransformableAdapter<?> transformableAdapter = edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.getAdapterFor( sgTransformable );
+								edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc = new edu.cmu.cs.dennisc.render.gl.imp.RenderContext();
 								rc.setGL( gl );
 								rc.initialize();
 
@@ -131,7 +131,7 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 								gl.glLoadIdentity();
 								glu.gluLookAt( p.x + 1, p.y + 1, p.z - 1, p.x, p.y, p.z, 0, 1, 0 );
 
-								edu.cmu.cs.dennisc.renderer.gl.imp.adapters.SceneAdapter sceneAdapter = edu.cmu.cs.dennisc.renderer.gl.imp.AdapterFactory.getAdapterFor( sgScene );
+								edu.cmu.cs.dennisc.render.gl.imp.adapters.SceneAdapter sceneAdapter = edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.getAdapterFor( sgScene );
 								sceneAdapter.setup( rc );
 								gl.glEnable( javax.media.opengl.GL.GL_DEPTH_TEST );
 
@@ -147,10 +147,10 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 						},
 						viewport,
 						rImageBuffer,
-						edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED,
-						new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer>() {
+						edu.cmu.cs.dennisc.render.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED,
+						new edu.cmu.cs.dennisc.render.Observer<edu.cmu.cs.dennisc.render.ImageBuffer>() {
 							@Override
-							public void done( edu.cmu.cs.dennisc.renderer.ImageBuffer result ) {
+							public void done( edu.cmu.cs.dennisc.render.ImageBuffer result ) {
 								imageIcon = new javax.swing.ImageIcon( result.getImage() );
 								repaintComponentsIfNecessary();
 								//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( result );

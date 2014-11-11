@@ -74,9 +74,9 @@ public class IconRenderTest {
 
 				program.setActiveScene( scene );
 
-				edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = edu.cmu.cs.dennisc.renderer.RenderUtils.getDefaultRenderFactory();
+				edu.cmu.cs.dennisc.render.RenderFactory renderFactory = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory();
 
-				final edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget;
+				final edu.cmu.cs.dennisc.render.RenderTarget renderTarget;
 				final boolean IS_USING_OFFSCREEN_RENDER_TARGET = false;
 
 				if( IS_USING_OFFSCREEN_RENDER_TARGET ) {
@@ -105,11 +105,11 @@ public class IconRenderTest {
 					label.setIcon( icon );
 
 					edu.cmu.cs.dennisc.color.Color4f backgroundColor = true ? null : edu.cmu.cs.dennisc.color.Color4f.WHITE;
-					final edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = edu.cmu.cs.dennisc.renderer.RenderUtils.getDefaultRenderFactory().createImageBuffer( backgroundColor );
-					renderTarget.getAsynchronousImageCapturer().captureImageBuffer( new edu.cmu.cs.dennisc.renderer.RenderTask() {
+					final edu.cmu.cs.dennisc.render.ImageBuffer rImageBuffer = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createImageBuffer( backgroundColor );
+					renderTarget.getAsynchronousImageCapturer().captureImageBuffer( new edu.cmu.cs.dennisc.render.RenderTask() {
 						@Override
 						public void render( Object context ) {
-							edu.cmu.cs.dennisc.renderer.gl.imp.GlrRenderContext glrRenderContext = (edu.cmu.cs.dennisc.renderer.gl.imp.GlrRenderContext)context;
+							edu.cmu.cs.dennisc.render.gl.imp.GlrRenderContext glrRenderContext = (edu.cmu.cs.dennisc.render.gl.imp.GlrRenderContext)context;
 							javax.media.opengl.GL2 gl = glrRenderContext.getDrawable().getGL().getGL2();
 							java.awt.Rectangle viewport = glrRenderContext.getViewport();
 							edu.cmu.cs.dennisc.color.Color4f backgroundColor = rImageBuffer.getBackgroundColor();
@@ -136,8 +136,8 @@ public class IconRenderTest {
 
 							edu.cmu.cs.dennisc.math.Point3 p = sgTransformable.getAbsoluteTransformation().translation;
 
-							edu.cmu.cs.dennisc.renderer.gl.imp.adapters.TransformableAdapter<?> transformableAdapter = edu.cmu.cs.dennisc.renderer.gl.imp.AdapterFactory.getAdapterFor( sgTransformable );
-							edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext rc = new edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext();
+							edu.cmu.cs.dennisc.render.gl.imp.adapters.TransformableAdapter<?> transformableAdapter = edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.getAdapterFor( sgTransformable );
+							edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc = new edu.cmu.cs.dennisc.render.gl.imp.RenderContext();
 							rc.setGL( gl );
 							rc.initialize();
 
@@ -145,7 +145,7 @@ public class IconRenderTest {
 							gl.glLoadIdentity();
 							glu.gluLookAt( p.x + 2, p.y + 2, p.z - 2, p.x, p.y, p.z, 0, 1, 0 );
 
-							edu.cmu.cs.dennisc.renderer.gl.imp.adapters.SceneAdapter sceneAdapter = edu.cmu.cs.dennisc.renderer.gl.imp.AdapterFactory.getAdapterFor( sgScene );
+							edu.cmu.cs.dennisc.render.gl.imp.adapters.SceneAdapter sceneAdapter = edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.getAdapterFor( sgScene );
 							sceneAdapter.setup( rc );
 							gl.glEnable( javax.media.opengl.GL.GL_DEPTH_TEST );
 							//							gl.glDisable( javax.media.opengl.GL.GL_BLEND );
@@ -156,9 +156,9 @@ public class IconRenderTest {
 							//							gl.glDisable( javax.media.opengl.GL.GL_BLEND );
 							gl.glDisable( javax.media.opengl.GL.GL_DEPTH_TEST );
 						}
-					}, new java.awt.Rectangle( surfaceSize.width, surfaceSize.height, surfaceSize.width, surfaceSize.height ), rImageBuffer, edu.cmu.cs.dennisc.renderer.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED, new edu.cmu.cs.dennisc.renderer.Observer<edu.cmu.cs.dennisc.renderer.ImageBuffer>() {
+					}, new java.awt.Rectangle( surfaceSize.width, surfaceSize.height, surfaceSize.width, surfaceSize.height ), rImageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED, new edu.cmu.cs.dennisc.render.Observer<edu.cmu.cs.dennisc.render.ImageBuffer>() {
 						@Override
-						public void done( edu.cmu.cs.dennisc.renderer.ImageBuffer result ) {
+						public void done( edu.cmu.cs.dennisc.render.ImageBuffer result ) {
 							//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
 							label.setIcon( new javax.swing.ImageIcon( result.getImage() ) );
 							frame.pack();

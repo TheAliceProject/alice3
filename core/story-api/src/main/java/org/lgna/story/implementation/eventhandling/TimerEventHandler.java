@@ -54,8 +54,8 @@ import org.lgna.story.event.WhileContingencyListener;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
-import edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent;
-import edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent;
+import edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener;
 
 /**
  * @author Matt May
@@ -80,12 +80,12 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 
 	public void enable() {
 		isEnabled = true;
-		edu.cmu.cs.dennisc.renderer.RenderUtils.getDefaultRenderFactory().addAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().addAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
 	public void disable() {
 		isEnabled = false;
-		edu.cmu.cs.dennisc.renderer.RenderUtils.getDefaultRenderFactory().removeAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().removeAutomaticDisplayListener( this.automaticDisplayListener );
 	}
 
 	public void addListener( TimeListener timerEventListener, Double frequency, MultipleEventPolicy policy ) {

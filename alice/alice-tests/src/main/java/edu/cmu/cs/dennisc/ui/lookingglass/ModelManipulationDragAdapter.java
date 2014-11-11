@@ -63,7 +63,7 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 		return edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
 	}
 
-	protected edu.cmu.cs.dennisc.renderer.PickObserver getPickObserver() {
+	protected edu.cmu.cs.dennisc.render.PickObserver getPickObserver() {
 		return null;
 	}
 
@@ -99,7 +99,7 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 	@Override
 	protected void handleMousePress( java.awt.Point current, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
 		if( isOriginalAsOpposedToStyleChange ) {
-			edu.cmu.cs.dennisc.renderer.PickResult pickResult = getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost( current.x, current.y, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED, getPickObserver() );
+			edu.cmu.cs.dennisc.render.PickResult pickResult = getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost( current.x, current.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED, getPickObserver() );
 			m_sgCamera = (edu.cmu.cs.dennisc.scenegraph.AbstractCamera)pickResult.getSource();
 			edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 			if( sgVisual != null ) {

@@ -115,10 +115,10 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		@Override
 		public void update( double tCurrent ) {
 			getView().updateTime( tCurrent );
-			edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> renderTarget = programContext.getProgramImp().getOnscreenRenderTarget();
-			if( renderTarget instanceof edu.cmu.cs.dennisc.renderer.gl.GlrCaptureFauxOnscreenRenderTarget ) {
-				edu.cmu.cs.dennisc.renderer.gl.GlrCaptureFauxOnscreenRenderTarget captureLookingGlass = (edu.cmu.cs.dennisc.renderer.gl.GlrCaptureFauxOnscreenRenderTarget)renderTarget;
-				captureLookingGlass.captureImage( new edu.cmu.cs.dennisc.renderer.gl.GlrCaptureFauxOnscreenRenderTarget.Observer() {
+			edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> renderTarget = programContext.getProgramImp().getOnscreenRenderTarget();
+			if( renderTarget instanceof edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget ) {
+				edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget captureLookingGlass = (edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget)renderTarget;
+				captureLookingGlass.captureImage( new edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget.Observer() {
 					@Override
 					public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown ) {
 						if( image != null ) {

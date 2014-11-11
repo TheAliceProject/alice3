@@ -48,18 +48,18 @@ import edu.cmu.cs.dennisc.ui.DragAdapter;
  * @author Dennis Cosgrove
  */
 public abstract class OnscreenLookingGlassDragAdapter extends DragAdapter {
-	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> m_onscreenLookingGlass;
+	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> m_onscreenLookingGlass;
 
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		return m_onscreenLookingGlass;
 	}
 
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenLookingGlass ) {
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenLookingGlass ) {
 		m_onscreenLookingGlass = onscreenLookingGlass;
 		setAWTComponent( getAWTComponentToAddListenersTo( onscreenLookingGlass ) );
 	}
 
-	protected java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenLookingGlass ) {
+	protected java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenLookingGlass ) {
 		return onscreenLookingGlass.getAwtComponent();
 	}
 }

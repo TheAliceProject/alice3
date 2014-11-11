@@ -90,7 +90,7 @@ public class MigrateProjects extends Batch {
 				org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( project.getProgramType() );
 				runProgramContext.initializeInContainer( new org.lgna.story.implementation.ProgramImp.AwtContainerInitializer() {
 					@Override
-					public void addComponents( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
+					public void addComponents( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
 						frame.getContentPane().add( onscreenRenderTarget.getAwtComponent() );
 					}
 				} );

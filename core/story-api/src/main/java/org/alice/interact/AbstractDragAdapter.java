@@ -355,7 +355,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	}
 
 	@Override
-	protected void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
+	protected void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getSGCamera();
 		if( sgCamera != null ) {
 			if( !hasSetCameraTransformables )
@@ -374,7 +374,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	}
 
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
-		edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+		edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
 		if( onscreenRenderTarget != null ) {
 			if( this.cameraIndex < onscreenRenderTarget.getSgCameraCount() ) {
 				return onscreenRenderTarget.getSgCameraAt( this.cameraIndex );

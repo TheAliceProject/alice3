@@ -54,8 +54,8 @@ import edu.cmu.cs.dennisc.math.Hexahedron;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.renderer.gl.imp.AdapterFactory;
-import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractCameraAdapter;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -75,7 +75,7 @@ public abstract class AbstractThumbnailMaker {
 	private final edu.cmu.cs.dennisc.scenegraph.Transformable sgModelTransformable;
 	private final Transformable sgCameraVehicle;
 	private final SymmetricPerspectiveCamera sgCamera;
-	private final edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget offscreenRenderTarget;
+	private final edu.cmu.cs.dennisc.render.OffscreenRenderTarget offscreenRenderTarget;
 
 	protected AbstractThumbnailMaker( int width, int height )
 	{
@@ -99,7 +99,7 @@ public abstract class AbstractThumbnailMaker {
 		this.sgCamera.farClippingPlaneDistance.setValue( 1000.0 );
 		this.sgCamera.nearClippingPlaneDistance.setValue( .1 );
 		this.sgCamera.setParent( this.sgCameraVehicle );
-		this.offscreenRenderTarget = edu.cmu.cs.dennisc.renderer.RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget( this.width * this.antAliasFactor, this.height * this.antAliasFactor, null );
+		this.offscreenRenderTarget = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createOffscreenRenderTarget( this.width * this.antAliasFactor, this.height * this.antAliasFactor, null );
 		setUpCamera( this.offscreenRenderTarget );
 	}
 
@@ -108,8 +108,8 @@ public abstract class AbstractThumbnailMaker {
 		if( this.offscreenRenderTarget.getSgCameraCount() > 0 ) {
 			for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : this.offscreenRenderTarget.getSgCameras() ) {
 				AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
-				edu.cmu.cs.dennisc.renderer.gl.imp.adapters.SceneAdapter sceneAdapter = cameraAdapterI.getSceneAdapter();
-				edu.cmu.cs.dennisc.renderer.gl.imp.adapters.ComponentAdapter<?> componentAdapter = AdapterFactory.getAdapterFor( sgComponent );
+				edu.cmu.cs.dennisc.render.gl.imp.adapters.SceneAdapter sceneAdapter = cameraAdapterI.getSceneAdapter();
+				edu.cmu.cs.dennisc.render.gl.imp.adapters.ComponentAdapter<?> componentAdapter = AdapterFactory.getAdapterFor( sgComponent );
 				if( componentAdapter != null ) {
 					sceneAdapter.removeDescendant( componentAdapter );
 				}
@@ -450,7 +450,7 @@ public abstract class AbstractThumbnailMaker {
 		return createThumbnail( v, v.getAxisAlignedMinimumBoundingBox(), trimWhitespace );
 	}
 
-	protected void setUpCamera( edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget renderTarget )
+	protected void setUpCamera( edu.cmu.cs.dennisc.render.OffscreenRenderTarget renderTarget )
 	{
 		boolean isClearingAndAddingRequired;
 		if( renderTarget.getSgCameraCount() == 1 ) {

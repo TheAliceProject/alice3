@@ -115,12 +115,12 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
@@ -510,5 +510,5 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	protected boolean hidCursor = false;
 	private double movementScale = 1.0;
 	protected AbstractCamera camera = null;
-	protected edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
+	protected edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
 }

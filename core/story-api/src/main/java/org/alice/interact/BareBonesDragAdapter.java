@@ -52,7 +52,7 @@ import org.alice.interact.manipulator.AnimatorDependentManipulator;
 import org.alice.interact.manipulator.OnscreenPicturePlaneInformedManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.renderer.PickResult;
+import edu.cmu.cs.dennisc.render.PickResult;
 
 /**
  * @author Dennis Cosgrove
@@ -124,7 +124,7 @@ public abstract class BareBonesDragAdapter {
 		return this.manipulators;
 	}
 
-	private java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+	private java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget ) {
 		if( onscreenRenderTarget != null ) {
 			return onscreenRenderTarget.getAwtComponent();
 		} else {
@@ -132,11 +132,11 @@ public abstract class BareBonesDragAdapter {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget ) {
 		if( this.onscreenRenderTarget != null ) {
 			this.onscreenRenderTarget.getRenderFactory().removeAutomaticDisplayListener( this.automaticDisplayAdapter );
 		}
@@ -278,18 +278,18 @@ public abstract class BareBonesDragAdapter {
 	}
 
 	private PickResult pickIntoScene( java.awt.Point mouseLocation ) {
-		edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+		edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
 		assert onscreenRenderTarget != null;
 		final boolean IS_ASYNCHRONOUS_PICK_READY_FOR_PRIME_TIME = false;
 		if( IS_ASYNCHRONOUS_PICK_READY_FOR_PRIME_TIME ) {
-			getOnscreenRenderTarget().getAsynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED, null, new edu.cmu.cs.dennisc.renderer.PickFrontMostObserver() {
+			getOnscreenRenderTarget().getAsynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED, null, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
 				@Override
-				public void done( edu.cmu.cs.dennisc.renderer.PickResult result ) {
+				public void done( edu.cmu.cs.dennisc.render.PickResult result ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( result );
 				}
 			} );
 		}
-		edu.cmu.cs.dennisc.renderer.PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED );
+		edu.cmu.cs.dennisc.render.PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
 		return pickResult;
 	}
 
@@ -430,11 +430,11 @@ public abstract class BareBonesDragAdapter {
 
 	}
 
-	protected abstract void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e );
+	protected abstract void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e );
 
-	private final edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
+	private final edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener() {
 		@Override
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
 			handleAutomaticDisplayCompleted( e );
 		}
 	};
@@ -499,7 +499,7 @@ public abstract class BareBonesDragAdapter {
 
 	protected/*private*/final java.util.List<ManipulatorConditionSet> manipulators = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
-	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget;
+	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget;
 	private java.awt.Component lookingGlassComponent = null;
 	private java.awt.Component currentRolloverComponent = null;
 	private edu.cmu.cs.dennisc.animation.Animator animator;

@@ -166,7 +166,7 @@ public abstract class ProgramImp {
 		}
 	}
 
-	protected ProgramImp( org.lgna.story.SProgram abstraction, edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+	protected ProgramImp( org.lgna.story.SProgram abstraction, edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget ) {
 		this.abstraction = abstraction;
 		this.onscreenRenderTarget = onscreenRenderTarget;
 		this.toggleFullScreenAction.putValue( javax.swing.Action.SMALL_ICON, new FullScreenIcon() );
@@ -210,7 +210,7 @@ public abstract class ProgramImp {
 		return this.abstraction;
 	}
 
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
@@ -224,15 +224,15 @@ public abstract class ProgramImp {
 		this.simulationSpeedFactor = simulationSpeedFactor;
 	}
 
-	private edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
+	private edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener() {
 		@Override
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
 			ProgramImp.this.getAnimator().update();
 		}
 	};
 
 	public void startAnimator() {
-		edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
+		edu.cmu.cs.dennisc.render.RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
 		renderFactory.addAutomaticDisplayListener( this.automaticDisplayListener );
 		renderFactory.incrementAutomaticDisplayCount();
 		this.isAnimatorStarted = true;
@@ -241,7 +241,7 @@ public abstract class ProgramImp {
 	public void stopAnimator() {
 		if( this.isAnimatorStarted ) {
 			this.getAnimator().completeAll( null );
-			edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
+			edu.cmu.cs.dennisc.render.RenderFactory renderFactory = this.getOnscreenRenderTarget().getRenderFactory();
 			renderFactory.decrementAutomaticDisplayCount();
 			renderFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
 			this.isAnimatorStarted = false;
@@ -268,7 +268,7 @@ public abstract class ProgramImp {
 	}
 
 	public static interface AwtContainerInitializer {
-		public void addComponents( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel );
+		public void addComponents( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel );
 	}
 
 	private static class DefaultAwtContainerInitializer implements AwtContainerInitializer {
@@ -279,7 +279,7 @@ public abstract class ProgramImp {
 		}
 
 		@Override
-		public void addComponents( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
+		public void addComponents( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
 			this.awtContainer.add( onscreenRenderTarget.getAwtComponent() );
 			if( controlPanel != null ) {
 				this.awtContainer.add( controlPanel, java.awt.BorderLayout.PAGE_START );
@@ -363,7 +363,7 @@ public abstract class ProgramImp {
 	}
 
 	private final org.lgna.story.SProgram abstraction;
-	private final edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget;
+	private final edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget;
 	private double simulationSpeedFactor = 1.0;
 	private javax.swing.Action restartAction;
 	private boolean isAnimatorStarted = false;
