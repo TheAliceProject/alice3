@@ -165,7 +165,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			this.mousePlaneOffset = new Point( 0, 0 );
 			this.originalPosition = new Point3( 0, 0, 0 );
 
-			org.lgna.croquet.history.DragStep dragStep = startInput.getDragAndDropContext();
+			org.lgna.croquet.history.DragStep dragStep = (org.lgna.croquet.history.DragStep)startInput.getDragAndDropContext();
 			org.lgna.croquet.DragModel dragModel = dragStep.getModel();
 			DragComponent dragSource = dragStep.getDragSource();
 			dragSource.hideDragProxy();
@@ -249,7 +249,9 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		}
 		//		this.sgBoundingBoxTransformable.setParent(null);
 		//		System.out.println("End drag position = "+this.sgBoundingBoxTransformable.localTransformation.getValue().translation);
-		DragComponent dragSource = endInput.getDragAndDropContext().getDragSource();
+		org.lgna.croquet.history.DragStep dragStep = (org.lgna.croquet.history.DragStep)endInput.getDragAndDropContext();
+
+		DragComponent dragSource = dragStep.getDragSource();
 		dragSource.showDragProxy();
 	}
 
