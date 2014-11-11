@@ -52,7 +52,7 @@ import static javax.media.opengl.GL2ES2.GL_DEPTH_COMPONENT;
  * @author Dennis Cosgrove
  */
 public final class ImageCaptureDisplayTask extends DisplayTask {
-	public ImageCaptureDisplayTask( edu.cmu.cs.dennisc.render.RenderTask renderTask, java.awt.Rectangle viewport, GlrImageBuffer imageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.render.Observer<edu.cmu.cs.dennisc.render.ImageBuffer> observer ) {
+	public ImageCaptureDisplayTask( edu.cmu.cs.dennisc.render.RenderTask renderTask, java.awt.Rectangle viewport, GlrImageBuffer imageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.render.ImageCaptureObserver observer ) {
 		this.renderTask = renderTask;
 		this.viewport = viewport;
 		this.imageBuffer = imageBuffer;
@@ -165,5 +165,5 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
 	private final java.awt.Rectangle viewport;
 	private final GlrImageBuffer imageBuffer;
 	private final edu.cmu.cs.dennisc.render.ImageOrientationRequirement imageOrientationRequirement;
-	private final edu.cmu.cs.dennisc.render.Observer<edu.cmu.cs.dennisc.render.ImageBuffer> observer;
+	private final edu.cmu.cs.dennisc.render.ImageCaptureObserver observer;
 }

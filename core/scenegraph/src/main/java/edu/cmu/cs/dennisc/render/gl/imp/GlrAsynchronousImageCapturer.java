@@ -51,12 +51,12 @@ package edu.cmu.cs.dennisc.render.gl.imp;
 	}
 
 	@Override
-	public void captureImageBuffer( edu.cmu.cs.dennisc.render.RenderTask renderTask, java.awt.Rectangle viewport, edu.cmu.cs.dennisc.render.ImageBuffer imageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.render.Observer<edu.cmu.cs.dennisc.render.ImageBuffer> observer ) {
+	public void captureImageBuffer( edu.cmu.cs.dennisc.render.RenderTask renderTask, java.awt.Rectangle viewport, edu.cmu.cs.dennisc.render.ImageBuffer imageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.render.ImageCaptureObserver observer ) {
 		this.rtImp.addDisplayTask( new ImageCaptureDisplayTask( renderTask, viewport, (edu.cmu.cs.dennisc.render.gl.imp.GlrImageBuffer)imageBuffer, imageOrientationRequirement, observer ) );
 	}
 
 	@Override
-	public final void captureImageBuffer( edu.cmu.cs.dennisc.render.ImageBuffer imageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.render.Observer<edu.cmu.cs.dennisc.render.ImageBuffer> observer ) {
+	public final void captureImageBuffer( edu.cmu.cs.dennisc.render.ImageBuffer imageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.render.ImageCaptureObserver observer ) {
 		this.captureImageBuffer( null, null, imageBuffer, imageOrientationRequirement, observer );
 	}
 

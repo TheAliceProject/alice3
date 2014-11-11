@@ -148,7 +148,7 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 						viewport,
 						rImageBuffer,
 						edu.cmu.cs.dennisc.render.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED,
-						new edu.cmu.cs.dennisc.render.Observer<edu.cmu.cs.dennisc.render.ImageBuffer>() {
+						new edu.cmu.cs.dennisc.render.ImageCaptureObserver() {
 							@Override
 							public void done( edu.cmu.cs.dennisc.render.ImageBuffer result ) {
 								imageIcon = new javax.swing.ImageIcon( result.getImage() );

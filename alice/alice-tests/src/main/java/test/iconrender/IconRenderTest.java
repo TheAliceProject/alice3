@@ -156,7 +156,7 @@ public class IconRenderTest {
 							//							gl.glDisable( javax.media.opengl.GL.GL_BLEND );
 							gl.glDisable( javax.media.opengl.GL.GL_DEPTH_TEST );
 						}
-					}, new java.awt.Rectangle( surfaceSize.width, surfaceSize.height, surfaceSize.width, surfaceSize.height ), rImageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED, new edu.cmu.cs.dennisc.render.Observer<edu.cmu.cs.dennisc.render.ImageBuffer>() {
+					}, new java.awt.Rectangle( surfaceSize.width, surfaceSize.height, surfaceSize.width, surfaceSize.height ), rImageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED, new edu.cmu.cs.dennisc.render.ImageCaptureObserver() {
 						@Override
 						public void done( edu.cmu.cs.dennisc.render.ImageBuffer result ) {
 							//edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );

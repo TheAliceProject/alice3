@@ -40,18 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.render.nil;
+package edu.cmu.cs.dennisc.render;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class NrAsynchronousImageCapturer implements edu.cmu.cs.dennisc.render.AsynchronousImageCapturer {
-	@Override
-	public void captureImageBuffer( edu.cmu.cs.dennisc.render.RenderTask renderTask, java.awt.Rectangle viewport, edu.cmu.cs.dennisc.render.ImageBuffer imageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.render.ImageCaptureObserver observer ) {
-	}
+public interface ImageCaptureObserver extends Observer<ImageBuffer> {
 
-	@Override
-	public final void captureImageBuffer( edu.cmu.cs.dennisc.render.ImageBuffer imageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement imageOrientationRequirement, edu.cmu.cs.dennisc.render.ImageCaptureObserver observer ) {
-		this.captureImageBuffer( null, null, imageBuffer, imageOrientationRequirement, observer );
-	}
 }
