@@ -20,13 +20,12 @@ projectNames = [
 	"scenegraph",
 	"story-api",
 	"ast",
-	"story-api-migration",
-	"croquet"
+	"story-api-migration"
 ]
 
 mavenRepoJarPaths = [
-	"org/jogamp/gluegen/gluegen-rt/2.1.3/gluegen-rt-2.1.3.jar",
-	"org/jogamp/jogl/jogl-all/2.1.3/jogl-all-2.1.3.jar",
+	"org/jogamp/gluegen/gluegen-rt/2.2.4/gluegen-rt-2.2.4.jar",
+	"org/jogamp/jogl/jogl-all/2.2.4/jogl-all-2.2.4.jar",
 	"javax/media/jmf/2.1.1e/jmf-2.1.1e.jar",
 	"com/sun/javamp3/1.0/javamp3-1.0.jar",
 	"org/alice/alice-model-source/2014.08.20/alice-model-source-2014.08.20.jar",
@@ -109,7 +108,7 @@ def _generateManifest8():
 	return sb.toString()
 
 def setUpNetbeans8Plugin():
-	#MavenUtilities.runMavenCleanCompilePackage()
+	MavenUtilities.runMavenCleanCompilePackage()
 	#MavenUtilities.runMavenCompilePackage()
 	#MavenUtilities.runMavenPackage()
 	_copyJars()
