@@ -60,7 +60,7 @@ public class GraphicsPropertiesAttachment implements Attachment {
 		org.w3c.dom.Element xmlRootElement = xmlDocument.createElement( "graphicsProperties" );
 		xmlDocument.appendChild( xmlRootElement );
 		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSharedDetails();
-		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getPickDetails();
+		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
 		if( sharedDetails != null ) {
 			org.w3c.dom.Element xmlSharedElement = xmlDocument.createElement( "sharedProperties" );
 			xmlRootElement.appendChild( xmlSharedElement );
@@ -70,13 +70,13 @@ public class GraphicsPropertiesAttachment implements Attachment {
 			xmlSharedElement.appendChild( createXmlElement( xmlDocument, "version", sharedDetails.getVersion() ) );
 			xmlSharedElement.appendChild( createXmlElement( xmlDocument, "extensions", java.util.Arrays.toString( sharedDetails.getExtensions() ) ) );
 		}
-		if( pickDetails != null ) {
+		if( synchronousPickDetails != null ) {
 			org.w3c.dom.Element xmlPickElement = xmlDocument.createElement( "pickProperties" );
 			xmlRootElement.appendChild( xmlPickElement );
 
-			xmlPickElement.appendChild( createXmlElement( xmlDocument, "isPickFunctioningCorrectly", Boolean.toString( pickDetails.isPickFunctioningCorrectly() ) ) );
-			xmlPickElement.appendChild( createXmlElement( xmlDocument, "isReportingPickCanBeHardwareAccelerated", Boolean.toString( pickDetails.isReportingPickCanBeHardwareAccelerated() ) ) );
-			xmlPickElement.appendChild( createXmlElement( xmlDocument, "isPickActuallyHardwareAccelerated", Boolean.toString( pickDetails.isPickActuallyHardwareAccelerated() ) ) );
+			xmlPickElement.appendChild( createXmlElement( xmlDocument, "isPickFunctioningCorrectly", Boolean.toString( synchronousPickDetails.isPickFunctioningCorrectly() ) ) );
+			xmlPickElement.appendChild( createXmlElement( xmlDocument, "isReportingPickCanBeHardwareAccelerated", Boolean.toString( synchronousPickDetails.isReportingPickCanBeHardwareAccelerated() ) ) );
+			xmlPickElement.appendChild( createXmlElement( xmlDocument, "isPickActuallyHardwareAccelerated", Boolean.toString( synchronousPickDetails.isPickActuallyHardwareAccelerated() ) ) );
 		}
 		edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, baos );
 		try {

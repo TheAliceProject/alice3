@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.SynchronousPicker {
 	private static class ActualPicker {
 		private static final int SELECTION_CAPACITY = 256;
-		private final PickContext pickContext = new PickContext();
+		private final PickContext pickContext = new PickContext( true );
 		private final java.nio.IntBuffer selectionAsIntBuffer;
 
 		private final javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser;
@@ -109,9 +109,9 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 
 		private void performPick( javax.media.opengl.GL2 gl ) {
 			this.pickContext.gl = gl;
-			ConformanceTestResults.SINGLETON.updatePickInformationIfNecessary( GlDrawableUtilities.canCreateGlPixelBuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable, gl );
+			ConformanceTestResults.SINGLETON.updateSynchronousPickInformationIfNecessary( gl, GlDrawableUtilities.canCreateGlPixelBuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable );
 
-			ConformanceTestResults.PickDetails pickDetails = ConformanceTestResults.SINGLETON.getPickDetails();
+			ConformanceTestResults.SynchronousPickDetails pickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
 
 			if( pickParameters != null ) {
 				edu.cmu.cs.dennisc.render.PickObserver pickObserver = pickParameters.getPickObserver();

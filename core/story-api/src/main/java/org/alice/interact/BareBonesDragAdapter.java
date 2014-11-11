@@ -52,7 +52,6 @@ import org.alice.interact.manipulator.AnimatorDependentManipulator;
 import org.alice.interact.manipulator.OnscreenPicturePlaneInformedManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.render.PickResult;
 
 /**
  * @author Dennis Cosgrove
@@ -276,20 +275,29 @@ public abstract class BareBonesDragAdapter {
 		}
 	}
 
-	private PickResult pickIntoScene( java.awt.Point mouseLocation ) {
+	private static enum IsSuppressionOfGlExceptionDesired {
+		TRUE,
+		FALSE;
+	}
+
+	private void pickIntoScene( java.awt.Point mouseLocation, IsSuppressionOfGlExceptionDesired isSuppressionOfGlExceptionDesired, edu.cmu.cs.dennisc.render.PickFrontMostObserver observer ) {
 		edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
 		assert onscreenRenderTarget != null;
 		final boolean IS_ASYNCHRONOUS_PICK_READY_FOR_PRIME_TIME = false;
 		if( IS_ASYNCHRONOUS_PICK_READY_FOR_PRIME_TIME ) {
-			getOnscreenRenderTarget().getAsynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED, null, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
-				@Override
-				public void done( edu.cmu.cs.dennisc.render.PickResult result ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( result );
+			getOnscreenRenderTarget().getAsynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED, null, observer );
+		} else {
+			try {
+				edu.cmu.cs.dennisc.render.PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
+				observer.done( pickResult );
+			} catch( javax.media.opengl.GLException gle ) {
+				if( isSuppressionOfGlExceptionDesired == IsSuppressionOfGlExceptionDesired.TRUE ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "Error picking into scene", gle );
+				} else {
+					throw gle;
 				}
-			} );
+			}
 		}
-		edu.cmu.cs.dennisc.render.PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
-		return pickResult;
 	}
 
 	protected void handleMouseEntered( java.awt.event.MouseEvent e ) {
@@ -297,12 +305,12 @@ public abstract class BareBonesDragAdapter {
 		if( !this.currentInputState.isAnyMouseButtonDown() ) {
 			this.currentInputState.setMouseLocation( e.getPoint() );
 			if( e.getComponent() == this.lookingGlassComponent ) {
-				try {
-					PickResult pr = pickIntoScene( e.getPoint() );
-					this.currentInputState.setRolloverPickResult( pr );
-				} catch( javax.media.opengl.GLException gle ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "Error picking into scene", gle );
-				}
+				this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.TRUE, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
+					@Override
+					public void done( edu.cmu.cs.dennisc.render.PickResult pickResult ) {
+						currentInputState.setRolloverPickResult( pickResult );
+					}
+				} );
 			} else {
 				this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ) );
 			}
@@ -333,7 +341,12 @@ public abstract class BareBonesDragAdapter {
 		e.getComponent().requestFocus();
 
 		if( e.getComponent() == this.lookingGlassComponent ) {
-			this.currentInputState.setClickPickResult( pickIntoScene( e.getPoint() ) );
+			this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.FALSE, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
+				@Override
+				public void done( edu.cmu.cs.dennisc.render.PickResult result ) {
+					currentInputState.setClickPickResult( result );
+				}
+			} );
 		} else {
 			this.currentInputState.setClickHandle( this.getHandleForComponent( e.getComponent() ) );
 		}
@@ -348,7 +361,12 @@ public abstract class BareBonesDragAdapter {
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_UP );
 		this.currentInputState.setInputEvent( e );
 		if( this.currentRolloverComponent == this.lookingGlassComponent ) {
-			this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
+			this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.FALSE, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
+				@Override
+				public void done( edu.cmu.cs.dennisc.render.PickResult pickResult ) {
+					currentInputState.setRolloverPickResult( pickResult );
+				}
+			} );
 		} else {
 			this.currentInputState.setRolloverHandle( this.getHandleForComponent( this.currentRolloverComponent ) );
 		}
@@ -378,12 +396,12 @@ public abstract class BareBonesDragAdapter {
 				//Don't pick into the scene if a mouse button is already down
 				if( !this.currentInputState.isAnyMouseButtonDown() )
 				{
-					try {
-						PickResult pr = pickIntoScene( e.getPoint() );
-						this.currentInputState.setRolloverPickResult( pr );
-					} catch( javax.media.opengl.GLException gle ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "Error picking into scene", gle );
-					}
+					this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.TRUE, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
+						@Override
+						public void done( edu.cmu.cs.dennisc.render.PickResult pickResult ) {
+							currentInputState.setRolloverPickResult( pickResult );
+						}
+					} );
 				}
 			}
 			else

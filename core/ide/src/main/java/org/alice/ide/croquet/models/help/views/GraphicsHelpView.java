@@ -69,17 +69,17 @@ public class GraphicsHelpView extends org.lgna.croquet.views.MigPanel {
 	}
 
 	public GraphicsHelpView() {
-		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getPickDetails();
+		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
 		StringBuilder sb = new StringBuilder();
 		sb.append( "FYI: " );
-		if( pickDetails != null ) {
-			if( pickDetails.isPickFunctioningCorrectly() ) {
+		if( synchronousPickDetails != null ) {
+			if( synchronousPickDetails.isPickFunctioningCorrectly() ) {
 				sb.append( "Clicking into the scene appears to be functioning correctly" );
-				if( pickDetails.isPickActuallyHardwareAccelerated() ) {
+				if( synchronousPickDetails.isPickActuallyHardwareAccelerated() ) {
 					sb.append( " in hardware" );
 				} else {
 					sb.append( " in software (updating your video drivers might help)" );
-					if( pickDetails.isReportingPickCanBeHardwareAccelerated() ) {
+					if( synchronousPickDetails.isReportingPickCanBeHardwareAccelerated() ) {
 						sb.append( "(video card reports hardware support but fails)" );
 					}
 				}

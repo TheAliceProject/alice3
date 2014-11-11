@@ -43,6 +43,7 @@
 package edu.cmu.cs.dennisc.render.gl.imp;
 
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 /**
  * @author Dennis Cosgrove
@@ -65,6 +66,9 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractCameraAdapter;
 	@Override
 	public final IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
 		this.pickContext.gl = gl;
+
+		//todo:
+		ConformanceTestResults.SINGLETON.updateAsynchronousPickInformationIfNecessary( gl );
 
 		edu.cmu.cs.dennisc.render.gl.GlrRenderTarget glrRenderTarget = rtImp.getRenderTarget();
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = rtImp.getCameraAtPixel( this.x, this.y );
@@ -195,6 +199,6 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractCameraAdapter;
 	private final edu.cmu.cs.dennisc.render.VisualInclusionCriterion criterion;
 
 	private static final int SELECTION_CAPACITY = 256;
-	private final PickContext pickContext = new PickContext();
+	private final PickContext pickContext = new PickContext( false );
 	private final java.nio.IntBuffer selectionAsIntBuffer;
 }

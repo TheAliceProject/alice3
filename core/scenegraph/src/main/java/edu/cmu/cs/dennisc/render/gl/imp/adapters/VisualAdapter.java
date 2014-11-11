@@ -52,7 +52,6 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Appearance;
-import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 /**
  * @author Dennis Cosgrove
@@ -320,7 +319,7 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 			if( isSubElementActuallyRequired ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.PickDetails pickDetails = ConformanceTestResults.SINGLETON.getPickDetails();
+				edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.PickDetails pickDetails = pc.getConformanceTestResultsPickDetails();
 				if( pickDetails != null ) {
 					isSubElementActuallyRequired = pickDetails.isPickFunctioningCorrectly() == false;
 				} else {

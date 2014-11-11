@@ -56,7 +56,7 @@ public class JGraphicsHeaderPane extends javax.swing.JPanel {
 
 	public JGraphicsHeaderPane( org.lgna.issue.ApplicationIssueConfiguration config ) {
 		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSharedDetails();
-		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getPickDetails();
+		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
 		StringBuilder sbSearchGraphicsDriverUrlSpec = new StringBuilder();
 		sbSearchGraphicsDriverUrlSpec.append( "http://www.google.com/search?q=+graphics+driver" );
 		if( sharedDetails != null ) {
@@ -121,14 +121,14 @@ public class JGraphicsHeaderPane extends javax.swing.JPanel {
 		sb.append( System.getProperty( "sun.arch.data.model" ) );
 		sb.append( "-bit</strong><p>" );
 		sb.append( "FYI: " );
-		if( pickDetails != null ) {
-			if( pickDetails.isPickFunctioningCorrectly() ) {
+		if( synchronousPickDetails != null ) {
+			if( synchronousPickDetails.isPickFunctioningCorrectly() ) {
 				sb.append( "Clicking into the scene appears to be functioning correctly" );
-				if( pickDetails.isPickActuallyHardwareAccelerated() ) {
+				if( synchronousPickDetails.isPickActuallyHardwareAccelerated() ) {
 					sb.append( " in hardware" );
 				} else {
 					sb.append( " in software (updating your video drivers might help)" );
-					if( pickDetails.isReportingPickCanBeHardwareAccelerated() ) {
+					if( synchronousPickDetails.isReportingPickCanBeHardwareAccelerated() ) {
 						sb.append( "(video card reports hardware support but fails)" );
 					}
 				}

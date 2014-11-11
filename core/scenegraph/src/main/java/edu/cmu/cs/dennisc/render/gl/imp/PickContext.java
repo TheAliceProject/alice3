@@ -54,13 +54,23 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter;
 public class PickContext extends Context {
 	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
 
-	private java.util.HashMap<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	public PickContext( boolean isSynchronous ) {
+		this.isSynchronous = isSynchronous;
+	}
 
 	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
 		synchronized( m_pickNameMap ) {
 			int name = m_pickNameMap.size();
 			m_pickNameMap.put( new Integer( name ), visualAdapter );
 			return name;
+		}
+	}
+
+	public edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.PickDetails getConformanceTestResultsPickDetails() {
+		if( this.isSynchronous ) {
+			return edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
+		} else {
+			return edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getAsynchronousPickDetails();
 		}
 	}
 
@@ -99,4 +109,7 @@ public class PickContext extends Context {
 	@Override
 	public void setAppearanceIndex( int index ) {
 	}
+
+	private final java.util.Map<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final boolean isSynchronous;
 }
