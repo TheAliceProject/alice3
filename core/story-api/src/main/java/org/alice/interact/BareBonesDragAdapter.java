@@ -269,9 +269,8 @@ public abstract class BareBonesDragAdapter {
 		if( c == null ) {
 			return null;
 		}
-		org.lgna.croquet.views.AwtComponentView<?> lgc = org.lgna.croquet.views.AwtComponentView.lookup( c );
-		if( lgc instanceof ManipulationHandle ) {
-			return (ManipulationHandle)lgc;
+		if( c instanceof ManipulationHandle ) {
+			return (ManipulationHandle)c;
 		} else {
 			return getHandleForComponent( c.getParent() );
 		}

@@ -221,13 +221,13 @@ public class CameraNavigatorWidget extends org.lgna.croquet.views.LineAxisPanel 
 		javax.swing.JPanel jPanel = this.getAwtComponent();
 		switch( mode ) {
 		case PERSPECTIVE:
-			jPanel.add( this.cameraControlStrafe.getAwtComponent() );
-			jPanel.add( this.cameraDriver.getAwtComponent() );
-			jPanel.add( this.cameraControlUpDown.getAwtComponent() );
+			jPanel.add( this.cameraControlStrafe );
+			jPanel.add( this.cameraDriver );
+			jPanel.add( this.cameraControlUpDown );
 			break;
 		case ORTHOGRAPHIC:
-			jPanel.add( this.orthographicCameraControlStrafe.getAwtComponent() );
-			jPanel.add( this.orthographicCameraControlZoom.getAwtComponent() );
+			jPanel.add( this.orthographicCameraControlStrafe );
+			jPanel.add( this.orthographicCameraControlZoom );
 			break;
 		}
 	}
