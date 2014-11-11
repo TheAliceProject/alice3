@@ -56,10 +56,5 @@ public class AliceIdeConfiguration implements org.alice.ide.IdeConfiguration {
 		return this.issueReportingHub;
 	}
 
-	@Override
-	public org.alice.ide.iconfactory.IconFactoryManager createIconFactoryManager() {
-		return new org.alice.stageide.iconfactory.StoryIconFactoryManager();
-	}
-
 	private final org.alice.ide.issue.AliceIssueReportingHub issueReportingHub = new org.alice.ide.issue.AliceIssueReportingHub();
 }

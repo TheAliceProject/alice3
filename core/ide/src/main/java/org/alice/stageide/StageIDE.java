@@ -56,7 +56,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	private org.alice.ide.cascade.ExpressionCascadeManager cascadeManager = new org.alice.stageide.cascade.ExpressionCascadeManager();
 
 	public StageIDE( org.alice.ide.IdeConfiguration ideConfiguration, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
-		super( ideConfiguration, crashDetector );
+		super( ideConfiguration, StoryApiConfigurationManager.getInstance(), crashDetector );
 		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
 			@Override
 			public void windowStateChanged( java.awt.event.WindowEvent e ) {
@@ -103,11 +103,6 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration> getDeclarationFilter() {
 		return this.declarationFilter;
-	}
-
-	@Override
-	public org.alice.ide.ApiConfigurationManager getApiConfigurationManager() {
-		return StoryApiConfigurationManager.getInstance();
 	}
 
 	@Override

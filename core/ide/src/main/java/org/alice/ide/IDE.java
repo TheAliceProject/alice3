@@ -78,7 +78,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private final IdeConfiguration ideConfiguration;
 	private final edu.cmu.cs.dennisc.crash.CrashDetector crashDetector;
 
-	public IDE( IdeConfiguration ideConfiguration, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
+	public IDE( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
 		this.ideConfiguration = ideConfiguration;
 		this.crashDetector = crashDetector;
 		StringBuffer sb = new StringBuffer();
@@ -86,7 +86,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		sb.append( getApplicationName() );
 		IDE.exceptionHandler.setTitle( sb.toString() );
 		IDE.exceptionHandler.setApplicationName( getApplicationName() );
-		this.projectDocumentFrame = new ProjectDocumentFrame( ideConfiguration );
+		this.projectDocumentFrame = new ProjectDocumentFrame( ideConfiguration, apiConfigurationManager );
 
 		//initialize locale
 
@@ -143,7 +143,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.getPerspectiveState().getValue() == this.getSetupScenePerspective();
 	}
 
-	public abstract ApiConfigurationManager getApiConfigurationManager();
+	public final ApiConfigurationManager getApiConfigurationManager() {
+		return this.projectDocumentFrame.getApiConfigurationManager();
+	}
 
 	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_WINDOW_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.SHIFT_MASK );
 	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK );
@@ -326,7 +328,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				String message = this.reorganizeTypeFieldsIfNecessary( namedUserType, 0, alreadyMovedFields );
 				if( message != null ) {
 					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( message )
-							.title( "Unable to Recover" )
+							.title( "Unable to Recover"
+							)
 							.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 							.buildAndShow();
 				}

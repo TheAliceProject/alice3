@@ -48,7 +48,8 @@ import org.alice.ide.declarationseditor.DeclarationComposite;
  * @author Dennis Cosgrove
  */
 public class ProjectDocumentFrame {
-	public ProjectDocumentFrame( IdeConfiguration ideConfiguration ) {
+	public ProjectDocumentFrame( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager ) {
+		this.apiConfigurationManager = apiConfigurationManager;
 		this.findComposite = new org.alice.ide.croquet.models.project.find.croquet.FindComposite( this );
 		this.perspectiveState = new org.alice.stageide.perspectives.PerspectiveState();
 		this.uploadOperations = ideConfiguration != null ? ideConfiguration.createUploadOperations( this ) : new org.lgna.croquet.Operation[ 0 ];
@@ -57,7 +58,11 @@ public class ProjectDocumentFrame {
 		this.setupScenePerspective = new org.alice.stageide.perspectives.SetupScenePerspective( this, aliceMenuBar );
 		this.perspectiveState.addItem( this.codePerspective );
 		this.perspectiveState.addItem( this.setupScenePerspective );
-		this.iconFactoryManager = ideConfiguration.createIconFactoryManager();
+		this.iconFactoryManager = apiConfigurationManager.createIconFactoryManager();
+	}
+
+	public ApiConfigurationManager getApiConfigurationManager() {
+		return this.apiConfigurationManager;
 	}
 
 	public org.lgna.croquet.Operation[] getUploadOperations() {
@@ -103,6 +108,8 @@ public class ProjectDocumentFrame {
 	public org.alice.ide.iconfactory.IconFactoryManager getIconFactoryManager() {
 		return this.iconFactoryManager;
 	}
+
+	private final ApiConfigurationManager apiConfigurationManager;
 
 	private org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> typeMetaState;
 

@@ -49,6 +49,4 @@ public interface IdeConfiguration {
 	org.lgna.croquet.Operation[] createUploadOperations( ProjectDocumentFrame projectDocumentFrame );
 
 	org.lgna.issue.IssueReportingHub getIssueReportingHub();
-
-	org.alice.ide.iconfactory.IconFactoryManager createIconFactoryManager();
 }

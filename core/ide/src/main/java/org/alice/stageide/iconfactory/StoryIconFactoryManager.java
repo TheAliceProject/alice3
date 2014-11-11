@@ -51,17 +51,22 @@ public class StoryIconFactoryManager implements org.alice.ide.iconfactory.IconFa
 
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory( org.lgna.project.ast.UserField field, org.lgna.croquet.icon.IconFactory fallbackIconFactory ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
-		if( type.isAssignableTo( org.lgna.story.SShape.class ) ) {
-			synchronized( this.mapFieldToIconFactory ) {
-				org.lgna.croquet.icon.IconFactory iconFactory = this.mapFieldToIconFactory.get( field );
-				if( iconFactory != null ) {
-					//pass
-				} else {
-					iconFactory = new FieldIconFactory( field, fallbackIconFactory );
-					this.mapFieldToIconFactory.put( field, iconFactory );
+		final boolean IS_READY_FOR_PRIME_TIME = false;
+		if( IS_READY_FOR_PRIME_TIME ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
+			if( type.isAssignableTo( org.lgna.story.SShape.class ) ) {
+				synchronized( this.mapFieldToIconFactory ) {
+					org.lgna.croquet.icon.IconFactory iconFactory = this.mapFieldToIconFactory.get( field );
+					if( iconFactory != null ) {
+						//pass
+					} else {
+						iconFactory = new FieldIconFactory( field, fallbackIconFactory );
+						this.mapFieldToIconFactory.put( field, iconFactory );
+					}
+					return iconFactory;
 				}
-				return iconFactory;
+			} else {
+				return fallbackIconFactory;
 			}
 		} else {
 			return fallbackIconFactory;
