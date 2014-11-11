@@ -47,6 +47,9 @@ import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
+/**
+ * @author David Culyba
+ */
 public class SnapLine extends Transformable {
 
 	public SnapLine( Vector3 line ) {

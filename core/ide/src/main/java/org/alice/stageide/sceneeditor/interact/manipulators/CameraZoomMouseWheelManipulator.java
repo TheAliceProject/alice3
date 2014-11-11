@@ -48,7 +48,7 @@ import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.QuaternionAndTranslation;
-import org.alice.interact.QuaternionAndTranslationTargetBasedAnimation;
+import org.alice.interact.animation.QuaternionAndTranslationTargetBasedAnimation;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.manipulator.AnimatorDependentManipulator;

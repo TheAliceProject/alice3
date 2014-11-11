@@ -40,44 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact;
+package org.alice.interact.animation;
 
-import edu.cmu.cs.dennisc.color.Color4f;
 
 /**
  * @author David Culyba
  */
-public abstract class ColorTargetBasedAnimation extends TargetBasedFrameObserver<Color4f> {
-
-	public ColorTargetBasedAnimation( Color4f currentValue ) {
+public abstract class DoubleTargetBasedAnimation extends TargetBasedFrameObserver<Double> {
+	public DoubleTargetBasedAnimation( Double currentValue ) {
 		super( currentValue );
 	}
 
-	public ColorTargetBasedAnimation( Color4f currentValue, double speed ) {
+	public DoubleTargetBasedAnimation( Double currentValue, double speed ) {
 		super( currentValue, speed );
 	}
 
-	public ColorTargetBasedAnimation( Color4f currentValue, Color4f targetValue ) {
+	public DoubleTargetBasedAnimation( Double currentValue, Double targetValue ) {
 		super( currentValue, targetValue );
 	}
 
-	public ColorTargetBasedAnimation( Color4f currentValue, Color4f targetValue, double speed ) {
+	public DoubleTargetBasedAnimation( Double currentValue, Double targetValue, double speed ) {
 		super( currentValue, targetValue, speed );
+		if( this.currentValue.isNaN() ) {
+			this.currentValue = new Double( 0.0d );
+		}
+		if( this.targetValue.isNaN() ) {
+			this.targetValue = new Double( 0.0d );
+		}
 	}
 
 	@Override
 	protected boolean isCloseEnoughToBeDone() {
-		double rDif = Math.abs( this.currentValue.red - this.targetValue.red );
-		double gDif = Math.abs( this.currentValue.green - this.targetValue.green );
-		double bDif = Math.abs( this.currentValue.blue - this.targetValue.blue );
-		double aDif = Math.abs( this.currentValue.alpha - this.targetValue.alpha );
-
-		return ( Math.sqrt( ( rDif * rDif ) + ( gDif * gDif ) + ( bDif * bDif ) + ( aDif * aDif ) ) < MIN_DISTANCE_TO_DONE );
-	}
-
-	@Override
-	protected Color4f interpolate( Color4f v0, Color4f v1, double deltaSinceLastUpdate ) {
-		return Color4f.createInterpolation( v0, v1, (float)( deltaSinceLastUpdate * this.speed ) );
+		return ( Math.abs( this.currentValue - this.targetValue ) < MIN_DISTANCE_TO_DONE );
 	}
 
 	@Override
@@ -86,8 +80,14 @@ public abstract class ColorTargetBasedAnimation extends TargetBasedFrameObserver
 	}
 
 	@Override
-	protected Color4f newE( Color4f other ) {
-		return new Color4f( other );
+	protected Double interpolate( Double v0, Double v1, double deltaSinceLastUpdate ) {
+		double newValue = v0 + ( ( v1 - v0 ) * this.speed * deltaSinceLastUpdate );
+		return new Double( newValue );
+	}
+
+	@Override
+	protected Double newE( Double other ) {
+		return new Double( other );
 	}
 
 }

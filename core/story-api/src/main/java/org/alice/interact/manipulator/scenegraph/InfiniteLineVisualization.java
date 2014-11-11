@@ -52,6 +52,9 @@ import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
+/**
+ * @author David Culyba
+ */
 public class InfiniteLineVisualization extends Visual {
 
 	private static final double LINE_DISTANCE = 1000.0d;

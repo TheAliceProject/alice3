@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact;
+package org.alice.interact.animation;
 
 import edu.cmu.cs.dennisc.animation.FrameObserver;
 

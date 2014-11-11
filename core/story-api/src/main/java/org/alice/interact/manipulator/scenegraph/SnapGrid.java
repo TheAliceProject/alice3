@@ -63,6 +63,9 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
+/**
+ * @author David Culyba
+ */
 public class SnapGrid extends Transformable implements PropertyListener {
 	private static final double LINE_HALF_DISTANCE = 20.0d;
 	private static final double MIDPOINT = LINE_HALF_DISTANCE / 2;
