@@ -47,10 +47,10 @@ import static javax.media.opengl.GL.GL_BACK;
 import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL.GL_FRONT;
 import static javax.media.opengl.GL.GL_FRONT_AND_BACK;
-import edu.cmu.cs.dennisc.renderer.gl.AdapterFactory;
-import edu.cmu.cs.dennisc.renderer.gl.PickContext;
-import edu.cmu.cs.dennisc.renderer.gl.PickParameters;
-import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.AdapterFactory;
+import edu.cmu.cs.dennisc.renderer.gl.imp.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.PickParameters;
+import edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Appearance;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
@@ -220,7 +220,7 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 		//pass
 	}
 
-	protected void renderGeometry( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc, RenderType renderType ) {
+	protected void renderGeometry( edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext rc, RenderType renderType ) {
 		synchronized( m_geometryAdapters ) {
 			for( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : m_geometryAdapters ) {
 				geometryAdapter.render( rc, renderType );
@@ -302,7 +302,7 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 		actuallyRender( rc, RenderType.GHOST );
 	}
 
-	protected void pickGeometry( edu.cmu.cs.dennisc.renderer.gl.PickContext pc, boolean isSubElementActuallyRequired ) {
+	protected void pickGeometry( edu.cmu.cs.dennisc.renderer.gl.imp.PickContext pc, boolean isSubElementActuallyRequired ) {
 		synchronized( m_geometryAdapters ) {
 			for( int i = 0; i < m_geometryAdapters.length; i++ ) {
 				pc.gl.glPushName( i );

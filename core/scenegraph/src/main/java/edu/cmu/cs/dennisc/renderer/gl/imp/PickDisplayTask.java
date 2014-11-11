@@ -42,9 +42,6 @@
  */
 package edu.cmu.cs.dennisc.renderer.gl.imp;
 
-import edu.cmu.cs.dennisc.renderer.gl.AdapterFactory;
-import edu.cmu.cs.dennisc.renderer.gl.PickContext;
-import edu.cmu.cs.dennisc.renderer.gl.SelectionBufferInfo;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
 
 /**
@@ -63,7 +60,7 @@ import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
 		this.selectionAsIntBuffer = byteBuffer.asIntBuffer();
 	}
 
-	protected abstract void fireDone( edu.cmu.cs.dennisc.renderer.gl.PickParameters pickParameters );
+	protected abstract void fireDone( edu.cmu.cs.dennisc.renderer.gl.imp.PickParameters pickParameters );
 
 	@Override
 	public final IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
@@ -71,7 +68,7 @@ import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
 
 		edu.cmu.cs.dennisc.renderer.gl.GlrRenderTarget glrRenderTarget = rtImp.getRenderTarget();
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = rtImp.getCameraAtPixel( this.x, this.y );
-		edu.cmu.cs.dennisc.renderer.gl.PickParameters pickParameters = new edu.cmu.cs.dennisc.renderer.gl.PickParameters( glrRenderTarget, sgCamera, this.x, this.y, this.pickSubElementPolicy == edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.REQUIRED, null );
+		edu.cmu.cs.dennisc.renderer.gl.imp.PickParameters pickParameters = new edu.cmu.cs.dennisc.renderer.gl.imp.PickParameters( glrRenderTarget, sgCamera, this.x, this.y, this.pickSubElementPolicy == edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.REQUIRED, null );
 
 		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
 

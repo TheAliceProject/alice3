@@ -18,12 +18,12 @@ public class ModelAdapter<E extends Model> extends GenericModelAdapter<E> {
 	}
 
 	@Override
-	protected void pickGeometry( edu.cmu.cs.dennisc.renderer.gl.PickContext pc, boolean isSubElementRequired ) {
+	protected void pickGeometry( edu.cmu.cs.dennisc.renderer.gl.imp.PickContext pc, boolean isSubElementRequired ) {
 		m_element.synchronizedPick();
 	}
 
 	@Override
-	protected void renderGeometry( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc, VisualAdapter.RenderType renderType ) {
+	protected void renderGeometry( edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext rc, VisualAdapter.RenderType renderType ) {
 		//		if( rc.isGLChanged() ) {
 		//			m_element.forget();
 		//		}

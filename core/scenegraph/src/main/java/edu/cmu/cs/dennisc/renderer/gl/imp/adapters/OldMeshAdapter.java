@@ -51,8 +51,8 @@ import static javax.media.opengl.GL2GL3.GL_QUADS;
 import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_NORMAL_ARRAY;
 import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_TEXTURE_COORD_ARRAY;
 import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
-import edu.cmu.cs.dennisc.renderer.gl.PickContext;
-import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.VisualAdapter.RenderType;
 
 /**

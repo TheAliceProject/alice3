@@ -44,8 +44,8 @@
 package edu.cmu.cs.dennisc.renderer.gl.imp.adapters;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.renderer.gl.AdapterFactory;
-import edu.cmu.cs.dennisc.renderer.gl.ChangeHandler;
+import edu.cmu.cs.dennisc.renderer.gl.imp.AdapterFactory;
+import edu.cmu.cs.dennisc.renderer.gl.imp.ChangeHandler;
 
 /**
  * @author Dennis Cosgrove

@@ -44,7 +44,7 @@
 package edu.cmu.cs.dennisc.renderer.gl.imp.adapters;
 
 import static javax.media.opengl.GL2ES1.GL_CLIP_PLANE0;
-import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.VisualAdapter.RenderType;
 
 /**

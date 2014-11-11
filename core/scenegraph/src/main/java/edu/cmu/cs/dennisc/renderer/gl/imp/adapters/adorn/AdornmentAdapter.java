@@ -48,15 +48,15 @@ package edu.cmu.cs.dennisc.renderer.gl.imp.adapters.adorn;
 public abstract class AdornmentAdapter extends edu.cmu.cs.dennisc.renderer.gl.imp.adapters.ComponentAdapter<edu.cmu.cs.dennisc.scenegraph.adorn.Adornment> {
 	protected edu.cmu.cs.dennisc.renderer.gl.imp.adapters.CompositeAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Composite> m_adornmentRootAdapter = null;
 
-	protected abstract void actuallyRender( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc, edu.cmu.cs.dennisc.renderer.gl.imp.adapters.CompositeAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Composite> adornmentRootAdapter );
+	protected abstract void actuallyRender( edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.renderer.gl.imp.adapters.CompositeAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Composite> adornmentRootAdapter );
 
 	@Override
-	public void setup( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc ) {
+	public void setup( edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext rc ) {
 		//pass
 	}
 
 	@Override
-	public void renderOpaque( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc ) {
+	public void renderOpaque( edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext rc ) {
 		if( m_adornmentRootAdapter != null ) {
 			rc.gl.glPushMatrix();
 			rc.gl.glMultMatrixd( accessInverseAbsoluteTransformationAsBuffer() );
@@ -66,13 +66,13 @@ public abstract class AdornmentAdapter extends edu.cmu.cs.dennisc.renderer.gl.im
 	}
 
 	@Override
-	public void renderGhost( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc, edu.cmu.cs.dennisc.renderer.gl.imp.adapters.GhostAdapter root ) {
+	public void renderGhost( edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.renderer.gl.imp.adapters.GhostAdapter root ) {
 		//todo?
 		//pass
 	}
 
 	@Override
-	public void pick( edu.cmu.cs.dennisc.renderer.gl.PickContext pc, edu.cmu.cs.dennisc.renderer.gl.PickParameters pickParameters ) {
+	public void pick( edu.cmu.cs.dennisc.renderer.gl.imp.PickContext pc, edu.cmu.cs.dennisc.renderer.gl.imp.PickParameters pickParameters ) {
 		//todo?
 		//pass
 	}
@@ -80,7 +80,7 @@ public abstract class AdornmentAdapter extends edu.cmu.cs.dennisc.renderer.gl.im
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.adorningRoot ) {
-			m_adornmentRootAdapter = edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.getAdapterFor( m_element.adorningRoot.getValue() );
+			m_adornmentRootAdapter = edu.cmu.cs.dennisc.renderer.gl.imp.AdapterFactory.getAdapterFor( m_element.adorningRoot.getValue() );
 		} else {
 			super.propertyChanged( property );
 		}

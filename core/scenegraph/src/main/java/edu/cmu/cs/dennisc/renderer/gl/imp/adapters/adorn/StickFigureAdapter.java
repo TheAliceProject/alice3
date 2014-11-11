@@ -81,7 +81,7 @@ public class StickFigureAdapter extends AdornmentAdapter {
 	}
 
 	@Override
-	protected void actuallyRender( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc, edu.cmu.cs.dennisc.renderer.gl.imp.adapters.CompositeAdapter adornmentRootAdapter ) {
+	protected void actuallyRender( edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.renderer.gl.imp.adapters.CompositeAdapter adornmentRootAdapter ) {
 		rc.gl.glDisable( GL_LIGHTING );
 		rc.setColor( COLOR, 1.0f );
 		glStickFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), adornmentRootAdapter );

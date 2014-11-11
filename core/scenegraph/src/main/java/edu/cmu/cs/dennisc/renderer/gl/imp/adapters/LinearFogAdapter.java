@@ -47,7 +47,7 @@ import static javax.media.opengl.GL.GL_LINEAR;
 import static javax.media.opengl.GL2ES1.GL_FOG_END;
 import static javax.media.opengl.GL2ES1.GL_FOG_MODE;
 import static javax.media.opengl.GL2ES1.GL_FOG_START;
-import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext;
 
 /**
  * @author Dennis Cosgrove

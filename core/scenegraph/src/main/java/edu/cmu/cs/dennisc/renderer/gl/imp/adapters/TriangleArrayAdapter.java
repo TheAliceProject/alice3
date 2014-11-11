@@ -44,8 +44,8 @@
 package edu.cmu.cs.dennisc.renderer.gl.imp.adapters;
 
 import static javax.media.opengl.GL.GL_TRIANGLES;
-import edu.cmu.cs.dennisc.renderer.gl.PickContext;
-import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.VisualAdapter.RenderType;
 
 /**

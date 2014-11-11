@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
+import edu.cmu.cs.dennisc.renderer.gl.imp.AdapterFactory;
+
 /**
  * @author Dennis Cosgrove
  */

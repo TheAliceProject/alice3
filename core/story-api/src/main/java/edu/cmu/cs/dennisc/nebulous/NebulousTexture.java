@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
 public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 
 	static {
-		edu.cmu.cs.dennisc.renderer.gl.AdapterFactory.register( edu.cmu.cs.dennisc.nebulous.NebulousTexture.class, edu.cmu.cs.dennisc.nebulous.NebulousTextureAdapter.class );
+		edu.cmu.cs.dennisc.renderer.gl.imp.AdapterFactory.register( edu.cmu.cs.dennisc.nebulous.NebulousTexture.class, edu.cmu.cs.dennisc.nebulous.NebulousTextureAdapter.class );
 		if( SystemUtilities.getBooleanProperty( "org.alice.ide.disableDefaultNebulousLoading", false ) )
 		{
 			//Don't load nebulous resources if the default loading is disabled

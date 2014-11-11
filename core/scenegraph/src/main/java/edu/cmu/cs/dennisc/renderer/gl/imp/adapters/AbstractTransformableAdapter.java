@@ -1,9 +1,9 @@
 package edu.cmu.cs.dennisc.renderer.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.renderer.gl.Context;
-import edu.cmu.cs.dennisc.renderer.gl.PickContext;
-import edu.cmu.cs.dennisc.renderer.gl.PickParameters;
-import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.Context;
+import edu.cmu.cs.dennisc.renderer.gl.imp.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.PickParameters;
+import edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext;
 
 public abstract class AbstractTransformableAdapter<E extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable> extends CompositeAdapter<E> {
 

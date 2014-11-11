@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.renderer.gl;
 /**
  * @author Dennis Cosgrove
  */
-abstract class Animator implements Runnable {
+/*package-private*/abstract class Animator implements Runnable {
 	public static final long DEFAULT_SLEEP_MILLIS = 5;
 	private boolean isActive = false;
 	private long tStart;

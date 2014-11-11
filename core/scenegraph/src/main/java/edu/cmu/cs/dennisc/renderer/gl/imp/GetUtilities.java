@@ -40,84 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package edu.cmu.cs.dennisc.renderer.gl.imp;
 
-package edu.cmu.cs.dennisc.renderer.gl;
+import static javax.media.opengl.GL.GL_FALSE;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Context {
-	public javax.media.opengl.GL2 gl;
-	public javax.media.opengl.glu.GLU glu;
-
-	private javax.media.opengl.glu.GLUquadric m_quadric;
-
-	public Context() {
-		glu = new javax.media.opengl.glu.GLU();
+public class GetUtilities {
+	public static boolean getBoolean( javax.media.opengl.GL gl, int which ) {
+		byte[] tmp = new byte[ 1 ];
+		gl.glGetBooleanv( which, tmp, 0 );
+		return tmp[ 0 ] != GL_FALSE;
 	}
 
-	private int scaledCount = 0;
-	private java.util.Stack<Integer> scaledCountStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
-
-	public void initialize() {
-		this.scaledCount = 0;
-		this.disableNormalize();
+	public static int getInteger( javax.media.opengl.GL gl, int which ) {
+		int[] tmp = new int[ 1 ];
+		gl.glGetIntegerv( which, tmp, 0 );
+		return tmp[ 0 ];
 	}
 
-	public boolean isScaled() {
-		return this.scaledCount > 0;
+	public static float getFloat( javax.media.opengl.GL gl, int which ) {
+		float[] tmp = new float[ 1 ];
+		gl.glGetFloatv( which, tmp, 0 );
+		return tmp[ 0 ];
 	}
 
-	protected abstract void enableNormalize();
-
-	protected abstract void disableNormalize();
-
-	public void incrementScaledCount() {
-		this.scaledCount++;
-		if( this.scaledCount == 1 ) {
-			this.enableNormalize();
-		}
-
+	public static double getDouble( javax.media.opengl.GL2 gl, int which ) {
+		double[] tmp = new double[ 1 ];
+		gl.glGetDoublev( which, tmp, 0 );
+		return tmp[ 0 ];
 	}
 
-	public void decrementScaledCount() {
-		if( this.scaledCount == 1 ) {
-			this.disableNormalize();
-		}
-		this.scaledCount--;
+	public static int getTexParameterInteger( javax.media.opengl.GL gl, int target, int name ) {
+		int[] tmp = new int[ 1 ];
+		gl.glGetTexParameteriv( target, name, tmp, 0 );
+		return tmp[ 0 ];
 	}
 
-	public void pushScaledCountAndSetToZero() {
-		this.scaledCountStack.push( this.scaledCount );
-		this.scaledCount = 0;
+	public static float getTexParameterFloat( javax.media.opengl.GL gl, int target, int name ) {
+		float[] tmp = new float[ 1 ];
+		gl.glGetTexParameterfv( target, name, tmp, 0 );
+		return tmp[ 0 ];
 	}
-
-	public void popAndRestoreScaledCount() {
-		this.scaledCount = this.scaledCountStack.pop();
-	}
-
-	//todo: synchronize?
-	public javax.media.opengl.glu.GLUquadric getQuadric() {
-		if( m_quadric == null ) {
-			m_quadric = glu.gluNewQuadric();
-		}
-		return m_quadric;
-	}
-
-	protected abstract void handleGLChange();
-
-	//	private boolean isGLChanged = true;
-	//	public boolean isGLChanged() {
-	//		return this.isGLChanged;
-	//	}
-	public void setGL( javax.media.opengl.GL2 gl ) {
-		//		this.isGLChanged = this.gl != gl;
-		//		if( this.isGLChanged ) {
-		if( this.gl != gl ) {
-			this.gl = gl;
-			handleGLChange();
-		}
-	}
-
-	public abstract void setAppearanceIndex( int index );
 }

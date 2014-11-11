@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
 
 import static javax.media.opengl.GL.GL_BLEND;
 import static javax.media.opengl.GL.GL_CULL_FACE;
@@ -67,7 +67,7 @@ import javax.media.opengl.glu.GLU;
 /**
  * @author Dennis Cosgrove
  */
-public class Graphics2D extends edu.cmu.cs.dennisc.renderer.Graphics2D {
+/*package-private*/class Graphics2D extends edu.cmu.cs.dennisc.renderer.Graphics2D {
 	private static edu.cmu.cs.dennisc.math.SineCosineCache s_sineCosineCache = new edu.cmu.cs.dennisc.math.SineCosineCache( 8 );
 
 	private static final java.awt.Paint DEFAULT_PAINT = java.awt.Color.BLACK;

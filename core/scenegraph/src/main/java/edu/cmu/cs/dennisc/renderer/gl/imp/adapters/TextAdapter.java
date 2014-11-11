@@ -56,9 +56,9 @@ import static javax.media.opengl.glu.GLU.GLU_TESS_MISSING_END_CONTOUR;
 import static javax.media.opengl.glu.GLU.GLU_TESS_MISSING_END_POLYGON;
 import static javax.media.opengl.glu.GLU.GLU_TESS_NEED_COMBINE_CALLBACK;
 import static javax.media.opengl.glu.GLU.GLU_TESS_VERTEX;
-import edu.cmu.cs.dennisc.renderer.gl.Context;
-import edu.cmu.cs.dennisc.renderer.gl.PickContext;
-import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.Context;
+import edu.cmu.cs.dennisc.renderer.gl.imp.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.VisualAdapter.RenderType;
 
 /**

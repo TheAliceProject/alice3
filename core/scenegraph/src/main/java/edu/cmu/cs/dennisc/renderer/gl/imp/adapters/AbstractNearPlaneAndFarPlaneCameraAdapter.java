@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.renderer.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.renderer.gl.Context;
+import edu.cmu.cs.dennisc.renderer.gl.imp.Context;
 
 /**
  * @author Dennis Cosgrove
@@ -55,7 +55,7 @@ public abstract class AbstractNearPlaneAndFarPlaneCameraAdapter<E extends edu.cm
 	protected abstract void setupProjection( Context context, java.awt.Rectangle actualViewport, float near, float far );
 
 	@Override
-	protected void setupProjection( edu.cmu.cs.dennisc.renderer.gl.Context context, java.awt.Rectangle actualViewport ) {
+	protected void setupProjection( edu.cmu.cs.dennisc.renderer.gl.imp.Context context, java.awt.Rectangle actualViewport ) {
 		setupProjection( context, actualViewport, m_near, m_far );
 	}
 

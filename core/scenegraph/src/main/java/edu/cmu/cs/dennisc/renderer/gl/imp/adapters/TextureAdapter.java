@@ -43,10 +43,10 @@
 
 package edu.cmu.cs.dennisc.renderer.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.renderer.gl.AdapterFactory;
 import edu.cmu.cs.dennisc.renderer.gl.ForgettableBinding;
-import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
 import edu.cmu.cs.dennisc.renderer.gl.TextureBinding;
+import edu.cmu.cs.dennisc.renderer.gl.imp.AdapterFactory;
+import edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext;
 
 /**
  * @author Dennis Cosgrove

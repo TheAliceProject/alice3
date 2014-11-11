@@ -42,7 +42,6 @@
  */
 package edu.cmu.cs.dennisc.renderer.gl.imp;
 
-import edu.cmu.cs.dennisc.renderer.gl.PickParameters;
 
 /**
  * @author Dennis Cosgrove
@@ -54,7 +53,7 @@ import edu.cmu.cs.dennisc.renderer.gl.PickParameters;
 	}
 
 	@Override
-	protected void fireDone( edu.cmu.cs.dennisc.renderer.gl.PickParameters pickParameters ) {
+	protected void fireDone( edu.cmu.cs.dennisc.renderer.gl.imp.PickParameters pickParameters ) {
 		this.observer.done( pickParameters.accessFrontMostPickResult() );
 	}
 

@@ -60,9 +60,9 @@ import java.nio.IntBuffer;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.renderer.gl.GetUtilities;
-import edu.cmu.cs.dennisc.renderer.gl.PickContext;
-import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.GetUtilities;
+import edu.cmu.cs.dennisc.renderer.gl.imp.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.VisualAdapter.RenderType;
 import edu.cmu.cs.dennisc.scenegraph.Indices;
 import edu.cmu.cs.dennisc.scenegraph.Mesh;
@@ -105,7 +105,7 @@ public class MeshAdapter<E extends Mesh> extends GeometryAdapter<E>
 		}
 	}
 
-	public static void renderMesh( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
+	public static void renderMesh( edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
 	{
 		int maxIndices = GetUtilities.getInteger( rc.gl, GL_MAX_ELEMENTS_INDICES );
 		int maxVertices = GetUtilities.getInteger( rc.gl, GL_MAX_ELEMENTS_VERTICES );
@@ -119,7 +119,7 @@ public class MeshAdapter<E extends Mesh> extends GeometryAdapter<E>
 		}
 	}
 
-	public static void renderMeshWithBuffers( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
+	public static void renderMeshWithBuffers( edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
 	{
 		rc.gl.glEnableClientState( GL_VERTEX_ARRAY );
 		vertexBuffer.rewind();
@@ -141,7 +141,7 @@ public class MeshAdapter<E extends Mesh> extends GeometryAdapter<E>
 	}
 
 	//This is really slow in debug mode
-	public static void renderMeshAsArrays( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
+	public static void renderMeshAsArrays( edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer )
 	{
 		indexBuffer.rewind();
 		rc.gl.glBegin( GL_TRIANGLES );
@@ -160,7 +160,7 @@ public class MeshAdapter<E extends Mesh> extends GeometryAdapter<E>
 		rc.gl.glEnd();
 	}
 
-	public static void pickMesh( edu.cmu.cs.dennisc.renderer.gl.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer )
+	public static void pickMesh( edu.cmu.cs.dennisc.renderer.gl.imp.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer )
 	{
 		int maxIndices = GetUtilities.getInteger( pc.gl, GL_MAX_ELEMENTS_INDICES );
 		int maxVertices = GetUtilities.getInteger( pc.gl, GL_MAX_ELEMENTS_VERTICES );
@@ -174,7 +174,7 @@ public class MeshAdapter<E extends Mesh> extends GeometryAdapter<E>
 		}
 	}
 
-	public static void pickMeshWithBuffers( edu.cmu.cs.dennisc.renderer.gl.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer )
+	public static void pickMeshWithBuffers( edu.cmu.cs.dennisc.renderer.gl.imp.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer )
 	{
 		pc.gl.glPushName( -1 );
 		pc.gl.glEnableClientState( GL_VERTEX_ARRAY );
@@ -186,7 +186,7 @@ public class MeshAdapter<E extends Mesh> extends GeometryAdapter<E>
 		pc.gl.glPopName();
 	}
 
-	public static void pickMeshAsArrays( edu.cmu.cs.dennisc.renderer.gl.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer )
+	public static void pickMeshAsArrays( edu.cmu.cs.dennisc.renderer.gl.imp.PickContext pc, DoubleBuffer vertexBuffer, IntBuffer indexBuffer )
 	{
 		pc.gl.glPushName( -1 );
 

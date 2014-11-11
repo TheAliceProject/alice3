@@ -51,7 +51,7 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_QUADRATIC_ATTENUATI
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPOT_CUTOFF;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPOT_DIRECTION;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPOT_EXPONENT;
-import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext;
 
 /**
  * @author Dennis Cosgrove

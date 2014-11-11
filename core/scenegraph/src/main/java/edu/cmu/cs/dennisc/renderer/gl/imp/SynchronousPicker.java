@@ -43,12 +43,7 @@
 
 package edu.cmu.cs.dennisc.renderer.gl.imp;
 
-import edu.cmu.cs.dennisc.renderer.gl.AdapterFactory;
-import edu.cmu.cs.dennisc.renderer.gl.ChangeHandler;
 import edu.cmu.cs.dennisc.renderer.gl.GlrRenderTarget;
-import edu.cmu.cs.dennisc.renderer.gl.PickContext;
-import edu.cmu.cs.dennisc.renderer.gl.PickParameters;
-import edu.cmu.cs.dennisc.renderer.gl.SelectionBufferInfo;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.AbstractCameraAdapter;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 

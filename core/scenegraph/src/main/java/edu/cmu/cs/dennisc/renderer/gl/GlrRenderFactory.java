@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.renderer.gl;
 
+import edu.cmu.cs.dennisc.renderer.gl.imp.ChangeHandler;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -121,7 +123,7 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFacto
 		return false;
 	}
 
-	public Animator.ThreadDeferenceAction step() {
+	/*package-private*/Animator.ThreadDeferenceAction step() {
 		Animator.ThreadDeferenceAction rv = Animator.ThreadDeferenceAction.SLEEP;
 		synchronized( this.toBeReleased ) {
 			for( edu.cmu.cs.dennisc.pattern.Releasable releasable : this.toBeReleased ) {

@@ -41,14 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
 
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.VisualAdapter;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SelectionBufferInfo {
+/*package-private*/class SelectionBufferInfo {
 	public SelectionBufferInfo( PickContext pc, java.nio.IntBuffer intBuffer, int offset ) {
 		int nameCount = intBuffer.get( offset + 0 );
 		int zFrontAsInt = intBuffer.get( offset + 1 );

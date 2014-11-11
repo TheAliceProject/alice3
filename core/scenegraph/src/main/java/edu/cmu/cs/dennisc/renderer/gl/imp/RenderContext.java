@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
 
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
 import static javax.media.opengl.GL.GL_CULL_FACE;
@@ -66,6 +66,7 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_NORMALIZE;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
+import edu.cmu.cs.dennisc.renderer.gl.ForgettableBinding;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.GeometryAdapter;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.MultipleAppearanceAdapter;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.TextureAdapter;

@@ -1,8 +1,8 @@
 package edu.cmu.cs.dennisc.renderer.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.renderer.gl.PickContext;
-import edu.cmu.cs.dennisc.renderer.gl.PickParameters;
-import edu.cmu.cs.dennisc.renderer.gl.RenderContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.PickContext;
+import edu.cmu.cs.dennisc.renderer.gl.imp.PickParameters;
+import edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext;
 
 public class StandInAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Transformable> extends CompositeAdapter<E> {
 	private double[] m_localTransformation = new double[ 16 ];

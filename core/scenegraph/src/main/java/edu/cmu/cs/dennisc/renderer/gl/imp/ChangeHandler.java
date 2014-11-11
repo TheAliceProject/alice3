@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.renderer.gl;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
 
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.ComponentAdapter;
 import edu.cmu.cs.dennisc.renderer.gl.imp.adapters.CompositeAdapter;

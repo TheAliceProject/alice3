@@ -40,47 +40,75 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.renderer.gl;
 
-import static javax.media.opengl.GL.GL_FALSE;
+package edu.cmu.cs.dennisc.renderer.gl.imp;
+
+import edu.cmu.cs.dennisc.renderer.gl.GlrRenderTarget;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GetUtilities {
-	public static boolean getBoolean( javax.media.opengl.GL gl, int which ) {
-		byte[] tmp = new byte[ 1 ];
-		gl.glGetBooleanv( which, tmp, 0 );
-		return tmp[ 0 ] != GL_FALSE;
+public class PickParameters {
+	private final java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> pickResults = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final GlrRenderTarget lookingGlass;
+	private final edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera;
+	private final int x;
+	private final int y;
+	private final boolean isSubElementRequired;
+	private final edu.cmu.cs.dennisc.renderer.PickObserver pickObserver;
+
+	public PickParameters( GlrRenderTarget lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.renderer.PickObserver pickObserver ) {
+		this.lookingGlass = lookingGlass;
+		this.sgCamera = sgCamera;
+		this.x = x;
+		this.y = y;
+		this.isSubElementRequired = isSubElementRequired;
+		this.pickObserver = pickObserver;
 	}
 
-	public static int getInteger( javax.media.opengl.GL gl, int which ) {
-		int[] tmp = new int[ 1 ];
-		gl.glGetIntegerv( which, tmp, 0 );
-		return tmp[ 0 ];
+	public void addPickResult( edu.cmu.cs.dennisc.scenegraph.Component source, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, boolean isFrontFacing, edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry, int subElement, edu.cmu.cs.dennisc.math.Point3 xyzInSource ) {
+		this.pickResults.add( new edu.cmu.cs.dennisc.renderer.PickResult( source, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource ) );
 	}
 
-	public static float getFloat( javax.media.opengl.GL gl, int which ) {
-		float[] tmp = new float[ 1 ];
-		gl.glGetFloatv( which, tmp, 0 );
-		return tmp[ 0 ];
+	public java.util.List<edu.cmu.cs.dennisc.renderer.PickResult> accessAllPickResults() {
+		return this.pickResults;
 	}
 
-	public static double getDouble( javax.media.opengl.GL2 gl, int which ) {
-		double[] tmp = new double[ 1 ];
-		gl.glGetDoublev( which, tmp, 0 );
-		return tmp[ 0 ];
+	public edu.cmu.cs.dennisc.renderer.PickResult accessFrontMostPickResult() {
+		edu.cmu.cs.dennisc.renderer.PickResult rv;
+		if( this.pickResults.isEmpty() ) {
+			rv = new edu.cmu.cs.dennisc.renderer.PickResult( this.sgCamera );
+		} else {
+			rv = this.pickResults.get( 0 );
+		}
+		return rv;
 	}
 
-	public static int getTexParameterInteger( javax.media.opengl.GL gl, int target, int name ) {
-		int[] tmp = new int[ 1 ];
-		gl.glGetTexParameteriv( target, name, tmp, 0 );
-		return tmp[ 0 ];
+	public GlrRenderTarget getLookingGlass() {
+		return this.lookingGlass;
 	}
 
-	public static float getTexParameterFloat( javax.media.opengl.GL gl, int target, int name ) {
-		float[] tmp = new float[ 1 ];
-		gl.glGetTexParameterfv( target, name, tmp, 0 );
-		return tmp[ 0 ];
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
+		return this.sgCamera;
+	}
+
+	public int getX() {
+		return this.x;
+	}
+
+	public int getY() {
+		return this.y;
+	}
+
+	public int getFlippedY( java.awt.Rectangle actualViewport ) {
+		return actualViewport.height - this.y;
+	}
+
+	public boolean isSubElementRequired() {
+		return this.isSubElementRequired;
+	}
+
+	public edu.cmu.cs.dennisc.renderer.PickObserver getPickObserver() {
+		return this.pickObserver;
 	}
 }

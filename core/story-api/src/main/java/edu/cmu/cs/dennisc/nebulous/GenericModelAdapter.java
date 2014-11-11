@@ -26,12 +26,12 @@ public class GenericModelAdapter<E extends Model> extends edu.cmu.cs.dennisc.ren
 	}
 
 	@Override
-	protected void pickGeometry( edu.cmu.cs.dennisc.renderer.gl.PickContext pc, boolean isSubElementRequired ) {
+	protected void pickGeometry( edu.cmu.cs.dennisc.renderer.gl.imp.PickContext pc, boolean isSubElementRequired ) {
 		m_element.synchronizedPick();
 	}
 
 	@Override
-	protected void renderGeometry( edu.cmu.cs.dennisc.renderer.gl.RenderContext rc, VisualAdapter.RenderType renderType ) {
+	protected void renderGeometry( edu.cmu.cs.dennisc.renderer.gl.imp.RenderContext rc, VisualAdapter.RenderType renderType ) {
 		float globalBrightness = rc.getGlobalBrightness();
 		boolean renderAlpha = ( renderType == VisualAdapter.RenderType.ALPHA_BLENDED ) || ( renderType == VisualAdapter.RenderType.ALL );
 		boolean renderOpaque = ( renderType == VisualAdapter.RenderType.OPAQUE ) || ( renderType == VisualAdapter.RenderType.ALL );
