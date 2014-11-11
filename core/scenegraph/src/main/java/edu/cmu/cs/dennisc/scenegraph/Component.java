@@ -312,13 +312,13 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 			} else {
 				s_buffer.set( xyzw );
 			}
-			edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToAWT( rv, s_buffer, renderTarget, camera );
+			edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromCameraToAWT( rv, s_buffer, renderTarget, camera );
 		}
 		return rv;
 	}
 
 	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera ) {
-		edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromAWTToCamera( rv, p, z, renderTarget, camera );
+		edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromAWTToCamera( rv, p, z, renderTarget, camera );
 		if( this != camera ) {
 			transformFrom_AffectReturnValuePassedIn( rv, camera );
 		}

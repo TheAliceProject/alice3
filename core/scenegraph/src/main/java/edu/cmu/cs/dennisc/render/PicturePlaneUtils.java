@@ -41,13 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.pictureplane;
+package edu.cmu.cs.dennisc.render;
 
 //todo: unify w/ scenegraph.util.TransformationUtilities?
 /**
  * @author Dennis Cosgrove
  */
-public class TransformationUtilities {
+public class PicturePlaneUtils {
 	private static edu.cmu.cs.dennisc.math.Vector4 transformFromAWTToViewport( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, java.awt.Rectangle actualViewport ) {
 		rv.x = p.x;
 		rv.y = actualViewport.height - p.y;

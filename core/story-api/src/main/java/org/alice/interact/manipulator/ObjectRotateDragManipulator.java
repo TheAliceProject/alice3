@@ -315,7 +315,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		{
 			try {
 				Point3 pointInCamera = this.rotationHandle.getSphereLocation( this.getCamera() );
-				Point awtPoint = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
+				Point awtPoint = edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
 				edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenRenderTarget.getAwtComponent(), awtPoint );
 			} finally {
 				CursorUtilities.popAndSet( this.onscreenRenderTarget.getAwtComponent() );
