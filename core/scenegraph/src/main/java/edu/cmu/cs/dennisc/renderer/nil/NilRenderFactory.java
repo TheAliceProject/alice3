@@ -74,24 +74,6 @@ public enum NilRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFactor
 	}
 
 	@Override
-	public Iterable<? extends edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets() {
-		//TODO
-		return null;
-	}
-
-	@Override
-	public Iterable<? extends edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets() {
-		//TODO
-		return null;
-	}
-
-	@Override
-	public Iterable<? extends edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget> getOffscreenRenderTargets() {
-		//TODO
-		return null;
-	}
-
-	@Override
 	public void acquireRenderingLock() {
 	}
 

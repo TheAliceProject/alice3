@@ -74,7 +74,7 @@ public class IconRenderTest {
 
 				program.setActiveScene( scene );
 
-				edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance();
+				edu.cmu.cs.dennisc.renderer.RenderFactory renderFactory = edu.cmu.cs.dennisc.renderer.RenderUtils.getDefaultRenderFactory();
 
 				final edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget;
 				final boolean IS_USING_OFFSCREEN_RENDER_TARGET = false;
@@ -105,7 +105,7 @@ public class IconRenderTest {
 					label.setIcon( icon );
 
 					edu.cmu.cs.dennisc.color.Color4f backgroundColor = true ? null : edu.cmu.cs.dennisc.color.Color4f.WHITE;
-					final edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance().createImageBuffer( backgroundColor );
+					final edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = edu.cmu.cs.dennisc.renderer.RenderUtils.getDefaultRenderFactory().createImageBuffer( backgroundColor );
 					renderTarget.getAsynchronousImageCapturer().captureImageBuffer( new edu.cmu.cs.dennisc.renderer.RenderTask() {
 						@Override
 						public void render( Object context ) {

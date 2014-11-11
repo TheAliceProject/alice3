@@ -250,21 +250,6 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.renderer.RenderFacto
 	}
 
 	@Override
-	public Iterable<? extends edu.cmu.cs.dennisc.renderer.HeavyweightOnscreenRenderTarget> getHeavyweightOnscreenRenderTargets() {
-		return java.util.Collections.unmodifiableCollection( this.heavyweightOnscreenLookingGlasses );
-	}
-
-	@Override
-	public Iterable<? extends edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget> getLightweightOnscreenRenderTargets() {
-		return java.util.Collections.unmodifiableCollection( this.lightweightOnscreenLookingGlasses );
-	}
-
-	@Override
-	public Iterable<? extends edu.cmu.cs.dennisc.renderer.OffscreenRenderTarget> getOffscreenRenderTargets() {
-		return java.util.Collections.unmodifiableCollection( this.offscreenLookingGlasses );
-	}
-
-	@Override
 	public void addAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener ) {
 		this.automaticDisplayListeners.add( automaticDisplayListener );
 	}

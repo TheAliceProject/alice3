@@ -45,37 +45,8 @@ package edu.cmu.cs.dennisc.renderer;
 /**
  * @author Dennis Cosgrove
  */
-
-public interface RenderFactory {
-	ImageBuffer createImageBuffer( edu.cmu.cs.dennisc.color.Color4f backgroundColor );
-
-	ImageBuffer createTransparentBackgroundImageBuffer();
-
-	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget();
-
-	LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget();
-
-	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith );
-
-	void acquireRenderingLock();
-
-	void releaseRenderingLock();
-
-	void addAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener );
-
-	void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener );
-
-	Iterable<edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener> getAutomaticDisplayListeners();
-
-	int getAutomaticDisplayCount();
-
-	void incrementAutomaticDisplayCount();
-
-	void decrementAutomaticDisplayCount();
-
-	void invokeLater( Runnable runnable );
-
-	void invokeAndWait( Runnable runnable ) throws InterruptedException, java.lang.reflect.InvocationTargetException;
-
-	void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable );
+public class RenderUtils {
+	public static RenderFactory getDefaultRenderFactory() {
+		return edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance();
+	}
 }

@@ -78,7 +78,7 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 				java.awt.Rectangle viewport = new java.awt.Rectangle( 0, 0, this.getIconWidth(), this.getIconHeight() );
 
 				edu.cmu.cs.dennisc.color.Color4f backgroundColor = true ? null : edu.cmu.cs.dennisc.color.Color4f.WHITE;
-				final edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = edu.cmu.cs.dennisc.renderer.gl.GlrRenderFactory.getInstance().createImageBuffer( backgroundColor );
+				final edu.cmu.cs.dennisc.renderer.ImageBuffer rImageBuffer = edu.cmu.cs.dennisc.renderer.RenderUtils.getDefaultRenderFactory().createImageBuffer( backgroundColor );
 				org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
 
 				org.lgna.story.implementation.AbstractTransformableImp fieldImp = sceneEditor.getImplementation( field );
