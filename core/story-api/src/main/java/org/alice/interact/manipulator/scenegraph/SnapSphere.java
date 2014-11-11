@@ -40,27 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.interact;
+package org.alice.interact.manipulator.scenegraph;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.LineArray;
+import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
+import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.Vertex;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 
-public class SnapLine extends Transformable {
+/**
+ * @author David Culyba
+ */
+public class SnapSphere extends Transformable {
+	private static final double DEFAULT_RADIUS = .06d;
 
-	public SnapLine( Vector3 line ) {
-		sgAxis = new InfiniteLineVisualization( line );
-		sgAxis.setParent( this );
+	public SnapSphere() {
+		this( DEFAULT_RADIUS );
 	}
 
-	public void setLine( Vector3 line ) {
-		sgAxis.setLine( line );
+	public SnapSphere( double radius ) {
+		this.sgSphere.radius.setValue( radius );
+		this.sgFrontFacingAppearance.shadingStyle.setValue( ShadingStyle.NONE );
+		this.sgFrontFacingAppearance.diffuseColor.setValue( Color4f.GREEN );
+		this.sgFrontFacingAppearance.opacity.setValue( new Float( 1f ) );
+		this.sgSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
+		this.sgSphereVisual.geometries.setValue( new Geometry[] { this.sgSphere, this.sgLineArray } );
+		this.sgSphereVisual.setParent( this );
 	}
 
 	public void setColor( Color4f color ) {
-		sgAxis.setColor( color );
+		sgFrontFacingAppearance.setDiffuseColor( color );
 	}
 
-	private final InfiniteLineVisualization sgAxis;
+	//Since this visual is rooted at the location of the sphere (and is therefore centered on the rotation ring), we need to make the line extend back to the center of the ring
+	public void setLineDirection( Point3 rootOrigin, Point3 sphereEndPoint ) {
+		Vertex[] vertices = new Vertex[ 2 ];
+		Vector3 lineOffset = Vector3.createSubtraction( rootOrigin, sphereEndPoint );
+		vertices[ 0 ] = Vertex.createXYZ( 0, 0, 0 );
+		vertices[ 1 ] = Vertex.createXYZ( lineOffset.x, lineOffset.y, lineOffset.z );
+
+		this.sgLineArray.vertices.setValue( vertices );
+	}
+
+	private final Sphere sgSphere = new Sphere();
+	private final Visual sgSphereVisual = new Visual();
+	private final LineArray sgLineArray = new LineArray();
+	private final SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
 }

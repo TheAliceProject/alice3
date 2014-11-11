@@ -44,10 +44,10 @@
 package org.alice.interact.manipulator;
 
 import org.alice.interact.AbstractDragAdapter;
-import org.alice.interact.SnapLine;
-import org.alice.interact.SnapSphere;
 import org.alice.interact.VectorUtilities;
 import org.alice.interact.handle.RotationRingHandle;
+import org.alice.interact.manipulator.scenegraph.SnapLine;
+import org.alice.interact.manipulator.scenegraph.SnapSphere;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Angle;

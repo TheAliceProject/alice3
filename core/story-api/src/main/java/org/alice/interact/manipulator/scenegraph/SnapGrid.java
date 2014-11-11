@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.interact;
+package org.alice.interact.manipulator.scenegraph;
 
 import java.util.LinkedList;
 import java.util.List;

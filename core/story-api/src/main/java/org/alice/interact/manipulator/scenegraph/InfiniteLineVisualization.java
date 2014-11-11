@@ -40,57 +40,55 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact;
+
+package org.alice.interact.manipulator.scenegraph;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.LineArray;
 import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
 import edu.cmu.cs.dennisc.scenegraph.SimpleAppearance;
-import edu.cmu.cs.dennisc.scenegraph.Sphere;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
-/**
- * @author Administrator
- * 
- */
-public class SnapSphere extends Transformable {
-	private static final double DEFAULT_RADIUS = .06d;
+public class InfiniteLineVisualization extends Visual {
 
-	public SnapSphere() {
-		this( DEFAULT_RADIUS );
+	private static final double LINE_DISTANCE = 1000.0d;
+	private static SimpleAppearance s_sgFrontFacingAppearance = new SimpleAppearance();
+	static {
+		s_sgFrontFacingAppearance.setShadingStyle( ShadingStyle.NONE );
 	}
 
-	public SnapSphere( double radius ) {
-		this.sgSphere.radius.setValue( radius );
-		this.sgFrontFacingAppearance.shadingStyle.setValue( ShadingStyle.NONE );
-		this.sgFrontFacingAppearance.diffuseColor.setValue( Color4f.GREEN );
-		this.sgFrontFacingAppearance.opacity.setValue( new Float( 1f ) );
-		this.sgSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
-		this.sgSphereVisual.geometries.setValue( new Geometry[] { this.sgSphere, this.sgLineArray } );
-		this.sgSphereVisual.setParent( this );
+	public InfiniteLineVisualization( Vector3 line ) {
+		Vertex[] vertices = new Vertex[ 2 ];
+
+		Point3 lineEnd1 = Point3.createMultiplication( line, LINE_DISTANCE );
+		Point3 lineEnd2 = Point3.createMultiplication( line, -LINE_DISTANCE );
+		vertices[ 0 ] = Vertex.createXYZRGB( lineEnd1.x, lineEnd1.y, lineEnd1.z, 0, 1, 0 );
+		vertices[ 1 ] = Vertex.createXYZRGB( lineEnd2.x, lineEnd2.y, lineEnd2.z, 0, 1, 0 );
+
+		LineArray sgLineArray = new LineArray();
+		sgLineArray.vertices.setValue( vertices );
+		geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { sgLineArray } );
+		frontFacingAppearance.setValue( s_sgFrontFacingAppearance );
+	}
+
+	public void setLine( Vector3 line ) {
+		LineArray lines = (LineArray)( geometries.getValue()[ 0 ] );
+		Vertex[] vertices = lines.vertices.getValue();
+		Point3 lineEnd1 = Point3.createMultiplication( line, LINE_DISTANCE );
+		Point3 lineEnd2 = Point3.createMultiplication( line, -LINE_DISTANCE );
+		vertices[ 0 ].position.x = lineEnd1.x;
+		vertices[ 0 ].position.y = lineEnd1.y;
+		vertices[ 0 ].position.z = lineEnd1.z;
+		vertices[ 1 ].position.x = lineEnd2.x;
+		vertices[ 1 ].position.y = lineEnd2.y;
+		vertices[ 1 ].position.z = lineEnd2.z;
 	}
 
 	public void setColor( Color4f color ) {
-		sgFrontFacingAppearance.setDiffuseColor( color );
+		s_sgFrontFacingAppearance.setDiffuseColor( color );
 	}
 
-	//Since this visual is rooted at the location of the sphere (and is therefore centered on the rotation ring), we need to make the line extend back to the center of the ring
-	public void setLineDirection( Point3 rootOrigin, Point3 sphereEndPoint ) {
-		Vertex[] vertices = new Vertex[ 2 ];
-		Vector3 lineOffset = Vector3.createSubtraction( rootOrigin, sphereEndPoint );
-		vertices[ 0 ] = Vertex.createXYZ( 0, 0, 0 );
-		vertices[ 1 ] = Vertex.createXYZ( lineOffset.x, lineOffset.y, lineOffset.z );
-
-		this.sgLineArray.vertices.setValue( vertices );
-	}
-
-	private final Sphere sgSphere = new Sphere();
-	private final Visual sgSphereVisual = new Visual();
-	private final LineArray sgLineArray = new LineArray();
-	private final SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
 }
