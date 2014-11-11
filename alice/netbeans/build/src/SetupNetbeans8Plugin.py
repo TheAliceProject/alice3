@@ -9,11 +9,11 @@ import edu
 import java
 
 LOCATION_OF_ROOT_FOR_DEVELOPMENT = java.io.File(FileUtilities.DEFAULT_DIRECTORY, "gits/alice")
-LOCATION_OF_PLUGIN_8 = java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans/Alice3ModuleSuite")
+LOCATION_OF_PLUGIN_8 = java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans/8/Alice3ModuleSuite")
 LOCATION_FOR_PLUGIN_8_JARS = java.io.File(LOCATION_OF_PLUGIN_8, "Alice3Module/release/modules/ext")
 LOCATION_FOR_PLUGIN_8_DISTRIBUTION = java.io.File(LOCATION_OF_PLUGIN_8, "Alice3Module/release/src/aliceSource.jar_root")
 
-LOCATION_OF_PROJECT_TEMPLATE_8 = java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans/ProjectTemplate")
+LOCATION_OF_PROJECT_TEMPLATE_8 = java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans/8/ProjectTemplate")
 
 projectNames = [
 	"util",
@@ -108,7 +108,7 @@ def _generateManifest8():
 	return sb.toString()
 
 def setUpNetbeans8Plugin():
-	MavenUtilities.runMavenCleanCompilePackage()
+	#MavenUtilities.runMavenCleanCompilePackage()
 	#MavenUtilities.runMavenCompilePackage()
 	#MavenUtilities.runMavenPackage()
 	_copyJars()
@@ -122,19 +122,19 @@ def setUpNetbeans8Plugin():
 
 setUpNetbeans8Plugin()
 
-LOCATION_OF_PROJECT_TEMPLATE_6 = java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans6/ProjectTemplate")
+LOCATION_OF_PROJECT_TEMPLATE_6 = java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans/6/ProjectTemplate")
 
 def setUpNetbeans6Plugin():
-	src = java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans/Alice3ModuleSuite/Alice3Module/release")
-	dst = java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans6/AliceProjectWizard/release")
+	src = java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans/8/Alice3ModuleSuite/Alice3Module/release")
+	dst = java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans/6/AliceProjectWizard/release")
 
 	if dst.exists():
 		pass
 	else:
 		dst.mkdirs()
 	FileUtilities.copyDirIgnoreFolders(src.getAbsolutePath(), dst.getAbsolutePath(), [])
-	_zipProjectTemplate(LOCATION_OF_PROJECT_TEMPLATE_6, java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans6/AliceProjectWizard/src/org/alice/netbeans/aliceprojectwizard/AliceProjectTemplateProject.zip"))
+	_zipProjectTemplate(LOCATION_OF_PROJECT_TEMPLATE_6, java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans/6/AliceProjectWizard/src/org/alice/netbeans/aliceprojectwizard/AliceProjectTemplateProject.zip"))
 
-	edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans6/AliceProjectWizard/manifest.mf" ), _generateManifest6() )
+	edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, "alice/netbeans/6/AliceProjectWizard/manifest.mf" ), _generateManifest6() )
 
 setUpNetbeans6Plugin()
