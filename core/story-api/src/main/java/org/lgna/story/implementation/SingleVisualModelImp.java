@@ -44,7 +44,7 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.renderer.PickResult;
+import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.Visual;

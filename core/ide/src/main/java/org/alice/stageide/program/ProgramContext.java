@@ -112,7 +112,7 @@ public abstract class ProgramContext {
 		return this.vm;
 	}
 
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		org.lgna.story.implementation.ProgramImp programImp = this.getProgramImp();
 		return programImp != null ? programImp.getOnscreenRenderTarget() : null;
 	}

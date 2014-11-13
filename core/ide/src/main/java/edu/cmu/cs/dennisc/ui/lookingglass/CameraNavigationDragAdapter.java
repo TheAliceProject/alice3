@@ -51,7 +51,7 @@ enum CameraNavigationMode {
 /**
  * @author Dennis Cosgrove
  */
-public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter implements java.awt.event.MouseWheelListener, edu.cmu.cs.dennisc.renderer.event.RenderTargetListener {
+public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter implements java.awt.event.MouseWheelListener, edu.cmu.cs.dennisc.render.event.RenderTargetListener {
 	private CameraNavigationFunction m_function = new CameraNavigationFunction();
 	private double m_tPrev = Double.NaN;
 
@@ -68,11 +68,11 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenLookingGlass ) {
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenLookingGlass ) {
 		super.setOnscreenRenderTarget( onscreenLookingGlass );
-		onscreenLookingGlass.getRenderFactory().addAutomaticDisplayListener( new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
+		onscreenLookingGlass.getRenderFactory().addAutomaticDisplayListener( new edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener() {
 			@Override
-			public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
+			public void automaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
 				CameraNavigationDragAdapter.this.handleDisplayed();
 			}
 		} );
@@ -95,7 +95,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	private boolean isMultipleCameraWarningAlreadyDelivered = false;
 
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
-		edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenLookingGlass = getOnscreenRenderTarget();
+		edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenLookingGlass = getOnscreenRenderTarget();
 		if( onscreenLookingGlass != null ) {
 			int cameraCount = onscreenLookingGlass.getSgCameraCount();
 			if( ( cameraCount > 1 ) && ( this.isMultipleCameraWarningAlreadyDelivered == false ) ) {
@@ -270,23 +270,23 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	}
 
 	@Override
-	public void initialized( edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent e ) {
+	public void initialized( edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent e ) {
 	}
 
 	@Override
-	public void resized( edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent e ) {
+	public void resized( edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent e ) {
 	}
 
 	@Override
-	public void displayChanged( edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent e ) {
+	public void displayChanged( edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent e ) {
 	}
 
 	@Override
-	public void cleared( edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent e ) {
+	public void cleared( edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent e ) {
 	}
 
 	@Override
-	public void rendered( edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent e ) {
+	public void rendered( edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent e ) {
 		paint( e.getGraphics2D() );
 	}
 

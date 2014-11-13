@@ -179,7 +179,7 @@ public abstract class AbstractPoserScene<T extends SJointedModel> extends SScene
 		addCustomDragAdapter();
 	}
 
-	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		return ( (SceneImp)EmployeesOnly.getImplementation( this ) ).getProgram().getOnscreenRenderTarget();
 	}
 

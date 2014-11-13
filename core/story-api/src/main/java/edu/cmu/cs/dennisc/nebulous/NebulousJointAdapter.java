@@ -2,7 +2,7 @@ package edu.cmu.cs.dennisc.nebulous;
 
 import java.nio.DoubleBuffer;
 
-import edu.cmu.cs.dennisc.lookingglass.opengl.AbstractTransformableAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractTransformableAdapter;
 
 public class NebulousJointAdapter extends AbstractTransformableAdapter<edu.cmu.cs.dennisc.nebulous.NebulousJoint> {
 	private double[] m_localTransformation = new double[ 16 ];

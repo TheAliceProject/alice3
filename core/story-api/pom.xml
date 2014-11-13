@@ -27,12 +27,6 @@
 			<artifactId>scenegraph</artifactId>
 		</dependency>
 
-		<!-- TODO: remove -->
-		<dependency>
-			<groupId>org.alice</groupId>
-			<artifactId>croquet</artifactId>
-		</dependency>
-
 		<!-- Gallery/Models -->
 		<dependency>
 			<groupId>org.alice</groupId>

@@ -237,7 +237,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 		return scene != null ? scene.getProgram() : null;
 	}
 
-	protected edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	protected edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		ProgramImp program = this.getProgram();
 		return program != null ? program.getOnscreenRenderTarget() : null;
 	}
@@ -307,7 +307,7 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 	private java.awt.Component getParentComponent() {
 		SceneImp scene = this.getScene();
 		if( scene != null ) {
-			edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+			edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
 			if( onscreenRenderTarget != null ) {
 				return onscreenRenderTarget.getAwtComponent();
 			}

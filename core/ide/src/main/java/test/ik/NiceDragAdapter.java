@@ -73,10 +73,6 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 		return edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
 	}
 
-	protected edu.cmu.cs.dennisc.renderer.PickObserver getPickObserver() {
-		return null;
-	}
-
 	protected void updateTranslation( edu.cmu.cs.dennisc.scenegraph.Transformable sgDragAcceptor, edu.cmu.cs.dennisc.math.Tuple3 xyz, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		if( sgDragAcceptor != null ) {
 			sgDragAcceptor.setTranslationOnly( xyz, asSeenBy );
@@ -109,7 +105,8 @@ public class NiceDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.Onscreen
 	@Override
 	protected void handleMousePress( java.awt.Point current, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
 		if( isOriginalAsOpposedToStyleChange ) {
-			edu.cmu.cs.dennisc.renderer.PickResult pickResult = getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost( current.x, current.y, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED, getPickObserver() );
+			edu.cmu.cs.dennisc.render.PickObserver pickObserver = null;
+			edu.cmu.cs.dennisc.render.PickResult pickResult = getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost( current.x, current.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED, pickObserver );
 			m_sgCamera = (edu.cmu.cs.dennisc.scenegraph.AbstractCamera)pickResult.getSource();
 			edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 			if( sgVisual != null ) {

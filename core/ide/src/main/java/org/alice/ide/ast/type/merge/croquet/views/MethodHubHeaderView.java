@@ -54,7 +54,7 @@ public class MethodHubHeaderView extends org.alice.ide.codeeditor.MethodHeaderPa
 	}
 
 	@Override
-	protected org.lgna.croquet.views.Label createNameLabel() {
+	protected org.lgna.croquet.views.SwingComponentView<?> createNameLabel() {
 		if( this.methodHub instanceof org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> ) {
 			org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?> methodHubWithNameState = (org.alice.ide.ast.type.merge.croquet.MemberHubWithNameState<?>)methodHub;
 			return new MemberHubNameLabel( methodHubWithNameState );

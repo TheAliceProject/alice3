@@ -42,13 +42,13 @@
  */
 package edu.cmu.cs.dennisc.nebulous;
 
-import edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext;
+import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 /**
  * @author alice
  * 
  */
-public final class NebulousTextureBinding implements edu.cmu.cs.dennisc.lookingglass.opengl.ForgettableBinding {
+public final class NebulousTextureBinding implements edu.cmu.cs.dennisc.render.gl.ForgettableBinding {
 	public void bind( RenderContext rc, NebulousTexture texture ) {
 		texture.doSetup( rc.gl );
 	}

@@ -53,6 +53,23 @@ public abstract class MutableAstI18nFactory extends AstI18nFactory {
 	}
 
 	@Override
+	public org.lgna.croquet.views.SwingComponentView<?> createNameView( org.lgna.project.ast.AbstractDeclaration declaration ) {
+		final boolean IS_DECLARATION_NAME_STATE_READY_FOR_PRIME_TIME = false;
+		if( IS_DECLARATION_NAME_STATE_READY_FOR_PRIME_TIME ) {
+			//			if( declaration instanceof org.lgna.project.ast.Code ) {
+			//				org.lgna.project.ast.Code code = (org.lgna.project.ast.Code)declaration;
+			//				//todo
+			//				if( this.isSignatureLocked( code ) ) {
+			//					return super.createNameView( declaration );
+			//				}
+			//			}
+			return org.alice.ide.ast.declaration.DeclarationNameState.getInstance( declaration ).createSubduedTextField();
+		} else {
+			return super.createNameView( declaration );
+		}
+	}
+
+	@Override
 	protected org.lgna.project.ast.AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
 		return null;
 	}

@@ -54,7 +54,7 @@ public class VideoEncodingProgramContext extends ProgramContext {
 		private edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
 
 		public FrameBasedProgramImp( org.lgna.story.SProgram abstraction ) {
-			super( abstraction, IS_CAPTURE_READY_FOR_PRIME_TIME ? new edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass( SIZE, null ) : edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenRenderTarget() );
+			super( abstraction, IS_CAPTURE_READY_FOR_PRIME_TIME ? new edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget( SIZE, null ) : edu.cmu.cs.dennisc.render.gl.GlrRenderFactory.getInstance().createHeavyweightOnscreenRenderTarget() );
 		}
 
 		@Override

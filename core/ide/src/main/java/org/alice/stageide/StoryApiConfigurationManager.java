@@ -561,4 +561,9 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	public boolean isBuildMethod( org.lgna.project.ast.MethodInvocation methodInvocation ) {
 		return getBuildMethodPoseBuilderType( methodInvocation, false ) != null;
 	}
+
+	@Override
+	public org.alice.ide.iconfactory.IconFactoryManager createIconFactoryManager() {
+		return new org.alice.stageide.iconfactory.StoryIconFactoryManager();
+	}
 }

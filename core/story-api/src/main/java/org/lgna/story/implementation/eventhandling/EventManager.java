@@ -81,7 +81,7 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.matt.eventscript.EventScript;
 import edu.cmu.cs.dennisc.matt.eventscript.InputEventRecorder;
 import edu.cmu.cs.dennisc.matt.eventscript.MouseEventWrapper;
-import edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**

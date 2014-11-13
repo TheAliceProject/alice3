@@ -46,7 +46,6 @@ package org.alice.stageide.sceneeditor.interact;
 import java.awt.event.KeyEvent;
 
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
-import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InteractionGroup;
 import org.alice.interact.ModifierMask;
 import org.alice.interact.ModifierMask.ModifierKey;
@@ -107,7 +106,7 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 /**
  * @author David Culyba
  */
-public class GlobalDragAdapter extends AbstractDragAdapter {
+public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.CroquetSupportingDragAdapter {
 
 	//Used to lock down the scene editor so only selection is available as an interaction (moving objects, moving the camera and whatnot are all disabled)
 	private static final boolean ENABLE_SELECTION_ONLY_MODE = false;

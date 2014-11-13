@@ -58,7 +58,7 @@ import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
-import edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget;
+import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -78,7 +78,7 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 	private Joint joint;
 	private boolean started = false;
 
-	public PoserPicturePlaneInteraction( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> renderTarget, AbstractPoserScene scene ) {
+	public PoserPicturePlaneInteraction( OnscreenRenderTarget<?> renderTarget, AbstractPoserScene scene ) {
 		super( renderTarget, ( (CameraImp)( (SceneImp)EmployeesOnly.getImplementation( scene ) ).findFirstCamera() ).getSgCamera() );
 		this.scene = scene;
 		SceneImp sceneImp = (SceneImp)EmployeesOnly.getImplementation( scene );
@@ -242,8 +242,8 @@ public class PoserPicturePlaneInteraction extends PicturePlaneInteraction {
 
 	private ManipulationHandle3D checkIfHandleSelected( MouseEvent e ) {
 		SceneImp implementation = EmployeesOnly.getImplementation( scene );
-		edu.cmu.cs.dennisc.renderer.RenderTarget rt = implementation.getProgram().getOnscreenRenderTarget();
-		edu.cmu.cs.dennisc.renderer.PickResult pickResult = rt.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED );
+		edu.cmu.cs.dennisc.render.RenderTarget rt = implementation.getProgram().getOnscreenRenderTarget();
+		edu.cmu.cs.dennisc.render.PickResult pickResult = rt.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
 		if( ( pickResult != null ) && ( pickResult.getVisual() != null ) ) {
 			Composite composite = pickResult.getVisual().getParent();
 			if( composite != null ) {
