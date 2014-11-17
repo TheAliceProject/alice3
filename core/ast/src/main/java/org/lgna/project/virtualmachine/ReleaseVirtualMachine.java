@@ -371,7 +371,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		if( frame != null ) {
 			//a bit of double negative logic
 			//push onto stack from top of runtime stack to get the order we want
-			java.util.Stack<LgnaStackTraceElement> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+			java.util.Stack<LgnaStackTraceElement> stack = edu.cmu.cs.dennisc.java.util.Stacks.newVectorStack();
 			do {
 				stack.push( frame );
 				frame = frame.getOwner();

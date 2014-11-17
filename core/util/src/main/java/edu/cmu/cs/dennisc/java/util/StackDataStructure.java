@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,35 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.perspectives;
+package edu.cmu.cs.dennisc.java.util;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PerspectiveState extends org.lgna.croquet.MutableDataSingleSelectListState<org.alice.ide.perspectives.ProjectPerspective> {
-	public PerspectiveState( org.alice.ide.perspectives.ProjectPerspective... perspectives ) {
-		super(
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
-				java.util.UUID.fromString( "9daef1a1-fd63-4069-8431-25126032ec1f" ),
-				0,
-				org.alice.ide.perspectives.codecs.IdePerspectiveCodec.SINGLETON,
-				perspectives );
-	}
+public interface StackDataStructure<E> {
+	void push( E item );
 
-	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
-		this.stack.push( reasonToDisableSomeAmountOfRendering );
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().disableRendering( reasonToDisableSomeAmountOfRendering );
-	}
+	E pop();
 
-	public void enableRendering() {
-		if( this.stack.isEmpty() ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-		} else {
-			org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
-			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
-		}
-	}
+	E peek();
 
-	private final edu.cmu.cs.dennisc.java.util.StackDataStructure<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	boolean isEmpty();
+
+	int size();
+
+	E get( int index );
+
+	void clear();
+
+	void setSize( int size );
 }

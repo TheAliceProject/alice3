@@ -115,7 +115,7 @@ public class RenderContext extends Context {
 
 	private final java.awt.Rectangle clearRect = new java.awt.Rectangle();
 
-	private final java.util.Stack<Float> globalOpacityStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.StackDataStructure<Float> globalOpacityStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 	private float globalOpacity = 1.0f;
 
 	public void pushGlobalOpacity() {

@@ -290,7 +290,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		this.getJRootPane().setDefaultButton( button.getAwtComponent() );
 	}
 
-	private java.util.Stack<javax.swing.JButton> defaultJButtonStack;
+	private edu.cmu.cs.dennisc.java.util.StackDataStructure<javax.swing.JButton> defaultJButtonStack;
 
 	public void pushDefaultButton( Button button ) {
 		if( this.defaultJButtonStack != null ) {

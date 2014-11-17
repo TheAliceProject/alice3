@@ -61,7 +61,7 @@ class HistoryStackModel extends javax.swing.AbstractListModel {
 		if( index == 0 ) {
 			return null;
 		} else {
-			return projectHistory.getStack().elementAt( index - 1 );
+			return projectHistory.getStack().get( index - 1 );
 		}
 	}
 

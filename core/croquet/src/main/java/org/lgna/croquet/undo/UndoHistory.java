@@ -47,7 +47,7 @@ package org.lgna.croquet.undo;
  */
 public class UndoHistory {
 
-	private java.util.Stack<org.lgna.croquet.edits.AbstractEdit<?>> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private edu.cmu.cs.dennisc.java.util.StackDataStructure<org.lgna.croquet.edits.AbstractEdit<?>> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 	private int insertionIndex = 0;
 	private org.lgna.croquet.Group group;
 
@@ -59,7 +59,7 @@ public class UndoHistory {
 		return this.group;
 	}
 
-	public java.util.Stack<org.lgna.croquet.edits.AbstractEdit<?>> getStack() {
+	public edu.cmu.cs.dennisc.java.util.StackDataStructure<org.lgna.croquet.edits.AbstractEdit<?>> getStack() {
 		return this.stack;
 	}
 

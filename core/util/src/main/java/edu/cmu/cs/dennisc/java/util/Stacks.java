@@ -50,19 +50,76 @@ public class Stacks {
 		throw new Error();
 	}
 
-	public static <E> java.util.Stack<E> newStack() {
+	public static <E> java.util.Stack<E> newVectorStack() {
 		return new java.util.Stack<E>();
 	}
 
-	public static <E> java.util.Stack<E> newStack( E... array ) {
-		java.util.Stack<E> rv = new java.util.Stack<E>();
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
-		return rv;
+	//
+	//	public static <E> java.util.Stack<E> newStack( E... array ) {
+	//		java.util.Stack<E> rv = new java.util.Stack<E>();
+	//		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
+	//		return rv;
+	//	}
+	//
+	//	public static <E> java.util.Stack<E> newStack( java.util.Collection<E> other ) {
+	//		java.util.Stack<E> rv = new java.util.Stack<E>();
+	//		rv.addAll( other );
+	//		return rv;
+	//	}
+
+	private static class StackDequeImp<E> implements StackDataStructure<E> {
+		@Override
+		public E peek() {
+			return this.imp.peek();
+		}
+
+		@Override
+		public E pop() {
+			return this.imp.pop();
+		}
+
+		@Override
+		public void push( E item ) {
+			this.imp.push( item );
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return this.imp.isEmpty();
+		}
+
+		@Override
+		public int size() {
+			return this.imp.size();
+		}
+
+		@Override
+		public E get( int index ) {
+			return this.imp.get( index );
+		}
+
+		@Override
+		public void clear() {
+			this.imp.clear();
+		}
+
+		@Override
+		public void setSize( int size ) {
+			this.imp.setSize( size );
+		}
+
+		private final java.util.Stack<E> imp = new java.util.Stack<E>();
 	}
 
-	public static <E> java.util.Stack<E> newStack( java.util.Collection<E> other ) {
-		java.util.Stack<E> rv = new java.util.Stack<E>();
-		rv.addAll( other );
+	public static <E> StackDataStructure<E> newStack() {
+		return new StackDequeImp<E>();
+	}
+
+	public static <E> StackDataStructure<E> newStack( E... items ) {
+		StackDataStructure<E> rv = new StackDequeImp<E>();
+		for( E item : items ) {
+			rv.push( item );
+		}
 		return rv;
 	}
 }

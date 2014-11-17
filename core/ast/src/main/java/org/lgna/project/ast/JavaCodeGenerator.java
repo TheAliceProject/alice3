@@ -420,7 +420,7 @@ public class JavaCodeGenerator {
 	private final java.util.List<JavaPackage> packagesMarkedForOnDemandImport;
 	private final java.util.List<JavaMethod> staticMethodsMarkedForImport;
 
-	private final java.util.Stack<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.StackDataStructure<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	private final org.lgna.project.resource.ResourcesTypeWrapper resourcesTypeWrapper;
 
