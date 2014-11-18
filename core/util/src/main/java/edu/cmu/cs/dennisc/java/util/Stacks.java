@@ -50,24 +50,7 @@ public class Stacks {
 		throw new Error();
 	}
 
-	public static <E> java.util.Stack<E> newVectorStack() {
-		return new java.util.Stack<E>();
-	}
-
-	//
-	//	public static <E> java.util.Stack<E> newStack( E... array ) {
-	//		java.util.Stack<E> rv = new java.util.Stack<E>();
-	//		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
-	//		return rv;
-	//	}
-	//
-	//	public static <E> java.util.Stack<E> newStack( java.util.Collection<E> other ) {
-	//		java.util.Stack<E> rv = new java.util.Stack<E>();
-	//		rv.addAll( other );
-	//		return rv;
-	//	}
-
-	private static class StackDequeImp<E> implements StackDataStructure<E> {
+	private static class StackImp<E> implements StackDataStructure<E> {
 		@Override
 		public E peek() {
 			return this.imp.peek();
@@ -112,12 +95,12 @@ public class Stacks {
 	}
 
 	public static <E> StackDataStructure<E> newStack() {
-		return new StackDequeImp<E>();
+		return new StackImp<E>();
 	}
 
-	public static <E> StackDataStructure<E> newStack( E... items ) {
-		StackDataStructure<E> rv = new StackDequeImp<E>();
-		for( E item : items ) {
+	public static <E, X extends E> StackDataStructure<E> newStack( X... items ) {
+		StackDataStructure<E> rv = newStack();
+		for( X item : items ) {
 			rv.push( item );
 		}
 		return rv;
