@@ -57,7 +57,7 @@ public class Vectors {
 	public static <E, X extends E> java.util.Vector<E> newVector( X... array ) {
 		java.util.Vector<E> rv = new java.util.Vector<E>();
 		if( array != null ) {
-			edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
+			java.util.Collections.addAll( rv, array );
 		}
 		return rv;
 	}

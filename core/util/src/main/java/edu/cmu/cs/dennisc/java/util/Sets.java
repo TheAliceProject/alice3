@@ -76,7 +76,7 @@ public class Sets {
 
 	public static <E, X extends E> java.util.concurrent.CopyOnWriteArraySet<E> newCopyOnWriteArraySet( X... array ) {
 		java.util.concurrent.CopyOnWriteArraySet<E> rv = new java.util.concurrent.CopyOnWriteArraySet<E>();
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
+		java.util.Collections.addAll( rv, array );
 		return rv;
 	}
 

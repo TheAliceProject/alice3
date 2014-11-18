@@ -62,7 +62,7 @@ public class Lists {
 
 	public static <E, X extends E> java.util.LinkedList<E> newLinkedList( X... array ) {
 		java.util.LinkedList<E> rv = new java.util.LinkedList<E>();
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
+		java.util.Collections.addAll( rv, array );
 		return rv;
 	}
 
@@ -76,7 +76,7 @@ public class Lists {
 
 	public static <E, X extends E> java.util.ArrayList<E> newArrayList( X... array ) {
 		java.util.ArrayList<E> rv = new java.util.ArrayList<E>();
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
+		java.util.Collections.addAll( rv, array );
 		return rv;
 	}
 
@@ -92,7 +92,7 @@ public class Lists {
 
 	public static <E, X extends E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( X... array ) {
 		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList<E>();
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
+		java.util.Collections.addAll( rv, array );
 		return rv;
 	}
 
