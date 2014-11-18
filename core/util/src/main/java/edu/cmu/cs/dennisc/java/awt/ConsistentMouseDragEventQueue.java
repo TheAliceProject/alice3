@@ -65,7 +65,7 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 		}
 	}
 
-	private final edu.cmu.cs.dennisc.java.util.StackDataStructure<java.awt.Component> stack;
+	private final edu.cmu.cs.dennisc.java.util.DStack<java.awt.Component> stack;
 	private int lastPressOrDragModifiers;
 	private java.awt.Component componentForPotentialFollowUpClickEvent;
 

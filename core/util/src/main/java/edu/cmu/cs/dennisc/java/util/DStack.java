@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.java.util;
 /**
  * @author Dennis Cosgrove
  */
-public interface StackDataStructure<E> {
+public interface DStack<E> {
 	void push( E item );
 
 	E pop();

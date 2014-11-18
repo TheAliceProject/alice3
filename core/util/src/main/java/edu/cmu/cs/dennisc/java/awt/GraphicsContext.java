@@ -66,7 +66,7 @@ public final class GraphicsContext {
 		return rv;
 	}
 
-	private static <T> T popTo( edu.cmu.cs.dennisc.java.util.StackDataStructure<T> stack, int size ) {
+	private static <T> T popTo( edu.cmu.cs.dennisc.java.util.DStack<T> stack, int size ) {
 		assert stack.size() > size;
 		T o = null;
 		while( stack.size() > size ) {
@@ -121,16 +121,16 @@ public final class GraphicsContext {
 		}
 	}
 
-	private final edu.cmu.cs.dennisc.java.util.StackDataStructure<GraphicsAndStackSizes> mainStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<GraphicsAndStackSizes> mainStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
-	private final edu.cmu.cs.dennisc.java.util.StackDataStructure<java.awt.Paint> paintStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
-	private final edu.cmu.cs.dennisc.java.util.StackDataStructure<java.awt.Stroke> strokeStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
-	private final edu.cmu.cs.dennisc.java.util.StackDataStructure<java.awt.Font> fontStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
-	private final edu.cmu.cs.dennisc.java.util.StackDataStructure<java.awt.Shape> clipStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
-	private final edu.cmu.cs.dennisc.java.util.StackDataStructure<java.awt.geom.AffineTransform> transformStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<java.awt.Paint> paintStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<java.awt.Stroke> strokeStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<java.awt.Font> fontStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<java.awt.Shape> clipStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<java.awt.geom.AffineTransform> transformStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
-	private final edu.cmu.cs.dennisc.java.util.StackDataStructure<Object> antialiasingStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
-	private final edu.cmu.cs.dennisc.java.util.StackDataStructure<Object> textAntialiasingStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<Object> antialiasingStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<Object> textAntialiasingStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	public GraphicsContext() {
 	}
@@ -189,12 +189,12 @@ public final class GraphicsContext {
 		this.getGraphics2d().setStroke( this.strokeStack.pop() );
 	}
 
-	private static void pushAndSetRenderingHint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.java.util.StackDataStructure<Object> stack, java.awt.RenderingHints.Key key, Object value ) {
+	private static void pushAndSetRenderingHint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.java.util.DStack<Object> stack, java.awt.RenderingHints.Key key, Object value ) {
 		stack.push( g2.getRenderingHint( key ) );
 		g2.setRenderingHint( key, value );
 	}
 
-	private static void popRenderingHint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.java.util.StackDataStructure<Object> stack, java.awt.RenderingHints.Key key ) {
+	private static void popRenderingHint( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.java.util.DStack<Object> stack, java.awt.RenderingHints.Key key ) {
 		g2.setRenderingHint( key, stack.pop() );
 	}
 

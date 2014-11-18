@@ -50,7 +50,7 @@ public class Stacks {
 		throw new Error();
 	}
 
-	private static class StackImp<E> implements StackDataStructure<E> {
+	private static class StackImp<E> implements DStack<E> {
 		@Override
 		public E peek() {
 			return this.imp.peek();
@@ -94,12 +94,12 @@ public class Stacks {
 		private final java.util.Stack<E> imp = new java.util.Stack<E>();
 	}
 
-	public static <E> StackDataStructure<E> newStack() {
+	public static <E> DStack<E> newStack() {
 		return new StackImp<E>();
 	}
 
-	public static <E, X extends E> StackDataStructure<E> newStack( X... items ) {
-		StackDataStructure<E> rv = newStack();
+	public static <E, X extends E> DStack<E> newStack( X... items ) {
+		DStack<E> rv = newStack();
 		for( X item : items ) {
 			rv.push( item );
 		}

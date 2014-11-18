@@ -51,7 +51,7 @@ public class ProjectStack {
 		throw new AssertionError();
 	}
 
-	private static final edu.cmu.cs.dennisc.java.util.StackDataStructure<org.lgna.project.Project> projectStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private static final edu.cmu.cs.dennisc.java.util.DStack<org.lgna.project.Project> projectStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	private static org.lgna.project.Project peekProject( boolean isUpToDate ) {
 		if( projectStack.size() > 0 ) {

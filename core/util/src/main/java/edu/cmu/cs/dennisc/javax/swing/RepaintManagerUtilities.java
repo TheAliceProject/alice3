@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.javax.swing;
  */
 public class RepaintManagerUtilities {
 	private static javax.swing.RepaintManager originalRepaintManager;
-	private static edu.cmu.cs.dennisc.java.util.StackDataStructure<javax.swing.JComponent> stencils = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private static edu.cmu.cs.dennisc.java.util.DStack<javax.swing.JComponent> stencils = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	private static class StencilRepaintManager extends javax.swing.RepaintManager {
 		@Override

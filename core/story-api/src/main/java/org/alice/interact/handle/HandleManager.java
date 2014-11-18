@@ -298,7 +298,7 @@ public class HandleManager implements ManipulationListener {
 	public void removeCondition( ManipulationEventCriteria condition ) {
 	}
 
-	private final edu.cmu.cs.dennisc.java.util.StackDataStructure<HandleSet> handleSetStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<HandleSet> handleSetStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 	private final java.util.List<ManipulationHandle> handles = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private Point3 cameraPosition;
