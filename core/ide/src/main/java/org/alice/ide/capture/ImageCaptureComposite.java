@@ -60,7 +60,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 	private static final int LAYER_ID = javax.swing.JLayeredPane.POPUP_LAYER + 1;
 
 	private org.alice.ide.capture.views.ImageCaptureRectangleStencilView getImageCaptureRectangleStencilView( org.lgna.croquet.views.AbstractWindow<?> window ) {
-		return mapWindowToStencilView.getInitializingIfAbsent( window, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentHashMap.Initializer<org.lgna.croquet.views.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView>() {
+		return mapWindowToStencilView.getInitializingIfAbsent( window, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.croquet.views.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView>() {
 			@Override
 			public org.alice.ide.capture.views.ImageCaptureRectangleStencilView initialize( org.lgna.croquet.views.AbstractWindow<?> key ) {
 				return new org.alice.ide.capture.views.ImageCaptureRectangleStencilView( key, LAYER_ID, ImageCaptureComposite.this );

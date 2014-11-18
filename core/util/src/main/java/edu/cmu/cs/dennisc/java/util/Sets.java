@@ -54,10 +54,10 @@ public class Sets {
 		return new java.util.HashSet<E>();
 	}
 
-	public static <E> java.util.HashSet<E> newHashSet( E... values ) {
+	public static <E, X extends E> java.util.HashSet<E> newHashSet( X... values ) {
 		java.util.HashSet<E> rv = new java.util.HashSet<E>();
 		if( values != null ) {
-			for( E value : values ) {
+			for( X value : values ) {
 				rv.add( value );
 			}
 		}
@@ -74,7 +74,7 @@ public class Sets {
 		return new java.util.concurrent.CopyOnWriteArraySet<E>();
 	}
 
-	public static <E> java.util.concurrent.CopyOnWriteArraySet<E> newCopyOnWriteArraySet( E... array ) {
+	public static <E, X extends E> java.util.concurrent.CopyOnWriteArraySet<E> newCopyOnWriteArraySet( X... array ) {
 		java.util.concurrent.CopyOnWriteArraySet<E> rv = new java.util.concurrent.CopyOnWriteArraySet<E>();
 		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;

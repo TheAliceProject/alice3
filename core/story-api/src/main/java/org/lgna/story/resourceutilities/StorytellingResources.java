@@ -19,7 +19,6 @@ import org.lgna.project.ast.JavaType;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.java.util.CollectionUtilities;
 import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
 import edu.cmu.cs.dennisc.nebulous.Manager;
 
@@ -443,11 +442,9 @@ public class StorytellingResources {
 		{
 			if( modelPath.exists() ) {
 				if( modelPath.isDirectory() ) {
-					resourceFiles = CollectionUtilities.addAll( resourceFiles, FileUtilities.listFiles( modelPath, "jar" ) );
-					resourceFiles = CollectionUtilities.addAll( resourceFiles, FileUtilities.listDirectories( modelPath ) );
-
-				}
-				else {
+					java.util.Collections.addAll( resourceFiles, FileUtilities.listFiles( modelPath, "jar" ) );
+					java.util.Collections.addAll( resourceFiles, FileUtilities.listDirectories( modelPath ) );
+				} else {
 					resourceFiles.add( modelPath );
 				}
 			}

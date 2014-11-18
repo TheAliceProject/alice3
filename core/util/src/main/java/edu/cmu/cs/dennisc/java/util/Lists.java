@@ -60,7 +60,7 @@ public class Lists {
 		return rv;
 	}
 
-	public static <E> java.util.LinkedList<E> newLinkedList( E... array ) {
+	public static <E, X extends E> java.util.LinkedList<E> newLinkedList( X... array ) {
 		java.util.LinkedList<E> rv = new java.util.LinkedList<E>();
 		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
@@ -74,7 +74,7 @@ public class Lists {
 		return new java.util.ArrayList<E>();
 	}
 
-	public static <E> java.util.ArrayList<E> newArrayList( E... array ) {
+	public static <E, X extends E> java.util.ArrayList<E> newArrayList( X... array ) {
 		java.util.ArrayList<E> rv = new java.util.ArrayList<E>();
 		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
@@ -86,11 +86,19 @@ public class Lists {
 		return rv;
 	}
 
-	public static <E> java.util.ArrayList<java.util.ArrayList<E>> newArrayListOfSingleArrayList( E... list0Array ) {
-		java.util.ArrayList<java.util.ArrayList<E>> rv = new java.util.ArrayList<java.util.ArrayList<E>>();
-		java.util.ArrayList<E> list0 = new java.util.ArrayList<E>();
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( list0, list0Array );
-		rv.add( list0 );
+	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList() {
+		return new java.util.concurrent.CopyOnWriteArrayList<E>();
+	}
+
+	public static <E, X extends E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( X... array ) {
+		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList<E>();
+		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
+		return rv;
+	}
+
+	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( java.util.Collection<E> other ) {
+		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList<E>();
+		rv.addAll( other );
 		return rv;
 	}
 
@@ -178,19 +186,11 @@ public class Lists {
 		}
 	}
 
-	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList() {
-		return new java.util.concurrent.CopyOnWriteArrayList<E>();
-	}
-
-	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( E... array ) {
-		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList<E>();
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
-		return rv;
-	}
-
-	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( java.util.Collection<E> other ) {
-		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList<E>();
-		rv.addAll( other );
+	public static <E> java.util.ArrayList<java.util.ArrayList<E>> newArrayListOfSingleArrayList( E... list0Array ) {
+		java.util.ArrayList<java.util.ArrayList<E>> rv = new java.util.ArrayList<java.util.ArrayList<E>>();
+		java.util.ArrayList<E> list0 = new java.util.ArrayList<E>();
+		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( list0, list0Array );
+		rv.add( list0 );
 		return rv;
 	}
 }

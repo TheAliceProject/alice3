@@ -54,7 +54,7 @@ public class Queues {
 		return new java.util.concurrent.ConcurrentLinkedQueue<E>();
 	}
 
-	public static <E> java.util.concurrent.ConcurrentLinkedQueue<E> newConcurrentLinkedQueue( E... array ) {
+	public static <E, X extends E> java.util.concurrent.ConcurrentLinkedQueue<E> newConcurrentLinkedQueue( X... array ) {
 		java.util.concurrent.ConcurrentLinkedQueue<E> rv = new java.util.concurrent.ConcurrentLinkedQueue<E>();
 		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
 		return rv;
