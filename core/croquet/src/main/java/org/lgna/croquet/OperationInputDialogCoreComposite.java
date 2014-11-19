@@ -73,7 +73,7 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 		return text;
 	}
 
-	protected abstract org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
 	@Override
 	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
@@ -85,7 +85,7 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 				if( isCommited != null ) { // close button condition
 					if( isCommited ) {
 						try {
-							org.lgna.croquet.edits.AbstractEdit edit = createEdit( completionStep );
+							org.lgna.croquet.edits.Edit edit = createEdit( completionStep );
 							if( edit != null ) {
 								completionStep.commitAndInvokeDo( edit );
 							} else {

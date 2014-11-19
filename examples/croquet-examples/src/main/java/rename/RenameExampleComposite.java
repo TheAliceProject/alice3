@@ -69,7 +69,7 @@ public class RenameExampleComposite extends org.lgna.croquet.SimpleOperationInpu
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return null;
 	}
 

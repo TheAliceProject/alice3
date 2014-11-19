@@ -135,12 +135,12 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		return this.root;
 	}
 
-	protected void appendPrepModelsToCascadeRootPath( java.util.ArrayList<PrepModel> cascadeRootPath, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
+	protected void appendPrepModelsToCascadeRootPath( java.util.ArrayList<PrepModel> cascadeRootPath, org.lgna.croquet.edits.Edit<?> edit ) {
 
 	}
 
 	@Override
-	public final java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
+	public final java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
 		PrepModel rootPrepModel = this.root.getPopupPrepModel();
 		java.util.ArrayList<PrepModel> cascadeRootPath = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( rootPrepModel );
 		java.util.ArrayList<java.util.ArrayList<PrepModel>> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();

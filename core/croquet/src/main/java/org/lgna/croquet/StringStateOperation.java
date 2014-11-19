@@ -53,13 +53,13 @@ public abstract class StringStateOperation extends ActionOperation {
 		this.stringState = stringState;
 	}
 
-	protected abstract org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, String value ) throws CancelException;
+	protected abstract org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, String value ) throws CancelException;
 
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		try {
-			org.lgna.croquet.edits.AbstractEdit edit = this.perform( step, this.stringState.getValue() );
+			org.lgna.croquet.edits.Edit edit = this.perform( step, this.stringState.getValue() );
 			if( edit != null ) {
 				step.commitAndInvokeDo( edit );
 			} else {

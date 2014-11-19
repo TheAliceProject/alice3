@@ -68,7 +68,7 @@ public class LocalStatementCascade extends org.lgna.croquet.CascadeWithInternalB
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
+	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
 		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit(
 				completionStep,
 				this.blockStatementIndexPair,

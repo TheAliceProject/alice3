@@ -91,12 +91,12 @@ public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> ext
 	}
 
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.AbstractEdit<?> replacementCandidate ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
 		return this.getResponsibleModel().getReplacementAcceptability( replacementCandidate );
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		this.getResponsibleModel().addKeyValuePairs( retargeter, edit );
 	}

@@ -242,7 +242,7 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		MenuItemSelectStep.createAndAddToTransaction( this, menuSelection.getMenuBarComposite(), menuSelection.getMenuItemPrepModels(), menuSelection.getTrigger() );
 	}
 
-	public org.lgna.croquet.edits.AbstractEdit<?> getEdit() {
+	public org.lgna.croquet.edits.Edit<?> getEdit() {
 		if( this.completionStep != null ) {
 			return this.completionStep.getEdit();
 		} else {

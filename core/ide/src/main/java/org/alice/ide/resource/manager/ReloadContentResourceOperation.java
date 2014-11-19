@@ -115,7 +115,7 @@ public final class ReloadContentResourceOperation extends SelectedResourceOperat
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> step, final org.lgna.common.Resource resource ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, final org.lgna.common.Resource resource ) {
 		if( resource != null ) {
 			final Capsule prevCapsule;
 			final Capsule nextCapsule;

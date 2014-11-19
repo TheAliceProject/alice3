@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.croquet.edits;
 
-package org.alice.stageide.oneshot;
-
-import org.alice.stageide.oneshot.edits.LocalTransformationEdit;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalTransformationMethodInvocationEditFactory implements MethodInvocationEditFactory {
-	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-	private final org.lgna.project.ast.AbstractMethod method;
-	private final org.lgna.project.ast.Expression[] argumentExpressions;
+public interface Edit<M extends org.lgna.croquet.CompletionModel> {
+	org.lgna.croquet.Group getGroup();
 
-	public LocalTransformationMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		this.instanceFactory = instanceFactory;
-		this.method = method;
-		this.argumentExpressions = argumentExpressions;
-	}
+	boolean canUndo();
 
-	@Override
-	public org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
-		return new LocalTransformationEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
-	}
+	boolean canRedo();
+
+	void doOrRedo( boolean isDo );
+
+	void undo();
+
+	String getRedoPresentation();
+
+	String getUndoPresentation();
+
+	String getTerseDescription();
 }

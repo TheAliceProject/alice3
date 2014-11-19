@@ -178,7 +178,7 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 	private final org.lgna.croquet.Operation submitBugOperation = createActionOperation( "submitBugOperation", new Action() {
 
 		@Override
-		public org.lgna.croquet.edits.AbstractEdit<?> perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.Edit<?> perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			submitBugOperation.setEnabled( false );
 			try {
 				if( isClearedToSubmitBug() ) {

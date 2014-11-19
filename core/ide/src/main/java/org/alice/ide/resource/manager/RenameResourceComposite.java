@@ -75,7 +75,7 @@ public class RenameResourceComposite extends org.alice.ide.ast.rename.RenameComp
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.lgna.common.Resource resource = this.getResource();
 		if( resource != null ) {
 			return new org.alice.ide.resource.manager.edits.RenameResourceEdit( completionStep, resource, resource.getName(), this.getNameState().getValue() );

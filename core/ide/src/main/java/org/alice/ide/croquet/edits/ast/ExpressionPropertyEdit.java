@@ -106,7 +106,7 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.AbstractEdit 
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		ExpressionPropertyEdit replacementEdit = (ExpressionPropertyEdit)edit;
 		retargeter.addKeyValuePair( this.expressionProperty, replacementEdit.expressionProperty );

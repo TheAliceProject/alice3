@@ -49,5 +49,5 @@ package org.lgna.croquet;
 public interface CompletionModel extends Model {
 	public Group getGroup();
 
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit );
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit );
 }

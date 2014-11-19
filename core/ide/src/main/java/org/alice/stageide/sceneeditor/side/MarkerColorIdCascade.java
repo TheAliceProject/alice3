@@ -65,7 +65,7 @@ public final class MarkerColorIdCascade extends org.lgna.croquet.ImmutableCascad
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
+	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
 		assert values.length == 1;
 		return new org.alice.stageide.sceneeditor.side.edits.MarkerColorIdEdit( completionStep, this.field, values[ 0 ] );
 	}

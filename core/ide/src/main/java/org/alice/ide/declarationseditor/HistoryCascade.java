@@ -61,7 +61,7 @@ public abstract class HistoryCascade extends org.lgna.croquet.CascadeWithInterna
 	}
 
 	@Override
-	protected final org.lgna.croquet.edits.AbstractEdit<? extends org.lgna.croquet.Cascade<org.alice.ide.declarationseditor.DeclarationComposite>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.alice.ide.declarationseditor.DeclarationComposite>> completionStep, org.alice.ide.declarationseditor.DeclarationComposite[] values ) {
+	protected final org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.alice.ide.declarationseditor.DeclarationComposite>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.alice.ide.declarationseditor.DeclarationComposite>> completionStep, org.alice.ide.declarationseditor.DeclarationComposite[] values ) {
 		DeclarationCompositeHistory.getInstance().setDeclarationComposite( values[ 0 ] );
 		return null;
 	}

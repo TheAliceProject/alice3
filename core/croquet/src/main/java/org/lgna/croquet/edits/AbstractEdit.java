@@ -50,7 +50,7 @@ import org.lgna.croquet.Retargeter;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public abstract class AbstractEdit<M extends CompletionModel> implements Edit<M>, edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public static <E extends AbstractEdit<?>> E createCopy( E original, org.lgna.croquet.history.CompletionStep<?> step ) {
 		assert step != null : original;
 		original.preCopy();
@@ -94,6 +94,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu
 		}
 	}
 
+	@Override
 	public Group getGroup() {
 		M model = this.getModel();
 		if( model != null ) {
@@ -112,10 +113,12 @@ public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu
 		this.completionStep = completionStep;
 	}
 
+	@Override
 	public boolean canUndo() {
 		return true;
 	}
 
+	@Override
 	public boolean canRedo() {
 		return true;
 	}
@@ -124,6 +127,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu
 
 	protected abstract void undoInternal();
 
+	@Override
 	public final void doOrRedo( boolean isDo ) {
 		if( isDo ) {
 			//pass
@@ -142,6 +146,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu
 		}
 	}
 
+	@Override
 	public final void undo() {
 		if( canUndo() ) {
 			//pass
@@ -156,7 +161,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu
 		}
 	}
 
-	public ReplacementAcceptability getReplacementAcceptability( AbstractEdit<?> replacementCandidate ) {
+	public ReplacementAcceptability getReplacementAcceptability( Edit<?> replacementCandidate ) {
 		if( replacementCandidate != null ) {
 			return ReplacementAcceptability.PERFECT_MATCH;
 		} else {
@@ -167,7 +172,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu
 	public void retarget( Retargeter retargeter ) {
 	}
 
-	public void addKeyValuePairs( Retargeter retargeter, AbstractEdit<?> edit ) {
+	public void addKeyValuePairs( Retargeter retargeter, Edit<?> edit ) {
 	}
 
 	protected <D extends org.lgna.croquet.DropSite> D findFirstDropSite( Class<D> cls ) {
@@ -211,6 +216,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu
 
 	protected abstract void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle );
 
+	@Override
 	public String getRedoPresentation() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Redo:" );
@@ -218,6 +224,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu
 		return sb.toString();
 	}
 
+	@Override
 	public String getUndoPresentation() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Undo:" );
@@ -225,6 +232,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu
 		return sb.toString();
 	}
 
+	@Override
 	public final String getTerseDescription() {
 		StringBuilder sb = new StringBuilder();
 		this.appendDescription( sb, DescriptionStyle.TERSE );
@@ -248,11 +256,6 @@ public abstract class AbstractEdit<M extends CompletionModel> implements edu.cmu
 		sb.append( ": " );
 		this.appendDescription( sb, DescriptionStyle.LOG );
 		return sb.toString();
-	}
-
-	@Deprecated
-	public final String getPresentation() {
-		return this.getTerseDescription();
 	}
 
 	@Override

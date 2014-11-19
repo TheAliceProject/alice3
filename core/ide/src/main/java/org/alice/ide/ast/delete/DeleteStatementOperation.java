@@ -75,7 +75,7 @@ public class DeleteStatementOperation extends DeleteDeclarationLikeSubstanceOper
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return new org.alice.ide.ast.delete.edits.DeleteStatementEdit( completionStep, this.getNode() );
 	}
 }

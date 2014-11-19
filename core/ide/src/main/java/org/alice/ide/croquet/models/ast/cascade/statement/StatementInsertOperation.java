@@ -58,7 +58,7 @@ public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOp
 		return this.blockStatementIndexPair;
 	}
 
-	protected abstract org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep step );
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step );
 
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {

@@ -51,7 +51,6 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.WizardPageComposite;
-import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.views.BorderPanel;
@@ -95,7 +94,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 	private final ActionOperation restartOperation = createActionOperation( "restartImageRecorder", new Action() {
 
 		@Override
-		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public org.lgna.croquet.edits.Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			isRecordingState.setValueTransactionlessly( false );
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 			programContext.getProgramImp().stopAnimator();

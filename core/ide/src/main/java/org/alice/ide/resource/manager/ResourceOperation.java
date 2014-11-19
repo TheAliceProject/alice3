@@ -51,7 +51,7 @@ public abstract class ResourceOperation extends org.lgna.croquet.ActionOperation
 		super( org.lgna.croquet.Application.PROJECT_GROUP, migrationId );
 	}
 
-	protected abstract org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource );
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource );
 
 	protected abstract org.lgna.common.Resource getResource();
 
@@ -60,7 +60,7 @@ public abstract class ResourceOperation extends org.lgna.croquet.ActionOperation
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		org.lgna.common.Resource resource = this.getResource();
 		if( resource != null ) {
-			org.lgna.croquet.edits.AbstractEdit edit = this.createEdit( step, resource );
+			org.lgna.croquet.edits.Edit edit = this.createEdit( step, resource );
 			if( edit != null ) {
 				step.commitAndInvokeDo( edit );
 			} else {

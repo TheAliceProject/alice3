@@ -158,7 +158,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 	}
 
 	@Override
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
 		//todo: 
 		return java.util.Collections.emptyList();
 	}
