@@ -46,8 +46,8 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteMemberOperationResolver<N extends org.lgna.project.ast.AbstractMember> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<org.alice.ide.croquet.models.ast.DeleteMemberOperation<N>> {
-	public DeleteMemberOperationResolver( org.alice.ide.croquet.models.ast.DeleteMemberOperation<N> instance ) {
+public class DeleteMemberOperationResolver<N extends org.lgna.project.ast.AbstractMember> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<org.alice.ide.delete.croquet.DeleteMemberOperation<N>> {
+	public DeleteMemberOperationResolver( org.alice.ide.delete.croquet.DeleteMemberOperation<N> instance ) {
 		super( instance,
 				new Class[] {
 						instance.getNodeParameterType(),

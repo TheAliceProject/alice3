@@ -50,6 +50,6 @@ package org.alice.ide.members.components.templates;
 		super(
 				java.util.UUID.fromString( "525cb5c8-1490-4468-8eca-cee0affff602" ),
 				org.alice.ide.ast.rename.RenameFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+				org.alice.ide.delete.croquet.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 	}
 }

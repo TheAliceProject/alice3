@@ -66,7 +66,7 @@ public class MethodTemplateMenuModel extends org.lgna.croquet.PredeterminedMenuM
 				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getLaunchOperation().getMenuItemPrepModel(),
 				org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getItemSelectionOperationForMethod( method ).getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( method ).getMenuItemPrepModel() );
+				org.alice.ide.delete.croquet.DeleteMethodOperation.getInstance( method ).getMenuItemPrepModel() );
 		this.method = method;
 	}
 
