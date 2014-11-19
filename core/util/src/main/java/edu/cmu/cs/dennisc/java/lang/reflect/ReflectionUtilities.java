@@ -375,7 +375,7 @@ public final class ReflectionUtilities {
 		return getFields( cls, clsAssignable, InclusionLevel.ALL_DECLARED, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.STATIC | java.lang.reflect.Modifier.FINAL );
 	}
 
-	private static <E extends Object> java.util.List<E> getInstances( Class<?> cls, Class<E> clsAssignable, int modifierMask ) {
+	private static <E> java.util.List<E> getInstances( Class<?> cls, Class<E> clsAssignable, int modifierMask ) {
 		java.util.List<E> rv = new java.util.LinkedList<E>();
 		java.lang.reflect.Field[] fields = cls.getFields();
 		for( java.lang.reflect.Field field : fields ) {
@@ -390,12 +390,12 @@ public final class ReflectionUtilities {
 	}
 
 	//todo
-	public static <E extends Object> java.util.List<E> getPublicFinalInstances( Class<?> cls, Class<E> clsAssignable ) {
+	public static <E> java.util.List<E> getPublicFinalInstances( Class<?> cls, Class<E> clsAssignable ) {
 		return getInstances( cls, clsAssignable, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.FINAL );
 	}
 
 	//todo
-	public static <E extends Object> java.util.List<E> getPublicStaticFinalInstances( Class<?> cls, Class<E> clsAssignable ) {
+	public static <E> java.util.List<E> getPublicStaticFinalInstances( Class<?> cls, Class<E> clsAssignable ) {
 		return getInstances( cls, clsAssignable, java.lang.reflect.Modifier.PUBLIC | java.lang.reflect.Modifier.STATIC | java.lang.reflect.Modifier.FINAL );
 	}
 
