@@ -242,6 +242,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, e
 		return sb.toString();
 	}
 
+	@Override
 	public final String getDetailedDescription() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.getClass().getName() );
@@ -250,6 +251,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, e
 		return sb.toString();
 	}
 
+	@Override
 	public final String getLogDescription() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.getClass().getName() );

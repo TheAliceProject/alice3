@@ -42,6 +42,7 @@
  */
 package org.lgna.croquet.edits;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,4 +62,8 @@ public interface Edit {
 	String getUndoPresentation();
 
 	String getTerseDescription();
+
+	String getDetailedDescription();
+
+	String getLogDescription();
 }
