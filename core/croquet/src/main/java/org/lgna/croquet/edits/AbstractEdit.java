@@ -50,7 +50,7 @@ import org.lgna.croquet.Retargeter;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEdit<M extends CompletionModel> implements Edit<M>, edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public abstract class AbstractEdit<M extends CompletionModel> implements Edit, edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public static <E extends AbstractEdit<?>> E createCopy( E original, org.lgna.croquet.history.CompletionStep<?> step ) {
 		assert step != null : original;
 		original.preCopy();
@@ -161,7 +161,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit<M>
 		}
 	}
 
-	public ReplacementAcceptability getReplacementAcceptability( Edit<?> replacementCandidate ) {
+	public ReplacementAcceptability getReplacementAcceptability( Edit replacementCandidate ) {
 		if( replacementCandidate != null ) {
 			return ReplacementAcceptability.PERFECT_MATCH;
 		} else {
@@ -172,7 +172,7 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit<M>
 	public void retarget( Retargeter retargeter ) {
 	}
 
-	public void addKeyValuePairs( Retargeter retargeter, Edit<?> edit ) {
+	public void addKeyValuePairs( Retargeter retargeter, Edit edit ) {
 	}
 
 	protected <D extends org.lgna.croquet.DropSite> D findFirstDropSite( Class<D> cls ) {

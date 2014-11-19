@@ -83,7 +83,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>)edit;
 		InsertStatementActionOperation replacement = replacementEdit.getModel();
 		retargeter.addKeyValuePair( this.blockStatement, replacement.blockStatement );
@@ -112,7 +112,7 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	}
 
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate ) {
 		if( replacementCandidate instanceof org.alice.ide.croquet.edits.DependentEdit ) {
 			return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 		} else {

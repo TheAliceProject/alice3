@@ -57,7 +57,7 @@ public class SetWallPaintMethodInvocationEditFactory implements MethodInvocation
 	}
 
 	@Override
-	public org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
+	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
 		return new org.alice.stageide.oneshot.edits.SetWallPaintEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }

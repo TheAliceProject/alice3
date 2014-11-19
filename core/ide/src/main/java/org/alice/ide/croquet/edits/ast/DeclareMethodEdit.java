@@ -151,7 +151,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 	}
 
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate ) {
 		if( replacementCandidate instanceof DeclareMethodEdit ) {
 			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)replacementCandidate;
 			org.lgna.project.ast.AbstractType<?, ?, ?> originalReturnType = this.getReturnType();
@@ -190,7 +190,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		assert edit instanceof DeclareMethodEdit;
 		DeclareMethodEdit replacementEdit = (DeclareMethodEdit)edit;

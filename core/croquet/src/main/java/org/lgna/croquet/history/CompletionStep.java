@@ -131,13 +131,13 @@ public final class CompletionStep<M extends org.lgna.croquet.CompletionModel> ex
 		return this.edit;
 	}
 
-	private void setEdit( org.lgna.croquet.edits.Edit<M> edit ) {
+	private void setEdit( org.lgna.croquet.edits.Edit edit ) {
 		this.isSuccessfullyCompleted = true;
 		this.edit = (org.lgna.croquet.edits.AbstractEdit<M>)edit;
 		this.isPending = false;
 	}
 
-	public void ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( org.lgna.croquet.edits.Edit<M> edit ) {
+	public void ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( org.lgna.croquet.edits.Edit edit ) {
 		org.lgna.croquet.history.event.TutorialCompletionEvent e = new org.lgna.croquet.history.event.TutorialCompletionEvent( this, edit );
 		this.fireChanging( e );
 		this.setEdit( edit );

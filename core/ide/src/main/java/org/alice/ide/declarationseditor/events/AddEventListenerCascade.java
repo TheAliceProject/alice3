@@ -28,7 +28,7 @@ public class AddEventListenerCascade extends CascadeWithInternalBlank<MethodInvo
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.MethodInvocation>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.MethodInvocation>> completionStep, org.lgna.project.ast.MethodInvocation[] values ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.MethodInvocation>> completionStep, org.lgna.project.ast.MethodInvocation[] values ) {
 		NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
 		UserMethod method = sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 		BlockStatement body = method.body.getValue();

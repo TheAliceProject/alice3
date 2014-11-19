@@ -138,7 +138,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 	protected abstract java.util.List<? extends CascadeBlank<T>> getBlanks();
 
 	@Override
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
 		return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.root.getPopupPrepModel() );
 	}
 
@@ -172,7 +172,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		this.hideDropProxyIfNecessary();
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit<? extends Cascade<T>> createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values );
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values );
 
 	public static final class InternalMenuModelResolver<T> extends IndirectResolver<InternalMenuModel<T>, Cascade<T>> {
 		private InternalMenuModelResolver( Cascade<T> indirect ) {

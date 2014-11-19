@@ -124,7 +124,7 @@ public class BooleanStateImp {
 		return this.menuPrepModel;
 	}
 
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
 		if( this.menuPrepModel != null ) {
 			return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.menuPrepModel );
 		} else {

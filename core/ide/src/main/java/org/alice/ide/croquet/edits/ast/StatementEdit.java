@@ -69,7 +69,7 @@ public abstract class StatementEdit<M extends org.lgna.croquet.CompletionModel> 
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
 		StatementEdit replacementEdit = (StatementEdit)edit;
 		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
 	}

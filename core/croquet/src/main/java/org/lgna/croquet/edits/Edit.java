@@ -42,11 +42,10 @@
  */
 package org.lgna.croquet.edits;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public interface Edit<M extends org.lgna.croquet.CompletionModel> {
+public interface Edit {
 	org.lgna.croquet.Group getGroup();
 
 	boolean canUndo();

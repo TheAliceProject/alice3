@@ -62,7 +62,7 @@ public abstract class DeleteDeclarationLikeSubstanceOperation<N extends org.lgna
 
 	protected abstract org.lgna.croquet.BooleanState getFindModel();
 
-	protected abstract org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
@@ -78,7 +78,7 @@ public abstract class DeleteDeclarationLikeSubstanceOperation<N extends org.lgna
 				}
 			}
 		} else {
-			org.lgna.croquet.edits.Edit<?> edit = this.createEdit( completionStep );
+			org.lgna.croquet.edits.Edit edit = this.createEdit( completionStep );
 			assert edit != null : this;
 			completionStep.commitAndInvokeDo( edit );
 		}

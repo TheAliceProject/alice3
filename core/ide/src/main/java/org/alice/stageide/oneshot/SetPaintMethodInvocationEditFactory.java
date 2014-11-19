@@ -57,7 +57,7 @@ public class SetPaintMethodInvocationEditFactory implements MethodInvocationEdit
 	}
 
 	@Override
-	public org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
+	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
 		return new org.alice.stageide.oneshot.edits.SetPaintEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }

@@ -61,7 +61,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 	}
 
 	@Override
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit<?> edit ) {
+	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
 		return this.imp.getPotentialPrepModelPaths( edit );
 	}
 

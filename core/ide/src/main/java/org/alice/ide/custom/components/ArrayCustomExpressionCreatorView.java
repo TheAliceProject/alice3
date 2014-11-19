@@ -65,7 +65,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 
 		@Override
-		protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<T>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> completionStep, T[] values ) {
+		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> completionStep, T[] values ) {
 			T[] items = this.data.toArray();
 			items[ this.index ] = values[ 0 ];
 			this.data.internalSetAllItems( items );
