@@ -168,7 +168,7 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 		if( this.location != null ) {
 			frame.setLocation( this.location );
 		} else {
-			org.lgna.croquet.views.Frame documentFrame = org.alice.ide.IDE.getActiveInstance().getFrame();
+			org.lgna.croquet.views.Frame documentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getFrame();
 			if( documentFrame != null ) {
 				frame.setLocationRelativeTo( documentFrame );
 			} else {

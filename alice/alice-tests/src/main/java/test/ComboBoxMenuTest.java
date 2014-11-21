@@ -49,7 +49,8 @@ package test;
 public class ComboBoxMenuTest {
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.views.Frame frame = app.getFrame();
+		org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
+		org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
 		javax.swing.DefaultComboBoxModel model = new javax.swing.DefaultComboBoxModel();
 		model.addElement( "manny" );
 		model.addElement( "mo" );

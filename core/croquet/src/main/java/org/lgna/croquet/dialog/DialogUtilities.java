@@ -51,6 +51,7 @@ public class DialogUtilities {
 
 	public static <V extends org.lgna.croquet.views.SwingComponentView<?>> void showDialog( final DialogOwner<V> dialogOwner, org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+		org.lgna.croquet.DocumentFrame documentFrame = application.getDocumentFrame();
 
 		org.lgna.croquet.views.AbstractWindow<?> window = application.peekWindow();
 
@@ -63,7 +64,7 @@ public class DialogUtilities {
 			if( viewController != null ) {
 				owner = viewController;
 			} else {
-				owner = application.getFrame().getContentPane();
+				owner = documentFrame.getFrame().getContentPane();
 			}
 		}
 		boolean isModal = dialogOwner.isModal();

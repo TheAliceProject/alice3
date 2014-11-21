@@ -77,7 +77,8 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 		this.description = description;
 
 		org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
-		org.lgna.croquet.views.Frame frame = app.getFrame();
+		org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
+		org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
 		org.lgna.croquet.views.ContentPane contentPane = frame.getContentPane();
 
 		this.applicationContentPanelImage = new java.awt.image.BufferedImage( contentPane.getWidth(), contentPane.getHeight(), java.awt.image.BufferedImage.TYPE_INT_RGB );
@@ -168,9 +169,11 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 	public static void main( String[] args ) throws Exception {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		app.initialize( args );
-		app.getFrame().getContentPane().addCenterComponent( new org.lgna.croquet.views.Label( "hello" ) );
-		app.getFrame().pack();
-		app.getFrame().setVisible( true );
+		org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
+		org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
+		frame.getContentPane().addCenterComponent( new org.lgna.croquet.views.Label( "hello" ) );
+		frame.pack();
+		frame.setVisible( true );
 		Thread.sleep( 1000 );
 		final AnomalousSituationComposite composite = AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent.", "description" );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {

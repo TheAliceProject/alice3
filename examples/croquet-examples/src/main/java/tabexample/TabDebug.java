@@ -63,10 +63,10 @@ public class TabDebug {
 					}
 				} );
 
-				org.lgna.croquet.views.Frame frame = app.getFrame();
+				org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
+				org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
 				frame.setTitle( "Tab Example" );
 				frame.setMainComposite( tabExampleComposite );
-				frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
 				frame.pack();
 				frame.setVisible( true );
 			}

@@ -51,7 +51,7 @@ public class FileSystemTab extends SelectUriTab {
 	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
 		@Override
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			java.io.File file = org.lgna.croquet.Application.getActiveInstance().showOpenFileDialog( org.alice.ide.ProjectApplication.getActiveInstance().getMyProjectsDirectory(), null, org.lgna.project.io.IoUtilities.PROJECT_EXTENSION, true );
+			java.io.File file = org.lgna.croquet.Application.getActiveInstance().getDocumentFrame().showOpenFileDialog( org.alice.ide.ProjectApplication.getActiveInstance().getMyProjectsDirectory(), null, org.lgna.project.io.IoUtilities.PROJECT_EXTENSION, true );
 			if( file != null ) {
 				FileSystemTab.this.pathState.setValueTransactionlessly( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
 			}

@@ -143,10 +143,12 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 				@Override
 				public void run() {
 					org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+					org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
+					org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
 
 					final VideoComposite videoComposite = new VideoComposite();
 					videoComposite.getView().setUri( uriA );
-					app.getFrame().setMainComposite( videoComposite );
+					frame.setMainComposite( videoComposite );
 
 					javax.swing.Action action = new javax.swing.AbstractAction() {
 						@Override
@@ -155,11 +157,10 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 						}
 					};
 					action.putValue( javax.swing.Action.NAME, "set second video" );
-					app.getFrame().getMainComposite().getView().getAwtComponent().add( new javax.swing.JButton( action ), java.awt.BorderLayout.PAGE_START );
+					frame.getMainComposite().getView().getAwtComponent().add( new javax.swing.JButton( action ), java.awt.BorderLayout.PAGE_START );
 
-					app.getFrame().pack();
-					app.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
-					app.getFrame().setVisible( true );
+					frame.pack();
+					frame.setVisible( true );
 
 					final boolean IS_SNAPSHOT_TEST = false;
 					if( IS_SNAPSHOT_TEST ) {

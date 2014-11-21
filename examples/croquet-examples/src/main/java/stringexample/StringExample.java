@@ -55,7 +55,8 @@ public class StringExample {
 
 				stringexample.croquet.StringExampleComposite composite = new stringexample.croquet.StringExampleComposite();
 
-				org.lgna.croquet.views.Frame frame = app.getFrame();
+				org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
+				org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
 				frame.setTitle( "String Example" );
 				frame.setMainComposite( composite );
 				frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );

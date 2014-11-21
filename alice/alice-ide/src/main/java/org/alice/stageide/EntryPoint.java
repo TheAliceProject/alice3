@@ -145,7 +145,7 @@ public class EntryPoint {
 					}
 				}
 				ide.initialize( args );
-				ide.getFrame().setVisible( true );
+				ide.getDocumentFrame().getFrame().setVisible( true );
 			}
 		} );
 	}

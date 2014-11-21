@@ -95,7 +95,8 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 		final java.util.List<org.lgna.croquet.views.Frame> framesToDiable = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-		framesToDiable.add( application.getFrame() );
+		DocumentFrame documentFrame = application.getDocumentFrame();
+		framesToDiable.add( documentFrame.getFrame() );
 
 		final org.lgna.croquet.views.Frame frame = new org.lgna.croquet.views.Frame();
 		class ModalFrameWindowListener implements java.awt.event.WindowListener {
@@ -152,7 +153,7 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 
 		this.updateWindowSize( frame );
 		final int OFFSET = 32;
-		java.awt.Point p = application.getFrame().getLocation();
+		java.awt.Point p = documentFrame.getFrame().getLocation();
 		frame.setLocation( p.x + OFFSET, p.y + OFFSET );
 		frame.setTitle( this.getModalFrameTitle() );
 		this.handlePreShowWindow( frame );

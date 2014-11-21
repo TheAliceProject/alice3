@@ -68,14 +68,17 @@ public abstract class Application {
 		return singleton;
 	}
 
-	private final org.lgna.croquet.views.Frame frame = org.lgna.croquet.views.Frame.getApplicationRootFrame();
-	private final edu.cmu.cs.dennisc.java.util.DStack<org.lgna.croquet.views.AbstractWindow<?>> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack( this.frame );
-
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
 		this.transactionHistory = new org.lgna.croquet.history.TransactionHistory();
 		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( this.menuSelectionChangeListener );
+		this.documentFrame = new DocumentFrame();
+		this.stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack( this.documentFrame.getFrame() );
+	}
+
+	public DocumentFrame getDocumentFrame() {
+		return this.documentFrame;
 	}
 
 	public org.lgna.croquet.history.TransactionHistory getTransactionHistory() {
@@ -114,43 +117,10 @@ public abstract class Application {
 	}
 
 	public org.lgna.croquet.views.Frame getFrame() {
-		return this.frame;
+		return this.documentFrame.getFrame();
 	}
 
 	public void initialize( String[] args ) {
-		this.frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.DO_NOTHING );
-		this.frame.addWindowListener( new java.awt.event.WindowListener() {
-			@Override
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				Application.this.handleWindowOpened( e );
-			}
-
-			@Override
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				Application.this.handleQuit( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
-			}
-
-			@Override
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-			}
-
-			@Override
-			public void windowActivated( java.awt.event.WindowEvent e ) {
-			}
-
-			@Override
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
-			}
-
-			@Override
-			public void windowIconified( java.awt.event.WindowEvent e ) {
-			}
-
-			@Override
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
-			}
-		} );
-
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			com.apple.eawt.Application application = com.apple.eawt.Application.getApplication();
 			application.setAboutHandler( new com.apple.eawt.AboutHandler() {
@@ -210,7 +180,7 @@ public abstract class Application {
 				//todo?
 				//javax.swing.UIManager.getLookAndFeel().uninitialize();
 				//javax.swing.UIManager.getLookAndFeel().initialize();
-				for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.frame.getAwtComponent(), javax.swing.JComponent.class ) ) {
+				for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.documentFrame.getFrame().getAwtComponent(), javax.swing.JComponent.class ) ) {
 					component.setLocale( locale );
 					component.setComponentOrientation( java.awt.ComponentOrientation.getOrientation( locale ) );
 					component.revalidate();
@@ -236,20 +206,6 @@ public abstract class Application {
 
 	public abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
 
-	@Deprecated
-	public java.io.File showOpenFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
-	}
-
-	@Deprecated
-	public java.io.File showSaveFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
-	}
-
-	public java.io.File showOpenFileDialog( java.util.UUID sharingId, String dialogTitle, java.io.File initialDirectory, String initialFilename, java.io.FilenameFilter filenameFilter ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( sharingId, this.peekWindow().getAwtComponent(), dialogTitle, initialDirectory, initialFilename, filenameFilter );
-	}
-
 	private boolean isDragInProgress = false;
 
 	@Deprecated
@@ -271,4 +227,7 @@ public abstract class Application {
 			this.getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction().addMenuSelection( menuSelection );
 		}
 	}
+
+	private final edu.cmu.cs.dennisc.java.util.DStack<org.lgna.croquet.views.AbstractWindow<?>> stack;
+	private final DocumentFrame documentFrame;
 }
