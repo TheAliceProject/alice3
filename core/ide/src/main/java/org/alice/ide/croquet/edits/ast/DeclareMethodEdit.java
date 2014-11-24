@@ -178,27 +178,4 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of DeclareMethodEdit" );
 		}
 	}
-
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		this.declaringType = retargeter.retarget( this.declaringType );
-		this.returnType = retargeter.retarget( this.returnType );
-		if( this.method != null ) {
-			this.method = retargeter.retarget( this.method );
-		}
-	}
-
-	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
-		super.addKeyValuePairs( retargeter, edit );
-		assert edit instanceof DeclareMethodEdit;
-		DeclareMethodEdit replacementEdit = (DeclareMethodEdit)edit;
-		retargeter.addKeyValuePair( this.declaringType, replacementEdit.declaringType );
-		retargeter.addKeyValuePair( this.returnType, replacementEdit.returnType );
-		if( this.method != null ) {
-			retargeter.addKeyValuePair( this.method, replacementEdit.method );
-			retargeter.addKeyValuePair( this.method.body.getValue(), replacementEdit.method.body.getValue() );
-		}
-	}
 }

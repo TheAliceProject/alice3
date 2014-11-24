@@ -104,13 +104,4 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.AbstractEdit 
 		rv.append( " ===> " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.nextExpression, org.lgna.croquet.Application.getLocale() );
 	}
-
-	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
-		super.addKeyValuePairs( retargeter, edit );
-		ExpressionPropertyEdit replacementEdit = (ExpressionPropertyEdit)edit;
-		retargeter.addKeyValuePair( this.expressionProperty, replacementEdit.expressionProperty );
-		retargeter.addKeyValuePair( this.prevExpression, replacementEdit.prevExpression );
-		retargeter.addKeyValuePair( this.nextExpression, replacementEdit.nextExpression );
-	}
 }

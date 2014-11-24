@@ -138,11 +138,6 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 			Key key = new Key( composite, this.localizationKey );
 			return this.getResolved( key );
 		}
-
-		@Override
-		public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-			this.compositeResolver.retarget( retargeter );
-		}
 	}
 
 	public static final class BooleanStateKeyResolver extends KeyResolver<BooleanState> {

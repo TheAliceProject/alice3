@@ -61,8 +61,4 @@ public final class NullResolver<T> implements Resolver<T> {
 	public T getResolved() {
 		return null;
 	}
-
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-	}
 }

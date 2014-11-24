@@ -92,17 +92,6 @@ public final class CompletionStep<M extends org.lgna.croquet.CompletionModel> ex
 		return ( this.getModel() != null ) && ( ( this.edit == null ) || this.edit.isValid() );
 	}
 
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		if( this.transactionHistory != null ) {
-			this.transactionHistory.retarget( retargeter );
-		}
-		if( this.edit != null ) {
-			this.edit.retarget( retargeter );
-		}
-	}
-
 	public TransactionHistory getTransactionHistory() {
 		return this.transactionHistory;
 	}

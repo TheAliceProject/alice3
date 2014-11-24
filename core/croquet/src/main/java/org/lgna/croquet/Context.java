@@ -50,6 +50,4 @@ public interface Context extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDeco
 	public boolean isGoodToGo();
 
 	//public org.lgna.croquet.history.Transaction[] createRecoveryTransactions();
-
-	public void retarget( Retargeter retargeter );
 }

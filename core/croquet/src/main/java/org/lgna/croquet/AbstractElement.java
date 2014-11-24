@@ -90,11 +90,6 @@ public abstract class AbstractElement implements Element {
 		public final D getResolved() {
 			return this.getDirect( this.resolver.getResolved() );
 		}
-
-		@Override
-		public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
-			this.resolver.retarget( retargeter );
-		}
 	}
 
 	private final java.util.UUID migrationId;

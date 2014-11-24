@@ -70,12 +70,6 @@ public class StateContext<T> implements Context {
 	}
 
 	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		this.stateResolver.retarget( retargeter );
-		this.value = retargeter.retarget( this.value );
-	}
-
-	@Override
 	public boolean isGoodToGo() {
 		T currentValue = this.getState().getValue();
 		return edu.cmu.cs.dennisc.java.util.Objects.equals( currentValue, this.value );

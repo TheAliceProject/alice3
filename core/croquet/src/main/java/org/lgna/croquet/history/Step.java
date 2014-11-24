@@ -178,14 +178,6 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		return this.getOwner();
 	}
 
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		for( org.lgna.croquet.Context context : this.contexts ) {
-			context.retarget( retargeter );
-		}
-		this.modelResolver.retarget( retargeter );
-		this.trigger.retarget( retargeter );
-	}
-
 	protected StringBuilder updateRepr( StringBuilder rv ) {
 		org.lgna.croquet.Model model = this.getModel();
 		if( model != null ) {

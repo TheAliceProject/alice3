@@ -225,32 +225,4 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of InsertStatementEdit" );
 		}
 	}
-
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		this.blockStatement = retargeter.retarget( this.blockStatement );
-		org.lgna.project.ast.Statement statement = this.getStatement();
-		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-			org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
-				methodInvocation.method.setValue( retargeter.retarget( methodInvocation.method.getValue() ) );
-			}
-		}
-	}
-
-	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
-		super.addKeyValuePairs( retargeter, edit );
-		InsertStatementEdit replacementEdit = (InsertStatementEdit)edit;
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: investigate blockStatement" );
-		//retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );
-		final int N = this.initialExpressions.length;
-		assert N == replacementEdit.initialExpressions.length;
-		for( int i = 0; i < N; i++ ) {
-			retargeter.addKeyValuePair( this.initialExpressions[ i ], replacementEdit.initialExpressions[ i ] );
-		}
-	}
 }

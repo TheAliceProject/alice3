@@ -76,11 +76,6 @@ public enum Clipboard {
 		public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 			return Clipboard.SINGLETON.dragComponent.getDropReceptor();
 		}
-
-		@Override
-		public ClipboardDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
-			return this;
-		}
 	}
 
 	private static class ClipboardDragModel extends org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel {

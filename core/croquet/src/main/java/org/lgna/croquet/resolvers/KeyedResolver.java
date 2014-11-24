@@ -140,12 +140,4 @@ public abstract class KeyedResolver<T> implements Resolver<T> {
 			return this.instance;
 		}
 	}
-
-	@Override
-	public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		for( int i = 0; i < this.arguments.length; i++ ) {
-			this.arguments[ i ] = retargeter.retarget( this.arguments[ i ] );
-		}
-		this.instance = null;
-	}
 }

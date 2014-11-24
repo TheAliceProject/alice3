@@ -61,9 +61,6 @@ public abstract class Trigger implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 
 	public abstract void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu );
 
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-	}
-
 	protected void appendReprInternal( StringBuilder repr ) {
 	}
 

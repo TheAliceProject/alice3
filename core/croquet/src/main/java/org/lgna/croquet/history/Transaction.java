@@ -250,17 +250,6 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		}
 	}
 
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		for( PrepStep<?> prepStep : this.prepSteps ) {
-			prepStep.retarget( retargeter );
-		}
-		if( this.completionStep != null ) {
-			this.completionStep.retarget( retargeter );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-		}
-	}
-
 	public TransactionHistory getOwnerTransactionHistory() {
 		return this.getOwner();
 	}

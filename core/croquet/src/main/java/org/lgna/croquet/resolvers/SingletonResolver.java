@@ -84,8 +84,4 @@ public final class SingletonResolver<T> implements Resolver<T> {
 	public T getResolved() {
 		return this.instance;
 	}
-
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-	}
 }

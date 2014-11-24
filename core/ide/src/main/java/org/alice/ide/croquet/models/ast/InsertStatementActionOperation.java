@@ -83,29 +83,6 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
-		org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>)edit;
-		InsertStatementActionOperation replacement = replacementEdit.getModel();
-		retargeter.addKeyValuePair( this.blockStatement, replacement.blockStatement );
-		retargeter.addKeyValuePair( this.statement, replacement.statement );
-		//		org.lgna.project.ast.AbstractMethod method = getMethod( this.statement );
-		//		if( method != null ) {
-		//			retargeter.addKeyValuePair( method, getMethod( replacement.statement ) );
-		//		}
-	}
-
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		this.blockStatement = retargeter.retarget( this.blockStatement );
-		org.lgna.project.ast.Statement originalStatement = this.statement;
-		this.statement = retargeter.retarget( originalStatement );
-		//		org.lgna.project.ast.MethodInvocation methodInvocation = getMethodInvocation( this.statement );
-		//		if( methodInvocation != null ) {
-		//			methodInvocation.method.setValue( retargeter.retarget( getMethod( originalStatement ) ) );
-		//		}
-	}
-
-	@Override
 	public void appendDescription( StringBuilder rv, boolean isDetailed ) {
 		rv.append( "create: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );

@@ -45,7 +45,6 @@ package org.lgna.croquet.edits;
 import org.lgna.croquet.CompletionModel;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.Manager;
-import org.lgna.croquet.Retargeter;
 
 /**
  * @author Dennis Cosgrove
@@ -167,12 +166,6 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, e
 		} else {
 			return ReplacementAcceptability.createRejection( "replacement is null" );
 		}
-	}
-
-	public void retarget( Retargeter retargeter ) {
-	}
-
-	public void addKeyValuePairs( Retargeter retargeter, Edit edit ) {
 	}
 
 	protected <D extends org.lgna.croquet.DropSite> D findFirstDropSite( Class<D> cls ) {

@@ -90,12 +90,6 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 		}
 	}
 
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		for( Transaction transaction : this.transactions ) {
-			transaction.retarget( retargeter );
-		}
-	}
-
 	public void addTransaction( Transaction transaction ) {
 		assert transaction != null;
 		org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddTransactionEvent( transaction, this.transactions.size() );

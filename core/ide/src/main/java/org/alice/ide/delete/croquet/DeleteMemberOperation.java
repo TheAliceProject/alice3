@@ -98,20 +98,6 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
-		org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>>)edit;
-		DeleteMemberOperation<N> replacement = replacementEdit.getModel();
-		retargeter.addKeyValuePair( this.member, replacement.member );
-		retargeter.addKeyValuePair( this.declaringType, replacement.declaringType );
-	}
-
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		this.member = retargeter.retarget( this.member );
-		this.declaringType = retargeter.retarget( this.declaringType );
-	}
-
-	@Override
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate ) {
 		return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 	}

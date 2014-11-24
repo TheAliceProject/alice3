@@ -202,11 +202,6 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 		public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 			return RecycleBin.SINGLETON.getDropReceptor();
 		}
-
-		@Override
-		public RecycleBinDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
-			return this;
-		}
 	}
 
 	private final RecycleBinDropSite dropSite = new RecycleBinDropSite();
