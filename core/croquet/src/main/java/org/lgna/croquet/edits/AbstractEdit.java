@@ -160,14 +160,6 @@ public abstract class AbstractEdit<M extends CompletionModel> implements Edit, e
 		}
 	}
 
-	public ReplacementAcceptability getReplacementAcceptability( Edit replacementCandidate ) {
-		if( replacementCandidate != null ) {
-			return ReplacementAcceptability.PERFECT_MATCH;
-		} else {
-			return ReplacementAcceptability.createRejection( "replacement is null" );
-		}
-	}
-
 	protected <D extends org.lgna.croquet.DropSite> D findFirstDropSite( Class<D> cls ) {
 		org.lgna.croquet.history.Step<?> step = this.getCompletionStep();
 		while( step != null ) {

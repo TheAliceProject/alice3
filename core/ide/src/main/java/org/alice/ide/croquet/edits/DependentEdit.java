@@ -83,9 +83,4 @@ public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> ext
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		this.getResponsibleModel().appendDescription( rv, descriptionStyle.isDetailed() );
 	}
-
-	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate ) {
-		return this.getResponsibleModel().getReplacementAcceptability( replacementCandidate );
-	}
 }

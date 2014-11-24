@@ -89,15 +89,6 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	}
 
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate ) {
-		if( replacementCandidate instanceof org.alice.ide.croquet.edits.DependentEdit ) {
-			return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
-		} else {
-			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "edit is not an instance of DependentEdit" );
-		}
-	}
-
-	@Override
 	protected org.alice.ide.croquet.resolvers.InsertStatementActionOperationNewInstanceResolver createResolver() {
 		return new org.alice.ide.croquet.resolvers.InsertStatementActionOperationNewInstanceResolver( this );
 	}

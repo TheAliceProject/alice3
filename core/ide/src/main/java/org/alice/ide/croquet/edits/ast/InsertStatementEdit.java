@@ -183,46 +183,4 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		rv.append( "insert: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, statement, org.lgna.croquet.Application.getLocale() );
 	}
-
-	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate ) {
-		if( replacementCandidate instanceof InsertStatementEdit ) {
-			InsertStatementEdit insertStatementEdit = (InsertStatementEdit)replacementCandidate;
-			//todo: check isEnveloping
-			//if( this.isEnveloping == insertStatementEdit.isEnveloping ) {
-			final int N = this.initialExpressions.length;
-			if( insertStatementEdit.initialExpressions.length == N ) {
-				org.lgna.croquet.edits.ReplacementAcceptability rv = org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
-				//todo
-				if( N == 1 ) {
-					for( int i = 0; i < N; i++ ) {
-						org.lgna.project.ast.Expression originalI = this.initialExpressions[ i ];
-						org.lgna.project.ast.Expression replacementI = insertStatementEdit.initialExpressions[ i ];
-						if( originalI instanceof org.lgna.project.ast.AbstractValueLiteral ) {
-							if( replacementI instanceof org.lgna.project.ast.AbstractValueLiteral ) {
-								Object originalValue = ( (org.lgna.project.ast.AbstractValueLiteral)originalI ).getValueProperty().getValue();
-								Object replacementValue = ( (org.lgna.project.ast.AbstractValueLiteral)replacementI ).getValueProperty().getValue();
-								if( edu.cmu.cs.dennisc.java.util.Objects.equals( originalValue, replacementValue ) ) {
-									rv = org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH;
-								} else {
-									StringBuilder sb = new StringBuilder();
-									sb.append( "original value: " );
-									sb.append( originalValue );
-									sb.append( "; changed to: " );
-									sb.append( replacementValue );
-									sb.append( "." );
-									rv = org.lgna.croquet.edits.ReplacementAcceptability.createDeviation( org.lgna.croquet.edits.ReplacementAcceptability.DeviationSeverity.POTENTIAL_SOURCE_OF_PROBLEMS, sb.toString() );
-								}
-							}
-						}
-					}
-				}
-				return rv;
-			} else {
-				return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "initial expressions count not the same" );
-			}
-		} else {
-			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of InsertStatementEdit" );
-		}
-	}
 }

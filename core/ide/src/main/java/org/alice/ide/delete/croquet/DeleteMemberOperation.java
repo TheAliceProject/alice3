@@ -98,11 +98,6 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 	}
 
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate ) {
-		return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
-	}
-
-	@Override
 	public void appendDescription( StringBuilder rv, boolean isDetailed ) {
 		rv.append( "delete: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, member, org.lgna.croquet.Application.getLocale() );

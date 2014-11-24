@@ -149,33 +149,4 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 		rv.append( "declare: " );
 		rv.append( this.methodName );
 	}
-
-	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate ) {
-		if( replacementCandidate instanceof DeclareMethodEdit ) {
-			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)replacementCandidate;
-			org.lgna.project.ast.AbstractType<?, ?, ?> originalReturnType = this.getReturnType();
-			org.lgna.project.ast.AbstractType<?, ?, ?> replacementReturnType = declareMethodEdit.getReturnType();
-			if( originalReturnType == replacementReturnType ) {
-				String originalName = this.getMethodName();
-				String replacementName = declareMethodEdit.getMethodName();
-				if( edu.cmu.cs.dennisc.java.util.Objects.equals( originalName, replacementName ) ) {
-					return org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH;
-				} else {
-					StringBuilder sb = new StringBuilder();
-					sb.append( "original name: " );
-					sb.append( originalName );
-					sb.append( "; changed to: " );
-					sb.append( replacementName );
-					//sb.append( "." );
-					return org.lgna.croquet.edits.ReplacementAcceptability.createDeviation( org.lgna.croquet.edits.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE, sb.toString() );
-				}
-			} else {
-				org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
-				return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "<html>return type <strong>MUST</strong> be <strong>" + formatter.getTextForType( originalReturnType ) + "</strong></html>" );
-			}
-		} else {
-			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of DeclareMethodEdit" );
-		}
-	}
 }
