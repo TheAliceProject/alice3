@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface Context extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public interface Context {
 	public boolean isGoodToGo();
 
 	//public org.lgna.croquet.history.Transaction[] createRecoveryTransactions();

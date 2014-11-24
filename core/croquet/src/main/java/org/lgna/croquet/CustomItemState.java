@@ -47,21 +47,6 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CustomItemState<T> extends ItemState<T> {
-	public static class InternalRootResolver<T> extends IndirectResolver<InternalRoot<T>, CustomItemState<T>> {
-		private InternalRootResolver( CustomItemState<T> indirect ) {
-			super( indirect );
-		}
-
-		public InternalRootResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalRoot<T> getDirect( CustomItemState<T> indirect ) {
-			return indirect.getCascadeRoot();
-		}
-	}
-
 	public static class InternalRoot<T> extends org.lgna.croquet.CascadeRoot<T, CustomItemState<T>> {
 		private final CustomItemState<T> state;
 
@@ -73,11 +58,6 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		@Override
 		public java.util.List<? extends CascadeBlank<T>> getBlanks() {
 			return this.state.getBlanks();
-		}
-
-		@Override
-		protected InternalRootResolver<T> createResolver() {
-			return new InternalRootResolver<T>( this.state );
 		}
 
 		@Override

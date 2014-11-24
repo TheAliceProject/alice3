@@ -71,11 +71,6 @@ public class DecimalPointOperation extends NumberPadOperation {
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver<NumberPadOperation> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver<NumberPadOperation>( this, this.numberModel );
-	}
-
-	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		this.numberModel.replaceSelectionWithDecimalPoint();

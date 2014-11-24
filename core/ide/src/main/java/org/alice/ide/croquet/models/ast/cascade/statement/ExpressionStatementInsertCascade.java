@@ -62,9 +62,4 @@ public abstract class ExpressionStatementInsertCascade extends StatementInsertCa
 			return null;
 		}
 	}
-
-	@Override
-	protected <M extends org.lgna.croquet.Element> org.lgna.croquet.resolvers.Resolver<M> createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, this.getBlockStatementIndexPair() );
-	}
 }

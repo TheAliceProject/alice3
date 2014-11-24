@@ -47,21 +47,6 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Cascade<T> extends AbstractCompletionModel implements org.lgna.croquet.views.imp.JDropProxy.Hider {
-	public static class InternalRootResolver<T> extends IndirectResolver<InternalRoot<T>, Cascade<T>> {
-		private InternalRootResolver( Cascade<T> indirect ) {
-			super( indirect );
-		}
-
-		public InternalRootResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalRoot<T> getDirect( Cascade<T> indirect ) {
-			return indirect.getRoot();
-		}
-	}
-
 	public static final class InternalRoot<T> extends CascadeRoot<T, Cascade<T>> {
 		private final Cascade<T> cascade;
 
@@ -73,11 +58,6 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		@Override
 		public java.util.List<? extends CascadeBlank<T>> getBlanks() {
 			return this.cascade.getBlanks();
-		}
-
-		@Override
-		protected InternalRootResolver<T> createResolver() {
-			return new InternalRootResolver<T>( this.cascade );
 		}
 
 		@Override
@@ -174,21 +154,6 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 
 	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values );
 
-	public static final class InternalMenuModelResolver<T> extends IndirectResolver<InternalMenuModel<T>, Cascade<T>> {
-		private InternalMenuModelResolver( Cascade<T> indirect ) {
-			super( indirect );
-		}
-
-		public InternalMenuModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalMenuModel<T> getDirect( Cascade<T> indirect ) {
-			return indirect.getMenuModel();
-		}
-	}
-
 	//todo: reduce visibility
 	public static final class InternalMenuModel<T> extends AbstractMenuModel {
 		private final Cascade<T> cascade;
@@ -210,11 +175,6 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		@Override
 		public void setEnabled( boolean isEnabled ) {
 			this.cascade.setEnabled( isEnabled );
-		}
-
-		@Override
-		protected InternalMenuModelResolver<T> createResolver() {
-			return new InternalMenuModelResolver<T>( this.cascade );
 		}
 
 		private static class ComponentListener<T> implements java.awt.event.ComponentListener {

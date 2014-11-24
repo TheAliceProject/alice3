@@ -48,25 +48,12 @@ package org.lgna.croquet;
  */
 public class StateContext<T> implements Context {
 
-	private final org.lgna.croquet.resolvers.Resolver<State<T>> stateResolver;
+	private final State<T> state;
 	private T value;
 
 	public StateContext( State<T> state, T value ) {
-		this.stateResolver = state.getResolver();
+		this.state = state;
 		this.value = value;
-	}
-
-	public StateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.stateResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		State<T> state = this.stateResolver.getResolved();
-		this.value = state.decodeValue( binaryDecoder );
-	}
-
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.stateResolver );
-		State<T> state = this.stateResolver.getResolved();
-		state.encodeValue( binaryEncoder, this.value );
 	}
 
 	@Override
@@ -85,7 +72,7 @@ public class StateContext<T> implements Context {
 	//	}
 
 	public State<T> getState() {
-		return this.stateResolver.getResolved();
+		return this.state;
 	}
 
 	public T getValue() {

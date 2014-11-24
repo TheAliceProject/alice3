@@ -108,11 +108,6 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 	}
 
 	@Override
-	public final Model getResolved() {
-		return this;
-	}
-
-	@Override
 	public abstract org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
 
 	private boolean isEnabled = true;

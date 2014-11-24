@@ -54,8 +54,4 @@ public class RootNode<T, M extends org.lgna.croquet.CompletionModel> extends Bla
 	private RootNode( org.lgna.croquet.CascadeRoot<T, M> model ) {
 		super( model );
 	}
-
-	public RootNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
 }

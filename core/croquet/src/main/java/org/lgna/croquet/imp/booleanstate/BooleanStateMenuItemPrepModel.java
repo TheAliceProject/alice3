@@ -82,11 +82,6 @@ public class BooleanStateMenuItemPrepModel extends StandardMenuItemPrepModel {
 	}
 
 	@Override
-	protected BooleanStateMenuItemPrepModelResolver createResolver() {
-		return new BooleanStateMenuItemPrepModelResolver( this.booleanState );
-	}
-
-	@Override
 	public org.lgna.croquet.views.CheckBoxMenuItem createMenuItemAndAddTo( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
 		org.lgna.croquet.views.CheckBoxMenuItem checkBoxMenuItem = new org.lgna.croquet.views.CheckBoxMenuItem( this.getBooleanState() );
 		menuItemContainer.addCheckBoxMenuItem( checkBoxMenuItem );

@@ -46,32 +46,12 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeWithInternalBlank<T> extends Cascade<T> {
-	public static class InternalBlankResolver<T> extends IndirectResolver<InternalBlank<T>, CascadeWithInternalBlank<T>> {
-		private InternalBlankResolver( CascadeWithInternalBlank<T> indirect ) {
-			super( indirect );
-		}
-
-		public InternalBlankResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalBlank<T> getDirect( CascadeWithInternalBlank<T> indirect ) {
-			return indirect.getInternalBlank();
-		}
-	}
-
 	private static final class InternalBlank<T> extends CascadeBlank<T> {
 		private final CascadeWithInternalBlank<T> cascade;
 
 		private InternalBlank( CascadeWithInternalBlank<T> cascade ) {
 			super( java.util.UUID.fromString( "b3dfbbd6-6932-4208-b9de-98fda5ef7145" ) );
 			this.cascade = cascade;
-		}
-
-		@Override
-		protected InternalBlankResolver<T> createResolver() {
-			return new InternalBlankResolver<T>( this.cascade );
 		}
 
 		@Override

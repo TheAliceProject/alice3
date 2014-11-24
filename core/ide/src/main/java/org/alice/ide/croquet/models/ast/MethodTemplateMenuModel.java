@@ -69,9 +69,4 @@ public class MethodTemplateMenuModel extends org.lgna.croquet.PredeterminedMenuM
 				org.alice.ide.delete.croquet.DeleteMethodOperation.getInstance( method ).getMenuItemPrepModel() );
 		this.method = method;
 	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<MethodTemplateMenuModel> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<MethodTemplateMenuModel>( this, org.lgna.project.ast.UserMethod.class, this.method );
-	}
 }

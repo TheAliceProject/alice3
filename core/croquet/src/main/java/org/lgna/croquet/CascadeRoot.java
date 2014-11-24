@@ -43,25 +43,11 @@
 
 package org.lgna.croquet;
 
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CascadeRoot<T, CM extends CompletionModel> extends CascadeBlankOwner<T[], T> {
-	public static final class InternalPopupPrepModelResolver<T> extends IndirectResolver<InternalPopupPrepModel<T>, CascadeRoot<T, ?>> {
-		private InternalPopupPrepModelResolver( CascadeRoot<T, ?> indirect ) {
-			super( indirect );
-		}
-
-		public InternalPopupPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalPopupPrepModel<T> getDirect( CascadeRoot<T, ?> indirect ) {
-			return indirect.getPopupPrepModel();
-		}
-	}
-
 	public static final class InternalPopupPrepModel<T> extends PopupPrepModel {
 		private final CascadeRoot<T, ?> root;
 
@@ -72,11 +58,6 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 		public CascadeRoot<T, ?> getCascadeRoot() {
 			return this.root;
-		}
-
-		@Override
-		protected InternalPopupPrepModelResolver<T> createResolver() {
-			return new InternalPopupPrepModelResolver<T>( this.root );
 		}
 
 		@Override

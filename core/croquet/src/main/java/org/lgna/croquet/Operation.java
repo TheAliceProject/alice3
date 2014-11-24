@@ -166,21 +166,6 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
-	public static class InternalMenuPrepModelResolver extends IndirectResolver<InternalMenuItemPrepModel, Operation> {
-		private InternalMenuPrepModelResolver( Operation indirect ) {
-			super( indirect );
-		}
-
-		public InternalMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalMenuItemPrepModel getDirect( Operation indirect ) {
-			return indirect.getMenuItemPrepModel();
-		}
-	}
-
 	private final static class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
 		private final Operation operation;
 
@@ -211,11 +196,6 @@ public abstract class Operation extends AbstractCompletionModel {
 		@Override
 		public void setEnabled( boolean isEnabled ) {
 			this.operation.setEnabled( isEnabled );
-		}
-
-		@Override
-		protected InternalMenuPrepModelResolver createResolver() {
-			return new InternalMenuPrepModelResolver( this.operation );
 		}
 
 		@Override

@@ -49,36 +49,6 @@ package org.lgna.croquet;
 public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, DCC extends org.lgna.croquet.imp.dialog.DialogContentComposite<?>> extends AbstractDialogComposite<V> {
 	protected static final org.lgna.croquet.history.Step.Key<Boolean> IS_COMMITED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
 
-	public static final class InternalCommitOperationResolver extends IndirectResolver<InternalCommitOperation, AdornedDialogCoreComposite> {
-		private InternalCommitOperationResolver( AdornedDialogCoreComposite indirect ) {
-			super( indirect );
-		}
-
-		public InternalCommitOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalCommitOperation getDirect( AdornedDialogCoreComposite indirect ) {
-			return indirect.commitOperation;
-		}
-	}
-
-	public static final class InternalCancelOperationResolver extends IndirectResolver<InternalCancelOperation, AdornedDialogCoreComposite> {
-		private InternalCancelOperationResolver( AdornedDialogCoreComposite indirect ) {
-			super( indirect );
-		}
-
-		public InternalCancelOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalCancelOperation getDirect( AdornedDialogCoreComposite indirect ) {
-			return indirect.cancelOperation;
-		}
-	}
-
 	protected static abstract class InternalDialogOperation extends ActionOperation {
 		private final AdornedDialogCoreComposite coreComposite;
 
@@ -131,11 +101,6 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 		}
 
 		@Override
-		protected InternalCommitOperationResolver createResolver() {
-			return new InternalCommitOperationResolver( this.getDialogCoreComposite() );
-		}
-
-		@Override
 		protected String getSubKeyForLocalization() {
 			return "commit";
 		}
@@ -164,11 +129,6 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 	private static final class InternalCancelOperation extends InternalFinishOperation {
 		private InternalCancelOperation( AdornedDialogCoreComposite coreComposite ) {
 			super( java.util.UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), coreComposite, false );
-		}
-
-		@Override
-		protected InternalCancelOperationResolver createResolver() {
-			return new InternalCancelOperationResolver( this.getDialogCoreComposite() );
 		}
 
 		@Override

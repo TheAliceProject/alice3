@@ -74,9 +74,4 @@ public class BooleanLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 	public org.lgna.project.ast.BooleanLiteral getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.BooleanLiteral, Void> node ) {
 		return this.transientValue;
 	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.PrimitiveBooleanStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.PrimitiveBooleanStaticGetInstanceKeyedResolver( this, this.transientValue.value.getValue() );
-	}
 }

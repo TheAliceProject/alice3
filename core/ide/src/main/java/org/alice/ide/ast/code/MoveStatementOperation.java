@@ -92,11 +92,6 @@ public final class MoveStatementOperation extends org.lgna.croquet.ActionOperati
 	}
 
 	@Override
-	protected org.lgna.croquet.resolvers.Resolver<MoveStatementOperation> createResolver() {
-		return new org.alice.ide.ast.code.resolvers.MoveStatementOperationResolver( this );
-	}
-
-	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<MoveStatementOperation> completionStep = transaction.createAndSetCompletionStep( this, trigger );
 		completionStep.commitAndInvokeDo( new org.alice.ide.ast.code.edits.MoveStatementEdit( completionStep, this.fromLocation, this.statement, this.toLocation, this.isMultiple ) );

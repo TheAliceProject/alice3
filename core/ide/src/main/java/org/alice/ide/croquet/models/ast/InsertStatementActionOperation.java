@@ -89,11 +89,6 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.InsertStatementActionOperationNewInstanceResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.InsertStatementActionOperationNewInstanceResolver( this );
-	}
-
-	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>( step ) );

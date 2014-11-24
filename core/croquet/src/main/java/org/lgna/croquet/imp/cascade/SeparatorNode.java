@@ -55,10 +55,6 @@ public class SeparatorNode extends AbstractItemNode<Void, Void, org.lgna.croquet
 		super( model );
 	}
 
-	public SeparatorNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
 	@Override
 	public int getBlankStepCount() {
 		return 0;

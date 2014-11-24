@@ -81,9 +81,4 @@ public class LocalAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgna.pr
 	public org.lgna.project.ast.LocalAccess getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.LocalAccess, Void> node ) {
 		return this.transientValue;
 	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalAccessFillIn> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalAccessFillIn>( this, org.lgna.project.ast.UserLocal.class, this.transientValue.local.getValue() );
-	}
 }

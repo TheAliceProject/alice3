@@ -110,111 +110,6 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 	}
 
-	public static abstract class KeyResolver<M extends Model> implements org.lgna.croquet.resolvers.Resolver<M> {
-		private org.lgna.croquet.resolvers.Resolver<AbstractComposite<?>> compositeResolver;
-		private final String localizationKey;
-
-		public KeyResolver( Key key ) {
-			this.compositeResolver = key.composite.getResolver();
-			this.localizationKey = key.localizationKey;
-		}
-
-		public KeyResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.compositeResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			this.localizationKey = binaryDecoder.decodeString();
-		}
-
-		@Override
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			binaryEncoder.encode( this.compositeResolver );
-			binaryEncoder.encode( this.localizationKey );
-		}
-
-		protected abstract M getResolved( Key key );
-
-		@Override
-		public final M getResolved() {
-			AbstractComposite<?> composite = this.compositeResolver.getResolved();
-			Key key = new Key( composite, this.localizationKey );
-			return this.getResolved( key );
-		}
-	}
-
-	public static final class BooleanStateKeyResolver extends KeyResolver<BooleanState> {
-		public BooleanStateKeyResolver( Key key ) {
-			super( key );
-		}
-
-		public BooleanStateKeyResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected BooleanState getResolved( Key key ) {
-			return key.getComposite().mapKeyToBooleanState.get( key );
-		}
-	}
-
-	public static final class PreferenceBooleanStateKeyResolver extends KeyResolver<org.lgna.croquet.preferences.PreferenceBooleanState> {
-		public PreferenceBooleanStateKeyResolver( Key key ) {
-			super( key );
-		}
-
-		public PreferenceBooleanStateKeyResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected org.lgna.croquet.preferences.PreferenceBooleanState getResolved( Key key ) {
-			return key.getComposite().mapKeyToPreferenceBooleanState.get( key );
-		}
-	}
-
-	public static final class StringStateKeyResolver extends KeyResolver<StringState> {
-		public StringStateKeyResolver( Key key ) {
-			super( key );
-		}
-
-		public StringStateKeyResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected StringState getResolved( Key key ) {
-			return key.getComposite().mapKeyToStringState.get( key );
-		}
-	}
-
-	public static final class PreferenceStringStateKeyResolver extends KeyResolver<StringState> {
-		public PreferenceStringStateKeyResolver( Key key ) {
-			super( key );
-		}
-
-		public PreferenceStringStateKeyResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected org.lgna.croquet.preferences.PreferenceStringState getResolved( Key key ) {
-			return key.getComposite().mapKeyToPreferenceStringState.get( key );
-		}
-	}
-
-	public static final class ItemStateKeyResolver<T> extends KeyResolver<ItemState<T>> {
-		public ItemStateKeyResolver( Key key ) {
-			super( key );
-		}
-
-		public ItemStateKeyResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected ItemState<T> getResolved( Key key ) {
-			return key.getComposite().mapKeyToItemState.get( key );
-		}
-	}
-
 	protected static abstract class AbstractInternalStringValue extends PlainStringValue {
 		private final Key key;
 
@@ -274,11 +169,6 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected StringStateKeyResolver createResolver() {
-			return new StringStateKeyResolver( this.getKey() );
-		}
-
-		@Override
 		protected void appendRepr( java.lang.StringBuilder sb ) {
 			super.appendRepr( sb );
 			sb.append( ";key=" );
@@ -316,11 +206,6 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected PreferenceStringStateKeyResolver createResolver() {
-			return new PreferenceStringStateKeyResolver( this.getKey() );
-		}
-
-		@Override
 		protected void appendRepr( java.lang.StringBuilder sb ) {
 			super.appendRepr( sb );
 			sb.append( ";key=" );
@@ -351,11 +236,6 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected BooleanStateKeyResolver createResolver() {
-			return new BooleanStateKeyResolver( this.getKey() );
-		}
-
-		@Override
 		protected void appendRepr( java.lang.StringBuilder sb ) {
 			super.appendRepr( sb );
 			sb.append( ";key=" );
@@ -383,11 +263,6 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		@Override
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
-		}
-
-		@Override
-		protected PreferenceBooleanStateKeyResolver createResolver() {
-			return new PreferenceBooleanStateKeyResolver( this.getKey() );
 		}
 
 		@Override
@@ -759,11 +634,6 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		@Override
 		protected void updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.imp.cascade.BlankNode<T> blankNode ) {
 			this.customizer.appendBlankChildren( blankChildren, blankNode );
-		}
-
-		@Override
-		protected ItemStateKeyResolver<T> createResolver() {
-			return new ItemStateKeyResolver<T>( this.getKey() );
 		}
 
 		@Override

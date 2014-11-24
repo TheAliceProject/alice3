@@ -81,11 +81,6 @@ import org.lgna.croquet.Operation;
 	}
 
 	@Override
-	protected BooleanStateMenuModelResolver createResolver() {
-		return new BooleanStateMenuModelResolver( this.state );
-	}
-
-	@Override
 	protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( menuItemContainer, e );
 		super.handleShowing( menuItemContainer, e );

@@ -65,26 +65,6 @@ public final class CompletionStep<M extends org.lgna.croquet.CompletionModel> ex
 		}
 	}
 
-	public CompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.isPending = binaryDecoder.decodeBoolean();
-		this.isSuccessfullyCompleted = binaryDecoder.decodeBoolean();
-		this.edit = binaryDecoder.decodeBinaryEncodableAndDecodable( this );
-		this.transactionHistory = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		if( this.transactionHistory != null ) {
-			this.transactionHistory.setOwner( this );
-		}
-	}
-
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.isPending );
-		binaryEncoder.encode( this.isSuccessfullyCompleted );
-		binaryEncoder.encode( this.edit );
-		binaryEncoder.encode( this.transactionHistory );
-	}
-
 	/* package-private */void reifyIfNecessary() {
 	}
 

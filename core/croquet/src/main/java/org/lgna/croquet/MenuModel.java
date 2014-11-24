@@ -56,21 +56,6 @@ public abstract class MenuModel extends AbstractMenuModel {
 		this( individualId, null );
 	}
 
-	public static class InternalPopupPrepModelResolver extends IndirectResolver<InternalPopupPrepModel, MenuModel> {
-		private InternalPopupPrepModelResolver( MenuModel indirect ) {
-			super( indirect );
-		}
-
-		public InternalPopupPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalPopupPrepModel getDirect( MenuModel indirect ) {
-			return indirect.getPopupPrepModel();
-		}
-	}
-
 	public final static class InternalPopupPrepModel extends PopupPrepModel {
 		private MenuModel menuModel;
 
@@ -91,11 +76,6 @@ public abstract class MenuModel extends AbstractMenuModel {
 
 		public MenuModel getMenuModel() {
 			return this.menuModel;
-		}
-
-		@Override
-		protected InternalPopupPrepModelResolver createResolver() {
-			return new InternalPopupPrepModelResolver( this.menuModel );
 		}
 
 		@Override

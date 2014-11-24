@@ -74,8 +74,9 @@ public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposi
 	public C decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
-			org.lgna.croquet.resolvers.Resolver<C> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-			return resolver.getResolved();
+			throw new RuntimeException( "todo" );
+			//org.lgna.croquet.resolvers.Resolver<C> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+			//return resolver.getResolved();
 		} else {
 			return null;
 		}
@@ -86,7 +87,8 @@ public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposi
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {
-			binaryEncoder.encode( value.getResolver() );
+			throw new RuntimeException( "todo" );
+			//binaryEncoder.encode( value.getResolver() );
 		}
 	}
 

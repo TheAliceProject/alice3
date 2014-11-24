@@ -62,11 +62,6 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 
 	public abstract Class<N> getNodeParameterType();
 
-	@Override
-	protected org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N> createResolver() {
-		return new org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N>( this );
-	}
-
 	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return this.declaringType;
 	}

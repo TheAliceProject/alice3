@@ -53,10 +53,6 @@ public class SetOpacityEdit extends MethodInvocationEdit {
 		super( completionStep, instanceFactory, method, argumentExpressions );
 	}
 
-	public SetOpacityEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
-
 	@Override
 	protected void preserveUndoInfo( Object instance, boolean isDo ) {
 		if( instance instanceof org.lgna.story.SThing ) {

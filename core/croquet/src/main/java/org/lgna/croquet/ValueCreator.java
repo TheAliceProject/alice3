@@ -50,21 +50,6 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 	//todo: edits are never created by value creators.  allow group specification anyways?
 	public static final org.lgna.croquet.Group VALUE_CREATOR_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "4bef663b-1474-40ec-9731-4e2a2cb49333" ), "VALUE_CREATOR_GROUP" );
 
-	public static final class InternalFillInResolver<F> extends IndirectResolver<InternalFillIn<F>, ValueCreator<F>> {
-		private InternalFillInResolver( ValueCreator<F> internal ) {
-			super( internal );
-		}
-
-		public InternalFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalFillIn<F> getDirect( ValueCreator<F> indirect ) {
-			return indirect.fillIn;
-		}
-	}
-
 	private static final class InternalFillIn<F> extends ImmutableCascadeFillIn<F, Void> {
 		private final ValueCreator<F> valueCreator;
 		private String text;
@@ -92,11 +77,6 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		@Override
 		protected String getSubKeyForLocalization() {
 			return this.valueCreator.getSubKeyForLocalization();
-		}
-
-		@Override
-		protected InternalFillInResolver<F> createResolver() {
-			return new InternalFillInResolver<F>( this.valueCreator );
 		}
 
 		@Override

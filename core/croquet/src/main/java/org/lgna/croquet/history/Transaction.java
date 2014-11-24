@@ -118,22 +118,6 @@ public class Transaction extends TransactionNode<TransactionHistory> {
 		this.completionStep = null;
 	}
 
-	public Transaction( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.prepSteps = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( (PrepStep<?>[])binaryDecoder.decodeBinaryEncodableAndDecodableArray( PrepStep.class ) );
-		for( PrepStep<?> prepStep : this.prepSteps ) {
-			prepStep.setOwner( this );
-		}
-		this.completionStep = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.completionStep.setOwner( this );
-	}
-
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( (PrepStep<?>[])edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( (java.util.List)this.prepSteps, PrepStep.class ) );
-		binaryEncoder.encode( this.completionStep );
-	}
-
 	@Override
 	protected void appendContexts( java.util.List<org.lgna.croquet.Context> out ) {
 		for( PrepStep<?> prepStep : this.prepSteps ) {

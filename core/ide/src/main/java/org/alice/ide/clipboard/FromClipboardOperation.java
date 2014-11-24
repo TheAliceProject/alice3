@@ -64,9 +64,4 @@ public abstract class FromClipboardOperation extends org.alice.ide.croquet.model
 			throw new org.lgna.croquet.CancelException();
 		}
 	}
-
-	@Override
-	protected org.lgna.croquet.resolvers.Resolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, this.getBlockStatementIndexPair() );
-	}
 }

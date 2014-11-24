@@ -70,11 +70,6 @@ public class SingleSelectListStateMenuModel<T, D extends org.lgna.croquet.data.L
 	}
 
 	@Override
-	protected SingleSelectListStateMenuModelResolver<T, D> createResolver() {
-		return new SingleSelectListStateMenuModelResolver<T, D>( this.listSelectionState );
-	}
-
-	@Override
 	protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( menuItemContainer, e );
 		super.handleShowing( menuItemContainer, e );

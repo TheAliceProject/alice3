@@ -47,22 +47,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class FrameComposite<V extends org.lgna.croquet.views.Panel> extends AbstractWindowComposite<V> {
-	public static final class IsFrameShowingStateResolver extends IndirectResolver<BooleanState, FrameComposite> {
-		private IsFrameShowingStateResolver( FrameComposite indirect ) {
-			super( indirect );
-		}
-
-		public IsFrameShowingStateResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected BooleanState getDirect( FrameComposite indirect ) {
-			return indirect.isFrameShowingState;
-		}
-	}
-
-	protected static final class IsFrameShowingState extends BooleanState {
+	private static final class IsFrameShowingState extends BooleanState {
 		private final FrameComposite frameComposite;
 
 		public IsFrameShowingState( Group group, FrameComposite frameComposite ) {
