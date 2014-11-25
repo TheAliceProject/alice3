@@ -42,10 +42,6 @@
  */
 package org.lgna.croquet.imp.operation;
 
-import org.lgna.croquet.CascadeItem;
-import org.lgna.croquet.PrepModel;
-import org.lgna.croquet.StandardMenuItemPrepModel;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -107,15 +103,15 @@ public class OperationImp {
 		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
-	public StandardMenuItemPrepModel getMenuItemPrepModel() {
+	public org.lgna.croquet.StandardMenuItemPrepModel getMenuItemPrepModel() {
 		return this.menuItemPrepModel.get();
 	}
 
-	public <F, B> CascadeItem<F, B> getFauxCascadeItem() {
+	public <F, B> org.lgna.croquet.CascadeItem<F, B> getFauxCascadeItem() {
 		return this.fauxCascadeItem.get();
 	}
 
-	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
+	public java.util.List<java.util.List<org.lgna.croquet.PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
 		if( this.menuItemPrepModel.peek() != null ) {
 			return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.menuItemPrepModel.get() );
 		} else {
@@ -125,14 +121,14 @@ public class OperationImp {
 
 	private final org.lgna.croquet.Operation operation;
 	private final OperationSwingModel swingModel;
-	private final edu.cmu.cs.dennisc.pattern.Lazy<StandardMenuItemPrepModel> menuItemPrepModel = new edu.cmu.cs.dennisc.pattern.Lazy<StandardMenuItemPrepModel>() {
+	private final edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.StandardMenuItemPrepModel> menuItemPrepModel = new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.StandardMenuItemPrepModel>() {
 		@Override
 		protected org.lgna.croquet.StandardMenuItemPrepModel create() {
-			return new org.lgna.croquet.imp.operation.OperationMenuItemPrepModel( operation );
+			return new OperationMenuItemPrepModel( operation );
 		}
 	};
 
-	private final edu.cmu.cs.dennisc.pattern.Lazy<CascadeItem> fauxCascadeItem = new edu.cmu.cs.dennisc.pattern.Lazy<CascadeItem>() {
+	private final edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.CascadeItem> fauxCascadeItem = new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.CascadeItem>() {
 		@Override
 		protected org.lgna.croquet.CascadeItem<?, ?> create() {
 			return new OperationFauxCascadeItem( operation );
