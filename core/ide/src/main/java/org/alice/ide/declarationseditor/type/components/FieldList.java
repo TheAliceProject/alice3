@@ -78,7 +78,7 @@ public abstract class FieldList extends MemberList<org.lgna.project.ast.UserFiel
 		org.lgna.croquet.views.LineAxisPanel rv = new org.lgna.croquet.views.LineAxisPanel();
 		rv.addComponent( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( item ).getLaunchOperation().createButton() );
 		if( item.isDeletionAllowed.getValue() ) {
-			rv.addComponent( org.alice.ide.delete.croquet.DeleteFieldOperation.getInstance( item ).createButton() );
+			rv.addComponent( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton() );
 		} else {
 			//todo
 			rv.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 64 ) );

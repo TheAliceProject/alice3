@@ -54,7 +54,7 @@ public final class FieldMenuModel extends MemberMenuModel<org.lgna.project.ast.U
 			public FieldMenuModel initialize( org.lgna.project.ast.UserField key ) {
 				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				prepModels.add( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( key ).getLaunchOperation().getMenuItemPrepModel() );
-				prepModels.add( org.alice.ide.delete.croquet.DeleteFieldOperation.getInstance( key ).getMenuItemPrepModel() );
+				prepModels.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( key ).getMenuItemPrepModel() );
 
 				if( key.getValueType().isAssignableTo( org.lgna.story.SMarker.class ) ) {
 					prepModels.add( org.alice.stageide.sceneeditor.side.MarkerColorIdCascade.getInstance( key ).getMenuModel() );
