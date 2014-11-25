@@ -224,6 +224,44 @@ public abstract class Operation extends AbstractCompletionModel {
 		return this.menuPrepModel;
 	}
 
+	private class FauxCascadeItem<F, B> extends CascadeFillIn<F, B> {
+		public FauxCascadeItem() {
+			super( java.util.UUID.fromString( "68f2167d-0763-4a43-8ce3-592e1562877c" ) );
+		}
+
+		@Override
+		public java.util.List<? extends org.lgna.croquet.CascadeBlank<B>> getBlanks() {
+			return java.util.Collections.emptyList();
+		}
+
+		@Override
+		public F getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
+			return null;
+		}
+
+		@Override
+		public F createValue( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+			Operation.this.fire();
+			throw new CancelException();
+		}
+
+		@Override
+		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
+			return new javax.swing.JMenuItem( Operation.this.getSwingModel().action );
+		}
+	}
+
+	private final edu.cmu.cs.dennisc.pattern.Lazy<CascadeItem> fauxCascadeItem = new edu.cmu.cs.dennisc.pattern.Lazy<CascadeItem>() {
+		@Override
+		protected org.lgna.croquet.CascadeItem<?, ?> create() {
+			return new FauxCascadeItem();
+		}
+	};
+
+	public <F, B> CascadeItem<F, B> getFauxCascadeItem() {
+		return this.fauxCascadeItem.get();
+	}
+
 	public org.lgna.croquet.views.Button createButton( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		return new org.lgna.croquet.views.Button( this, fontScalar, textAttributes );
 	}
