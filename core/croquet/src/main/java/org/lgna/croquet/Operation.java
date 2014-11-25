@@ -110,7 +110,7 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.buttonIcon = icon;
 	}
 
-	public MenuItemPrepModel getMenuItemPrepModel() {
+	public StandardMenuItemPrepModel getMenuItemPrepModel() {
 		return this.imp.getMenuItemPrepModel();
 	}
 

@@ -42,8 +42,8 @@
  */
 package org.lgna.croquet.imp.operation;
 
-import org.lgna.croquet.MenuItemPrepModel;
 import org.lgna.croquet.PrepModel;
+import org.lgna.croquet.StandardMenuItemPrepModel;
 
 /**
  * @author Dennis Cosgrove
@@ -106,7 +106,7 @@ public class OperationImp {
 		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
-	public MenuItemPrepModel getMenuItemPrepModel() {
+	public StandardMenuItemPrepModel getMenuItemPrepModel() {
 		return this.menuItemPrepModel.get();
 	}
 
@@ -120,9 +120,9 @@ public class OperationImp {
 
 	private final org.lgna.croquet.Operation operation;
 	private final OperationSwingModel swingModel;
-	private final edu.cmu.cs.dennisc.pattern.Lazy<MenuItemPrepModel> menuItemPrepModel = new edu.cmu.cs.dennisc.pattern.Lazy<MenuItemPrepModel>() {
+	private final edu.cmu.cs.dennisc.pattern.Lazy<StandardMenuItemPrepModel> menuItemPrepModel = new edu.cmu.cs.dennisc.pattern.Lazy<StandardMenuItemPrepModel>() {
 		@Override
-		protected org.lgna.croquet.MenuItemPrepModel create() {
+		protected org.lgna.croquet.StandardMenuItemPrepModel create() {
 			return new org.lgna.croquet.imp.operation.OperationMenuItemPrepModel( operation );
 		}
 	};
