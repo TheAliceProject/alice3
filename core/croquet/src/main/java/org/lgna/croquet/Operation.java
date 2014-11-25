@@ -58,11 +58,7 @@ public abstract class Operation extends AbstractCompletionModel {
 
 	@Override
 	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
-		if( this.menuPrepModel != null ) {
-			return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.menuPrepModel );
-		} else {
-			return java.util.Collections.emptyList();
-		}
+		return this.imp.getPotentialPrepModelPaths( edit );
 	}
 
 	protected String modifyNameIfNecessary( String text ) {
@@ -114,62 +110,8 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.buttonIcon = icon;
 	}
 
-	private final static class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
-		private final Operation operation;
-
-		private InternalMenuItemPrepModel( Operation operation ) {
-			super( java.util.UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
-			assert operation != null;
-			this.operation = operation;
-		}
-
-		@Override
-		public Iterable<? extends Model> getChildren() {
-			return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( this.operation );
-		}
-
-		@Override
-		protected void localize() {
-		}
-
-		public Operation getOperation() {
-			return this.operation;
-		}
-
-		@Override
-		public boolean isEnabled() {
-			return this.operation.isEnabled();
-		}
-
-		@Override
-		public void setEnabled( boolean isEnabled ) {
-			this.operation.setEnabled( isEnabled );
-		}
-
-		@Override
-		public org.lgna.croquet.views.MenuItem createMenuItemAndAddTo( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
-			org.lgna.croquet.views.MenuItem menuItem = new org.lgna.croquet.views.MenuItem( this.getOperation() );
-			menuItemContainer.addMenuItem( menuItem );
-			return menuItem;
-		}
-
-		@Override
-		protected void appendRepr( StringBuilder sb ) {
-			super.appendRepr( sb );
-			sb.append( "operation=" );
-			sb.append( this.getOperation() );
-		}
-	}
-
-	private InternalMenuItemPrepModel menuPrepModel;
-
-	public synchronized InternalMenuItemPrepModel getMenuItemPrepModel() {
-		if( this.menuPrepModel != null ) {
-			//pass
-		} else {
-			this.menuPrepModel = new InternalMenuItemPrepModel( this );
-		}
-		return this.menuPrepModel;
+	public MenuItemPrepModel getMenuItemPrepModel() {
+		return this.imp.getMenuItemPrepModel();
 	}
 
 	private class FauxCascadeItem<F, B> extends CascadeFillIn<F, B> {

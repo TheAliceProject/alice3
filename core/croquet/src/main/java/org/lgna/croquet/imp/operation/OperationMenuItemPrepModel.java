@@ -40,28 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.pattern;
+package org.lgna.croquet.imp.operation;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Lazy<T> {
-	public synchronized T get() {
-		if( this.isCreated ) {
-			//pass
-		} else {
-			this.value = this.create();
-			this.isCreated = true;
-		}
-		return this.value;
+/*package-private*/class OperationMenuItemPrepModel extends org.lgna.croquet.StandardMenuItemPrepModel {
+	public OperationMenuItemPrepModel( org.lgna.croquet.Operation operation ) {
+		super( java.util.UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
+		assert operation != null;
+		this.operation = operation;
 	}
 
-	public T peek() {
-		return this.value;
+	@Override
+	public Iterable<? extends org.lgna.croquet.Model> getChildren() {
+		return edu.cmu.cs.dennisc.java.util.Lists.newArrayList( this.operation );
 	}
 
-	protected abstract T create();
+	@Override
+	protected void localize() {
+	}
 
-	private boolean isCreated;
-	private T value;
+	public org.lgna.croquet.Operation getOperation() {
+		return this.operation;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return this.operation.isEnabled();
+	}
+
+	@Override
+	public void setEnabled( boolean isEnabled ) {
+		this.operation.setEnabled( isEnabled );
+	}
+
+	@Override
+	public org.lgna.croquet.views.MenuItem createMenuItemAndAddTo( org.lgna.croquet.views.MenuItemContainer menuItemContainer ) {
+		org.lgna.croquet.views.MenuItem menuItem = new org.lgna.croquet.views.MenuItem( this.getOperation() );
+		menuItemContainer.addMenuItem( menuItem );
+		return menuItem;
+	}
+
+	@Override
+	protected void appendRepr( StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( "operation=" );
+		sb.append( this.getOperation() );
+	}
+
+	private final org.lgna.croquet.Operation operation;
 }

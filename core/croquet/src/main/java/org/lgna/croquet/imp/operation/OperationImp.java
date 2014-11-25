@@ -42,6 +42,9 @@
  */
 package org.lgna.croquet.imp.operation;
 
+import org.lgna.croquet.MenuItemPrepModel;
+import org.lgna.croquet.PrepModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -103,6 +106,24 @@ public class OperationImp {
 		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
+	public MenuItemPrepModel getMenuItemPrepModel() {
+		return this.menuItemPrepModel.get();
+	}
+
+	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
+		if( this.menuItemPrepModel.peek() != null ) {
+			return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.menuItemPrepModel.get() );
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
 	private final org.lgna.croquet.Operation operation;
 	private final OperationSwingModel swingModel;
+	private final edu.cmu.cs.dennisc.pattern.Lazy<MenuItemPrepModel> menuItemPrepModel = new edu.cmu.cs.dennisc.pattern.Lazy<MenuItemPrepModel>() {
+		@Override
+		protected org.lgna.croquet.MenuItemPrepModel create() {
+			return new org.lgna.croquet.imp.operation.OperationMenuItemPrepModel( operation );
+		}
+	};
 }
