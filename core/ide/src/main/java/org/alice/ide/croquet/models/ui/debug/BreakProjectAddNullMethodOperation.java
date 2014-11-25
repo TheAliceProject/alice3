@@ -65,8 +65,9 @@ public class BreakProjectAddNullMethodOperation extends org.lgna.croquet.ActionO
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.project.ast.UserMethod method = null;
 		org.alice.stageide.StageIDE.getActiveInstance().getSceneType().methods.add( method );
+		step.finish();
 	}
 }

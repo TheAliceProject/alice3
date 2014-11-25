@@ -42,11 +42,10 @@
  */
 package org.lgna.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public final class OwnedByCompositeOperation extends ActionOperation {
+public final class OwnedByCompositeOperation extends Operation {
 	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite, OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.Initializer<org.lgna.croquet.OperationOwningComposite> initializer ) {
 		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ) );
 		assert subKey != null : composite;

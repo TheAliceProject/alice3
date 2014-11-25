@@ -69,8 +69,7 @@ public class CopyToClipboardOperation extends org.lgna.croquet.ActionOperation {
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.project.ast.Node copyOfNode = org.alice.ide.IDE.getActiveInstance().createCopy( this.node );
 		Clipboard.SINGLETON.push( copyOfNode );
 		step.finish();

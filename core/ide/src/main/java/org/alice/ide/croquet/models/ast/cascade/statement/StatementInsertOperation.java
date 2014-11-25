@@ -61,8 +61,7 @@ public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOp
 	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step );
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		step.commitAndInvokeDo( this.createEdit( step ) );
 	}
 }

@@ -66,7 +66,7 @@ public class CycleFrameSizeOperation extends org.lgna.croquet.ActionOperation {
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		java.awt.Dimension maximumWindowSize = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
 		int heightDelta = screenSize.height - maximumWindowSize.height;
@@ -79,5 +79,6 @@ public class CycleFrameSizeOperation extends org.lgna.croquet.ActionOperation {
 		index++;
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( w + "x" + h, "(original:", sizes[ i ].width + "x" + sizes[ i ].height, "-" + heightDelta, "accounting for height of taskbar)" );
+		step.finish();
 	}
 }

@@ -54,8 +54,7 @@ public class InsertCopiedStatementOperation extends org.lgna.croquet.ActionOpera
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<InsertCopiedStatementOperation> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep step ) {
 		org.alice.ide.code.edits.InsertCopiedStatementEdit edit = new org.alice.ide.code.edits.InsertCopiedStatementEdit( step, this.blockStatement, this.index, this.statement );
 		step.commitAndInvokeDo( edit );
 	}

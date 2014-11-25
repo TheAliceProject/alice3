@@ -42,14 +42,10 @@
  */
 package org.alice.stageide.sceneeditor.interact.croquet;
 
-import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.history.Transaction;
-import org.lgna.croquet.triggers.Trigger;
-
 /**
  * @author Dave Culyba
  */
-public class AbstractFieldBasedManipulationActionOperation extends ActionOperation {
+public abstract class AbstractFieldBasedManipulationActionOperation extends org.lgna.croquet.ActionOperation {
 
 	private final boolean isDoRequired;
 	private final edu.cmu.cs.dennisc.animation.Animator animator;
@@ -84,9 +80,4 @@ public class AbstractFieldBasedManipulationActionOperation extends ActionOperati
 		}
 		return entityImp;
 	}
-
-	@Override
-	protected void perform( Transaction transaction, Trigger trigger ) {
-	}
-
 }

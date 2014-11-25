@@ -61,8 +61,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 	protected abstract String getInitialFilename();
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.alice.ide.ProjectApplication application = this.getProjectApplication();
 		java.net.URI uri = application.getUri();
 		java.io.File filePrevious = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );

@@ -65,8 +65,7 @@ public class BackspaceOperation extends NumberPadOperation {
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.numberModel.delete();
 		step.finish();
 	}

@@ -49,7 +49,7 @@ package org.lgna.croquet;
 public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, DCC extends org.lgna.croquet.imp.dialog.DialogContentComposite<?>> extends AbstractDialogComposite<V> {
 	protected static final org.lgna.croquet.history.Step.Key<Boolean> IS_COMMITED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
 
-	protected static abstract class InternalDialogOperation extends ActionOperation {
+	protected static abstract class InternalDialogOperation extends Operation {
 		private final AdornedDialogCoreComposite coreComposite;
 
 		public InternalDialogOperation( java.util.UUID id, AdornedDialogCoreComposite coreComposite ) {

@@ -520,8 +520,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 			try {
 				org.lgna.croquet.edits.Edit edit = this.action.perform( step, this );
 				if( edit != null ) {

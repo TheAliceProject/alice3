@@ -43,7 +43,6 @@
 
 package org.lgna.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */
