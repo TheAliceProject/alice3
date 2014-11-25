@@ -46,11 +46,16 @@ package org.lgna.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ScreenElement implements TrackableShape {
+public abstract class ScreenElement implements TrackableShape, org.lgna.croquet.resolvers.RuntimeResolver<ScreenElement> {
 	public abstract java.awt.Component getAwtComponent();
 
 	public final java.awt.Point convertPoint( java.awt.Point pt, ScreenElement destination ) {
 		return javax.swing.SwingUtilities.convertPoint( this.getAwtComponent(), pt, destination.getAwtComponent() );
+	}
+
+	@Override
+	public final ScreenElement getResolved() {
+		return this;
 	}
 
 	@Override
