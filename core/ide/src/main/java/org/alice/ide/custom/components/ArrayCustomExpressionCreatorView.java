@@ -230,7 +230,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		@Override
 		protected JExpressionItemAtIndexButton createJItemAtIndexButton( int index ) {
 			DeleteItemAtIndexOperation<org.lgna.project.ast.Expression> deleteOperation = new DeleteItemAtIndexOperation<org.lgna.project.ast.Expression>( this.getData(), index );
-			return new JExpressionItemAtIndexButton( index, deleteOperation.getSwingModel().getAction() );
+			return new JExpressionItemAtIndexButton( index, deleteOperation.getImp().getSwingModel().getAction() );
 		}
 
 		@Override

@@ -77,7 +77,7 @@ public class SingleSelectListStateMenuModel<T, D extends org.lgna.croquet.data.L
 		for( final Object item : this.listSelectionState ) {
 			Operation operation = this.listSelectionState.getItemSelectionOperation( (T)item );
 			operation.initializeIfNecessary();
-			javax.swing.Action action = operation.getSwingModel().getAction();
+			javax.swing.Action action = operation.getImp().getSwingModel().getAction();
 			javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem( action );
 			buttonGroup.add( jMenuItem );
 			jMenuItem.setSelected( this.listSelectionState.getValue() == item );

@@ -88,7 +88,7 @@ public abstract class ToolBarView extends MigPanel {
 				org.lgna.croquet.Operation operation = (org.lgna.croquet.Operation)element;
 				Button button = operation.createButton();
 				if( operation.isToolBarTextClobbered() ) {
-					button.setToolTipText( operation.getName() );
+					button.setToolTipText( operation.getImp().getName() );
 					button.setClobberText( "" );
 				}
 				button.tightenUpMargin();

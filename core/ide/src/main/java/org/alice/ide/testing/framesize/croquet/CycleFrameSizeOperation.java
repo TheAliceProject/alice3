@@ -56,7 +56,7 @@ public class CycleFrameSizeOperation extends org.lgna.croquet.ActionOperation {
 
 	public CycleFrameSizeOperation() {
 		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "fce834d4-4665-405e-9fae-2461613e3412" ) );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK ) );
+		this.getImp().setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK ) );
 	}
 
 	@Override

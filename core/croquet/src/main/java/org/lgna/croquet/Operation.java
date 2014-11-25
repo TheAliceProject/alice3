@@ -46,29 +46,14 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Operation extends AbstractCompletionModel {
-	public class SwingModel {
-		private javax.swing.Action action = new javax.swing.AbstractAction() {
-			@Override
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				Operation.this.handleActionPerformed( e );
-			}
-		};
-
-		public javax.swing.Action getAction() {
-			return this.action;
-		}
-	}
-
-	private final SwingModel swingModel = new SwingModel();
-
 	private javax.swing.Icon buttonIcon;
 
 	public Operation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
 
-	private void handleActionPerformed( java.awt.event.ActionEvent e ) {
-		this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
+	public org.lgna.croquet.imp.operation.OperationImp getImp() {
+		return this.imp;
 	}
 
 	@Override
@@ -78,10 +63,6 @@ public abstract class Operation extends AbstractCompletionModel {
 		} else {
 			return java.util.Collections.emptyList();
 		}
-	}
-
-	public SwingModel getSwingModel() {
-		return this.swingModel;
 	}
 
 	protected String modifyNameIfNecessary( String text ) {
@@ -94,8 +75,8 @@ public abstract class Operation extends AbstractCompletionModel {
 		if( name != null ) {
 			name = modifyNameIfNecessary( name );
 			int mnemonicKey = this.getLocalizedMnemonicKey();
-			safeSetNameAndMnemonic( this.swingModel.action, name, mnemonicKey );
-			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
+			safeSetNameAndMnemonic( this.imp.getSwingModel().getAction(), name, mnemonicKey );
+			this.imp.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 		}
 	}
 
@@ -105,46 +86,24 @@ public abstract class Operation extends AbstractCompletionModel {
 
 	@Override
 	public boolean isEnabled() {
-		return this.swingModel.action.isEnabled();
+		return this.imp.getSwingModel().getAction().isEnabled();
 	}
 
 	@Override
 	public void setEnabled( boolean isEnabled ) {
-		this.swingModel.action.setEnabled( isEnabled );
+		this.imp.getSwingModel().getAction().setEnabled( isEnabled );
 	}
 
-	public final String getName() {
-		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );
-	}
-
-	public final void setName( String name ) {
-		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
-	}
-
-	//	public String getShortDescription() {
-	//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
-	//	}
-	public void setShortDescription( String shortDescription ) {
-		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
-	}
-
-	public void setToolTipText( String toolTipText ) {
-		this.setShortDescription( toolTipText );
-	}
-
-	//	public String getLongDescription() {
-	//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
-	//	}
-	public void setLongDescription( String longDescription ) {
-		this.swingModel.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
-	}
-
-	public javax.swing.Icon getSmallIcon() {
-		return javax.swing.Icon.class.cast( this.swingModel.action.getValue( javax.swing.Action.SMALL_ICON ) );
+	public void setName( String name ) {
+		this.imp.setName( name );
 	}
 
 	public void setSmallIcon( javax.swing.Icon icon ) {
-		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+		this.imp.setSmallIcon( icon );
+	}
+
+	public void setToolTipText( String toolTipText ) {
+		this.imp.setShortDescription( toolTipText );
 	}
 
 	public javax.swing.Icon getButtonIcon() {
@@ -153,17 +112,6 @@ public abstract class Operation extends AbstractCompletionModel {
 
 	public void setButtonIcon( javax.swing.Icon icon ) {
 		this.buttonIcon = icon;
-	}
-
-	private void setMnemonicKey( int mnemonicKey ) {
-		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
-	}
-
-	//	public javax.swing.KeyStroke getAcceleratorKey() {
-	//		return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
-	//	}
-	protected void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
-		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
 	private final static class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
@@ -247,7 +195,7 @@ public abstract class Operation extends AbstractCompletionModel {
 
 		@Override
 		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
-			return new javax.swing.JMenuItem( Operation.this.getSwingModel().action );
+			return new javax.swing.JMenuItem( Operation.this.imp.getSwingModel().getAction() );
 		}
 	}
 
@@ -281,4 +229,6 @@ public abstract class Operation extends AbstractCompletionModel {
 	public org.lgna.croquet.views.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade<?> cascade ) {
 		return new org.lgna.croquet.views.ButtonWithRightClickCascade( this, cascade );
 	}
+
+	private final org.lgna.croquet.imp.operation.OperationImp imp = new org.lgna.croquet.imp.operation.OperationImp( this );
 }

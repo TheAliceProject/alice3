@@ -40,32 +40,69 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.views;
+package org.lgna.croquet.imp.operation;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTextField<V extends javax.swing.JTextField> extends TextComponent<V> {
-	private final org.lgna.croquet.Operation operation;
-
-	public AbstractTextField( org.lgna.croquet.StringState model, org.lgna.croquet.Operation operation ) {
-		super( model );
+public class OperationImp {
+	public OperationImp( org.lgna.croquet.Operation operation ) {
 		this.operation = operation;
+		this.swingModel = new OperationSwingModel( operation );
 	}
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.operation != null ) {
-			this.getAwtComponent().addActionListener( this.operation.getImp().getSwingModel().getAction() );
-		}
+	public org.lgna.croquet.Operation getOperation() {
+		return this.operation;
 	}
 
-	@Override
-	protected void handleUndisplayable() {
-		if( this.operation != null ) {
-			this.getAwtComponent().removeActionListener( this.operation.getImp().getSwingModel().getAction() );
-		}
-		super.handleUndisplayable();
+	public OperationSwingModel getSwingModel() {
+		return this.swingModel;
 	}
+
+	public String getName() {
+		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );
+	}
+
+	public void setName( String name ) {
+		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
+	}
+
+	public String getShortDescription() {
+		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
+	}
+
+	public void setShortDescription( String shortDescription ) {
+		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+	}
+
+	public String getLongDescription() {
+		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
+	}
+
+	public void setLongDescription( String longDescription ) {
+		this.swingModel.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
+	}
+
+	public javax.swing.Icon getSmallIcon() {
+		return javax.swing.Icon.class.cast( this.swingModel.action.getValue( javax.swing.Action.SMALL_ICON ) );
+	}
+
+	public void setSmallIcon( javax.swing.Icon icon ) {
+		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+	}
+
+	public void setMnemonicKey( int mnemonicKey ) {
+		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
+	}
+
+	public javax.swing.KeyStroke getAcceleratorKey() {
+		return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
+	}
+
+	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
+		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
+	}
+
+	private final org.lgna.croquet.Operation operation;
+	private final OperationSwingModel swingModel;
 }

@@ -393,7 +393,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	private javax.swing.Action getActionFor( E item ) {
 		Operation operation = this.getModel().getItemSelectionOperation( item );
 		operation.initializeIfNecessary();
-		return operation.getSwingModel().getAction();
+		return operation.getImp().getSwingModel().getAction();
 	}
 
 	//todo: PopupOperation

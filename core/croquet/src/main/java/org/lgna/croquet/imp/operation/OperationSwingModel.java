@@ -40,32 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.views;
+package org.lgna.croquet.imp.operation;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTextField<V extends javax.swing.JTextField> extends TextComponent<V> {
-	private final org.lgna.croquet.Operation operation;
-
-	public AbstractTextField( org.lgna.croquet.StringState model, org.lgna.croquet.Operation operation ) {
-		super( model );
+public class OperationSwingModel {
+	/*package-private*/OperationSwingModel( org.lgna.croquet.Operation operation ) {
 		this.operation = operation;
 	}
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		if( this.operation != null ) {
-			this.getAwtComponent().addActionListener( this.operation.getImp().getSwingModel().getAction() );
-		}
+	public javax.swing.Action getAction() {
+		return this.action;
 	}
 
-	@Override
-	protected void handleUndisplayable() {
-		if( this.operation != null ) {
-			this.getAwtComponent().removeActionListener( this.operation.getImp().getSwingModel().getAction() );
+	private final org.lgna.croquet.Operation operation;
+	//todo: private
+	/*package-private*/final javax.swing.Action action = new javax.swing.AbstractAction() {
+		@Override
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			operation.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 		}
-		super.handleUndisplayable();
-	}
+	};
+
 }

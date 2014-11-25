@@ -88,7 +88,7 @@ import org.lgna.croquet.Operation;
 		for( boolean isTrue : new boolean[] { true, false } ) {
 			Operation operation = isTrue ? this.state.getSetToTrueOperation() : this.state.getSetToFalseOperation();
 			operation.initializeIfNecessary();
-			javax.swing.Action action = operation.getSwingModel().getAction();
+			javax.swing.Action action = operation.getImp().getSwingModel().getAction();
 			javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem( action );
 			buttonGroup.add( jMenuItem );
 			jMenuItem.setSelected( this.state.getValue() == isTrue );

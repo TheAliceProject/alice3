@@ -121,7 +121,7 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 	private final RunAwtContainerInitializer runAwtContainerInitializer = new RunAwtContainerInitializer();
 
 	private void startProgram() {
-		new org.lgna.common.ComponentThread( new ProgramRunnable( runAwtContainerInitializer ), RunComposite.this.getLaunchOperation().getName() ).start();
+		new org.lgna.common.ComponentThread( new ProgramRunnable( runAwtContainerInitializer ), RunComposite.this.getLaunchOperation().getImp().getName() ).start();
 		if( this.fastForwardToStatementOperation != null ) {
 			this.fastForwardToStatementOperation.pre( this.programContext );
 		}
