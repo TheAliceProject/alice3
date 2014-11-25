@@ -42,6 +42,7 @@
  */
 package org.lgna.croquet.imp.operation;
 
+import org.lgna.croquet.CascadeItem;
 import org.lgna.croquet.PrepModel;
 import org.lgna.croquet.StandardMenuItemPrepModel;
 
@@ -110,6 +111,10 @@ public class OperationImp {
 		return this.menuItemPrepModel.get();
 	}
 
+	public <F, B> CascadeItem<F, B> getFauxCascadeItem() {
+		return this.fauxCascadeItem.get();
+	}
+
 	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
 		if( this.menuItemPrepModel.peek() != null ) {
 			return edu.cmu.cs.dennisc.java.util.Lists.newArrayListOfSingleArrayList( this.menuItemPrepModel.get() );
@@ -124,6 +129,13 @@ public class OperationImp {
 		@Override
 		protected org.lgna.croquet.StandardMenuItemPrepModel create() {
 			return new org.lgna.croquet.imp.operation.OperationMenuItemPrepModel( operation );
+		}
+	};
+
+	private final edu.cmu.cs.dennisc.pattern.Lazy<CascadeItem> fauxCascadeItem = new edu.cmu.cs.dennisc.pattern.Lazy<CascadeItem>() {
+		@Override
+		protected org.lgna.croquet.CascadeItem<?, ?> create() {
+			return new OperationFauxCascadeItem( operation );
 		}
 	};
 }
