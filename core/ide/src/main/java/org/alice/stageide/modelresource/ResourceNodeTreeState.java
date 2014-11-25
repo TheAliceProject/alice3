@@ -64,8 +64,8 @@ public abstract class ResourceNodeTreeState extends org.lgna.croquet.CustomSingl
 	protected abstract boolean isBreadcrumbButtonIconDesired();
 
 	@Override
-	public org.lgna.croquet.ActionOperation getItemSelectionOperation( java.util.concurrent.Callable<org.alice.stageide.modelresource.ResourceNode> itemCallable ) {
-		org.lgna.croquet.ActionOperation rv = super.getItemSelectionOperation( itemCallable );
+	public org.lgna.croquet.Operation getItemSelectionOperation( java.util.concurrent.Callable<org.alice.stageide.modelresource.ResourceNode> itemCallable ) {
+		org.lgna.croquet.Operation rv = super.getItemSelectionOperation( itemCallable );
 
 		if( this.isBreadcrumbButtonIconDesired() ) {
 			org.alice.stageide.modelresource.ResourceNode resourceNode;
