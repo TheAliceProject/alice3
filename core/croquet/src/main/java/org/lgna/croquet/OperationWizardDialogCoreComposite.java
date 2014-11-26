@@ -93,6 +93,21 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 	}
 
 	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		super.handlePostHideDialog( completionStep );
+		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
+		if( isCommited != null ) { // close button condition
+			if( isCommited ) {
+				createAndCommitEdit( completionStep );
+			} else {
+				cancel( completionStep );
+			}
+		} else {
+			cancel( completionStep );
+		}
+	}
+
+	@Override
 	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		boolean isAutoCommitDesired;
 		if( this.isAutoCommitWorthAttempting() ) {
@@ -112,22 +127,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		if( isAutoCommitDesired ) {
 			this.createAndCommitEdit( completionStep );
 		} else {
-			org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
-				@Override
-				public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-					super.handlePostHideDialog( completionStep );
-					Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-					if( isCommited != null ) { // close button condition
-						if( isCommited ) {
-							createAndCommitEdit( completionStep );
-						} else {
-							cancel( completionStep );
-						}
-					} else {
-						cancel( completionStep );
-					}
-				}
-			}, completionStep );
+			this.showDialog( completionStep );
 		}
 	}
 }

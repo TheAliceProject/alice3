@@ -83,7 +83,7 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 				assert coreComposite != null : this;
 				org.lgna.croquet.history.CompletionStep<?> dialogStep = transaction.getOwner().getOwner();
 				assert dialogStep != null : transaction;
-				org.lgna.croquet.views.Dialog dialog = dialogStep.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+				org.lgna.croquet.views.Dialog dialog = dialogStep.getEphemeralDataFor( DIALOG_KEY );
 				assert dialog != null : dialogStep;
 				dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
 				dialog.setVisible( false );
@@ -234,7 +234,7 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 		if( this.isDefaultButtonDesired() ) {
 			org.lgna.croquet.views.Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
 			if( commitButton != null ) {
-				org.lgna.croquet.views.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+				org.lgna.croquet.views.Dialog dialog = step.getEphemeralDataFor( DIALOG_KEY );
 				dialog.setDefaultButton( commitButton );
 			}
 		}
