@@ -75,7 +75,7 @@ public class CycleFrameSizeOperation extends org.lgna.croquet.ActionOperation {
 		int w = sizes[ i ].width;
 		int h = sizes[ i ].height - heightDelta;
 
-		org.lgna.croquet.Application.getActiveInstance().getFrame().setSize( w, h );
+		org.lgna.croquet.Application.getActiveInstance().getDocumentFrame().getFrame().setSize( w, h );
 		index++;
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( w + "x" + h, "(original:", sizes[ i ].width + "x" + sizes[ i ].height, "-" + heightDelta, "accounting for height of taskbar)" );

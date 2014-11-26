@@ -103,7 +103,7 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 						java.awt.Component owner;
 						org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 						if( application != null ) {
-							org.lgna.croquet.views.Frame frame = application.getFrame();
+							org.lgna.croquet.views.Frame frame = application.getDocumentFrame().getFrame();
 							if( frame != null ) {
 								owner = frame.getAwtComponent();
 							} else {
@@ -147,7 +147,7 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 				boolean isSystemExitDesired = true;
 				org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 				if( application != null ) {
-					org.lgna.croquet.views.Frame frame = application.getFrame();
+					org.lgna.croquet.views.Frame frame = application.getDocumentFrame().getFrame();
 					if( frame != null ) {
 						if( frame.isVisible() ) {
 							isSystemExitDesired = false;

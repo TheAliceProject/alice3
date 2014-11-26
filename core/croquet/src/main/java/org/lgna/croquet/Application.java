@@ -116,10 +116,6 @@ public abstract class Application {
 		}
 	}
 
-	public org.lgna.croquet.views.Frame getFrame() {
-		return this.documentFrame.getFrame();
-	}
-
 	public void initialize( String[] args ) {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			com.apple.eawt.Application application = com.apple.eawt.Application.getApplication();

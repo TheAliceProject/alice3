@@ -155,7 +155,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite = org.alice.ide.capture.ImageCaptureComposite.getInstance();
 		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getImp().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
 		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireWindowOperation().getImp().getSwingModel().getAction(), CAPTURE_ENTIRE_WINDOW_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
-		if( window == this.getFrame() ) {
+		if( window == this.getDocumentFrame().getFrame() ) {
 			//pass
 		} else {
 			window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureRectangleOperation().getImp().getSwingModel().getAction(), CAPTURE_RECTANGLE_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
@@ -186,7 +186,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		super.initialize( args );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionObserver );
 		this.getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
-		this.registerScreenCaptureKeyStrokes( this.getFrame() );
+		this.registerScreenCaptureKeyStrokes( this.getDocumentFrame().getFrame() );
 	}
 
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
@@ -397,7 +397,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	public org.alice.ide.stencil.PotentialDropReceptorsFeedbackView getPotentialDropReceptorsFeedbackView() {
 		if( this.potentialDropReceptorsStencil == null ) {
-			this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsFeedbackView( this.getFrame() );
+			this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsFeedbackView( this.getDocumentFrame().getFrame() );
 		}
 		return this.potentialDropReceptorsStencil;
 	}
@@ -641,7 +641,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( this.highlightStencil != null ) {
 			//pass
 		} else {
-			this.highlightStencil = new org.alice.ide.highlight.IdeHighlightStencil( this.getFrame(), HIGHLIGHT_STENCIL_LAYER );
+			this.highlightStencil = new org.alice.ide.highlight.IdeHighlightStencil( this.getDocumentFrame().getFrame(), HIGHLIGHT_STENCIL_LAYER );
 		}
 		return this.highlightStencil;
 	}
