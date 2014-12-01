@@ -40,31 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.lgna.croquet.imp.frame;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ContributorMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static ContributorMenuModel instance = new ContributorMenuModel();
+public final class LazyIsFrameShowingState<C extends org.lgna.croquet.FrameComposite<?>> extends AbstractIsFrameShowingState {
+	public static <C extends org.lgna.croquet.FrameComposite<?>> org.lgna.croquet.BooleanState createInstance( org.lgna.croquet.Group group, Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy ) {
+		return new LazyIsFrameShowingState<C>( group, cls, lazy );
 	}
 
-	public static ContributorMenuModel getInstance() {
-		return SingletonHolder.instance;
+	private LazyIsFrameShowingState( org.lgna.croquet.Group group, Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy ) {
+		super( group, java.util.UUID.fromString( "e6efce56-7da5-4798-9ec3-6fcaab3962b5" ) );
+		this.cls = cls;
+		this.lazy = lazy;
 	}
 
-	private ContributorMenuModel() {
-		super( java.util.UUID.fromString( "4215bc20-55ec-4b7e-9dc0-d573501ea985" ),
-				org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createInstance(
-						org.lgna.croquet.Application.INFORMATION_GROUP,
-						org.alice.ide.localize.review.croquet.LocalizeReviewFrame.class,
-						new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.localize.review.croquet.LocalizeReviewFrame>() {
-							@Override
-							protected org.alice.ide.localize.review.croquet.LocalizeReviewFrame create() {
-								return org.alice.ide.localize.review.croquet.LocalizeReviewFrame.getInstance();
-							}
-						}
-						).getMenuItemPrepModel() );
+	@Override
+	protected java.lang.Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+		return this.cls;
 	}
+
+	@Override
+	public org.lgna.croquet.FrameComposite<?> getFrameComposite() {
+		return this.lazy.get();
+	}
+
+	private final Class<C> cls;
+	private final edu.cmu.cs.dennisc.pattern.Lazy<C> lazy;
 }

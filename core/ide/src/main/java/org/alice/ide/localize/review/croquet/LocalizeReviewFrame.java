@@ -45,7 +45,7 @@ package org.alice.ide.localize.review.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class LocalizeReviewFrame extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<org.alice.ide.localize.review.croquet.views.LocalizeReviewFrameView> {
+public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.alice.ide.localize.review.croquet.views.LocalizeReviewFrameView> {
 	private static final String SUFFIX = ".properties";
 
 	private static class SingletonHolder {
@@ -57,7 +57,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameCompositeWithInte
 	}
 
 	private LocalizeReviewFrame() {
-		super( java.util.UUID.fromString( "2652798a-f27d-4658-8907-3f0b6bb0aac2" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+		super( java.util.UUID.fromString( "2652798a-f27d-4658-8907-3f0b6bb0aac2" ) );
 		this.tableModel = new LocalizationTableModel();
 	}
 
@@ -257,16 +257,5 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameCompositeWithInte
 		private final java.util.List<Item> allItems;
 		private java.util.List<Item> translatedItems;
 		private boolean isIncludingUntranslated;
-	}
-
-	public static void main( String[] args ) throws Exception {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-				LocalizeReviewFrame.getInstance().getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
-			}
-		} );
 	}
 }
