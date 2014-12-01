@@ -47,126 +47,14 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class FrameComposite<V extends org.lgna.croquet.views.Panel> extends AbstractWindowComposite<V> {
-	private static final class IsFrameShowingState extends BooleanState {
-		private final FrameComposite frameComposite;
-
-		public IsFrameShowingState( Group group, FrameComposite frameComposite ) {
-			super( group, java.util.UUID.fromString( "9afc0e33-5677-4e1f-a178-95d40f3e0b9c" ), false );
-			this.frameComposite = frameComposite;
-		}
-
-		@Override
-		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
-			return this.frameComposite.getClassUsedForLocalization();
-		}
-
-		public FrameComposite getFrameComposite() {
-			return this.frameComposite;
-		}
-
-		@Override
-		protected void fireChanged( Boolean prevValue, Boolean nextValue, IsAdjusting isAdjusting ) {
-			super.fireChanged( prevValue, nextValue, isAdjusting );
-			if( nextValue ) {
-				org.lgna.croquet.views.Frame frameView = this.frameComposite.getOwnerFrameView_createIfNecessary();
-				frameView.setTitle( this.frameComposite.getFrameTitle() );
-				this.frameComposite.handlePreActivation();
-				frameView.setVisible( true );
-			} else {
-				if( this.frameComposite.ownerFrameView != null ) {
-					if( this.frameComposite.ownerFrameView.isVisible() ) {
-						this.frameComposite.handlePostDeactivation();
-						this.frameComposite.ownerFrameView.setVisible( false );
-					}
-				} else {
-					//pass
-				}
-			}
-		}
-	}
-
-	private org.lgna.croquet.views.Frame ownerFrameView;
-
-	private final java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
-		@Override
-		public void windowActivated( java.awt.event.WindowEvent e ) {
-		}
-
-		@Override
-		public void windowDeactivated( java.awt.event.WindowEvent e ) {
-		}
-
-		@Override
-		public void windowIconified( java.awt.event.WindowEvent e ) {
-		}
-
-		@Override
-		public void windowDeiconified( java.awt.event.WindowEvent e ) {
-		}
-
-		@Override
-		public void windowOpened( java.awt.event.WindowEvent e ) {
-		}
-
-		@Override
-		public void windowClosing( java.awt.event.WindowEvent e ) {
-			handleWindowClosing( e );
-		}
-
-		@Override
-		public void windowClosed( java.awt.event.WindowEvent e ) {
-		}
-	};
-
-	private org.lgna.croquet.views.Frame getOwnerFrameView_createIfNecessary() {
-		if( this.ownerFrameView != null ) {
-			//pass
-		} else {
-			this.ownerFrameView = new org.lgna.croquet.views.Frame();
-			this.ownerFrameView.getContentPane().addCenterComponent( this.getRootComponent() );
-			this.updateWindowSize( this.ownerFrameView );
-			this.ownerFrameView.addWindowListener( this.windowListener );
-		}
-		return this.ownerFrameView;
-	}
-
-	private String title;
-	private final IsFrameShowingState isFrameShowingState;
-
 	public FrameComposite( java.util.UUID id, Group booleanStateGroup ) {
 		super( id );
-		this.isFrameShowingState = new IsFrameShowingState( booleanStateGroup, this );
-	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.title = this.findLocalizedText( "title" );
+		this.isFrameShowingState = new org.lgna.croquet.imp.frame.IsFrameShowingState( booleanStateGroup, this );
 	}
 
 	public BooleanState getIsFrameShowingState() {
 		return this.isFrameShowingState;
 	}
 
-	protected void handleWindowClosing( java.awt.event.WindowEvent e ) {
-		this.isFrameShowingState.setValueTransactionlessly( false );
-	}
-
-	protected String getFrameTitle() {
-		this.initializeIfNecessary();
-		String rv = this.title;
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = this.getIsFrameShowingState().getTrueText();
-			if( rv != null ) {
-				rv = rv.replaceAll( "<[a-z]*>", "" );
-				rv = rv.replaceAll( "</[a-z]*>", "" );
-				if( rv.endsWith( "..." ) ) {
-					rv = rv.substring( 0, rv.length() - 3 );
-				}
-			}
-		}
-		return rv;
-	}
+	private final org.lgna.croquet.imp.frame.IsFrameShowingState isFrameShowingState;
 }
