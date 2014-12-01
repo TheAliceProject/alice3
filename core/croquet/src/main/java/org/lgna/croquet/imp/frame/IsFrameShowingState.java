@@ -45,16 +45,10 @@ package org.lgna.croquet.imp.frame;
 /**
  * @author Dennis Cosgrove
  */
-public final class IsFrameShowingState extends org.lgna.croquet.BooleanState {
+public final class IsFrameShowingState extends AbstractIsFrameShowingState {
 	public IsFrameShowingState( org.lgna.croquet.Group group, org.lgna.croquet.FrameComposite<?> frameComposite ) {
-		super( group, java.util.UUID.fromString( "9afc0e33-5677-4e1f-a178-95d40f3e0b9c" ), false );
+		super( group, java.util.UUID.fromString( "9afc0e33-5677-4e1f-a178-95d40f3e0b9c" ) );
 		this.frameComposite = frameComposite;
-	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.title = this.findLocalizedText( "title" );
 	}
 
 	@Override
@@ -63,97 +57,10 @@ public final class IsFrameShowingState extends org.lgna.croquet.BooleanState {
 		return this.frameComposite.getClass();
 	}
 
+	@Override
 	public org.lgna.croquet.FrameComposite<?> getFrameComposite() {
 		return this.frameComposite;
 	}
 
-	private String getFrameTitle() {
-		this.initializeIfNecessary();
-		String rv = this.title;
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = this.getTrueText();
-			if( rv != null ) {
-				rv = rv.replaceAll( "<[a-z]*>", "" );
-				rv = rv.replaceAll( "</[a-z]*>", "" );
-				if( rv.endsWith( "..." ) ) {
-					rv = rv.substring( 0, rv.length() - 3 );
-				}
-			}
-		}
-		return rv;
-	}
-
-	@Override
-	protected void fireChanged( Boolean prevValue, Boolean nextValue, IsAdjusting isAdjusting ) {
-		super.fireChanged( prevValue, nextValue, isAdjusting );
-		if( nextValue ) {
-			org.lgna.croquet.views.Frame frameView = this.getOwnerFrameView_createIfNecessary();
-			frameView.setTitle( this.getFrameTitle() );
-			this.frameComposite.handlePreActivation();
-			frameView.setVisible( true );
-		} else {
-			if( this.ownerFrameView != null ) {
-				if( this.ownerFrameView.isVisible() ) {
-					this.frameComposite.handlePostDeactivation();
-					this.ownerFrameView.setVisible( false );
-				}
-			} else {
-				//pass
-			}
-		}
-	}
-
-	private org.lgna.croquet.views.Frame getOwnerFrameView_createIfNecessary() {
-		if( this.ownerFrameView != null ) {
-			//pass
-		} else {
-			this.ownerFrameView = new org.lgna.croquet.views.Frame();
-			this.ownerFrameView.getContentPane().addCenterComponent( this.frameComposite.getRootComponent() );
-			this.frameComposite.updateWindowSize( this.ownerFrameView );
-			this.ownerFrameView.addWindowListener( this.windowListener );
-		}
-		return this.ownerFrameView;
-	}
-
-	private void handleWindowClosing( java.awt.event.WindowEvent e ) {
-		this.setValueTransactionlessly( false );
-	}
-
 	private final org.lgna.croquet.FrameComposite<?> frameComposite;
-	private final java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
-		@Override
-		public void windowActivated( java.awt.event.WindowEvent e ) {
-		}
-
-		@Override
-		public void windowDeactivated( java.awt.event.WindowEvent e ) {
-		}
-
-		@Override
-		public void windowIconified( java.awt.event.WindowEvent e ) {
-		}
-
-		@Override
-		public void windowDeiconified( java.awt.event.WindowEvent e ) {
-		}
-
-		@Override
-		public void windowOpened( java.awt.event.WindowEvent e ) {
-		}
-
-		@Override
-		public void windowClosing( java.awt.event.WindowEvent e ) {
-			handleWindowClosing( e );
-		}
-
-		@Override
-		public void windowClosed( java.awt.event.WindowEvent e ) {
-		}
-	};
-
-	private String title;
-	private org.lgna.croquet.views.Frame ownerFrameView;
-
 }
