@@ -45,7 +45,7 @@ package org.alice.ide.capture;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.alice.ide.capture.views.ImageCaptureView> {
+public class ImageCaptureComposite extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<org.alice.ide.capture.views.ImageCaptureView> {
 	//todo
 	private static final org.lgna.croquet.Group IMAGE_CAPTURE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "220c4c60-aea1-4c18-95f9-7a0ef0a1f30b" ), "IMAGE_CAPTURE_GROUP" );
 

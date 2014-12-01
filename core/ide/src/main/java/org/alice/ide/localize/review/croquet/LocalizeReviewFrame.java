@@ -45,7 +45,7 @@ package org.alice.ide.localize.review.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.alice.ide.localize.review.croquet.views.LocalizeReviewFrameView> {
+public class LocalizeReviewFrame extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<org.alice.ide.localize.review.croquet.views.LocalizeReviewFrameView> {
 	private static final String SUFFIX = ".properties";
 
 	private static class SingletonHolder {

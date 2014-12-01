@@ -47,14 +47,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class FrameComposite<V extends org.lgna.croquet.views.Panel> extends AbstractWindowComposite<V> {
-	public FrameComposite( java.util.UUID id, Group booleanStateGroup ) {
-		super( id );
-		this.isFrameShowingState = new org.lgna.croquet.imp.frame.IsFrameShowingState( booleanStateGroup, this );
+	public FrameComposite( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
-
-	public BooleanState getIsFrameShowingState() {
-		return this.isFrameShowingState;
-	}
-
-	private final org.lgna.croquet.imp.frame.IsFrameShowingState isFrameShowingState;
 }

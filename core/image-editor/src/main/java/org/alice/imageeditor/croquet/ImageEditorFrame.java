@@ -45,7 +45,7 @@ package org.alice.imageeditor.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageEditorFrame extends org.lgna.croquet.FrameComposite<org.alice.imageeditor.croquet.views.ImageEditorPane> {
+public class ImageEditorFrame extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<org.alice.imageeditor.croquet.views.ImageEditorPane> {
 	public static String INVALID_PATH_NOT_A_DIRECTORY = "INVALID_PATH_NOT_A_DIRECTORY";
 	public static String INVALID_PATH_EMPTY_SUB_PATH = "INVALID_PATH_EMPTY_SUB_PATH";
 	private static final String DEFAULT_ROOT_DIRECTORY_PATH = edu.cmu.cs.dennisc.java.io.UserDirectoryUtilities.getBestGuessPicturesDirectory().getAbsolutePath();

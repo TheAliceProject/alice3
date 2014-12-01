@@ -55,7 +55,6 @@ import org.alice.ide.croquet.models.project.find.croquet.views.FindView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
-import org.lgna.croquet.FrameComposite;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.codecs.DefaultItemCodec;
 import org.lgna.croquet.data.RefreshableListData;
@@ -74,7 +73,7 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
 /**
  * @author Matt May
  */
-public abstract class AbstractFindComposite extends FrameComposite<FindView> {
+public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<FindView> {
 	public static final org.lgna.croquet.Group FIND_COMPOSITE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "609c0bf5-73c3-4987-a2b5-8225c19f7886" ) );
 
 	private final FindContentManager manager = new FindContentManager();
