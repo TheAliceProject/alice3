@@ -48,15 +48,7 @@ package org.alice.ide.localize.review.croquet;
 public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.alice.ide.localize.review.croquet.views.LocalizeReviewFrameView> {
 	private static final String SUFFIX = ".properties";
 
-	private static class SingletonHolder {
-		private static LocalizeReviewFrame instance = new LocalizeReviewFrame();
-	}
-
-	public static LocalizeReviewFrame getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private LocalizeReviewFrame() {
+	public LocalizeReviewFrame() {
 		super( java.util.UUID.fromString( "2652798a-f27d-4658-8907-3f0b6bb0aac2" ) );
 		this.tableModel = new LocalizationTableModel();
 	}

@@ -53,7 +53,7 @@ public class WindowMenuModel extends org.lgna.croquet.StaticMenuModel {
 			rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
 		}
 		rv.add( org.alice.ide.croquet.models.history.ProjectHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
-		rv.add( org.alice.ide.croquet.models.ui.MemoryUsageComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
+		rv.add( org.alice.ide.IDE.getActiveInstance().getMemoryUsageFrameIsShowingState().getMenuItemPrepModel() );
 		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
 		rv.add( PreferencesMenuModel.getInstance() );
 		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
