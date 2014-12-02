@@ -109,6 +109,10 @@ public class ProjectDocumentFrame {
 		return this.iconFactoryManager;
 	}
 
+	public org.lgna.croquet.BooleanState getStasticsFrameIsShowingState() {
+		return this.stasticsFrameIsShowingState;
+	}
+
 	private final ApiConfigurationManager apiConfigurationManager;
 
 	private org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> typeMetaState;
@@ -123,4 +127,14 @@ public class ProjectDocumentFrame {
 	private final org.alice.stageide.perspectives.PerspectiveState perspectiveState;
 
 	private final org.alice.ide.iconfactory.IconFactoryManager iconFactoryManager;
+
+	private final org.lgna.croquet.BooleanState stasticsFrameIsShowingState = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createInstance(
+			org.lgna.croquet.Application.INFORMATION_GROUP,
+			org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite.class,
+			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite>() {
+				@Override
+				protected org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite create() {
+					return new org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite( ProjectDocumentFrame.this );
+				}
+			} );
 }

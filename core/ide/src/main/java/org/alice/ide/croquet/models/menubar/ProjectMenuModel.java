@@ -56,7 +56,7 @@ public class ProjectMenuModel extends org.lgna.croquet.StaticMenuModel {
 		return new org.lgna.croquet.StandardMenuItemPrepModel[] {
 				org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getLaunchOperation().getMenuItemPrepModel(),
 				this.projectDocumentFrame.getFindComposite().getIsFrameShowingState().getMenuItemPrepModel(),
-				new org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite( this.projectDocumentFrame ).getIsFrameShowingState().getMenuItemPrepModel()
+				this.projectDocumentFrame.getStasticsFrameIsShowingState().getMenuItemPrepModel()
 		};
 	}
 
