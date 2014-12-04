@@ -55,16 +55,6 @@ public class ContributorMenuModel extends org.lgna.croquet.PredeterminedMenuMode
 	}
 
 	private ContributorMenuModel() {
-		super( java.util.UUID.fromString( "4215bc20-55ec-4b7e-9dc0-d573501ea985" ),
-				org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createInstance(
-						org.lgna.croquet.Application.INFORMATION_GROUP,
-						org.alice.ide.localize.review.croquet.LocalizeReviewFrame.class,
-						new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.localize.review.croquet.LocalizeReviewFrame>() {
-							@Override
-							protected org.alice.ide.localize.review.croquet.LocalizeReviewFrame create() {
-								return org.alice.ide.localize.review.croquet.LocalizeReviewFrame.getInstance();
-							}
-						}
-						).getMenuItemPrepModel() );
+		super( java.util.UUID.fromString( "4215bc20-55ec-4b7e-9dc0-d573501ea985" ), org.alice.ide.IDE.getActiveInstance().getLocalizeReviewIsShowingState().getMenuItemPrepModel() );
 	}
 }
