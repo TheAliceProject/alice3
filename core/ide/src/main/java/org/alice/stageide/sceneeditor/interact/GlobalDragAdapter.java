@@ -576,6 +576,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 				org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener( this.handleStyleListener );
 			}
 		}
+		this.setHaloEnabled( true );
 	}
 
 	public void addClickAdapter( ManipulatorClickAdapter clickAdapter, InputCondition... conditions ) {

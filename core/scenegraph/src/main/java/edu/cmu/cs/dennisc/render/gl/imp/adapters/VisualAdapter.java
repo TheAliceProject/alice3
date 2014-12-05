@@ -62,6 +62,7 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 		OPAQUE,
 		ALPHA_BLENDED,
 		GHOST,
+		HALO,
 		ALL
 	}
 
@@ -249,8 +250,41 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 		} else {
 			if( m_frontFacingAppearanceAdapter != null ) {
 				rc.gl.glCullFace( GL_BACK );
+
+				if( m_element.isHaloed.getValue() ) {
+					rc.gl.glClearStencil( 0 );
+					rc.gl.glClear( javax.media.opengl.GL.GL_STENCIL_BUFFER_BIT );
+					rc.gl.glEnable( javax.media.opengl.GL.GL_STENCIL_TEST );
+					rc.gl.glStencilFunc( javax.media.opengl.GL.GL_ALWAYS, 1, -1 );
+					rc.gl.glStencilOp( javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_REPLACE );
+				}
+
 				m_frontFacingAppearanceAdapter.setPipelineState( rc, GL_FRONT );
 				this.renderGeometry( rc, renderType );
+
+				if( m_element.isHaloed.getValue() ) {
+					rc.gl.glStencilFunc( javax.media.opengl.GL2.GL_NOTEQUAL, 1, -1 );
+					rc.gl.glStencilOp( javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_REPLACE );
+					rc.gl.glLineWidth( 3.0f );
+					rc.gl.glPolygonMode( GL_FRONT, javax.media.opengl.GL2.GL_LINE );
+					rc.setIsShadingEnabled( false );
+					rc.gl.glDisable( javax.media.opengl.GL2.GL_TEXTURE_2D );
+
+					//rc.gl.glEnable( javax.media.opengl.GL.GL_LINE_SMOOTH );
+					//rc.gl.glEnable( javax.media.opengl.GL2.GL_POLYGON_SMOOTH );
+					//rc.gl.glHint( javax.media.opengl.GL.GL_LINE_SMOOTH_HINT, javax.media.opengl.GL.GL_NICEST );
+					//rc.gl.glHint( javax.media.opengl.GL2.GL_POLYGON_SMOOTH_HINT, javax.media.opengl.GL.GL_NICEST );
+					rc.setColor( new float[] { 1.0f, 1.0f, 0.0f, 1.0f }, 1.0f );
+					rc.gl.glDisable( javax.media.opengl.GL2.GL_BLEND );
+					//rc.setColor( new float[] { 1.0f, 1.0f, 0.0f, 1.0f }, 0.5f );
+					//rc.gl.glEnable( javax.media.opengl.GL2.GL_BLEND );
+					//rc.gl.glBlendFunc( javax.media.opengl.GL2.GL_SRC_ALPHA, javax.media.opengl.GL2.GL_ONE_MINUS_SRC_ALPHA );
+					this.renderGeometry( rc, RenderType.HALO );
+					//rc.gl.glDisable( javax.media.opengl.GL2.GL_BLEND );
+
+					rc.gl.glDisable( javax.media.opengl.GL.GL_STENCIL_TEST );
+				}
+
 			}
 			if( m_backFacingAppearanceAdapter != null ) {
 				rc.gl.glCullFace( GL_FRONT );

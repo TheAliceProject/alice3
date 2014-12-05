@@ -61,7 +61,6 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter.RenderType;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Element;
@@ -295,7 +294,11 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 		}
 		for( Entry<Integer, TexturedAppearanceAdapter> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
 		{
-			appearanceEntry.getValue().setTexturePipelineState( rc );
+			if( renderType == RenderType.HALO ) {
+				//pass
+			} else {
+				appearanceEntry.getValue().setTexturePipelineState( rc );
+			}
 
 			WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get( appearanceEntry.getKey() );
 			if( weightedMeshControls != null ) {

@@ -189,6 +189,7 @@ public class GlDrawableUtilities {
 
 	public static javax.media.opengl.GLCapabilities createGlCapabilitiesForLightweightComponent() {
 		javax.media.opengl.GLCapabilities rv = createGlCapabilities();
+		rv.setStencilBits( 1 );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
 			//pass
 		} else {

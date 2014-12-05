@@ -52,6 +52,7 @@ public class Visual extends Leaf {
 	public final edu.cmu.cs.dennisc.math.property.Matrix3x3Property scale = new edu.cmu.cs.dennisc.math.property.Matrix3x3Property( this, edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity() );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isShowing = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isPickable = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isHaloed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
 	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<Geometry> geometries = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<Geometry>( this, new Geometry[ 0 ] ) {
 		@Override
 		protected Geometry[] createArray( int length ) {
