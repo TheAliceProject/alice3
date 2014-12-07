@@ -135,7 +135,7 @@ public class ObjectMarkerImp extends MarkerImp {
 	}
 
 	@Override
-	protected Visual[] getSgVisuals() {
+	public Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
 

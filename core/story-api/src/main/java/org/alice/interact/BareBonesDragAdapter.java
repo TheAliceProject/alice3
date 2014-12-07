@@ -1,43 +1,43 @@
 /**
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.interact;
@@ -52,7 +52,6 @@ import org.alice.interact.manipulator.AnimatorDependentManipulator;
 import org.alice.interact.manipulator.OnscreenPicturePlaneInformedManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.renderer.PickResult;
 
 /**
  * @author Dennis Cosgrove
@@ -124,7 +123,7 @@ public abstract class BareBonesDragAdapter {
 		return this.manipulators;
 	}
 
-	private java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+	private java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget ) {
 		if( onscreenRenderTarget != null ) {
 			return onscreenRenderTarget.getAwtComponent();
 		} else {
@@ -132,11 +131,11 @@ public abstract class BareBonesDragAdapter {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget ) {
 		if( this.onscreenRenderTarget != null ) {
 			this.onscreenRenderTarget.getRenderFactory().removeAutomaticDisplayListener( this.automaticDisplayAdapter );
 		}
@@ -269,19 +268,36 @@ public abstract class BareBonesDragAdapter {
 		if( c == null ) {
 			return null;
 		}
-		org.lgna.croquet.views.AwtComponentView<?> lgc = org.lgna.croquet.views.AwtComponentView.lookup( c );
-		if( lgc instanceof ManipulationHandle ) {
-			return (ManipulationHandle)lgc;
+		if( c instanceof ManipulationHandle ) {
+			return (ManipulationHandle)c;
 		} else {
 			return getHandleForComponent( c.getParent() );
 		}
 	}
 
-	private PickResult pickIntoScene( java.awt.Point mouseLocation ) {
-		edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+	private static enum IsSuppressionOfGlExceptionDesired {
+		TRUE,
+		FALSE;
+	}
+
+	private void pickIntoScene( java.awt.Point mouseLocation, IsSuppressionOfGlExceptionDesired isSuppressionOfGlExceptionDesired, edu.cmu.cs.dennisc.render.PickFrontMostObserver observer ) {
+		edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
 		assert onscreenRenderTarget != null;
-		edu.cmu.cs.dennisc.renderer.PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED );
-		return pickResult;
+		final boolean IS_ASYNCHRONOUS_PICK_READY_FOR_PRIME_TIME = false;
+		if( IS_ASYNCHRONOUS_PICK_READY_FOR_PRIME_TIME ) {
+			getOnscreenRenderTarget().getAsynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED, null, observer );
+		} else {
+			try {
+				edu.cmu.cs.dennisc.render.PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
+				observer.done( pickResult );
+			} catch( javax.media.opengl.GLException gle ) {
+				if( isSuppressionOfGlExceptionDesired == IsSuppressionOfGlExceptionDesired.TRUE ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "Error picking into scene", gle );
+				} else {
+					throw gle;
+				}
+			}
+		}
 	}
 
 	protected void handleMouseEntered( java.awt.event.MouseEvent e ) {
@@ -289,12 +305,12 @@ public abstract class BareBonesDragAdapter {
 		if( !this.currentInputState.isAnyMouseButtonDown() ) {
 			this.currentInputState.setMouseLocation( e.getPoint() );
 			if( e.getComponent() == this.lookingGlassComponent ) {
-				try {
-					PickResult pr = pickIntoScene( e.getPoint() );
-					this.currentInputState.setRolloverPickResult( pr );
-				} catch( javax.media.opengl.GLException gle ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "Error picking into scene", gle );
-				}
+				this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.TRUE, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
+					@Override
+					public void done( edu.cmu.cs.dennisc.render.PickResult pickResult ) {
+						currentInputState.setRolloverPickResult( pickResult );
+					}
+				} );
 			} else {
 				this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ) );
 			}
@@ -325,7 +341,12 @@ public abstract class BareBonesDragAdapter {
 		e.getComponent().requestFocus();
 
 		if( e.getComponent() == this.lookingGlassComponent ) {
-			this.currentInputState.setClickPickResult( pickIntoScene( e.getPoint() ) );
+			this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.FALSE, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
+				@Override
+				public void done( edu.cmu.cs.dennisc.render.PickResult result ) {
+					currentInputState.setClickPickResult( result );
+				}
+			} );
 		} else {
 			this.currentInputState.setClickHandle( this.getHandleForComponent( e.getComponent() ) );
 		}
@@ -340,7 +361,12 @@ public abstract class BareBonesDragAdapter {
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_UP );
 		this.currentInputState.setInputEvent( e );
 		if( this.currentRolloverComponent == this.lookingGlassComponent ) {
-			this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
+			this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.FALSE, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
+				@Override
+				public void done( edu.cmu.cs.dennisc.render.PickResult pickResult ) {
+					currentInputState.setRolloverPickResult( pickResult );
+				}
+			} );
 		} else {
 			this.currentInputState.setRolloverHandle( this.getHandleForComponent( this.currentRolloverComponent ) );
 		}
@@ -367,15 +393,15 @@ public abstract class BareBonesDragAdapter {
 			this.currentInputState.setMouseLocation( e.getPoint() );
 			if( e.getComponent() == this.lookingGlassComponent )
 			{
-				//Don't pick into the scene if a mouse button is already down 
+				//Don't pick into the scene if a mouse button is already down
 				if( !this.currentInputState.isAnyMouseButtonDown() )
 				{
-					try {
-						PickResult pr = pickIntoScene( e.getPoint() );
-						this.currentInputState.setRolloverPickResult( pr );
-					} catch( javax.media.opengl.GLException gle ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "Error picking into scene", gle );
-					}
+					this.pickIntoScene( e.getPoint(), IsSuppressionOfGlExceptionDesired.TRUE, new edu.cmu.cs.dennisc.render.PickFrontMostObserver() {
+						@Override
+						public void done( edu.cmu.cs.dennisc.render.PickResult pickResult ) {
+							currentInputState.setRolloverPickResult( pickResult );
+						}
+					} );
 				}
 			}
 			else
@@ -421,11 +447,11 @@ public abstract class BareBonesDragAdapter {
 
 	}
 
-	protected abstract void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e );
+	protected abstract void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e );
 
-	private final edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
+	private final edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener() {
 		@Override
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
 			handleAutomaticDisplayCompleted( e );
 		}
 	};
@@ -490,7 +516,7 @@ public abstract class BareBonesDragAdapter {
 
 	protected/*private*/final java.util.List<ManipulatorConditionSet> manipulators = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
-	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget;
+	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget;
 	private java.awt.Component lookingGlassComponent = null;
 	private java.awt.Component currentRolloverComponent = null;
 	private edu.cmu.cs.dennisc.animation.Animator animator;

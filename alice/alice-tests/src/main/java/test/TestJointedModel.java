@@ -167,7 +167,7 @@ class TestJointedModel extends SProgram {
 	private int previousY = -1;
 
 	public void test() {
-		final edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> lg = EmployeesOnly.getImplementation( this ).getOnscreenRenderTarget();
+		final edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> lg = EmployeesOnly.getImplementation( this ).getOnscreenRenderTarget();
 
 		lg.getAwtComponent().addMouseListener( new java.awt.event.MouseListener() {
 			@Override
@@ -199,7 +199,7 @@ class TestJointedModel extends SProgram {
 
 			@Override
 			public void mouseMoved( java.awt.event.MouseEvent e ) {
-				edu.cmu.cs.dennisc.renderer.PickResult pickResult = lg.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.REQUIRED );
+				edu.cmu.cs.dennisc.render.PickResult pickResult = lg.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.render.PickSubElementPolicy.REQUIRED );
 				org.lgna.story.implementation.EntityImp entityImp = org.lgna.story.implementation.EntityImp.getInstance( pickResult.getVisual() );
 				int subElement = pickResult.getSubElement();
 				if( ( entityImp == null ) && ( subElement != -1 ) ) {

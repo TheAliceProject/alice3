@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.scenegraph.adorn;
  */
 public class PivotFigure extends Adornment {
 	static {
-		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( PivotFigure.class, edu.cmu.cs.dennisc.lookingglass.opengl.adorn.PivotFigureAdapter.class );
+		edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.register( PivotFigure.class, edu.cmu.cs.dennisc.render.gl.imp.adapters.adorn.PivotFigureAdapter.class );
 	}
 
 	//todo: add pivot length property

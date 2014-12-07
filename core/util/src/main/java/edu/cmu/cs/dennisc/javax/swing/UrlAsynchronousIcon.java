@@ -45,10 +45,18 @@ package edu.cmu.cs.dennisc.javax.swing;
 /**
  * @author Dennis Cosgrove
  */
-public class UrlAsynchronousIcon extends AsynchronousIcon {
-	public UrlAsynchronousIcon( int width, int height, java.net.URL url ) {
-		super( width, height );
+public class UrlAsynchronousIcon extends AsynchronousWorkerIcon {
+	public UrlAsynchronousIcon( int iconWidthFallback, int iconHeightFallback, java.net.URL url ) {
+		super( iconWidthFallback, iconHeightFallback );
 		this.url = url;
+	}
+
+	@Override
+	protected void paintIconFallback( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		if( c.isOpaque() ) {
+			g.setColor( c.getBackground() );
+			g.fillRect( x, y, this.getIconWidthFallback(), this.getIconHeightFallback() );
+		}
 	}
 
 	@Override

@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.scenegraph.Composite;
  */
 public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable implements edu.cmu.cs.dennisc.scenegraph.ModelJoint {
 	static {
-		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( NebulousJoint.class, NebulousJointAdapter.class );
+		edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.register( NebulousJoint.class, NebulousJointAdapter.class );
 	}
 	private final edu.cmu.cs.dennisc.nebulous.Model nebModel;
 	private final org.lgna.story.resources.JointId jointId;

@@ -46,7 +46,7 @@ import java.awt.event.InputEvent;
 
 import org.alice.interact.handle.ManipulationHandle;
 
-import edu.cmu.cs.dennisc.renderer.PickResult;
+import edu.cmu.cs.dennisc.render.PickResult;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Component;
@@ -108,11 +108,11 @@ public class InputState {
 		return this.isDragEvent;
 	}
 
-	public void setDragAndDropContext( org.lgna.croquet.history.DragStep dragAndDropContext ) {
+	public void setDragAndDropContext( Object dragAndDropContext ) {
 		this.dragAndDropContext = dragAndDropContext;
 	}
 
-	public org.lgna.croquet.history.DragStep getDragAndDropContext() {
+	public Object getDragAndDropContext() {
 		return this.dragAndDropContext;
 	}
 
@@ -194,7 +194,7 @@ public class InputState {
 		return this.currentInputEventType;
 	}
 
-	public void setClickPickResult( edu.cmu.cs.dennisc.renderer.PickResult pickResult ) {
+	public void setClickPickResult( edu.cmu.cs.dennisc.render.PickResult pickResult ) {
 		this.clickPickResult = pickResult;
 		AbstractTransformable picked = this.getClickPickedTransformable( true );
 		PickHint clickedObjectType = PickUtilities.getPickType( this.clickPickResult );
@@ -215,7 +215,7 @@ public class InputState {
 		}
 	}
 
-	public edu.cmu.cs.dennisc.renderer.PickResult getClickPickResult() {
+	public edu.cmu.cs.dennisc.render.PickResult getClickPickResult() {
 		return this.clickPickResult;
 	}
 
@@ -400,5 +400,5 @@ public class InputState {
 	private long timeCaptured = 0;
 	private InputEvent inputEvent = null;
 	private boolean isDragEvent = false;
-	private org.lgna.croquet.history.DragStep dragAndDropContext = null;
+	private Object dragAndDropContext = null;
 }

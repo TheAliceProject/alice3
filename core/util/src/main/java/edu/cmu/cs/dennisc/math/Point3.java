@@ -59,6 +59,10 @@ public final class Point3 extends Tuple3 {
 		super( x, y, z );
 	}
 
+	public Point3( edu.cmu.cs.dennisc.math.immutable.MPoint3 other ) {
+		this( other.x, other.y, other.z );
+	}
+
 	public static Point3 createZero() {
 		return (Point3)setReturnValueToZero( new Point3() );
 	}
@@ -122,5 +126,9 @@ public final class Point3 extends Tuple3 {
 
 	public static double calculateDistanceBetween( Tuple3 a, Tuple3 b ) {
 		return Math.sqrt( calculateDistanceSquaredBetween( a, b ) );
+	}
+
+	public edu.cmu.cs.dennisc.math.immutable.MPoint3 createImmutable() {
+		return new edu.cmu.cs.dennisc.math.immutable.MPoint3( this.x, this.y, this.z );
 	}
 }

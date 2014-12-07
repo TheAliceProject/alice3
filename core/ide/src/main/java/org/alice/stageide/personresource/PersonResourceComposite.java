@@ -272,16 +272,21 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
+			public void run() {
+				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 
-		//new org.alice.stageide.StageIDE();
-		new org.lgna.croquet.simple.SimpleApplication();
+				//new org.alice.stageide.StageIDE();
+				new org.lgna.croquet.simple.SimpleApplication();
 
-		try {
-			org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage.ADULT ).fire();
-		} catch( org.lgna.croquet.CancelException ce ) {
-			//pass
-		}
-		System.exit( 0 );
+				try {
+					org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage.ADULT ).fire();
+				} catch( org.lgna.croquet.CancelException ce ) {
+					//pass
+				}
+				System.exit( 0 );
+			}
+		} );
 	}
 }

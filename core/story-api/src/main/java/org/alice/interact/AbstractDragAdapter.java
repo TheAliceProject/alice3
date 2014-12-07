@@ -43,15 +43,12 @@
 
 package org.alice.interact;
 
-import java.awt.Point;
-
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.SelectionEvent;
 import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
 import org.alice.interact.manipulator.OnscreenPicturePlaneInformedManipulator;
-import org.lgna.croquet.SingleSelectListState;
 import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.ObjectMarkerImp;
@@ -221,31 +218,6 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	//		}
 	//	}
 
-	protected abstract SingleSelectListState<org.alice.interact.handle.HandleStyle, ?> getHandleStyleState();
-
-	@Override
-	protected void updateHandleSelection( AbstractTransformableImp selected ) {
-		SingleSelectListState<org.alice.interact.handle.HandleStyle, ?> handleStyleListSelectionState = this.getHandleStyleState();
-		if( handleStyleListSelectionState != null ) {
-			org.alice.interact.handle.HandleStyle currentHandleStyle = handleStyleListSelectionState.getValue();
-			InteractionGroup selectedState = this.mapHandleStyleToInteractionGroup.get( currentHandleStyle );
-			if( selectedState != null ) { //Sometimes we don't support handles--like in the create-a-sim editor
-				PickHint pickHint = PickUtilities.getPickTypeForImp( selected );
-				if( !selectedState.canUseIteractionGroup( pickHint ) ) {
-					for( org.alice.interact.handle.HandleStyle handleStyle : handleStyleListSelectionState )
-					{
-						InteractionGroup interactionState = this.mapHandleStyleToInteractionGroup.get( handleStyle );
-						if( interactionState.canUseIteractionGroup( pickHint ) )
-						{
-							handleStyleListSelectionState.setValueTransactionlessly( handleStyle );
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-
 	public void setInteractionState( org.alice.interact.handle.HandleStyle handleStyle ) {
 		if( this.currentInteractionState != null ) {
 			this.currentInteractionState.enabledManipulators( false );
@@ -355,7 +327,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	}
 
 	@Override
-	protected void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
+	protected void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getSGCamera();
 		if( sgCamera != null ) {
 			if( !hasSetCameraTransformables )
@@ -374,7 +346,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	}
 
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
-		edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
+		edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget = this.getOnscreenRenderTarget();
 		if( onscreenRenderTarget != null ) {
 			if( this.cameraIndex < onscreenRenderTarget.getSgCameraCount() ) {
 				return onscreenRenderTarget.getSgCameraAt( this.cameraIndex );
@@ -397,40 +369,6 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 
 	public void addHandle( ManipulationHandle handle ) {
 		this.handleManager.addHandle( handle );
-	}
-
-	private Point getDragAndDropPoint( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
-		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.getAWTComponent() );
-		return pointInLookingGlass;
-	}
-
-	public void dragUpdated( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		this.currentInputState.setDragAndDropContext( dragAndDropContext );
-		this.currentInputState.setIsDragEvent( true );
-		this.currentInputState.setMouseLocation( getDragAndDropPoint( dragAndDropContext ) );
-		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent( dragAndDropContext.getLatestMouseEvent() );
-		this.fireStateChange();
-	}
-
-	public void dragEntered( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		this.currentInputState.setDragAndDropContext( dragAndDropContext );
-		this.currentInputState.setIsDragEvent( true );
-		this.currentInputState.setMouseLocation( getDragAndDropPoint( dragAndDropContext ) );
-		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent( dragAndDropContext.getLatestMouseEvent() );
-		this.fireStateChange();
-	}
-
-	public void dragExited( org.lgna.croquet.history.DragStep dragAndDropContext ) {
-		this.currentInputState.setDragAndDropContext( dragAndDropContext ); //We need a valid dragAndDropContext when we handle the update
-		this.currentInputState.setIsDragEvent( false );
-		this.currentInputState.setMouseLocation( getDragAndDropPoint( dragAndDropContext ) );
-		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent( dragAndDropContext.getLatestMouseEvent() );
-		this.fireStateChange();
-		this.currentInputState.setDragAndDropContext( null );
 	}
 
 	public abstract boolean shouldSnapToGround();
