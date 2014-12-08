@@ -576,7 +576,14 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 				org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener( this.handleStyleListener );
 			}
 		}
-		this.setHaloEnabled( true );
+
+		final boolean IS_SILHOUETTE_DESIRED = false;
+		if( IS_SILHOUETTE_DESIRED ) {
+			edu.cmu.cs.dennisc.scenegraph.Silhouette sgSilhouette = new edu.cmu.cs.dennisc.scenegraph.Silhouette();
+			//sgSilhouette.color.setValue( Color4f.YELLOW );
+			//sgSilhouette.width.setValue( 1.5f );
+			this.setSgSilhouette( sgSilhouette );
+		}
 	}
 
 	public void addClickAdapter( ManipulatorClickAdapter clickAdapter, InputCondition... conditions ) {

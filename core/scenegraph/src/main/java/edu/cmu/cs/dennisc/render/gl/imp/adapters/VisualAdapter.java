@@ -62,19 +62,9 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 		OPAQUE,
 		ALPHA_BLENDED,
 		GHOST,
-		HALO,
+		SILHOUETTE,
 		ALL
 	}
-
-	//todo: make private?
-	protected AppearanceAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Appearance> m_frontFacingAppearanceAdapter = null;
-	protected AppearanceAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Appearance> m_backFacingAppearanceAdapter = null;
-	protected boolean m_isShowing = false;
-	private double[] m_scale = new double[ 16 ];
-
-	protected java.nio.DoubleBuffer m_scaleBuffer = java.nio.DoubleBuffer.wrap( m_scale );
-	protected boolean m_isScaleIdentity = true;
-	protected GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>[] m_geometryAdapters = null;
 
 	//for tree node
 	/* package-private */AppearanceAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Appearance> getFrontFacingAppearanceAdapter() {
@@ -251,7 +241,7 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 			if( m_frontFacingAppearanceAdapter != null ) {
 				rc.gl.glCullFace( GL_BACK );
 
-				if( m_element.isHaloed.getValue() ) {
+				if( this.silhouetteAdapter != null ) {
 					rc.gl.glClearStencil( 0 );
 					rc.gl.glClear( javax.media.opengl.GL.GL_STENCIL_BUFFER_BIT );
 					rc.gl.glEnable( javax.media.opengl.GL.GL_STENCIL_TEST );
@@ -262,24 +252,15 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 				m_frontFacingAppearanceAdapter.setPipelineState( rc, GL_FRONT );
 				this.renderGeometry( rc, renderType );
 
-				if( m_element.isHaloed.getValue() ) {
+				if( this.silhouetteAdapter != null ) {
 					rc.gl.glStencilFunc( javax.media.opengl.GL2.GL_NOTEQUAL, 1, -1 );
 					rc.gl.glStencilOp( javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_REPLACE );
-					rc.gl.glLineWidth( 3.0f );
-					rc.gl.glPolygonMode( GL_FRONT, javax.media.opengl.GL2.GL_LINE );
-					rc.setIsShadingEnabled( false );
-					rc.gl.glDisable( javax.media.opengl.GL2.GL_TEXTURE_2D );
 
-					//rc.gl.glEnable( javax.media.opengl.GL.GL_LINE_SMOOTH );
-					//rc.gl.glEnable( javax.media.opengl.GL2.GL_POLYGON_SMOOTH );
-					//rc.gl.glHint( javax.media.opengl.GL.GL_LINE_SMOOTH_HINT, javax.media.opengl.GL.GL_NICEST );
-					//rc.gl.glHint( javax.media.opengl.GL2.GL_POLYGON_SMOOTH_HINT, javax.media.opengl.GL.GL_NICEST );
-					rc.setColor( new float[] { 1.0f, 1.0f, 0.0f, 1.0f }, 1.0f );
-					rc.gl.glDisable( javax.media.opengl.GL2.GL_BLEND );
-					//rc.setColor( new float[] { 1.0f, 1.0f, 0.0f, 1.0f }, 0.5f );
+					this.silhouetteAdapter.setup( rc );
+
 					//rc.gl.glEnable( javax.media.opengl.GL2.GL_BLEND );
 					//rc.gl.glBlendFunc( javax.media.opengl.GL2.GL_SRC_ALPHA, javax.media.opengl.GL2.GL_ONE_MINUS_SRC_ALPHA );
-					this.renderGeometry( rc, RenderType.HALO );
+					this.renderGeometry( rc, RenderType.SILHOUETTE );
 					//rc.gl.glDisable( javax.media.opengl.GL2.GL_BLEND );
 
 					rc.gl.glDisable( javax.media.opengl.GL.GL_STENCIL_TEST );
@@ -449,8 +430,22 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 			updateScale( m_element.scale.getValue() );
 		} else if( property == m_element.isShowing ) {
 			m_isShowing = m_element.isShowing.getValue();
+		} else if( property == m_element.silouette ) {
+			this.silhouetteAdapter = AdapterFactory.getAdapterFor( m_element.silouette.getValue() );
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	//todo: make private?
+	protected AppearanceAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Appearance> m_frontFacingAppearanceAdapter = null;
+	protected AppearanceAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Appearance> m_backFacingAppearanceAdapter = null;
+	protected boolean m_isShowing = false;
+	private double[] m_scale = new double[ 16 ];
+
+	protected java.nio.DoubleBuffer m_scaleBuffer = java.nio.DoubleBuffer.wrap( m_scale );
+	protected boolean m_isScaleIdentity = true;
+	protected GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>[] m_geometryAdapters = null;
+
+	private SilhouetteAdapter silhouetteAdapter;
 }

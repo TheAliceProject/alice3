@@ -258,6 +258,10 @@ public abstract class AdapterFactory {
 		return (GraphicAdapter<?>)getAdapterForElement( sgGraphic );
 	}
 
+	public static edu.cmu.cs.dennisc.render.gl.imp.adapters.SilhouetteAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Silhouette sgSilhouette ) {
+		return (edu.cmu.cs.dennisc.render.gl.imp.adapters.SilhouetteAdapter)getAdapterForElement( sgSilhouette );
+	}
+
 	public static <E extends AbstractElementAdapter> E[] getAdaptersFor( edu.cmu.cs.dennisc.pattern.AbstractElement[] sgElements, Class<? extends E> componentType ) {
 		if( sgElements != null ) {
 			E[] proxies = (E[])java.lang.reflect.Array.newInstance( componentType, sgElements.length );
