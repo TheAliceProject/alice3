@@ -47,7 +47,6 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
  */
 public class SilhouetteAdapter extends ElementAdapter<edu.cmu.cs.dennisc.scenegraph.Silhouette> {
 	public void setup( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, int face ) {
-		rc.setClearColor( this.color );
 		rc.gl.glLineWidth( this.lineWidth );
 		rc.gl.glPolygonMode( face, javax.media.opengl.GL2.GL_LINE );
 		rc.setIsShadingEnabled( false );
@@ -57,14 +56,14 @@ public class SilhouetteAdapter extends ElementAdapter<edu.cmu.cs.dennisc.scenegr
 		//rc.gl.glEnable( javax.media.opengl.GL2.GL_POLYGON_SMOOTH );
 		//rc.gl.glHint( javax.media.opengl.GL.GL_LINE_SMOOTH_HINT, javax.media.opengl.GL.GL_NICEST );
 		//rc.gl.glHint( javax.media.opengl.GL2.GL_POLYGON_SMOOTH_HINT, javax.media.opengl.GL.GL_NICEST );
-		rc.setColor( this.color, 1.0f );
+		rc.gl.glColor4fv( this.color );
 		rc.gl.glDisable( javax.media.opengl.GL2.GL_BLEND );
 	}
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.color ) {
-			m_element.color.getValue().getAsArray( this.color );
+			m_element.color.getValue().getAsFloatBuffer( this.color );
 		} else if( property == m_element.width ) {
 			this.lineWidth = m_element.width.getValue() * 2.0f;
 		} else {
@@ -72,6 +71,6 @@ public class SilhouetteAdapter extends ElementAdapter<edu.cmu.cs.dennisc.scenegr
 		}
 	}
 
-	private final float[] color = new float[ 4 ];
+	private final java.nio.FloatBuffer color = java.nio.FloatBuffer.allocate( 4 );
 	private float lineWidth;
 }
