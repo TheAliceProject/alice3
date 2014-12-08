@@ -104,8 +104,8 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 	private boolean[] atIsUpSideDown = { false };
 	private java.awt.image.BufferedImage image;
 
-	public GlrCaptureFauxOnscreenRenderTarget( java.awt.Dimension size, GlrRenderTarget lookingGlassToShareContextWith ) {
-		super( GlrRenderFactory.getInstance() );
+	public GlrCaptureFauxOnscreenRenderTarget( java.awt.Dimension size, GlrRenderTarget lookingGlassToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		super( GlrRenderFactory.getInstance(), requestedCapabilities );
 		this.size = size;
 		javax.media.opengl.GLContext share;
 		if( lookingGlassToShareContextWith != null ) {
@@ -113,7 +113,7 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 		} else {
 			share = null;
 		}
-		this.glPixelBuffer = GlDrawableUtilities.createGlPixelBuffer( GlDrawableUtilities.createGlCapabilities(), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(), size.width, size.height, share );
+		this.glPixelBuffer = GlDrawableUtilities.createGlPixelBuffer( GlDrawableUtilities.createGlCapabilities( requestedCapabilities ), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(), size.width, size.height, share );
 	}
 
 	@Override

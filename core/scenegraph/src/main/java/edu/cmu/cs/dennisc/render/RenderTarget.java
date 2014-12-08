@@ -48,6 +48,10 @@ package edu.cmu.cs.dennisc.render;
 public interface RenderTarget {
 	RenderFactory getRenderFactory();
 
+	RenderCapabilities getRequestedCapabilities();
+
+	RenderCapabilities getActualCapabilities();
+
 	int getSurfaceWidth();
 
 	int getSurfaceHeight();

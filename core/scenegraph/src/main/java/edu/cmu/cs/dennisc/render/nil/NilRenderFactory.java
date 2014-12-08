@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.render.nil;
 
+import edu.cmu.cs.dennisc.render.RenderCapabilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,18 +61,18 @@ public enum NilRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory 
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
-		return new NrHeavyweightOnscreenRenderTarget();
+	public edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities ) {
+		return new NrHeavyweightOnscreenRenderTarget( requestedCapabilities );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
-		return new NrLightweightOnscreenRenderTarget();
+	public edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities ) {
+		return new NrLightweightOnscreenRenderTarget( requestedCapabilities );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith ) {
-		return new NrOffscreenRenderTarget( width, height, renderTargetToShareContextWith );
+	public edu.cmu.cs.dennisc.render.OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities ) {
+		return new NrOffscreenRenderTarget( width, height, renderTargetToShareContextWith, requestedCapabilities );
 	}
 
 	@Override

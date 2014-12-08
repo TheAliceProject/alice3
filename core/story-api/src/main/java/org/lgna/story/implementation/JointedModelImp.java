@@ -502,7 +502,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
+	public final edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
 		return this.visualData.getSgVisuals();
 	}
 

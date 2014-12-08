@@ -75,7 +75,7 @@ public class OrthographicCameraMarkerImp extends CameraMarkerImp {
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
+	public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
 
