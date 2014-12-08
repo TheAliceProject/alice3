@@ -294,7 +294,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 		}
 		for( Entry<Integer, TexturedAppearanceAdapter> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
 		{
-			if( renderType == RenderType.HALO ) {
+			if( renderType == RenderType.SILHOUETTE ) {
 				//pass
 			} else {
 				appearanceEntry.getValue().setTexturePipelineState( rc );

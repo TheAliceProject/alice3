@@ -139,12 +139,12 @@ public abstract class HandleSupportingDragAdapter extends BareBonesDragAdapter {
 		return this.selectedObject;
 	}
 
-	private void setSelectedObjectHaloedIfAppropriate( boolean isHaloed ) {
-		if( this.isHaloEnabled ) {
+	private void setSelectedObjectSilhouetteIfAppropriate( boolean isHaloed ) {
+		if( this.sgSilhouette != null ) {
 			if( this.selectedObject instanceof org.lgna.story.implementation.ModelImp ) {
 				org.lgna.story.implementation.ModelImp modelImp = (org.lgna.story.implementation.ModelImp)this.selectedObject;
 				for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : modelImp.getSgVisuals() ) {
-					sgVisual.isHaloed.setValue( isHaloed );
+					sgVisual.silouette.setValue( isHaloed ? this.sgSilhouette : null );
 				}
 			}
 		}
@@ -154,7 +154,7 @@ public abstract class HandleSupportingDragAdapter extends BareBonesDragAdapter {
 		if( this.selectedObject != selected ) {
 			this.fireSelecting( new SelectionEvent( this, selected ) );
 
-			this.setSelectedObjectHaloedIfAppropriate( false );
+			this.setSelectedObjectSilhouetteIfAppropriate( false );
 
 			AbstractTransformable sgTransformable = selected != null ? selected.getSgComposite() : null;
 			if( HandleManager.isSelectable( sgTransformable ) ) {
@@ -167,7 +167,7 @@ public abstract class HandleSupportingDragAdapter extends BareBonesDragAdapter {
 			this.currentInputState.setTimeCaptured();
 			selectedObject = selected;
 
-			this.setSelectedObjectHaloedIfAppropriate( true );
+			this.setSelectedObjectSilhouetteIfAppropriate( true );
 
 			this.fireStateChange();
 		}
@@ -195,12 +195,12 @@ public abstract class HandleSupportingDragAdapter extends BareBonesDragAdapter {
 		triggerImplementationSelection( EntityImp.getInstance( selected, AbstractTransformableImp.class ) );
 	}
 
-	public boolean isHaloEnabled() {
-		return this.isHaloEnabled;
+	public edu.cmu.cs.dennisc.scenegraph.Silhouette getSgSilhouette() {
+		return this.sgSilhouette;
 	}
 
-	public void setHaloEnabled( boolean isHaloEnabled ) {
-		this.isHaloEnabled = isHaloEnabled;
+	public void setSgSilhouette( edu.cmu.cs.dennisc.scenegraph.Silhouette sgSilhouette ) {
+		this.sgSilhouette = sgSilhouette;
 	}
 
 	private final java.util.List<SelectionListener> selectionListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
@@ -208,5 +208,5 @@ public abstract class HandleSupportingDragAdapter extends BareBonesDragAdapter {
 	private AbstractTransformableImp toBeSelected = null;
 	private boolean hasObjectToBeSelected = false;
 	private AbstractTransformableImp selectedObject = null;
-	private boolean isHaloEnabled = false;
+	private edu.cmu.cs.dennisc.scenegraph.Silhouette sgSilhouette;
 }
