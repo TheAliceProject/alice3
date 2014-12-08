@@ -46,10 +46,10 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
  * @author Dennis Cosgrove
  */
 public class SilhouetteAdapter extends ElementAdapter<edu.cmu.cs.dennisc.scenegraph.Silhouette> {
-	public void setup( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc ) {
+	public void setup( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, int face ) {
 		rc.setClearColor( this.color );
 		rc.gl.glLineWidth( this.lineWidth );
-		rc.gl.glPolygonMode( javax.media.opengl.GL.GL_FRONT, javax.media.opengl.GL2.GL_LINE );
+		rc.gl.glPolygonMode( face, javax.media.opengl.GL2.GL_LINE );
 		rc.setIsShadingEnabled( false );
 		rc.gl.glDisable( javax.media.opengl.GL2.GL_TEXTURE_2D );
 
