@@ -230,7 +230,7 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 		rc.gl.glStencilFunc( javax.media.opengl.GL2.GL_NOTEQUAL, 1, -1 );
 		rc.gl.glStencilOp( javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_REPLACE );
 
-		this.silhouetteAdapter.setup( rc, GL_FRONT );
+		this.silhouetteAdapter.setup( rc, face );
 		this.renderGeometry( rc, RenderType.SILHOUETTE );
 		rc.gl.glDisable( javax.media.opengl.GL.GL_STENCIL_TEST );
 	}
