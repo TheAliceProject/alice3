@@ -225,25 +225,25 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget() {
-		GlrHeavyweightOnscreenRenderTarget holg = new GlrHeavyweightOnscreenRenderTarget( this );
+	public edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		GlrHeavyweightOnscreenRenderTarget holg = new GlrHeavyweightOnscreenRenderTarget( this, requestedCapabilities );
 		holg.addReleaseListener( this.releaseListener );
 		this.heavyweightOnscreenLookingGlasses.add( holg );
 		return holg;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget() {
-		GlrLightweightOnscreenRenderTarget lolg = new GlrLightweightOnscreenRenderTarget( this );
+	public edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		GlrLightweightOnscreenRenderTarget lolg = new GlrLightweightOnscreenRenderTarget( this, requestedCapabilities );
 		lolg.addReleaseListener( this.releaseListener );
 		this.lightweightOnscreenLookingGlasses.add( lolg );
 		return lolg;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.render.OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith ) {
+	public edu.cmu.cs.dennisc.render.OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		assert ( renderTargetToShareContextWith == null ) || ( renderTargetToShareContextWith instanceof GlrRenderTarget );
-		GlrOffscreenRenderTarget olg = new GlrOffscreenRenderTarget( this, width, height, (GlrRenderTarget)renderTargetToShareContextWith );
+		GlrOffscreenRenderTarget olg = new GlrOffscreenRenderTarget( this, width, height, (GlrRenderTarget)renderTargetToShareContextWith, requestedCapabilities );
 		olg.addReleaseListener( this.releaseListener );
 		this.offscreenLookingGlasses.add( olg );
 		return olg;

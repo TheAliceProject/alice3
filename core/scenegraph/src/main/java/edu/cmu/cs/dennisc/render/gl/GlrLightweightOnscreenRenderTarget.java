@@ -70,8 +70,8 @@ class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.s
 			}
 		}
 
-		public RenderPane() {
-			super( GlDrawableUtilities.createGlCapabilitiesForLightweightComponent(), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser() );
+		public RenderPane( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+			super( GlDrawableUtilities.createGlCapabilitiesForLightweightComponent( requestedCapabilities ), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser() );
 		}
 
 		@Override
@@ -150,8 +150,9 @@ class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.s
 		private Throwable prevThrowable = null;
 	}
 
-	/* package-private */GlrLightweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory ) {
-		super( lookingGlassFactory );
+	/* package-private */GlrLightweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		super( lookingGlassFactory, requestedCapabilities );
+		this.glPanel = new RenderPane( requestedCapabilities );
 		this.glPanel.setFocusable( true );
 	}
 
@@ -175,5 +176,5 @@ class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.s
 		return this.glPanel;
 	}
 
-	private final javax.media.opengl.awt.GLJPanel glPanel = new RenderPane();
+	private final javax.media.opengl.awt.GLJPanel glPanel;
 }

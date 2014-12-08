@@ -171,10 +171,12 @@ public class GlDrawableUtilities {
 	}
 
 	//private GLCapabilities glCapabilities;
-	public static javax.media.opengl.GLCapabilities createGlCapabilities() {
+	public static javax.media.opengl.GLCapabilities createGlCapabilities( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
 
 		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities( profile );
+
+		rv.setStencilBits( requestedCapabilities.getStencilBits() );
 		//rv.setSampleBuffers( true );
 		//rv.setNumSamples( 8 );
 
@@ -187,12 +189,8 @@ public class GlDrawableUtilities {
 		return rv;
 	}
 
-	public static javax.media.opengl.GLCapabilities createGlCapabilitiesForLightweightComponent() {
-		javax.media.opengl.GLCapabilities rv = createGlCapabilities();
-		final boolean IS_STENCIL_DESIRED = false;
-		if( IS_STENCIL_DESIRED ) {
-			rv.setStencilBits( 1 );
-		}
+	public static javax.media.opengl.GLCapabilities createGlCapabilitiesForLightweightComponent( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		javax.media.opengl.GLCapabilities rv = createGlCapabilities( requestedCapabilities );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
 			//pass
 		} else {
@@ -213,12 +211,12 @@ public class GlDrawableUtilities {
 		return glDefaultCapabilitiesChooser;
 	}
 
-	public static javax.media.opengl.awt.GLCanvas createGLCanvas() {
-		return new javax.media.opengl.awt.GLCanvas( createGlCapabilities(), getPerhapsMultisampledGlCapabilitiesChooser(), null );
+	public static javax.media.opengl.awt.GLCanvas createGLCanvas( edu.cmu.cs.dennisc.render.RenderCapabilities renderCapabilities ) {
+		return new javax.media.opengl.awt.GLCanvas( createGlCapabilities( renderCapabilities ), getPerhapsMultisampledGlCapabilitiesChooser(), null );
 	}
 
-	public static javax.media.opengl.awt.GLJPanel createGLJPanel() {
-		return new javax.media.opengl.awt.GLJPanel( createGlCapabilitiesForLightweightComponent(), getPerhapsMultisampledGlCapabilitiesChooser() );
+	public static javax.media.opengl.awt.GLJPanel createGLJPanel( edu.cmu.cs.dennisc.render.RenderCapabilities renderCapabilities ) {
+		return new javax.media.opengl.awt.GLJPanel( createGlCapabilitiesForLightweightComponent( renderCapabilities ), getPerhapsMultisampledGlCapabilitiesChooser() );
 	}
 
 	public static boolean canCreateExternalGLDrawable() {

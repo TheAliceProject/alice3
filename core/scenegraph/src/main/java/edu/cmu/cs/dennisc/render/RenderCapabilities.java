@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.render.gl;
+package edu.cmu.cs.dennisc.render;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class GlrOnscreenRenderTarget<C extends java.awt.Component> extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.OnscreenRenderTarget<C> {
-	protected GlrOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
-		super( lookingGlassFactory, requestedCapabilities );
+public final class RenderCapabilities {
+	public static class Builder {
+		public Builder stencilBits( int stencilBits ) {
+			this.stencilBits = stencilBits;
+			return this;
+		}
+
+		public RenderCapabilities build() {
+			return new RenderCapabilities( this );
+		}
+
+		private int stencilBits;
 	}
 
-	@Override
-	protected void repaintIfAppropriate() {
-		this.repaint();
+	private RenderCapabilities( Builder builder ) {
+		this.stencilBits = builder.stencilBits;
 	}
+
+	public int getStencilBits() {
+		return this.stencilBits;
+	}
+
+	private final int stencilBits;
 }
