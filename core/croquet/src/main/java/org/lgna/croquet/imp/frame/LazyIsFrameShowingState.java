@@ -45,22 +45,27 @@ package org.lgna.croquet.imp.frame;
 /**
  * @author Dennis Cosgrove
  */
-public final class IsFrameShowingState extends AbstractIsFrameShowingState {
-	public IsFrameShowingState( org.lgna.croquet.Group group, org.lgna.croquet.FrameComposite<?> frameComposite ) {
-		super( group, java.util.UUID.fromString( "9afc0e33-5677-4e1f-a178-95d40f3e0b9c" ) );
-		this.frameComposite = frameComposite;
+public final class LazyIsFrameShowingState<C extends org.lgna.croquet.FrameComposite<?>> extends AbstractIsFrameShowingState {
+	public static <C extends org.lgna.croquet.FrameComposite<?>> org.lgna.croquet.BooleanState createInstance( org.lgna.croquet.Group group, Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy ) {
+		return new LazyIsFrameShowingState<C>( group, cls, lazy );
+	}
+
+	private LazyIsFrameShowingState( org.lgna.croquet.Group group, Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy ) {
+		super( group, java.util.UUID.fromString( "e6efce56-7da5-4798-9ec3-6fcaab3962b5" ) );
+		this.cls = cls;
+		this.lazy = lazy;
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
-		//return this.frameComposite.getClassUsedForLocalization();
-		return this.frameComposite.getClass();
+	protected java.lang.Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+		return this.cls;
 	}
 
 	@Override
 	public org.lgna.croquet.FrameComposite<?> getFrameComposite() {
-		return this.frameComposite;
+		return this.lazy.get();
 	}
 
-	private final org.lgna.croquet.FrameComposite<?> frameComposite;
+	private final Class<C> cls;
+	private final edu.cmu.cs.dennisc.pattern.Lazy<C> lazy;
 }

@@ -55,6 +55,6 @@ public class ContributorMenuModel extends org.lgna.croquet.PredeterminedMenuMode
 	}
 
 	private ContributorMenuModel() {
-		super( java.util.UUID.fromString( "4215bc20-55ec-4b7e-9dc0-d573501ea985" ), org.alice.ide.localize.review.croquet.LocalizeReviewFrame.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
+		super( java.util.UUID.fromString( "4215bc20-55ec-4b7e-9dc0-d573501ea985" ), org.alice.ide.IDE.getActiveInstance().getLocalizeReviewIsShowingState().getMenuItemPrepModel() );
 	}
 }
