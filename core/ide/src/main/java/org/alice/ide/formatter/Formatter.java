@@ -79,12 +79,19 @@ public abstract class Formatter {
 		} else if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
 			return this.getTextForType( type );
+		} else if( declaration instanceof org.lgna.project.ast.JavaField ) {
+			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)declaration;
+			if( field.isStatic() ) {
+				return this.getNameForField( field.getFieldReflectionProxy().getReification() );
+			} else {
+				return declaration.getName();
+			}
 		} else {
 			return declaration.getName();
 		}
 	}
 
-	public abstract String getNameForField( java.lang.reflect.Field fld );
+	protected abstract String getNameForField( java.lang.reflect.Field fld );
 
 	public abstract boolean isTypeExpressionDesired();
 
