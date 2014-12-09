@@ -104,8 +104,10 @@ public class GenerateI18nSeed {
 			sbTags.append( "\n" );
 		}
 
-		java.io.File directory = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/git/alice/core/ide/intermediate/i18n_seed/org/lgna/story/resources" );
-		java.io.File file = new java.io.File( directory, "GalleryNames.properties" );
+		java.io.File repoRoot = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "/gits/alice/" );
+		java.io.File srcRoot = new java.io.File( repoRoot, "core/ide/intermediate/i18n_seed" );//"core/ide/src/main/java/" );
+		java.io.File packageDirectory = new java.io.File( srcRoot, "org/lgna/story/resources" );
+		java.io.File file = new java.io.File( packageDirectory, "GalleryNames.properties" );
 		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( file, sbNames.toString() );
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( file, file.exists() );
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sbNames );
