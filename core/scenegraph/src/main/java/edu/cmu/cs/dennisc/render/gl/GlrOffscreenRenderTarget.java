@@ -51,15 +51,15 @@ import edu.cmu.cs.dennisc.render.gl.imp.GlDrawableUtilities;
 class GlrOffscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.OffscreenRenderTarget {
 	private final javax.media.opengl.GLOffscreenAutoDrawable glPbuffer;
 
-	/* package-private */GlrOffscreenRenderTarget( GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget lookingGlassToShareContextWith ) {
-		super( lookingGlassFactory );
+	/* package-private */GlrOffscreenRenderTarget( GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget lookingGlassToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		super( lookingGlassFactory, requestedCapabilities );
 		javax.media.opengl.GLContext share;
 		if( lookingGlassToShareContextWith != null ) {
 			share = lookingGlassToShareContextWith.getGLAutoDrawable().getContext();
 		} else {
 			share = null;
 		}
-		this.glPbuffer = GlDrawableUtilities.createGlPixelBuffer( GlDrawableUtilities.createGlCapabilities(), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(), width, height, share );
+		this.glPbuffer = GlDrawableUtilities.createGlPixelBuffer( GlDrawableUtilities.createGlCapabilities( requestedCapabilities ), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(), width, height, share );
 	}
 
 	@Override

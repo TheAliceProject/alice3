@@ -51,9 +51,9 @@ import edu.cmu.cs.dennisc.render.gl.imp.GlDrawableUtilities;
 class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<java.awt.Component> implements edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget {
 	private javax.media.opengl.awt.GLCanvas m_glCanvas;
 
-	/* package-private */GlrHeavyweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory ) {
-		super( lookingGlassFactory );
-		m_glCanvas = GlDrawableUtilities.createGLCanvas();
+	/* package-private */GlrHeavyweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		super( lookingGlassFactory, requestedCapabilities );
+		m_glCanvas = GlDrawableUtilities.createGLCanvas( requestedCapabilities );
 		//m_glCanvas.getChosenGLCapabilities().getDepthBits();
 		//m_glCanvas.setAutoSwapBufferMode( false );
 		m_glCanvas.addComponentListener( new java.awt.event.ComponentListener() {

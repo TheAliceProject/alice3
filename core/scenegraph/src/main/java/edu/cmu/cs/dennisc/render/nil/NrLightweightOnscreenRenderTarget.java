@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.render.nil;
  * @author Dennis Cosgrove
  */
 /*package-private*/class NrLightweightOnscreenRenderTarget extends NrOnscreenRenderTarget<javax.swing.JPanel> implements edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget {
-	public NrLightweightOnscreenRenderTarget() {
-		super( new javax.swing.JPanel() );
+	public NrLightweightOnscreenRenderTarget( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		super( requestedCapabilities, new javax.swing.JPanel() );
 	}
 }

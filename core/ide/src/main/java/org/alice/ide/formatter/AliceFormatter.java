@@ -98,6 +98,7 @@ public class AliceFormatter extends Formatter {
 					map.put( key, resourceBundle.getString( key ) );
 				}
 			} catch( java.util.MissingResourceException mre ) {
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( bundleName );
 				//pass
 			}
 		}
@@ -203,8 +204,8 @@ public class AliceFormatter extends Formatter {
 	}
 
 	@Override
-	public String getNameForField( java.lang.reflect.Field fld ) {
-		return fld.getName();
+	protected String getNameForField( java.lang.reflect.Field fld ) {
+		return this.getLocalizedText( fld.getName() );
 	}
 
 	@Override

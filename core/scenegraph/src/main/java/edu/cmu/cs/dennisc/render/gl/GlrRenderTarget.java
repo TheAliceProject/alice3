@@ -49,8 +49,22 @@ import edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory;
  * @author Dennis Cosgrove
  */
 public abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasable implements edu.cmu.cs.dennisc.render.RenderTarget {
-	public GlrRenderTarget( GlrRenderFactory glrRenderer ) {
+	public GlrRenderTarget( GlrRenderFactory glrRenderer, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		this.glrRenderer = glrRenderer;
+
+		this.requestedCapabilities = requestedCapabilities;
+		//todo
+		this.actualCapabilities = requestedCapabilities;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.render.RenderCapabilities getRequestedCapabilities() {
+		return this.requestedCapabilities;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.render.RenderCapabilities getActualCapabilities() {
+		return this.actualCapabilities;
 	}
 
 	@Override
@@ -369,6 +383,9 @@ public abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.Default
 	}
 
 	private final GlrRenderFactory glrRenderer;
+	private final edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities;
+	private final edu.cmu.cs.dennisc.render.RenderCapabilities actualCapabilities;
+
 	private final edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp imp = new edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp( this );
 
 	private String m_description = new String();

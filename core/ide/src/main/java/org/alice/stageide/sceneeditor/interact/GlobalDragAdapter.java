@@ -45,7 +45,6 @@ package org.alice.stageide.sceneeditor.interact;
 
 import java.awt.event.KeyEvent;
 
-import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.InteractionGroup;
 import org.alice.interact.ModifierMask;
 import org.alice.interact.ModifierMask.ModifierKey;
@@ -113,9 +112,9 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 
 	TargetManipulator dropTargetManipulator;
 
-	private final AbstractSceneEditor sceneEditor;
+	private final org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor;
 
-	public GlobalDragAdapter( AbstractSceneEditor sceneEditor )
+	public GlobalDragAdapter( org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor )
 	{
 		this.sceneEditor = sceneEditor;
 		this.setUpControls();
@@ -575,6 +574,14 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 
 				org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener( this.handleStyleListener );
 			}
+		}
+
+		edu.cmu.cs.dennisc.render.RenderCapabilities renderCapabilities = this.sceneEditor.getOnscreenRenderTarget().getActualCapabilities();
+		if( renderCapabilities.getStencilBits() > 0 ) {
+			edu.cmu.cs.dennisc.scenegraph.Silhouette sgSilhouette = new edu.cmu.cs.dennisc.scenegraph.Silhouette();
+			//sgSilhouette.color.setValue( Color4f.YELLOW );
+			//sgSilhouette.width.setValue( 1.5f );
+			this.setSgSilhouette( sgSilhouette );
 		}
 	}
 

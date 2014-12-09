@@ -5,8 +5,10 @@ import java
 
 import FileUtilities
 
-#MAVEN_COMMAND = "C:\\apache-maven-3.1.1\\bin\\mvn.bat"
-MAVEN_COMMAND = "mvn"
+if edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows():
+	MAVEN_COMMAND = "C:\\apache-maven-3.1.1\\bin\\mvn.bat"
+else:
+	MAVEN_COMMAND = "mvn"
 
 MAVEN_REPOSITORY_DIRECTORY = java.io.File( FileUtilities.USER_DIRECTORY, ".m2/repository" )
 

@@ -127,13 +127,11 @@ public class AliceResourceUtilties {
 	private static String findLocalizedText( String bundleName, String key, Locale locale ) {
 		if( ( bundleName != null ) && ( key != null ) ) {
 			try {
-				java.util.ResourceBundle resourceBundle = StorytellingResources.getInstance().getLocalizationBundle( bundleName, locale );
+				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, locale );
 				String rv = resourceBundle.getString( key );
 				return rv;
 			} catch( java.util.MissingResourceException mre ) {
-				//				if( !locale.getLanguage().equals( "en" ) ) {
-				//					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to find localized text for " + bundleName + ": " + key + " in " + locale );
-				//				}
+				//Logger.errln( bundleName, key );
 				return null;
 			}
 		} else {

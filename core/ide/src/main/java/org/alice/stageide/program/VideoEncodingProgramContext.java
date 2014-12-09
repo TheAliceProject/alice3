@@ -50,11 +50,16 @@ public class VideoEncodingProgramContext extends ProgramContext {
 	private static final boolean IS_CAPTURE_READY_FOR_PRIME_TIME = false;
 	private static final java.awt.Dimension SIZE = new java.awt.Dimension( 640, 360 );
 
+	private static edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> createOnscreenRenderTarget() {
+		edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities = new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build();
+		return IS_CAPTURE_READY_FOR_PRIME_TIME ? new edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget( SIZE, null, requestedCapabilities ) : edu.cmu.cs.dennisc.render.gl.GlrRenderFactory.getInstance().createHeavyweightOnscreenRenderTarget( requestedCapabilities );
+	}
+
 	public static class FrameBasedProgramImp extends org.lgna.story.implementation.ProgramImp {
 		private edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
 
 		public FrameBasedProgramImp( org.lgna.story.SProgram abstraction ) {
-			super( abstraction, IS_CAPTURE_READY_FOR_PRIME_TIME ? new edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget( SIZE, null ) : edu.cmu.cs.dennisc.render.gl.GlrRenderFactory.getInstance().createHeavyweightOnscreenRenderTarget() );
+			super( abstraction, createOnscreenRenderTarget() );
 		}
 
 		@Override

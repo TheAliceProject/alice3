@@ -46,6 +46,21 @@ package edu.cmu.cs.dennisc.render.nil;
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class NrRenderTarget implements edu.cmu.cs.dennisc.render.RenderTarget {
+	public NrRenderTarget( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		this.requestedCapabilities = requestedCapabilities;
+		this.actualCapabilities = new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build();
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.render.RenderCapabilities getRequestedCapabilities() {
+		return null;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.render.RenderCapabilities getActualCapabilities() {
+		return null;
+	}
+
 	@Override
 	public edu.cmu.cs.dennisc.render.RenderFactory getRenderFactory() {
 		return NilRenderFactory.INSTANCE;
@@ -252,6 +267,9 @@ package edu.cmu.cs.dennisc.render.nil;
 	@Override
 	public void release() {
 	}
+
+	private final edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities;
+	private final edu.cmu.cs.dennisc.render.RenderCapabilities actualCapabilities;
 
 	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> sgCameras = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final java.util.List<edu.cmu.cs.dennisc.render.event.RenderTargetListener> renderTargetListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
