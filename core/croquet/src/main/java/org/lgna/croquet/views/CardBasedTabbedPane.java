@@ -56,7 +56,7 @@ public abstract class CardBasedTabbedPane<E extends org.lgna.croquet.TabComposit
 
 	private final FolderTabbedPaneCardOwner cardOwner = new FolderTabbedPaneCardOwner();
 
-	public CardBasedTabbedPane( TabState<E> model ) {
+	public CardBasedTabbedPane( TabState<E, ?> model ) {
 		super( model );
 		for( org.lgna.croquet.TabComposite<?> card : model ) {
 			if( card != null ) {

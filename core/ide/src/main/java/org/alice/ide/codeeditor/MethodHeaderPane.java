@@ -55,9 +55,8 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		this.userMethod = userMethod;
 	}
 
-	protected org.lgna.croquet.views.Label createNameLabel() {
-		return new org.alice.ide.ast.components.DeclarationNameLabel( this.userMethod );
-
+	protected org.lgna.croquet.views.SwingComponentView<?> createNameLabel() {
+		return this.factory.createNameView( this.userMethod );
 	}
 
 	@Override
@@ -83,9 +82,8 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( new org.lgna.croquet.views.Label( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 		}
 
-		org.lgna.croquet.views.Label nameLabel = this.createNameLabel();
+		org.lgna.croquet.views.SwingComponentView<?> nameLabel = this.createNameLabel();
 		nameLabel.scaleFont( NAME_SCALE );
-		nameLabel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 
 		if( userMethod.isSignatureLocked.getValue() ) {
 			this.addComponent( nameLabel );

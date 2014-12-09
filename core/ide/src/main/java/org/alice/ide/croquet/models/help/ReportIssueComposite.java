@@ -42,10 +42,8 @@
  */
 package org.alice.ide.croquet.models.help;
 
-import java.awt.Color;
-
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
-import org.lgna.croquet.SingleSelectListState;
+import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.event.ValueListener;
 
@@ -76,9 +74,8 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 
 	private ReportIssueComposite() {
 		super( java.util.UUID.fromString( "96e23d44-c8b1-4da1-8d59-aea9f7ee7b42" ), false );
-		this.reportTypeState = createSingleSelectListStateForEnum( "reportTypeState", edu.cmu.cs.dennisc.issue.IssueType.class, null );
+		this.reportTypeState = createImmutableListStateForEnum( "reportTypeState", edu.cmu.cs.dennisc.issue.IssueType.class, null );
 		this.registerSubComposite( logInOutComposite );
-		logInOutComposite.getLogOutCard().getUsernameLabel().getAwtComponent().setForeground( Color.WHITE );
 		this.reportBugLaunchOperation = this.getImp().createAndRegisterLaunchOperation( "reportBug", new IssueTypeInitializer( edu.cmu.cs.dennisc.issue.IssueType.BUG ) );
 		this.requestNewFeatureLaunchOperation = this.getImp().createAndRegisterLaunchOperation( "requestNewFeature", new IssueTypeInitializer( edu.cmu.cs.dennisc.issue.IssueType.NEW_FEATURE ) );
 		this.suggestImprovementLaunchOperation = this.getImp().createAndRegisterLaunchOperation( "suggestImprovement", new IssueTypeInitializer( edu.cmu.cs.dennisc.issue.IssueType.IMPROVEMENT ) );
@@ -105,7 +102,7 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 		return this.getVisibilityState().getValue().equals( BugSubmitVisibility.PUBLIC );
 	}
 
-	public SingleSelectListState<BugSubmitVisibility> getVisibilityState() {
+	public ImmutableDataSingleSelectListState<BugSubmitVisibility> getVisibilityState() {
 		return this.visibilityState;
 	}
 
@@ -114,7 +111,7 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 		return this.reportTypeState.getValue();
 	}
 
-	public SingleSelectListState<edu.cmu.cs.dennisc.issue.IssueType> getReportTypeState() {
+	public ImmutableDataSingleSelectListState<edu.cmu.cs.dennisc.issue.IssueType> getReportTypeState() {
 		return this.reportTypeState;
 	}
 
@@ -136,7 +133,7 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 		return this.descriptionState;
 	}
 
-	public SingleSelectListState<BugSubmitAttachment> getAttachmentState() {
+	public ImmutableDataSingleSelectListState<BugSubmitAttachment> getAttachmentState() {
 		return this.attachmentState;
 	}
 
@@ -209,12 +206,12 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 		return this.suggestImprovementLaunchOperation;
 	}
 
-	private final SingleSelectListState<BugSubmitVisibility> visibilityState = createSingleSelectListStateForEnum( "visibilityState", BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
+	private final ImmutableDataSingleSelectListState<BugSubmitVisibility> visibilityState = createImmutableListStateForEnum( "visibilityState", BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
 
-	private final SingleSelectListState<edu.cmu.cs.dennisc.issue.IssueType> reportTypeState;
+	private final ImmutableDataSingleSelectListState<edu.cmu.cs.dennisc.issue.IssueType> reportTypeState;
 	private final StringState summaryState = createStringState( "summaryState" );
 	private final StringState descriptionState = createStringState( "descriptionState" );
-	private final SingleSelectListState<BugSubmitAttachment> attachmentState = createSingleSelectListStateForEnum( "attachmentState", BugSubmitAttachment.class, null );
+	private final ImmutableDataSingleSelectListState<BugSubmitAttachment> attachmentState = createImmutableListStateForEnum( "attachmentState", BugSubmitAttachment.class, null );
 	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
 	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "079f108d-c3bb-4581-b107-f21b8d7286ca" ), BugLoginComposite.getInstance() );
 	private final org.lgna.croquet.Operation reportBugLaunchOperation;

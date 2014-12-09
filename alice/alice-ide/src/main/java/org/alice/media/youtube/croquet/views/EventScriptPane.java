@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
  * @author Dennis Cosgrove
  */
 public class EventScriptPane extends org.lgna.croquet.views.MigPanel {
-	public EventScriptPane( SingleSelectListState<EventScriptEvent> state ) {
+	public EventScriptPane( SingleSelectListState<EventScriptEvent, ?> state ) {
 		super( null, "fill, insets 0", "[grow,shrink]", "[grow 0][grow 0][grow100]" );
 		org.lgna.croquet.views.List<EventScriptEvent> list = state.createListWithItemCodecListCellRenderer();
 		list.setMinimumPreferredWidth( 240 );

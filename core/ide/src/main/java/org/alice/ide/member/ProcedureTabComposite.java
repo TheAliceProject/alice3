@@ -46,14 +46,14 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public final class ProcedureTabComposite extends MemberTabComposite<org.alice.ide.member.views.ProcedureTabView> {
-	private final org.lgna.croquet.SingleSelectListState<String> sortState = this.createSingleSelectListState( "sortState", String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, GROUP_BY_CATEGORY, SORT_ALPHABETICALLY );
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<String> sortState = this.createImmutableListState( "sortState", String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, GROUP_BY_CATEGORY, SORT_ALPHABETICALLY );
 
 	public ProcedureTabComposite() {
 		super( java.util.UUID.fromString( "cdc6fb94-34ef-4992-b3d0-2ad90bd0179c" ), org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ? null : new AddProcedureMenuModel() );
 	}
 
 	@Override
-	public org.lgna.croquet.SingleSelectListState<String> getSortState() {
+	public org.lgna.croquet.ImmutableDataSingleSelectListState<String> getSortState() {
 		return this.sortState;
 	}
 

@@ -159,7 +159,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 			if( originalReturnType == replacementReturnType ) {
 				String originalName = this.getMethodName();
 				String replacementName = declareMethodEdit.getMethodName();
-				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( originalName, replacementName ) ) {
+				if( edu.cmu.cs.dennisc.java.util.Objects.equals( originalName, replacementName ) ) {
 					return org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH;
 				} else {
 					StringBuilder sb = new StringBuilder();

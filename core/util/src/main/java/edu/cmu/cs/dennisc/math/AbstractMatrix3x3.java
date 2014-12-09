@@ -310,9 +310,9 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		} else {
 			if( o instanceof Matrix3x3 ) {
 				Matrix3x3 other = (Matrix3x3)o;
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.right, other.right )
-						&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.up, other.up )
-						&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.backward, other.backward );
+				return edu.cmu.cs.dennisc.java.util.Objects.equals( this.right, other.right )
+						&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.up, other.up )
+						&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.backward, other.backward );
 			} else {
 				return false;
 			}

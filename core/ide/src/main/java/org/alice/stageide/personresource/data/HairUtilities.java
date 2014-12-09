@@ -124,7 +124,7 @@ public class HairUtilities {
 					String[] hairColorNameAndHatName = getHairColorNameAndHatName( hair );
 					assert hairColorNameAndHatName.length == 2 : hair;
 					String hatName = hairColorNameAndHatName[ 1 ];
-					if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( hatName, hairHatStyle.getHatName() ) ) {
+					if( edu.cmu.cs.dennisc.java.util.Objects.equals( hatName, hairHatStyle.getHatName() ) ) {
 						String hairColorNameText = hairColorNameAndHatName[ 0 ];
 						HairColorName hairColorName = hairColorNameText != null ? HairColorName.valueOf( hairColorNameText ) : HairColorName.NULL;
 						return new HairHatStyleHairColorName( hairHatStyle, hairColorName );

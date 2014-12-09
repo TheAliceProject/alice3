@@ -42,10 +42,13 @@
  */
 package org.alice.stageide.type.croquet;
 
+import org.lgna.croquet.AbstractElement;
+import org.lgna.croquet.CancelException;
+
 /**
  * @author Dennis Cosgrove
  */
-public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite<org.lgna.croquet.views.Panel, org.lgna.project.ast.AbstractType> {
+public class OtherTypeDialog extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.views.Panel, org.lgna.project.ast.AbstractType> {
 	private static class SingletonHolder {
 		private static OtherTypeDialog instance = new OtherTypeDialog();
 	}
@@ -54,7 +57,37 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		return SingletonHolder.instance;
 	}
 
-	private java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private class ValueCreatorForRootFilterType extends org.lgna.croquet.ValueCreator<org.lgna.project.ast.AbstractType<?, ?, ?>> {
+		public ValueCreatorForRootFilterType( org.lgna.project.ast.JavaType rootFilterType ) {
+			super( java.util.UUID.fromString( "84922129-0658-47af-8e32-f2476f030e41" ) );
+			this.rootFilterType = rootFilterType;
+		}
+
+		@Override
+		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+			return OtherTypeDialog.class;
+		}
+
+		@Override
+		protected org.lgna.project.ast.AbstractType<?, ?, ?> createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+
+			OtherTypeDialog.this.initializeRootFilterType( this.rootFilterType );
+
+			org.lgna.project.ast.AbstractType<?, ?, ?> value = OtherTypeDialog.this.createValue( completionStep );
+			if( completionStep.isCanceled() ) {
+				throw new CancelException();
+			} else {
+				return value;
+			}
+		}
+
+		private final org.lgna.project.ast.JavaType rootFilterType;
+	}
+
+	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.JavaType, org.lgna.croquet.ValueCreator<org.lgna.project.ast.AbstractType<?, ?, ?>>> mapTypeToValueCreator = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+
+	private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private final TypeTreeState typeTreeState = new TypeTreeState();
 	private final org.lgna.croquet.StringValue descriptionText = new org.lgna.croquet.HtmlStringValue( java.util.UUID.fromString( "5417d9ee-bbe5-457b-aa63-1e5d0958ae1f" ) ) {
@@ -64,9 +97,27 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 
 	private final AssignableTab assignableTab = new AssignableTab( this );
 	private final ContainsTab containsTab = new ContainsTab( this );
-	private final org.lgna.croquet.TabState tabState = this.createTabState( "tabState", 0, this.assignableTab, this.containsTab );
+	private final org.lgna.croquet.ImmutableDataTabState<?> tabState = this.createImmutableTabState( "tabState", 0, this.assignableTab, this.containsTab );
 
 	private final ErrorStatus noSelectionError = this.createErrorStatus( "noSelectionError" );
+	private final Status notAssignableError = new Status() {
+		@Override
+		public boolean isGoodToGo() {
+			return false;
+		}
+
+		@Override
+		public String getText() {
+			StringBuilder sb = new StringBuilder();
+			sb.append( "Select class assignable to " );
+			if( rootFilterType != null ) {
+				sb.append( rootFilterType.getName() );
+			}
+			return sb.toString();
+		}
+	};
+
+	private org.lgna.project.ast.JavaType rootFilterType;
 
 	private boolean isInTheMidstOfLowestCommonAncestorSetting;
 	private final org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode> typeListener = new org.lgna.croquet.event.ValueListener<org.alice.stageide.type.croquet.TypeNode>() {
@@ -105,6 +156,23 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		super( java.util.UUID.fromString( "58d24fb6-a6f5-4ad9-87b0-dfb5e9e4de41" ) );
 	}
 
+	public org.lgna.croquet.ValueCreator<org.lgna.project.ast.AbstractType<?, ?, ?>> getValueCreator( org.lgna.project.ast.JavaType rootType ) {
+		return this.mapTypeToValueCreator.getInitializingIfAbsent( rootType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentHashMap.Initializer<org.lgna.project.ast.JavaType, org.lgna.croquet.ValueCreator<org.lgna.project.ast.AbstractType<?, ?, ?>>>() {
+			@Override
+			public org.lgna.croquet.ValueCreator<org.lgna.project.ast.AbstractType<?, ?, ?>> initialize( org.lgna.project.ast.JavaType key ) {
+				return new ValueCreatorForRootFilterType( key );
+			}
+		} );
+	}
+
+	public org.lgna.croquet.ValueCreator<org.lgna.project.ast.AbstractType<?, ?, ?>> getValueCreator( Class<? extends org.lgna.story.SThing> rootCls ) {
+		return this.getValueCreator( org.lgna.project.ast.JavaType.getInstance( rootCls ) );
+	}
+
+	private void initializeRootFilterType( org.lgna.project.ast.JavaType rootFilterType ) {
+		this.rootFilterType = rootFilterType;
+	}
+
 	@Override
 	protected Integer getWiderGoldenRatioSizeFromHeight() {
 		return 600;
@@ -140,13 +208,20 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		TypeNode typeNode = this.typeTreeState.getValue();
 		if( typeNode != null ) {
-			return IS_GOOD_TO_GO_STATUS;
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = typeNode.getType();
+			//todo assert this.rootFilterType != null;
+			if( ( this.rootFilterType == null ) || this.rootFilterType.isAssignableFrom( type ) ) {
+				return IS_GOOD_TO_GO_STATUS;
+			} else {
+				return this.notAssignableError;
+			}
 		} else {
 			return this.noSelectionError;
 		}
 	}
 
 	private static TypeNode build( org.lgna.project.ast.AbstractType<?, ?, ?> type, java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeNode> map ) {
+		assert type != null;
 		TypeNode typeNode = map.get( type );
 		if( typeNode != null ) {
 			//pass
@@ -163,21 +238,19 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 			superTypeNode.add( typeNode );
 		}
 		return typeNode;
-
 	}
 
 	@Override
 	public void handlePreActivation() {
 		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
 		Iterable<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
-		org.lgna.project.ast.JavaType rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class );
-		final boolean IS_SCENE_TYPE_DESIRED = true;
-		org.lgna.project.ast.JavaType filterType = IS_SCENE_TYPE_DESIRED ? rootType : org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class );
 		map.clear();
+
+		org.lgna.project.ast.JavaType rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class );
 		TypeNode rootNode = new TypeNode( rootType );
 		map.put( rootType, rootNode );
 		for( org.lgna.project.ast.NamedUserType type : types ) {
-			if( filterType.isAssignableFrom( type ) ) {
+			if( this.rootFilterType.isAssignableFrom( type ) ) {
 				build( type, map );
 			}
 		}
@@ -365,10 +438,7 @@ public class OtherTypeDialog extends org.lgna.croquet.SingleValueCreatorInputDia
 		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
 		org.alice.ide.ProjectStack.pushProject( project );
 		org.lgna.croquet.triggers.Trigger trigger = null;
-		try {
-			OtherTypeDialog.getInstance().getValueCreator().fire( trigger );
-		} finally {
-			System.exit( 0 );
-		}
+		OtherTypeDialog.getInstance().getValueCreator( org.lgna.story.SModel.class ).fire( trigger );
+		System.exit( 0 );
 	}
 }

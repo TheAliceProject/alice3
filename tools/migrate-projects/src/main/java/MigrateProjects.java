@@ -75,7 +75,7 @@ public class MigrateProjects extends Batch {
 		try {
 			org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( inFile );
 
-			final boolean IS_DISPLAY_DESIRED = true;
+			final boolean IS_DISPLAY_DESIRED = false;
 			if( IS_DISPLAY_DESIRED ) {
 				final javax.swing.JFrame frame = new javax.swing.JFrame();
 				frame.setLocation( x, y );
@@ -90,7 +90,7 @@ public class MigrateProjects extends Batch {
 				org.alice.stageide.program.RunProgramContext runProgramContext = new org.alice.stageide.program.RunProgramContext( project.getProgramType() );
 				runProgramContext.initializeInContainer( new org.lgna.story.implementation.ProgramImp.AwtContainerInitializer() {
 					@Override
-					public void addComponents( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
+					public void addComponents( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
 						frame.getContentPane().add( onscreenRenderTarget.getAwtComponent() );
 					}
 				} );
@@ -115,6 +115,32 @@ public class MigrateProjects extends Batch {
 				}
 			}
 
+			final boolean IS_WRITE_DESIRED = true;
+			if( IS_WRITE_DESIRED ) {
+				java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( inFile );
+				java.util.zip.ZipEntry zipEntry = zipFile.getEntry( "thumbnail.png" );
+				edu.cmu.cs.dennisc.java.util.zip.DataSource[] dataSources;
+				if( zipEntry != null ) {
+					java.io.InputStream is = zipFile.getInputStream( zipEntry );
+					java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is );
+					final byte[] data = edu.cmu.cs.dennisc.image.ImageUtilities.writeToByteArray( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, image );
+					dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] { new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
+						@Override
+						public String getName() {
+							return "thumbnail.png";
+						}
+
+						@Override
+						public void write( java.io.OutputStream os ) throws java.io.IOException {
+							os.write( data );
+						}
+					} };
+				} else {
+					dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] {};
+				}
+				org.lgna.project.io.IoUtilities.writeProject( outFile, project, dataSources );
+			}
+
 			if( edu.cmu.cs.dennisc.java.util.logging.Logger.getLevel().intValue() < java.util.logging.Level.SEVERE.intValue() ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "success", inFile );
 			}
@@ -127,6 +153,10 @@ public class MigrateProjects extends Batch {
 			this.outputProblematicFiles();
 			t.printStackTrace();
 		}
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 	}
 
 	@Override
@@ -141,11 +171,27 @@ public class MigrateProjects extends Batch {
 	private final java.util.List<org.lgna.project.ast.JavaField> problematicJavaFields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 	public static void main( String[] args ) {
-		org.lgna.project.Version prevVersion = new org.lgna.project.Version( "3.1.92.0.0" );
-		MigrateProjects migrateProjects = new MigrateProjects();
-		String inRootPath = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/" + prevVersion;
-		String outRootPath = inRootPath + "_FixedTo_" + org.lgna.project.ProjectVersion.getCurrentVersionText();
+		String inRootPath;
+		String outRootPath;
+		switch( args.length ) {
+		case 0:
+			org.lgna.project.Version prevVersion = new org.lgna.project.Version( "3.1.92.0.0" );
+			inRootPath = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/" + prevVersion;
+			outRootPath = inRootPath + "_FixedTo_" + org.lgna.project.ProjectVersion.getCurrentVersionText();
+			break;
+		case 1:
+			inRootPath = args[ 0 ];
+			outRootPath = inRootPath + "_migrated";
+			break;
+		case 2:
+			inRootPath = args[ 0 ];
+			outRootPath = args[ 1 ];
+			break;
+		default:
+			throw new RuntimeException( java.util.Arrays.toString( args ) );
+		}
 		String ext = "a3p";
+		MigrateProjects migrateProjects = new MigrateProjects();
 		migrateProjects.process( inRootPath, outRootPath, ext, ext );
 		migrateProjects.outputProblematicFiles();
 		System.exit( 0 );

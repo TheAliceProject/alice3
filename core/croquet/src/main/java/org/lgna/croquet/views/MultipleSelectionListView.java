@@ -55,6 +55,7 @@ public class MultipleSelectionListView<T> extends org.lgna.croquet.views.ViewCon
 	}
 
 	public void setCellRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setCellRenderer( listCellRenderer );
 	}
 

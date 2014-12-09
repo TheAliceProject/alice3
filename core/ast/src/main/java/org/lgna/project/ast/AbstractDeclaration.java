@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,13 +59,13 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 	}
 
 	@Override
-	public boolean contentEquals( org.lgna.project.ast.Node o, org.lgna.project.ast.ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			AbstractDeclaration other = (AbstractDeclaration)o;
 			if( strictness == ContentEqualsStrictness.DECLARATIONS_EQUAL ) {
 				return this == other;
 			} else if( strictness == ContentEqualsStrictness.DECLARATIONS_HAVE_SAME_NAME ) {
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getName(), other.getName() );
+				return edu.cmu.cs.dennisc.java.util.Objects.equals( this.getName(), other.getName() );
 			} else {
 				throw new RuntimeException( strictness.name() );
 			}

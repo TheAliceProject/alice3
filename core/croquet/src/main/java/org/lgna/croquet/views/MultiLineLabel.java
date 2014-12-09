@@ -76,6 +76,10 @@ public abstract class MultiLineLabel<J extends javax.swing.text.JTextComponent> 
 	}
 
 	public final void setText( String text ) {
+
+		//todo?
+		//this.checkEventDispatchThread();
+
 		try {
 			this.document.replace( 0, this.document.getLength(), text, null );
 		} catch( javax.swing.text.BadLocationException ble ) {

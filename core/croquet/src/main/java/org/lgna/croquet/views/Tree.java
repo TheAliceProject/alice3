@@ -71,10 +71,12 @@ public class Tree<E> extends ViewController<javax.swing.JTree, org.lgna.croquet.
 	}
 
 	public void setCellRenderer( javax.swing.tree.TreeCellRenderer cellRenderer ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setCellRenderer( cellRenderer );
 	}
 
 	public void expandEachRowOnce() {
+		this.checkEventDispatchThread();
 		java.util.Set<E> alreadyExpanded = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 		javax.swing.JTree jTree = this.getAwtComponent();
 		for( int i = 0; i < jTree.getRowCount(); i++ ) {

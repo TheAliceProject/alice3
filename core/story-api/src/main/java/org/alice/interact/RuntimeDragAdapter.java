@@ -55,6 +55,7 @@ import org.alice.interact.manipulator.CameraTiltDragManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectTranslateDragManipulator;
 import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
+import org.lgna.story.implementation.AbstractTransformableImp;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
@@ -113,6 +114,10 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
+	protected void updateHandleSelection( AbstractTransformableImp selected ) {
+	}
+
+	@Override
 	protected void handleMouseEntered( MouseEvent e ) {
 		//Overridden to do nothing
 	}
@@ -122,12 +127,6 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 		//Overridden to prevent picking every frame since there is no need for rollover events
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.fireStateChange();
-	}
-
-	@Override
-	protected org.lgna.croquet.SingleSelectListState<org.alice.interact.handle.HandleStyle> getHandleStyleState() {
-		//todo
-		return null;
 	}
 
 	@Override

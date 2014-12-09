@@ -168,7 +168,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			//appendBlankChildren( blankChildren, programType, root );
 
 			blankChildren.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			blankChildren.add( org.alice.stageide.type.croquet.OtherTypeDialog.getInstance().getValueCreator().getFillIn() );
+			blankChildren.add( org.alice.stageide.type.croquet.OtherTypeDialog.getInstance().getValueCreator( org.lgna.story.SThing.class ).getFillIn() );
 			org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel otherTypesMenuModel = org.alice.ide.croquet.models.ast.declaration.OtherTypesMenuModel.getInstance();
 			if( otherTypesMenuModel.isEmpty() ) {
 				//pass

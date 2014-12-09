@@ -530,7 +530,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	private final ScrollListener scrollListener = new ScrollListener();
 
-	public FolderTabbedPane( TabState<E> model ) {
+	public FolderTabbedPane( TabState<E, ?> model ) {
 		super( model );
 		org.lgna.croquet.CardOwnerComposite cardOwner = this.getCardOwner();
 		cardOwner.getView().setBackgroundColor( null );

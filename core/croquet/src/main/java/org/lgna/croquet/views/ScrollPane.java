@@ -159,16 +159,19 @@ public class ScrollPane extends SwingComponentView<javax.swing.JScrollPane> {
 	}
 
 	public void setVerticalScrollbarPolicy( VerticalScrollbarPolicy verticalScrollbarPolicy ) {
-		assert verticalScrollbarPolicy != null;
+		assert verticalScrollbarPolicy != null : this;
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setVerticalScrollBarPolicy( verticalScrollbarPolicy.internal );
 	}
 
 	public void setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		assert horizontalScrollbarPolicy != null;
+		assert horizontalScrollbarPolicy != null : this;
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setHorizontalScrollBarPolicy( horizontalScrollbarPolicy.internal );
 	}
 
 	private void setScrollBarIncrements( javax.swing.JScrollBar scrollBar, int unitIncrement, int blockIncrement ) {
+		this.checkEventDispatchThread();
 		scrollBar.setUnitIncrement( unitIncrement );
 		scrollBar.setBlockIncrement( blockIncrement );
 	}

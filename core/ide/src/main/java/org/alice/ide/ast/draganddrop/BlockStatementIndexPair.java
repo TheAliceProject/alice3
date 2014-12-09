@@ -119,7 +119,7 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 		}
 		if( o instanceof BlockStatementIndexPair ) {
 			BlockStatementIndexPair bsip = (BlockStatementIndexPair)o;
-			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.blockStatement, bsip.blockStatement ) && ( this.index == bsip.index );
+			return edu.cmu.cs.dennisc.java.util.Objects.equals( this.blockStatement, bsip.blockStatement ) && ( this.index == bsip.index );
 		} else {
 			return false;
 		}

@@ -154,20 +154,28 @@ public class InstanceProperty<E> implements Property<E> {
 		readValue( ois );
 	}
 
-	public boolean valueEquals( InstanceProperty<E> other ) {
-		E thisValue = this.getValue();
-		E otherValue = other.getValue();
-		if( thisValue != null ) {
-			if( otherValue != null ) {
-				return thisValue.equals( otherValue );
-			} else {
-				return false;
-			}
+	protected boolean isToBeIgnored( InstanceProperty<E> other, PropertyFilter filter ) {
+		return ( filter != null ) && filter.isToBeIgnored( this, other );
+	}
+
+	public boolean valueEquals( InstanceProperty<E> other, PropertyFilter filter ) {
+		if( this.isToBeIgnored( other, filter ) ) {
+			return true;
 		} else {
-			if( otherValue != null ) {
-				return false;
+			E thisValue = this.getValue();
+			E otherValue = other.getValue();
+			if( thisValue != null ) {
+				if( otherValue != null ) {
+					return thisValue.equals( otherValue );
+				} else {
+					return false;
+				}
 			} else {
-				return true;
+				if( otherValue != null ) {
+					return false;
+				} else {
+					return true;
+				}
 			}
 		}
 	}

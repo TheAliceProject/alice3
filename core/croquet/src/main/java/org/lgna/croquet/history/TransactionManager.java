@@ -82,7 +82,7 @@ public class TransactionManager {
 	}
 
 	@Deprecated
-	public static <T> ListSelectionStatePrepStep<T> addListSelectionPrepStep( org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
+	public static <T> ListSelectionStatePrepStep<T> addListSelectionPrepStep( org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<T, ?> model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
 

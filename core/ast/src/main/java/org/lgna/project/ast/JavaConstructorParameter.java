@@ -92,7 +92,7 @@ public class JavaConstructorParameter extends JavaParameter {
 	}
 
 	@Override
-	public AbstractType<?, ?, ?> getValueType() {
+	public JavaType getValueType() {
 		return this.valueType;
 	}
 
@@ -100,7 +100,7 @@ public class JavaConstructorParameter extends JavaParameter {
 	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof JavaConstructorParameter ) {
 			JavaConstructorParameter otherJCP = (JavaConstructorParameter)other;
-			return this.constructor.equals( otherJCP.constructor ) && ( this.index == otherJCP.index ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.name, otherJCP.name ) && this.valueType.equals( otherJCP.valueType );
+			return this.constructor.equals( otherJCP.constructor ) && ( this.index == otherJCP.index ) && edu.cmu.cs.dennisc.java.util.Objects.equals( this.name, otherJCP.name ) && this.valueType.equals( otherJCP.valueType );
 		} else {
 			return false;
 		}

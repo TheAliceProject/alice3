@@ -78,7 +78,7 @@ public class StateContext<T> implements Context {
 	@Override
 	public boolean isGoodToGo() {
 		T currentValue = this.getState().getValue();
-		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( currentValue, this.value );
+		return edu.cmu.cs.dennisc.java.util.Objects.equals( currentValue, this.value );
 	}
 
 	//	public org.lgna.croquet.history.Transaction[] createRecoveryTransactions() {

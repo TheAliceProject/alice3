@@ -113,7 +113,7 @@ public abstract class MemberList<E> extends org.lgna.croquet.views.ItemSelectabl
 
 	private org.lgna.croquet.views.PageAxisPanel pageAxisPanel = new org.lgna.croquet.views.PageAxisPanel();
 
-	public MemberList( org.lgna.croquet.SingleSelectListState<E> model, org.lgna.croquet.Operation... operations ) {
+	public MemberList( org.lgna.croquet.SingleSelectListState<E, ?> model, org.lgna.croquet.Operation... operations ) {
 		super( model );
 		this.internalAddComponent( pageAxisPanel );
 		for( org.lgna.croquet.Operation operation : operations ) {

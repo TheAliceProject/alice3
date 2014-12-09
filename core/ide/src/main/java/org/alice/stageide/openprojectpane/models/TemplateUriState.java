@@ -210,6 +210,6 @@ public class TemplateUriState extends org.lgna.croquet.ImmutableDataSingleSelect
 	}
 
 	private TemplateUriState() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "53c45c6f-e14f-4a88-ae90-1942ed3f3483" ), org.alice.ide.croquet.codecs.UriCodec.SINGLETON, createArray(), -1 );
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "53c45c6f-e14f-4a88-ae90-1942ed3f3483" ), -1, org.alice.ide.croquet.codecs.UriCodec.SINGLETON, createArray() );
 	}
 }

@@ -70,14 +70,14 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 			edu.cmu.cs.dennisc.color.Color4f color4f = org.lgna.story.EmployeesOnly.getColor4f( value, edu.cmu.cs.dennisc.color.Color4f.WHITE );
 			edu.cmu.cs.dennisc.texture.Texture texture = org.lgna.story.EmployeesOnly.getTexture( value, null );
 			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : ModelImp.this.getSgPaintAppearances() ) {
-				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( color4f, sgAppearance.diffuseColor.getValue() ) ) {
+				if( edu.cmu.cs.dennisc.java.util.Objects.equals( color4f, sgAppearance.diffuseColor.getValue() ) ) {
 					//pass
 				} else {
 					sgAppearance.diffuseColor.setValue( color4f );
 				}
 				if( sgAppearance instanceof edu.cmu.cs.dennisc.scenegraph.TexturedAppearance ) {
 					edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgTexturedAppearance = (edu.cmu.cs.dennisc.scenegraph.TexturedAppearance)sgAppearance;
-					if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( texture, sgTexturedAppearance.diffuseColorTexture.getValue() ) ) {
+					if( edu.cmu.cs.dennisc.java.util.Objects.equals( texture, sgTexturedAppearance.diffuseColorTexture.getValue() ) ) {
 						//pass
 					} else {
 						sgTexturedAppearance.diffuseColorTexture.setValue( texture );
@@ -108,7 +108,7 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 
 	protected abstract edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances();
 
-	protected abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
+	public abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
 
 	@Override
 	public void setName( java.lang.String name ) {
@@ -429,7 +429,7 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 					java.awt.geom.Point2D.Float out_bodyConnectionLocationOfTail,
 					java.awt.geom.Point2D.Float out_textBoundsOffset,
 					edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble,
-					edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget,
+					edu.cmu.cs.dennisc.render.RenderTarget renderTarget,
 					java.awt.Rectangle actualViewport,
 					edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera,
 					java.awt.geom.Dimension2D textSize

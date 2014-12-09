@@ -94,8 +94,23 @@ public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.Snapsho
 		javax.swing.Icon icon;
 		if( uri != null ) {
 			if( uri.isAbsolute() ) {
+				boolean isExtensionDesired;
+				if( "file".equals( uri.getScheme() ) ) {
+					isExtensionDesired = true;
+				} else {
+					uri = org.alice.ide.uricontent.StarterProjectUtilities.toFileUriFromStarterUri( uri );
+					isExtensionDesired = false;
+				}
 				java.io.File file = new java.io.File( uri );
 				text = file.getName();
+				if( isExtensionDesired ) {
+					//pass
+				} else {
+					final String SUFFIX = ".a3p";
+					if( text.endsWith( SUFFIX ) ) {
+						text = text.substring( 0, text.length() - SUFFIX.length() );
+					}
+				}
 				if( file.exists() ) {
 					//					//todo: remove
 					//					String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file );

@@ -45,8 +45,6 @@ package org.alice.stageide.sceneeditor.interact;
 
 import java.awt.event.KeyEvent;
 
-import org.alice.ide.sceneeditor.AbstractSceneEditor;
-import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InteractionGroup;
 import org.alice.interact.ModifierMask;
 import org.alice.interact.ModifierMask.ModifierKey;
@@ -107,16 +105,16 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 /**
  * @author David Culyba
  */
-public class GlobalDragAdapter extends AbstractDragAdapter {
+public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.CroquetSupportingDragAdapter {
 
 	//Used to lock down the scene editor so only selection is available as an interaction (moving objects, moving the camera and whatnot are all disabled)
 	private static final boolean ENABLE_SELECTION_ONLY_MODE = false;
 
 	TargetManipulator dropTargetManipulator;
 
-	private final AbstractSceneEditor sceneEditor;
+	private final org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor;
 
-	public GlobalDragAdapter( AbstractSceneEditor sceneEditor )
+	public GlobalDragAdapter( org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor )
 	{
 		this.sceneEditor = sceneEditor;
 		this.setUpControls();
@@ -577,6 +575,14 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 				org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener( this.handleStyleListener );
 			}
 		}
+
+		edu.cmu.cs.dennisc.render.RenderCapabilities renderCapabilities = this.sceneEditor.getOnscreenRenderTarget().getActualCapabilities();
+		if( renderCapabilities.getStencilBits() > 0 ) {
+			edu.cmu.cs.dennisc.scenegraph.Silhouette sgSilhouette = new edu.cmu.cs.dennisc.scenegraph.Silhouette();
+			//sgSilhouette.color.setValue( Color4f.YELLOW );
+			//sgSilhouette.width.setValue( 1.5f );
+			this.setSgSilhouette( sgSilhouette );
+		}
 	}
 
 	public void addClickAdapter( ManipulatorClickAdapter clickAdapter, InputCondition... conditions ) {
@@ -588,7 +594,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
-	protected org.lgna.croquet.SingleSelectListState<org.alice.interact.handle.HandleStyle> getHandleStyleState() {
+	protected org.lgna.croquet.ImmutableDataSingleSelectListState<org.alice.interact.handle.HandleStyle> getHandleStyleState() {
 		return org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState();
 	}
 

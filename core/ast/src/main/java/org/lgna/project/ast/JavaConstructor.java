@@ -79,12 +79,12 @@ public class JavaConstructor extends AbstractConstructor {
 		} else {
 			N = parameterTypeReflectionProxies.length;
 		}
-		this.requiredParameters = new java.util.ArrayList<JavaConstructorParameter>();
-		this.requiredParameters.ensureCapacity( N );
+		java.util.ArrayList<JavaConstructorParameter> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( N );
 		java.lang.annotation.Annotation[][] parameterAnnotations = this.constructorReflectionProxy.getParameterAnnotations();
 		for( int i = 0; i < N; i++ ) {
-			this.requiredParameters.add( new JavaConstructorParameter( this, i, parameterAnnotations[ i ] ) );
+			list.add( new JavaConstructorParameter( this, i, parameterAnnotations[ i ] ) );
 		}
+		this.requiredParameters = java.util.Collections.unmodifiableList( list );
 		if( this.constructorReflectionProxy.isVarArgs() ) {
 			this.variableOrKeyedParameter = new JavaConstructorParameter( this, N, parameterAnnotations[ N ] );
 		} else {
@@ -102,7 +102,7 @@ public class JavaConstructor extends AbstractConstructor {
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
+	public JavaConstructorParameter getKeyedParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
 				return this.variableOrKeyedParameter;
@@ -115,7 +115,7 @@ public class JavaConstructor extends AbstractConstructor {
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
+	public JavaConstructorParameter getVariableLengthParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
 				return null;
@@ -207,6 +207,6 @@ public class JavaConstructor extends AbstractConstructor {
 	}
 
 	private final ConstructorReflectionProxy constructorReflectionProxy;
-	private final java.util.ArrayList<JavaConstructorParameter> requiredParameters;
-	private final AbstractParameter variableOrKeyedParameter;
+	private final java.util.List<JavaConstructorParameter> requiredParameters;
+	private final JavaConstructorParameter variableOrKeyedParameter;
 }

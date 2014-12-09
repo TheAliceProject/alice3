@@ -237,6 +237,10 @@ public abstract class StringState extends SimpleValueState<String> {
 		return new org.lgna.croquet.views.PasswordField( this, operation );
 	}
 
+	public org.lgna.croquet.views.SubduedTextField createSubduedTextField() {
+		return new org.lgna.croquet.views.SubduedTextField( this );
+	}
+
 	public org.lgna.croquet.views.TextArea createTextArea() {
 		return new org.lgna.croquet.views.TextArea( this );
 	}

@@ -133,71 +133,8 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 		if( classReflectionProxy != null ) {
 			return mapReflectionProxyToInstance.getInitializingIfAbsent( classReflectionProxy, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<ClassReflectionProxy, JavaType>() {
 				@Override
-				public org.lgna.project.ast.JavaType initialize( org.lgna.project.ast.ClassReflectionProxy key ) {
-					JavaType rv = new JavaType( classReflectionProxy );
-					mapReflectionProxyToInstance.put( classReflectionProxy, rv );
-					Class<?> cls = classReflectionProxy.getReification();
-					if( cls != null ) {
-						//todo: handle constructors as methods are (set up chains...)
-						for( java.lang.reflect.Constructor<?> cnstrctr : cls.getDeclaredConstructors() ) {
-							rv.constructors.add( JavaConstructor.getInstance( cnstrctr ) );
-						}
-
-						for( java.lang.reflect.Field fld : cls.getDeclaredFields() ) {
-							rv.fields.add( JavaField.getInstance( fld ) );
-						}
-
-						java.util.Set<java.lang.reflect.Method> methodSet = null;
-						Iterable<org.lgna.project.reflect.MethodInfo> methodInfos = org.lgna.project.reflect.ClassInfoManager.getMethodInfos( cls );
-						if( methodInfos != null ) {
-							methodSet = new java.util.HashSet<java.lang.reflect.Method>();
-							for( org.lgna.project.reflect.MethodInfo methodInfo : methodInfos ) {
-								try {
-									java.lang.reflect.Method mthd = methodInfo.getMthd();
-									if( mthd != null ) {
-										rv.handleMthd( mthd );
-										methodSet.add( mthd );
-									}
-								} catch( RuntimeException re ) {
-									//edu.cmu.cs.dennisc.print.PrintUtilities.println( "no such method", methodInfo, "on ", cls );
-									//re.printStackTrace();
-								}
-							}
-						}
-						for( java.lang.reflect.Method mthd : cls.getDeclaredMethods() ) {
-							if( ( methodSet != null ) && methodSet.contains( mthd ) ) {
-								//pass
-							} else {
-								rv.handleMthd( mthd );
-							}
-						}
-					}
-					for( JavaMethod method : rv.methods ) {
-						java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
-						org.lgna.project.annotations.GetterTemplate propertyGetterTemplate = mthd.getAnnotation( org.lgna.project.annotations.GetterTemplate.class );
-						if( propertyGetterTemplate != null ) {
-							java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( mthd );
-							JavaMethod setter;
-							if( sttr != null ) {
-								setter = (JavaMethod)JavaMethod.getInstance( sttr ).getLongestInChain();
-							} else {
-								setter = null;
-							}
-							rv.getterSetterPairs.add( new JavaGetterSetterPair( method, setter ) );
-							if( setter != null ) {
-								org.lgna.project.annotations.ValueTemplate valueTemplate = mthd.getAnnotation( org.lgna.project.annotations.ValueTemplate.class );
-								if( valueTemplate != null ) {
-									JavaMethod m = setter;
-									while( m != null ) {
-										JavaMethodParameter parameter0 = (JavaMethodParameter)m.getRequiredParameters().get( 0 );
-										parameter0.setValueTemplate( valueTemplate );
-										m = m.getNextShorterInChain();
-									}
-								}
-							}
-						}
-					}
-					return rv;
+				public JavaType initialize( org.lgna.project.ast.ClassReflectionProxy key ) {
+					return new JavaType( classReflectionProxy );
 				}
 			} );
 		} else {
@@ -334,21 +271,21 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 
 	@Override
 	public java.util.List<JavaConstructor> getDeclaredConstructors() {
-		return this.constructors;
+		return this.constructors.get();
 	}
 
 	@Override
 	public java.util.List<JavaMethod> getDeclaredMethods() {
-		return this.methods;
+		return this.methods.get();
 	}
 
 	@Override
 	public java.util.List<JavaField> getDeclaredFields() {
-		return this.fields;
+		return this.fields.get();
 	}
 
 	public java.util.List<JavaGetterSetterPair> getGetterSetterPairs() {
-		return this.getterSetterPairs;
+		return this.getterSetterPairs.get();
 	}
 
 	private static Class<?>[] trimLast( Class<?>[] src ) {
@@ -378,39 +315,6 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			rv = null;
 		}
 		return rv;
-	}
-
-	private void handleMthd( java.lang.reflect.Method mthd ) {
-		int modifiers = mthd.getModifiers();
-		if( isMask( modifiers, java.lang.reflect.Modifier.PUBLIC ) || isMask( modifiers, java.lang.reflect.Modifier.PROTECTED ) ) {
-			JavaMethod methodDeclaredInJava = JavaMethod.getInstance( mthd );
-			if( mthd.isAnnotationPresent( org.lgna.project.annotations.MethodTemplate.class ) ) {
-				org.lgna.project.annotations.MethodTemplate methodTemplate = mthd.getAnnotation( org.lgna.project.annotations.MethodTemplate.class );
-				if( ( methodTemplate.visibility() == org.lgna.project.annotations.Visibility.PRIME_TIME ) && ( methodTemplate.isFollowedByLongerMethod() == false ) ) {
-					JavaMethod longer = methodDeclaredInJava;
-					java.lang.reflect.Method _mthd = mthd;
-					while( true ) {
-						_mthd = getNextShorterInChain( _mthd );
-						if( _mthd != null ) {
-							JavaMethod shorter = JavaMethod.getInstance( _mthd );
-							if( _mthd.isAnnotationPresent( org.lgna.project.annotations.MethodTemplate.class ) ) {
-								org.lgna.project.annotations.MethodTemplate shorterMethodTemplate = _mthd.getAnnotation( org.lgna.project.annotations.MethodTemplate.class );
-								if( shorterMethodTemplate.isFollowedByLongerMethod() ) {
-									longer.setNextShorterInChain( shorter );
-									shorter.setNextLongerInChain( longer );
-									longer = shorter;
-								} else {
-									break;
-								}
-							}
-						} else {
-							break;
-						}
-					}
-				}
-			}
-			this.methods.add( methodDeclaredInJava );
-		}
 	}
 
 	public ClassReflectionProxy getClassReflectionProxy() {
@@ -522,9 +426,157 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 		}
 	}
 
+	private static void handleMthd( java.lang.reflect.Method mthd, java.util.List<JavaMethod> methods ) {
+		int modifiers = mthd.getModifiers();
+		if( isMask( modifiers, java.lang.reflect.Modifier.PUBLIC ) || isMask( modifiers, java.lang.reflect.Modifier.PROTECTED ) ) {
+			JavaMethod methodDeclaredInJava = JavaMethod.getInstance( mthd );
+			if( mthd.isAnnotationPresent( org.lgna.project.annotations.MethodTemplate.class ) ) {
+				org.lgna.project.annotations.MethodTemplate methodTemplate = mthd.getAnnotation( org.lgna.project.annotations.MethodTemplate.class );
+				if( ( methodTemplate.visibility() == org.lgna.project.annotations.Visibility.PRIME_TIME ) && ( methodTemplate.isFollowedByLongerMethod() == false ) ) {
+					JavaMethod longer = methodDeclaredInJava;
+					java.lang.reflect.Method _mthd = mthd;
+					while( true ) {
+						_mthd = getNextShorterInChain( _mthd );
+						if( _mthd != null ) {
+							JavaMethod shorter = JavaMethod.getInstance( _mthd );
+							if( _mthd.isAnnotationPresent( org.lgna.project.annotations.MethodTemplate.class ) ) {
+								org.lgna.project.annotations.MethodTemplate shorterMethodTemplate = _mthd.getAnnotation( org.lgna.project.annotations.MethodTemplate.class );
+								if( shorterMethodTemplate.isFollowedByLongerMethod() ) {
+									longer.setNextShorterInChain( shorter );
+									shorter.setNextLongerInChain( longer );
+									longer = shorter;
+								} else {
+									break;
+								}
+							}
+						} else {
+							break;
+						}
+					}
+				}
+			}
+			methods.add( methodDeclaredInJava );
+		}
+	}
+
 	private final ClassReflectionProxy classReflectionProxy;
-	private final java.util.List<JavaConstructor> constructors = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-	private final java.util.List<JavaMethod> methods = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-	private final java.util.List<JavaField> fields = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-	private final java.util.List<JavaGetterSetterPair> getterSetterPairs = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+	private final edu.cmu.cs.dennisc.pattern.Lazy<java.util.List<JavaConstructor>> constructors = new edu.cmu.cs.dennisc.pattern.Lazy<java.util.List<JavaConstructor>>() {
+		@Override
+		protected java.util.List<JavaConstructor> create() {
+			Class<?> cls = classReflectionProxy.getReification();
+			if( cls != null ) {
+				java.util.List<JavaConstructor> constructors = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				for( java.lang.reflect.Constructor<?> cnstrctr : cls.getDeclaredConstructors() ) {
+					constructors.add( JavaConstructor.getInstance( cnstrctr ) );
+				}
+				return java.util.Collections.unmodifiableList( constructors );
+			} else {
+				return java.util.Collections.emptyList();
+			}
+		}
+	};
+	private final edu.cmu.cs.dennisc.pattern.Lazy<java.util.List<JavaMethod>> methods = new edu.cmu.cs.dennisc.pattern.Lazy<java.util.List<JavaMethod>>() {
+		@Override
+		protected java.util.List<JavaMethod> create() {
+			Class<?> cls = classReflectionProxy.getReification();
+			if( cls != null ) {
+				java.util.List<JavaMethod> methods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				java.util.Set<java.lang.reflect.Method> methodSet = null;
+				Iterable<org.lgna.project.reflect.MethodInfo> methodInfos = org.lgna.project.reflect.ClassInfoManager.getMethodInfos( cls );
+				if( methodInfos != null ) {
+					methodSet = new java.util.HashSet<java.lang.reflect.Method>();
+					for( org.lgna.project.reflect.MethodInfo methodInfo : methodInfos ) {
+						try {
+							java.lang.reflect.Method mthd = methodInfo.getMthd();
+							if( mthd != null ) {
+								handleMthd( mthd, methods );
+								methodSet.add( mthd );
+							}
+						} catch( RuntimeException re ) {
+							//edu.cmu.cs.dennisc.print.PrintUtilities.println( "no such method", methodInfo, "on ", cls );
+							//re.printStackTrace();
+						}
+					}
+				}
+				for( java.lang.reflect.Method mthd : cls.getDeclaredMethods() ) {
+					if( ( methodSet != null ) && methodSet.contains( mthd ) ) {
+						//pass
+					} else {
+						handleMthd( mthd, methods );
+					}
+				}
+
+				//update value templates for setters
+				for( JavaMethod method : methods ) {
+					java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
+					org.lgna.project.annotations.GetterTemplate propertyGetterTemplate = mthd.getAnnotation( org.lgna.project.annotations.GetterTemplate.class );
+					if( propertyGetterTemplate != null ) {
+						java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( mthd );
+						JavaMethod setter;
+						if( sttr != null ) {
+							setter = (JavaMethod)JavaMethod.getInstance( sttr ).getLongestInChain();
+						} else {
+							setter = null;
+						}
+						if( setter != null ) {
+							org.lgna.project.annotations.ValueTemplate valueTemplate = mthd.getAnnotation( org.lgna.project.annotations.ValueTemplate.class );
+							if( valueTemplate != null ) {
+								JavaMethod m = setter;
+								while( m != null ) {
+									JavaMethodParameter parameter0 = (JavaMethodParameter)m.getRequiredParameters().get( 0 );
+									parameter0.setValueTemplate( valueTemplate );
+									m = m.getNextShorterInChain();
+								}
+							}
+						}
+					}
+				}
+
+				return java.util.Collections.unmodifiableList( methods );
+			} else {
+				return java.util.Collections.emptyList();
+			}
+		}
+	};
+	private final edu.cmu.cs.dennisc.pattern.Lazy<java.util.List<JavaField>> fields = new edu.cmu.cs.dennisc.pattern.Lazy<java.util.List<JavaField>>() {
+		@Override
+		protected java.util.List<JavaField> create() {
+			Class<?> cls = classReflectionProxy.getReification();
+			if( cls != null ) {
+				java.util.List<JavaField> fields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				for( java.lang.reflect.Field fld : cls.getDeclaredFields() ) {
+					fields.add( JavaField.getInstance( fld ) );
+				}
+				return java.util.Collections.unmodifiableList( fields );
+			} else {
+				return java.util.Collections.emptyList();
+			}
+		}
+	};
+	private final edu.cmu.cs.dennisc.pattern.Lazy<java.util.List<JavaGetterSetterPair>> getterSetterPairs = new edu.cmu.cs.dennisc.pattern.Lazy<java.util.List<JavaGetterSetterPair>>() {
+		@Override
+		protected java.util.List<JavaGetterSetterPair> create() {
+			Class<?> cls = classReflectionProxy.getReification();
+			if( cls != null ) {
+				java.util.List<JavaGetterSetterPair> getterSetterPairs = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				for( JavaMethod method : getDeclaredMethods() ) {
+					java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
+					org.lgna.project.annotations.GetterTemplate propertyGetterTemplate = mthd.getAnnotation( org.lgna.project.annotations.GetterTemplate.class );
+					if( propertyGetterTemplate != null ) {
+						java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( mthd );
+						JavaMethod setter;
+						if( sttr != null ) {
+							setter = (JavaMethod)JavaMethod.getInstance( sttr ).getLongestInChain();
+						} else {
+							setter = null;
+						}
+						getterSetterPairs.add( new JavaGetterSetterPair( method, setter ) );
+					}
+				}
+				return java.util.Collections.unmodifiableList( getterSetterPairs );
+			} else {
+				return java.util.Collections.emptyList();
+			}
+		}
+	};
 }

@@ -48,7 +48,7 @@ package org.alice.stageide.type.croquet;
 public class ContainsTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.croquet.views.Panel> {
 	private final org.lgna.croquet.StringState filterState = this.createStringState( "filterState" );
 	private final org.alice.stageide.type.croquet.data.MemberListData memberListData = new org.alice.stageide.type.croquet.data.MemberListData( this.filterState );
-	private final org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.Member> memberListState = this.createSingleSelectListState( "memberListState", this.memberListData, -1 );
+	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.Member> memberListState = this.createRefreshableListState( "memberListState", this.memberListData, -1 );
 
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Member> memberListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.Member>() {
 		@Override
@@ -75,7 +75,7 @@ public class ContainsTab extends org.lgna.croquet.SimpleTabComposite<org.lgna.cr
 		return this.memberListData;
 	}
 
-	public org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.Member> getMemberListState() {
+	public org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.Member> getMemberListState() {
 		return this.memberListState;
 	}
 

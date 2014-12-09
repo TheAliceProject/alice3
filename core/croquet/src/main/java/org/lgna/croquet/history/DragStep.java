@@ -228,7 +228,7 @@ public class DragStep extends PrepStep<org.lgna.croquet.DragModel> {
 		}
 		if( this.currentDropReceptor != null ) {
 			org.lgna.croquet.DropSite nextPotentialDropSite = this.currentDropReceptor.dragUpdated( this );
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.currentPotentialDropSite, nextPotentialDropSite ) ) {
+			if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.currentPotentialDropSite, nextPotentialDropSite ) ) {
 				//pass
 			} else {
 				if( this.currentPotentialDropSite != null ) {

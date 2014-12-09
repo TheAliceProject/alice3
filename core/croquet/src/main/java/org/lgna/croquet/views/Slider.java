@@ -86,6 +86,7 @@ public class Slider extends ViewController<javax.swing.JSlider, org.lgna.croquet
 	}
 
 	public void setOrientation( Orientation orientation ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setOrientation( orientation.getInternal() );
 	}
 
@@ -94,6 +95,7 @@ public class Slider extends ViewController<javax.swing.JSlider, org.lgna.croquet
 	}
 
 	public void setInverted( boolean inverted ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setInverted( inverted );
 	}
 
@@ -102,6 +104,7 @@ public class Slider extends ViewController<javax.swing.JSlider, org.lgna.croquet
 	}
 
 	public void setMinorTickSpacing( int minorTickSpacing ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setMinorTickSpacing( minorTickSpacing );
 	}
 
@@ -110,6 +113,7 @@ public class Slider extends ViewController<javax.swing.JSlider, org.lgna.croquet
 	}
 
 	public void setMajorTickSpacing( int majorTickSpacing ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setMajorTickSpacing( majorTickSpacing );
 	}
 
@@ -118,6 +122,7 @@ public class Slider extends ViewController<javax.swing.JSlider, org.lgna.croquet
 	}
 
 	public void setSnapToTicks( boolean snapToTicks ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setSnapToTicks( snapToTicks );
 	}
 
@@ -126,6 +131,7 @@ public class Slider extends ViewController<javax.swing.JSlider, org.lgna.croquet
 	}
 
 	public void setPaintTicks( boolean paintTicks ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setPaintTicks( paintTicks );
 	}
 
@@ -134,6 +140,7 @@ public class Slider extends ViewController<javax.swing.JSlider, org.lgna.croquet
 	}
 
 	public void setPaintLabels( boolean paintLabels ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setPaintLabels( paintLabels );
 	}
 
@@ -142,6 +149,7 @@ public class Slider extends ViewController<javax.swing.JSlider, org.lgna.croquet
 	}
 
 	public void setLabelTable( java.util.Dictionary<Integer, javax.swing.JComponent> labelTable ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setLabelTable( labelTable );
 	}
 }

@@ -49,7 +49,7 @@ public class RenderTestProgramImp extends org.lgna.story.implementation.ProgramI
 	private final edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 
 	public RenderTestProgramImp( org.lgna.story.SProgram abstraction ) {
-		super( abstraction, edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenRenderTarget() );
+		super( abstraction, edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget() );
 		java.awt.Component awtComponent = this.getOnscreenRenderTarget().getAwtComponent();
 		awtComponent.addMouseListener( new java.awt.event.MouseListener() {
 
@@ -90,7 +90,7 @@ public class RenderTestProgramImp extends org.lgna.story.implementation.ProgramI
 	private void handleMousePressed( java.awt.event.MouseEvent e ) {
 		java.awt.Component awtComponent = e.getComponent();
 		try {
-			edu.cmu.cs.dennisc.renderer.PickResult pickResult = this.getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED );
+			edu.cmu.cs.dennisc.render.PickResult pickResult = this.getOnscreenRenderTarget().getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
 			edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite;
 			if( sgVisual != null ) {

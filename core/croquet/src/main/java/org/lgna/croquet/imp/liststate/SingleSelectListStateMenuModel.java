@@ -49,13 +49,13 @@ import org.lgna.croquet.SingleSelectListState;
 /**
  * @author Dennis Cosgrove
  */
-public class SingleSelectListStateMenuModel<T> extends MenuModel {
-	/*package-private*/SingleSelectListStateMenuModel( SingleSelectListState<T> listSelectionState ) {
+public class SingleSelectListStateMenuModel<T, D extends org.lgna.croquet.data.ListData<T>> extends MenuModel {
+	/*package-private*/SingleSelectListStateMenuModel( SingleSelectListState<T, D> listSelectionState ) {
 		super( java.util.UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), listSelectionState.getClass() );
 		this.listSelectionState = listSelectionState;
 	}
 
-	public SingleSelectListState<T> getListSelectionState() {
+	public SingleSelectListState<T, D> getListSelectionState() {
 		return this.listSelectionState;
 	}
 
@@ -70,8 +70,8 @@ public class SingleSelectListStateMenuModel<T> extends MenuModel {
 	}
 
 	@Override
-	protected SingleSelectListStateMenuModelResolver<T> createResolver() {
-		return new SingleSelectListStateMenuModelResolver<T>( this.listSelectionState );
+	protected SingleSelectListStateMenuModelResolver<T, D> createResolver() {
+		return new SingleSelectListStateMenuModelResolver<T, D>( this.listSelectionState );
 	}
 
 	@Override
@@ -96,5 +96,5 @@ public class SingleSelectListStateMenuModel<T> extends MenuModel {
 		super.handleHiding( menuItemContainer, e );
 	}
 
-	private final SingleSelectListState<T> listSelectionState;
+	private final SingleSelectListState<T, D> listSelectionState;
 }

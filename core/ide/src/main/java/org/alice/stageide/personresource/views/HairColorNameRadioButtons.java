@@ -46,7 +46,7 @@ package org.alice.stageide.personresource.views;
  * @author Dennis Cosgrove
  */
 public class HairColorNameRadioButtons extends org.lgna.croquet.views.CustomRadioButtons<org.alice.stageide.personresource.data.HairColorName> {
-	public HairColorNameRadioButtons( org.lgna.croquet.SingleSelectListState<org.alice.stageide.personresource.data.HairColorName> model ) {
+	public HairColorNameRadioButtons( org.lgna.croquet.RefreshableDataSingleSelectListState<org.alice.stageide.personresource.data.HairColorName> model ) {
 		super( model );
 	}
 

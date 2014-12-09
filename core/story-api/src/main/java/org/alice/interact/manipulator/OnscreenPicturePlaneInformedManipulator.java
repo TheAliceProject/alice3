@@ -47,8 +47,8 @@ package org.alice.interact.manipulator;
  */
 public interface OnscreenPicturePlaneInformedManipulator {
 
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget();
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget();
 
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget );
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget );
 
 }

@@ -15,6 +15,7 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserPackage;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.resources.ModelResource;
 
 public class ModelResourceTree {
@@ -71,6 +72,23 @@ public class ModelResourceTree {
 		return new LinkedList<ModelResourceTreeNode>();
 	}
 
+	private static UserPackage getAlicePackage( Class<?> resourceClass, Class<?> rootClass )
+	{
+		String resourcePackage = resourceClass.getPackage().getName();
+		String rootPackage = rootClass.getPackage().getName();
+		int rootIndex = resourcePackage.indexOf( rootPackage );
+		if( rootIndex != -1 )
+		{
+			resourcePackage = resourcePackage.substring( rootIndex + rootPackage.length() );
+			if( resourcePackage.startsWith( "." ) )
+			{
+				resourcePackage = resourcePackage.substring( 1 );
+			}
+		}
+		resourcePackage = AliceResourceClassUtilities.DEFAULT_PACKAGE + resourcePackage;
+		return new UserPackage( resourcePackage );
+	}
+
 	//The Stack<Class<?>> classes is a stack of classes representing the hierarchy of the classes, with the parent class at the top of the stack
 	private ModelResourceTreeNode addNodes( ModelResourceTreeNode root, Stack<Class<? extends org.lgna.story.resources.ModelResource>> classes )
 	{
@@ -100,7 +118,7 @@ public class ModelResourceTree {
 
 				NamedUserType aliceType = null;
 				String aliceClassName = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getAliceClassName( currentClass );
-				UserPackage packageName = org.lgna.story.implementation.alice.AliceResourceClassUtilities.getAlicePackage( currentClass, rootClass );
+				UserPackage packageName = getAlicePackage( currentClass, rootClass );
 
 				UserMethod[] noMethods = {};
 				UserField[] noFields = {};

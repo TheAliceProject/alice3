@@ -150,19 +150,19 @@ public class FileUtilities {
 		return sb.toString();
 	}
 
-	public static boolean isExtensionAmoung( String filename, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy caseSensitivityPolicy, String... extensionCandidates ) {
+	public static boolean isExtensionAmoung( String filename, String... extensionCandidates ) {
 		String extension = getExtension( filename );
 		for( String extensionCandidate : extensionCandidates ) {
 			assert extensionCandidate.charAt( 0 ) != '.';
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( extension, extensionCandidate, caseSensitivityPolicy ) ) {
+			if( edu.cmu.cs.dennisc.java.util.Strings.equalsIgnoreCase( extension, extensionCandidate ) ) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public static boolean isExtensionAmoung( java.io.File file, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy caseSensitivityPolicy, String... extensionCandidates ) {
-		return isExtensionAmoung( file.getName(), caseSensitivityPolicy, extensionCandidates );
+	public static boolean isExtensionAmoung( java.io.File file, String... extensionCandidates ) {
+		return isExtensionAmoung( file.getName(), extensionCandidates );
 	}
 
 	public static String getExtension( String filename ) {

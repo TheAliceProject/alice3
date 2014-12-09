@@ -42,6 +42,7 @@
  */
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,11 +56,11 @@ public final class BooleanExpressionBodyPair extends AbstractNode {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			BooleanExpressionBodyPair other = (BooleanExpressionBodyPair)o;
-			if( this.expression.valueContentEquals( other.expression, strictness ) ) {
-				return this.body.valueContentEquals( other.body, strictness );
+			if( this.expression.valueContentEquals( other.expression, strictness, filter ) ) {
+				return this.body.valueContentEquals( other.body, strictness, filter );
 			}
 		}
 		return false;

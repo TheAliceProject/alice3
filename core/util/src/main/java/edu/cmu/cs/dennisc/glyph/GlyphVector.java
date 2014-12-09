@@ -244,7 +244,7 @@ public class GlyphVector {
 	}
 
 	public boolean setText( String text ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( m_text, text ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( m_text, text ) ) {
 			m_text = text;
 			markShapesDirty();
 			return true;
@@ -258,7 +258,7 @@ public class GlyphVector {
 	}
 
 	public boolean setFont( java.awt.Font font ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( m_font, font ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( m_font, font ) ) {
 			m_font = font;
 			markShapesDirty();
 			return true;

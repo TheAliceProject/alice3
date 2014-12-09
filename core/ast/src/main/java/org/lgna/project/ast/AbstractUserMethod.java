@@ -83,12 +83,12 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 
 	@Override
 	public final AbstractType<?, ?, ?> getReturnType() {
-		return returnType.getValue();
+		return this.returnType.getValue();
 	}
 
 	@Override
-	public final java.util.List<? extends AbstractParameter> getRequiredParameters() {
-		return requiredParameters.getValue();
+	public final java.util.List<UserParameter> getRequiredParameters() {
+		return this.requiredParameters.getValue();
 	}
 
 	@Override

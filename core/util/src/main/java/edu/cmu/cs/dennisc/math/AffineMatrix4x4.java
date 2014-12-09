@@ -111,6 +111,10 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		set( other );
 	}
 
+	public AffineMatrix4x4( edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4 other ) {
+		this( new OrthogonalMatrix3x3( other.orientation ), new Point3( other.translation ) );
+	}
+
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		orientation.decode( binaryDecoder );
 		translation.decode( binaryDecoder );
@@ -767,8 +771,8 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		} else {
 			if( o instanceof AffineMatrix4x4 ) {
 				AffineMatrix4x4 other = (AffineMatrix4x4)o;
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.orientation, other.orientation )
-						&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.translation, other.translation );
+				return edu.cmu.cs.dennisc.java.util.Objects.equals( this.orientation, other.orientation )
+						&& edu.cmu.cs.dennisc.java.util.Objects.equals( this.translation, other.translation );
 			} else {
 				return false;
 			}
@@ -790,5 +794,9 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 	@Override
 	public boolean isWithinEpsilonOfIdentity( double epsilon ) {
 		return this.orientation.isWithinEpsilonOfIdentity( epsilon ) && this.translation.isWithinEpsilonOfZero( epsilon );
+	}
+
+	public edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4 createImmutable() {
+		return new edu.cmu.cs.dennisc.math.immutable.MAffineMatrix4x4( this.orientation.createImmutable(), this.translation.createImmutable() );
 	}
 }

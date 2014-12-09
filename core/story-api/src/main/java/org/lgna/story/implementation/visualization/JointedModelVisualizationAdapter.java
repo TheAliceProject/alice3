@@ -51,8 +51,8 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 /**
  * @author Dennis Cosgrove
  */
-public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.LeafAdapter<JointedModelVisualization> {
-	private static abstract class GlWalkObserver<C extends edu.cmu.cs.dennisc.lookingglass.opengl.Context> implements org.lgna.story.implementation.JointedModelImp.TreeWalkObserver {
+public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adapters.LeafAdapter<JointedModelVisualization> {
+	private static abstract class GlWalkObserver<C extends edu.cmu.cs.dennisc.render.gl.imp.Context> implements org.lgna.story.implementation.JointedModelImp.TreeWalkObserver {
 		private final C context;
 		private final org.lgna.story.implementation.ReferenceFrame asSeenBy;
 		private final double[] array = new double[ 16 ];
@@ -167,8 +167,8 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 		}
 	}
 
-	private static class RenderWalkObserver extends GlWalkObserver<edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext> {
-		public RenderWalkObserver( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
+	private static class RenderWalkObserver extends GlWalkObserver<edu.cmu.cs.dennisc.render.gl.imp.RenderContext> {
+		public RenderWalkObserver( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, org.lgna.story.implementation.ReferenceFrame asSeenBy ) {
 			super( rc, asSeenBy );
 		}
 
@@ -183,10 +183,10 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 		}
 	}
 
-	private static class PickWalkObserver extends GlWalkObserver<edu.cmu.cs.dennisc.lookingglass.opengl.PickContext> {
-		private final edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters;
+	private static class PickWalkObserver extends GlWalkObserver<edu.cmu.cs.dennisc.render.gl.imp.PickContext> {
+		private final edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters;
 
-		public PickWalkObserver( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, org.lgna.story.implementation.ReferenceFrame asSeenBy, edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters ) {
+		public PickWalkObserver( edu.cmu.cs.dennisc.render.gl.imp.PickContext pc, org.lgna.story.implementation.ReferenceFrame asSeenBy, edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters ) {
 			super( pc, asSeenBy );
 			this.pickParameters = pickParameters;
 		}
@@ -220,7 +220,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 	}
 
 	@Override
-	public void pick( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters ) {
+	public void pick( edu.cmu.cs.dennisc.render.gl.imp.PickContext pc, edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters ) {
 		this.pushOffset( pc.gl );
 		org.lgna.story.implementation.JointedModelImp implementation = this.m_element.getImplementation();
 		pc.gl.glPushName( -1 ); // visual
@@ -248,11 +248,11 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 	}
 
 	@Override
-	public void renderGhost( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.GhostAdapter root ) {
+	public void renderGhost( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GhostAdapter root ) {
 	}
 
 	@Override
-	public void renderOpaque( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
+	public void renderOpaque( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc ) {
 		rc.gl.glEnable( GL_LIGHTING );
 		this.pushOffset( rc.gl );
 		org.lgna.story.implementation.JointedModelImp implementation = this.m_element.getImplementation();
@@ -309,6 +309,6 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 	}
 
 	@Override
-	public void setup( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
+	public void setup( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc ) {
 	}
 }

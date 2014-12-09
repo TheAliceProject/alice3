@@ -85,7 +85,7 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 	public StatisticsFlowControlFrequencyView( StatisticsFlowControlFrequencyComposite composite ) {
 		super( composite );
 		GridPanel gridPanel = GridPanel.createGridPane( 2, 1 );
-		SingleSelectListState<UserMethod> userMethodList = composite.getUserMethodList();
+		SingleSelectListState<UserMethod, ?> userMethodList = composite.getUserMethodList();
 		ControlDisplay statsDisplay = new ControlDisplay( userMethodList );
 		statsDisplay.setMaximum();
 		userMethodList.setValueTransactionlessly( StatisticsFlowControlFrequencyComposite.root );
@@ -113,7 +113,7 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 		private int maximum = 10;
 		private final Class[] clsArr = { ConditionalStatement.class, CountLoop.class, WhileLoop.class, AbstractForEachLoop.class, AbstractEachInTogether.class, ReturnStatement.class, LocalDeclarationStatement.class, DoInOrder.class, DoTogether.class };
 
-		public ControlDisplay( SingleSelectListState<UserMethod> listSelectionState ) {
+		public ControlDisplay( SingleSelectListState<UserMethod, ?> listSelectionState ) {
 			this.gridPanel = GridPanel.createGridPane( numRows, numCols, 5, 5 );
 			populateGridPanel();
 			populateLeftCol();

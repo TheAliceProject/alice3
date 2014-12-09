@@ -45,25 +45,20 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MutableDataSingleSelectListState<T> extends SingleSelectListState<T> {
-	public MutableDataSingleSelectListState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex ) {
-		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec ), selectionIndex );
+public abstract class MutableDataSingleSelectListState<T> extends SingleSelectListState<T, org.lgna.croquet.data.MutableListData<T>> {
+	public MutableDataSingleSelectListState( Group group, java.util.UUID migrationId, int selectionIndex, org.lgna.croquet.data.MutableListData<T> data ) {
+		super( group, migrationId, selectionIndex, data );
+	}
+
+	public MutableDataSingleSelectListState( Group group, java.util.UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, java.util.Collection<T> values ) {
+		this( group, migrationId, selectionIndex, new org.lgna.croquet.data.MutableListData<T>( itemCodec, values ) );
+	}
+
+	public MutableDataSingleSelectListState( Group group, java.util.UUID migrationId, int selectionIndex, ItemCodec<T> itemCodec, T... values ) {
+		this( group, migrationId, selectionIndex, new org.lgna.croquet.data.MutableListData<T>( itemCodec, values ) );
 	}
 
 	public MutableDataSingleSelectListState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec ) {
-		this( group, migrationId, itemCodec, -1 );
-	}
-
-	public MutableDataSingleSelectListState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, java.util.Collection<T> data ) {
-		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
-	}
-
-	public MutableDataSingleSelectListState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, T... data ) {
-		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
-	}
-
-	@Override
-	public org.lgna.croquet.data.MutableListData<T> getData() {
-		return (org.lgna.croquet.data.MutableListData<T>)super.getData();
+		this( group, migrationId, -1, new org.lgna.croquet.data.MutableListData<T>( itemCodec ) );
 	}
 }

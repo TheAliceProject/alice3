@@ -42,6 +42,7 @@
  */
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,46 +51,50 @@ public class NodeListProperty<E extends Node> extends edu.cmu.cs.dennisc.propert
 		super( owner );
 	}
 
-	public boolean valueContentEquals( NodeListProperty<E> other, ContentEqualsStrictness strictness ) {
-		java.util.List<E> thisValue = this.getValue();
-		java.util.List<E> otherValue = other.getValue();
-		if( thisValue != null ) {
-			if( otherValue != null ) {
-				int N = thisValue.size();
-				if( N == otherValue.size() ) {
-					for( int i = 0; i < N; i++ ) {
-						E thisValueI = thisValue.get( i );
-						E otherValueI = otherValue.get( i );
-						if( thisValueI != null ) {
-							if( otherValueI != null ) {
-								if( thisValueI.contentEquals( otherValueI, strictness ) ) {
-									//pass
+	public boolean valueContentEquals( NodeListProperty<E> other, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( this.isToBeIgnored( other, filter ) ) {
+			return true;
+		} else {
+			java.util.List<E> thisValue = this.getValue();
+			java.util.List<E> otherValue = other.getValue();
+			if( thisValue != null ) {
+				if( otherValue != null ) {
+					int N = thisValue.size();
+					if( N == otherValue.size() ) {
+						for( int i = 0; i < N; i++ ) {
+							E thisValueI = thisValue.get( i );
+							E otherValueI = otherValue.get( i );
+							if( thisValueI != null ) {
+								if( otherValueI != null ) {
+									if( thisValueI.contentEquals( otherValueI, strictness, filter ) ) {
+										//pass
+									} else {
+										return false;
+									}
 								} else {
 									return false;
 								}
 							} else {
-								return false;
-							}
-						} else {
-							if( otherValueI != null ) {
-								return false;
-							} else {
-								//pass
+								if( otherValueI != null ) {
+									return false;
+								} else {
+									//pass
+								}
 							}
 						}
+						return true;
+					} else {
+						return false;
 					}
-					return true;
 				} else {
 					return false;
 				}
 			} else {
-				return false;
-			}
-		} else {
-			if( otherValue != null ) {
-				return false;
-			} else {
-				return true;
+				if( otherValue != null ) {
+					return false;
+				} else {
+					return true;
+				}
 			}
 		}
 	}

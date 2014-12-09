@@ -45,9 +45,9 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleSelectListState<T> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
+public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.ListData<T>> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
 	private class DataIndexPair implements javax.swing.ComboBoxModel {
-		public DataIndexPair( org.lgna.croquet.data.ListData<T> data, int index ) {
+		public DataIndexPair( D data, int index ) {
 			this.data = data;
 			this.index = index;
 		}
@@ -93,7 +93,7 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 			//todo: update this.index???
 		}
 
-		private final org.lgna.croquet.data.ListData<T> data;
+		private final D data;
 		private int index;
 	}
 
@@ -110,14 +110,14 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 		}
 	}
 
-	public SingleSelectListState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
+	public SingleSelectListState( Group group, java.util.UUID id, int selectionIndex, D data ) {
 		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
 		this.dataIndexPair = new DataIndexPair( data, selectionIndex );
-		this.imp = new org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T>( this, new org.lgna.croquet.imp.liststate.SingleSelectListStateSwingModel( this.dataIndexPair ) );
+		this.imp = new org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T, D>( this, new org.lgna.croquet.imp.liststate.SingleSelectListStateSwingModel( this.dataIndexPair ) );
 		this.imp.getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
 
-	public org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T> getImp() {
+	public org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T, D> getImp() {
 		return this.imp;
 	}
 
@@ -135,7 +135,7 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 		}
 	}
 
-	public org.lgna.croquet.data.ListData<T> getData() {
+	public final D getData() {
 		return this.dataIndexPair.data;
 	}
 
@@ -148,11 +148,11 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 		return this.emptyConditionText;
 	}
 
-	public synchronized SingleSelectListStateComboBoxPrepModel<T> getPrepModel() {
+	public synchronized SingleSelectListStateComboBoxPrepModel<T, D> getPrepModel() {
 		if( this.prepModel != null ) {
 			//pass
 		} else {
-			this.prepModel = new SingleSelectListStateComboBoxPrepModel<T>( this );
+			this.prepModel = new SingleSelectListStateComboBoxPrepModel<T, D>( this );
 		}
 		return this.prepModel;
 	}
@@ -483,7 +483,7 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 	}
 
 	private final DataIndexPair dataIndexPair;
-	private final org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T> imp;
+	private final org.lgna.croquet.imp.liststate.SingleSelectListStateImp<T, D> imp;
 	private final PlainStringValue emptyConditionText = new EmptyConditionText();
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
 		@Override
@@ -503,6 +503,6 @@ public abstract class SingleSelectListState<T> extends ItemState<T> implements I
 		}
 	};
 
-	private SingleSelectListStateComboBoxPrepModel<T> prepModel;
+	private SingleSelectListStateComboBoxPrepModel<T, D> prepModel;
 	private boolean isInTheMidstOfSettingSwingValue;
 }

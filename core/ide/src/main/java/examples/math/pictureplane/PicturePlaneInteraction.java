@@ -51,7 +51,7 @@ public abstract class PicturePlaneInteraction {
 		RAY
 	}
 
-	private final edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
+	private final edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
 	private final edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera;
 	private edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable;
 
@@ -89,12 +89,12 @@ public abstract class PicturePlaneInteraction {
 		}
 	};
 
-	public PicturePlaneInteraction( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+	public PicturePlaneInteraction( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 		this.sgCamera = this.onscreenRenderTarget.getSgCameraAt( 0 ); //todo
 	}
 
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenPicturePlane() {
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenPicturePlane() {
 		return this.onscreenRenderTarget;
 	}
 
@@ -129,18 +129,18 @@ public abstract class PicturePlaneInteraction {
 	private void startPlaneDrag( java.awt.event.MouseEvent e ) {
 		edu.cmu.cs.dennisc.math.Point3 p = this.sgTransformable.getTranslation( this.sgCamera );
 		edu.cmu.cs.dennisc.math.Vector4 xyzwInCameraSpace = new edu.cmu.cs.dennisc.math.Vector4( p.x, p.y, p.z, 1.0 );
-		edu.cmu.cs.dennisc.math.Vector4 xyzwInViewportSpace = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToViewport_New( xyzwInCameraSpace, this.onscreenRenderTarget, this.sgCamera );
+		edu.cmu.cs.dennisc.math.Vector4 xyzwInViewportSpace = edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromCameraToViewport_New( xyzwInCameraSpace, this.onscreenRenderTarget, this.sgCamera );
 		this.planeZ0 = xyzwInViewportSpace.z / xyzwInViewportSpace.w;
 	}
 
 	private void planeDrag( java.awt.event.MouseEvent e ) {
 		//todo: account for viewport
 		int x = e.getX();
-		int y = this.onscreenRenderTarget.getHeight() - e.getY();
+		int y = this.onscreenRenderTarget.getSurfaceHeight() - e.getY();
 
 		edu.cmu.cs.dennisc.math.Vector4 xyzwInViewportSpace = new edu.cmu.cs.dennisc.math.Vector4( x, y, this.planeZ0, 1.0 );
 
-		edu.cmu.cs.dennisc.math.Vector4 xyzwInCameraSpace = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromViewportToCamera_New( xyzwInViewportSpace, this.onscreenRenderTarget, this.sgCamera );
+		edu.cmu.cs.dennisc.math.Vector4 xyzwInCameraSpace = edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromViewportToCamera_New( xyzwInViewportSpace, this.onscreenRenderTarget, this.sgCamera );
 
 		edu.cmu.cs.dennisc.math.Point3 p = new edu.cmu.cs.dennisc.math.Point3( xyzwInCameraSpace.x / xyzwInCameraSpace.w, xyzwInCameraSpace.y / xyzwInCameraSpace.w, xyzwInCameraSpace.z / xyzwInCameraSpace.w );
 		this.sgTransformable.setTranslationOnly( p, this.sgCamera );
@@ -175,7 +175,7 @@ public abstract class PicturePlaneInteraction {
 
 	private void stopRayDrag( java.awt.event.MouseEvent e ) {
 		edu.cmu.cs.dennisc.math.Point3 p = this.sgTransformable.getTranslation( this.sgCamera );
-		java.awt.Point xyInPixels = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToAWT_New( p, this.onscreenRenderTarget, this.sgCamera );
+		java.awt.Point xyInPixels = edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromCameraToAWT_New( p, this.onscreenRenderTarget, this.sgCamera );
 
 		this.isInTheMidstOfACursorWarp = true;
 		try {

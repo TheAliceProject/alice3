@@ -51,6 +51,7 @@ public class SideBySideScrollPane extends SwingComponentView<edu.cmu.cs.dennisc.
 	}
 
 	public void setLeadingView( AwtComponentView<?> leadingView ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setLeadingView( leadingView != null ? leadingView.getAwtComponent() : null );
 	}
 
@@ -59,6 +60,7 @@ public class SideBySideScrollPane extends SwingComponentView<edu.cmu.cs.dennisc.
 	}
 
 	public void setTrailingView( AwtComponentView<?> trailingView ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setTrailingView( trailingView != null ? trailingView.getAwtComponent() : null );
 	}
 

@@ -518,7 +518,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 									return false;
 								}
 							} else {
-								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( thisValue, otherValue ) ) {
+								if( edu.cmu.cs.dennisc.java.util.Objects.equals( thisValue, otherValue ) ) {
 									//pass
 								} else {
 									return false;

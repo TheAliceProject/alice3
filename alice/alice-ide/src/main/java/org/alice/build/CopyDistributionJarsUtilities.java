@@ -69,7 +69,7 @@ public class CopyDistributionJarsUtilities {
 			if( file.isDirectory() ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping directory:", file );
 			} else {
-				if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( file, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "jar" ) ) {
+				if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( file, "jar" ) ) {
 					if( edu.cmu.cs.dennisc.java.io.FileUtilities.isDescendantOf( file, mavenRepositoryRootDirectory ) ) {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "++ adding: " + file );
 						jarFiles.add( file );

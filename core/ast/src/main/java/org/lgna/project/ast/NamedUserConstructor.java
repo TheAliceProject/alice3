@@ -114,7 +114,7 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	}
 
 	@Override
-	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
+	public java.util.List<UserParameter> getRequiredParameters() {
 		return this.requiredParameters.getValue();
 	}
 

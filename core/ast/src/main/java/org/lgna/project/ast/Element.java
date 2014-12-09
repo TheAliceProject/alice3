@@ -457,7 +457,7 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 									return false;
 								}
 							} else {
-								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( thisValue, otherValue ) ) {
+								if( edu.cmu.cs.dennisc.java.util.Objects.equals( thisValue, otherValue ) ) {
 									//pass
 								} else {
 									return false;

@@ -61,8 +61,8 @@ public final class SuperExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			SuperExpression other = (SuperExpression)o;
 			//todo: check type?
 			return true;

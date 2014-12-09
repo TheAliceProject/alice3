@@ -19,6 +19,7 @@
 		<project.resources.application.directory>${project.resources.directory}/application</project.resources.application.directory>
 		<project.resources.gallery.directory>${project.resources.application.directory}/gallery</project.resources.gallery.directory>
 		<project.resources.sound-gallery.directory>${project.resources.application.directory}/sound-gallery</project.resources.sound-gallery.directory>
+		<project.resources.starter-projects.directory>${project.resources.application.directory}/starter-projects</project.resources.starter-projects.directory>
 		<project.resources.platform.directory>${project.resources.directory}/platform</project.resources.platform.directory>
 
 		<platform.win32.label>win32</platform.win32.label>
@@ -82,19 +83,26 @@
 									<type>zip</type>
 									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
 								</artifactItem>
-									<artifactItem>
-										<groupId>org.alice.nonfree</groupId>
-										<artifactId>nebulous-person-resources</artifactId>
-										<version>${nebulous.person.version}</version>
-										<type>zip</type>
-										<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
-									</artifactItem>
+								<artifactItem>
+									<groupId>org.alice.nonfree</groupId>
+									<artifactId>nebulous-person-resources</artifactId>
+									<version>${nebulous.person.version}</version>
+									<type>zip</type>
+									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
+								</artifactItem>
 								<artifactItem>
 									<groupId>org.alice</groupId>
 									<artifactId>sound-gallery</artifactId>
 									<version>${sound.gallery.version}</version>
 									<type>zip</type>
 									<outputDirectory>${project.resources.sound-gallery.directory}</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.alice</groupId>
+									<artifactId>starter-projects</artifactId>
+									<version>${starter.projects.version}</version>
+									<type>zip</type>
+									<outputDirectory>${project.resources.starter-projects.directory}</outputDirectory>
 								</artifactItem>
 							</artifactItems>
 						</configuration>

@@ -55,10 +55,12 @@ public abstract class SwingComponentView<J extends javax.swing.JComponent> exten
 	}
 
 	public void setAlignmentX( float alignmentX ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setAlignmentX( alignmentX );
 	}
 
 	public void setAlignmentY( float alignmentY ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setAlignmentY( alignmentY );
 	}
 
@@ -72,10 +74,11 @@ public abstract class SwingComponentView<J extends javax.swing.JComponent> exten
 	}
 
 	private void scrollRectToVisible( java.awt.Rectangle rect ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().scrollRectToVisible( rect );
 	}
 
-	public void scrollToVisible() {
+	public final void scrollToVisible() {
 		this.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( this.getAwtComponent() ) );
 	}
 
@@ -84,6 +87,7 @@ public abstract class SwingComponentView<J extends javax.swing.JComponent> exten
 	}
 
 	public void setToolTipText( String toolTipText ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setToolTipText( toolTipText );
 	}
 
@@ -92,15 +96,13 @@ public abstract class SwingComponentView<J extends javax.swing.JComponent> exten
 	}
 
 	public void setBorder( javax.swing.border.Border border ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setBorder( border );
 	}
 
 	public void setOpaque( boolean isOpaque ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setOpaque( isOpaque );
-	}
-
-	private void revalidate() {
-		this.getAwtComponent().revalidate();
 	}
 
 	public static enum Condition {
@@ -137,6 +139,10 @@ public abstract class SwingComponentView<J extends javax.swing.JComponent> exten
 
 	public void unregisterKeyboardAction( javax.swing.KeyStroke keyStroke ) {
 		this.getAwtComponent().unregisterKeyboardAction( keyStroke );
+	}
+
+	private void revalidate() {
+		this.getAwtComponent().revalidate();
 	}
 
 	public void revalidateAndRepaint() {

@@ -58,11 +58,11 @@ public abstract class AbstractArgument extends AbstractNode {
 	protected abstract AbstractType<?, ?, ?> getExpressionTypeForParameterType( AbstractType<?, ?, ?> parameterType );
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			AbstractArgument other = (AbstractArgument)o;
-			if( this.parameter.valueContentEquals( other.parameter, strictness ) ) {
-				return this.expression.valueContentEquals( other.expression, strictness );
+			if( this.parameter.valueContentEquals( other.parameter, strictness, filter ) ) {
+				return this.expression.valueContentEquals( other.expression, strictness, filter );
 			}
 		}
 		return false;

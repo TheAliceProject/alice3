@@ -46,7 +46,6 @@ import org.alice.ide.ProjectApplication;
 import org.alice.ide.croquet.models.project.stats.croquet.views.StatisticsFrameView;
 import org.lgna.croquet.FrameComposite;
 import org.lgna.croquet.SimpleTabComposite;
-import org.lgna.croquet.TabState;
 
 /**
  * @author Matt May
@@ -65,11 +64,11 @@ public class StatisticsFrameComposite extends FrameComposite<StatisticsFrameView
 		return new StatisticsFrameView( this );
 	}
 
-	public TabState<SimpleTabComposite<?>> getTabState() {
+	public org.lgna.croquet.ImmutableDataTabState<SimpleTabComposite<?>> getTabState() {
 		return this.tabState;
 	}
 
 	private final StatisticsFlowControlFrequencyComposite flowControlFrequencyTab = new StatisticsFlowControlFrequencyComposite();
 	private final StatisticsMethodFrequencyTabComposite methodTab = new StatisticsMethodFrequencyTabComposite();
-	private final TabState<SimpleTabComposite<?>> tabState = this.createTabState( "tabState", 0, flowControlFrequencyTab, methodTab );
+	private final org.lgna.croquet.ImmutableDataTabState<SimpleTabComposite<?>> tabState = this.createImmutableTabState( "tabState", 0, flowControlFrequencyTab, methodTab );
 }

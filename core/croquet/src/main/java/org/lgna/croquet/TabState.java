@@ -46,9 +46,9 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabState<T extends TabComposite<?>> extends SingleSelectListState<T> {
-	public TabState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
-		super( group, id, data, selectionIndex );
+public abstract class TabState<T extends TabComposite<?>, D extends org.lgna.croquet.data.ListData<T>> extends SingleSelectListState<T, D> {
+	public TabState( Group group, java.util.UUID id, int selectionIndex, D data ) {
+		super( group, id, selectionIndex, data );
 	}
 
 	public org.lgna.croquet.views.FolderTabbedPane<T> createFolderTabbedPane() {

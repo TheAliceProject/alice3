@@ -47,7 +47,7 @@ package org.lgna.croquet.views;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractRadioButtons<E> extends ItemSelectablePanel<E> {
-	/* package-private */AbstractRadioButtons( org.lgna.croquet.SingleSelectListState<E> model ) {
+	/* package-private */AbstractRadioButtons( org.lgna.croquet.SingleSelectListState<E, ?> model ) {
 		super( model );
 	}
 }

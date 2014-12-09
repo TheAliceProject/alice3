@@ -50,9 +50,9 @@ import org.alice.stageide.personresource.data.HairHatStyle;
  */
 public final class HairTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.HairTabView> {
 	private final org.alice.stageide.personresource.data.HairColorNameListData hairColorNameData = new org.alice.stageide.personresource.data.HairColorNameListData();
-	private final org.lgna.croquet.SingleSelectListState<org.alice.stageide.personresource.data.HairColorName> hairColorNameState = this.createSingleSelectListState( "hairColorNameState", this.hairColorNameData, -1 );
+	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.alice.stageide.personresource.data.HairColorName> hairColorNameState = this.createRefreshableListState( "hairColorNameState", this.hairColorNameData, -1 );
 	private final org.alice.stageide.personresource.data.HairHatStyleListData hairHatStyleListData = new org.alice.stageide.personresource.data.HairHatStyleListData();
-	private final org.lgna.croquet.SingleSelectListState<HairHatStyle> hairHatStyleState = this.createSingleSelectListState( "hairHatStyleState", this.hairHatStyleListData, -1 );
+	private final org.lgna.croquet.RefreshableDataSingleSelectListState<HairHatStyle> hairHatStyleState = this.createRefreshableListState( "hairHatStyleState", this.hairHatStyleListData, -1 );
 
 	public HairTabComposite() {
 		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), IsCloseable.FALSE );
@@ -72,7 +72,7 @@ public final class HairTabComposite extends org.lgna.croquet.SimpleTabComposite<
 		return this.hairColorNameData;
 	}
 
-	public org.lgna.croquet.SingleSelectListState<org.alice.stageide.personresource.data.HairColorName> getHairColorNameState() {
+	public org.lgna.croquet.RefreshableDataSingleSelectListState<org.alice.stageide.personresource.data.HairColorName> getHairColorNameState() {
 		return this.hairColorNameState;
 	}
 
@@ -80,7 +80,7 @@ public final class HairTabComposite extends org.lgna.croquet.SimpleTabComposite<
 		return this.hairHatStyleListData;
 	}
 
-	public org.lgna.croquet.SingleSelectListState<HairHatStyle> getHairHatStyleState() {
+	public org.lgna.croquet.RefreshableDataSingleSelectListState<HairHatStyle> getHairHatStyleState() {
 		return this.hairHatStyleState;
 	}
 };

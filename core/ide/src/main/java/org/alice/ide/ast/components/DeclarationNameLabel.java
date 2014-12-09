@@ -140,7 +140,7 @@ public class DeclarationNameLabel extends org.lgna.croquet.views.Label {
 		} else {
 			text = this.getTextForBlankName();
 		}
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getText(), text ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.equals( this.getText(), text ) ) {
 			//pass
 		} else {
 			this.setText( text );

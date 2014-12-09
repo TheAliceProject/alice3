@@ -50,7 +50,7 @@ public abstract class ListUriTab extends SelectUriTab {
 		super( migrationId );
 	}
 
-	public abstract org.lgna.croquet.SingleSelectListState<java.net.URI> getListSelectionState();
+	public abstract org.lgna.croquet.SingleSelectListState<java.net.URI, ?> getListSelectionState();
 
 	public abstract String getTextForZeroProjects();
 

@@ -53,6 +53,7 @@ public class StatusLabel extends SwingComponentView<javax.swing.JLabel> {
 	}
 
 	public void setStatus( org.lgna.croquet.AbstractSeverityStatusComposite.Status status ) {
+		this.checkEventDispatchThread();
 		String text;
 		if( org.lgna.croquet.AbstractSeverityStatusComposite.IS_GOOD_TO_GO_STATUS == status ) {
 			text = TEXT_TO_USE_FOR_GOOD_TO_GO_STATUS;

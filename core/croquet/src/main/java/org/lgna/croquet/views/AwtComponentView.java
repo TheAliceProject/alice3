@@ -236,6 +236,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 		if( this.awtComponent != null ) {
 			// pass
 		} else {
+			this.checkEventDispatchThread();
 			this.awtComponent = this.createAwtComponent();
 			this.trackDisplayability();
 			this.awtComponent.addHierarchyListener( this.hierarchyListener );
@@ -266,6 +267,14 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 		return this.getAwtComponent().isDisplayable();
 	}
 
+	protected void checkEventDispatchThread() {
+		if( javax.swing.SwingUtilities.isEventDispatchThread() ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( Thread.currentThread(), this );
+		}
+	}
+
 	protected void checkTreeLock() {
 		if( this.isTreeLockRequired() ) {
 			if( Thread.holdsLock( this.getTreeLock() ) ) {
@@ -285,6 +294,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	}
 
 	public void setFont( java.awt.Font font ) {
+		this.checkEventDispatchThread();
 		//		if( font != null ) {
 		this.getAwtComponent().setFont( font );
 		//		} else {
@@ -383,6 +393,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	}
 
 	public void setComponentOrientation( java.awt.ComponentOrientation componentOrientation ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setComponentOrientation( componentOrientation );
 	}
 
@@ -391,6 +402,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	}
 
 	public void setForegroundColor( java.awt.Color color ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setForeground( color );
 	}
 
@@ -399,6 +411,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	}
 
 	public void setBackgroundColor( java.awt.Color color ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setBackground( color );
 	}
 
@@ -411,6 +424,7 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 	}
 
 	public void setVisible( boolean isVisible ) {
+		this.checkEventDispatchThread();
 		this.checkTreeLock();
 		this.getAwtComponent().setVisible( isVisible );
 	}
@@ -451,15 +465,17 @@ public abstract class AwtComponentView<J extends java.awt.Component> extends Scr
 		return this.getAwtComponent().getY();
 	}
 
+	public void setLocation( int x, int y ) {
+		this.checkEventDispatchThread();
+		this.getAwtComponent().setLocation( x, y );
+	}
+
 	public final void setLocation( java.awt.Point pt ) {
 		this.setLocation( pt.x, pt.y );
 	}
 
-	public void setLocation( int x, int y ) {
-		this.getAwtComponent().setLocation( x, y );
-	}
-
 	public void setLocation( java.awt.Point pt, ScreenElement asSeenBy ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setLocation( asSeenBy.convertPoint( pt, this.getParent() ) );
 	}
 

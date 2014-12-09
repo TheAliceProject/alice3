@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,11 +57,11 @@ public class AssertStatement extends Statement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			AssertStatement other = (AssertStatement)o;
-			if( this.expression.valueContentEquals( other.expression, strictness ) ) {
-				return this.message.valueContentEquals( other.message, strictness );
+			if( this.expression.valueContentEquals( other.expression, strictness, filter ) ) {
+				return this.message.valueContentEquals( other.message, strictness, filter );
 			}
 		}
 		return false;

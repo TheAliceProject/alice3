@@ -81,7 +81,7 @@ public final class SceneDropSite implements org.lgna.croquet.DropSite {
 		}
 		if( o instanceof SceneDropSite ) {
 			SceneDropSite sds = (SceneDropSite)o;
-			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.transform, sds.transform );
+			return edu.cmu.cs.dennisc.java.util.Objects.equals( this.transform, sds.transform );
 		} else {
 			return false;
 		}

@@ -47,9 +47,9 @@ package org.alice.stageide.personresource;
  */
 public class TopAndBottomOutfitTabComposite extends OutfitTabComposite<org.alice.stageide.personresource.views.TopAndBottomOutiftTabView> {
 	private final org.alice.stageide.personresource.data.TopPieceData topPieceData = new org.alice.stageide.personresource.data.TopPieceData();
-	private final org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.TopPiece> topPieceState = this.createSingleSelectListState( "topPieceState", this.topPieceData, -1 );
+	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.story.resources.sims2.TopPiece> topPieceState = this.createRefreshableListState( "topPieceState", this.topPieceData, -1 );
 	private final org.alice.stageide.personresource.data.BottomPieceData bottomPieceData = new org.alice.stageide.personresource.data.BottomPieceData();
-	private final org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.BottomPiece> bottomPieceState = this.createSingleSelectListState( "bottomPieceState", this.bottomPieceData, -1 );
+	private final org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.story.resources.sims2.BottomPiece> bottomPieceState = this.createRefreshableListState( "bottomPieceState", this.bottomPieceData, -1 );
 
 	public TopAndBottomOutfitTabComposite() {
 		super( java.util.UUID.fromString( "ef64b1eb-0731-43ae-ae17-143d8e05df02" ) );
@@ -59,7 +59,7 @@ public class TopAndBottomOutfitTabComposite extends OutfitTabComposite<org.alice
 		return this.topPieceData;
 	}
 
-	public org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.TopPiece> getTopPieceState() {
+	public org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.story.resources.sims2.TopPiece> getTopPieceState() {
 		return this.topPieceState;
 	}
 
@@ -67,7 +67,7 @@ public class TopAndBottomOutfitTabComposite extends OutfitTabComposite<org.alice
 		return this.bottomPieceData;
 	}
 
-	public org.lgna.croquet.SingleSelectListState<org.lgna.story.resources.sims2.BottomPiece> getBottomPieceState() {
+	public org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.story.resources.sims2.BottomPiece> getBottomPieceState() {
 		return this.bottomPieceState;
 	}
 

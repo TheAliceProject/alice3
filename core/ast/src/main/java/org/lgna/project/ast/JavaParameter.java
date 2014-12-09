@@ -79,10 +79,6 @@ public abstract class JavaParameter extends AbstractParameter {
 		return false;
 	}
 
-	public JavaType getValueTypeDeclaredInJava() {
-		return (JavaType)getValueType();
-	}
-
 	@Override
 	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
 		return this.details;

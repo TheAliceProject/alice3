@@ -5092,27 +5092,6 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					new org.lgna.project.Version( "3.1.68.0.0" ),
 					new org.lgna.project.Version( "3.1.69.0.0" ),
 
-					"name=\"org.lgna.story.resources.prop.HelicopterResource",
-					"name=\"org.lgna.story.resources.prop.HelicopterPropResource",
-
-					createMoreSpecificFieldPattern( "UFO", "org.lgna.story.resources.prop.UFOResource" ),
-					createMoreSpecificFieldReplacement( "U_F_O_PROP", "org.lgna.story.resources.prop.UFOPropResource" ),
-
-					//added for older projects
-					//todo: do others require this?
-					"name=\"org.lgna.story.resources.prop.UFOResource",
-					"name=\"org.lgna.story.resources.prop.UFOPropResource",
-					//
-
-					"name=\"org.lgna.story.resources.prop.PirateShipResource",
-					"name=\"org.lgna.story.resources.prop.PirateShipPropResource",
-
-					"name=\"org.lgna.story.resources.prop.FishingBoatResource",
-					"name=\"org.lgna.story.resources.prop.FishingBoatPropResource",
-
-					"name=\"org.lgna.story.resources.prop.SubmarineResource",
-					"name=\"org.lgna.story.resources.prop.SubmarinePropResource",
-
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.CaveResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT_UNDERWATER", "org.lgna.story.resources.prop.CaveResource" ),
 
@@ -5188,6 +5167,30 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					new org.lgna.project.Version( "3.1.70.0.0" ),
 					new org.lgna.project.Version( "3.1.85.0.0" ),
 
+					//<note: moved from 68 - 69 migration when a world with the UFO discovered with old resource>
+					"name=\"org.lgna.story.resources.prop.HelicopterResource",
+					"name=\"org.lgna.story.resources.prop.HelicopterPropResource",
+
+					createMoreSpecificFieldPattern( "UFO", "org.lgna.story.resources.prop.UFOResource" ),
+					createMoreSpecificFieldReplacement( "U_F_O_PROP", "org.lgna.story.resources.prop.UFOPropResource" ),
+
+					//added for older projects
+					//todo: do others require this?
+					"name=\"org.lgna.story.resources.prop.UFOResource",
+					"name=\"org.lgna.story.resources.prop.UFOPropResource",
+					//
+
+					"name=\"org.lgna.story.resources.prop.PirateShipResource",
+					"name=\"org.lgna.story.resources.prop.PirateShipPropResource",
+
+					"name=\"org.lgna.story.resources.prop.FishingBoatResource",
+					"name=\"org.lgna.story.resources.prop.FishingBoatPropResource",
+
+					"name=\"org.lgna.story.resources.prop.SubmarineResource",
+					"name=\"org.lgna.story.resources.prop.SubmarinePropResource",
+
+					//</note>
+
 					"org.lgna.story.event.ComesIntoViewEvent",
 					"org.lgna.story.event.EnterViewEvent",
 
@@ -5251,10 +5254,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.biped.PandaResource",
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TrainEngineResource" ),
-					createMoreSpecificFieldReplacement( "LIMOUSINE", "org.lgna.story.resources.prop.LimousineResource" ),
+					createMoreSpecificFieldReplacement( "MODERATE_BLUE_STRIPES_WOOD_FRAME", "org.lgna.story.resources.prop.BedSingleResource" ),
 
 					"name=\"org.lgna.story.resources.prop.TrainEngineResource",
-					"name=\"org.lgna.story.resources.prop.LimousineResource",
+					"name=\"org.lgna.story.resources.prop.BedSingleResource",
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.biped.GhostResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.biped.ThorResource" ),
@@ -5269,10 +5272,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.biped.ThorResource",
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TrainCarResource" ),
-					createMoreSpecificFieldReplacement( "LIMOUSINE", "org.lgna.story.resources.prop.LimousineResource" ),
+					createMoreSpecificFieldReplacement( "BASIC_GRAY_WOOD_FRAME", "org.lgna.story.resources.prop.BedDoubleResource" ),
 
 					"name=\"org.lgna.story.resources.prop.TrainCarResource",
-					"name=\"org.lgna.story.resources.prop.LimousineResource",
+					"name=\"org.lgna.story.resources.prop.BedDoubleResource",
 
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.TunnelResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.TentResource" ),

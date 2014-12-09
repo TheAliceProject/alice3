@@ -56,7 +56,7 @@ public class TemplatesTab extends ListUriTab {
 	}
 
 	@Override
-	public org.lgna.croquet.SingleSelectListState<java.net.URI> getListSelectionState() {
+	public org.alice.stageide.openprojectpane.models.TemplateUriState getListSelectionState() {
 		return org.alice.stageide.openprojectpane.models.TemplateUriState.getInstance();
 	}
 

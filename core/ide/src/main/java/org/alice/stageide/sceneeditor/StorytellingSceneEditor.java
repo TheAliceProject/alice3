@@ -52,10 +52,10 @@ import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
-import org.alice.interact.SnapGrid;
 import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
+import org.alice.interact.manipulator.scenegraph.SnapGrid;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.side.SideComposite;
@@ -69,7 +69,6 @@ import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActi
 import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.views.InstanceFactorySelectionPanel;
 import org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel;
-import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.views.ComboBox;
 import org.lgna.croquet.views.DragComponent;
 import org.lgna.croquet.views.SpringPanel.Horizontal;
@@ -108,10 +107,10 @@ import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent;
-import edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent;
-import edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent;
-import edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
@@ -121,7 +120,7 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
  * @author dculyba
  * 
  */
-public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.cmu.cs.dennisc.renderer.event.RenderTargetListener {
+public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.cmu.cs.dennisc.render.event.RenderTargetListener {
 
 	private class SceneEditorDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
 		@Override
@@ -223,14 +222,17 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private static javax.swing.Icon EXPAND_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/expand.png" ) );
 	private static javax.swing.Icon CONTRACT_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/contract.png" ) );
 
-	private edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
+	private edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener() {
 		@Override
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
 			StorytellingSceneEditor.this.animator.update();
 		}
 	};
-
-	private edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createLightweightOnscreenRenderTarget();
+	private edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createLightweightOnscreenRenderTarget(
+			new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder()
+					.stencilBits( 0 )
+					.build()
+			);
 
 	private class LookingGlassPanel extends org.lgna.croquet.views.CompassPointSpringPanel {
 		@Override
@@ -327,7 +329,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		}
 	};
 
-	private SingleSelectListState<View> mainCameraMarkerList = org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState.getInstance();
+	private org.lgna.croquet.ImmutableDataSingleSelectListState<View> mainCameraMarkerList = org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState.getInstance();
 
 	private boolean selectionIsFromInstanceSelector = false;
 	private boolean selectionIsFromMain = false;
@@ -643,12 +645,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 
 	public void setSelectedObjectMarker( UserField objectMarkerField ) {
-		org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.UserField> markerList = SideComposite.getInstance().getObjectMarkersTab().getMarkerListState();
+		org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.UserField> markerList = SideComposite.getInstance().getObjectMarkersTab().getMarkerListState();
 		markerList.setSelectedIndex( markerList.indexOf( objectMarkerField ) );
 	}
 
 	public void setSelectedCameraMarker( UserField cameraMarkerField ) {
-		org.lgna.croquet.SingleSelectListState<org.lgna.project.ast.UserField> markerList = SideComposite.getInstance().getCameraMarkersTab().getMarkerListState();
+		org.lgna.croquet.RefreshableDataSingleSelectListState<org.lgna.project.ast.UserField> markerList = SideComposite.getInstance().getCameraMarkersTab().getMarkerListState();
 		markerList.setSelectedIndex( markerList.indexOf( cameraMarkerField ) );
 	}
 
@@ -1159,24 +1161,26 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 
 	public void handleShowing() {
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().incrementAutomaticDisplayCount();
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.render.RenderFactory renderFactory = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory();
+		renderFactory.incrementAutomaticDisplayCount();
+		renderFactory.addAutomaticDisplayListener( this.automaticDisplayListener );
 		this.showLookingGlassPanel();
 	}
 
 	public void handleHiding() {
 		this.hideLookingGlassPanel();
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().decrementAutomaticDisplayCount();
+		edu.cmu.cs.dennisc.render.RenderFactory renderFactory = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory();
+		renderFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
+		renderFactory.decrementAutomaticDisplayCount();
 	}
 
-	private void paintHorizonLine( Graphics graphics, edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget renderTarget, OrthographicCamera camera )
+	private void paintHorizonLine( Graphics graphics, edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget renderTarget, OrthographicCamera camera )
 	{
 		AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
 		double dotProd = Vector3.calculateDotProduct( cameraTransform.orientation.up, Vector3.accessPositiveYAxis() );
 		if( ( dotProd == 1 ) || ( dotProd == -1 ) )
 		{
-			Dimension lookingGlassSize = renderTarget.getSize();
+			Dimension lookingGlassSize = renderTarget.getSurfaceSize();
 
 			Point3 cameraPosition = camera.getAbsoluteTransformation().translation;
 
@@ -1184,7 +1188,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			double lookingGlassHeight = lookingGlassSize.getHeight();
 
-			double yRatio = this.onscreenRenderTarget.getHeight() / dummyPlane.getHeight();
+			double yRatio = this.onscreenRenderTarget.getSurfaceHeight() / dummyPlane.getHeight();
 			double horizonInCameraSpace = 0.0d - cameraPosition.y;
 			double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
 			int horizonLinePixelVal = (int)( yRatio * distanceFromMaxY );
@@ -1295,5 +1299,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		{
 			this.snapGrid.setSpacing( gridSpacing );
 		}
+	}
+
+	public edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 }

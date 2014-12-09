@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -87,13 +88,13 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			ConstructorInvocationStatement other = (ConstructorInvocationStatement)o;
-			if( this.constructor.valueContentEquals( other.constructor, strictness ) ) {
-				if( this.requiredArguments.valueContentEquals( other.requiredArguments, strictness ) ) {
-					if( this.variableArguments.valueContentEquals( other.variableArguments, strictness ) ) {
-						return this.keyedArguments.valueContentEquals( other.keyedArguments, strictness );
+			if( this.constructor.valueContentEquals( other.constructor, strictness, filter ) ) {
+				if( this.requiredArguments.valueContentEquals( other.requiredArguments, strictness, filter ) ) {
+					if( this.variableArguments.valueContentEquals( other.variableArguments, strictness, filter ) ) {
+						return this.keyedArguments.valueContentEquals( other.keyedArguments, strictness, filter );
 					}
 				}
 			}

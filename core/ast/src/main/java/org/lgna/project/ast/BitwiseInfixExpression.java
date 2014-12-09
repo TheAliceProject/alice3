@@ -42,6 +42,7 @@
  */
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -145,12 +146,12 @@ public final class BitwiseInfixExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			BitwiseInfixExpression other = (BitwiseInfixExpression)o;
-			if( this.leftOperand.valueContentEquals( other.leftOperand, strictness ) ) {
-				if( this.operator.valueEquals( other.operator ) ) {
-					return this.rightOperand.valueContentEquals( other.rightOperand, strictness );
+			if( this.leftOperand.valueContentEquals( other.leftOperand, strictness, filter ) ) {
+				if( this.operator.valueEquals( other.operator, filter ) ) {
+					return this.rightOperand.valueContentEquals( other.rightOperand, strictness, filter );
 				}
 			}
 		}

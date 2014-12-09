@@ -228,7 +228,7 @@ public class BillboardImp extends VisualScaleModelImp {
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
+	public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
 

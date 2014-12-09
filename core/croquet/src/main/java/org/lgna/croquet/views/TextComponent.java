@@ -77,6 +77,7 @@ public abstract class TextComponent<J extends javax.swing.text.JTextComponent> e
 	}
 
 	public void setEditable( boolean isEditable ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setEditable( isEditable );
 	}
 
@@ -94,11 +95,13 @@ public abstract class TextComponent<J extends javax.swing.text.JTextComponent> e
 	}
 
 	public void setMargin( java.awt.Insets margin ) {
+		this.checkEventDispatchThread();
 		//this.getAwtComponent().setMargin( margin );
 		this.insideBorder.setBorderInsets( margin );
 	}
 
 	public void selectAll() {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().selectAll();
 	}
 

@@ -50,7 +50,6 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.CancelException;
-import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.croquet.edits.AbstractEdit;
 import org.lgna.croquet.event.ValueListener;
@@ -116,10 +115,10 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		@Override
 		public void update( double tCurrent ) {
 			getView().updateTime( tCurrent );
-			edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> renderTarget = programContext.getProgramImp().getOnscreenRenderTarget();
-			if( renderTarget instanceof edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass ) {
-				edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass captureLookingGlass = (edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass)renderTarget;
-				captureLookingGlass.captureImage( new edu.cmu.cs.dennisc.lookingglass.opengl.CaptureFauxOnscreenLookingGlass.Observer() {
+			edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> renderTarget = programContext.getProgramImp().getOnscreenRenderTarget();
+			if( renderTarget instanceof edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget ) {
+				edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget captureLookingGlass = (edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget)renderTarget;
+				captureLookingGlass.captureImage( new edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget.Observer() {
 					@Override
 					public void handleImage( java.awt.image.BufferedImage image, boolean isUpSideDown ) {
 						if( image != null ) {
@@ -131,7 +130,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 					}
 				} );
 			} else {
-				if( ( renderTarget.getWidth() > 0 ) && ( renderTarget.getHeight() > 0 ) ) {
+				java.awt.Dimension surfaceSize = renderTarget.getSurfaceSize();
+				if( ( surfaceSize.width > 0 ) && ( surfaceSize.height > 0 ) ) {
 					if( image != null ) {
 						//pass
 					} else {
@@ -153,7 +153,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null" );
 					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", renderTarget.getWidth(), "height:", renderTarget.getHeight() );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", surfaceSize.width, "height:", surfaceSize.height );
 				}
 			}
 		}
@@ -232,7 +232,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		return this.isRecordingState;
 	}
 
-	public SingleSelectListState<EventScriptEvent> getEventList() {
+	public org.lgna.croquet.MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
 		return getOwner().getEventList();
 	}
 
@@ -261,7 +261,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		getView().updateTime( 0 );
 		encoder = new WebmRecordingAdapter();
 		frameRateState.setEnabled( true );
-		encoder.setDimension( programContext.getOnscreenRenderTarget().getSize() );
+		encoder.setDimension( programContext.getOnscreenRenderTarget().getSurfaceSize() );
 		this.encoder.initializeAudioRecording();
 	}
 

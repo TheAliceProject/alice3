@@ -48,8 +48,8 @@ import org.lgna.croquet.SingleSelectListState;
 /**
  * @author Dennis Cosgrove
  */
-public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<E>> {
-	public ComboBox( org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<E> model ) {
+public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<E, ?>> {
+	public ComboBox( org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<E, ?> model ) {
 		super( model );
 		this.setSwingComboBoxModel( model.getListSelectionState().getImp().getSwingModel().getComboBoxModel() );
 	}
@@ -141,6 +141,7 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 	}
 
 	public void setRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setRenderer( listCellRenderer );
 	}
 
@@ -149,6 +150,7 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 	}
 
 	public void setMaximumRowCount( int maximumRowCount ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setMaximumRowCount( maximumRowCount );
 	}
 
@@ -187,7 +189,7 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 			java.awt.Component view = this.getView();
 			if( view != null ) {
 				java.awt.Rectangle rv = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertRectangle( view.getParent(), view.getBounds(), asSeenBy.getAwtComponent() );
-				SingleSelectListState<E> listSelectionState = ComboBox.this.getModel().getListSelectionState();
+				SingleSelectListState<E, ?> listSelectionState = ComboBox.this.getModel().getListSelectionState();
 				final int N = listSelectionState.getItemCount();
 				int index = listSelectionState.indexOf( item );
 				if( index != -1 ) {
@@ -261,6 +263,7 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 	}
 
 	/* package-private */void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setModel( model );
 	}
 

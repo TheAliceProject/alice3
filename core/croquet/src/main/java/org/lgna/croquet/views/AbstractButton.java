@@ -80,12 +80,14 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 	}
 
 	public void setIconTextGap( int iconTextGap ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setIconTextGap( iconTextGap );
 	}
 
 	private static final java.awt.Insets ZERO_MARGIN = new java.awt.Insets( 0, 0, 0, 0 );
 
 	public void tightenUpMargin( java.awt.Insets margin ) {
+		this.checkEventDispatchThread();
 		javax.swing.AbstractButton jButton = this.getAwtComponent();
 		if( "javax.swing.plaf.synth.SynthButtonUI".equals( jButton.getUI().getClass().getName() ) ) {
 			if( this.uiDefaultsName != null ) {
@@ -122,7 +124,7 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 		}
 	}
 
-	public void tightenUpMargin() {
+	public final void tightenUpMargin() {
 		this.tightenUpMargin( null );
 	}
 
@@ -133,41 +135,49 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 			model = MODEL_FOR_NULL;
 		}
 		if( model != this.getAwtComponent().getModel() ) {
+			this.checkEventDispatchThread();
 			this.getAwtComponent().setModel( model );
 		}
 	}
 
 	/* package-private */void setAction( javax.swing.Action action ) {
 		if( action != this.getAwtComponent().getAction() ) {
+			this.checkEventDispatchThread();
 			this.getAwtComponent().setAction( action );
 		}
 	}
 
 	public void doClick() {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().doClick();
 	}
 
 	public void setHorizontalTextPosition( HorizontalTextPosition horizontalTextPosition ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
 	}
 
 	public void setVerticalTextPosition( VerticalTextPosition verticalTextPosition ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setVerticalTextPosition( verticalTextPosition.getInternal() );
 	}
 
 	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
 	}
 
 	public void setVerticalAlignment( VerticalAlignment verticalAlignment ) {
+		this.checkEventDispatchThread();
 		this.getAwtComponent().setVerticalAlignment( verticalAlignment.getInternal() );
-	}
-
-	public void setMargin( java.awt.Insets margin ) {
-		this.getAwtComponent().setMargin( margin );
 	}
 
 	public java.awt.Insets getMargin() {
 		return this.getAwtComponent().getMargin();
+	}
+
+	public void setMargin( java.awt.Insets margin ) {
+		this.checkEventDispatchThread();
+		this.getAwtComponent().setMargin( margin );
 	}
 }

@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+
 //todo: rename AbstractEachInTogether
 /**
  * @author Dennis Cosgrove
@@ -65,11 +66,11 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 	protected abstract ExpressionProperty getArrayOrIterableProperty();
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			AbstractEachInTogether other = (AbstractEachInTogether)o;
-			if( this.item.valueContentEquals( other.item, strictness ) ) {
-				return this.getArrayOrIterableProperty().valueContentEquals( other.getArrayOrIterableProperty(), strictness );
+			if( this.item.valueContentEquals( other.item, strictness, filter ) ) {
+				return this.getArrayOrIterableProperty().valueContentEquals( other.getArrayOrIterableProperty(), strictness, filter );
 			}
 		}
 		return false;

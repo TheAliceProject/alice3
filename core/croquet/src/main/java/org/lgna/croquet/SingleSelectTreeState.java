@@ -258,7 +258,7 @@ public abstract class SingleSelectTreeState<T> extends ItemState<T> {
 	private void setSelectedNode( T e ) {
 		javax.swing.tree.TreePath currTreePath = this.swingModel.treeSelectionModel.getSelectionPath();
 		javax.swing.tree.TreePath nextTreePath = this.getTreeModel().getTreePath( e );
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( currTreePath, nextTreePath ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.equals( currTreePath, nextTreePath ) ) {
 			//pass
 		} else {
 			this.swingModel.treeSelectionModel.setSelectionPath( nextTreePath );

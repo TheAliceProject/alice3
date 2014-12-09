@@ -119,7 +119,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		if( ( dotProd == 1 ) || ( dotProd == -1 ) ) {
 			Point3 cameraPosition = orthoCamera.getAbsoluteTransformation().translation;
 			ClippedZPlane dummyPlane = new ClippedZPlane( orthoCamera.picturePlane.getValue(), this.onscreenRenderTarget.getActualViewport( orthoCamera ) );
-			double yRatio = this.onscreenRenderTarget.getHeight() / dummyPlane.getHeight();
+			double yRatio = this.onscreenRenderTarget.getSurfaceHeight() / dummyPlane.getHeight();
 			double horizonInCameraSpace = 0.0d - cameraPosition.y;
 			double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
 			int horizonLinePixelVal = (int)( yRatio * distanceFromMaxY );
@@ -131,7 +131,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 	private boolean isHorizonInView() {
 		assert this.camera instanceof OrthographicCamera;
 		int horizonLinePixelVal = this.getHorizonPixelLocation();
-		double lookingGlassHeight = this.onscreenRenderTarget.getHeight();
+		double lookingGlassHeight = this.onscreenRenderTarget.getSurfaceHeight();
 		if( ( horizonLinePixelVal >= 0 ) && ( horizonLinePixelVal <= lookingGlassHeight ) ) {
 			return true;
 		}
@@ -165,7 +165,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			this.mousePlaneOffset = new Point( 0, 0 );
 			this.originalPosition = new Point3( 0, 0, 0 );
 
-			org.lgna.croquet.history.DragStep dragStep = startInput.getDragAndDropContext();
+			org.lgna.croquet.history.DragStep dragStep = (org.lgna.croquet.history.DragStep)startInput.getDragAndDropContext();
 			org.lgna.croquet.DragModel dragModel = dragStep.getModel();
 			DragComponent dragSource = dragStep.getDragSource();
 			dragSource.hideDragProxy();
@@ -249,7 +249,9 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		}
 		//		this.sgBoundingBoxTransformable.setParent(null);
 		//		System.out.println("End drag position = "+this.sgBoundingBoxTransformable.localTransformation.getValue().translation);
-		DragComponent dragSource = endInput.getDragAndDropContext().getDragSource();
+		org.lgna.croquet.history.DragStep dragStep = (org.lgna.croquet.history.DragStep)endInput.getDragAndDropContext();
+
+		DragComponent dragSource = dragStep.getDragSource();
 		dragSource.showDragProxy();
 	}
 

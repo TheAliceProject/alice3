@@ -45,12 +45,7 @@ package org.lgna.croquet.event;
 /**
  * @author Dennis Cosgrove
  */
-public class ValueEvent<T> {
-	private final boolean isPreviousValueValid;
-	private final T previousValue;
-	private final T nextValue;
-	private final boolean isAdjusting;
-
+public final class ValueEvent<T> {
 	public static <T> ValueEvent<T> createInstance( T previousValue, T nextValue, boolean isAdjusting ) {
 		return new ValueEvent<T>( true, previousValue, nextValue, isAdjusting );
 	}
@@ -85,4 +80,29 @@ public class ValueEvent<T> {
 	public boolean isAdjusting() {
 		return this.isAdjusting;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[" );
+		if( this.isPreviousValueValid ) {
+			sb.append( this.previousValue );
+		} else {
+			sb.append( "NOT VALID" );
+		}
+		sb.append( " -> " );
+		sb.append( this.nextValue );
+
+		if( this.isAdjusting ) {
+			sb.append( " (isAdjusting=true)" );
+		}
+		sb.append( "]" );
+		return sb.toString();
+	}
+
+	private final boolean isPreviousValueValid;
+	private final T previousValue;
+	private final T nextValue;
+	private final boolean isAdjusting;
 }

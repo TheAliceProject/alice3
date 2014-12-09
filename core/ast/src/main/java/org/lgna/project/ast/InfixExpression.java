@@ -42,6 +42,7 @@
  */
 package org.lgna.project.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,12 +61,12 @@ public abstract class InfixExpression<E extends Enum<E>> extends Expression {
 	protected abstract AbstractType<?, ?, ?> getRightOperandType();
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
-		if( super.contentEquals( o, strictness ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+		if( super.contentEquals( o, strictness, filter ) ) {
 			InfixExpression<E> other = (InfixExpression<E>)o;
-			if( this.leftOperand.valueContentEquals( other.leftOperand, strictness ) ) {
-				if( this.operator.valueEquals( other.operator ) ) {
-					return this.rightOperand.valueContentEquals( other.rightOperand, strictness );
+			if( this.leftOperand.valueContentEquals( other.leftOperand, strictness, filter ) ) {
+				if( this.operator.valueEquals( other.operator, filter ) ) {
+					return this.rightOperand.valueContentEquals( other.rightOperand, strictness, filter );
 				}
 			}
 		}

@@ -47,7 +47,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class SimpleTabState<C extends SimpleTabComposite<?>> extends ImmutableDataTabState<C> {
-	public SimpleTabState( Group group, java.util.UUID migrationId, Class<C> cls, C[] values, int selectionIndex ) {
-		super( group, migrationId, org.lgna.croquet.codecs.SimpleTabCompositeCodec.getInstance( cls ), values, selectionIndex );
+	public SimpleTabState( Group group, java.util.UUID migrationId, int selectionIndex, Class<C> cls, C[] values ) {
+		super( group, migrationId, selectionIndex, org.lgna.croquet.codecs.SimpleTabCompositeCodec.getInstance( cls ), values );
 	}
 }

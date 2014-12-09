@@ -307,7 +307,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	//	public final BinaryEncodableAndDecodable decodeBinaryEncodableAndDecodable( BinaryEncodableAndDecodable rv ) {
 	//		String clsName = decodeString();
 	//		if( rv != null ) {
-	//			assert edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( clsName, rv.getClass().getName() );
+	//			assert edu.cmu.cs.dennisc.java.util.Objects.equals( clsName, rv.getClass().getName() );
 	//			rv.decode( this );
 	//		} else {
 	//			assert clsName.length() == 0;
@@ -361,7 +361,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		String clsName = decodeString();
 		if( rv != null ) {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( clsName, rv.getClass().getName() );
-			//assert edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( clsName, rv.getClass().getName() );
+			//assert edu.cmu.cs.dennisc.java.util.Objects.equals( clsName, rv.getClass().getName() );
 			int reference = decodeInt();
 			if( map.containsKey( reference ) ) {
 				assert rv == map.get( reference );

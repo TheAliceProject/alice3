@@ -48,14 +48,14 @@ package org.alice.ide.member;
 public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide.member.views.FunctionTabView> {
 	private static final String GROUP_BY_RETURN_TYPE = "group by return type";
 
-	private final org.lgna.croquet.SingleSelectListState<String> sortState = this.createSingleSelectListState( "sortState", String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, GROUP_BY_CATEGORY, SORT_ALPHABETICALLY, GROUP_BY_RETURN_TYPE );
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<String> sortState = this.createImmutableListState( "sortState", String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, GROUP_BY_CATEGORY, SORT_ALPHABETICALLY, GROUP_BY_RETURN_TYPE );
 
 	public FunctionTabComposite() {
 		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ), org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ? null : new AddFunctionMenuModel() );
 	}
 
 	@Override
-	public org.lgna.croquet.SingleSelectListState<String> getSortState() {
+	public org.lgna.croquet.ImmutableDataSingleSelectListState<String> getSortState() {
 		return this.sortState;
 	}
 
