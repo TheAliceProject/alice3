@@ -50,8 +50,4 @@ public class TODO_REMOVE_BogusStep extends PrepStep {
 	public TODO_REMOVE_BogusStep( Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( transaction, null, trigger );
 	}
-
-	public TODO_REMOVE_BogusStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
 }

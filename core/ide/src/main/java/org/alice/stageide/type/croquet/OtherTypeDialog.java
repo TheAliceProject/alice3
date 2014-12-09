@@ -157,7 +157,7 @@ public class OtherTypeDialog extends org.lgna.croquet.ValueCreatorInputDialogCor
 	}
 
 	public org.lgna.croquet.ValueCreator<org.lgna.project.ast.AbstractType<?, ?, ?>> getValueCreator( org.lgna.project.ast.JavaType rootType ) {
-		return this.mapTypeToValueCreator.getInitializingIfAbsent( rootType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentHashMap.Initializer<org.lgna.project.ast.JavaType, org.lgna.croquet.ValueCreator<org.lgna.project.ast.AbstractType<?, ?, ?>>>() {
+		return this.mapTypeToValueCreator.getInitializingIfAbsent( rootType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.JavaType, org.lgna.croquet.ValueCreator<org.lgna.project.ast.AbstractType<?, ?, ?>>>() {
 			@Override
 			public org.lgna.croquet.ValueCreator<org.lgna.project.ast.AbstractType<?, ?, ?>> initialize( org.lgna.project.ast.JavaType key ) {
 				return new ValueCreatorForRootFilterType( key );

@@ -60,11 +60,12 @@ public abstract class UriCreator<T> extends org.lgna.croquet.ValueCreator<T> {
 	@Override
 	protected T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+		org.lgna.croquet.DocumentFrame documentFrame = application.getDocumentFrame();
 		java.io.File directory = this.getInitialDirectory();
 		String extension = this.getExtension();
 		org.lgna.croquet.history.TransactionHistory subtTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
 		org.lgna.croquet.history.CompletionStep<?> step = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, subtTransactionHistory );
-		java.io.File file = application.showOpenFileDialog( directory, null, extension, true );
+		java.io.File file = documentFrame.showOpenFileDialog( directory, null, extension, true );
 		if( file != null ) {
 			T rv = this.internalGetValueFrom( file );
 			step.finish();

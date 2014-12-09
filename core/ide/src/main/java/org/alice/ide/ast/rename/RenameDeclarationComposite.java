@@ -59,7 +59,7 @@ public abstract class RenameDeclarationComposite<N extends org.lgna.project.ast.
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return new org.alice.ide.croquet.edits.ast.rename.RenameDeclarationEdit( completionStep, declaration, this.declaration.getName(), this.getNameState().getValue() );
 	}
 

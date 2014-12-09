@@ -103,8 +103,7 @@ public class PredeterminedScaleActionOperation extends AbstractFieldBasedManipul
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		step.commitAndInvokeDo( new org.lgna.croquet.edits.AbstractEdit( step ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {

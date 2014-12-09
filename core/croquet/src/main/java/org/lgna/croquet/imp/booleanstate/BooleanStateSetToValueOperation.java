@@ -70,8 +70,7 @@ package org.lgna.croquet.imp.booleanstate;
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.state.setValueTransactionlessly( this.value );
 		step.finish();
 	}

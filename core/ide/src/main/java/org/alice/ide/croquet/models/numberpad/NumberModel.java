@@ -109,7 +109,7 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 	}
 
 	public void replaceSelectionWithDecimalPoint() {
-		this.replaceSelection( DecimalPointOperation.getInstance( this ).getName() );
+		this.replaceSelection( DecimalPointOperation.getInstance( this ).getImp().getName() );
 	}
 
 	public void negate() {

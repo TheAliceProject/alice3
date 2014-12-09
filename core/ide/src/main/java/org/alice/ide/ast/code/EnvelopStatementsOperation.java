@@ -77,9 +77,8 @@ public final class EnvelopStatementsOperation extends org.lgna.croquet.ActionOpe
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<EnvelopStatementsOperation> completionStep = transaction.createAndSetCompletionStep( this, trigger );
-		completionStep.commitAndInvokeDo( new org.alice.ide.ast.code.edits.EnvelopStatementsEdit( completionStep, this.fromLocation, this.toLocation ) );
+	protected void perform( org.lgna.croquet.history.CompletionStep step ) {
+		step.commitAndInvokeDo( new org.alice.ide.ast.code.edits.EnvelopStatementsEdit( step, this.fromLocation, this.toLocation ) );
 	}
 
 }

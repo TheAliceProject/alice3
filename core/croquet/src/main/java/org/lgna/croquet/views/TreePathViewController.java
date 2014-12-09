@@ -43,7 +43,6 @@
 
 package org.lgna.croquet.views;
 
-import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.SingleSelectTreeState;
 
 /**
@@ -134,7 +133,7 @@ public class TreePathViewController<T> extends PanelViewController<SingleSelectT
 			} else {
 				selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
 			}
-			ActionOperation operation = treeSelectionState.getItemSelectionOperation( treeNode );
+			org.lgna.croquet.Operation operation = treeSelectionState.getItemSelectionOperation( treeNode );
 			operation.initializeIfNecessary();
 			Button button = operation.createButton();
 

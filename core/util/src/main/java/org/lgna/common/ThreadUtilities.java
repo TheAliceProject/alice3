@@ -113,7 +113,7 @@ public class ThreadUtilities {
 		}
 	}
 
-	public static <T extends Object> void eachInTogether( EachInTogetherRunnable<T> eachInTogetherRunnable, T... items ) {
+	public static <T> void eachInTogether( EachInTogetherRunnable<T> eachInTogetherRunnable, T... items ) {
 		switch( items.length ) {
 		case 0:
 			break;

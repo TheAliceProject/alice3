@@ -73,8 +73,7 @@ public class FindComposite extends AbstractFindComposite {
 		}
 
 		@Override
-		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 			getIsFrameShowingState().setValueTransactionlessly( true );
 			String name = member.getName();
 

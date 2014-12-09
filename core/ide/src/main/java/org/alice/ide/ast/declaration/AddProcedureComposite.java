@@ -68,9 +68,4 @@ public final class AddProcedureComposite extends AddMethodComposite {
 	protected org.alice.ide.ast.declaration.views.AddProcedureView createView() {
 		return new org.alice.ide.ast.declaration.views.AddProcedureView( this );
 	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<AddProcedureComposite> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<AddProcedureComposite>( this, org.lgna.project.ast.UserType.class, this.getDeclaringType() );
-	}
 }

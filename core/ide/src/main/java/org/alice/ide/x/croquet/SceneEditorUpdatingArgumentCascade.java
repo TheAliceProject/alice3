@@ -64,11 +64,6 @@ public class SceneEditorUpdatingArgumentCascade extends org.alice.ide.croquet.mo
 	}
 
 	@Override
-	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<SceneEditorUpdatingArgumentCascade> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<SceneEditorUpdatingArgumentCascade>( this, org.lgna.project.ast.SimpleArgument.class, this.getArgument() );
-	}
-
-	@Override
 	protected org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createExpressionPropertyEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.Expression prevExpression, org.lgna.project.ast.Expression nextExpression ) {
 		org.lgna.project.ast.SimpleArgument simpleArgument = this.getArgument();
 		org.lgna.project.ast.InstanceCreation instanceCreation = simpleArgument.getFirstAncestorAssignableTo( org.lgna.project.ast.InstanceCreation.class );

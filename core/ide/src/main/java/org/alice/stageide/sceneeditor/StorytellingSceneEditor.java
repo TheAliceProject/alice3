@@ -230,7 +230,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	};
 	private edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createLightweightOnscreenRenderTarget(
 			new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder()
-					.stencilBits( 0 )
+					.stencilBits( 1 )
 					.build()
 			);
 

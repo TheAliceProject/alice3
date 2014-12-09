@@ -49,7 +49,7 @@ package org.alice.stageide.personresource;
 public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.personresource.views.IngredientsView> {
 	private final org.lgna.croquet.Operation randomize = this.createActionOperation( "randomize", new Action() {
 		@Override
-		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			return createRandomEdit( step );
 		}
 	} );
@@ -337,7 +337,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return this.faceTab;
 	}
 
-	private org.lgna.croquet.edits.AbstractEdit createRandomEdit( org.lgna.croquet.history.CompletionStep<?> step ) {
+	private org.lgna.croquet.edits.Edit createRandomEdit( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.story.resources.sims2.LifeStage lifeStage;
 		if( this.lifeStageState.isEnabled() ) {
 			lifeStage = null;

@@ -83,12 +83,6 @@ public class DropTrigger extends AbstractMouseEventTrigger {
 	}
 
 	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		this.dropSite = this.dropSite.createReplacement( retargeter );
-	}
-
-	@Override
 	protected void appendReprInternal( StringBuilder repr ) {
 		super.appendReprInternal( repr );
 		repr.append( ";dropSite=" );

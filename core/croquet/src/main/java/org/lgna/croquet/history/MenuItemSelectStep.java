@@ -51,35 +51,17 @@ public class MenuItemSelectStep extends PrepStep<org.lgna.croquet.MenuItemPrepMo
 		return new MenuItemSelectStep( parent, menuBarComposite, menuItemPrepModels, trigger );
 	}
 
-	private final org.lgna.croquet.resolvers.Resolver<org.lgna.croquet.MenuBarComposite> menuBarCompositeResolver;
+	private final org.lgna.croquet.MenuBarComposite menuBarComposite;
 	private final org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels;
 
 	private MenuItemSelectStep( Transaction parent, org.lgna.croquet.MenuBarComposite menuBarComposite, org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger trigger ) {
 		super( parent, menuItemPrepModels[ menuItemPrepModels.length - 1 ], trigger );
-		if( menuBarComposite != null ) {
-			this.menuBarCompositeResolver = menuBarComposite.getResolver();
-		} else {
-			this.menuBarCompositeResolver = new org.lgna.croquet.resolvers.NullResolver<org.lgna.croquet.MenuBarComposite>();
-		}
+		this.menuBarComposite = menuBarComposite;
 		this.menuItemPrepModels = menuItemPrepModels;
 	}
 
-	public MenuItemSelectStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.menuBarCompositeResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.menuItemPrepModels = new org.lgna.croquet.MenuItemPrepModel[ 0 ];
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this.menuItemPrepModels );
-	}
-
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.menuBarCompositeResolver );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this.menuItemPrepModels );
-	}
-
 	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
-		return this.menuBarCompositeResolver.getResolved();
+		return this.menuBarComposite;
 	}
 
 	public org.lgna.croquet.MenuItemPrepModel[] getMenuItemPrepModels() {

@@ -64,7 +64,7 @@ public class HandleManager implements ManipulationListener {
 
 	public HandleSet getCurrentHandleSet() {
 		synchronized( this.handleSetStack ) {
-			if( this.handleSetStack.empty() ) {
+			if( this.handleSetStack.isEmpty() ) {
 				return null;
 			} else {
 				return this.handleSetStack.peek();
@@ -100,7 +100,7 @@ public class HandleManager implements ManipulationListener {
 
 	public void setHandleSet( HandleSet handleSet ) {
 		synchronized( this.handleSetStack ) {
-			if( !this.handleSetStack.empty() ) {
+			if( !this.handleSetStack.isEmpty() ) {
 				this.handleSetStack.pop();
 			}
 			this.handleSetStack.push( handleSet );
@@ -117,7 +117,7 @@ public class HandleManager implements ManipulationListener {
 
 	public HandleSet popHandleSet() {
 		synchronized( this.handleSetStack ) {
-			if( this.handleSetStack.empty() ) {
+			if( this.handleSetStack.isEmpty() ) {
 				System.err.println( "TRYING TO POP AN EMPTY HANDLE STACK!!!" );
 				Thread.dumpStack();
 				return null;
@@ -298,7 +298,7 @@ public class HandleManager implements ManipulationListener {
 	public void removeCondition( ManipulationEventCriteria condition ) {
 	}
 
-	private final java.util.Stack<HandleSet> handleSetStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<HandleSet> handleSetStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 	private final java.util.List<ManipulationHandle> handles = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
 	private Point3 cameraPosition;

@@ -104,11 +104,6 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFill
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.InstanceFactoryStaticGetInstanceKeyedResolver<InstanceFactoryFillIn> createResolver() {
-		return new org.alice.ide.croquet.resolvers.InstanceFactoryStaticGetInstanceKeyedResolver<InstanceFactoryFillIn>( this, this.value );
-	}
-
-	@Override
 	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, Void> step ) {
 		org.lgna.project.ast.Expression expression = this.value.createTransientExpression();
 		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();

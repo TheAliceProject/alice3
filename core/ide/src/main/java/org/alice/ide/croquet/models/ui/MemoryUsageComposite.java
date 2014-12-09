@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ui;
 /**
  * @author Dennis Cosgrove
  */
-public class MemoryUsageComposite extends org.lgna.croquet.FrameComposite<edu.cmu.cs.dennisc.memory.MemoryUsagePanel> {
+public class MemoryUsageComposite extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<edu.cmu.cs.dennisc.memory.MemoryUsagePanel> {
 	private static class SingletonHolder {
 		private static MemoryUsageComposite instance = new MemoryUsageComposite();
 	}

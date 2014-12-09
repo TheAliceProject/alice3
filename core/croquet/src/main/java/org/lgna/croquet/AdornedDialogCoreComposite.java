@@ -49,37 +49,7 @@ package org.lgna.croquet;
 public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, DCC extends org.lgna.croquet.imp.dialog.DialogContentComposite<?>> extends AbstractDialogComposite<V> {
 	protected static final org.lgna.croquet.history.Step.Key<Boolean> IS_COMMITED_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogCoreComposite.IS_COMMITED_KEY" );
 
-	public static final class InternalCommitOperationResolver extends IndirectResolver<InternalCommitOperation, AdornedDialogCoreComposite> {
-		private InternalCommitOperationResolver( AdornedDialogCoreComposite indirect ) {
-			super( indirect );
-		}
-
-		public InternalCommitOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalCommitOperation getDirect( AdornedDialogCoreComposite indirect ) {
-			return indirect.commitOperation;
-		}
-	}
-
-	public static final class InternalCancelOperationResolver extends IndirectResolver<InternalCancelOperation, AdornedDialogCoreComposite> {
-		private InternalCancelOperationResolver( AdornedDialogCoreComposite indirect ) {
-			super( indirect );
-		}
-
-		public InternalCancelOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalCancelOperation getDirect( AdornedDialogCoreComposite indirect ) {
-			return indirect.cancelOperation;
-		}
-	}
-
-	protected static abstract class InternalDialogOperation extends ActionOperation {
+	protected static abstract class InternalDialogOperation extends Operation {
 		private final AdornedDialogCoreComposite coreComposite;
 
 		public InternalDialogOperation( java.util.UUID id, AdornedDialogCoreComposite coreComposite ) {
@@ -113,7 +83,7 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 				assert coreComposite != null : this;
 				org.lgna.croquet.history.CompletionStep<?> dialogStep = transaction.getOwner().getOwner();
 				assert dialogStep != null : transaction;
-				org.lgna.croquet.views.Dialog dialog = dialogStep.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+				org.lgna.croquet.views.Dialog dialog = dialogStep.getEphemeralDataFor( DIALOG_KEY );
 				assert dialog != null : dialogStep;
 				dialogStep.putEphemeralDataFor( IS_COMMITED_KEY, this.isCommit );
 				dialog.setVisible( false );
@@ -128,11 +98,6 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 	private static final class InternalCommitOperation extends InternalFinishOperation {
 		private InternalCommitOperation( AdornedDialogCoreComposite coreComposite ) {
 			super( java.util.UUID.fromString( "8618f47b-8a2b-45e1-ad03-0ff76e2b7e35" ), coreComposite, true );
-		}
-
-		@Override
-		protected InternalCommitOperationResolver createResolver() {
-			return new InternalCommitOperationResolver( this.getDialogCoreComposite() );
 		}
 
 		@Override
@@ -164,11 +129,6 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 	private static final class InternalCancelOperation extends InternalFinishOperation {
 		private InternalCancelOperation( AdornedDialogCoreComposite coreComposite ) {
 			super( java.util.UUID.fromString( "c467630e-39ee-49c9-ad07-d20c7a29db68" ), coreComposite, false );
-		}
-
-		@Override
-		protected InternalCancelOperationResolver createResolver() {
-			return new InternalCancelOperationResolver( this.getDialogCoreComposite() );
 		}
 
 		@Override
@@ -274,7 +234,7 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 		if( this.isDefaultButtonDesired() ) {
 			org.lgna.croquet.views.Button commitButton = this.getDialogContentComposite().getView().getCommitButton();
 			if( commitButton != null ) {
-				org.lgna.croquet.views.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
+				org.lgna.croquet.views.Dialog dialog = step.getEphemeralDataFor( DIALOG_KEY );
 				dialog.setDefaultButton( commitButton );
 			}
 		}

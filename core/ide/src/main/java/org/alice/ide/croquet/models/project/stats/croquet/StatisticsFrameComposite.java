@@ -44,13 +44,12 @@ package org.alice.ide.croquet.models.project.stats.croquet;
 
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.croquet.models.project.stats.croquet.views.StatisticsFrameView;
-import org.lgna.croquet.FrameComposite;
 import org.lgna.croquet.SimpleTabComposite;
 
 /**
  * @author Matt May
  */
-public class StatisticsFrameComposite extends FrameComposite<StatisticsFrameView> {
+public class StatisticsFrameComposite extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<StatisticsFrameView> {
 	//todo: move
 	public static final Integer TOP_SIZE = 250;
 	public static final Integer BOTTOM_SIZE = 100;

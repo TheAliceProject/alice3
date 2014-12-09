@@ -56,12 +56,6 @@ public class GetAGoodLookAtEdit extends org.alice.stageide.oneshot.edits.LocalTr
 		this.toLookAt = toLookAt;
 	}
 
-	public GetAGoodLookAtEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.camera = null;
-		this.toLookAt = null;
-	}
-
 	public org.lgna.story.SCamera getCamera() {
 		return this.camera;
 	}

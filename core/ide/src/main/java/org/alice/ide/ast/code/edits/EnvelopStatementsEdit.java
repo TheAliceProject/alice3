@@ -87,26 +87,4 @@ public class EnvelopStatementsEdit extends org.lgna.croquet.edits.AbstractEdit<o
 		org.lgna.project.ast.Statement statement = this.fromLocation.getBlockStatement().statements.get( this.fromLocation.getIndex() );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, statement, org.lgna.croquet.Application.getLocale() );
 	}
-
-	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		EnvelopStatementsEdit replacementEdit = (EnvelopStatementsEdit)edit;
-		retargeter.addKeyValuePair( this.fromLocation, replacementEdit.fromLocation );
-		retargeter.addKeyValuePair( this.toLocation, replacementEdit.toLocation );
-	}
-
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		this.fromLocation = retargeter.retarget( this.fromLocation );
-		this.toLocation = retargeter.retarget( this.toLocation );
-	}
-
-	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.AbstractEdit<?> replacementCandidate ) {
-		if( replacementCandidate instanceof EnvelopStatementsEdit ) {
-			return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
-		} else {
-			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "edit is not an instance of EnvelopStatementsEdit" );
-		}
-	}
 }

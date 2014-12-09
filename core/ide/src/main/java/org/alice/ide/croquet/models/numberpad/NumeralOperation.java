@@ -65,19 +65,13 @@ public class NumeralOperation extends NumberPadOperation {
 	private final short numeral;
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.NumberModelShortStaticGetInstanceKeyedResolver<NumeralOperation> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NumberModelShortStaticGetInstanceKeyedResolver<NumeralOperation>( this, this.numberModel, this.numeral );
-	}
-
-	@Override
 	protected void localize() {
 		//super.localize();
 		this.setName( Short.toString( this.numeral ) );
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.numberModel.replaceSelection( this.numeral );
 		step.finish();
 	}

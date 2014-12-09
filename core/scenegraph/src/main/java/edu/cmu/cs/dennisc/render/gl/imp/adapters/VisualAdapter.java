@@ -218,6 +218,23 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 		}
 	}
 
+	private void preSilhouette( RenderContext rc ) {
+		rc.gl.glClearStencil( 0 );
+		rc.gl.glClear( javax.media.opengl.GL.GL_STENCIL_BUFFER_BIT );
+		rc.gl.glEnable( javax.media.opengl.GL.GL_STENCIL_TEST );
+		rc.gl.glStencilFunc( javax.media.opengl.GL.GL_ALWAYS, 1, -1 );
+		rc.gl.glStencilOp( javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_REPLACE );
+	}
+
+	private void postSilouette( RenderContext rc, int face ) {
+		rc.gl.glStencilFunc( javax.media.opengl.GL2.GL_NOTEQUAL, 1, -1 );
+		rc.gl.glStencilOp( javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_REPLACE );
+
+		this.silhouetteAdapter.setup( rc, face );
+		this.renderGeometry( rc, RenderType.SILHOUETTE );
+		rc.gl.glDisable( javax.media.opengl.GL.GL_STENCIL_TEST );
+	}
+
 	protected void actuallyRender( RenderContext rc, RenderType renderType ) {
 		assert ( m_frontFacingAppearanceAdapter != null ) || ( m_backFacingAppearanceAdapter != null );
 
@@ -232,7 +249,13 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 			if( m_frontFacingAppearanceAdapter != null ) {
 				m_frontFacingAppearanceAdapter.setPipelineState( rc, GL_FRONT_AND_BACK );
 				rc.gl.glDisable( GL_CULL_FACE );
+				if( this.silhouetteAdapter != null ) {
+					this.preSilhouette( rc );
+				}
 				this.renderGeometry( rc, renderType );
+				if( this.silhouetteAdapter != null ) {
+					this.postSilouette( rc, GL_FRONT_AND_BACK );
+				}
 				rc.gl.glEnable( GL_CULL_FACE );
 			} else {
 				//should never reach here
@@ -240,32 +263,26 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 		} else {
 			if( m_frontFacingAppearanceAdapter != null ) {
 				rc.gl.glCullFace( GL_BACK );
-
 				if( this.silhouetteAdapter != null ) {
-					rc.gl.glClearStencil( 0 );
-					rc.gl.glClear( javax.media.opengl.GL.GL_STENCIL_BUFFER_BIT );
-					rc.gl.glEnable( javax.media.opengl.GL.GL_STENCIL_TEST );
-					rc.gl.glStencilFunc( javax.media.opengl.GL.GL_ALWAYS, 1, -1 );
-					rc.gl.glStencilOp( javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_REPLACE );
+					this.preSilhouette( rc );
 				}
-
 				m_frontFacingAppearanceAdapter.setPipelineState( rc, GL_FRONT );
 				this.renderGeometry( rc, renderType );
-
 				if( this.silhouetteAdapter != null ) {
-					rc.gl.glStencilFunc( javax.media.opengl.GL2.GL_NOTEQUAL, 1, -1 );
-					rc.gl.glStencilOp( javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_REPLACE );
-
-					this.silhouetteAdapter.setup( rc, GL_FRONT );
-					this.renderGeometry( rc, RenderType.SILHOUETTE );
-					rc.gl.glDisable( javax.media.opengl.GL.GL_STENCIL_TEST );
+					this.postSilouette( rc, GL_FRONT );
 				}
 
 			}
 			if( m_backFacingAppearanceAdapter != null ) {
 				rc.gl.glCullFace( GL_FRONT );
+				if( this.silhouetteAdapter != null ) {
+					this.preSilhouette( rc );
+				}
 				m_backFacingAppearanceAdapter.setPipelineState( rc, GL_BACK );
 				this.renderGeometry( rc, renderType );
+				if( this.silhouetteAdapter != null ) {
+					this.postSilouette( rc, GL_BACK );
+				}
 			}
 		}
 

@@ -158,7 +158,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	}
 
 	@Override
-	protected void appendPrepModelsToCascadeRootPath( java.util.ArrayList<org.lgna.croquet.PrepModel> cascadeRootPath, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
+	protected void appendPrepModelsToCascadeRootPath( java.util.List<org.lgna.croquet.PrepModel> cascadeRootPath, org.lgna.croquet.edits.Edit edit ) {
 		super.appendPrepModelsToCascadeRootPath( cascadeRootPath, edit );
 		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
 			org.lgna.croquet.edits.StateEdit<InstanceFactory> stateEdit = (org.lgna.croquet.edits.StateEdit<InstanceFactory>)edit;
@@ -199,7 +199,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 					createFillInMenuComboIfNecessary(
 							InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ),
 							apiConfigurationManager.getInstanceFactorySubMenuForThis( type )
-					)
+							)
 					);
 		}
 		if( type instanceof org.lgna.project.ast.NamedUserType ) {
@@ -255,7 +255,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 								createFillInMenuComboIfNecessary(
 										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessFactory.getInstance( parameter ) ),
 										apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess( parameter )
-								)
+										)
 								);
 					}
 				}
@@ -271,7 +271,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 								createFillInMenuComboIfNecessary(
 										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessFactory.getInstance( local ) ),
 										apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess( local )
-								)
+										)
 								);
 					}
 				}
@@ -330,7 +330,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 																	createFillInMenuComboIfNecessary(
 																			InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( parameter, parameterMethod ) ),
 																			apiConfigurationManager.getInstanceFactorySubMenuForParameterAccessMethodInvocation( parameter, parameterMethod )
-																	)
+																			)
 																	);
 														}
 													}

@@ -150,7 +150,7 @@ public abstract class PotentialNameChangerHelpComposite<V extends org.lgna.croqu
 	}
 
 	@Override
-	protected final org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
+	protected final org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
 		return null;
 	}
 

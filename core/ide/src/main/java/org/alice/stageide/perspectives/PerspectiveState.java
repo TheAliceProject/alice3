@@ -70,5 +70,5 @@ public class PerspectiveState extends org.lgna.croquet.MutableDataSingleSelectLi
 		}
 	}
 
-	private final java.util.Stack<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 }

@@ -69,9 +69,10 @@ public class ExampleMainComposite extends org.lgna.croquet.SimpleComposite<org.l
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		app.getFrame().setMainComposite( new ExampleMainComposite() );
-		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
-		app.getFrame().pack();
-		app.getFrame().setVisible( true );
+		org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
+		org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
+		frame.setMainComposite( new ExampleMainComposite() );
+		frame.pack();
+		frame.setVisible( true );
 	}
 }

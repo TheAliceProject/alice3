@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ui.debug;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TransactionHistoryComposite extends org.lgna.croquet.FrameComposite<org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView> {
+public abstract class TransactionHistoryComposite extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<org.alice.ide.croquet.models.ui.debug.components.TransactionHistoryView> {
 	public TransactionHistoryComposite( java.util.UUID id, org.lgna.croquet.Group booleanStateGroup ) {
 		super( id, booleanStateGroup );
 	}

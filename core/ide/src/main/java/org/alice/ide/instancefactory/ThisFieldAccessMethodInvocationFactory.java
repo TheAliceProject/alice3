@@ -76,14 +76,6 @@ public class ThisFieldAccessMethodInvocationFactory extends MethodInvocationFact
 		}
 	}
 
-	@Override
-	protected org.lgna.croquet.resolvers.Resolver<ThisFieldAccessMethodInvocationFactory> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ThisFieldAccessMethodInvocationFactory>(
-				this,
-				new Class[] { org.lgna.project.ast.UserField.class, org.lgna.project.ast.AbstractMethod.class },
-				new Object[] { this.field, this.getMethod() } );
-	}
-
 	public org.lgna.project.ast.UserField getField() {
 		return this.field;
 	}

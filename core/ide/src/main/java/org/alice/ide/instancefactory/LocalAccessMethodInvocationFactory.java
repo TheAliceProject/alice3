@@ -81,14 +81,6 @@ public class LocalAccessMethodInvocationFactory extends MethodInvocationFactory 
 		}
 	}
 
-	@Override
-	protected org.lgna.croquet.resolvers.Resolver<LocalAccessMethodInvocationFactory> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalAccessMethodInvocationFactory>(
-				this,
-				new Class[] { org.lgna.project.ast.UserParameter.class, org.lgna.project.ast.AbstractMethod.class },
-				new Object[] { this.local, this.getMethod() } );
-	}
-
 	public org.lgna.project.ast.UserLocal getLocal() {
 		return this.local;
 	}

@@ -76,11 +76,6 @@ public enum Clipboard {
 		public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 			return Clipboard.SINGLETON.dragComponent.getDropReceptor();
 		}
-
-		@Override
-		public ClipboardDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
-			return this;
-		}
 	}
 
 	private static class ClipboardDragModel extends org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel {
@@ -118,7 +113,7 @@ public enum Clipboard {
 		}
 	}
 
-	private final java.util.Stack<org.lgna.project.ast.Node> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<org.lgna.project.ast.Node> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 	private final ClipboardDropSite dropSite = new ClipboardDropSite();
 	private final ClipboardDragModel dragModel = new ClipboardDragModel();
 	private final org.alice.ide.clipboard.components.ClipboardDragComponent dragComponent = new org.alice.ide.clipboard.components.ClipboardDragComponent( dragModel );

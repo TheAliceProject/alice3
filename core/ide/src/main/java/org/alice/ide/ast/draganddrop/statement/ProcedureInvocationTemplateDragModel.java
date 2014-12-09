@@ -86,11 +86,6 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ProcedureInvocationTemplateDragModel> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ProcedureInvocationTemplateDragModel>( this, org.lgna.project.ast.AbstractMethod.class, this.method );
-	}
-
-	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade.getInstance( blockStatementIndexPair, this.method );
 	}

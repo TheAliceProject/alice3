@@ -50,7 +50,7 @@ public abstract class ExpressionCascadeManager {
 	private final org.alice.ide.cascade.fillerinners.StringFillerInner stringFillerInner = new org.alice.ide.cascade.fillerinners.StringFillerInner();
 	private final java.util.List<org.alice.ide.cascade.fillerinners.ExpressionFillerInner> expressionFillerInners = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
-	private final java.util.Stack<ExpressionCascadeContext> contextStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<ExpressionCascadeContext> contextStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	public ExpressionCascadeManager() {
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.DoubleFillerInner() );

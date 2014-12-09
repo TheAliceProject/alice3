@@ -171,7 +171,9 @@ class IkProgram extends SProgram {
 	public static void main( String[] args ) {
 		IkTestApplication app = new IkTestApplication();
 		app.initialize( args );
-		app.getFrame().setMainComposite( new test.ik.croquet.IkSplitComposite() );
+
+		org.lgna.croquet.views.Frame frame = app.getDocumentFrame().getFrame();
+		frame.setMainComposite( new test.ik.croquet.IkSplitComposite() );
 
 		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.LEFT_CLAVICLE;
 		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.LEFT_WRIST;
@@ -184,7 +186,7 @@ class IkProgram extends SProgram {
 		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( program );
 		program.initializeTest();
 
-		app.getFrame().setSize( 1200, 800 );
-		app.getFrame().setVisible( true );
+		frame.setSize( 1200, 800 );
+		frame.setVisible( true );
 	}
 }

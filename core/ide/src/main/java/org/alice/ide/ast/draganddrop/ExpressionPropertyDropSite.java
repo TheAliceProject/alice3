@@ -69,15 +69,6 @@ public class ExpressionPropertyDropSite implements org.lgna.croquet.DropSite {
 	}
 
 	@Override
-	public ExpressionPropertyDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
-		org.lgna.project.ast.ExpressionProperty replacementExpressionProperty = retargeter.retarget( this.expressionProperty );
-
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "retarget properties" );
-
-		return new ExpressionPropertyDropSite( replacementExpressionProperty );
-	}
-
-	@Override
 	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 		org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)this.expressionProperty.getOwner();
 		org.lgna.project.ast.AbstractCode code = node.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );

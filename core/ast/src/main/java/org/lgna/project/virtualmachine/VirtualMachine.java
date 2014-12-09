@@ -959,7 +959,7 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected final <E extends Object> E evaluate( org.lgna.project.ast.Expression expression, Class<E> cls ) {
+	protected final <E> E evaluate( org.lgna.project.ast.Expression expression, Class<E> cls ) {
 		//in order to support python...
 		//if( result instanceof Integer ) {
 		//	condition = ((Integer)result) != 0;

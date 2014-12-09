@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public final class ExitOperation extends org.lgna.croquet.ActionOperation {
+public final class ExitOperation extends org.lgna.croquet.Operation {
 	private static class SingletonHolder {
 		private static ExitOperation instance = new ExitOperation();
 	}

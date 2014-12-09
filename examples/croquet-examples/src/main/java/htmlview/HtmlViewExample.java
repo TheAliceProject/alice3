@@ -92,10 +92,12 @@ public class HtmlViewExample {
 				bottomView.getHtmlDocument().getStyleSheet().addRule( "A {color:" + edu.cmu.cs.dennisc.java.awt.ColorUtilities.toHashText( java.awt.Color.GREEN.darker() ) + "}" );
 
 				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-				app.getFrame().getContentPane().addPageStartComponent( topView );
-				app.getFrame().getContentPane().addPageEndComponent( bottomView );
-				app.getFrame().setSize( 1000, 800 );
-				app.getFrame().setVisible( true );
+				org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
+				org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
+				frame.getContentPane().addPageStartComponent( topView );
+				frame.getContentPane().addPageEndComponent( bottomView );
+				frame.setSize( 1000, 800 );
+				frame.setVisible( true );
 			}
 		} );
 	}

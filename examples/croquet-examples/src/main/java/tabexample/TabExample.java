@@ -55,7 +55,8 @@ public class TabExample {
 
 				tabexample.croquet.TabExampleComposite tabExampleComposite = new tabexample.croquet.TabExampleComposite();
 
-				org.lgna.croquet.views.Frame frame = app.getFrame();
+				org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
+				org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
 				frame.setTitle( "Tab Example" );
 				frame.setMainComposite( tabExampleComposite );
 				frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );

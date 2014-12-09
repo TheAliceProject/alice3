@@ -45,7 +45,7 @@ package org.alice.ide.javacode.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class JavaCodeFrameComposite extends org.lgna.croquet.FrameComposite<org.lgna.croquet.views.Panel> {
+public class JavaCodeFrameComposite extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<org.lgna.croquet.views.Panel> {
 	private static class SingletonHolder {
 		private static JavaCodeFrameComposite instance = new JavaCodeFrameComposite();
 	}

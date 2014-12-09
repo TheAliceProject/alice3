@@ -119,7 +119,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	private final ActionOperation restartRecording = this.createActionOperation( "restart", new Action() {
 
 		@Override
-		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			isRecordingState.setValueTransactionlessly( false );
 			resetData();
 			return null;

@@ -71,9 +71,10 @@ public abstract class PerspectiveApplication extends Application {
 				toolBarComposite = null;
 				mainComposite = null;
 			}
-			this.getFrame().setMenuBarComposite( menuBarComposite );
-			this.getFrame().setToolBarComposite( toolBarComposite );
-			this.getFrame().setMainComposite( mainComposite );
+			org.lgna.croquet.views.Frame frame = this.getDocumentFrame().getFrame();
+			frame.setMenuBarComposite( menuBarComposite );
+			frame.setToolBarComposite( toolBarComposite );
+			frame.setMainComposite( mainComposite );
 		}
 	}
 }

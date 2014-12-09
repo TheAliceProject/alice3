@@ -47,8 +47,6 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public interface InstanceFactory {
-	public <F extends InstanceFactory> org.lgna.croquet.resolvers.Resolver<F> getResolver();
-
 	public boolean isValid();
 
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType();

@@ -55,11 +55,10 @@ import org.alice.ide.croquet.models.project.find.croquet.views.FindView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
-import org.lgna.croquet.FrameComposite;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.codecs.DefaultItemCodec;
 import org.lgna.croquet.data.RefreshableListData;
-import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.AbstractDeclaration;
@@ -74,7 +73,7 @@ import edu.cmu.cs.dennisc.pattern.Criterion;
 /**
  * @author Matt May
  */
-public abstract class AbstractFindComposite extends FrameComposite<FindView> {
+public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<FindView> {
 	public static final org.lgna.croquet.Group FIND_COMPOSITE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "609c0bf5-73c3-4987-a2b5-8225c19f7886" ) );
 
 	private final FindContentManager manager = new FindContentManager();
@@ -149,7 +148,7 @@ public abstract class AbstractFindComposite extends FrameComposite<FindView> {
 	private final ActionOperation howToAddOperation = createActionOperation( "howToAdd", new Action() {
 
 		@Override
-		public AbstractEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			//needs work
 			if( searchResultsState.getValue() != null ) {
 				AbstractDeclaration searchObject = searchResultsState.getValue().getDeclaration();

@@ -159,26 +159,4 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 		rv.append( "move: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.getStatement(), org.lgna.croquet.Application.getLocale() );
 	}
-
-	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		MoveStatementEdit replacementEdit = (MoveStatementEdit)edit;
-		retargeter.addKeyValuePair( this.fromLocation, replacementEdit.fromLocation );
-		retargeter.addKeyValuePair( this.toLocation, replacementEdit.toLocation );
-	}
-
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		this.fromLocation = retargeter.retarget( this.fromLocation );
-		this.toLocation = retargeter.retarget( this.toLocation );
-	}
-
-	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.AbstractEdit<?> replacementCandidate ) {
-		if( replacementCandidate instanceof MoveStatementEdit ) {
-			return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
-		} else {
-			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "edit is not an instance of MoveStatementEdit" );
-		}
-	}
 }

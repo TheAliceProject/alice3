@@ -369,14 +369,12 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	public LgnaStackTraceElement[] getStackTrace( Thread thread ) {
 		Frame frame = this.getFrameForThread( thread );
 		if( frame != null ) {
-			//a bit of double negative logic
-			//push onto stack from top of runtime stack to get the order we want
-			java.util.Stack<LgnaStackTraceElement> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+			java.util.Deque<LgnaStackTraceElement> deque = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			do {
-				stack.push( frame );
+				deque.addLast( frame );
 				frame = frame.getOwner();
 			} while( frame != null );
-			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( stack, LgnaStackTraceElement.class );
+			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( deque, LgnaStackTraceElement.class );
 		} else {
 			return new LgnaStackTraceElement[] {};
 		}

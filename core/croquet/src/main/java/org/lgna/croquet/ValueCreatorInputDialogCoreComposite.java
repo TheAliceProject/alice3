@@ -64,32 +64,34 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.cr
 		return this.name;
 	}
 
+	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		super.handlePostHideDialog( completionStep );
+		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
+		if( isCommited != null ) { // close button condition
+			if( isCommited ) {
+				try {
+					this.value = createValue();
+					completionStep.finish();
+				} catch( CancelException ce ) {
+					completionStep.cancel();
+				}
+			} else {
+				completionStep.cancel();
+			}
+		} else {
+			completionStep.cancel();
+		}
+	}
+
 	protected abstract T createValue();
+
+	private T value;
 
 	@Override
 	public T createValue( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		final Object[] buffer = { null };
-		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
-			@Override
-			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-				super.handlePostHideDialog( completionStep );
-				Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-				if( isCommited != null ) { // close button condition
-					if( isCommited ) {
-						try {
-							buffer[ 0 ] = createValue();
-							completionStep.finish();
-						} catch( CancelException ce ) {
-							completionStep.cancel();
-						}
-					} else {
-						completionStep.cancel();
-					}
-				} else {
-					completionStep.cancel();
-				}
-			}
-		}, completionStep );
-		return (T)buffer[ 0 ];
+		this.value = null;
+		this.showDialog( completionStep );
+		return this.value;
 	}
 }

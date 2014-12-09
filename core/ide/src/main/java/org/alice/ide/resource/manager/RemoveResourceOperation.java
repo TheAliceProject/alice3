@@ -59,7 +59,7 @@ public final class RemoveResourceOperation extends SelectedResourceOperation {
 	}
 
 	@Override
-	public org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource ) {
+	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource ) {
 		return new org.alice.ide.resource.manager.edits.RemoveResourceEdit( step, resource );
 	}
 }

@@ -49,9 +49,4 @@ public abstract class PotentiallyEnvelopingStatementInsertCascade extends Statem
 	public PotentiallyEnvelopingStatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isEnveloping, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
 		super( id, blockStatementIndexPair, isEnveloping, blanks );
 	}
-
-	@Override
-	protected org.lgna.croquet.resolvers.Resolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndBooleanStaticGetInstanceResolver( this, this.getBlockStatementIndexPair(), this.isEnveloping() );
-	}
 }

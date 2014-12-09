@@ -45,32 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class OwnedByCompositeOperation extends ActionOperation {
-	public static final class Resolver extends IndirectResolver<OwnedByCompositeOperation, OperationOwningComposite<?>> {
-		private final String subKeyText;
-
-		private Resolver( OperationOwningComposite<?> indirect, String subKeyText ) {
-			super( indirect );
-			this.subKeyText = subKeyText;
-		}
-
-		public Resolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-			this.subKeyText = binaryDecoder.decodeString();
-		}
-
-		@Override
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			super.encode( binaryEncoder );
-			binaryEncoder.encode( this.subKeyText );
-		}
-
-		@Override
-		protected OwnedByCompositeOperation getDirect( OperationOwningComposite<?> indirect ) {
-			return indirect.getLaunchOperation( this.subKeyText );
-		}
-	}
-
+public final class OwnedByCompositeOperation extends Operation {
 	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite, OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.Initializer<org.lgna.croquet.OperationOwningComposite> initializer ) {
 		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ) );
 		assert subKey != null : composite;
@@ -124,11 +99,6 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	@Override
 	protected boolean isSubTransactionHistoryRequired() {
 		return this.composite.isSubTransactionHistoryRequired();
-	}
-
-	@Override
-	protected Resolver createResolver() {
-		return new Resolver( this.composite, this.subKey.getText() );
 	}
 
 	private final OperationOwningComposite composite;

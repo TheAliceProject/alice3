@@ -68,37 +68,7 @@ public abstract class AbstractElement implements Element {
 		}
 	}
 
-	public static abstract class IndirectResolver<D extends Element, I extends Element> implements org.lgna.croquet.resolvers.Resolver<D> {
-		private final org.lgna.croquet.resolvers.Resolver<I> resolver;
-
-		public IndirectResolver( I indirect ) {
-			this.resolver = indirect.getResolver();
-		}
-
-		public IndirectResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			this.resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		}
-
-		@Override
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			binaryEncoder.encode( this.resolver );
-		}
-
-		protected abstract D getDirect( I indirect );
-
-		@Override
-		public final D getResolved() {
-			return this.getDirect( this.resolver.getResolved() );
-		}
-
-		@Override
-		public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
-			this.resolver.retarget( retargeter );
-		}
-	}
-
 	private final java.util.UUID migrationId;
-	private org.lgna.croquet.resolvers.Resolver<Element> resolver;
 
 	public AbstractElement( java.util.UUID migrationId ) {
 		this.migrationId = migrationId;
@@ -323,20 +293,6 @@ public abstract class AbstractElement implements Element {
 	}
 
 	protected abstract void localize();
-
-	protected <M extends Element> org.lgna.croquet.resolvers.Resolver<M> createResolver() {
-		return new org.lgna.croquet.resolvers.SingletonResolver( this );
-	}
-
-	@Override
-	public <M extends Element> org.lgna.croquet.resolvers.Resolver<M> getResolver() {
-		if( this.resolver != null ) {
-			//pass
-		} else {
-			this.resolver = this.createResolver();
-		}
-		return (org.lgna.croquet.resolvers.Resolver<M>)this.resolver;
-	}
 
 	protected void appendRepr( StringBuilder sb ) {
 	}

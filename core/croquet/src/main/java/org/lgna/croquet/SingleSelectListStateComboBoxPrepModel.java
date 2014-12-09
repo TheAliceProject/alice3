@@ -80,11 +80,6 @@ public final class SingleSelectListStateComboBoxPrepModel<T, D extends org.lgna.
 		this.listSelectionState.setEnabled( isEnabled );
 	}
 
-	@Override
-	protected org.lgna.croquet.imp.liststate.SingleSelectListStateComboBoxPrepModelResolver<T, D> createResolver() {
-		return new org.lgna.croquet.imp.liststate.SingleSelectListStateComboBoxPrepModelResolver<T, D>( this.listSelectionState );
-	}
-
 	public org.lgna.croquet.views.ComboBox<T> createComboBox() {
 		return new org.lgna.croquet.views.ComboBox<T>( this );
 	}

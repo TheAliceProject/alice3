@@ -66,7 +66,7 @@ public class CopyFromClipboardOperation extends FromClipboardOperation {
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.Statement statement ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.Statement statement ) {
 		org.lgna.project.ast.Statement copy = org.alice.ide.IDE.getActiveInstance().createCopy( statement );
 		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit<CopyFromClipboardOperation>( step, this.getBlockStatementIndexPair(), copy );
 	}
