@@ -14,5 +14,8 @@ hs_*.log
 /.settings
 /target
 
+# zanata
+.zanata-cache
+
 # Ignore these projects from Looking Glass so that people don't add these files to the Alice repository by mistake.
 /lookingglass
