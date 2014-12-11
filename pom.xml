@@ -280,6 +280,7 @@
 						<interactiveMode>false</interactiveMode>
 						<srcDir>${project.basedir}/src/main</srcDir>
 						<transDir>${project.basedir}/src/i18n</transDir>
+						<pushType>both</pushType>
 						<!-- <dryRun>true</dryRun> -->
 					</configuration>
 				</plugin>
