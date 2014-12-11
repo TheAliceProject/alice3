@@ -81,7 +81,7 @@ public class IconRenderTest {
 
 				if( IS_USING_OFFSCREEN_RENDER_TARGET ) {
 					java.awt.Dimension size = new java.awt.Dimension( 512, 512 );
-					renderTarget = renderFactory.createOffscreenRenderTarget( size.width, size.height, null );
+					renderTarget = renderFactory.createOffscreenRenderTarget( size.width, size.height, null, new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build() );
 					org.lgna.story.implementation.CameraImp<?> impCamera = org.lgna.story.EmployeesOnly.getImplementation( scene.getCamera() );
 					renderTarget.addSgCamera( impCamera.getSgCamera() );
 				} else {
