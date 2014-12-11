@@ -275,11 +275,13 @@
 					<configuration>
 						<projectConfig>${parent.basedir}/zanata.xml</projectConfig>
 						<sourceLang>en-US</sourceLang>
-						<copyTrans>true</copyTrans>
+                                                <copyTrans>false</copyTrans>
 						<deleteObsoleteModules>true</deleteObsoleteModules>
 						<interactiveMode>false</interactiveMode>
 						<srcDir>${project.basedir}/src/main</srcDir>
 						<transDir>${project.basedir}/src/i18n</transDir>
+                                                <merge>import</merge>
+                                                <pushType>both</pushType>
 						<!-- <dryRun>true</dryRun> -->
 					</configuration>
 				</plugin>
