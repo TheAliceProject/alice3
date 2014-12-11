@@ -72,6 +72,9 @@ public class GenerateI18nSeed {
 			for( String[] tagArray : new String[][] { resourceKey.getTags(), resourceKey.getGroupTags(), resourceKey.getThemeTags() } ) {
 				if( tagArray != null ) {
 					for( String tag : tagArray ) {
+						//						if( tag.contains( "fishing" ) ) {
+						//							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( tag );
+						//						}
 						if( tag.startsWith( "*" ) ) {
 							tag = tag.substring( 1 );
 						}
@@ -98,17 +101,20 @@ public class GenerateI18nSeed {
 		java.util.Collections.sort( list );
 		StringBuilder sbTags = new StringBuilder();
 		for( String tag : list ) {
-			sbTags.append( tag );
+			sbTags.append( tag.replaceAll( " ", "_" ) );
 			sbTags.append( " = " );
 			sbTags.append( tag );
 			sbTags.append( "\n" );
 		}
 
 		java.io.File repoRoot = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "/gits/alice/" );
-		java.io.File srcRoot = new java.io.File( repoRoot, "core/ide/intermediate/i18n_seed" );//"core/ide/src/main/java/" );
+		java.io.File srcRoot = new java.io.File( repoRoot, "core/i18n/src/main/resources" );//"core/ide/src/main/java/" );
 		java.io.File packageDirectory = new java.io.File( srcRoot, "org/lgna/story/resources" );
-		java.io.File file = new java.io.File( packageDirectory, "GalleryNames.properties" );
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( file, sbNames.toString() );
+		java.io.File namesFile = new java.io.File( packageDirectory, "GalleryNames.properties" );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( namesFile, sbNames.toString() );
+
+		java.io.File tagsFile = new java.io.File( packageDirectory, "GalleryTags.properties" );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( tagsFile, sbTags.toString() );
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( file, file.exists() );
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sbNames );
 		//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sbTags );
