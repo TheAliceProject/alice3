@@ -49,7 +49,7 @@ public class RenderTestProgramImp extends org.lgna.story.implementation.ProgramI
 	private final edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 
 	public RenderTestProgramImp( org.lgna.story.SProgram abstraction ) {
-		super( abstraction, edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget() );
+		super( abstraction, edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget( new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build() ) );
 		java.awt.Component awtComponent = this.getOnscreenRenderTarget().getAwtComponent();
 		awtComponent.addMouseListener( new java.awt.event.MouseListener() {
 
