@@ -280,8 +280,7 @@
 						<interactiveMode>false</interactiveMode>
 						<srcDir>${project.basedir}/src/main</srcDir>
 						<transDir>${project.basedir}/src/i18n</transDir>
-						<merge>import</merge>
-						<pushType>both</pushType>
+						<!-- <useCache>false</useCache> -->
 						<!-- <dryRun>true</dryRun> -->
 					</configuration>
 				</plugin>
