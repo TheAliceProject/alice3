@@ -43,11 +43,10 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
-
 /**
  * @author Dennis Cosgrove
  */
-class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.swing.JPanel> implements edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget {
+/*package-private*/class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.swing.JPanel> implements edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget {
 	private static final boolean IS_IMAGE_TRACKING_READY_FOR_PRIME_TIME = false;
 
 	private class RenderPane extends javax.media.opengl.awt.GLJPanel {

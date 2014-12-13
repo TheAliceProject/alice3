@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasable implements edu.cmu.cs.dennisc.render.RenderTarget {
+/*package-private*/abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasable implements edu.cmu.cs.dennisc.render.RenderTarget {
 	public GlrRenderTarget( GlrRenderFactory glrRenderer, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		this.glrRenderer = glrRenderer;
 
@@ -104,17 +104,17 @@ public abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.Default
 
 	@Override
 	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		this.imp.addSgCamera( sgCamera );
+		this.imp.addSgCamera( sgCamera, this.getGLAutoDrawable() );
 	}
 
 	@Override
 	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		this.imp.removeSgCamera( sgCamera );
+		this.imp.removeSgCamera( sgCamera, this.getGLAutoDrawable() );
 	}
 
 	@Override
 	public void clearSgCameras() {
-		this.imp.clearSgCameras();
+		this.imp.clearSgCameras( this.getGLAutoDrawable() );
 	}
 
 	@Override

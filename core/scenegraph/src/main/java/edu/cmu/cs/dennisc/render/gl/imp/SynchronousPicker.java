@@ -44,7 +44,6 @@
 package edu.cmu.cs.dennisc.render.gl.imp;
 
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
-import edu.cmu.cs.dennisc.render.gl.GlrRenderTarget;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractCameraAdapter;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
@@ -76,8 +75,8 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 			this.glShareContext = null;
 		}
 
-		public void setPickParameters( GlrRenderTarget lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.render.PickObserver pickObserver ) {
-			this.pickParameters = new PickParameters( lookingGlass, sgCamera, x, y, isSubElementRequired, pickObserver );
+		public void setPickParameters( edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.render.PickObserver pickObserver ) {
+			this.pickParameters = new PickParameters( renderTarget, sgCamera, x, y, isSubElementRequired, pickObserver );
 		}
 
 		public void clearPickParameters() {
@@ -129,8 +128,8 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 				this.pickContext.gl.glRenderMode( javax.media.opengl.GL2.GL_SELECT );
 				this.pickContext.gl.glInitNames();
 
-				GlrRenderTarget lookingGlass = pickParameters.getLookingGlass();
-				java.awt.Rectangle actualViewport = lookingGlass.getActualViewport( sgCamera );
+				edu.cmu.cs.dennisc.render.RenderTarget renderTarget = pickParameters.getRenderTarget();
+				java.awt.Rectangle actualViewport = renderTarget.getActualViewport( sgCamera );
 				this.pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
 				cameraAdapter.performPick( this.pickContext, pickParameters, actualViewport );
 				this.pickContext.gl.glFlush();

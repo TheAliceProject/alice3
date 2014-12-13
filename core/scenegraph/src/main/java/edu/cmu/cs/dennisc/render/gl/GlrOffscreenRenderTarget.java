@@ -43,11 +43,10 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
-
 /**
  * @author Dennis Cosgrove
  */
-class GlrOffscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.OffscreenRenderTarget {
+/*package-private*/class GlrOffscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.OffscreenRenderTarget {
 	private final javax.media.opengl.GLOffscreenAutoDrawable glPbuffer;
 
 	/* package-private */GlrOffscreenRenderTarget( GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {

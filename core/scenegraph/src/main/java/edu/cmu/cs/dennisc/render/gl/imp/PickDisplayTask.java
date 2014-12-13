@@ -70,9 +70,9 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 		//todo:
 		ConformanceTestResults.SINGLETON.updateAsynchronousPickInformationIfNecessary( gl );
 
-		edu.cmu.cs.dennisc.render.gl.GlrRenderTarget glrRenderTarget = rtImp.getRenderTarget();
+		edu.cmu.cs.dennisc.render.RenderTarget rt = rtImp.getRenderTarget();
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = rtImp.getCameraAtPixel( this.x, this.y );
-		edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters = new edu.cmu.cs.dennisc.render.gl.imp.PickParameters( glrRenderTarget, sgCamera, this.x, this.y, this.pickSubElementPolicy == edu.cmu.cs.dennisc.render.PickSubElementPolicy.REQUIRED, null );
+		edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters = new edu.cmu.cs.dennisc.render.gl.imp.PickParameters( rt, sgCamera, this.x, this.y, this.pickSubElementPolicy == edu.cmu.cs.dennisc.render.PickSubElementPolicy.REQUIRED, null );
 
 		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
 
@@ -82,7 +82,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 		this.pickContext.gl.glRenderMode( javax.media.opengl.GL2.GL_SELECT );
 		this.pickContext.gl.glInitNames();
 
-		java.awt.Rectangle actualViewport = glrRenderTarget.getActualViewport( sgCamera );
+		java.awt.Rectangle actualViewport = rt.getActualViewport( sgCamera );
 		this.pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
 		cameraAdapter.performPick( this.pickContext, pickParameters, actualViewport );
 		this.pickContext.gl.glFlush();
