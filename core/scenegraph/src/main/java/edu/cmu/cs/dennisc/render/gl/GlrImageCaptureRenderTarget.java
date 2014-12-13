@@ -42,12 +42,11 @@
  */
 package edu.cmu.cs.dennisc.render.gl;
 
-import edu.cmu.cs.dennisc.render.gl.imp.GlDrawableUtilities;
 
 /**
  * @author Dennis Cosgrove
  */
-class GlrImageCaptureRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget {
+/*package-private*/class GlrImageCaptureRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget {
 	public GlrImageCaptureRenderTarget( GlrRenderFactory renderFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		super( renderFactory, requestedCapabilities );
 		this.width = width;
