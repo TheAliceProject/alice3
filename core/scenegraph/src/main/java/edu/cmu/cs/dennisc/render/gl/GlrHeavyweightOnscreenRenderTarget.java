@@ -52,7 +52,7 @@ class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<java.aw
 
 	/* package-private */GlrHeavyweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		super( lookingGlassFactory, requestedCapabilities );
-		m_glCanvas = GlDrawableUtilities.createGLCanvas( requestedCapabilities );
+		m_glCanvas = GlDrawableUtils.createGLCanvas( requestedCapabilities );
 		//m_glCanvas.getChosenGLCapabilities().getDepthBits();
 		//m_glCanvas.setAutoSwapBufferMode( false );
 		m_glCanvas.addComponentListener( new java.awt.event.ComponentListener() {

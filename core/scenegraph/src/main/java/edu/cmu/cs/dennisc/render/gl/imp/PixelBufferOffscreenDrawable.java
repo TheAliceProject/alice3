@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import edu.cmu.cs.dennisc.render.gl.GlDrawableUtilities;
+import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 
 
 /**
@@ -100,7 +100,7 @@ public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 		if( this.glPixelBuffer != null ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 		} else {
-			this.glPixelBuffer = GlDrawableUtilities.createGlPixelBuffer( glRequestedCapabilities, glCapabilitiesChooser, width, height, glShareContext );
+			this.glPixelBuffer = GlDrawableUtils.createGlPixelBuffer( glRequestedCapabilities, glCapabilitiesChooser, width, height, glShareContext );
 			if( this.getCallback() != null ) {
 				this.glPixelBuffer.addGLEventListener( glEventListener );
 			}

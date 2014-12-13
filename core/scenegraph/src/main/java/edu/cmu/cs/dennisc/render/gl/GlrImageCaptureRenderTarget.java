@@ -51,11 +51,11 @@ package edu.cmu.cs.dennisc.render.gl;
 		super( renderFactory, requestedCapabilities );
 		this.width = width;
 		this.height = height;
-		this.glDrawable = GlDrawableUtilities.createGlPixelBuffer(
-				GlDrawableUtilities.createGlCapabilities( requestedCapabilities ),
-				GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(),
+		this.glDrawable = GlDrawableUtils.createGlPixelBuffer(
+				GlDrawableUtils.createGlCapabilities( requestedCapabilities ),
+				GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(),
 				this.width, this.height,
-				GlDrawableUtilities.getGlContextToShare( renderTargetToShareContextWith ) );
+				GlDrawableUtils.getGlContextToShare( renderTargetToShareContextWith ) );
 	}
 
 	@Override

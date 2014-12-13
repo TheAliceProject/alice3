@@ -43,7 +43,7 @@
 package edu.cmu.cs.dennisc.render.gl.imp;
 
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
-import edu.cmu.cs.dennisc.render.gl.GlDrawableUtilities;
+import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 import edu.cmu.cs.dennisc.render.gl.GlrRenderTarget;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractCameraAdapter;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
@@ -341,10 +341,10 @@ public class RenderTargetImp {
 
 	private java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
 		if( this.drawable != null ) {
-			if( ( this.width != GlDrawableUtilities.getGlDrawableWidth( this.drawable ) ) || ( this.height != GlDrawableUtilities.getGlDrawableHeight( this.drawable ) ) ) {
+			if( ( this.width != GlDrawableUtils.getGlDrawableWidth( this.drawable ) ) || ( this.height != GlDrawableUtils.getGlDrawableHeight( this.drawable ) ) ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
-				this.width = GlDrawableUtilities.getGlDrawableWidth( this.drawable );
-				this.height = GlDrawableUtilities.getGlDrawableHeight( this.drawable );
+				this.width = GlDrawableUtils.getGlDrawableWidth( this.drawable );
+				this.height = GlDrawableUtils.getGlDrawableHeight( this.drawable );
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: drawable null" );
@@ -467,11 +467,11 @@ public class RenderTargetImp {
 			}
 		}
 
-		this.width = GlDrawableUtilities.getGlDrawableWidth( drawable );
-		this.height = GlDrawableUtilities.getGlDrawableHeight( drawable );
+		this.width = GlDrawableUtils.getGlDrawableWidth( drawable );
+		this.height = GlDrawableUtils.getGlDrawableHeight( drawable );
 
 		this.renderContext.setGL( gl );
-		this.fireInitialized( new edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent( this.getRenderTarget(), GlDrawableUtilities.getGlDrawableWidth( this.drawable ), GlDrawableUtilities.getGlDrawableHeight( this.drawable ) ) );
+		this.fireInitialized( new edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent( this.getRenderTarget(), GlDrawableUtils.getGlDrawableWidth( this.drawable ), GlDrawableUtils.getGlDrawableHeight( this.drawable ) ) );
 	}
 
 	//todo: investigate not being invoked
@@ -495,8 +495,8 @@ public class RenderTargetImp {
 		if( ( this.width > 0 ) && ( this.height > 0 ) ) {
 			//pass
 		} else {
-			int nextWidth = GlDrawableUtilities.getGlDrawableWidth( drawable );
-			int nextHeight = GlDrawableUtilities.getGlDrawableHeight( drawable );
+			int nextWidth = GlDrawableUtils.getGlDrawableWidth( drawable );
+			int nextHeight = GlDrawableUtils.getGlDrawableHeight( drawable );
 			if( ( this.width != nextWidth ) || ( this.height != nextHeight ) ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, nextWidth, nextHeight );
 				this.width = nextWidth;

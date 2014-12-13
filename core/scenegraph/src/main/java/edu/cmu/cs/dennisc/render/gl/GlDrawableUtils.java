@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.render.gl;
 /**
  * @author Dennis Cosgrove
  */
-public class GlDrawableUtilities {
+public class GlDrawableUtils {
 	private static final java.util.Map<javax.media.opengl.GLOffscreenAutoDrawable, java.awt.Dimension> mapPixelBufferToDimension;
 
 	private static boolean areEquivalentIgnoringMultisample( javax.media.opengl.GLCapabilitiesImmutable a, javax.media.opengl.GLCapabilitiesImmutable b ) {
@@ -166,7 +166,7 @@ public class GlDrawableUtilities {
 		}
 	}
 
-	private GlDrawableUtilities() {
+	private GlDrawableUtils() {
 		throw new AssertionError();
 	}
 

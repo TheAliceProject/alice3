@@ -106,11 +106,11 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 	public GlrCaptureFauxOnscreenRenderTarget( java.awt.Dimension size, GlrRenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		super( GlrRenderFactory.getInstance(), requestedCapabilities );
 		this.size = size;
-		this.glPixelBuffer = GlDrawableUtilities.createGlPixelBuffer(
-				GlDrawableUtilities.createGlCapabilities( requestedCapabilities ),
-				GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(),
+		this.glPixelBuffer = GlDrawableUtils.createGlPixelBuffer(
+				GlDrawableUtils.createGlCapabilities( requestedCapabilities ),
+				GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(),
 				size.width, size.height,
-				GlDrawableUtilities.getGlContextToShare( renderTargetToShareContextWith ) );
+				GlDrawableUtils.getGlContextToShare( renderTargetToShareContextWith ) );
 	}
 
 	@Override

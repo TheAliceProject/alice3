@@ -70,7 +70,7 @@ class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.s
 		}
 
 		public RenderPane( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
-			super( GlDrawableUtilities.createGlCapabilitiesForLightweightComponent( requestedCapabilities ), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser() );
+			super( GlDrawableUtils.createGlCapabilitiesForLightweightComponent( requestedCapabilities ), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser() );
 		}
 
 		@Override

@@ -58,13 +58,13 @@ class GlrOffscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.den
 		} else {
 			share = null;
 		}
-		this.glPbuffer = GlDrawableUtilities.createGlPixelBuffer( GlDrawableUtilities.createGlCapabilities( requestedCapabilities ), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(), width, height, share );
+		this.glPbuffer = GlDrawableUtils.createGlPixelBuffer( GlDrawableUtils.createGlCapabilities( requestedCapabilities ), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(), width, height, share );
 	}
 
 	@Override
 	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
 		if( this.glPbuffer != null ) {
-			rv.setSize( GlDrawableUtilities.getGlDrawableWidth( this.glPbuffer ), GlDrawableUtilities.getGlDrawableHeight( this.glPbuffer ) );
+			rv.setSize( GlDrawableUtils.getGlDrawableWidth( this.glPbuffer ), GlDrawableUtils.getGlDrawableHeight( this.glPbuffer ) );
 		} else {
 			rv.setSize( 0, 0 );
 		}

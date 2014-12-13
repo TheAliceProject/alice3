@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import edu.cmu.cs.dennisc.render.gl.GlDrawableUtilities;
+import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 import edu.cmu.cs.dennisc.render.gl.GlrRenderTarget;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractCameraAdapter;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
@@ -110,7 +110,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 
 		private void performPick( javax.media.opengl.GL2 gl ) {
 			this.pickContext.gl = gl;
-			ConformanceTestResults.SINGLETON.updateSynchronousPickInformationIfNecessary( gl, GlDrawableUtilities.canCreateGlPixelBuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable );
+			ConformanceTestResults.SINGLETON.updateSynchronousPickInformationIfNecessary( gl, GlDrawableUtils.canCreateGlPixelBuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable );
 
 			ConformanceTestResults.SynchronousPickDetails pickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
 
