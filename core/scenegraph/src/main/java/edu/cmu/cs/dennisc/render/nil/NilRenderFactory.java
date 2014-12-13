@@ -76,6 +76,11 @@ public enum NilRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory 
 	}
 
 	@Override
+	public edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget createImageCaptureRenderTarget( int width, int height, edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		return new NrImageCaptureRenderTarget( width, height, renderTargetToShareContextWith, requestedCapabilities );
+	}
+
+	@Override
 	public void acquireRenderingLock() {
 	}
 

@@ -51,11 +51,11 @@ import edu.cmu.cs.dennisc.render.gl.imp.GlDrawableUtilities;
 class GlrOffscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.OffscreenRenderTarget {
 	private final javax.media.opengl.GLOffscreenAutoDrawable glPbuffer;
 
-	/* package-private */GlrOffscreenRenderTarget( GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget lookingGlassToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	/* package-private */GlrOffscreenRenderTarget( GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		super( lookingGlassFactory, requestedCapabilities );
 		javax.media.opengl.GLContext share;
-		if( lookingGlassToShareContextWith != null ) {
-			share = lookingGlassToShareContextWith.getGLAutoDrawable().getContext();
+		if( renderTargetToShareContextWith != null ) {
+			share = renderTargetToShareContextWith.getGLAutoDrawable().getContext();
 		} else {
 			share = null;
 		}

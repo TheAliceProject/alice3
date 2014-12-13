@@ -40,44 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.render;
+package edu.cmu.cs.dennisc.render.gl;
+
+import edu.cmu.cs.dennisc.render.gl.imp.GlDrawableUtilities;
 
 /**
  * @author Dennis Cosgrove
  */
+class GlrImageCaptureRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget {
+	public GlrImageCaptureRenderTarget( GlrRenderFactory renderFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		super( renderFactory, requestedCapabilities );
+		this.width = width;
+		this.height = height;
+		this.glDrawable = GlDrawableUtilities.createGlPixelBuffer(
+				GlDrawableUtilities.createGlCapabilities( requestedCapabilities ),
+				GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(),
+				this.width, this.height,
+				GlDrawableUtilities.getGlContextToShare( renderTargetToShareContextWith ) );
+	}
 
-public interface RenderFactory {
-	ImageBuffer createImageBuffer( edu.cmu.cs.dennisc.color.Color4f backgroundColor );
+	@Override
+	protected void repaintIfAppropriate() {
+	}
 
-	ImageBuffer createTransparentBackgroundImageBuffer();
+	@Override
+	public javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
+		return this.glDrawable;
+	}
 
-	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities );
+	@Override
+	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
+		return rv;
+	}
 
-	LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities );
-
-	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities );
-
-	ImageCaptureRenderTarget createImageCaptureRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities );
-
-	void acquireRenderingLock();
-
-	void releaseRenderingLock();
-
-	void addAutomaticDisplayListener( edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener );
-
-	void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener );
-
-	Iterable<edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener> getAutomaticDisplayListeners();
-
-	int getAutomaticDisplayCount();
-
-	void incrementAutomaticDisplayCount();
-
-	void decrementAutomaticDisplayCount();
-
-	void invokeLater( Runnable runnable );
-
-	void invokeAndWait( Runnable runnable ) throws InterruptedException, java.lang.reflect.InvocationTargetException;
-
-	void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable );
+	private final int width;
+	private final int height;
+	private final javax.media.opengl.GLAutoDrawable glDrawable;
 }

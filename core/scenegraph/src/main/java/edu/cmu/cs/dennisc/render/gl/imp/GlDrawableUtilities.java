@@ -310,4 +310,15 @@ public class GlDrawableUtilities {
 		}
 		return height;
 	}
+
+	public static javax.media.opengl.GLContext getGlContextToShare( edu.cmu.cs.dennisc.render.gl.GlrRenderTarget glrRenderTarget ) {
+		javax.media.opengl.GLContext share;
+		if( glrRenderTarget != null ) {
+			share = glrRenderTarget.getGLAutoDrawable().getContext();
+		} else {
+			share = null;
+		}
+		return share;
+	}
+
 }

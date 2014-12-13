@@ -45,39 +45,5 @@ package edu.cmu.cs.dennisc.render;
 /**
  * @author Dennis Cosgrove
  */
-
-public interface RenderFactory {
-	ImageBuffer createImageBuffer( edu.cmu.cs.dennisc.color.Color4f backgroundColor );
-
-	ImageBuffer createTransparentBackgroundImageBuffer();
-
-	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities );
-
-	LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities );
-
-	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities );
-
-	ImageCaptureRenderTarget createImageCaptureRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities );
-
-	void acquireRenderingLock();
-
-	void releaseRenderingLock();
-
-	void addAutomaticDisplayListener( edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener );
-
-	void removeAutomaticDisplayListener( edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener );
-
-	Iterable<edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener> getAutomaticDisplayListeners();
-
-	int getAutomaticDisplayCount();
-
-	void incrementAutomaticDisplayCount();
-
-	void decrementAutomaticDisplayCount();
-
-	void invokeLater( Runnable runnable );
-
-	void invokeAndWait( Runnable runnable ) throws InterruptedException, java.lang.reflect.InvocationTargetException;
-
-	void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Runnable runnable );
+public interface ImageCaptureRenderTarget extends RenderTarget {
 }

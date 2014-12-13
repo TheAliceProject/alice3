@@ -250,6 +250,11 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 	}
 
 	@Override
+	public edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget createImageCaptureRenderTarget( int width, int height, edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		return new GlrImageCaptureRenderTarget( this, width, height, (GlrRenderTarget)renderTargetToShareContextWith, requestedCapabilities );
+	}
+
+	@Override
 	public void addAutomaticDisplayListener( edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener ) {
 		this.automaticDisplayListeners.add( automaticDisplayListener );
 	}
