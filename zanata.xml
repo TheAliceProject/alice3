@@ -3,7 +3,7 @@
   <url>https://translate.zanata.org/zanata/</url>
   <project>alice</project>
   <project-version>master</project-version>
-  <project-type>utf8properties</project-type>
+  <project-type>properties</project-type>
 
   <locales>
     <locale>lv</locale>
