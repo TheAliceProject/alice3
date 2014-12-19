@@ -59,7 +59,6 @@ import static javax.media.opengl.glu.GLU.GLU_TESS_VERTEX;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter.RenderType;
 
 /**
  * @author Dennis Cosgrove
@@ -151,7 +150,7 @@ public class TextAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph.T
 	private void renderFaceContours( Context context, double xOffset, double yOffset, double z, boolean isFront ) {
 		synchronized( s_tessAdapter ) {
 
-			java.util.Vector<java.util.Vector<edu.cmu.cs.dennisc.math.Point2f>> faceContours = m_element.getGlyphVector().acquireFaceContours();
+			java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> faceContours = m_element.getGlyphVector().acquireFaceContours();
 
 			s_tessAdapter.set( context.gl, context.glu, xOffset, yOffset, z, isFront );
 
@@ -166,16 +165,16 @@ public class TextAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph.T
 			try {
 				javax.media.opengl.glu.GLU.gluBeginPolygon( tesselator );
 				try {
-					for( java.util.Vector<edu.cmu.cs.dennisc.math.Point2f> faceContour : faceContours ) {
+					for( java.util.List<edu.cmu.cs.dennisc.math.Point2f> faceContour : faceContours ) {
 						javax.media.opengl.glu.GLU.gluTessBeginContour( tesselator );
 						try {
 							int n = faceContour.size();
 							for( int i = 0; i < n; i++ ) {
 								edu.cmu.cs.dennisc.math.Point2f p;
 								if( isFront ) {
-									p = faceContour.elementAt( n - i - 1 );
+									p = faceContour.get( n - i - 1 );
 								} else {
-									p = faceContour.elementAt( i );
+									p = faceContour.get( i );
 								}
 								double[] xyz = { p.x, p.y, 0 };
 								javax.media.opengl.glu.GLU.gluTessVertex( tesselator, xyz, 0, xyz );
@@ -202,9 +201,9 @@ public class TextAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph.T
 		renderFaceContours( context, alignmentOffset.x, alignmentOffset.y, zBack, false );
 
 		if( zFront != zBack ) {
-			java.util.Vector<java.util.Vector<edu.cmu.cs.dennisc.math.Point2f>> outlineLines = m_element.getGlyphVector().acquireOutlineLines();
+			java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> outlineLines = m_element.getGlyphVector().acquireOutlineLines();
 			try {
-				for( java.util.Vector<edu.cmu.cs.dennisc.math.Point2f> outlineLine : outlineLines ) {
+				for( java.util.List<edu.cmu.cs.dennisc.math.Point2f> outlineLine : outlineLines ) {
 					context.gl.glBegin( GL_QUAD_STRIP );
 					edu.cmu.cs.dennisc.math.Point2f prev = null;
 					for( edu.cmu.cs.dennisc.math.Point2f curr : outlineLine ) {
