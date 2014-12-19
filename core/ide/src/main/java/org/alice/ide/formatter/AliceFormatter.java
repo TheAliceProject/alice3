@@ -92,7 +92,7 @@ public class AliceFormatter extends Formatter {
 		};
 		for( String bundleName : bundleNames ) {
 			try {
-				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.formatter." + bundleName, locale );
+				java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( "org.alice.ide.formatter." + bundleName, locale );
 				for( java.util.Enumeration<String> e = resourceBundle.getKeys(); e.hasMoreElements(); ) {
 					String key = e.nextElement();
 					map.put( key, resourceBundle.getString( key ) );

@@ -185,7 +185,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 		public void setLocale( java.util.Locale locale ) {
 			java.util.List<Item> _translatedItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( Item item : this.allItems ) {
-				java.util.ResourceBundle resourceBundleB = java.util.ResourceBundle.getBundle( item.bundleName, locale );
+				java.util.ResourceBundle resourceBundleB = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( item.bundleName, locale );
 				try {
 					item.localizedValue = resourceBundleB.getString( item.key );
 				} catch( java.util.MissingResourceException mre ) {
