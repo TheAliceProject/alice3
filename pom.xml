@@ -279,7 +279,7 @@
 						<deleteObsoleteModules>true</deleteObsoleteModules>
 						<interactiveMode>false</interactiveMode>
 						<srcDir>${project.basedir}/src/main</srcDir>
-						<transDir>${project.basedir}/src/i18n</transDir>
+						<transDir>${project.basedir}/src/l10n-alice</transDir>
 						<!-- <useCache>false</useCache> -->
 						<!-- <dryRun>true</dryRun> -->
 					</configuration>
@@ -354,13 +354,13 @@
 
 			<!-- generated i18n translation files -->
 			<resource>
-				<directory>src/i18n/java</directory>
+				<directory>src/l10n-alice/java</directory>
 				<excludes>
 					<exclude>**/*.gitkeep</exclude>
 				</excludes>
 			</resource>
 			<resource>
-				<directory>src/i18n/resources</directory>
+				<directory>src/l10n-alice/resources</directory>
 				<excludes>
 					<exclude>**/*.gitkeep</exclude>
 				</excludes>

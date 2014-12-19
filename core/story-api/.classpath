@@ -33,12 +33,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/classes" path="src/i18n/resources">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/classes" path="src/i18n/java">
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/l10n-alice/java">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
