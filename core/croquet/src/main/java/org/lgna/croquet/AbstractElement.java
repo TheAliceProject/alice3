@@ -140,7 +140,7 @@ public abstract class AbstractElement implements Element {
 		if( cls != null ) {
 			String bundleName = cls.getPackage().getName() + ".croquet";
 			try {
-				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+				java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
 				String key = cls.getSimpleName();
 
 				//todo?

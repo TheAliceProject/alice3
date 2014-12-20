@@ -103,7 +103,7 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 				this.mapValueToLocalization = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 				String bundleName = this.valueCls.getPackage().getName() + ".croquet";
 				try {
-					java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+					java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
 					String clsName = this.valueCls.getSimpleName();
 					for( T enumConstant : this.valueCls.getEnumConstants() ) {
 						String localizationKey = clsName + "." + enumConstant.name();

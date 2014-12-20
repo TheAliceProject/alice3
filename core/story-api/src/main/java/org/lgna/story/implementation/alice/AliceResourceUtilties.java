@@ -127,7 +127,7 @@ public class AliceResourceUtilties {
 	private static String findLocalizedText( String bundleName, String key, Locale locale ) {
 		if( ( bundleName != null ) && ( key != null ) ) {
 			try {
-				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, locale );
+				java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
 				String rv = resourceBundle.getString( key );
 				return rv;
 			} catch( java.util.MissingResourceException mre ) {
