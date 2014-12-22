@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 public class Scalable extends Composite {
 	public final edu.cmu.cs.dennisc.math.property.Dimension3Property scale = new edu.cmu.cs.dennisc.math.property.Dimension3Property( this, new edu.cmu.cs.dennisc.math.Dimension3( 1, 1, 1 ) ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
 			super.setValue( owner, value );
 			Scalable.this.fireAbsoluteTransformationChange();
 		}

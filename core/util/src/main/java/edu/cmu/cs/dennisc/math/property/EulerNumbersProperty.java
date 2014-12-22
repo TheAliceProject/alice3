@@ -50,6 +50,7 @@ public class EulerNumbersProperty extends edu.cmu.cs.dennisc.property.InstancePr
 		super( owner, value );
 	}
 
+	@Override
 	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.EulerNumbers value ) {
 		assert value != null : this;
 		assert value.isNaN() == false : this;
@@ -57,18 +58,18 @@ public class EulerNumbersProperty extends edu.cmu.cs.dennisc.property.InstancePr
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.EulerNumbers getCopy( edu.cmu.cs.dennisc.math.EulerNumbers rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+	public edu.cmu.cs.dennisc.math.EulerNumbers getCopy( edu.cmu.cs.dennisc.math.EulerNumbers rv, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		rv.set( getValue( owner ) );
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.EulerNumbers getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+	public edu.cmu.cs.dennisc.math.EulerNumbers getCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		return getCopy( new edu.cmu.cs.dennisc.math.EulerNumbers(), owner );
 	}
 
 	@Override
-	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.EulerNumbers value ) {
+	public void setCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.EulerNumbers value ) {
 		//todo?
 		setValue( owner, new edu.cmu.cs.dennisc.math.EulerNumbers( value ) );
 	}

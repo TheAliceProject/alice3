@@ -140,7 +140,7 @@ public final class FieldAccess extends Expression {
 		}
 
 		@Override
-		public AbstractField getValue( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+		public AbstractField getValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 			Object o = super.getValue( owner );
 			if( o instanceof AbstractField ) {
 				return (AbstractField)o;

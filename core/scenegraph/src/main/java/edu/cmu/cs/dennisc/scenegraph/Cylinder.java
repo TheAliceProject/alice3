@@ -87,21 +87,21 @@ public class Cylinder extends Shape {
 
 	public final BoundDoubleProperty length = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
 			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
 	public final BoundDoubleProperty bottomRadius = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
 			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
 	public final BoundDoubleProperty topRadius = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
 			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
@@ -109,7 +109,7 @@ public class Cylinder extends Shape {
 	//todo: change default to CENTER?
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<OriginAlignment> originAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<OriginAlignment>( this, OriginAlignment.BOTTOM ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, OriginAlignment value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, OriginAlignment value ) {
 			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
 				Cylinder.this.boundsChanging();
 				super.setValue( owner, value );
@@ -121,7 +121,7 @@ public class Cylinder extends Shape {
 	//todo: change default to POSITIVE_Z? NEGATIVE_Z?
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<BottomToTopAxis> bottomToTopAxis = new edu.cmu.cs.dennisc.property.InstanceProperty<BottomToTopAxis>( this, BottomToTopAxis.POSITIVE_Y ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, BottomToTopAxis value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, BottomToTopAxis value ) {
 			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
 				Cylinder.this.boundsChanging();
 				super.setValue( owner, value );

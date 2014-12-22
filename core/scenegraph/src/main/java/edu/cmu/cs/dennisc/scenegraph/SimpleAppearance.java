@@ -4,7 +4,7 @@ public class SimpleAppearance extends Appearance {
 
 	public final edu.cmu.cs.dennisc.color.property.Color4fProperty ambientColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, new edu.cmu.cs.dennisc.color.Color4f( Float.NaN, Float.NaN, Float.NaN, Float.NaN ), true ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.color.Color4f value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.color.Color4f value ) {
 			if( value == null ) {
 				value = new edu.cmu.cs.dennisc.color.Color4f( Float.NaN, Float.NaN, Float.NaN, Float.NaN );
 			}
@@ -16,14 +16,14 @@ public class SimpleAppearance extends Appearance {
 	public final edu.cmu.cs.dennisc.property.FloatProperty opacity = new edu.cmu.cs.dennisc.property.FloatProperty( this, 1.0f );
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<FillingStyle> fillingStyle = new edu.cmu.cs.dennisc.property.InstanceProperty<FillingStyle>( this, FillingStyle.SOLID ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, FillingStyle value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, FillingStyle value ) {
 			assert value != null : this;
 			super.setValue( owner, value );
 		}
 	};
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<ShadingStyle> shadingStyle = new edu.cmu.cs.dennisc.property.InstanceProperty<ShadingStyle>( this, ShadingStyle.SMOOTH ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, ShadingStyle value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, ShadingStyle value ) {
 			assert value != null : this;
 			super.setValue( owner, value );
 		}

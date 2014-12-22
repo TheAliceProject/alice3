@@ -64,7 +64,7 @@ public abstract class VertexGeometry extends Geometry {
 
 		@Deprecated
 		public void touch() {
-			edu.cmu.cs.dennisc.property.PropertyOwner owner = getOwner();
+			edu.cmu.cs.dennisc.property.InstancePropertyOwner owner = getOwner();
 			setValue( owner, getValue( owner ) );
 			//todo
 			//			edu.cmu.cs.dennisc.property.event.PropertyEvent e = new edu.cmu.cs.dennisc.property.event.PropertyEvent( this, owner, getValue() );

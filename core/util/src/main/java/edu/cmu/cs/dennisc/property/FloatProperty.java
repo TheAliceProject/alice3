@@ -58,7 +58,7 @@ public class FloatProperty extends InstanceProperty<Float> {
 	}
 
 	@Override
-	public void setValue( PropertyOwner owner, Float value ) {
+	public void setValue( InstancePropertyOwner owner, Float value ) {
 		assert value != null : this;
 		assert ( Float.isNaN( value ) == false ) || m_isNaNAcceptable : this;
 		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {

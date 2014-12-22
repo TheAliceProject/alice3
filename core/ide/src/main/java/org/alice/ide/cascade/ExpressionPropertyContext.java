@@ -59,7 +59,7 @@ public class ExpressionPropertyContext implements ExpressionCascadeContext {
 
 	@Override
 	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
-		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.expressionProperty.getOwner();
+		edu.cmu.cs.dennisc.property.InstancePropertyOwner owner = this.expressionProperty.getOwner();
 		if( owner instanceof org.lgna.project.ast.Node ) {
 			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)owner;
 			org.lgna.project.ast.Statement statement = node.getFirstAncestorAssignableTo( org.lgna.project.ast.Statement.class, true );

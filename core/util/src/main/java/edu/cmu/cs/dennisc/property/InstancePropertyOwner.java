@@ -45,7 +45,31 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public interface InstancePropertyOwner extends PropertyOwner {
+public interface InstancePropertyOwner {
+	public Iterable<Property<?>> getProperties();
+
+	public Property<?> getPropertyNamed( String name );
+
+	public void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e );
+
+	public void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e );
+
+	public void fireAdding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<?> e );
+
+	public void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<?> e );
+
+	public void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<?> e );
+
+	public void fireCleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<?> e );
+
+	public void fireRemoving( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<?> e );
+
+	public void fireRemoved( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<?> e );
+
+	public void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<?> e );
+
+	public void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<?> e );
+
 	public InstanceProperty<?> getInstancePropertyNamed( String name );
 
 	//todo:

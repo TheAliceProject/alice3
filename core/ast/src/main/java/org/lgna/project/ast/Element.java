@@ -53,7 +53,6 @@ import edu.cmu.cs.dennisc.property.Property;
 public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
 	private static final boolean IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS = true;
 
-	private static java.util.HashMap<Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner>, java.util.List<Property<?>>> s_classToPropertiesMap = new java.util.HashMap<Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner>, java.util.List<Property<?>>>();
 	private java.util.List<Property<?>> m_properties = null;
 
 	private java.util.List<edu.cmu.cs.dennisc.property.event.PropertyListener> m_propertyListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.property.event.PropertyListener>();
@@ -172,7 +171,7 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 
 	@Override
 	public java.util.List<Property<?>> getProperties() {
-		Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner> cls = getClass();
+		Class<? extends edu.cmu.cs.dennisc.property.InstancePropertyOwner> cls = getClass();
 		if( m_properties == null ) {
 			m_properties = new java.util.LinkedList<Property<?>>();
 			for( java.lang.reflect.Field field : cls.getFields() ) {

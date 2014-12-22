@@ -84,7 +84,7 @@ public class InstanceProperty<E> implements Property<E> {
 		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : this.propertyListeners ) {
 			propertyListener.propertyChanging( e );
 		}
-		PropertyOwner owner = this.getOwner();
+		InstancePropertyOwner owner = this.getOwner();
 		if( owner != null ) {
 			owner.firePropertyChanging( e );
 		}
@@ -94,24 +94,24 @@ public class InstanceProperty<E> implements Property<E> {
 		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : this.propertyListeners ) {
 			propertyListener.propertyChanged( e );
 		}
-		PropertyOwner owner = this.getOwner();
+		InstancePropertyOwner owner = this.getOwner();
 		if( owner != null ) {
 			owner.firePropertyChanged( e );
 		}
 	}
 
-	public PropertyOwner getOwner() {
+	public InstancePropertyOwner getOwner() {
 		return m_owner;
 	}
 
 	@Override
-	public E getValue( PropertyOwner owner ) {
+	public E getValue( InstancePropertyOwner owner ) {
 		assert m_owner == owner : this;
 		return m_value;
 	}
 
 	@Override
-	public void setValue( PropertyOwner owner, E value ) {
+	public void setValue( InstancePropertyOwner owner, E value ) {
 		assert m_owner == owner;
 		//assert m_isLocked == false;
 		edu.cmu.cs.dennisc.property.event.PropertyEvent e = new edu.cmu.cs.dennisc.property.event.PropertyEvent( this, owner, value );

@@ -50,6 +50,7 @@ public class Matrix4x4Property extends edu.cmu.cs.dennisc.property.InstancePrope
 		super( owner, value );
 	}
 
+	@Override
 	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Matrix4x4 value ) {
 		assert value != null : this;
 		assert value.isNaN() == false : this;
@@ -57,25 +58,25 @@ public class Matrix4x4Property extends edu.cmu.cs.dennisc.property.InstancePrope
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Matrix4x4 getCopy( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+	public edu.cmu.cs.dennisc.math.Matrix4x4 getCopy( edu.cmu.cs.dennisc.math.Matrix4x4 rv, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		rv.set( getValue( owner ) );
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Matrix4x4 getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+	public edu.cmu.cs.dennisc.math.Matrix4x4 getCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		return getCopy( new edu.cmu.cs.dennisc.math.Matrix4x4(), owner );
 	}
 
 	@Override
-	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Matrix4x4 value ) {
+	public void setCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Matrix4x4 value ) {
 		//todo?
 		setValue( owner, new edu.cmu.cs.dennisc.math.Matrix4x4( value ) );
 	}
 
 	@Deprecated
 	public void touch() {
-		edu.cmu.cs.dennisc.property.PropertyOwner owner = getOwner();
+		edu.cmu.cs.dennisc.property.InstancePropertyOwner owner = getOwner();
 		setValue( owner, getValue( owner ) );
 		//todo
 		//		edu.cmu.cs.dennisc.property.event.PropertyEvent e = new edu.cmu.cs.dennisc.property.event.PropertyEvent( this, owner, getValue() );

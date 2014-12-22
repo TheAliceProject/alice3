@@ -52,7 +52,7 @@ public class Text extends Geometry {
 
 	public final edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, DEFAULT_TEXT ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, String value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, String value ) {
 			boundsChanging();
 			super.setValue( owner, value );
 			m_glyphVector.setText( value.toString() );
@@ -62,7 +62,7 @@ public class Text extends Geometry {
 	};
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<java.awt.Font> font = new edu.cmu.cs.dennisc.property.InstanceProperty<java.awt.Font>( this, DEFAULT_FONT ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, java.awt.Font value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, java.awt.Font value ) {
 			boundsChanging();
 			super.setValue( owner, value );
 			m_glyphVector.setFont( value );
@@ -73,7 +73,7 @@ public class Text extends Geometry {
 
 	public final BoundDoubleProperty depth = new BoundDoubleProperty( this, 0.25 ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
 			super.setValue( owner, value );
 			m_unalignedBoundingBox.setNaN();
 		}
@@ -81,7 +81,7 @@ public class Text extends Geometry {
 
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<LeftToRightAlignment> leftToRightAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<LeftToRightAlignment>( this, LeftToRightAlignment.ALIGN_CENTER_OF_LEFT_AND_RIGHT ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, LeftToRightAlignment value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, LeftToRightAlignment value ) {
 			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
 				boundsChanging();
 				super.setValue( owner, value );
@@ -92,7 +92,7 @@ public class Text extends Geometry {
 	};
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<TopToBottomAlignment> topToBottomAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<TopToBottomAlignment>( this, TopToBottomAlignment.ALIGN_BASELINE ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, TopToBottomAlignment value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, TopToBottomAlignment value ) {
 			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
 				boundsChanging();
 				super.setValue( owner, value );
@@ -103,7 +103,7 @@ public class Text extends Geometry {
 	};
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<FrontToBackAlignment> frontToBackAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<FrontToBackAlignment>( this, FrontToBackAlignment.ALIGN_CENTER_OF_FRONT_AND_BACK ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, FrontToBackAlignment value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, FrontToBackAlignment value ) {
 			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
 				boundsChanging();
 				super.setValue( owner, value );

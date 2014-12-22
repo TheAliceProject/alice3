@@ -161,7 +161,7 @@ public abstract class UserType<C extends UserConstructor> extends AbstractType<C
 		}
 
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType<?, ?, ?> value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, AbstractType<?, ?, ?> value ) {
 			assert ( value == null ) || ( value.isArray() == false );
 			super.setValue( owner, value );
 		}

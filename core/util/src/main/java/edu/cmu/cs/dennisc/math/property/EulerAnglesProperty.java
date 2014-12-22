@@ -50,6 +50,7 @@ public class EulerAnglesProperty extends edu.cmu.cs.dennisc.property.InstancePro
 		super( owner, value );
 	}
 
+	@Override
 	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.EulerAngles value ) {
 		assert value != null : this;
 		assert value.isNaN() == false : this;
@@ -57,18 +58,18 @@ public class EulerAnglesProperty extends edu.cmu.cs.dennisc.property.InstancePro
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.EulerAngles getCopy( edu.cmu.cs.dennisc.math.EulerAngles rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+	public edu.cmu.cs.dennisc.math.EulerAngles getCopy( edu.cmu.cs.dennisc.math.EulerAngles rv, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		rv.setValue( getValue( owner ) );
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.EulerAngles getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+	public edu.cmu.cs.dennisc.math.EulerAngles getCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		return getCopy( edu.cmu.cs.dennisc.math.EulerAngles.createNaN(), owner );
 	}
 
 	@Override
-	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.EulerAngles value ) {
+	public void setCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.EulerAngles value ) {
 		//todo?
 		setValue( owner, new edu.cmu.cs.dennisc.math.EulerAngles( value ) );
 	}

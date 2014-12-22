@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 public class Sprite extends Geometry {
 	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 0.5 ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
 			assert value >= 0.0;
 			super.setValue( owner, value );
 		}

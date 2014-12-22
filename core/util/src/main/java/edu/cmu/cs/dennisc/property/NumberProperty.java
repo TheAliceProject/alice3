@@ -58,7 +58,7 @@ public class NumberProperty extends InstanceProperty<Number> {
 	}
 
 	@Override
-	public void setValue( PropertyOwner owner, Number value ) {
+	public void setValue( InstancePropertyOwner owner, Number value ) {
 		assert value != null : this;
 		if( value instanceof Float ) {
 			assert ( Float.isNaN( (Float)value ) == false ) || m_isNaNAcceptable : this;

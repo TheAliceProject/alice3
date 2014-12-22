@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 public abstract class IndexedPolygonArray extends VertexGeometry {
 	public final edu.cmu.cs.dennisc.property.IntBufferProperty polygonData = new edu.cmu.cs.dennisc.property.IntBufferProperty( this, new int[ 0 ] ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, java.nio.IntBuffer value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, java.nio.IntBuffer value ) {
 			assert value != null;
 			super.setValue( owner, value );
 		}

@@ -50,6 +50,7 @@ public class Dimension3Property extends edu.cmu.cs.dennisc.property.InstanceProp
 		super( owner, value );
 	}
 
+	@Override
 	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
 		assert value != null : this;
 		assert value.isNaN() == false : this;
@@ -57,18 +58,18 @@ public class Dimension3Property extends edu.cmu.cs.dennisc.property.InstanceProp
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Dimension3 getCopy( edu.cmu.cs.dennisc.math.Dimension3 rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+	public edu.cmu.cs.dennisc.math.Dimension3 getCopy( edu.cmu.cs.dennisc.math.Dimension3 rv, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		rv.set( getValue( owner ) );
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Dimension3 getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
+	public edu.cmu.cs.dennisc.math.Dimension3 getCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		return getCopy( edu.cmu.cs.dennisc.math.Dimension3.createNaN(), owner );
 	}
 
 	@Override
-	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
+	public void setCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
 		//todo?
 		setValue( owner, new edu.cmu.cs.dennisc.math.Dimension3( value ) );
 	}

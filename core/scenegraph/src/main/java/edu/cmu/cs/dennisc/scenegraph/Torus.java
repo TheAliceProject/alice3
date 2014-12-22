@@ -113,7 +113,7 @@ public class Torus extends Shape {
 
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<CoordinatePlane> coordinatePlane = new edu.cmu.cs.dennisc.property.InstanceProperty<CoordinatePlane>( this, CoordinatePlane.XZ ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, CoordinatePlane value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, CoordinatePlane value ) {
 			//todo: check isEqual
 			Torus.this.boundsChanging();
 			super.setValue( owner, value );
@@ -122,14 +122,14 @@ public class Torus extends Shape {
 	};
 	public final BoundDoubleProperty minorRadius = new BoundDoubleProperty( this, 0.1 ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
 			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
 	public final BoundDoubleProperty majorRadius = new BoundDoubleProperty( this, 0.9 ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
 			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}

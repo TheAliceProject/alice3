@@ -55,21 +55,21 @@ public class Capsule extends Shape {
 
 	public final BoundDoubleProperty distanceBetweenSphereCenters = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
 			assert value >= 0.0;
 			super.setValue( owner, value );
 		}
 	};
 	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
 			assert value >= 0.0;
 			super.setValue( owner, value );
 		}
 	};
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<Axis> axis = new edu.cmu.cs.dennisc.property.InstanceProperty<Axis>( this, Axis.Y ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Axis value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Axis value ) {
 			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
 				Capsule.this.boundsChanging();
 				super.setValue( owner, value );

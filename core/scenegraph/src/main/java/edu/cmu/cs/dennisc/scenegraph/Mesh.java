@@ -51,7 +51,7 @@ public class Mesh extends Geometry
 {
 	public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty( this, (java.nio.DoubleBuffer)null ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, java.nio.DoubleBuffer value ) {
+		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, java.nio.DoubleBuffer value ) {
 			Mesh.this.boundsChanging();
 			super.setValue( owner, value );
 			Mesh.this.fireBoundChange();

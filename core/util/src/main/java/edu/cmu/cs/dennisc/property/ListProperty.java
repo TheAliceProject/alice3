@@ -339,7 +339,7 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 	}
 
 	@Override
-	public void setValue( PropertyOwner owner, java.util.ArrayList<E> value ) {
+	public void setValue( InstancePropertyOwner owner, java.util.ArrayList<E> value ) {
 
 		//todo?
 

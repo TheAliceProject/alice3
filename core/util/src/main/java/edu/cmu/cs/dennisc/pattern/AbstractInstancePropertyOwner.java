@@ -190,8 +190,8 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 	//	}
 	@Override
 	public java.util.List<Property<?>> getProperties() {
-		Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner> cls = getClass();
 		if( this.properties == null ) {
+			Class<? extends edu.cmu.cs.dennisc.property.InstancePropertyOwner> cls = getClass();
 			this.properties = new java.util.LinkedList<Property<?>>();
 			for( java.lang.reflect.Field field : cls.getFields() ) {
 				int modifiers = field.getModifiers();
