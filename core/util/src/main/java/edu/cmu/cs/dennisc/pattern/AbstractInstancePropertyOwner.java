@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.property.Property;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultInstancePropertyOwner extends AbstractNameable implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
+public abstract class AbstractInstancePropertyOwner extends AbstractNameable implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
 	private static final boolean IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS = true;
 
 	private static java.util.HashMap<Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner>, java.util.List<Property<?>>> s_classToPropertiesMap = new java.util.HashMap<Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner>, java.util.List<Property<?>>>();
@@ -501,8 +501,8 @@ public abstract class DefaultInstancePropertyOwner extends AbstractNameable impl
 		if( ( this == other ) || super.equals( other ) ) {
 			return true;
 		} else {
-			if( other instanceof DefaultInstancePropertyOwner ) {
-				DefaultInstancePropertyOwner otherDIPO = (DefaultInstancePropertyOwner)other;
+			if( other instanceof AbstractInstancePropertyOwner ) {
+				AbstractInstancePropertyOwner otherDIPO = (AbstractInstancePropertyOwner)other;
 				int propertyCount = 0;
 				for( Property thisProperty : this.getProperties() ) {
 					String propertyName = thisProperty.getName();
@@ -511,8 +511,8 @@ public abstract class DefaultInstancePropertyOwner extends AbstractNameable impl
 						if( otherProperty != null ) {
 							Object thisValue = thisProperty.getValue( this );
 							Object otherValue = otherProperty.getValue( otherDIPO );
-							if( thisValue instanceof DefaultInstancePropertyOwner ) {
-								if( ( (DefaultInstancePropertyOwner)thisValue ).isEquivalentTo( otherValue ) ) {
+							if( thisValue instanceof AbstractInstancePropertyOwner ) {
+								if( ( (AbstractInstancePropertyOwner)thisValue ).isEquivalentTo( otherValue ) ) {
 									//pass
 								} else {
 									return false;

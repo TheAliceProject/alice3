@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner {
+public abstract class Element extends edu.cmu.cs.dennisc.pattern.AbstractInstancePropertyOwner {
 	public static class Key<T> {
 		public static <T> Key<T> createInstance( String repr ) {
 			return new Key<T>( repr );
