@@ -66,7 +66,7 @@ public class NumberProperty extends InstanceProperty<Number> {
 		if( value instanceof Double ) {
 			assert ( Double.isNaN( (Double)value ) == false ) || m_isNaNAcceptable : this;
 		}
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
 			super.setValue( owner, value );
 		}
 	}

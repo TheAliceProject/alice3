@@ -59,7 +59,7 @@ public class EulerNumbersProperty extends edu.cmu.cs.dennisc.property.InstancePr
 
 	@Override
 	public edu.cmu.cs.dennisc.math.EulerNumbers getCopy( edu.cmu.cs.dennisc.math.EulerNumbers rv, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		rv.set( getValue( owner ) );
+		rv.set( getValue() );
 		return rv;
 	}
 

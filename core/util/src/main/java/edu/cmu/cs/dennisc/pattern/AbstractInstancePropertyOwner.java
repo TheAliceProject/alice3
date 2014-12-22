@@ -400,7 +400,7 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 			// //pass
 			// } else {
 			binaryEncoder.encode( property.getName() );
-			Object value = property.getValue( this );
+			Object value = property.getValue();
 			if( value != null ) {
 				Class<?> valueCls = value.getClass();
 				binaryEncoder.encode( valueCls.getName() );
@@ -470,8 +470,8 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 					try {
 						InstanceProperty otherProperty = otherDIPO.getPropertyNamed( propertyName );
 						if( otherProperty != null ) {
-							Object thisValue = thisProperty.getValue( this );
-							Object otherValue = otherProperty.getValue( otherDIPO );
+							Object thisValue = thisProperty.getValue();
+							Object otherValue = otherProperty.getValue();
 							if( thisValue instanceof AbstractInstancePropertyOwner ) {
 								if( ( (AbstractInstancePropertyOwner)thisValue ).isEquivalentTo( otherValue ) ) {
 									//pass

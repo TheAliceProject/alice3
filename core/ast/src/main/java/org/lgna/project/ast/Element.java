@@ -381,7 +381,7 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 			// //pass
 			// } else {
 			binaryEncoder.encode( property.getName() );
-			Object value = property.getValue( this );
+			Object value = property.getValue();
 			if( value != null ) {
 				Class<?> valueCls = value.getClass();
 				binaryEncoder.encode( valueCls.getName() );
@@ -446,8 +446,8 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 					try {
 						InstanceProperty otherProperty = otherDIPO.getPropertyNamed( propertyName );
 						if( otherProperty != null ) {
-							Object thisValue = thisProperty.getValue( this );
-							Object otherValue = otherProperty.getValue( otherDIPO );
+							Object thisValue = thisProperty.getValue();
+							Object otherValue = otherProperty.getValue();
 							if( thisValue instanceof Element ) {
 								if( ( (Element)thisValue ).isEquivalentTo( otherValue ) ) {
 									//pass

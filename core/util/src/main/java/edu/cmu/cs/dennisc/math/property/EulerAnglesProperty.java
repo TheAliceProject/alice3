@@ -59,7 +59,7 @@ public class EulerAnglesProperty extends edu.cmu.cs.dennisc.property.InstancePro
 
 	@Override
 	public edu.cmu.cs.dennisc.math.EulerAngles getCopy( edu.cmu.cs.dennisc.math.EulerAngles rv, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		rv.setValue( getValue( owner ) );
+		rv.setValue( getValue() );
 		return rv;
 	}
 

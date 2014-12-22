@@ -59,7 +59,7 @@ public class AffineMatrix4x4Property extends edu.cmu.cs.dennisc.property.Instanc
 
 	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getCopy( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		rv.set( getValue( owner ) );
+		rv.set( getValue() );
 		return rv;
 	}
 
@@ -77,7 +77,7 @@ public class AffineMatrix4x4Property extends edu.cmu.cs.dennisc.property.Instanc
 	@Deprecated
 	public void touch() {
 		edu.cmu.cs.dennisc.property.InstancePropertyOwner owner = getOwner();
-		setValue( owner, getValue( owner ) );
+		setValue( owner, getValue() );
 		//todo
 		//		edu.cmu.cs.dennisc.property.event.PropertyEvent e = new edu.cmu.cs.dennisc.property.event.PropertyEvent( this, owner, getValue() );
 		//		//owner.firePropertyChanging( e );

@@ -103,11 +103,6 @@ public class InstanceProperty<E> {
 		return m_owner;
 	}
 
-	public E getValue( InstancePropertyOwner owner ) {
-		assert m_owner == owner : this;
-		return m_value;
-	}
-
 	public void setValue( InstancePropertyOwner owner, E value ) {
 		assert m_owner == owner;
 		//assert m_isLocked == false;
@@ -125,7 +120,7 @@ public class InstanceProperty<E> {
 	//	}
 
 	public final E getValue() {
-		return getValue( m_owner );
+		return m_value;
 	}
 
 	public final void setValue( E value ) {

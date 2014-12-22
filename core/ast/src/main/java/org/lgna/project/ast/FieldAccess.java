@@ -138,16 +138,5 @@ public final class FieldAccess extends Expression {
 		public boolean isReference() {
 			return true;
 		}
-
-		@Override
-		public AbstractField getValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-			Object o = super.getValue( owner );
-			if( o instanceof AbstractField ) {
-				return (AbstractField)o;
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( o );
-				return null;
-			}
-		}
 	};
 }

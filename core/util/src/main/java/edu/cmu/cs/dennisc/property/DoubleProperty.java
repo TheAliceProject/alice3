@@ -61,7 +61,7 @@ public class DoubleProperty extends InstanceProperty<Double> {
 	public void setValue( InstancePropertyOwner owner, Double value ) {
 		assert value != null : this;
 		assert ( Double.isNaN( value ) == false ) || m_isNaNAcceptable : this;
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
 			super.setValue( owner, value );
 		}
 	}

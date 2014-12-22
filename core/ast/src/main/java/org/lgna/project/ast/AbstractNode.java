@@ -319,7 +319,7 @@ public abstract class AbstractNode extends Element implements Node {
 					}
 				}
 
-				Object value = property.getValue( this );
+				Object value = property.getValue();
 				if( value instanceof Iterable<?> ) {
 					Iterable<?> iterable = (Iterable<?>)value;
 					for( Object item : iterable ) {
@@ -389,10 +389,10 @@ public abstract class AbstractNode extends Element implements Node {
 		return rv;
 	}
 
-	protected final org.w3c.dom.Element encodeProperty( org.w3c.dom.Document xmlDocument, edu.cmu.cs.dennisc.property.InstanceProperty property, java.util.Map<AbstractDeclaration, Integer> map ) {
+	protected final org.w3c.dom.Element encodeProperty( org.w3c.dom.Document xmlDocument, edu.cmu.cs.dennisc.property.InstanceProperty<?> property, java.util.Map<AbstractDeclaration, Integer> map ) {
 		org.w3c.dom.Element xmlProperty = xmlDocument.createElement( "property" );
 		xmlProperty.setAttribute( "name", property.getName() );
-		Object value = property.getValue( this );
+		Object value = property.getValue();
 		xmlProperty.appendChild( encodeValue( value, xmlDocument, map ) );
 		return xmlProperty;
 	}
@@ -574,7 +574,7 @@ public abstract class AbstractNode extends Element implements Node {
 	protected java.util.Set<AbstractDeclaration> fillInDeclarationSet( java.util.Set<AbstractDeclaration> rv, java.util.Set<AbstractNode> nodes ) {
 		nodes.add( this );
 		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : this.getProperties() ) {
-			Object value = property.getValue( this );
+			Object value = property.getValue();
 			if( value instanceof AbstractNode ) {
 				if( nodes.contains( value ) ) {
 					//pass
@@ -613,7 +613,7 @@ public abstract class AbstractNode extends Element implements Node {
 					rv.remove( declarationProperty.getValue() );
 				}
 			}
-			Object value = property.getValue( this );
+			Object value = property.getValue();
 			if( value instanceof AbstractNode ) {
 				if( nodes.contains( value ) ) {
 					//pass

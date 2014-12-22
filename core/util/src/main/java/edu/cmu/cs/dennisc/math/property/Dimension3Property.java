@@ -59,7 +59,7 @@ public class Dimension3Property extends edu.cmu.cs.dennisc.property.InstanceProp
 
 	@Override
 	public edu.cmu.cs.dennisc.math.Dimension3 getCopy( edu.cmu.cs.dennisc.math.Dimension3 rv, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		rv.set( getValue( owner ) );
+		rv.set( getValue() );
 		return rv;
 	}
 

@@ -110,7 +110,7 @@ public class Cylinder extends Shape {
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<OriginAlignment> originAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<OriginAlignment>( this, OriginAlignment.BOTTOM ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, OriginAlignment value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
+			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
 				Cylinder.this.boundsChanging();
 				super.setValue( owner, value );
 				Cylinder.this.fireBoundChange();
@@ -122,7 +122,7 @@ public class Cylinder extends Shape {
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<BottomToTopAxis> bottomToTopAxis = new edu.cmu.cs.dennisc.property.InstanceProperty<BottomToTopAxis>( this, BottomToTopAxis.POSITIVE_Y ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, BottomToTopAxis value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
+			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
 				Cylinder.this.boundsChanging();
 				super.setValue( owner, value );
 				Cylinder.this.fireBoundChange();

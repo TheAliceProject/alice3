@@ -754,7 +754,7 @@ public class ASG {
 			} else {
 				org.w3c.dom.Element xmlProperty = document.createElement( "property" );
 				xmlProperty.setAttribute( "name", propertyName );
-				Object value = property.getValue( element );
+				Object value = property.getValue();
 				if( value != null ) {
 					Class<?> propertyValueClass = value.getClass();
 					if( edu.cmu.cs.dennisc.scenegraph.Element.class.isAssignableFrom( propertyValueClass ) ) {

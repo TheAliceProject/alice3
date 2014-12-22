@@ -82,7 +82,7 @@ public class Text extends Geometry {
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<LeftToRightAlignment> leftToRightAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<LeftToRightAlignment>( this, LeftToRightAlignment.ALIGN_CENTER_OF_LEFT_AND_RIGHT ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, LeftToRightAlignment value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
+			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
 				boundsChanging();
 				super.setValue( owner, value );
 				m_unalignedBoundingBox.setNaN();
@@ -93,7 +93,7 @@ public class Text extends Geometry {
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<TopToBottomAlignment> topToBottomAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<TopToBottomAlignment>( this, TopToBottomAlignment.ALIGN_BASELINE ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, TopToBottomAlignment value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
+			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
 				boundsChanging();
 				super.setValue( owner, value );
 				m_unalignedBoundingBox.setNaN();
@@ -104,7 +104,7 @@ public class Text extends Geometry {
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<FrontToBackAlignment> frontToBackAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<FrontToBackAlignment>( this, FrontToBackAlignment.ALIGN_CENTER_OF_FRONT_AND_BACK ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, FrontToBackAlignment value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
+			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
 				boundsChanging();
 				super.setValue( owner, value );
 				m_unalignedBoundingBox.setNaN();

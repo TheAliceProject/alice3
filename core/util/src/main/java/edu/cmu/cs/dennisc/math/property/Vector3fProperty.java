@@ -56,7 +56,7 @@ public class Vector3fProperty extends edu.cmu.cs.dennisc.property.InstanceProper
 
 	@Override
 	public edu.cmu.cs.dennisc.math.Vector3f getCopy( edu.cmu.cs.dennisc.math.Vector3f rv, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		rv.set( getValue( owner ) );
+		rv.set( getValue() );
 		return rv;
 	}
 

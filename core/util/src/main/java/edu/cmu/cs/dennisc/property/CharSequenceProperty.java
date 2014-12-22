@@ -57,7 +57,7 @@ public class CharSequenceProperty extends InstanceProperty<CharSequence> {
 	@Override
 	public void setValue( InstancePropertyOwner owner, CharSequence value ) {
 		assert ( value != null ) || this.isNullAcceptable() : this;
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
 			super.setValue( owner, value );
 		}
 	}
