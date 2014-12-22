@@ -49,9 +49,9 @@ public class Vector3fProperty extends edu.cmu.cs.dennisc.property.InstanceProper
 	}
 
 	@Override
-	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Vector3f value ) {
+	public void setValue( edu.cmu.cs.dennisc.math.Vector3f value ) {
 		assert value != null : this;
-		super.setValue( owner, value );
+		super.setValue( value );
 	}
 
 	@Override
@@ -67,6 +67,6 @@ public class Vector3fProperty extends edu.cmu.cs.dennisc.property.InstanceProper
 
 	@Override
 	public void setCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Vector3f value ) {
-		setValue( owner, new edu.cmu.cs.dennisc.math.Vector3f( value ) );
+		setValue( new edu.cmu.cs.dennisc.math.Vector3f( value ) );
 	}
 }

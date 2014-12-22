@@ -49,8 +49,8 @@ package edu.cmu.cs.dennisc.scenegraph;
 public class Transformable extends AbstractTransformable {
 	public final edu.cmu.cs.dennisc.math.property.AffineMatrix4x4Property localTransformation = new edu.cmu.cs.dennisc.math.property.AffineMatrix4x4Property( this, edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity() ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
-			super.setValue( owner, value );
+		public void setValue( edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
+			super.setValue( value );
 			Transformable.this.fireAbsoluteTransformationChange();
 		}
 	};

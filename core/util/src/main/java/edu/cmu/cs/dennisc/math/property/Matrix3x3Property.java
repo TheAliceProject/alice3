@@ -64,6 +64,6 @@ public class Matrix3x3Property extends edu.cmu.cs.dennisc.property.InstancePrope
 	@Override
 	public void setCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Matrix3x3 value ) {
 		//todo?
-		setValue( owner, new edu.cmu.cs.dennisc.math.Matrix3x3( value ) );
+		setValue( new edu.cmu.cs.dennisc.math.Matrix3x3( value ) );
 	}
 }

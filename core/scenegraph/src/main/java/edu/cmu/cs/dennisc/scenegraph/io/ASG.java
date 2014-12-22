@@ -70,7 +70,7 @@ abstract class AbstractPropertyReference {
 	}
 
 	protected void setPropertyValue( Object value ) {
-		m_property.setValue( m_element, value );
+		m_property.setValue( value );
 	}
 }
 
@@ -1243,12 +1243,12 @@ public class ASG {
 						value = valueOf( propertyValueClass, getNodeText( xmlProperty ) );
 					}
 				}
-				property.setValue( sgElement, value );
+				property.setValue( value );
 			} else if( xmlProperty.hasAttribute( "key" ) ) {
 				Integer key = Integer.parseInt( xmlProperty.getAttribute( "key" ) );
 				referencesToBeResolved.addElement( new PropertyReferenceToElement( sgElement, property, key ) );
 			} else {
-				property.setValue( sgElement, null );
+				property.setValue( null );
 			}
 		}
 		return sgElement;

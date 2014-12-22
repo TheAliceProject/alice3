@@ -51,10 +51,10 @@ public class Dimension3Property extends edu.cmu.cs.dennisc.property.InstanceProp
 	}
 
 	@Override
-	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
+	public void setValue( edu.cmu.cs.dennisc.math.Dimension3 value ) {
 		assert value != null : this;
 		assert value.isNaN() == false : this;
-		super.setValue( owner, value );
+		super.setValue( value );
 	}
 
 	@Override
@@ -71,6 +71,6 @@ public class Dimension3Property extends edu.cmu.cs.dennisc.property.InstanceProp
 	@Override
 	public void setCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Dimension3 value ) {
 		//todo?
-		setValue( owner, new edu.cmu.cs.dennisc.math.Dimension3( value ) );
+		setValue( new edu.cmu.cs.dennisc.math.Dimension3( value ) );
 	}
 }

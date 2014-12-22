@@ -66,11 +66,11 @@ public class Visual extends Leaf {
 		}
 
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.scenegraph.Geometry[] value ) {
+		public void setValue( edu.cmu.cs.dennisc.scenegraph.Geometry[] value ) {
 			for( Geometry geometry : value ) {
 				assert geometry != null : this;
 			}
-			super.setValue( owner, value );
+			super.setValue( value );
 		}
 	};
 

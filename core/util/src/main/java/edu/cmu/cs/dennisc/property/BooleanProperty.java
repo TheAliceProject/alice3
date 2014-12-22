@@ -51,10 +51,10 @@ public class BooleanProperty extends InstanceProperty<Boolean> {
 	}
 
 	@Override
-	public void setValue( InstancePropertyOwner owner, Boolean value ) {
+	public void setValue( Boolean value ) {
 		assert value != null;
 		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
-			super.setValue( owner, value );
+			super.setValue( value );
 		}
 	}
 

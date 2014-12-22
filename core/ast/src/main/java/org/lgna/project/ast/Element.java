@@ -316,7 +316,7 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 						value = decodeObject( binaryDecoder, valueCls, map );
 					}
 				}
-				property.setValue( this, value );
+				property.setValue( value );
 			} else {
 				break;
 			}

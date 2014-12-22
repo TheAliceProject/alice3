@@ -339,7 +339,7 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 	}
 
 	@Override
-	public void setValue( InstancePropertyOwner owner, java.util.ArrayList<E> value ) {
+	public void setValue( java.util.ArrayList<E> value ) {
 
 		//todo?
 
@@ -347,7 +347,7 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 		edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> eAdd = new edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E>( this, 0, value );
 		fireClearing( eClear );
 		fireAdding( eAdd );
-		super.setValue( owner, value );
+		super.setValue( value );
 		fireCleared( eClear );
 		fireAdded( eAdd );
 	}

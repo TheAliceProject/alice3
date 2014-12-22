@@ -105,7 +105,7 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.AbstractInstanc
 				value = property.getValue();
 			}
 			edu.cmu.cs.dennisc.property.InstanceProperty rvProperty = rv.getPropertyNamed( property.getName() );
-			rvProperty.setValue( rv, value );
+			rvProperty.setValue( value );
 		}
 		return rv;
 	}

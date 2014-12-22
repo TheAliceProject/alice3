@@ -59,9 +59,9 @@ public class Color4fProperty extends edu.cmu.cs.dennisc.property.InstancePropert
 	}
 
 	@Override
-	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.color.Color4f value ) {
+	public void setValue( edu.cmu.cs.dennisc.color.Color4f value ) {
 		assert value != null : this;
 		assert ( value.isNaN() == false ) || m_isNaNAcceptable : this;
-		super.setValue( owner, value );
+		super.setValue( value );
 	}
 }

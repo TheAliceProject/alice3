@@ -335,7 +335,7 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 						value = decodeObject( binaryDecoder, valueCls, map );
 					}
 				}
-				property.setValue( this, value );
+				property.setValue( value );
 			} else {
 				break;
 			}

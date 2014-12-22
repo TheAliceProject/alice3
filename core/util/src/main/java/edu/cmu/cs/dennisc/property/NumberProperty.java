@@ -58,7 +58,7 @@ public class NumberProperty extends InstanceProperty<Number> {
 	}
 
 	@Override
-	public void setValue( InstancePropertyOwner owner, Number value ) {
+	public void setValue( Number value ) {
 		assert value != null : this;
 		if( value instanceof Float ) {
 			assert ( Float.isNaN( (Float)value ) == false ) || m_isNaNAcceptable : this;
@@ -67,7 +67,7 @@ public class NumberProperty extends InstanceProperty<Number> {
 			assert ( Double.isNaN( (Double)value ) == false ) || m_isNaNAcceptable : this;
 		}
 		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
-			super.setValue( owner, value );
+			super.setValue( value );
 		}
 	}
 }

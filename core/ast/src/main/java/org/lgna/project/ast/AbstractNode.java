@@ -667,7 +667,7 @@ public abstract class AbstractNode extends Element implements Node {
 				Object value = decoder.decodeValue( (org.w3c.dom.Element)xmlProperty.getFirstChild(), map );
 				if( property != null ) {
 					value = this.convertPropertyValueIfNecessary( property, value );
-					property.setValue( this, value );
+					property.setValue( value );
 				} else {
 					this.handleMissingProperty( propertyName, value );
 				}

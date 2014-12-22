@@ -51,10 +51,10 @@ public class IntegerProperty extends InstanceProperty<Integer> {
 	}
 
 	@Override
-	public void setValue( InstancePropertyOwner owner, Integer value ) {
+	public void setValue( Integer value ) {
 		assert value != null : this;
 		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
-			super.setValue( owner, value );
+			super.setValue( value );
 		}
 	}
 }

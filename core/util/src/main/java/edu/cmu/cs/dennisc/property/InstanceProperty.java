@@ -103,15 +103,6 @@ public class InstanceProperty<E> {
 		return m_owner;
 	}
 
-	public void setValue( InstancePropertyOwner owner, E value ) {
-		assert m_owner == owner;
-		//assert m_isLocked == false;
-		edu.cmu.cs.dennisc.property.event.PropertyEvent e = new edu.cmu.cs.dennisc.property.event.PropertyEvent( this, owner, value );
-		firePropertyChanging( e );
-		m_value = value;
-		firePropertyChanged( e );
-	}
-
 	//	public boolean isLocked() {
 	//		return m_isLocked;
 	//	}
@@ -123,8 +114,12 @@ public class InstanceProperty<E> {
 		return m_value;
 	}
 
-	public final void setValue( E value ) {
-		setValue( m_owner, value );
+	public void setValue( E value ) {
+		//assert m_isLocked == false;
+		edu.cmu.cs.dennisc.property.event.PropertyEvent e = new edu.cmu.cs.dennisc.property.event.PropertyEvent( this, m_owner, value );
+		firePropertyChanging( e );
+		m_value = value;
+		firePropertyChanged( e );
 	}
 
 	protected void writeValue( java.io.ObjectOutputStream oos ) throws java.io.IOException {

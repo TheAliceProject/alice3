@@ -74,10 +74,10 @@ public abstract class Geometry extends Element {
 		}
 
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
+		public void setValue( Double value ) {
 			//todo: check isEqual
 			Geometry.this.boundsChanging();
-			super.setValue( owner, value );
+			super.setValue( value );
 			Geometry.this.fireBoundChange();
 		};
 	}

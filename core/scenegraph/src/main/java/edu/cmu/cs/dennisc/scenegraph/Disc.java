@@ -55,26 +55,26 @@ public class Disc extends Shape {
 
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<Axis> axis = new edu.cmu.cs.dennisc.property.InstanceProperty<Axis>( this, Axis.Y ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Axis value ) {
+		public void setValue( Axis value ) {
 			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
 				Disc.this.boundsChanging();
-				super.setValue( owner, value );
+				super.setValue( value );
 				Disc.this.fireBoundChange();
 			}
 		};
 	};
 	public final edu.cmu.cs.dennisc.property.DoubleProperty innerRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
+		public void setValue( Double value ) {
 			assert value >= 0.0 : value;
-			super.setValue( owner, value );
+			super.setValue( value );
 		}
 	};
 	public final BoundDoubleProperty outerRadius = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
+		public void setValue( Double value ) {
 			assert value >= 0.0 : value;
-			super.setValue( owner, value );
+			super.setValue( value );
 		}
 	};
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isFrontFaceVisible = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
