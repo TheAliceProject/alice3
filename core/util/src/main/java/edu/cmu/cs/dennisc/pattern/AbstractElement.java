@@ -46,23 +46,20 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractElement extends AbstractReleasable implements Nameable, NameChangeListenable {
-	private java.util.List<edu.cmu.cs.dennisc.pattern.event.NameListener> m_nameListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.pattern.event.NameListener>();
-	private String m_name = null;
-
 	@Override
 	public String getName() {
-		return m_name;
+		return this.name;
 	}
 
 	@Override
 	public void setName( String name ) {
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( m_name, name ) ) {
-			edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent = new edu.cmu.cs.dennisc.pattern.event.NameEvent( this, name );
-			for( edu.cmu.cs.dennisc.pattern.event.NameListener nameListeners : m_nameListeners ) {
+		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( this.name, name ) ) {
+			edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent = new edu.cmu.cs.dennisc.pattern.event.NameEvent( this, this.name, name );
+			for( edu.cmu.cs.dennisc.pattern.event.NameListener nameListeners : this.nameListeners ) {
 				nameListeners.nameChanging( nameEvent );
 			}
-			m_name = name;
-			for( edu.cmu.cs.dennisc.pattern.event.NameListener nameListeners : m_nameListeners ) {
+			this.name = name;
+			for( edu.cmu.cs.dennisc.pattern.event.NameListener nameListeners : this.nameListeners ) {
 				nameListeners.nameChanged( nameEvent );
 			}
 		}
@@ -70,17 +67,19 @@ public abstract class AbstractElement extends AbstractReleasable implements Name
 
 	@Override
 	public void addNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener ) {
-		m_nameListeners.add( nameListener );
+		this.nameListeners.add( nameListener );
 	}
 
 	@Override
 	public void removeNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener ) {
-		m_nameListeners.remove( nameListener );
+		this.nameListeners.remove( nameListener );
 	}
 
 	@Override
-	public Iterable<edu.cmu.cs.dennisc.pattern.event.NameListener> getNameListeners() {
-		return m_nameListeners;
+	public java.util.Collection<edu.cmu.cs.dennisc.pattern.event.NameListener> getNameListeners() {
+		return java.util.Collections.unmodifiableCollection( this.nameListeners );
 	}
 
+	private final java.util.List<edu.cmu.cs.dennisc.pattern.event.NameListener> nameListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private String name = null;
 }
