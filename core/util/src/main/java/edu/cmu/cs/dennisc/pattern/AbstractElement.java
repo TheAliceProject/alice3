@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.pattern;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractElement extends DefaultReleasable implements Nameable, NameChangeListenable {
+public abstract class AbstractElement extends AbstractReleasable implements Nameable, NameChangeListenable {
 	private java.util.List<edu.cmu.cs.dennisc.pattern.event.NameListener> m_nameListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.pattern.event.NameListener>();
 	private String m_name = null;
 

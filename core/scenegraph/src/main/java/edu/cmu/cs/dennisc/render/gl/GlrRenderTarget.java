@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.DefaultReleasable implements edu.cmu.cs.dennisc.render.RenderTarget {
+/*package-private*/abstract class GlrRenderTarget extends edu.cmu.cs.dennisc.pattern.AbstractReleasable implements edu.cmu.cs.dennisc.render.RenderTarget {
 	public GlrRenderTarget( GlrRenderFactory glrRenderer, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		this.glrRenderer = glrRenderer;
 

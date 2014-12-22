@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.pattern;
  * @author Dennis Cosgrove
  */
 
-public abstract class DefaultReleasable implements Releasable {
+public abstract class AbstractReleasable implements Releasable {
 
 	protected void actuallyRelease() {
 	}
