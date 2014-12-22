@@ -52,8 +52,6 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public abstract class CompositeAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Composite> extends ComponentAdapter<E> {
-	private java.util.Vector<ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component>> m_componentAdapters = new java.util.Vector<ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component>>();
-
 	public Iterable<ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component>> accessComponentAdapters() {
 		return m_componentAdapters;
 	}
@@ -139,4 +137,6 @@ public abstract class CompositeAdapter<E extends edu.cmu.cs.dennisc.scenegraph.C
 			}
 		}
 	}
+
+	private final java.util.List<ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component>> m_componentAdapters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 }

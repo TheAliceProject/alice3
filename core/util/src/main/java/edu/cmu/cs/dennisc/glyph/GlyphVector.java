@@ -87,7 +87,7 @@ public class GlyphVector {
 		return this.outlinesShape;
 	}
 
-	//	private static void reverse( java.util.Vector<edu.cmu.cs.dennisc.math.Point2d> v ) {
+	//	private static void reverse( java.util.List<edu.cmu.cs.dennisc.math.Point2d> v ) {
 	//		int n = v.size();
 	//		for( int i=0; i<n/2; i++ ) {
 	//			int j = n-i-1;
@@ -241,7 +241,7 @@ public class GlyphVector {
 		while( !pi.isDone() ) {
 			switch( pi.currentSegment( segment ) ) {
 			case java.awt.geom.PathIterator.SEG_MOVETO:
-				polyline = new java.util.Vector<edu.cmu.cs.dennisc.math.Point2f>();
+				polyline = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 				//note: no break
 			case java.awt.geom.PathIterator.SEG_LINETO:
 				assert polyline != null;

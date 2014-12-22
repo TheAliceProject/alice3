@@ -47,8 +47,6 @@ package edu.cmu.cs.dennisc.texture;
  * @author Dennis Cosgrove
  */
 public abstract class Texture extends edu.cmu.cs.dennisc.pattern.AbstractElement implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, edu.cmu.cs.dennisc.image.ImageGenerator {
-	private java.util.Vector<edu.cmu.cs.dennisc.texture.event.TextureListener> m_textureListeners = new java.util.Vector<edu.cmu.cs.dennisc.texture.event.TextureListener>();
-
 	public Texture() {
 	}
 
@@ -72,11 +70,11 @@ public abstract class Texture extends edu.cmu.cs.dennisc.pattern.AbstractElement
 	public abstract boolean isMipMappingDesired();
 
 	public void addTextureListener( edu.cmu.cs.dennisc.texture.event.TextureListener textureListener ) {
-		m_textureListeners.addElement( textureListener );
+		m_textureListeners.add( textureListener );
 	}
 
 	public void removeTextureListener( edu.cmu.cs.dennisc.texture.event.TextureListener textureListener ) {
-		m_textureListeners.removeElement( textureListener );
+		m_textureListeners.remove( textureListener );
 	}
 
 	public Iterable<edu.cmu.cs.dennisc.texture.event.TextureListener> accessTextureListeners() {
@@ -92,4 +90,6 @@ public abstract class Texture extends edu.cmu.cs.dennisc.pattern.AbstractElement
 	public void fireTextureChanged() {
 		fireTextureChanged( new edu.cmu.cs.dennisc.texture.event.TextureEvent( this ) );
 	}
+
+	private final java.util.List<edu.cmu.cs.dennisc.texture.event.TextureListener> m_textureListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 }

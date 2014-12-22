@@ -47,7 +47,6 @@ package edu.cmu.cs.dennisc.pattern;
  */
 
 public class DefaultReleasable implements Releasable {
-	private java.util.Vector<edu.cmu.cs.dennisc.pattern.event.ReleaseListener> m_releaseListeners = new java.util.Vector<edu.cmu.cs.dennisc.pattern.event.ReleaseListener>();
 
 	protected void actuallyRelease() {
 	}
@@ -73,16 +72,18 @@ public class DefaultReleasable implements Releasable {
 
 	@Override
 	public void addReleaseListener( edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener ) {
-		m_releaseListeners.addElement( releaseListener );
+		m_releaseListeners.add( releaseListener );
 	}
 
 	@Override
 	public void removeReleaseListener( edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener ) {
-		m_releaseListeners.removeElement( releaseListener );
+		m_releaseListeners.remove( releaseListener );
 	}
 
 	@Override
 	public Iterable<edu.cmu.cs.dennisc.pattern.event.ReleaseListener> accessReleaseListeners() {
 		return m_releaseListeners;
 	}
+
+	private final java.util.List<edu.cmu.cs.dennisc.pattern.event.ReleaseListener> m_releaseListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 }

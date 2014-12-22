@@ -61,19 +61,11 @@ import static javax.media.opengl.GL2ES1.GL_CLIP_PLANE0;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter.RenderType;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SceneAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegraph.Scene> {
-	private BackgroundAdapter m_backgroundAdapter = null;
-	private float m_globalBrightness;
-	private java.util.Vector<GhostAdapter> m_ghostAdapters = new java.util.Vector<GhostAdapter>();
-	//todo: reduce visibility
-	protected java.util.Vector<VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_visualAdapters = new java.util.Vector<VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>>();
-	private java.util.Vector<PlanarReflectorAdapter> m_planarReflectorAdapters = new java.util.Vector<PlanarReflectorAdapter>();
-
 	@Override
 	public void initialize( edu.cmu.cs.dennisc.scenegraph.Scene sgElement ) {
 		super.initialize( sgElement );
@@ -239,4 +231,11 @@ public class SceneAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegraph
 			super.propertyChanged( property );
 		}
 	}
+
+	private BackgroundAdapter m_backgroundAdapter = null;
+	private float m_globalBrightness;
+	private final java.util.List<GhostAdapter> m_ghostAdapters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	//todo: reduce visibility
+	protected final java.util.List<VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_visualAdapters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final java.util.List<PlanarReflectorAdapter> m_planarReflectorAdapters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 }
