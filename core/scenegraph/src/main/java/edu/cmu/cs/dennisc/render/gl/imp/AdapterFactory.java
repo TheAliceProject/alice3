@@ -83,8 +83,8 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.TransformableAdapter;
  * @author Dennis Cosgrove
  */
 public abstract class AdapterFactory {
-	private static java.util.Map<edu.cmu.cs.dennisc.pattern.AbstractElement, AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractElement>> s_elementToAdapterMap = new java.util.HashMap<edu.cmu.cs.dennisc.pattern.AbstractElement, AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractElement>>();
-	private static java.util.Map<Class<? extends edu.cmu.cs.dennisc.pattern.AbstractElement>, Class<? extends AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractElement>>> s_classToAdapterClassMap = new java.util.HashMap<Class<? extends edu.cmu.cs.dennisc.pattern.AbstractElement>, Class<? extends AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractElement>>>();
+	private static java.util.Map<edu.cmu.cs.dennisc.pattern.AbstractNameable, AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractNameable>> s_elementToAdapterMap = new java.util.HashMap<edu.cmu.cs.dennisc.pattern.AbstractNameable, AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractNameable>>();
+	private static java.util.Map<Class<? extends edu.cmu.cs.dennisc.pattern.AbstractNameable>, Class<? extends AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractNameable>>> s_classToAdapterClassMap = new java.util.HashMap<Class<? extends edu.cmu.cs.dennisc.pattern.AbstractNameable>, Class<? extends AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractNameable>>>();
 	private static final String SCENEGRAPH_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.Element.class.getPackage().getName();
 	private static final String RENDERER_PACKAGE_NAME = ElementAdapter.class.getPackage().getName();
 	private static final String SCENEGRAPH_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.graphics.Text.class.getPackage().getName();
@@ -94,11 +94,11 @@ public abstract class AdapterFactory {
 		register( edu.cmu.cs.dennisc.texture.BufferedImageTexture.class, BufferedImageTextureAdapter.class );
 	}
 
-	public static void register( Class<? extends edu.cmu.cs.dennisc.pattern.AbstractElement> sgClass, Class<? extends AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractElement>> adapterClass ) {
+	public static void register( Class<? extends edu.cmu.cs.dennisc.pattern.AbstractNameable> sgClass, Class<? extends AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractNameable>> adapterClass ) {
 		s_classToAdapterClassMap.put( sgClass, adapterClass );
 	}
 
-	private static AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractElement> createAdapterFor( edu.cmu.cs.dennisc.pattern.AbstractElement sgElement ) {
+	private static AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractNameable> createAdapterFor( edu.cmu.cs.dennisc.pattern.AbstractNameable sgElement ) {
 		Class sgClass = sgElement.getClass();
 		Class cls = s_classToAdapterClassMap.get( sgClass );
 		if( cls != null ) {
@@ -129,10 +129,10 @@ public abstract class AdapterFactory {
 				register( sgClass, cls );
 			}
 		}
-		AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractElement> rv;
+		AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractNameable> rv;
 		if( cls != null ) {
 			try {
-				rv = (AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractElement>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
+				rv = (AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractNameable>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
 			} catch( Throwable t ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, cls );
 				rv = null;
@@ -144,13 +144,13 @@ public abstract class AdapterFactory {
 		return rv;
 	}
 
-	public static void forget( edu.cmu.cs.dennisc.pattern.AbstractElement sgElement ) {
+	public static void forget( edu.cmu.cs.dennisc.pattern.AbstractNameable sgElement ) {
 		synchronized( s_elementToAdapterMap ) {
 			s_elementToAdapterMap.remove( sgElement );
 		}
 	}
 
-	public static AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractElement> getAdapterForElement( edu.cmu.cs.dennisc.pattern.AbstractElement sgElement ) {
+	public static AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractNameable> getAdapterForElement( edu.cmu.cs.dennisc.pattern.AbstractNameable sgElement ) {
 		AbstractElementAdapter rv;
 		if( sgElement != null ) {
 			synchronized( s_elementToAdapterMap ) {
@@ -262,7 +262,7 @@ public abstract class AdapterFactory {
 		return (edu.cmu.cs.dennisc.render.gl.imp.adapters.SilhouetteAdapter)getAdapterForElement( sgSilhouette );
 	}
 
-	public static <E extends AbstractElementAdapter> E[] getAdaptersFor( edu.cmu.cs.dennisc.pattern.AbstractElement[] sgElements, Class<? extends E> componentType ) {
+	public static <E extends AbstractElementAdapter> E[] getAdaptersFor( edu.cmu.cs.dennisc.pattern.AbstractNameable[] sgElements, Class<? extends E> componentType ) {
 		if( sgElements != null ) {
 			E[] proxies = (E[])java.lang.reflect.Array.newInstance( componentType, sgElements.length );
 			for( int i = 0; i < sgElements.length; i++ ) {
@@ -274,7 +274,7 @@ public abstract class AdapterFactory {
 		}
 	}
 
-	public static void createNecessaryProxies( edu.cmu.cs.dennisc.pattern.AbstractElement sgElement ) {
+	public static void createNecessaryProxies( edu.cmu.cs.dennisc.pattern.AbstractNameable sgElement ) {
 		getAdapterForElement( sgElement );
 		if( sgElement instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
 			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgElement;

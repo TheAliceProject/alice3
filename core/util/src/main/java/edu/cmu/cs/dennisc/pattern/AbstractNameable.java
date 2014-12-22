@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.pattern;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractElement extends AbstractReleasable implements Nameable, NameChangeListenable {
+public abstract class AbstractNameable extends AbstractReleasable implements Nameable, NameChangeListenable {
 	@Override
 	public String getName() {
 		return this.name;

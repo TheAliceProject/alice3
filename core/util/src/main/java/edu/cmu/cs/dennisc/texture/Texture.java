@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.texture;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Texture extends edu.cmu.cs.dennisc.pattern.AbstractElement implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, edu.cmu.cs.dennisc.image.ImageGenerator {
+public abstract class Texture extends edu.cmu.cs.dennisc.pattern.AbstractNameable implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, edu.cmu.cs.dennisc.image.ImageGenerator {
 	public Texture() {
 	}
 

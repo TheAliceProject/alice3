@@ -202,7 +202,7 @@ public abstract class ChangeHandler {
 		}
 	};
 
-	public static void addListenersAndObservers( edu.cmu.cs.dennisc.pattern.AbstractElement element ) {
+	public static void addListenersAndObservers( edu.cmu.cs.dennisc.pattern.AbstractNameable element ) {
 		element.addReleaseListener( s_releaseListener );
 		if( element instanceof edu.cmu.cs.dennisc.scenegraph.Element ) {
 			( (edu.cmu.cs.dennisc.scenegraph.Element)element ).addPropertyListener( s_propertyListener );
@@ -220,7 +220,7 @@ public abstract class ChangeHandler {
 		}
 	}
 
-	public static void removeListenersAndObservers( edu.cmu.cs.dennisc.pattern.AbstractElement element ) {
+	public static void removeListenersAndObservers( edu.cmu.cs.dennisc.pattern.AbstractNameable element ) {
 		element.removeReleaseListener( s_releaseListener );
 		if( element instanceof edu.cmu.cs.dennisc.scenegraph.Element ) {
 			( (edu.cmu.cs.dennisc.scenegraph.Element)element ).removePropertyListener( s_propertyListener );

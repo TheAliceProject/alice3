@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.ChangeHandler;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractElementAdapter<E extends edu.cmu.cs.dennisc.pattern.AbstractElement> {
+public abstract class AbstractElementAdapter<E extends edu.cmu.cs.dennisc.pattern.AbstractNameable> {
 	protected E m_element;
 
 	public E getElement() {
@@ -70,8 +70,8 @@ public abstract class AbstractElementAdapter<E extends edu.cmu.cs.dennisc.patter
 
 	public static void handleReleased( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent e ) {
 		edu.cmu.cs.dennisc.pattern.Releasable releasable = e.getTypedSource();
-		if( releasable instanceof edu.cmu.cs.dennisc.pattern.AbstractElement ) {
-			edu.cmu.cs.dennisc.pattern.AbstractElement element = (edu.cmu.cs.dennisc.pattern.AbstractElement)releasable;
+		if( releasable instanceof edu.cmu.cs.dennisc.pattern.AbstractNameable ) {
+			edu.cmu.cs.dennisc.pattern.AbstractNameable element = (edu.cmu.cs.dennisc.pattern.AbstractNameable)releasable;
 			AbstractElementAdapter elementAdapter = AdapterFactory.getAdapterForElement( element );
 			if( elementAdapter != null ) {
 				elementAdapter.handleReleased();

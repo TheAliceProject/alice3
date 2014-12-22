@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.property.Property;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultInstancePropertyOwner extends AbstractElement implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
+public abstract class DefaultInstancePropertyOwner extends AbstractNameable implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
 	private static final boolean IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS = true;
 
 	private static java.util.HashMap<Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner>, java.util.List<Property<?>>> s_classToPropertiesMap = new java.util.HashMap<Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner>, java.util.List<Property<?>>>();
