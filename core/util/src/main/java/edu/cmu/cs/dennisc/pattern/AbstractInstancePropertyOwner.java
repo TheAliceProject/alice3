@@ -42,7 +42,6 @@
  */
 package edu.cmu.cs.dennisc.pattern;
 
-import edu.cmu.cs.dennisc.property.GetterSetterProperty;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
 import edu.cmu.cs.dennisc.property.Property;
@@ -53,127 +52,109 @@ import edu.cmu.cs.dennisc.property.Property;
 public abstract class AbstractInstancePropertyOwner extends AbstractNameable implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
 	private static final boolean IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS = true;
 
-	private static java.util.HashMap<Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner>, java.util.List<Property<?>>> s_classToPropertiesMap = new java.util.HashMap<Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner>, java.util.List<Property<?>>>();
-	private java.util.List<Property<?>> m_properties = null;
-
-	private java.util.List<edu.cmu.cs.dennisc.property.event.PropertyListener> m_propertyListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.property.event.PropertyListener>();
-	private java.util.List<edu.cmu.cs.dennisc.property.event.ListPropertyListener<?>> m_listPropertyListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.property.event.ListPropertyListener<?>>();
-
-	public abstract boolean isComposedOfGetterAndSetterProperties();
-
 	public void addPropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
-		m_propertyListeners.add( propertyListener );
+		this.propertyListeners.add( propertyListener );
 	}
 
 	public void removePropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
-		m_propertyListeners.remove( propertyListener );
+		this.propertyListeners.remove( propertyListener );
 	}
 
-	public Iterable<edu.cmu.cs.dennisc.property.event.PropertyListener> accessPropertyListeners() {
-		return m_propertyListeners;
+	public java.util.Collection<edu.cmu.cs.dennisc.property.event.PropertyListener> getPropertyListeners() {
+		return java.util.Collections.unmodifiableCollection( this.propertyListeners );
 	}
 
 	@Override
 	public void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : m_propertyListeners ) {
+		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : this.propertyListeners ) {
 			propertyListener.propertyChanging( e );
 		}
 	}
 
 	@Override
 	public void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : m_propertyListeners ) {
+		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : this.propertyListeners ) {
 			propertyListener.propertyChanged( e );
 		}
 	}
 
 	public void addListPropertyListener( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> listPropertyListener ) {
-		m_listPropertyListeners.add( listPropertyListener );
+		this.listPropertyListeners.add( listPropertyListener );
 	}
 
 	public void removeListPropertyListener( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> listPropertyListener ) {
-		m_listPropertyListeners.remove( listPropertyListener );
+		this.listPropertyListeners.remove( listPropertyListener );
 	}
 
-	public Iterable<edu.cmu.cs.dennisc.property.event.ListPropertyListener<?>> accessListPropertyListeners() {
-		return m_listPropertyListeners;
+	public java.util.Collection<edu.cmu.cs.dennisc.property.event.ListPropertyListener<?>> getListPropertyListeners() {
+		return java.util.Collections.unmodifiableCollection( this.listPropertyListeners );
 	}
 
 	@Override
 	public void fireAdding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : this.listPropertyListeners ) {
 			l.adding( e );
 		}
 	}
 
 	@Override
 	public void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : this.listPropertyListeners ) {
 			l.added( e );
 		}
 	}
 
 	@Override
 	public void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : this.listPropertyListeners ) {
 			l.clearing( e );
 		}
 	}
 
 	@Override
 	public void fireCleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : this.listPropertyListeners ) {
 			l.cleared( e );
 		}
 	}
 
 	@Override
 	public void fireRemoving( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : this.listPropertyListeners ) {
 			l.removing( e );
 		}
 	}
 
 	@Override
 	public void fireRemoved( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : this.listPropertyListeners ) {
 			l.removed( e );
 		}
 	}
 
 	@Override
 	public void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : this.listPropertyListeners ) {
 			l.setting( e );
 		}
 	}
 
 	@Override
 	public void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
-		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : m_listPropertyListeners ) {
+		for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<?> l : this.listPropertyListeners ) {
 			l.set( e );
 		}
 	}
 
 	@Override
 	public Property<?> getPropertyNamed( String name ) {
-		if( isComposedOfGetterAndSetterProperties() ) {
-			for( Property<?> property : getProperties() ) {
-				if( property.getName().equals( name ) ) {
-					return property;
-				}
-			}
-			//throw new RuntimeException( "no property named: " + name );
+		//todo: remove
+		name = Character.toLowerCase( name.charAt( 0 ) ) + name.substring( 1 );
+		try {
+			java.lang.reflect.Field field = getClass().getField( name );
+			return (Property<?>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
+		} catch( NoSuchFieldException nsfe ) {
 			return null;
-		} else {
-			//todo: remove
-			name = Character.toLowerCase( name.charAt( 0 ) ) + name.substring( 1 );
-			try {
-				java.lang.reflect.Field field = getClass().getField( name );
-				return (Property<?>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
-			} catch( NoSuchFieldException nsfe ) {
-				return null;
-			}
 		}
 	}
 
@@ -210,43 +191,24 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 	@Override
 	public java.util.List<Property<?>> getProperties() {
 		Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner> cls = getClass();
-		if( isComposedOfGetterAndSetterProperties() ) {
-			java.util.List<Property<?>> rv = s_classToPropertiesMap.get( cls );
-			if( rv == null ) {
-				rv = new java.util.LinkedList<Property<?>>();
-				for( java.lang.reflect.Field field : cls.getFields() ) {
-					int modifiers = field.getModifiers();
-					if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
-						if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
-							if( GetterSetterProperty.class.isAssignableFrom( field.getType() ) ) {
-								rv.add( (Property)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, null ) );
-							}
-						}
-					}
-				}
-				s_classToPropertiesMap.put( cls, rv );
-			}
-			return rv;
-		} else {
-			if( m_properties == null ) {
-				m_properties = new java.util.LinkedList<Property<?>>();
-				for( java.lang.reflect.Field field : cls.getFields() ) {
-					int modifiers = field.getModifiers();
-					if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
-						if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
-							//pass
-						} else {
-							if( InstanceProperty.class.isAssignableFrom( field.getType() ) ) {
-								InstanceProperty instanceProperty = (InstanceProperty)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
-								assert instanceProperty.getOwner() == this;
-								m_properties.add( instanceProperty );
-							}
+		if( this.properties == null ) {
+			this.properties = new java.util.LinkedList<Property<?>>();
+			for( java.lang.reflect.Field field : cls.getFields() ) {
+				int modifiers = field.getModifiers();
+				if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
+					if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
+						//pass
+					} else {
+						if( InstanceProperty.class.isAssignableFrom( field.getType() ) ) {
+							InstanceProperty instanceProperty = (InstanceProperty)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
+							assert instanceProperty.getOwner() == this;
+							this.properties.add( instanceProperty );
 						}
 					}
 				}
 			}
-			return m_properties;
 		}
+		return this.properties;
 	}
 
 	@Override
@@ -542,4 +504,8 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 			}
 		}
 	}
+
+	private java.util.List<Property<?>> properties = null;
+	private final java.util.List<edu.cmu.cs.dennisc.property.event.PropertyListener> propertyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.List<edu.cmu.cs.dennisc.property.event.ListPropertyListener<?>> listPropertyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 }

@@ -76,11 +76,6 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.AbstractInstanc
 		}
 	}
 
-	@Override
-	public boolean isComposedOfGetterAndSetterProperties() {
-		return false;
-	}
-
 	public <T> boolean containsBonusDataFor( Key<T> key ) {
 		return this.dataMap.containsKey( key );
 	}
