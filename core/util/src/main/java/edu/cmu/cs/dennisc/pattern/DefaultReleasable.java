@@ -81,8 +81,8 @@ public class DefaultReleasable implements Releasable {
 	}
 
 	@Override
-	public Iterable<edu.cmu.cs.dennisc.pattern.event.ReleaseListener> accessReleaseListeners() {
-		return m_releaseListeners;
+	public java.util.Collection<edu.cmu.cs.dennisc.pattern.event.ReleaseListener> getReleaseListeners() {
+		return java.util.Collections.unmodifiableCollection( m_releaseListeners );
 	}
 
 	private final java.util.List<edu.cmu.cs.dennisc.pattern.event.ReleaseListener> m_releaseListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
