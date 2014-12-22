@@ -1,7 +1,5 @@
 package edu.cmu.cs.dennisc.toolkit.scenegraph;
 
-import java.util.Vector;
-
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
@@ -16,9 +14,6 @@ import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener;
 
 public class SceneGraphTreeModel implements TreeModel, HierarchyListener, PropertyListener {
-
-	protected Component rootComponent;
-	private Vector<TreeModelListener> treeModelListeners = new Vector<TreeModelListener>();
 
 	public SceneGraphTreeModel( Component root )
 	{
@@ -72,13 +67,18 @@ public class SceneGraphTreeModel implements TreeModel, HierarchyListener, Proper
 	}
 
 	@Override
-	public void hierarchyChanged( HierarchyEvent hierarchyEvent ) {
-		System.out.println( hierarchyEvent );
+	public void addTreeModelListener( TreeModelListener l ) {
+		this.treeModelListeners.add( l );
 	}
 
 	@Override
-	public void addTreeModelListener( TreeModelListener l ) {
-		this.treeModelListeners.add( l );
+	public void removeTreeModelListener( TreeModelListener l ) {
+		this.treeModelListeners.remove( l );
+	}
+
+	@Override
+	public void hierarchyChanged( HierarchyEvent hierarchyEvent ) {
+		System.out.println( hierarchyEvent );
 	}
 
 	/**
@@ -156,12 +156,6 @@ public class SceneGraphTreeModel implements TreeModel, HierarchyListener, Proper
 	}
 
 	@Override
-	public void removeTreeModelListener( TreeModelListener l ) {
-		this.treeModelListeners.remove( l );
-
-	}
-
-	@Override
 	public void valueForPathChanged( TreePath path, Object newValue ) {
 		System.out.println( "*** valueForPathChanged : "
 				+ path + " --> " + newValue );
@@ -178,4 +172,6 @@ public class SceneGraphTreeModel implements TreeModel, HierarchyListener, Proper
 		System.out.println( e );
 	}
 
+	private final java.util.List<TreeModelListener> treeModelListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private Component rootComponent;
 }
