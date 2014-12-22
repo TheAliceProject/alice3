@@ -44,7 +44,6 @@ package edu.cmu.cs.dennisc.pattern;
 
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
-import edu.cmu.cs.dennisc.property.Property;
 
 /**
  * @author Dennis Cosgrove
@@ -147,12 +146,12 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 	}
 
 	@Override
-	public Property<?> getPropertyNamed( String name ) {
+	public InstanceProperty<?> getPropertyNamed( String name ) {
 		//todo: remove
 		name = Character.toLowerCase( name.charAt( 0 ) ) + name.substring( 1 );
 		try {
 			java.lang.reflect.Field field = getClass().getField( name );
-			return (Property<?>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
+			return (InstanceProperty<?>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
 		} catch( NoSuchFieldException nsfe ) {
 			return null;
 		}
@@ -189,10 +188,10 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 	//		return rv;
 	//	}
 	@Override
-	public java.util.List<Property<?>> getProperties() {
+	public java.util.List<InstanceProperty<?>> getProperties() {
 		if( this.properties == null ) {
 			Class<? extends edu.cmu.cs.dennisc.property.InstancePropertyOwner> cls = getClass();
-			this.properties = new java.util.LinkedList<Property<?>>();
+			this.properties = new java.util.LinkedList<InstanceProperty<?>>();
 			for( java.lang.reflect.Field field : cls.getFields() ) {
 				int modifiers = field.getModifiers();
 				if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
@@ -214,7 +213,7 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 	@Override
 	public String lookupNameFor( InstanceProperty<?> instanceProperty ) {
 		for( java.lang.reflect.Field field : getClass().getFields() ) {
-			if( Property.class.isAssignableFrom( field.getType() ) ) {
+			if( InstanceProperty.class.isAssignableFrom( field.getType() ) ) {
 				int modifiers = field.getModifiers();
 				if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
 					if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
@@ -282,7 +281,7 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 		while( true ) {
 			String propertyName = binaryDecoder.decodeString();
 			if( propertyName.length() > 0 ) {
-				Property property = getPropertyNamed( propertyName );
+				InstanceProperty property = getPropertyNamed( propertyName );
 				assert property != null;
 				String valueClsName = binaryDecoder.decodeString();
 				assert valueClsName != null;
@@ -395,7 +394,7 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Map<edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
-		for( Property<?> property : getProperties() ) {
+		for( InstanceProperty<?> property : getProperties() ) {
 			// todo?
 			// if( property.isTransient() ) {
 			// //pass
@@ -466,10 +465,10 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 			if( other instanceof AbstractInstancePropertyOwner ) {
 				AbstractInstancePropertyOwner otherDIPO = (AbstractInstancePropertyOwner)other;
 				int propertyCount = 0;
-				for( Property thisProperty : this.getProperties() ) {
+				for( InstanceProperty thisProperty : this.getProperties() ) {
 					String propertyName = thisProperty.getName();
 					try {
-						Property otherProperty = otherDIPO.getPropertyNamed( propertyName );
+						InstanceProperty otherProperty = otherDIPO.getPropertyNamed( propertyName );
 						if( otherProperty != null ) {
 							Object thisValue = thisProperty.getValue( this );
 							Object otherValue = otherProperty.getValue( otherDIPO );
@@ -495,7 +494,7 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 						return false;
 					}
 				}
-				for( Property otherProperty : otherDIPO.getProperties() ) {
+				for( InstanceProperty otherProperty : otherDIPO.getProperties() ) {
 					propertyCount--;
 				}
 				return propertyCount == 0;
@@ -505,7 +504,7 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 		}
 	}
 
-	private java.util.List<Property<?>> properties = null;
+	private java.util.List<InstanceProperty<?>> properties = null;
 	private final java.util.List<edu.cmu.cs.dennisc.property.event.PropertyListener> propertyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final java.util.List<edu.cmu.cs.dennisc.property.event.ListPropertyListener<?>> listPropertyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 }

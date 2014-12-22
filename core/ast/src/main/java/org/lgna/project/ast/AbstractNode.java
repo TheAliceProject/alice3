@@ -136,7 +136,7 @@ public abstract class AbstractNode extends Element implements Node {
 	@Override
 	public void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		super.firePropertyChanging( e );
-		edu.cmu.cs.dennisc.property.Property<?> property = e.getTypedSource();
+		edu.cmu.cs.dennisc.property.InstanceProperty<?> property = e.getTypedSource();
 		if( property instanceof NodeProperty<?> ) {
 			NodeProperty<?> nodeProperty = (NodeProperty<?>)property;
 			boolean isReference;
@@ -158,7 +158,7 @@ public abstract class AbstractNode extends Element implements Node {
 
 	@Override
 	public void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		edu.cmu.cs.dennisc.property.Property<?> property = e.getTypedSource();
+		edu.cmu.cs.dennisc.property.InstanceProperty<?> property = e.getTypedSource();
 		if( property instanceof NodeProperty<?> ) {
 			NodeProperty<?> nodeProperty = (NodeProperty<?>)property;
 			boolean isReference;
@@ -297,7 +297,7 @@ public abstract class AbstractNode extends Element implements Node {
 			crawler.visit( this );
 
 			// Look through this nodes properties to see if any have anything to crawl
-			for( edu.cmu.cs.dennisc.property.Property<?> property : this.getProperties() ) {
+			for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : this.getProperties() ) {
 				// Check if this is a reference
 				if( property instanceof DeclarationProperty<?> ) {
 					DeclarationProperty<?> declarationProperty = (DeclarationProperty<?>)property;
@@ -389,7 +389,7 @@ public abstract class AbstractNode extends Element implements Node {
 		return rv;
 	}
 
-	protected final org.w3c.dom.Element encodeProperty( org.w3c.dom.Document xmlDocument, edu.cmu.cs.dennisc.property.Property property, java.util.Map<AbstractDeclaration, Integer> map ) {
+	protected final org.w3c.dom.Element encodeProperty( org.w3c.dom.Document xmlDocument, edu.cmu.cs.dennisc.property.InstanceProperty property, java.util.Map<AbstractDeclaration, Integer> map ) {
 		org.w3c.dom.Element xmlProperty = xmlDocument.createElement( "property" );
 		xmlProperty.setAttribute( "name", property.getName() );
 		Object value = property.getValue( this );
@@ -541,7 +541,7 @@ public abstract class AbstractNode extends Element implements Node {
 			Setter setter = setterParameter.getCode();
 			rv.appendChild( encodeValue( setter, xmlDocument, map ) );
 		}
-		for( edu.cmu.cs.dennisc.property.Property property : getProperties() ) {
+		for( edu.cmu.cs.dennisc.property.InstanceProperty property : getProperties() ) {
 			rv.appendChild( encodeProperty( xmlDocument, property, map ) );
 		}
 		return rv;
@@ -573,7 +573,7 @@ public abstract class AbstractNode extends Element implements Node {
 
 	protected java.util.Set<AbstractDeclaration> fillInDeclarationSet( java.util.Set<AbstractDeclaration> rv, java.util.Set<AbstractNode> nodes ) {
 		nodes.add( this );
-		for( edu.cmu.cs.dennisc.property.Property<?> property : this.getProperties() ) {
+		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : this.getProperties() ) {
 			Object value = property.getValue( this );
 			if( value instanceof AbstractNode ) {
 				if( nodes.contains( value ) ) {
@@ -604,7 +604,7 @@ public abstract class AbstractNode extends Element implements Node {
 
 	private java.util.Set<AbstractDeclaration> removeDeclarationsThatNeedToBeCopied( java.util.Set<AbstractDeclaration> rv, java.util.Set<AbstractNode> nodes ) {
 		nodes.add( this );
-		for( edu.cmu.cs.dennisc.property.Property<?> property : this.getProperties() ) {
+		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : this.getProperties() ) {
 			if( property instanceof DeclarationProperty ) {
 				DeclarationProperty<? extends AbstractDeclaration> declarationProperty = (DeclarationProperty<? extends AbstractDeclaration>)property;
 				if( declarationProperty.isReference() ) {
@@ -651,7 +651,7 @@ public abstract class AbstractNode extends Element implements Node {
 		throw new RuntimeException( propertyName );
 	}
 
-	protected Object convertPropertyValueIfNecessary( edu.cmu.cs.dennisc.property.Property property, Object value ) {
+	protected Object convertPropertyValueIfNecessary( edu.cmu.cs.dennisc.property.InstanceProperty property, Object value ) {
 		return value;
 	}
 
@@ -663,7 +663,7 @@ public abstract class AbstractNode extends Element implements Node {
 			org.w3c.dom.Element xmlProperty = (org.w3c.dom.Element)xmlNode;
 			if( xmlProperty.getTagName().equals( "property" ) ) {
 				String propertyName = xmlProperty.getAttribute( "name" );
-				edu.cmu.cs.dennisc.property.Property property = this.getPropertyNamed( propertyName );
+				edu.cmu.cs.dennisc.property.InstanceProperty property = this.getPropertyNamed( propertyName );
 				Object value = decoder.decodeValue( (org.w3c.dom.Element)xmlProperty.getFirstChild(), map );
 				if( property != null ) {
 					value = this.convertPropertyValueIfNecessary( property, value );

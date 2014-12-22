@@ -97,14 +97,14 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.AbstractInstanc
 	public Element newCopy() {
 		Element rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.getClass() );
 		rv.setName( this.getName() );
-		for( edu.cmu.cs.dennisc.property.Property property : this.getProperties() ) {
+		for( edu.cmu.cs.dennisc.property.InstanceProperty property : this.getProperties() ) {
 			Object value;
 			if( property instanceof edu.cmu.cs.dennisc.property.CopyableProperty ) {
 				value = ( (edu.cmu.cs.dennisc.property.CopyableProperty)property ).getCopy( this );
 			} else {
 				value = property.getValue( this );
 			}
-			edu.cmu.cs.dennisc.property.Property rvProperty = rv.getPropertyNamed( property.getName() );
+			edu.cmu.cs.dennisc.property.InstanceProperty rvProperty = rv.getPropertyNamed( property.getName() );
 			rvProperty.setValue( rv, value );
 		}
 		return rv;

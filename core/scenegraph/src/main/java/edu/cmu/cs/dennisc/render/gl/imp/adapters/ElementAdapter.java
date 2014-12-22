@@ -52,9 +52,8 @@ public abstract class ElementAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Ele
 	@Override
 	public void initialize( E element ) {
 		super.initialize( element );
-		for( edu.cmu.cs.dennisc.property.Property<?> property : m_element.getProperties() ) {
-			edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty = (edu.cmu.cs.dennisc.property.InstanceProperty<?>)property;
-			propertyChanged( instanceProperty );
+		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : m_element.getProperties() ) {
+			propertyChanged( property );
 		}
 	}
 

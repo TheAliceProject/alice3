@@ -46,9 +46,9 @@ package edu.cmu.cs.dennisc.property;
  * @author Dennis Cosgrove
  */
 public interface InstancePropertyOwner {
-	public Iterable<Property<?>> getProperties();
+	public Iterable<InstanceProperty<?>> getProperties();
 
-	public Property<?> getPropertyNamed( String name );
+	public InstanceProperty<?> getPropertyNamed( String name );
 
 	public void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e );
 

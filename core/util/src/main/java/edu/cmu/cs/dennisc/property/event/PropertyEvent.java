@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.property.event;
 /**
  * @author Dennis Cosgrove
  */
-public class PropertyEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.property.Property> {
+public class PropertyEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.property.InstanceProperty> {
 	private edu.cmu.cs.dennisc.property.InstancePropertyOwner m_owner;
 	private Object m_value;
 
-	public PropertyEvent( edu.cmu.cs.dennisc.property.Property source, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Object value ) {
+	public PropertyEvent( edu.cmu.cs.dennisc.property.InstanceProperty source, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Object value ) {
 		super( source );
 		m_owner = owner;
 		m_value = value;

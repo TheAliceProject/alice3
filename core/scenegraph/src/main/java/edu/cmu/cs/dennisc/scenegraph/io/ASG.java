@@ -52,9 +52,9 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
  */
 abstract class AbstractPropertyReference {
 	private edu.cmu.cs.dennisc.scenegraph.Element m_element;
-	private edu.cmu.cs.dennisc.property.Property m_property;
+	private edu.cmu.cs.dennisc.property.InstanceProperty m_property;
 
-	public AbstractPropertyReference( edu.cmu.cs.dennisc.scenegraph.Element element, edu.cmu.cs.dennisc.property.Property property ) {
+	public AbstractPropertyReference( edu.cmu.cs.dennisc.scenegraph.Element element, edu.cmu.cs.dennisc.property.InstanceProperty property ) {
 		m_element = element;
 		m_property = property;
 	}
@@ -80,7 +80,7 @@ abstract class AbstractPropertyReference {
 class PropertyReferenceToElement extends AbstractPropertyReference {
 	private Integer m_key;
 
-	public PropertyReferenceToElement( edu.cmu.cs.dennisc.scenegraph.Element element, edu.cmu.cs.dennisc.property.Property property, Integer key ) {
+	public PropertyReferenceToElement( edu.cmu.cs.dennisc.scenegraph.Element element, edu.cmu.cs.dennisc.property.InstanceProperty<?> property, Integer key ) {
 		super( element, property );
 		m_key = key;
 	}
@@ -745,7 +745,7 @@ public class ASG {
 		Class<? extends edu.cmu.cs.dennisc.scenegraph.Element> elementClass = element.getClass();
 		xmlElement.setAttribute( "class", elementClass.getName() );
 		xmlElement.setAttribute( "key", getKey( element ) );
-		for( edu.cmu.cs.dennisc.property.Property<?> property : element.getProperties() ) {
+		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : element.getProperties() ) {
 			String propertyName = property.getName();
 			if( propertyName.equals( "Parent" ) ) {
 				// pass
@@ -1096,7 +1096,7 @@ public class ASG {
 			if( isDeadProperty( propertyName ) ) {
 				continue;
 			}
-			edu.cmu.cs.dennisc.property.Property property = sgElement.getPropertyNamed( propertyName );
+			edu.cmu.cs.dennisc.property.InstanceProperty property = sgElement.getPropertyNamed( propertyName );
 			if( xmlProperty.hasAttribute( "class" ) ) {
 				String propertyValueClassname = xmlProperty.getAttribute( "class" );
 				propertyValueClassname = convertClassnameIfNecessary( propertyValueClassname );
