@@ -69,8 +69,8 @@ public class InstanceProperty<T> {
 		this.propertyListeners.remove( propertyListener );
 	}
 
-	public Iterable<edu.cmu.cs.dennisc.property.event.PropertyListener> accessPropertyListeners() {
-		return this.propertyListeners;
+	public java.util.Collection<edu.cmu.cs.dennisc.property.event.PropertyListener> getPropertyListeners() {
+		return java.util.Collections.unmodifiableCollection( this.propertyListeners );
 	}
 
 	private void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -97,19 +97,11 @@ public class InstanceProperty<T> {
 		return this.owner;
 	}
 
-	//	public boolean isLocked() {
-	//		return this.isLocked;
-	//	}
-	//	public void setLocked( boolean isLocked ) {
-	//		this.isLocked = isLocked;
-	//	}
-
 	public final T getValue() {
 		return this.value;
 	}
 
 	public void setValue( T value ) {
-		//assert this.isLocked == false;
 		edu.cmu.cs.dennisc.property.event.PropertyEvent e = new edu.cmu.cs.dennisc.property.event.PropertyEvent( this, this.owner, value );
 		firePropertyChanging( e );
 		this.value = value;
@@ -170,5 +162,4 @@ public class InstanceProperty<T> {
 	private final InstancePropertyOwner owner;
 	private T value;
 	private String name;
-	//private boolean isLocked = false;
 }
