@@ -100,7 +100,7 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.AbstractInstanc
 		for( edu.cmu.cs.dennisc.property.InstanceProperty property : this.getProperties() ) {
 			Object value;
 			if( property instanceof edu.cmu.cs.dennisc.property.CopyableInstanceProperty ) {
-				value = ( (edu.cmu.cs.dennisc.property.CopyableInstanceProperty)property ).getCopy( this );
+				value = ( (edu.cmu.cs.dennisc.property.CopyableInstanceProperty)property ).getCopy();
 			} else {
 				value = property.getValue();
 			}
