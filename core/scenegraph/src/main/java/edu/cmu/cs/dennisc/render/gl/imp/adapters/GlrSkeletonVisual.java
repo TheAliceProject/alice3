@@ -48,6 +48,9 @@ import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL.GL_GREATER;
 import static javax.media.opengl.GL2ES1.GL_ALPHA_TEST;
 
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -55,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
@@ -64,6 +68,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Element;
+import edu.cmu.cs.dennisc.scenegraph.InverseAbsoluteTransformationWeightsPair;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.Mesh;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
@@ -72,6 +77,132 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
 public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual<SkeletonVisual> implements PropertyListener, edu.cmu.cs.dennisc.scenegraph.SkeletonVisualBoundingBoxTracker {
+	private static class WeightedMeshControl {
+		protected WeightedMesh weightedMesh;
+
+		protected DoubleBuffer vertexBuffer;
+		protected FloatBuffer normalBuffer;
+		protected FloatBuffer textCoordBuffer;
+		protected IntBuffer indexBuffer;
+
+		protected AffineMatrix4x4[] affineMatrices;
+		protected float[] weights;
+		protected List<Integer>[] normalIndices;
+		protected boolean needsInitialization = true;
+		private boolean geometryIsChanged = true;
+
+		public void initialize( WeightedMesh weightedMesh ) {
+			this.weightedMesh = weightedMesh;
+			internalInitialize();
+		}
+
+		public boolean isGeometryChanged() {
+			return geometryIsChanged;
+		}
+
+		public void setIsGeometryChanged( boolean isGeometryChanged ) {
+			geometryIsChanged = isGeometryChanged;
+		}
+
+		private void internalInitialize() {
+			if( this.weightedMesh != null ) {
+				this.textCoordBuffer = this.weightedMesh.textCoordBuffer.getValue();
+				this.indexBuffer = this.weightedMesh.indexBuffer.getValue();
+
+				this.normalBuffer = BufferUtilities.copyFloatBuffer( this.weightedMesh.normalBuffer.getValue() );
+				this.vertexBuffer = BufferUtilities.copyDoubleBuffer( this.weightedMesh.vertexBuffer.getValue() );
+				int nVertexCount = this.vertexBuffer.limit() / 3;
+
+				this.affineMatrices = new AffineMatrix4x4[ nVertexCount ];
+				this.weights = new float[ nVertexCount ];
+				for( int i = 0; i < nVertexCount; i++ ) {
+					this.affineMatrices[ i ] = new AffineMatrix4x4();
+					this.weights[ i ] = 0f;
+				}
+				needsInitialization = false;
+			}
+		}
+
+		public void preProcess() {
+			for( int i = 0; i < this.affineMatrices.length; i++ ) {
+				this.affineMatrices[ i ].setZero();
+				this.weights[ i ] = 0f;
+			}
+		}
+
+		public void process( edu.cmu.cs.dennisc.scenegraph.Joint joint, AffineMatrix4x4 oTransformation ) {
+			InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get( joint.jointID.getValue() );
+			if( iatwp != null ) {
+				//        	System.out.println("\n  Processing mesh "+this.weightedMesh.hashCode());
+				//        	System.out.println("  On Joint "+joint.hashCode());
+				//        	System.out.println("  Weight Info "+this.weightedMesh.weightInfo.getValue().hashCode());
+				//        	System.out.println("  iatwp "+iatwp.hashCode());
+				AffineMatrix4x4 oDelta = AffineMatrix4x4.createMultiplication( oTransformation, iatwp.getInverseAbsoluteTransformation() );
+				iatwp.reset();
+				while( !iatwp.isDone() ) {
+					int vertexIndex = iatwp.getIndex();
+					float weight = iatwp.getWeight();
+					AffineMatrix4x4 transform = AffineMatrix4x4.createMultiplication( oDelta, weight );
+					this.affineMatrices[ vertexIndex ].add( transform );
+					this.weights[ vertexIndex ] += weight;
+					iatwp.advance();
+				}
+			}
+		}
+
+		public void postProcess() {
+			for( int i = 0; i < this.affineMatrices.length; i++ ) {
+				float weight = this.weights[ i ];
+				if( ( 0.999f < weight ) && ( weight < 1.001f ) ) {
+					//pass
+				} else if( weight != 0 ) {
+					AffineMatrix4x4 am = this.affineMatrices[ i ];
+					this.affineMatrices[ i ].multiply( 1.0 / weight );
+				}
+			}
+			this.transformBuffers( this.affineMatrices, this.vertexBuffer, this.normalBuffer, this.weightedMesh.vertexBuffer.getValue(), this.weightedMesh.normalBuffer.getValue() );
+			setIsGeometryChanged( true );
+		}
+
+		private void transformBuffers( AffineMatrix4x4[] voAffineMatrices, DoubleBuffer vertices, FloatBuffer normals, DoubleBuffer verticesSrc, FloatBuffer normalsSrc ) {
+			double[] vertexSrc = new double[ 3 ];
+			float[] normalSrc = new float[ 3 ];
+			double[] vertexDst = new double[ 3 ];
+			float[] normalDst = new float[ 3 ];
+			vertices.rewind();
+			normals.rewind();
+			verticesSrc.rewind();
+			normalsSrc.rewind();
+
+			for( AffineMatrix4x4 voAffineMatrice : voAffineMatrices ) {
+				vertexSrc[ 0 ] = verticesSrc.get();
+				vertexSrc[ 1 ] = verticesSrc.get();
+				vertexSrc[ 2 ] = verticesSrc.get();
+				voAffineMatrice.transformVertex( vertexDst, 0, vertexSrc, 0 );
+				vertices.put( vertexDst );
+
+				normalSrc[ 0 ] = normalsSrc.get();
+				normalSrc[ 1 ] = normalsSrc.get();
+				normalSrc[ 2 ] = normalsSrc.get();
+				voAffineMatrice.transformNormal( normalDst, 0, normalSrc, 0 );
+				normals.put( normalDst );
+			}
+		}
+
+		public void renderGeometry( RenderContext rc ) {
+			if( this.needsInitialization ) {
+				this.internalInitialize();
+			}
+			GlrMesh.renderMesh( rc, vertexBuffer, normalBuffer, textCoordBuffer, indexBuffer );
+		}
+
+		public void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
+			if( this.needsInitialization ) {
+				this.internalInitialize();
+			}
+			GlrMesh.pickMesh( pc, vertexBuffer, indexBuffer );
+		}
+	}
 
 	private static float ALPHA_TEST_THRESHOLD = .5f;
 
