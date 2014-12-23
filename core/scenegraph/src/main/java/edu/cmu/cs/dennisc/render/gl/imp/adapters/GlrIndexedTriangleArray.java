@@ -51,14 +51,8 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public class GlrIndexedTriangleArray extends GlrIndexedPolygonArray<edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray> {
-	@Override
-	protected int getMode() {
-		return GL_TRIANGLES;
-	}
-
-	@Override
-	protected int getIndicesPerPolygon() {
-		return 3;
+	public GlrIndexedTriangleArray() {
+		super( GL_TRIANGLES, 3 );
 	}
 
 	@Override

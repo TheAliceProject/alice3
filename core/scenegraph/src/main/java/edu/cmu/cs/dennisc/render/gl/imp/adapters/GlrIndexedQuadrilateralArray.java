@@ -51,14 +51,8 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public class GlrIndexedQuadrilateralArray extends GlrIndexedPolygonArray<edu.cmu.cs.dennisc.scenegraph.IndexedQuadrilateralArray> {
-	@Override
-	protected int getMode() {
-		return GL_QUADS;
-	}
-
-	@Override
-	protected int getIndicesPerPolygon() {
-		return 4;
+	public GlrIndexedQuadrilateralArray() {
+		super( GL_QUADS, 4 );
 	}
 
 	@Override

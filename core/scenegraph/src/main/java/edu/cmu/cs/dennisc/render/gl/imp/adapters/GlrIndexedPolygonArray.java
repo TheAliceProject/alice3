@@ -45,18 +45,15 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class GlrIndexedPolygonArray<E extends edu.cmu.cs.dennisc.scenegraph.IndexedPolygonArray> extends GlrVertexGeometry<E> {
-	private float m_uRatio = Float.NaN;
-	private float m_vRatio = Float.NaN;
-
-	protected abstract int getMode();
-
-	protected abstract int getIndicesPerPolygon();
+	public GlrIndexedPolygonArray( int mode, int indicesPerPolygon ) {
+		this.mode = mode;
+		this.indicesPerPolygon = indicesPerPolygon;
+	}
 
 	protected abstract void renderPolygon( RenderContext rc, int[] polygonData, int i );
 
@@ -66,7 +63,7 @@ public abstract class GlrIndexedPolygonArray<E extends edu.cmu.cs.dennisc.sceneg
 	protected boolean isDisplayListInNeedOfRefresh( RenderContext rc ) {
 		float uRatio = rc.getURatio();
 		float vRatio = rc.getVRatio();
-		return super.isDisplayListInNeedOfRefresh( rc ) || ( Float.compare( uRatio, m_uRatio ) != 0 ) || ( Float.compare( vRatio, m_vRatio ) != 0 );
+		return super.isDisplayListInNeedOfRefresh( rc ) || ( Float.compare( uRatio, this.uRatioPrev ) != 0 ) || ( Float.compare( vRatio, this.vRatioPrev ) != 0 );
 	}
 
 	@Override
@@ -74,8 +71,6 @@ public abstract class GlrIndexedPolygonArray<E extends edu.cmu.cs.dennisc.sceneg
 		float uRatio = rc.getURatio();
 		float vRatio = rc.getVRatio();
 		int[] polygonData = owner.polygonData.getValueAsArray();
-		int mode = getMode();
-		int indicesPerPolygon = getIndicesPerPolygon();
 		rc.gl.glBegin( mode );
 		try {
 			for( int i = 0; i < polygonData.length; i += indicesPerPolygon ) {
@@ -84,14 +79,12 @@ public abstract class GlrIndexedPolygonArray<E extends edu.cmu.cs.dennisc.sceneg
 		} finally {
 			rc.gl.glEnd();
 		}
-		m_uRatio = uRatio;
-		m_vRatio = vRatio;
+		this.uRatioPrev = uRatio;
+		this.vRatioPrev = vRatio;
 	}
 
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		int mode = getMode();
-		int indicesPerPolygon = getIndicesPerPolygon();
 		int[] polygonData = owner.polygonData.getValueAsArray();
 		//todo: add try/finally pairs
 		pc.gl.glPushName( -1 );
@@ -131,7 +124,6 @@ public abstract class GlrIndexedPolygonArray<E extends edu.cmu.cs.dennisc.sceneg
 	@Override
 	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
 		if( subElement != -1 ) {
-			int indicesPerPolygon = getIndicesPerPolygon();
 			int[] polygonData = owner.polygonData.getValueAsArray();
 			int index = subElement * indicesPerPolygon;
 			if( ( 0 <= index ) && ( index < polygonData.length ) ) {
@@ -145,4 +137,9 @@ public abstract class GlrIndexedPolygonArray<E extends edu.cmu.cs.dennisc.sceneg
 		}
 		return rv;
 	}
+
+	private final int mode;
+	private final int indicesPerPolygon;
+	private float uRatioPrev = Float.NaN;
+	private float vRatioPrev = Float.NaN;
 }
