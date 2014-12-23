@@ -8,7 +8,7 @@ package edu.cmu.cs.dennisc.nebulous;
  */
 public class Thing extends Model {
 	static {
-		edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.register( Thing.class, ThingAdapter.class );
+		edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.register( Thing.class, ThingAdapter.class );
 	}
 
 	private final Object o;

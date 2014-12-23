@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.nebulous;
  */
 public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable implements edu.cmu.cs.dennisc.scenegraph.ModelJoint {
 	static {
-		edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.register( NebulousJoint.class, NebulousJointAdapter.class );
+		edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.register( NebulousJoint.class, NebulousJointAdapter.class );
 	}
 
 	public NebulousJoint( edu.cmu.cs.dennisc.nebulous.Model nebModel, org.lgna.story.resources.JointId jointId ) {

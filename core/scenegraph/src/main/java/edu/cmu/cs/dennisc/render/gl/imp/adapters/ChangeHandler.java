@@ -41,18 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.render.gl.imp;
-
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrElement;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrLayer;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexture;
+package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ChangeHandler {
+public class ChangeHandler {
 	//private static java.util.concurrent.Semaphore s_semaphore = new java.util.concurrent.Semaphore( 1 );
 	private static java.util.List<edu.cmu.cs.dennisc.pattern.event.Event<?>> s_events = new java.util.LinkedList<edu.cmu.cs.dennisc.pattern.event.Event<?>>();
 
@@ -97,7 +91,7 @@ public abstract class ChangeHandler {
 			edu.cmu.cs.dennisc.property.event.PropertyEvent propertyEvent = (edu.cmu.cs.dennisc.property.event.PropertyEvent)event;
 			GlrElement.handlePropertyChanged( (edu.cmu.cs.dennisc.property.InstanceProperty<?>)propertyEvent.getTypedSource() );
 		} else if( event instanceof edu.cmu.cs.dennisc.pattern.event.ReleaseEvent ) {
-			GlrElement.handleReleased( (edu.cmu.cs.dennisc.pattern.event.ReleaseEvent)event );
+			GlrObject.handleReleased( (edu.cmu.cs.dennisc.pattern.event.ReleaseEvent)event );
 		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent ) {
 			edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent = (edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent)event;
 			GlrComponent.handleAbsoluteTransformationChanged( absoluteTransformationEvent.getTypedSource() );
@@ -202,7 +196,7 @@ public abstract class ChangeHandler {
 		}
 	};
 
-	public static void addListenersAndObservers( edu.cmu.cs.dennisc.pattern.AbstractReleasable element ) {
+	/*package-private*/static void addListeners( edu.cmu.cs.dennisc.pattern.AbstractReleasable element ) {
 		element.addReleaseListener( s_releaseListener );
 		if( element instanceof edu.cmu.cs.dennisc.scenegraph.Element ) {
 			( (edu.cmu.cs.dennisc.scenegraph.Element)element ).addPropertyListener( s_propertyListener );
@@ -220,7 +214,7 @@ public abstract class ChangeHandler {
 		}
 	}
 
-	public static void removeListenersAndObservers( edu.cmu.cs.dennisc.pattern.AbstractReleasable element ) {
+	/*package-private*/static void removeListeners( edu.cmu.cs.dennisc.pattern.AbstractReleasable element ) {
 		element.removeReleaseListener( s_releaseListener );
 		if( element instanceof edu.cmu.cs.dennisc.scenegraph.Element ) {
 			( (edu.cmu.cs.dennisc.scenegraph.Element)element ).removePropertyListener( s_propertyListener );

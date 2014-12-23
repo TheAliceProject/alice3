@@ -43,7 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
@@ -79,13 +78,13 @@ public abstract class GlrComposite<E extends edu.cmu.cs.dennisc.scenegraph.Compo
 		}
 	}
 
-	public static void handleComponentAdded( edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent e ) {
+	/*package-private*/static void handleComponentAdded( edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent e ) {
 		GlrComposite compositeAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component> childAdapter = AdapterFactory.getAdapterFor( e.getChild() );
 		compositeAdapter.handleComponentAdded( childAdapter );
 	}
 
-	public static void handleComponentRemoved( edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e ) {
+	/*package-private*/static void handleComponentRemoved( edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e ) {
 		GlrComposite compositeAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component> childAdapter = AdapterFactory.getAdapterFor( e.getChild() );
 		compositeAdapter.handleComponentRemoved( childAdapter );

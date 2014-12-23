@@ -59,7 +59,6 @@ import static javax.media.opengl.GL.GL_STENCIL_BUFFER_BIT;
 import static javax.media.opengl.GL.GL_STENCIL_TEST;
 import static javax.media.opengl.GL2ES1.GL_CLIP_PLANE0;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-import edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 /**

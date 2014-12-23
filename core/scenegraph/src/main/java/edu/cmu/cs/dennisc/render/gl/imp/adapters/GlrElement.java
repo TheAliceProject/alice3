@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -61,7 +59,7 @@ public abstract class GlrElement<E extends edu.cmu.cs.dennisc.scenegraph.Element
 		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "unhandled property:", property );
 	}
 
-	public static void handlePropertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty ) {
+	/*package-private*/static void handlePropertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty ) {
 		edu.cmu.cs.dennisc.scenegraph.Element sgElement = (edu.cmu.cs.dennisc.scenegraph.Element)instanceProperty.getOwner();
 		GlrElement elementAdapter = (GlrElement)AdapterFactory.getAdapterForElement( sgElement );
 		elementAdapter.propertyChanged( instanceProperty );

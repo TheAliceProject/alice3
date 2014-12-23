@@ -80,7 +80,7 @@ public abstract class AdornmentAdapter extends edu.cmu.cs.dennisc.render.gl.imp.
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.adorningRoot ) {
-			m_adornmentRootAdapter = edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.getAdapterFor( owner.adorningRoot.getValue() );
+			m_adornmentRootAdapter = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( owner.adorningRoot.getValue() );
 		} else {
 			super.propertyChanged( property );
 		}

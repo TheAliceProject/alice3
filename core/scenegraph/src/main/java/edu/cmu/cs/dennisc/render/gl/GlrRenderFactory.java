@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
-import edu.cmu.cs.dennisc.render.gl.imp.ChangeHandler;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.ChangeHandler;
 
 /**
  * @author Dennis Cosgrove

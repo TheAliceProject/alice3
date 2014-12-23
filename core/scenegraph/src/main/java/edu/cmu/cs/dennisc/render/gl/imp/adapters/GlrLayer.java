@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -64,13 +62,13 @@ public class GlrLayer extends GlrElement<edu.cmu.cs.dennisc.scenegraph.Layer> {
 		}
 	}
 
-	public static void handleGraphicAdded( edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent e ) {
+	/*package-private*/static void handleGraphicAdded( edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent e ) {
 		GlrLayer layerAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		GlrGraphic<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter = AdapterFactory.getAdapterFor( e.getChild() );
 		layerAdapter.handleGraphicAdded( graphicAdapter );
 	}
 
-	public static void handleGraphicRemoved( edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent e ) {
+	/*package-private*/static void handleGraphicRemoved( edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent e ) {
 		GlrLayer layerAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		GlrGraphic<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter = AdapterFactory.getAdapterFor( e.getChild() );
 		layerAdapter.handleGraphicRemoved( graphicAdapter );

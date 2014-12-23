@@ -41,30 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.render.gl.imp;
-
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrFrustumPerspectiveCamera;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGhost;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractTransformable;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAppearance;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrBackground;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrBufferedImageTexture;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrElement;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGeometry;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGraphic;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrLayer;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrObject;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexture;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrMultipleAppearance;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrOrthographicCamera;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrProjectionCamera;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexturedAppearance;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable;
+package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 //public class AdapterFactory {
 //	private static AdapterFactory s_singleton = new AdapterFactory();
@@ -150,7 +127,7 @@ public abstract class AdapterFactory {
 		}
 	}
 
-	public static GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> getAdapterForElement( edu.cmu.cs.dennisc.pattern.AbstractReleasable sgElement ) {
+	public static GlrObject<?> getAdapterForElement( edu.cmu.cs.dennisc.pattern.AbstractReleasable sgElement ) {
 		GlrObject rv;
 		if( sgElement != null ) {
 			synchronized( s_elementToAdapterMap ) {
@@ -160,7 +137,7 @@ public abstract class AdapterFactory {
 					if( rv != null ) {
 						s_elementToAdapterMap.put( sgElement, rv );
 						rv.initialize( sgElement );
-						ChangeHandler.addListenersAndObservers( sgElement );
+						ChangeHandler.addListeners( sgElement );
 						createNecessaryProxies( sgElement );
 					} else {
 						// todo

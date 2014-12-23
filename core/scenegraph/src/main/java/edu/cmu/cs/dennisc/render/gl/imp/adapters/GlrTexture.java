@@ -45,14 +45,13 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import edu.cmu.cs.dennisc.render.gl.ForgettableBinding;
 import edu.cmu.cs.dennisc.render.gl.TextureBinding;
-import edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class GlrTexture<E extends edu.cmu.cs.dennisc.texture.Texture> extends GlrObject<E> {
-	public static void handleTextureChanged( edu.cmu.cs.dennisc.texture.event.TextureEvent e ) {
+	/*package-private*/static void handleTextureChanged( edu.cmu.cs.dennisc.texture.event.TextureEvent e ) {
 		GlrTexture<?> textureAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		textureAdapter.handleTextureChanged();
 	}
