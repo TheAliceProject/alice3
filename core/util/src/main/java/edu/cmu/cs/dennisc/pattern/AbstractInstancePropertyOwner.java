@@ -158,36 +158,6 @@ public abstract class AbstractInstancePropertyOwner extends AbstractNameable imp
 	}
 
 	@Override
-	public InstanceProperty<?> getInstancePropertyNamed( String name ) {
-		return (InstanceProperty<?>)getPropertyNamed( name );
-	}
-
-	//	public Iterable< Property<?> > getProperties() {
-	//		Class< ? extends edu.cmu.cs.dennisc.property.PropertyOwner > cls = getClass();
-	//		java.util.List< Property<?> > rv = s_classToPropertiesMap.get( cls );
-	//		if( rv == null ) {
-	//			rv = new java.util.LinkedList< Property<?> >();
-	//			for( java.lang.reflect.Field field : cls.getFields() ) {
-	//				int modifiers = field.getModifiers();
-	//				if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
-	//					if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
-	//						if( GetterSetterProperty.class.isAssignableFrom( field.getType() ) ) {
-	//							rv.add( (Property)edu.cmu.cs.dennisc.reflect.ReflectionUtilities.get( field, null ) );
-	//						}
-	//					} else {
-	//						if( InstanceProperty.class.isAssignableFrom( field.getType() ) ) {
-	//							InstanceProperty instanceProperty = (InstanceProperty)edu.cmu.cs.dennisc.reflect.ReflectionUtilities.get( field, this );
-	//							assert instanceProperty.getOwner() == this;
-	//							rv.add( instanceProperty );
-	//						}
-	//					}
-	//				}
-	//			}
-	//			s_classToPropertiesMap.put( cls, rv );
-	//		}
-	//		return rv;
-	//	}
-	@Override
 	public java.util.List<InstanceProperty<?>> getProperties() {
 		if( this.properties == null ) {
 			Class<? extends edu.cmu.cs.dennisc.property.InstancePropertyOwner> cls = getClass();

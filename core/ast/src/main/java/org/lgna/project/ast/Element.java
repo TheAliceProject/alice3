@@ -164,11 +164,6 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 	}
 
 	@Override
-	public InstanceProperty<?> getInstancePropertyNamed( String name ) {
-		return (InstanceProperty<?>)getPropertyNamed( name );
-	}
-
-	@Override
 	public java.util.List<InstanceProperty<?>> getProperties() {
 		Class<? extends edu.cmu.cs.dennisc.property.InstancePropertyOwner> cls = getClass();
 		if( m_properties == null ) {

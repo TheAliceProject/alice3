@@ -50,6 +50,8 @@ public interface InstancePropertyOwner {
 
 	public InstanceProperty<?> getPropertyNamed( String name );
 
+	public String lookupNameFor( InstanceProperty<?> instanceProperty );
+
 	public void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e );
 
 	public void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e );
@@ -69,10 +71,4 @@ public interface InstancePropertyOwner {
 	public void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<?> e );
 
 	public void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<?> e );
-
-	public InstanceProperty<?> getInstancePropertyNamed( String name );
-
-	//todo:
-	//public Iterable< InstanceProperty< ? > > getInstanceProperties();
-	public String lookupNameFor( InstanceProperty<?> instanceProperty );
 }
