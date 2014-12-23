@@ -61,7 +61,7 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 			double right = s_actualPicturePlaneBufferForReuse.getXMaximum();
 			double bottom = s_actualPicturePlaneBufferForReuse.getYMinimum();
 			double top = s_actualPicturePlaneBufferForReuse.getYMaximum();
-			double near = m_element.nearClippingPlaneDistance.getValue();
+			double near = owner.nearClippingPlaneDistance.getValue();
 			//double far = m_element.farClippingPlaneDistance.getValue();
 
 			//Pixels are relative to the top of the screen, but the "up" vector is bottom relative. Make the yPixel value bottom relative
@@ -88,8 +88,8 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 			double right = s_actualPicturePlaneBufferForReuse.getXMaximum();
 			double bottom = s_actualPicturePlaneBufferForReuse.getYMinimum();
 			double top = s_actualPicturePlaneBufferForReuse.getYMaximum();
-			double near = m_element.nearClippingPlaneDistance.getValue();
-			double far = m_element.farClippingPlaneDistance.getValue();
+			double near = owner.nearClippingPlaneDistance.getValue();
+			double far = owner.farClippingPlaneDistance.getValue();
 
 			rv.setIdentity();
 
@@ -112,7 +112,7 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 
 	public final edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, java.awt.Rectangle actualViewport ) {
 		//		rv.set( m_picturePlane, actualViewport );
-		rv.set( m_element.picturePlane.getValue(), actualViewport );
+		rv.set( owner.picturePlane.getValue(), actualViewport );
 		return rv;
 	}
 
@@ -126,7 +126,7 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.picturePlane ) {
+		if( property == owner.picturePlane ) {
 		} else {
 			super.propertyChanged( property );
 		}

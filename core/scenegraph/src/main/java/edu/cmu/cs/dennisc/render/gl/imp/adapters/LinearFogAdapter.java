@@ -66,10 +66,10 @@ public class LinearFogAdapter extends FogAdapter<edu.cmu.cs.dennisc.scenegraph.L
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.nearDistance ) {
-			m_near = m_element.nearDistance.getValue().floatValue();
-		} else if( property == m_element.farDistance ) {
-			m_far = m_element.farDistance.getValue().floatValue();
+		if( property == owner.nearDistance ) {
+			m_near = owner.nearDistance.getValue().floatValue();
+		} else if( property == owner.farDistance ) {
+			m_far = owner.farDistance.getValue().floatValue();
 		} else {
 			super.propertyChanged( property );
 		}

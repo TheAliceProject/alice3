@@ -73,15 +73,15 @@ public abstract class ShapeEnclosedTextAdapter<E extends edu.cmu.cs.dennisc.scen
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.fillColor ) {
-			edu.cmu.cs.dennisc.color.Color4f color = this.m_element.fillColor.getValue();
+		if( property == owner.fillColor ) {
+			edu.cmu.cs.dennisc.color.Color4f color = this.owner.fillColor.getValue();
 			if( color != null ) {
 				this.fillColor = color.getAsAWTColor();
 			} else {
 				this.fillColor = null;
 			}
-		} else if( property == m_element.outlineColor ) {
-			edu.cmu.cs.dennisc.color.Color4f color = this.m_element.outlineColor.getValue();
+		} else if( property == owner.outlineColor ) {
+			edu.cmu.cs.dennisc.color.Color4f color = this.owner.outlineColor.getValue();
 			if( color != null ) {
 				this.outlineColor = color.getAsAWTColor();
 			} else {

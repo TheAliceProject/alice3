@@ -88,17 +88,17 @@ public class MeshAdapter<E extends Mesh> extends GeometryAdapter<E>
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.vertexBuffer ) {
-			this.vertexBuffer = m_element.vertexBuffer.getValue();
+		if( property == owner.vertexBuffer ) {
+			this.vertexBuffer = owner.vertexBuffer.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.normalBuffer ) {
-			this.normalBuffer = m_element.normalBuffer.getValue();
+		} else if( property == owner.normalBuffer ) {
+			this.normalBuffer = owner.normalBuffer.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.textCoordBuffer ) {
-			this.textCoordBuffer = m_element.textCoordBuffer.getValue();
+		} else if( property == owner.textCoordBuffer ) {
+			this.textCoordBuffer = owner.textCoordBuffer.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.indexBuffer ) {
-			this.indexBuffer = m_element.indexBuffer.getValue();
+		} else if( property == owner.indexBuffer ) {
+			this.indexBuffer = owner.indexBuffer.getValue();
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );

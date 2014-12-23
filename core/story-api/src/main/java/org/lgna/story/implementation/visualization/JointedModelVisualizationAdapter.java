@@ -222,7 +222,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.render.
 	@Override
 	public void pick( edu.cmu.cs.dennisc.render.gl.imp.PickContext pc, edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters ) {
 		this.pushOffset( pc.gl );
-		org.lgna.story.implementation.JointedModelImp implementation = this.m_element.getImplementation();
+		org.lgna.story.implementation.JointedModelImp implementation = this.owner.getImplementation();
 		pc.gl.glPushName( -1 ); // visual
 		try {
 			pc.gl.glPushName( 1 ); // isFrontFacing
@@ -255,7 +255,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.render.
 	public void renderOpaque( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc ) {
 		rc.gl.glEnable( GL_LIGHTING );
 		this.pushOffset( rc.gl );
-		org.lgna.story.implementation.JointedModelImp implementation = this.m_element.getImplementation();
+		org.lgna.story.implementation.JointedModelImp implementation = this.owner.getImplementation();
 
 		edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = implementation.getAxisAlignedMinimumBoundingBox();
 		//              boundingBox = null;

@@ -78,12 +78,12 @@ public class PointLightAdapter<E extends edu.cmu.cs.dennisc.scenegraph.PointLigh
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.constantAttenuation ) {
-			m_constant = m_element.constantAttenuation.getValue().floatValue();
-		} else if( property == m_element.linearAttenuation ) {
-			m_linear = m_element.linearAttenuation.getValue().floatValue();
-		} else if( property == m_element.quadraticAttenuation ) {
-			m_quadratic = m_element.quadraticAttenuation.getValue().floatValue();
+		if( property == owner.constantAttenuation ) {
+			m_constant = owner.constantAttenuation.getValue().floatValue();
+		} else if( property == owner.linearAttenuation ) {
+			m_linear = owner.linearAttenuation.getValue().floatValue();
+		} else if( property == owner.quadraticAttenuation ) {
+			m_quadratic = owner.quadraticAttenuation.getValue().floatValue();
 		} else {
 			super.propertyChanged( property );
 		}

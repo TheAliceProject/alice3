@@ -55,8 +55,8 @@ public class SymmetricPerspectiveCameraAdapter extends AbstractPerspectiveCamera
 	@Override
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
 		double vertical = getActualVerticalViewingAngle( actualViewport ).getAsRadians();
-		double near = -m_element.nearClippingPlaneDistance.getValue();
-		double far = -m_element.farClippingPlaneDistance.getValue();
+		double near = -owner.nearClippingPlaneDistance.getValue();
+		double far = -owner.farClippingPlaneDistance.getValue();
 
 		//todo: investigate (especially x)
 		xPixel = actualViewport.width - xPixel;
@@ -84,8 +84,8 @@ public class SymmetricPerspectiveCameraAdapter extends AbstractPerspectiveCamera
 
 	@Override
 	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, java.awt.Rectangle actualViewport ) {
-		double zNear = m_element.nearClippingPlaneDistance.getValue();
-		double zFar = m_element.farClippingPlaneDistance.getValue();
+		double zNear = owner.nearClippingPlaneDistance.getValue();
+		double zFar = owner.farClippingPlaneDistance.getValue();
 		double fovx = getActualHorizontalViewingAngle( actualViewport ).getAsRadians();
 		double fovy = getActualVerticalViewingAngle( actualViewport ).getAsRadians();
 		double aspect = fovx / fovy;
@@ -262,10 +262,10 @@ public class SymmetricPerspectiveCameraAdapter extends AbstractPerspectiveCamera
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.verticalViewingAngle ) {
-			m_verticalInDegrees = m_element.verticalViewingAngle.getValue().getAsDegrees();
-		} else if( property == m_element.horizontalViewingAngle ) {
-			m_horizontalInDegrees = m_element.horizontalViewingAngle.getValue().getAsDegrees();
+		if( property == owner.verticalViewingAngle ) {
+			m_verticalInDegrees = owner.verticalViewingAngle.getValue().getAsDegrees();
+		} else if( property == owner.horizontalViewingAngle ) {
+			m_horizontalInDegrees = owner.horizontalViewingAngle.getValue().getAsDegrees();
 		} else {
 			super.propertyChanged( property );
 		}

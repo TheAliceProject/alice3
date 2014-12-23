@@ -57,20 +57,20 @@ public class DiscAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Disc
 	private static final int LOOP_COUNT = 1;
 
 	private void glDisc( Context c ) {
-		double innerRadius = m_element.innerRadius.getValue();
-		double outerRadius = m_element.outerRadius.getValue();
+		double innerRadius = owner.innerRadius.getValue();
+		double outerRadius = owner.outerRadius.getValue();
 		c.gl.glPushMatrix();
 		try {
-			edu.cmu.cs.dennisc.scenegraph.Disc.Axis axis = m_element.axis.getValue();
+			edu.cmu.cs.dennisc.scenegraph.Disc.Axis axis = owner.axis.getValue();
 			if( axis == edu.cmu.cs.dennisc.scenegraph.Disc.Axis.X ) {
 				c.gl.glRotated( 90.0, 0.0, 1.0, 0.0 );
 			} else if( axis == edu.cmu.cs.dennisc.scenegraph.Disc.Axis.Y ) {
 				c.gl.glRotated( 90.0, 1.0, 0.0, 0.0 );
 			}
-			if( m_element.isFrontFaceVisible.getValue() ) {
+			if( owner.isFrontFaceVisible.getValue() ) {
 				c.glu.gluDisk( c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT );
 			}
-			if( m_element.isBackFaceVisible.getValue() ) {
+			if( owner.isBackFaceVisible.getValue() ) {
 				c.gl.glRotated( 180.0, 0.0, 1.0, 0.0 );
 				c.glu.gluDisk( c.getQuadric(), innerRadius, outerRadius, SLICE_COUNT, LOOP_COUNT );
 			}
@@ -104,13 +104,13 @@ public class DiscAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Disc
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.innerRadius ) {
+		if( property == owner.innerRadius ) {
 			setIsGeometryChanged( true );
-		} else if( property == m_element.outerRadius ) {
+		} else if( property == owner.outerRadius ) {
 			setIsGeometryChanged( true );
-		} else if( property == m_element.isFrontFaceVisible ) {
+		} else if( property == owner.isFrontFaceVisible ) {
 			setIsGeometryChanged( true );
-		} else if( property == m_element.isBackFaceVisible ) {
+		} else if( property == owner.isBackFaceVisible ) {
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );

@@ -84,9 +84,9 @@ public class TorusAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Tor
 
 	private void glTorus( Context context, boolean isLightingEnabled ) {
 
-		edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane coordinatePlane = this.m_element.coordinatePlane.getValue();
-		double majorRadius = this.m_element.majorRadius.getValue();
-		double minorRadius = this.m_element.minorRadius.getValue();
+		edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
+		double majorRadius = this.owner.majorRadius.getValue();
+		double minorRadius = this.owner.minorRadius.getValue();
 
 		//todo: add scenegraph hint
 		final int N = 32;
@@ -130,7 +130,7 @@ public class TorusAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Tor
 	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
 		//todo: solve for intersection with actual torus as opposed to just the plane
 		edu.cmu.cs.dennisc.math.Vector3 direction = new edu.cmu.cs.dennisc.math.Vector3( 0, 0, 0 );
-		edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane coordinatePlane = this.m_element.coordinatePlane.getValue();
+		edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane coordinatePlane = this.owner.coordinatePlane.getValue();
 		if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.XY ) {
 			direction.z = 1;
 		} else if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.YZ ) {
@@ -143,11 +143,11 @@ public class TorusAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Tor
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.majorRadius ) {
+		if( property == owner.majorRadius ) {
 			setIsGeometryChanged( true );
-		} else if( property == m_element.minorRadius ) {
+		} else if( property == owner.minorRadius ) {
 			setIsGeometryChanged( true );
-		} else if( property == m_element.coordinatePlane ) {
+		} else if( property == owner.coordinatePlane ) {
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );

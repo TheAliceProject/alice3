@@ -82,14 +82,14 @@ public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Sim
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.ambientColor ) {
-			m_element.ambientColor.getValue().getAsArray( m_ambient );
+		if( property == owner.ambientColor ) {
+			owner.ambientColor.getValue().getAsArray( m_ambient );
 			m_isAmbientLinkedToDiffuse = Float.isNaN( m_ambient[ 0 ] );
-		} else if( property == m_element.diffuseColor ) {
-			m_element.diffuseColor.getValue().getAsArray( m_diffuse );
+		} else if( property == owner.diffuseColor ) {
+			owner.diffuseColor.getValue().getAsArray( m_diffuse );
 			updateOpacityRelatedBooleans();
-		} else if( property == m_element.fillingStyle ) {
-			edu.cmu.cs.dennisc.scenegraph.FillingStyle fillingStyle = m_element.fillingStyle.getValue();
+		} else if( property == owner.fillingStyle ) {
+			edu.cmu.cs.dennisc.scenegraph.FillingStyle fillingStyle = owner.fillingStyle.getValue();
 			if( fillingStyle.equals( edu.cmu.cs.dennisc.scenegraph.FillingStyle.SOLID ) ) {
 				m_polygonMode = GL_FILL;
 			} else if( fillingStyle.equals( edu.cmu.cs.dennisc.scenegraph.FillingStyle.WIREFRAME ) ) {
@@ -99,8 +99,8 @@ public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Sim
 			} else {
 				throw new RuntimeException();
 			}
-		} else if( property == m_element.shadingStyle ) {
-			edu.cmu.cs.dennisc.scenegraph.ShadingStyle shadingStyle = m_element.shadingStyle.getValue();
+		} else if( property == owner.shadingStyle ) {
+			edu.cmu.cs.dennisc.scenegraph.ShadingStyle shadingStyle = owner.shadingStyle.getValue();
 			if( ( shadingStyle == null ) || shadingStyle.equals( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.NONE ) ) {
 				m_isShaded = false;
 			} else if( shadingStyle.equals( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.FLAT ) ) {
@@ -112,17 +112,17 @@ public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Sim
 			} else {
 				throw new RuntimeException();
 			}
-		} else if( property == m_element.opacity ) {
-			m_opacity = m_element.opacity.getValue();
+		} else if( property == owner.opacity ) {
+			m_opacity = owner.opacity.getValue();
 			updateOpacityRelatedBooleans();
-		} else if( property == m_element.specularHighlightColor ) {
-			m_element.specularHighlightColor.getValue().getAsArray( m_specular );
-		} else if( property == m_element.specularHighlightExponent ) {
-			m_shininess = m_element.specularHighlightExponent.getValue();
-		} else if( property == m_element.emissiveColor ) {
-			m_element.emissiveColor.getValue().getAsArray( m_emissive );
-		} else if( property == m_element.isEthereal ) {
-			m_isEthereal = m_element.isEthereal.getValue();
+		} else if( property == owner.specularHighlightColor ) {
+			owner.specularHighlightColor.getValue().getAsArray( m_specular );
+		} else if( property == owner.specularHighlightExponent ) {
+			m_shininess = owner.specularHighlightExponent.getValue();
+		} else if( property == owner.emissiveColor ) {
+			owner.emissiveColor.getValue().getAsArray( m_emissive );
+		} else if( property == owner.isEthereal ) {
+			m_isEthereal = owner.isEthereal.getValue();
 		} else {
 			super.propertyChanged( property );
 		}

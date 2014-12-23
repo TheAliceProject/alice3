@@ -61,7 +61,7 @@ public class NebulousTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.ne
 
 	@Override
 	public ForgettableBinding bindTexture( RenderContext rc ) {
-		this.nebulousBinding.bind( rc, this.m_element );
+		this.nebulousBinding.bind( rc, this.owner );
 		return this.nebulousBinding;
 	}
 

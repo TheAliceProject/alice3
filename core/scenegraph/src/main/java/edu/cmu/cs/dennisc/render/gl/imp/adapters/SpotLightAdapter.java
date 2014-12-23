@@ -69,10 +69,10 @@ public class SpotLightAdapter extends PointLightAdapter<edu.cmu.cs.dennisc.scene
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.innerBeamAngle ) {
-		} else if( property == m_element.outerBeamAngle ) {
-			m_outerBeamAngleInDegrees = (float)m_element.outerBeamAngle.getValue().getAsDegrees();
-		} else if( property == m_element.falloff ) {
+		if( property == owner.innerBeamAngle ) {
+		} else if( property == owner.outerBeamAngle ) {
+			m_outerBeamAngleInDegrees = (float)owner.outerBeamAngle.getValue().getAsDegrees();
+		} else if( property == owner.falloff ) {
 		} else {
 			super.propertyChanged( property );
 		}

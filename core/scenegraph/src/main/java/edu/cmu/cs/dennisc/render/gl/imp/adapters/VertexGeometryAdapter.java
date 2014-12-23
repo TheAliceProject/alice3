@@ -64,7 +64,7 @@ public abstract class VertexGeometryAdapter<E extends edu.cmu.cs.dennisc.scenegr
 		setIsGeometryChanged( true );
 		m_isAlphaBlended = false;
 		//	    m_isVertexColored = false;
-		for( edu.cmu.cs.dennisc.scenegraph.Vertex v : m_element.vertices.getValue() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.Vertex v : owner.vertices.getValue() ) {
 			if( v.diffuseColor.isNaN() == false ) {
 				//m_isVertexColored = true;
 				if( v.diffuseColor.alpha < 1.0f ) {
@@ -85,12 +85,12 @@ public abstract class VertexGeometryAdapter<E extends edu.cmu.cs.dennisc.scenegr
 	//    }
 
 	protected edu.cmu.cs.dennisc.scenegraph.Vertex accessVertexAt( int index ) {
-		return m_element.vertices.getValue()[ index ];
+		return owner.vertices.getValue()[ index ];
 	}
 
 	public void renderPrimative( RenderContext rc, int mode ) {
 		rc.gl.glBegin( mode );
-		for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : m_element.vertices.getValue() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : owner.vertices.getValue() ) {
 			rc.renderVertex( vertex );
 		}
 		rc.gl.glEnd();
@@ -99,7 +99,7 @@ public abstract class VertexGeometryAdapter<E extends edu.cmu.cs.dennisc.scenegr
 	public void pickPrimative( PickContext pc, int mode ) {
 		pc.gl.glPushName( -1 );
 		pc.gl.glBegin( mode );
-		for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : m_element.vertices.getValue() ) {
+		for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : owner.vertices.getValue() ) {
 			pc.pickVertex( vertex );
 		}
 		pc.gl.glEnd();
@@ -108,7 +108,7 @@ public abstract class VertexGeometryAdapter<E extends edu.cmu.cs.dennisc.scenegr
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.vertices ) {
+		if( property == owner.vertices ) {
 			updateVertices();
 			setIsGeometryChanged( true );
 		} else {

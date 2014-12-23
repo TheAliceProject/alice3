@@ -43,36 +43,15 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory;
-import edu.cmu.cs.dennisc.render.gl.imp.ChangeHandler;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractElementAdapter<E extends edu.cmu.cs.dennisc.pattern.AbstractNameable> {
-	protected E m_element;
-
-	public E getElement() {
-		return this.m_element;
-	}
-
-	public void handleReleased() {
-		if( m_element == null )
-		{
-			Logger.severe( "TRYING TO RELEASE NULL ELEMENT IN " + this.hashCode() );
-		}
-		AdapterFactory.forget( m_element );
-		ChangeHandler.removeListenersAndObservers( m_element );
-		//		Logger.severe( "RELEASING " + this.hashCode() + "->" + m_element.hashCode() + " : " + this + "->" + m_element );
-		m_element = null;
-	}
-
 	public static void handleReleased( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent e ) {
 		edu.cmu.cs.dennisc.pattern.Releasable releasable = e.getTypedSource();
 		if( releasable instanceof edu.cmu.cs.dennisc.pattern.AbstractNameable ) {
 			edu.cmu.cs.dennisc.pattern.AbstractNameable element = (edu.cmu.cs.dennisc.pattern.AbstractNameable)releasable;
-			AbstractElementAdapter elementAdapter = AdapterFactory.getAdapterForElement( element );
+			AbstractElementAdapter elementAdapter = edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.getAdapterForElement( element );
 			if( elementAdapter != null ) {
 				elementAdapter.handleReleased();
 			}
@@ -81,16 +60,32 @@ public abstract class AbstractElementAdapter<E extends edu.cmu.cs.dennisc.patter
 		}
 	}
 
+	public E getOwner() {
+		return this.owner;
+	}
+
+	public void handleReleased() {
+		if( this.owner == null ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "TRYING TO RELEASE NULL ELEMENT IN " + this.hashCode() );
+		}
+		edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.forget( this.owner );
+		edu.cmu.cs.dennisc.render.gl.imp.ChangeHandler.removeListenersAndObservers( this.owner );
+		//		Logger.severe( "RELEASING " + this.hashCode() + "->" + this.element.hashCode() + " : " + this + "->" + this.element );
+		this.owner = null;
+	}
+
 	public void initialize( E element ) {
-		m_element = element;
+		this.owner = element;
 	}
 
 	@Override
 	public String toString() {
-		if( m_element != null ) {
-			return getClass().getName() + " " + m_element.toString();
+		if( this.owner != null ) {
+			return getClass().getName() + " " + this.owner.toString();
 		} else {
 			return super.toString();
 		}
 	}
+
+	protected E owner;
 }

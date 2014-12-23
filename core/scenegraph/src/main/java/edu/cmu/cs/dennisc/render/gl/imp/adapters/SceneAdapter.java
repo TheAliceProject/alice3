@@ -69,7 +69,7 @@ public class SceneAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegraph
 	@Override
 	public void initialize( edu.cmu.cs.dennisc.scenegraph.Scene sgElement ) {
 		super.initialize( sgElement );
-		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( m_element, edu.cmu.cs.dennisc.scenegraph.Component.class ) ) {
+		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( owner, edu.cmu.cs.dennisc.scenegraph.Component.class ) ) {
 			addDescendant( AdapterFactory.getAdapterFor( sgComponent ) );
 		}
 		//		m_sgE.accept( new edu.cmu.cs.dennisc.pattern.FilteredVisitor< edu.cmu.cs.dennisc.scenegraph.Component >() {
@@ -132,7 +132,7 @@ public class SceneAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegraph
 			for( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter : m_visualAdapters ) {
 				if( visualAdapter.isAlphaBlended() ) {
 					//todo: adapters should be removed 
-					if( ( visualAdapter.m_element != null ) && ( visualAdapter.m_element.getRoot() instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) ) {
+					if( ( visualAdapter.owner != null ) && ( visualAdapter.owner.getRoot() instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) ) {
 						if( visualAdapter.isAllAlpha() ) {
 							visualAdapter.renderAllAlphaBlended( rc );
 						}
@@ -223,10 +223,10 @@ public class SceneAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegraph
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.background ) {
-			m_backgroundAdapter = AdapterFactory.getAdapterFor( m_element.background.getValue() );
-		} else if( property == m_element.globalBrightness ) {
-			m_globalBrightness = m_element.globalBrightness.getValue();
+		if( property == owner.background ) {
+			m_backgroundAdapter = AdapterFactory.getAdapterFor( owner.background.getValue() );
+		} else if( property == owner.globalBrightness ) {
+			m_globalBrightness = owner.globalBrightness.getValue();
 		} else {
 			super.propertyChanged( property );
 		}

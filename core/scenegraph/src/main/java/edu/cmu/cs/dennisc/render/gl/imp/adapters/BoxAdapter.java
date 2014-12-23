@@ -197,23 +197,23 @@ public class BoxAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Box> 
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.xMinimum ) {
-			m_xMin = m_element.xMinimum.getValue();
+		if( property == owner.xMinimum ) {
+			m_xMin = owner.xMinimum.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.xMaximum ) {
-			m_xMax = m_element.xMaximum.getValue();
+		} else if( property == owner.xMaximum ) {
+			m_xMax = owner.xMaximum.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.yMinimum ) {
-			m_yMin = m_element.yMinimum.getValue();
+		} else if( property == owner.yMinimum ) {
+			m_yMin = owner.yMinimum.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.yMaximum ) {
-			m_yMax = m_element.yMaximum.getValue();
+		} else if( property == owner.yMaximum ) {
+			m_yMax = owner.yMaximum.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.zMinimum ) {
-			m_zMin = m_element.zMinimum.getValue();
+		} else if( property == owner.zMinimum ) {
+			m_zMin = owner.zMinimum.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.zMaximum ) {
-			m_zMax = m_element.zMaximum.getValue();
+		} else if( property == owner.zMaximum ) {
+			m_zMax = owner.zMaximum.getValue();
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );

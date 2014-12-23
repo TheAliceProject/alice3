@@ -73,7 +73,7 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 
 	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 inverseAbsoluteTransformationOfSource, int geometryIndex, int subElement ) {
 		if( ( 0 <= geometryIndex ) && ( geometryIndex < m_geometryAdapters.length ) ) {
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 absoluteTransformation = this.m_element.getAbsoluteTransformation();
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 absoluteTransformation = this.owner.getAbsoluteTransformation();
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createMultiplication( inverseAbsoluteTransformationOfSource, absoluteTransformation );
 			m_geometryAdapters[ geometryIndex ].getIntersectionInSource( rv, ray, m, subElement );
 		}
@@ -186,19 +186,19 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 	{
 		synchronized( m_geometryAdapters ) {
 			for( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : m_geometryAdapters ) {
-				if( geometryAdapter.m_element != null )
+				if( geometryAdapter.owner != null )
 				{
 					geometryAdapter.handleReleased();
 				}
 			}
 			m_geometryAdapters = null;
 		}
-		if( ( m_frontFacingAppearanceAdapter != null ) && ( m_frontFacingAppearanceAdapter.m_element != null ) )
+		if( ( m_frontFacingAppearanceAdapter != null ) && ( m_frontFacingAppearanceAdapter.owner != null ) )
 		{
 			m_frontFacingAppearanceAdapter.handleReleased();
 		}
 		m_frontFacingAppearanceAdapter = null;
-		if( ( m_backFacingAppearanceAdapter != null ) && ( m_backFacingAppearanceAdapter.m_element != null ) )
+		if( ( m_backFacingAppearanceAdapter != null ) && ( m_backFacingAppearanceAdapter.owner != null ) )
 		{
 			m_backFacingAppearanceAdapter.handleReleased();
 		}
@@ -340,7 +340,7 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 
 	@Override
 	public void pick( PickContext pc, PickParameters pickParameters ) {
-		if( this.m_element.isPickable.getValue() && isActuallyShowing() && ( isEthereal() == false ) ) {
+		if( this.owner.isPickable.getValue() && isActuallyShowing() && ( isEthereal() == false ) ) {
 			boolean isSubElementActuallyRequired = pickParameters.isSubElementRequired();
 
 			if( isSubElementActuallyRequired ) {
@@ -387,7 +387,7 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 	}
 
 	protected void updateGeometryAdapters() {
-		GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>[] newAdapters = AdapterFactory.getAdaptersFor( m_element.geometries.getValue(), GeometryAdapter.class );
+		GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>[] newAdapters = AdapterFactory.getAdaptersFor( owner.geometries.getValue(), GeometryAdapter.class );
 		if( m_geometryAdapters != null )
 		{
 			for( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> oldAdapter : m_geometryAdapters )
@@ -412,11 +412,11 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.geometries ) {
+		if( property == owner.geometries ) {
 			//todo: update scene observer skin vector
 			updateGeometryAdapters();
-		} else if( property == m_element.frontFacingAppearance ) {
-			AppearanceAdapter<? extends Appearance> newAdapter = AdapterFactory.getAdapterFor( m_element.frontFacingAppearance.getValue() );
+		} else if( property == owner.frontFacingAppearance ) {
+			AppearanceAdapter<? extends Appearance> newAdapter = AdapterFactory.getAdapterFor( owner.frontFacingAppearance.getValue() );
 			if( m_frontFacingAppearanceAdapter != newAdapter )
 			{
 				if( m_frontFacingAppearanceAdapter != null )
@@ -426,8 +426,8 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 				m_frontFacingAppearanceAdapter = newAdapter;
 			}
 
-		} else if( property == m_element.backFacingAppearance ) {
-			AppearanceAdapter<? extends Appearance> newAdapter = AdapterFactory.getAdapterFor( m_element.backFacingAppearance.getValue() );
+		} else if( property == owner.backFacingAppearance ) {
+			AppearanceAdapter<? extends Appearance> newAdapter = AdapterFactory.getAdapterFor( owner.backFacingAppearance.getValue() );
 			if( m_backFacingAppearanceAdapter != newAdapter )
 			{
 				if( m_backFacingAppearanceAdapter != null )
@@ -437,13 +437,13 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 				m_backFacingAppearanceAdapter = newAdapter;
 			}
 
-		} else if( property == m_element.scale ) {
+		} else if( property == owner.scale ) {
 			//todo: accessScale?
-			updateScale( m_element.scale.getValue() );
-		} else if( property == m_element.isShowing ) {
-			m_isShowing = m_element.isShowing.getValue();
-		} else if( property == m_element.silouette ) {
-			this.silhouetteAdapter = AdapterFactory.getAdapterFor( m_element.silouette.getValue() );
+			updateScale( owner.scale.getValue() );
+		} else if( property == owner.isShowing ) {
+			m_isShowing = owner.isShowing.getValue();
+		} else if( property == owner.silouette ) {
+			this.silhouetteAdapter = AdapterFactory.getAdapterFor( owner.silouette.getValue() );
 		} else {
 			super.propertyChanged( property );
 		}

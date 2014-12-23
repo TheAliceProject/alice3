@@ -185,7 +185,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 				java.util.Arrays.sort( selectionBufferInfos, comparator );
 			}
 			for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
-				pickParameters.addPickResult( sgCamera, selectionBufferInfo.getSGVisual(), selectionBufferInfo.isFrontFacing(), selectionBufferInfo.getSGGeometry(), selectionBufferInfo.getSubElement(), selectionBufferInfo.getPointInSource() );
+				pickParameters.addPickResult( sgCamera, selectionBufferInfo.getSgVisual(), selectionBufferInfo.isFrontFacing(), selectionBufferInfo.getSGGeometry(), selectionBufferInfo.getSubElement(), selectionBufferInfo.getPointInSource() );
 			}
 		}
 

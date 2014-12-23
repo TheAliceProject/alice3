@@ -64,8 +64,8 @@ public class FrustumPerspectiveCameraAdapter extends AbstractPerspectiveCameraAd
 		double bottom = actualPicturePlane.getYMinimum();
 		double top = actualPicturePlane.getYMaximum();
 
-		double zNear = m_element.nearClippingPlaneDistance.getValue();
-		double zFar = m_element.farClippingPlaneDistance.getValue();
+		double zNear = owner.nearClippingPlaneDistance.getValue();
+		double zFar = owner.farClippingPlaneDistance.getValue();
 
 		rv.right.set( 2 * zNear, 0, 0, 0 );
 		rv.up.set( 0, ( 2 * zNear ) / ( top - bottom ), 0, 0 );
@@ -82,7 +82,7 @@ public class FrustumPerspectiveCameraAdapter extends AbstractPerspectiveCameraAd
 	}
 
 	public edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, java.awt.Rectangle actualViewport ) {
-		rv.set( m_element.picturePlane.getValue(), actualViewport );
+		rv.set( owner.picturePlane.getValue(), actualViewport );
 		return rv;
 	}
 
@@ -96,7 +96,7 @@ public class FrustumPerspectiveCameraAdapter extends AbstractPerspectiveCameraAd
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.picturePlane ) {
+		if( property == owner.picturePlane ) {
 		} else {
 			super.propertyChanged( property );
 		}

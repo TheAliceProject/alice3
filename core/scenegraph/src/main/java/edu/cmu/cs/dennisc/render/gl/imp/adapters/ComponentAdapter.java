@@ -88,7 +88,7 @@ public abstract class ComponentAdapter<E extends edu.cmu.cs.dennisc.scenegraph.C
 
 	protected void handleHierarchyChanged() {
 		SceneAdapter sceneAdapter;
-		edu.cmu.cs.dennisc.scenegraph.Composite sgRoot = m_element.getRoot();
+		edu.cmu.cs.dennisc.scenegraph.Composite sgRoot = owner.getRoot();
 		if( sgRoot instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) {
 			//edu.cmu.cs.dennisc.scenegraph.Scene sgScene = (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot;
 			sceneAdapter = AdapterFactory.getAdapterFor( (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot );
@@ -119,7 +119,7 @@ public abstract class ComponentAdapter<E extends edu.cmu.cs.dennisc.scenegraph.C
 	}
 
 	public SceneAdapter getSceneAdapter() {
-		edu.cmu.cs.dennisc.scenegraph.Composite sgRoot = m_element.getRoot();
+		edu.cmu.cs.dennisc.scenegraph.Composite sgRoot = owner.getRoot();
 		if( sgRoot instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) {
 			return AdapterFactory.getAdapterFor( (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot );
 		} else {
@@ -131,7 +131,7 @@ public abstract class ComponentAdapter<E extends edu.cmu.cs.dennisc.scenegraph.C
 		synchronized( s_buffer ) {
 			synchronized( m_absolute ) {
 				if( Double.isNaN( m_absolute[ 0 ] ) ) {
-					m_element.getAbsoluteTransformation( s_buffer );
+					owner.getAbsoluteTransformation( s_buffer );
 					assert s_buffer.isNaN() == false;
 					s_buffer.getAsColumnMajorArray16( m_absolute );
 				}
@@ -143,7 +143,7 @@ public abstract class ComponentAdapter<E extends edu.cmu.cs.dennisc.scenegraph.C
 		synchronized( s_buffer ) {
 			synchronized( m_inverseAbsolute ) {
 				if( Double.isNaN( m_inverseAbsolute[ 0 ] ) ) {
-					m_element.getInverseAbsoluteTransformation( s_buffer );
+					owner.getInverseAbsoluteTransformation( s_buffer );
 					assert s_buffer.isNaN() == false;
 					s_buffer.getAsColumnMajorArray16( m_inverseAbsolute );
 				}

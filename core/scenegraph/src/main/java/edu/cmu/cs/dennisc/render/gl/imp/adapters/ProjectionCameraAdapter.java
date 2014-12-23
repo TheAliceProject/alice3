@@ -75,8 +75,8 @@ public class ProjectionCameraAdapter extends AbstractCameraAdapter<edu.cmu.cs.de
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.projection ) {
-			m_element.projection.getValue().getAsColumnMajorArray16( m_projection );
+		if( property == owner.projection ) {
+			owner.projection.getValue().getAsColumnMajorArray16( m_projection );
 		} else {
 			super.propertyChanged( property );
 		}

@@ -168,7 +168,7 @@ public abstract class AdapterFactory {
 						// not create rv for: " + sgElement );
 					}
 				} else {
-					if( rv.getElement() == null ) {
+					if( rv.getOwner() == null ) {
 						rv = null;
 						// todo
 						// edu.cmu.cs.dennisc.pattern.AbstractElement.warnln( sgElement + "'s

@@ -113,8 +113,8 @@ public class MultipleAppearanceAdapter extends AppearanceAdapter<edu.cmu.cs.denn
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.singleAppearances ) {
-			m_singleAppearanceAdapters = AdapterFactory.getAdaptersFor( m_element.singleAppearances.getValue(), TexturedAppearanceAdapter.class );
+		if( property == owner.singleAppearances ) {
+			m_singleAppearanceAdapters = AdapterFactory.getAdaptersFor( owner.singleAppearances.getValue(), TexturedAppearanceAdapter.class );
 		} else {
 			super.propertyChanged( property );
 		}

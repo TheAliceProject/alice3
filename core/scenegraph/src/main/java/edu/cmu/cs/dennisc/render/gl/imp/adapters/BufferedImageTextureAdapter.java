@@ -50,7 +50,7 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 public class BufferedImageTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.texture.BufferedImageTexture> {
 	@Override
 	protected com.jogamp.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
-		return newTextureData( gl, m_element.getBufferedImage(), m_element.isMipMappingDesired() );
+		return newTextureData( gl, owner.getBufferedImage(), owner.isMipMappingDesired() );
 	}
 	//	
 	//	@Override

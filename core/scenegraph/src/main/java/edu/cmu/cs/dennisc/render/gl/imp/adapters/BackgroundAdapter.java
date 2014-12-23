@@ -57,8 +57,8 @@ public class BackgroundAdapter extends ElementAdapter<edu.cmu.cs.dennisc.scenegr
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.color ) {
-			m_element.color.getValue().getAsArray( m_color );
+		if( property == owner.color ) {
+			owner.color.getValue().getAsArray( m_color );
 		} else {
 			super.propertyChanged( property );
 		}

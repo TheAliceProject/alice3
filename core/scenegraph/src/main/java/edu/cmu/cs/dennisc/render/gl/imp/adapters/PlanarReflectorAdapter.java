@@ -54,7 +54,7 @@ public class PlanarReflectorAdapter extends VisualAdapter<edu.cmu.cs.dennisc.sce
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_geometryTransformation = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
 
 	private void updateGeometryTransformation() {
-		edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = m_element.geometries.getValue();
+		edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = owner.geometries.getValue();
 		if( ( sgGeometries != null ) && ( sgGeometries.length > 0 ) ) {
 			edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = sgGeometries[ 0 ];
 
@@ -110,7 +110,7 @@ public class PlanarReflectorAdapter extends VisualAdapter<edu.cmu.cs.dennisc.sce
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		super.propertyChanged( property );
-		if( property == m_element.geometries ) {
+		if( property == owner.geometries ) {
 			updateGeometryTransformation();
 		}
 	}
@@ -136,7 +136,7 @@ public class PlanarReflectorAdapter extends VisualAdapter<edu.cmu.cs.dennisc.sce
 	//	}
 
 	public boolean isFacing( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = m_element.getTransformation( cameraAdapter.m_element );
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = owner.getTransformation( cameraAdapter.owner );
 		return m.orientation.backward.z > 0;
 	}
 
@@ -146,7 +146,7 @@ public class PlanarReflectorAdapter extends VisualAdapter<edu.cmu.cs.dennisc.sce
 	private java.nio.DoubleBuffer m_equationBuffer = java.nio.DoubleBuffer.wrap( m_equation );
 
 	public synchronized void applyReflection( RenderContext rc ) {
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = m_element.getAbsoluteTransformation();
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = owner.getAbsoluteTransformation();
 		m.multiply( m_geometryTransformation );
 
 		edu.cmu.cs.dennisc.math.Plane plane = edu.cmu.cs.dennisc.math.Plane.createInstance( m );

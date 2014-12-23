@@ -231,7 +231,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 						java.util.Arrays.sort( selectionBufferInfos, comparator );
 					}
 					for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
-						pickParameters.addPickResult( sgCamera, selectionBufferInfo.getSGVisual(), selectionBufferInfo.isFrontFacing(), selectionBufferInfo.getSGGeometry(), selectionBufferInfo.getSubElement(), selectionBufferInfo.getPointInSource() );
+						pickParameters.addPickResult( sgCamera, selectionBufferInfo.getSgVisual(), selectionBufferInfo.isFrontFacing(), selectionBufferInfo.getSGGeometry(), selectionBufferInfo.getSubElement(), selectionBufferInfo.getPointInSource() );
 					}
 				}
 				if( pickObserver != null ) {

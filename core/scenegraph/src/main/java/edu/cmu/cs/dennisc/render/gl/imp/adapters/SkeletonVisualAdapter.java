@@ -90,8 +90,8 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 	@Override
 	public void initialize( SkeletonVisual element )
 	{
-		if( this.m_element != null ) {
-			this.m_element.setTracker( null );
+		if( this.owner != null ) {
+			this.owner.setTracker( null );
 		}
 		super.initialize( element );
 		element.setTracker( this );
@@ -108,20 +108,20 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 
 	private void initializeData()
 	{
-		if( this.m_element != null )
+		if( this.owner != null )
 		{
 			if( this.currentSkeleton != null )
 			{
 				this.setListeningOnSkeleton( this.currentSkeleton, false );
-				System.out.println( "SWITCHING SKELETON FROM " + this.currentSkeleton.hashCode() + " TO " + m_element.skeleton.getValue().hashCode() );
+				System.out.println( "SWITCHING SKELETON FROM " + this.currentSkeleton.hashCode() + " TO " + owner.skeleton.getValue().hashCode() );
 			}
-			this.currentSkeleton = m_element.skeleton.getValue();
+			this.currentSkeleton = owner.skeleton.getValue();
 			if( this.currentSkeleton != null )
 			{
 				this.setListeningOnSkeleton( this.currentSkeleton, true );
 				this.skeletonIsDirty = true;
 			}
-			if( m_element.renderBackfaces() ) {
+			if( owner.renderBackfaces() ) {
 				this.m_backFacingAppearanceAdapter = this.m_frontFacingAppearanceAdapter;
 			}
 			updateAppearanceToGeometryAdapterMap();
@@ -148,7 +148,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 			}
 			if( !matchesGeometry )
 			{
-				if( adapter.m_element != null )
+				if( adapter.owner != null )
 				{
 					adapter.handleReleased();
 				}
@@ -225,7 +225,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 				for( MeshAdapter<Mesh> ma : meshAdapters )
 				{
 					pc.gl.glPushName( i++ );
-					if( !( (Mesh)ma.m_element ).cullBackfaces.getValue() )
+					if( !( (Mesh)ma.owner ).cullBackfaces.getValue() )
 					{
 						pc.gl.glDisable( GL_CULL_FACE );
 					}
@@ -234,7 +234,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 						pc.gl.glEnable( GL_CULL_FACE );
 						pc.gl.glCullFace( GL_BACK );
 					}
-					if( ( (Mesh)ma.m_element ).useAlphaTest.getValue() )
+					if( ( (Mesh)ma.owner ).useAlphaTest.getValue() )
 					{
 						pc.gl.glEnable( GL_ALPHA_TEST );
 						pc.gl.glAlphaFunc( GL_GREATER, ALPHA_TEST_THRESHOLD );
@@ -276,7 +276,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 			{
 				for( MeshAdapter<Mesh> ma : meshAdapters )
 				{
-					edu.cmu.cs.dennisc.math.AxisAlignedBox b = ma.m_element.getAxisAlignedMinimumBoundingBox();
+					edu.cmu.cs.dennisc.math.AxisAlignedBox b = ma.owner.getAxisAlignedMinimumBoundingBox();
 					rv.union( b );
 				}
 			}
@@ -332,7 +332,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 			{
 				for( MeshAdapter<Mesh> ma : meshAdapters )
 				{
-					if( !( (Mesh)ma.m_element ).cullBackfaces.getValue() )
+					if( !( (Mesh)ma.owner ).cullBackfaces.getValue() )
 					{
 						rc.gl.glDisable( GL_CULL_FACE );
 					}
@@ -341,7 +341,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 						rc.gl.glEnable( GL_CULL_FACE );
 						rc.gl.glCullFace( GL_BACK );
 					}
-					if( ( (Mesh)ma.m_element ).useAlphaTest.getValue() )
+					if( ( (Mesh)ma.owner ).useAlphaTest.getValue() )
 					{
 						rc.gl.glEnable( GL_ALPHA_TEST );
 						rc.gl.glAlphaFunc( GL_GREATER, ALPHA_TEST_THRESHOLD );
@@ -520,7 +520,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 					}
 				}
 				AffineMatrix4x4 oTransformationPre = new AffineMatrix4x4();
-				edu.cmu.cs.dennisc.math.Matrix3x3 inverseScale = new edu.cmu.cs.dennisc.math.Matrix3x3( m_element.scale.getValue() );
+				edu.cmu.cs.dennisc.math.Matrix3x3 inverseScale = new edu.cmu.cs.dennisc.math.Matrix3x3( owner.scale.getValue() );
 				inverseScale.invert();
 				synchronized( this.currentSkeleton ) {
 					processWeightedMesh( this.currentSkeleton, oTransformationPre, inverseScale );
@@ -587,7 +587,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 			}
 			appearanceIdToAdapterMap.clear();
 			List<ElementAdapter<? extends Element>> newAdapters = new ArrayList<ElementAdapter<? extends Element>>();
-			for( TexturedAppearance ta : this.m_element.textures.getValue() )
+			for( TexturedAppearance ta : this.owner.textures.getValue() )
 			{
 				TexturedAppearanceAdapter newAdapter = AdapterFactory.getAdapterFor( ta );
 				appearanceIdToAdapterMap.put( ta.textureId.getValue(), newAdapter );
@@ -609,7 +609,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 	protected void updateAppearanceToGeometryAdapterMap() {
 		synchronized( appearanceIdToGeometryAdapaters ) {
 			appearanceIdToGeometryAdapaters.clear();
-			for( TexturedAppearance ta : this.m_element.textures.getValue() )
+			for( TexturedAppearance ta : this.owner.textures.getValue() )
 			{
 				List<MeshAdapter<Mesh>> meshAdapters = new LinkedList<MeshAdapter<Mesh>>();
 				for( GeometryAdapter adapter : this.m_geometryAdapters )
@@ -617,7 +617,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 					if( adapter instanceof MeshAdapter<?> )
 					{
 						MeshAdapter<Mesh> ma = (MeshAdapter<Mesh>)adapter;
-						if( ma.m_element.textureId.getValue() == ta.textureId.getValue() )
+						if( ma.owner.textureId.getValue() == ta.textureId.getValue() )
 						{
 							meshAdapters.add( ma );
 						}
@@ -631,10 +631,10 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 	protected void updateAppearanceToMeshControllersMap() {
 		synchronized( appearanceIdToMeshControllersMap ) {
 			appearanceIdToMeshControllersMap.clear();
-			for( TexturedAppearance ta : this.m_element.textures.getValue() )
+			for( TexturedAppearance ta : this.owner.textures.getValue() )
 			{
 				List<WeightedMeshControl> controls = new LinkedList<WeightedMeshControl>();
-				for( WeightedMesh weightedMesh : this.m_element.weightedMeshes.getValue() )
+				for( WeightedMesh weightedMesh : this.owner.weightedMeshes.getValue() )
 				{
 					if( weightedMesh.textureId.getValue() == ta.textureId.getValue() )
 					{
@@ -656,18 +656,18 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adap
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.skeleton )
+		if( property == owner.skeleton )
 		{
 			handleNewSkeleton();
 		}
-		else if( property == m_element.weightedMeshes )
+		else if( property == owner.weightedMeshes )
 		{
 			updateAppearanceToMeshControllersMap();
 		}
-		else if( property == m_element.textures ) {
+		else if( property == owner.textures ) {
 			updateAppearanceIdToAdapterMap();
 		}
-		else if( property == m_element.baseBoundingBox ) {
+		else if( property == owner.baseBoundingBox ) {
 			//pass
 		}
 		else {

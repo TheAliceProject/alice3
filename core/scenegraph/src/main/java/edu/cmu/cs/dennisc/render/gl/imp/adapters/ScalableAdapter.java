@@ -108,8 +108,8 @@ public class ScalableAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegr
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.scale ) {
-			edu.cmu.cs.dennisc.math.Dimension3 scale = m_element.scale.getValue();
+		if( property == owner.scale ) {
+			edu.cmu.cs.dennisc.math.Dimension3 scale = owner.scale.getValue();
 			this.isIdentity = ( scale.x == 1.0 ) && ( scale.y == 1.0 ) && ( scale.z == 1.0 );
 			this.x = scale.x;
 			this.y = scale.y;

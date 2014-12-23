@@ -103,8 +103,8 @@ public class SphereAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Sp
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.radius ) {
-			m_radius = m_element.radius.getValue();
+		if( property == owner.radius ) {
+			m_radius = owner.radius.getValue();
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );

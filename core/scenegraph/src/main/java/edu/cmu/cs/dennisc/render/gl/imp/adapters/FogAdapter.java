@@ -59,8 +59,8 @@ public abstract class FogAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Fog> ex
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.color ) {
-			m_element.color.getValue().getAsArray( m_color );
+		if( property == owner.color ) {
+			owner.color.getValue().getAsArray( m_color );
 		} else {
 			super.propertyChanged( property );
 		}

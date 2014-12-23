@@ -77,11 +77,11 @@ public class TexturedAppearanceAdapter extends SimpleAppearanceAdapter<edu.cmu.c
 	public void handleReleased()
 	{
 		super.handleReleased();
-		if( ( m_diffuseColorTextureAdapter != null ) && ( m_diffuseColorTextureAdapter.m_element != null ) )
+		if( ( m_diffuseColorTextureAdapter != null ) && ( m_diffuseColorTextureAdapter.owner != null ) )
 		{
 			m_diffuseColorTextureAdapter.handleReleased();
 		}
-		if( ( m_bumpTextureAdapter != null ) && ( m_bumpTextureAdapter.m_element != null ) )
+		if( ( m_bumpTextureAdapter != null ) && ( m_bumpTextureAdapter.owner != null ) )
 		{
 			m_bumpTextureAdapter.handleReleased();
 		}
@@ -89,8 +89,8 @@ public class TexturedAppearanceAdapter extends SimpleAppearanceAdapter<edu.cmu.c
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.diffuseColorTexture ) {
-			TextureAdapter<? extends Texture> newAdapter = AdapterFactory.getAdapterFor( m_element.diffuseColorTexture.getValue() );
+		if( property == owner.diffuseColorTexture ) {
+			TextureAdapter<? extends Texture> newAdapter = AdapterFactory.getAdapterFor( owner.diffuseColorTexture.getValue() );
 			if( m_diffuseColorTextureAdapter != newAdapter )
 			{
 				if( m_diffuseColorTextureAdapter != null )
@@ -99,12 +99,12 @@ public class TexturedAppearanceAdapter extends SimpleAppearanceAdapter<edu.cmu.c
 				}
 				m_diffuseColorTextureAdapter = newAdapter;
 			}
-		} else if( property == m_element.isDiffuseColorTextureAlphaBlended ) {
-			m_isDiffuseColorTextureAlphaBlended = m_element.isDiffuseColorTextureAlphaBlended.getValue();
-		} else if( property == m_element.isDiffuseColorTextureClamped ) {
-			m_isDiffuseColorTextureClamped = m_element.isDiffuseColorTextureClamped.getValue();
-		} else if( property == m_element.bumpTexture ) {
-			TextureAdapter<? extends Texture> newAdapter = AdapterFactory.getAdapterFor( m_element.bumpTexture.getValue() );
+		} else if( property == owner.isDiffuseColorTextureAlphaBlended ) {
+			m_isDiffuseColorTextureAlphaBlended = owner.isDiffuseColorTextureAlphaBlended.getValue();
+		} else if( property == owner.isDiffuseColorTextureClamped ) {
+			m_isDiffuseColorTextureClamped = owner.isDiffuseColorTextureClamped.getValue();
+		} else if( property == owner.bumpTexture ) {
+			TextureAdapter<? extends Texture> newAdapter = AdapterFactory.getAdapterFor( owner.bumpTexture.getValue() );
 			if( m_bumpTextureAdapter != newAdapter )
 			{
 				if( m_bumpTextureAdapter != null )
@@ -113,8 +113,8 @@ public class TexturedAppearanceAdapter extends SimpleAppearanceAdapter<edu.cmu.c
 				}
 				m_bumpTextureAdapter = newAdapter;
 			}
-		} else if( property == m_element.textureId ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle textureId?", property.getValue(), this.m_element.hashCode(), this.m_element );
+		} else if( property == owner.textureId ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle textureId?", property.getValue(), this.owner.hashCode(), this.owner );
 		} else {
 			super.propertyChanged( property );
 		}

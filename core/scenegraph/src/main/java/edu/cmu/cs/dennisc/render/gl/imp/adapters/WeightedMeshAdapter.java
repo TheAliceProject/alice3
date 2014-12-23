@@ -53,12 +53,12 @@ public class WeightedMeshAdapter<E extends WeightedMesh> extends MeshAdapter<E>
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( ( property == m_element.vertexBuffer ) ||
-				( property == m_element.normalBuffer ) ||
-				( property == m_element.textCoordBuffer ) ||
-				( property == m_element.indexBuffer ) ||
-				( property == m_element.weightInfo ) ||
-				( property == m_element.skeleton ) )
+		if( ( property == owner.vertexBuffer ) ||
+				( property == owner.normalBuffer ) ||
+				( property == owner.textCoordBuffer ) ||
+				( property == owner.indexBuffer ) ||
+				( property == owner.weightInfo ) ||
+				( property == owner.skeleton ) )
 		{
 		}
 		else {

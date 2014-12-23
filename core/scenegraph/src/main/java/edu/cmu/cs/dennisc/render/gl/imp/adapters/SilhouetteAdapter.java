@@ -62,10 +62,10 @@ public class SilhouetteAdapter extends ElementAdapter<edu.cmu.cs.dennisc.scenegr
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.color ) {
-			m_element.color.getValue().getAsFloatBuffer( this.color );
-		} else if( property == m_element.width ) {
-			this.lineWidth = m_element.width.getValue() * 2.0f;
+		if( property == owner.color ) {
+			owner.color.getValue().getAsFloatBuffer( this.color );
+		} else if( property == owner.width ) {
+			this.lineWidth = owner.width.getValue() * 2.0f;
 		} else {
 			super.propertyChanged( property );
 		}

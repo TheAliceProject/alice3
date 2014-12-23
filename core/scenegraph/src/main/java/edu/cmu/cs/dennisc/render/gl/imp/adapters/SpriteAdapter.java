@@ -68,7 +68,7 @@ public class SpriteAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.radius ) {
+		if( property == owner.radius ) {
 			//todo
 			setIsGeometryChanged( true );
 		} else {

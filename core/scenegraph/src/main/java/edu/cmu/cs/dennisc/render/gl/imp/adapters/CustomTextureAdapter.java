@@ -52,7 +52,7 @@ public class CustomTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.text
 
 	@Override
 	protected boolean isDirty() {
-		return m_element.isAnimated() || super.isDirty();
+		return owner.isAnimated() || super.isDirty();
 	}
 
 	public java.awt.Graphics2D createGraphics() {
@@ -96,18 +96,18 @@ public class CustomTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.text
 			if( m_textureRenderer != null ) {
 				m_textureRenderer.dispose();
 			}
-			m_textureRenderer = new com.jogamp.opengl.util.awt.TextureRenderer( m_element.getWidth(), m_element.getHeight(), m_element.isPotentiallyAlphaBlended() );
+			m_textureRenderer = new com.jogamp.opengl.util.awt.TextureRenderer( owner.getWidth(), owner.getHeight(), owner.isPotentiallyAlphaBlended() );
 		}
 		java.awt.Graphics2D g = m_textureRenderer.createGraphics();
-		m_element.paint( g, m_textureRenderer.getWidth(), m_textureRenderer.getHeight() );
+		owner.paint( g, m_textureRenderer.getWidth(), m_textureRenderer.getHeight() );
 		g.dispose();
 		m_textureRenderer.markDirty( 0, 0, m_textureRenderer.getWidth(), m_textureRenderer.getHeight() );
 
-		if( m_element.isMipMappingDesired() ) {
+		if( owner.isMipMappingDesired() ) {
 			java.awt.Image image = m_textureRenderer.getImage();
 			if( image instanceof java.awt.image.BufferedImage ) {
 				java.awt.image.BufferedImage bufferedImage = (java.awt.image.BufferedImage)image;
-				if( m_element.isPotentiallyAlphaBlended() ) {
+				if( owner.isPotentiallyAlphaBlended() ) {
 					//pass
 				} else {
 					try {

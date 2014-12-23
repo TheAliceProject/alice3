@@ -63,8 +63,8 @@ public class ExponentialFogAdapter extends FogAdapter<edu.cmu.cs.dennisc.scenegr
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.density ) {
-			m_density = m_element.density.getValue().floatValue();
+		if( property == owner.density ) {
+			m_density = owner.density.getValue().floatValue();
 		} else {
 			super.propertyChanged( property );
 		}

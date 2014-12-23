@@ -60,8 +60,8 @@ public abstract class TextAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graphi
 
 	@Override
 	protected void render( edu.cmu.cs.dennisc.render.Graphics2D g2, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
-		String text = this.m_element.text.getValue();
-		java.awt.Font font = this.m_element.font.getValue();
+		String text = this.owner.text.getValue();
+		java.awt.Font font = this.owner.font.getValue();
 		if( font == this.rememberedFont ) {
 			//pass
 		} else {
@@ -88,12 +88,12 @@ public abstract class TextAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graphi
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.text ) {
+		if( property == owner.text ) {
 			this.markMultilineTextInvalid();
-		} else if( property == m_element.font ) {
+		} else if( property == owner.font ) {
 			this.markMultilineTextInvalid();
-		} else if( property == m_element.textColor ) {
-			edu.cmu.cs.dennisc.color.Color4f color = this.m_element.textColor.getValue();
+		} else if( property == owner.textColor ) {
+			edu.cmu.cs.dennisc.color.Color4f color = this.owner.textColor.getValue();
 			if( color != null ) {
 				this.textColor = color.getAsAWTColor();
 			} else {

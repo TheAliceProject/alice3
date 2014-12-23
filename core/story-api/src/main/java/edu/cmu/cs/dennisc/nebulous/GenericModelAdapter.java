@@ -17,17 +17,17 @@ public class GenericModelAdapter<E extends Model> extends edu.cmu.cs.dennisc.ren
 
 	@Override
 	public boolean hasOpaque() {
-		return m_element.synchronizedHasOpaque();
+		return owner.synchronizedHasOpaque();
 	}
 
 	@Override
 	public boolean isAlphaBlended() {
-		return m_element.synchronizedIsAlphaBlended();
+		return owner.synchronizedIsAlphaBlended();
 	}
 
 	@Override
 	protected void pickGeometry( edu.cmu.cs.dennisc.render.gl.imp.PickContext pc, boolean isSubElementRequired ) {
-		m_element.synchronizedPick();
+		owner.synchronizedPick();
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class GenericModelAdapter<E extends Model> extends edu.cmu.cs.dennisc.ren
 		boolean renderAlpha = ( renderType == VisualAdapter.RenderType.ALPHA_BLENDED ) || ( renderType == VisualAdapter.RenderType.ALL );
 		boolean renderOpaque = ( renderType == VisualAdapter.RenderType.OPAQUE ) || ( renderType == VisualAdapter.RenderType.ALL );
 		rc.clearDiffuseColorTextureAdapter();
-		m_element.synchronizedRender( rc.gl, globalBrightness, renderAlpha, renderOpaque );
+		owner.synchronizedRender( rc.gl, globalBrightness, renderAlpha, renderOpaque );
 	}
 
 	@Override

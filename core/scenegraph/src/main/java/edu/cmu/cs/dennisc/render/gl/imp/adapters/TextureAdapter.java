@@ -58,12 +58,12 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 	}
 
 	public boolean isPotentiallyAlphaBlended() {
-		return m_element.isPotentiallyAlphaBlended();
+		return owner.isPotentiallyAlphaBlended();
 	}
 
 	public boolean isValid() {
-		if( m_element != null ) {
-			return m_element.isValid();
+		if( owner != null ) {
+			return owner.isValid();
 		} else {
 			return false;
 		}

@@ -150,7 +150,7 @@ public class TextAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph.T
 	private void renderFaceContours( Context context, double xOffset, double yOffset, double z, boolean isFront ) {
 		synchronized( s_tessAdapter ) {
 
-			java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> faceContours = m_element.getGlyphVector().acquireFaceContours();
+			java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> faceContours = owner.getGlyphVector().acquireFaceContours();
 
 			s_tessAdapter.set( context.gl, context.glu, xOffset, yOffset, z, isFront );
 
@@ -187,21 +187,21 @@ public class TextAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph.T
 					javax.media.opengl.glu.GLU.gluTessEndPolygon( tesselator );
 				}
 			} finally {
-				m_element.getGlyphVector().releaseFaceContours();
+				owner.getGlyphVector().releaseFaceContours();
 			}
 		}
 	}
 
 	private void glText( Context context, boolean isLightingEnabled ) {
-		edu.cmu.cs.dennisc.math.Vector3 alignmentOffset = m_element.getAlignmentOffset();
+		edu.cmu.cs.dennisc.math.Vector3 alignmentOffset = owner.getAlignmentOffset();
 		double zFront = alignmentOffset.z;
-		double zBack = zFront + m_element.depth.getValue();
+		double zBack = zFront + owner.depth.getValue();
 
 		renderFaceContours( context, alignmentOffset.x, alignmentOffset.y, zFront, true );
 		renderFaceContours( context, alignmentOffset.x, alignmentOffset.y, zBack, false );
 
 		if( zFront != zBack ) {
-			java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> outlineLines = m_element.getGlyphVector().acquireOutlineLines();
+			java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> outlineLines = owner.getGlyphVector().acquireOutlineLines();
 			try {
 				for( java.util.List<edu.cmu.cs.dennisc.math.Point2f> outlineLine : outlineLines ) {
 					context.gl.glBegin( GL_QUAD_STRIP );
@@ -232,7 +232,7 @@ public class TextAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph.T
 					context.gl.glEnd();
 				}
 			} finally {
-				m_element.getGlyphVector().releaseOutlineLines();
+				owner.getGlyphVector().releaseOutlineLines();
 			}
 		}
 	}
@@ -257,17 +257,17 @@ public class TextAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph.T
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.text ) {
+		if( property == owner.text ) {
 			setIsGeometryChanged( true );
-		} else if( property == m_element.font ) {
+		} else if( property == owner.font ) {
 			setIsGeometryChanged( true );
-		} else if( property == m_element.depth ) {
+		} else if( property == owner.depth ) {
 			setIsGeometryChanged( true );
-		} else if( property == m_element.leftToRightAlignment ) {
+		} else if( property == owner.leftToRightAlignment ) {
 			setIsGeometryChanged( true );
-		} else if( property == m_element.topToBottomAlignment ) {
+		} else if( property == owner.topToBottomAlignment ) {
 			setIsGeometryChanged( true );
-		} else if( property == m_element.frontToBackAlignment ) {
+		} else if( property == owner.frontToBackAlignment ) {
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );
@@ -276,7 +276,7 @@ public class TextAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph.T
 
 	@Override
 	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
-		edu.cmu.cs.dennisc.math.Vector3 alignmentOffset = m_element.getAlignmentOffset();
+		edu.cmu.cs.dennisc.math.Vector3 alignmentOffset = owner.getAlignmentOffset();
 		double zFront = alignmentOffset.z;
 		//todo: no reason to believe it hit the front 
 		return GeometryAdapter.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, zFront, 0, 0, -1 );

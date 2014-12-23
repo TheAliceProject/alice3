@@ -52,7 +52,7 @@ public abstract class ElementAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Ele
 	@Override
 	public void initialize( E element ) {
 		super.initialize( element );
-		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : m_element.getProperties() ) {
+		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : owner.getProperties() ) {
 			propertyChanged( property );
 		}
 	}
@@ -69,8 +69,8 @@ public abstract class ElementAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Ele
 
 	@Override
 	public String toString() {
-		if( m_element != null ) {
-			return getClass().getName() + " " + m_element.toString();
+		if( owner != null ) {
+			return getClass().getName() + " " + owner.toString();
 		} else {
 			return super.toString();
 		}

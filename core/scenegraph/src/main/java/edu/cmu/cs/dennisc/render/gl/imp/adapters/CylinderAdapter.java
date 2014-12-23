@@ -257,26 +257,26 @@ public class CylinderAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.length ) {
-			m_length = m_element.length.getValue();
+		if( property == owner.length ) {
+			m_length = owner.length.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.bottomRadius ) {
-			m_bottomRadius = m_element.bottomRadius.getValue();
+		} else if( property == owner.bottomRadius ) {
+			m_bottomRadius = owner.bottomRadius.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.topRadius ) {
-			m_topRadius = m_element.topRadius.getValue();
+		} else if( property == owner.topRadius ) {
+			m_topRadius = owner.topRadius.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.hasBottomCap ) {
-			m_hasBottomCap = m_element.hasBottomCap.getValue();
+		} else if( property == owner.hasBottomCap ) {
+			m_hasBottomCap = owner.hasBottomCap.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.hasTopCap ) {
-			m_hasTopCap = m_element.hasTopCap.getValue();
+		} else if( property == owner.hasTopCap ) {
+			m_hasTopCap = owner.hasTopCap.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.originAlignment ) {
-			m_originAlignment = m_element.originAlignment.getValue();
+		} else if( property == owner.originAlignment ) {
+			m_originAlignment = owner.originAlignment.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.bottomToTopAxis ) {
-			m_bottomToTopAxis = m_element.bottomToTopAxis.getValue();
+		} else if( property == owner.bottomToTopAxis ) {
+			m_bottomToTopAxis = owner.bottomToTopAxis.getValue();
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );

@@ -63,7 +63,7 @@ public abstract class ComponentArrayAdapter extends VertexGeometryAdapter<edu.cm
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.component ) {
+		if( property == owner.component ) {
 			setIsGeometryChanged( true );
 			throw new RuntimeException( "todo" );
 		} else {

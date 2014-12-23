@@ -100,9 +100,9 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter;
 		return this.zBack;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Visual getSGVisual() {
+	public edu.cmu.cs.dennisc.scenegraph.Visual getSgVisual() {
 		if( this.visualAdapter != null ) {
-			return this.visualAdapter.getElement();
+			return this.visualAdapter.getOwner();
 		} else {
 			return null;
 		}
@@ -117,7 +117,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter;
 	}
 
 	public edu.cmu.cs.dennisc.scenegraph.Geometry getSGGeometry() {
-		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSGVisual();
+		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisual();
 		if( sgVisual != null ) {
 			if( ( 0 <= this.geometryIndex ) && ( this.geometryIndex < sgVisual.getGeometryCount() ) ) {
 				return sgVisual.getGeometryAt( this.geometryIndex );

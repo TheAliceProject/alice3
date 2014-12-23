@@ -81,12 +81,12 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 			float wrapWidth,
 			java.awt.Color fillColor,
 			java.awt.Color outlineColor ) {
-		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator originator = this.m_element.getOriginator();
+		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator originator = this.owner.getOriginator();
 		if( originator != null ) {
 			g2.setFont( font );
 			java.awt.geom.Dimension2D size = multilineText.getDimension( g2, wrapWidth );
-			originator.calculate( originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, this.m_element, renderTarget, actualViewport, camera, size );
-			OnscreenBubble bubble = BubbleManager.getInstance().getBubble( this.m_element );
+			originator.calculate( originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, this.owner, renderTarget, actualViewport, camera, size );
+			OnscreenBubble bubble = BubbleManager.getInstance().getBubble( this.owner );
 			if( bubble == null )
 			{
 				float padding;
@@ -98,20 +98,20 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 				{
 					padding = font.getSize2D() * .4f;
 				}
-				bubble = BubbleManager.getInstance().addBubble( this.m_element, originOfTail, size, padding, actualViewport );
+				bubble = BubbleManager.getInstance().addBubble( this.owner, originOfTail, size, padding, actualViewport );
 			}
 			else
 			{
 				bubble.updateOriginOfTail( originOfTail, actualViewport );
 			}
 
-			this.render( g2, renderTarget, actualViewport, camera, multilineText, font, textColor, wrapWidth, fillColor, outlineColor, bubble, m_element.portion.getValue() );
+			this.render( g2, renderTarget, actualViewport, camera, multilineText, font, textColor, wrapWidth, fillColor, outlineColor, bubble, owner.portion.getValue() );
 		}
 	}
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.portion ) {
+		if( property == owner.portion ) {
 			//pass
 		} else {
 			super.propertyChanged( property );

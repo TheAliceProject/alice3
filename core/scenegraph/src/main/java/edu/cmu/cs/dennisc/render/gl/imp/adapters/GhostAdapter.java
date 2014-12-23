@@ -69,8 +69,8 @@ public class GhostAdapter extends TransformableAdapter<edu.cmu.cs.dennisc.sceneg
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.opacity ) {
-			m_opacity = m_element.opacity.getValue();
+		if( property == owner.opacity ) {
+			m_opacity = owner.opacity.getValue();
 		} else {
 			super.propertyChanged( property );
 		}

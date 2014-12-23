@@ -61,10 +61,10 @@ public abstract class AbstractNearPlaneAndFarPlaneCameraAdapter<E extends edu.cm
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.nearClippingPlaneDistance ) {
-			m_near = m_element.nearClippingPlaneDistance.getValue().floatValue();
-		} else if( property == m_element.farClippingPlaneDistance ) {
-			m_far = m_element.farClippingPlaneDistance.getValue().floatValue();
+		if( property == owner.nearClippingPlaneDistance ) {
+			m_near = owner.nearClippingPlaneDistance.getValue().floatValue();
+		} else if( property == owner.farClippingPlaneDistance ) {
+			m_far = owner.farClippingPlaneDistance.getValue().floatValue();
 		} else {
 			super.propertyChanged( property );
 		}

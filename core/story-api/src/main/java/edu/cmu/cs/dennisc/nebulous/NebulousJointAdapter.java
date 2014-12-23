@@ -10,7 +10,7 @@ public class NebulousJointAdapter extends AbstractTransformableAdapter<edu.cmu.c
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_localTransformationMatrix = new edu.cmu.cs.dennisc.math.AffineMatrix4x4();
 
 	private void updateLocalTransformation() {
-		m_element.getLocalTransformation( m_localTransformationMatrix );
+		owner.getLocalTransformation( m_localTransformationMatrix );
 		this.m_localTransformationMatrix.getAsColumnMajorArray16( m_localTransformation );
 	}
 

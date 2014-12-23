@@ -149,10 +149,10 @@ public abstract class LightAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Light
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.color ) {
-			m_element.color.getValue().getAsArray( m_color );
-		} else if( property == m_element.brightness ) {
-			m_brightness = m_element.brightness.getValue();
+		if( property == owner.color ) {
+			owner.color.getValue().getAsArray( m_color );
+		} else if( property == owner.brightness ) {
+			m_brightness = owner.brightness.getValue();
 		} else {
 			super.propertyChanged( property );
 		}

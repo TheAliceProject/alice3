@@ -207,37 +207,37 @@ public class OldMeshAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegrap
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.xyzs ) {
-			this.xyzs = m_element.xyzs.getValue();
+		if( property == owner.xyzs ) {
+			this.xyzs = owner.xyzs.getValue();
 			this.xyzBuffer = null;
 			setIsGeometryChanged( true );
-		} else if( property == m_element.ijks ) {
-			this.ijks = m_element.ijks.getValue();
+		} else if( property == owner.ijks ) {
+			this.ijks = owner.ijks.getValue();
 			this.ijkBuffer = null;
 			setIsGeometryChanged( true );
-		} else if( property == m_element.uvs ) {
-			this.uvs = m_element.uvs.getValue();
+		} else if( property == owner.uvs ) {
+			this.uvs = owner.uvs.getValue();
 			this.uvBuffer = null;
 			setIsGeometryChanged( true );
-		} else if( property == m_element.xyzTriangleIndices ) {
-			this.xyzTriangleIndices = m_element.xyzTriangleIndices.getValue();
+		} else if( property == owner.xyzTriangleIndices ) {
+			this.xyzTriangleIndices = owner.xyzTriangleIndices.getValue();
 			this.triangleIndexBuffer = null;
 			setIsGeometryChanged( true );
-		} else if( property == m_element.ijkTriangleIndices ) {
-			this.ijkTriangleIndices = m_element.ijkTriangleIndices.getValue();
+		} else if( property == owner.ijkTriangleIndices ) {
+			this.ijkTriangleIndices = owner.ijkTriangleIndices.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.uvTriangleIndices ) {
-			this.uvTriangleIndices = m_element.uvTriangleIndices.getValue();
+		} else if( property == owner.uvTriangleIndices ) {
+			this.uvTriangleIndices = owner.uvTriangleIndices.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.xyzQuadrangleIndices ) {
-			this.xyzQuadrangleIndices = m_element.xyzQuadrangleIndices.getValue();
+		} else if( property == owner.xyzQuadrangleIndices ) {
+			this.xyzQuadrangleIndices = owner.xyzQuadrangleIndices.getValue();
 			this.quadrangleIndexBuffer = null;
 			setIsGeometryChanged( true );
-		} else if( property == m_element.ijkQuadrangleIndices ) {
-			this.ijkQuadrangleIndices = m_element.ijkQuadrangleIndices.getValue();
+		} else if( property == owner.ijkQuadrangleIndices ) {
+			this.ijkQuadrangleIndices = owner.ijkQuadrangleIndices.getValue();
 			setIsGeometryChanged( true );
-		} else if( property == m_element.uvQuadrangleIndices ) {
-			this.uvQuadrangleIndices = m_element.uvQuadrangleIndices.getValue();
+		} else if( property == owner.uvQuadrangleIndices ) {
+			this.uvQuadrangleIndices = owner.uvQuadrangleIndices.getValue();
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );

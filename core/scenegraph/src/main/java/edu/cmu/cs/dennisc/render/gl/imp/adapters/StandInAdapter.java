@@ -55,8 +55,8 @@ public class StandInAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Transformabl
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.localTransformation ) {
-			m_element.localTransformation.getValue().getAsColumnMajorArray16( m_localTransformation );
+		if( property == owner.localTransformation ) {
+			owner.localTransformation.getValue().getAsColumnMajorArray16( m_localTransformation );
 		} else {
 			super.propertyChanged( property );
 		}

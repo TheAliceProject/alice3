@@ -125,7 +125,7 @@ public abstract class AbstractCameraAdapter<E extends edu.cmu.cs.dennisc.scenegr
 		if( this.m_layerAdapters != null ) {
 			java.awt.Rectangle actualViewport = getActualViewport( new java.awt.Rectangle(), surfaceWidth, surfaceHeight );
 			for( LayerAdapter layerAdapter : this.m_layerAdapters ) {
-				layerAdapter.render( g2, renderTarget, actualViewport, this.m_element );
+				layerAdapter.render( g2, renderTarget, actualViewport, this.owner );
 			}
 		}
 	}
@@ -167,10 +167,10 @@ public abstract class AbstractCameraAdapter<E extends edu.cmu.cs.dennisc.scenegr
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.background ) {
-			m_backgroundAdapter = AdapterFactory.getAdapterFor( m_element.background.getValue() );
-		} else if( property == m_element.postRenderLayers ) {
-			m_layerAdapters = AdapterFactory.getAdaptersFor( m_element.postRenderLayers.getValue(), LayerAdapter.class );
+		if( property == owner.background ) {
+			m_backgroundAdapter = AdapterFactory.getAdapterFor( owner.background.getValue() );
+		} else if( property == owner.postRenderLayers ) {
+			m_layerAdapters = AdapterFactory.getAdaptersFor( owner.postRenderLayers.getValue(), LayerAdapter.class );
 		} else {
 			super.propertyChanged( property );
 		}

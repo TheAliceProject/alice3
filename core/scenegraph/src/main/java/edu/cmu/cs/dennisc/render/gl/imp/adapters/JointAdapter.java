@@ -50,31 +50,31 @@ public class JointAdapter extends TransformableAdapter<edu.cmu.cs.dennisc.sceneg
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == m_element.jointID ) {
+		if( property == owner.jointID ) {
 			//pass
-		} else if( property == m_element.isFreeInX ) {
+		} else if( property == owner.isFreeInX ) {
 			//pass
-		} else if( property == m_element.isFreeInY ) {
+		} else if( property == owner.isFreeInY ) {
 			//pass
-		} else if( property == m_element.isFreeInZ ) {
+		} else if( property == owner.isFreeInZ ) {
 			//pass
-		} else if( property == m_element.boundingBox ) {
+		} else if( property == owner.boundingBox ) {
 			//pass
-		} else if( property == m_element.oStiffness ) {
+		} else if( property == owner.oStiffness ) {
 			//pass
-		} else if( property == m_element.oBoneOrientation ) {
+		} else if( property == owner.oBoneOrientation ) {
 			//pass
-		} else if( property == m_element.oPreferedAngles ) {
+		} else if( property == owner.oPreferedAngles ) {
 			//pass
-		} else if( property == m_element.oLocalRotationAxis ) {
+		} else if( property == owner.oLocalRotationAxis ) {
 			//pass
-		} else if( property == m_element.oMinimumDampRange ) {
+		} else if( property == owner.oMinimumDampRange ) {
 			//pass
-		} else if( property == m_element.oMaximumDampRange ) {
+		} else if( property == owner.oMaximumDampRange ) {
 			//pass
-		} else if( property == m_element.oMinimumDampStrength ) {
+		} else if( property == owner.oMinimumDampStrength ) {
 			//pass
-		} else if( property == m_element.oMaximumDampStrength ) {
+		} else if( property == owner.oMaximumDampStrength ) {
 			//pass
 		} else {
 			super.propertyChanged( property );
