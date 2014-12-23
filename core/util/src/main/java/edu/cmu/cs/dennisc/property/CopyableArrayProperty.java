@@ -45,13 +45,13 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CopyableArrayProperty<E> extends CopyableInstanceProperty<E[]> {
-	public CopyableArrayProperty( InstancePropertyOwner owner, E... value ) {
+public abstract class CopyableArrayProperty<T> extends CopyableInstanceProperty<T[]> {
+	public CopyableArrayProperty( InstancePropertyOwner owner, T... value ) {
 		super( owner, value );
 	}
 
 	public int getLength() {
-		E[] value = this.getValue();
+		T[] value = this.getValue();
 		if( value != null ) {
 			return value.length;
 		} else {
@@ -60,18 +60,18 @@ public abstract class CopyableArrayProperty<E> extends CopyableInstanceProperty<
 	}
 
 	@Override
-	public void setValue( E[] value ) {
+	public void setValue( T[] value ) {
 		assert value != null : this;
 		super.setValue( value );
 	}
 
-	protected abstract E[] createArray( int length );
+	protected abstract T[] createArray( int length );
 
-	protected abstract E createCopy( E e );
+	protected abstract T createCopy( T e );
 
 	@Override
-	public E[] getCopy( E[] rv ) {
-		E[] value = getValue();
+	public T[] getCopy( T[] rv ) {
+		T[] value = getValue();
 		for( int i = 0; i < value.length; i++ ) {
 			rv[ i ] = createCopy( value[ i ] );
 		}
@@ -79,13 +79,13 @@ public abstract class CopyableArrayProperty<E> extends CopyableInstanceProperty<
 	}
 
 	@Override
-	public final E[] getCopy() {
+	public final T[] getCopy() {
 		return this.getCopy( this.createArray( this.getLength() ) );
 	}
 
 	@Override
-	public void setCopy( E[] value ) {
-		E[] dst = this.createArray( value.length );
+	public void setCopy( T[] value ) {
+		T[] dst = this.createArray( value.length );
 		for( int i = 0; i < value.length; i++ ) {
 			dst[ i ] = this.createCopy( value[ i ] );
 		}

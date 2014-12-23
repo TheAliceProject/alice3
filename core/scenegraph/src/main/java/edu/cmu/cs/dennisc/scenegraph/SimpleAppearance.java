@@ -6,7 +6,7 @@ public class SimpleAppearance extends Appearance {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.color.Color4f value ) {
 			if( value == null ) {
-				value = new edu.cmu.cs.dennisc.color.Color4f( Float.NaN, Float.NaN, Float.NaN, Float.NaN );
+				value = edu.cmu.cs.dennisc.color.Color4f.createNaN();
 			}
 			super.setValue( value );
 		}

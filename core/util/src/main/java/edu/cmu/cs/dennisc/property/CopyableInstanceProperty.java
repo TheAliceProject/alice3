@@ -45,14 +45,14 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CopyableInstanceProperty<E> extends InstanceProperty<E> {
-	public CopyableInstanceProperty( InstancePropertyOwner owner, E value ) {
+public abstract class CopyableInstanceProperty<T> extends InstanceProperty<T> {
+	public CopyableInstanceProperty( InstancePropertyOwner owner, T value ) {
 		super( owner, value );
 	}
 
-	public abstract E getCopy( E rv );
+	public abstract T getCopy( T rv );
 
-	public abstract E getCopy();
+	public abstract T getCopy();
 
-	public abstract void setCopy( E value );
+	public abstract void setCopy( T value );
 }

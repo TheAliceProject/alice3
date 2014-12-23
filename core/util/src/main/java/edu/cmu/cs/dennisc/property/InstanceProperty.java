@@ -45,25 +45,19 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceProperty<E> {
-	private InstancePropertyOwner m_owner;
-	private String m_name;
-	private transient E m_value;
-	//private boolean m_isLocked = false;
-	private final java.util.List<edu.cmu.cs.dennisc.property.event.PropertyListener> propertyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-
-	public InstanceProperty( InstancePropertyOwner owner, E value ) {
-		m_owner = owner;
-		m_value = value;
+public class InstanceProperty<T> {
+	public InstanceProperty( InstancePropertyOwner owner, T value ) {
+		this.owner = owner;
+		this.value = value;
 	}
 
 	public String getName() {
-		if( m_name != null ) {
+		if( this.name != null ) {
 			//pass
 		} else {
-			m_name = m_owner.lookupNameFor( this );
+			this.name = this.owner.lookupNameFor( this );
 		}
-		return m_name;
+		return this.name;
 	}
 
 	public void addPropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
@@ -100,35 +94,35 @@ public class InstanceProperty<E> {
 	}
 
 	public InstancePropertyOwner getOwner() {
-		return m_owner;
+		return this.owner;
 	}
 
 	//	public boolean isLocked() {
-	//		return m_isLocked;
+	//		return this.isLocked;
 	//	}
 	//	public void setLocked( boolean isLocked ) {
-	//		m_isLocked = isLocked;
+	//		this.isLocked = isLocked;
 	//	}
 
-	public final E getValue() {
-		return m_value;
+	public final T getValue() {
+		return this.value;
 	}
 
-	public void setValue( E value ) {
-		//assert m_isLocked == false;
-		edu.cmu.cs.dennisc.property.event.PropertyEvent e = new edu.cmu.cs.dennisc.property.event.PropertyEvent( this, m_owner, value );
+	public void setValue( T value ) {
+		//assert this.isLocked == false;
+		edu.cmu.cs.dennisc.property.event.PropertyEvent e = new edu.cmu.cs.dennisc.property.event.PropertyEvent( this, this.owner, value );
 		firePropertyChanging( e );
-		m_value = value;
+		this.value = value;
 		firePropertyChanged( e );
 	}
 
 	protected void writeValue( java.io.ObjectOutputStream oos ) throws java.io.IOException {
-		assert ( m_value == null ) || ( m_value instanceof java.io.Serializable );
-		oos.writeObject( m_value );
+		assert ( this.value == null ) || ( this.value instanceof java.io.Serializable );
+		oos.writeObject( this.value );
 	}
 
 	protected void readValue( java.io.ObjectInputStream ois ) throws java.io.IOException, ClassNotFoundException {
-		m_value = (E)ois.readObject();
+		this.value = (T)ois.readObject();
 	}
 
 	private void writeObject( java.io.ObjectOutputStream oos ) throws java.io.IOException {
@@ -141,16 +135,16 @@ public class InstanceProperty<E> {
 		readValue( ois );
 	}
 
-	protected boolean isToBeIgnored( InstanceProperty<E> other, PropertyFilter filter ) {
+	protected boolean isToBeIgnored( InstanceProperty<T> other, PropertyFilter filter ) {
 		return ( filter != null ) && filter.isToBeIgnored( this, other );
 	}
 
-	public boolean valueEquals( InstanceProperty<E> other, PropertyFilter filter ) {
+	public boolean valueEquals( InstanceProperty<T> other, PropertyFilter filter ) {
 		if( this.isToBeIgnored( other, filter ) ) {
 			return true;
 		} else {
-			E thisValue = this.getValue();
-			E otherValue = other.getValue();
+			T thisValue = this.getValue();
+			T otherValue = other.getValue();
 			if( thisValue != null ) {
 				if( otherValue != null ) {
 					return thisValue.equals( otherValue );
@@ -171,4 +165,10 @@ public class InstanceProperty<E> {
 	public String toString() {
 		return getClass().getName() + "[owner=" + getOwner() + ";name=" + getName() + "]";
 	}
+
+	private final java.util.List<edu.cmu.cs.dennisc.property.event.PropertyListener> propertyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final InstancePropertyOwner owner;
+	private T value;
+	private String name;
+	//private boolean isLocked = false;
 }
