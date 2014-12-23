@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.math.property;
 /**
  * @author Dennis Cosgrove
  */
-public class AffineMatrix4x4Property extends edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.math.AffineMatrix4x4> implements edu.cmu.cs.dennisc.property.CopyableProperty<edu.cmu.cs.dennisc.math.AffineMatrix4x4> {
+public class AffineMatrix4x4Property extends edu.cmu.cs.dennisc.property.CopyableInstanceProperty<edu.cmu.cs.dennisc.math.AffineMatrix4x4> {
 	public AffineMatrix4x4Property( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
 		super( owner, value );
 	}
@@ -58,31 +58,25 @@ public class AffineMatrix4x4Property extends edu.cmu.cs.dennisc.property.Instanc
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getCopy( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		rv.set( getValue() );
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getCopy( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
+		rv.set( this.getValue() );
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		return getCopy( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), owner );
+	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getCopy() {
+		return this.getCopy( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
 	}
 
 	@Override
-	public void setCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
+	public void setCopy( edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
 		//todo?
-		setValue( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( value ) );
+		this.setValue( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( value ) );
 	}
 
 	@Deprecated
 	public void touch() {
-		edu.cmu.cs.dennisc.property.InstancePropertyOwner owner = getOwner();
-		setValue( getValue() );
-		//todo
-		//		edu.cmu.cs.dennisc.property.event.PropertyEvent e = new edu.cmu.cs.dennisc.property.event.PropertyEvent( this, owner, getValue() );
-		//		//owner.firePropertyChanging( e );
-		//		//m_value = value;
-		//		owner.firePropertyChanged( e );
+		this.setValue( this.getValue() );
 	}
 
 }

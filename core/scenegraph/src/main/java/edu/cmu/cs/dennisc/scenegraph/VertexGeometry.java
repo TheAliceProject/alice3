@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class VertexGeometry extends Geometry {
-	public class VerticesProperty extends edu.cmu.cs.dennisc.property.CopyableArrayProperty<Vertex> {
+	public static class VerticesProperty extends edu.cmu.cs.dennisc.property.CopyableArrayProperty<Vertex> {
 		public VerticesProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Vertex... vertices ) {
 			super( owner, vertices );
 		}

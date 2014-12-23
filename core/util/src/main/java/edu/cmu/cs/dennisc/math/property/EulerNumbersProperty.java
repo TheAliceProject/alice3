@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.math.property;
 /**
  * @author Dennis Cosgrove
  */
-public class EulerNumbersProperty extends edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.math.EulerNumbers> implements edu.cmu.cs.dennisc.property.CopyableProperty<edu.cmu.cs.dennisc.math.EulerNumbers> {
+public class EulerNumbersProperty extends edu.cmu.cs.dennisc.property.CopyableInstanceProperty<edu.cmu.cs.dennisc.math.EulerNumbers> {
 	public EulerNumbersProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.EulerNumbers value ) {
 		super( owner, value );
 	}
@@ -58,19 +58,19 @@ public class EulerNumbersProperty extends edu.cmu.cs.dennisc.property.InstancePr
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.EulerNumbers getCopy( edu.cmu.cs.dennisc.math.EulerNumbers rv, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		rv.set( getValue() );
+	public edu.cmu.cs.dennisc.math.EulerNumbers getCopy( edu.cmu.cs.dennisc.math.EulerNumbers rv ) {
+		rv.set( this.getValue() );
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.EulerNumbers getCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		return getCopy( new edu.cmu.cs.dennisc.math.EulerNumbers(), owner );
+	public final edu.cmu.cs.dennisc.math.EulerNumbers getCopy() {
+		return this.getCopy( new edu.cmu.cs.dennisc.math.EulerNumbers() );
 	}
 
 	@Override
-	public void setCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.EulerNumbers value ) {
+	public void setCopy( edu.cmu.cs.dennisc.math.EulerNumbers value ) {
 		//todo?
-		setValue( new edu.cmu.cs.dennisc.math.EulerNumbers( value ) );
+		this.setValue( new edu.cmu.cs.dennisc.math.EulerNumbers( value ) );
 	}
 }

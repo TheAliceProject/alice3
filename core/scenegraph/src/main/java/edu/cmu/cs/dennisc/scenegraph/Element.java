@@ -99,8 +99,8 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.AbstractInstanc
 		rv.setName( this.getName() );
 		for( edu.cmu.cs.dennisc.property.InstanceProperty property : this.getProperties() ) {
 			Object value;
-			if( property instanceof edu.cmu.cs.dennisc.property.CopyableProperty ) {
-				value = ( (edu.cmu.cs.dennisc.property.CopyableProperty)property ).getCopy( this );
+			if( property instanceof edu.cmu.cs.dennisc.property.CopyableInstanceProperty ) {
+				value = ( (edu.cmu.cs.dennisc.property.CopyableInstanceProperty)property ).getCopy( this );
 			} else {
 				value = property.getValue();
 			}

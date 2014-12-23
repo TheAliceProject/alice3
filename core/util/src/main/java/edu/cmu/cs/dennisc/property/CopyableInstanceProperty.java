@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,25 +45,14 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayProperty<E> extends InstanceProperty<E[]> {
-	public ArrayProperty( InstancePropertyOwner owner, E... value ) {
+public abstract class CopyableInstanceProperty<E> extends InstanceProperty<E> {
+	public CopyableInstanceProperty( InstancePropertyOwner owner, E value ) {
 		super( owner, value );
 	}
 
-	//todo: 
-	//public int getLength( PropertyOwner owner ) {
-	public int getLength() {
-		E[] value = getValue();
-		if( value != null ) {
-			return value.length;
-		} else {
-			return 0;
-		}
-	}
+	public abstract E getCopy( E rv );
 
-	@Override
-	public void setValue( E[] value ) {
-		assert value != null : this;
-		super.setValue( value );
-	}
+	public abstract E getCopy();
+
+	public abstract void setCopy( E value );
 }

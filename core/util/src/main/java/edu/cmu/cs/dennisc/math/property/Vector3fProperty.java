@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.math.property;
 
-public class Vector3fProperty extends edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.math.Vector3f> implements edu.cmu.cs.dennisc.property.CopyableProperty<edu.cmu.cs.dennisc.math.Vector3f> {
+public class Vector3fProperty extends edu.cmu.cs.dennisc.property.CopyableInstanceProperty<edu.cmu.cs.dennisc.math.Vector3f> {
 	public Vector3fProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Vector3f value ) {
 		super( owner, value );
 	}
@@ -55,18 +55,18 @@ public class Vector3fProperty extends edu.cmu.cs.dennisc.property.InstanceProper
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Vector3f getCopy( edu.cmu.cs.dennisc.math.Vector3f rv, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		rv.set( getValue() );
+	public edu.cmu.cs.dennisc.math.Vector3f getCopy( edu.cmu.cs.dennisc.math.Vector3f rv ) {
+		rv.set( this.getValue() );
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Vector3f getCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		return getCopy( edu.cmu.cs.dennisc.math.Vector3f.createNaN(), owner );
+	public final edu.cmu.cs.dennisc.math.Vector3f getCopy() {
+		return this.getCopy( edu.cmu.cs.dennisc.math.Vector3f.createNaN() );
 	}
 
 	@Override
-	public void setCopy( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Vector3f value ) {
-		setValue( new edu.cmu.cs.dennisc.math.Vector3f( value ) );
+	public void setCopy( edu.cmu.cs.dennisc.math.Vector3f value ) {
+		this.setValue( new edu.cmu.cs.dennisc.math.Vector3f( value ) );
 	}
 }
