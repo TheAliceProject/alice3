@@ -67,9 +67,9 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_NORMALIZE;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
 import edu.cmu.cs.dennisc.render.gl.ForgettableBinding;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GeometryAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.MultipleAppearanceAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.TextureAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGeometry;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrMultipleAppearance;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexture;
 
 /**
  * @author Dennis Cosgrove
@@ -89,8 +89,8 @@ public class RenderContext extends Context {
 		unusedTexturesListeners.add( listener );
 	}
 
-	private final java.util.Map<GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>, Integer> displayListMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture>, ForgettableBinding> textureBindingMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>, Integer> displayListMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<GlrTexture<? extends edu.cmu.cs.dennisc.texture.Texture>, ForgettableBinding> textureBindingMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final java.util.List<Integer> toBeForgottenDisplayLists = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private final java.util.List<ForgettableBinding> toBeForgottenTextures = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 
@@ -106,11 +106,11 @@ public class RenderContext extends Context {
 
 	private float globalBrightness = 1.0f;
 
-	private TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> currDiffuseColorTextureAdapter;
+	private GlrTexture<? extends edu.cmu.cs.dennisc.texture.Texture> currDiffuseColorTextureAdapter;
 
 	private boolean isShadingEnabled;
 
-	private MultipleAppearanceAdapter multipleAppearanceAdapter;
+	private GlrMultipleAppearance multipleAppearanceAdapter;
 	private int face;
 
 	private final java.awt.Rectangle clearRect = new java.awt.Rectangle();
@@ -256,7 +256,7 @@ public class RenderContext extends Context {
 		//forgetAllGeometryAdapters();
 	}
 
-	public void setMultipleAppearance( int face, MultipleAppearanceAdapter multipleAppearanceAdapter ) {
+	public void setMultipleAppearance( int face, GlrMultipleAppearance multipleAppearanceAdapter ) {
 		this.face = face;
 		this.multipleAppearanceAdapter = multipleAppearanceAdapter;
 	}
@@ -423,7 +423,7 @@ public class RenderContext extends Context {
 		return id;
 	}
 
-	public Integer getDisplayListID( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter ) {
+	public Integer getDisplayListID( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter ) {
 		synchronized( this.displayListMap ) {
 			Integer rv = this.displayListMap.get( geometryAdapter );
 			//			if( this.gl.glIsList( rv ) ) {
@@ -436,7 +436,7 @@ public class RenderContext extends Context {
 		}
 	}
 
-	public Integer generateDisplayListID( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter ) {
+	public Integer generateDisplayListID( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter ) {
 		Integer id = new Integer( gl.glGenLists( 1 ) );
 		synchronized( this.displayListMap ) {
 			this.displayListMap.put( geometryAdapter, id );
@@ -447,14 +447,14 @@ public class RenderContext extends Context {
 
 	private void forgetAllGeometryAdapters() {
 		synchronized( this.displayListMap ) {
-			for( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : this.displayListMap.keySet() ) {
+			for( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : this.displayListMap.keySet() ) {
 				forgetGeometryAdapter( geometryAdapter, false );
 			}
 			this.displayListMap.clear();
 		}
 	}
 
-	public void forgetGeometryAdapter( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter, boolean removeFromMap ) {
+	public void forgetGeometryAdapter( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter, boolean removeFromMap ) {
 		synchronized( this.displayListMap ) {
 			Integer value = this.displayListMap.get( geometryAdapter );
 			if( value != null ) {
@@ -469,11 +469,11 @@ public class RenderContext extends Context {
 		}
 	}
 
-	public void forgetGeometryAdapter( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter ) {
+	public void forgetGeometryAdapter( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter ) {
 		forgetGeometryAdapter( geometryAdapter, true );
 	}
 
-	private void forgetTextureBindingID( TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter, ForgettableBinding value, boolean removeFromMap ) {
+	private void forgetTextureBindingID( GlrTexture<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter, ForgettableBinding value, boolean removeFromMap ) {
 		if( value != null ) {
 			this.toBeForgottenTextures.add( value );
 			if( removeFromMap ) {
@@ -489,20 +489,20 @@ public class RenderContext extends Context {
 	private void forgetAllTextureAdapters() {
 		synchronized( this.textureBindingMap ) {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( this.textureBindingMap );
-			for( TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter : this.textureBindingMap.keySet() ) {
+			for( GlrTexture<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter : this.textureBindingMap.keySet() ) {
 				forgetTextureBindingID( textureAdapter, this.textureBindingMap.get( textureAdapter ), false );
 			}
 			this.textureBindingMap.clear();
 		}
 	}
 
-	public void forgetTextureAdapter( TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter, boolean removeFromMap ) {
+	public void forgetTextureAdapter( GlrTexture<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter, boolean removeFromMap ) {
 		synchronized( this.textureBindingMap ) {
 			forgetTextureBindingID( textureAdapter, this.textureBindingMap.get( textureAdapter ), removeFromMap );
 		}
 	}
 
-	public void forgetTextureAdapter( TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter ) {
+	public void forgetTextureAdapter( GlrTexture<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter ) {
 		forgetTextureAdapter( textureAdapter, true );
 	}
 
@@ -532,7 +532,7 @@ public class RenderContext extends Context {
 		this.currDiffuseColorTextureAdapter = null;
 	}
 
-	public void setDiffuseColorTextureAdapter( TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> diffuseColorTextureAdapter, boolean isDiffuseColorTextureClamped ) {
+	public void setDiffuseColorTextureAdapter( GlrTexture<? extends edu.cmu.cs.dennisc.texture.Texture> diffuseColorTextureAdapter, boolean isDiffuseColorTextureClamped ) {
 		if( ( diffuseColorTextureAdapter != null ) && diffuseColorTextureAdapter.isValid() ) {
 			gl.glEnable( GL_TEXTURE_2D );
 			if( this.currDiffuseColorTextureAdapter != diffuseColorTextureAdapter ) {
@@ -552,7 +552,7 @@ public class RenderContext extends Context {
 		}
 	}
 
-	public void setBumpTextureAdapter( TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> bumpTextureAdapter ) {
+	public void setBumpTextureAdapter( GlrTexture<? extends edu.cmu.cs.dennisc.texture.Texture> bumpTextureAdapter ) {
 		if( ( bumpTextureAdapter != null ) && bumpTextureAdapter.isValid() ) {
 			//todo:
 			//String extensions = gl.glGetString(GL_EXTENSIONS);

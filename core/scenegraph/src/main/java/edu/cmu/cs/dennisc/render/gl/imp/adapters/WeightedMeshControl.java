@@ -171,13 +171,13 @@ import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 		if( this.needsInitialization ) {
 			this.internalInitialize();
 		}
-		MeshAdapter.renderMesh( rc, vertexBuffer, normalBuffer, textCoordBuffer, indexBuffer );
+		GlrMesh.renderMesh( rc, vertexBuffer, normalBuffer, textCoordBuffer, indexBuffer );
 	}
 
 	public void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
 		if( this.needsInitialization ) {
 			this.internalInitialize();
 		}
-		MeshAdapter.pickMesh( pc, vertexBuffer, indexBuffer );
+		GlrMesh.pickMesh( pc, vertexBuffer, indexBuffer );
 	}
 }

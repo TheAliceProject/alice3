@@ -45,10 +45,10 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters.adorn;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AdornmentAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adapters.ComponentAdapter<edu.cmu.cs.dennisc.scenegraph.adorn.Adornment> {
-	protected edu.cmu.cs.dennisc.render.gl.imp.adapters.CompositeAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Composite> m_adornmentRootAdapter = null;
+public abstract class AdornmentAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<edu.cmu.cs.dennisc.scenegraph.adorn.Adornment> {
+	protected edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite> m_adornmentRootAdapter = null;
 
-	protected abstract void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.CompositeAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Composite> adornmentRootAdapter );
+	protected abstract void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite> adornmentRootAdapter );
 
 	@Override
 	public void setup( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc ) {
@@ -66,7 +66,7 @@ public abstract class AdornmentAdapter extends edu.cmu.cs.dennisc.render.gl.imp.
 	}
 
 	@Override
-	public void renderGhost( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GhostAdapter root ) {
+	public void renderGhost( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGhost root ) {
 		//todo?
 		//pass
 	}

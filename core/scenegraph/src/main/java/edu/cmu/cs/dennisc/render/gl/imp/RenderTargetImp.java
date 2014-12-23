@@ -44,7 +44,7 @@ package edu.cmu.cs.dennisc.render.gl.imp;
 
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 /**
@@ -298,7 +298,7 @@ public class RenderTargetImp {
 					if( rt.getSgCameraCount() > 0 ) {
 						this.renderContext.initialize();
 						for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : this.sgCameras ) {
-							AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( sgCamera );
+							GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( sgCamera );
 							cameraAdapterI.performClearAndRenderOffscreen( this.renderContext, this.width, this.height );
 							this.reusableLookingGlassRenderEvent.prologue();
 							try {

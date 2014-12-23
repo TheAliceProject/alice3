@@ -44,7 +44,7 @@
 package edu.cmu.cs.dennisc.render.gl.imp;
 
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 /**
@@ -120,7 +120,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 				}
 				ChangeHandler.handleBufferedChanges();
 				edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = pickParameters.getSGCamera();
-				AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
+				GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
 
 				this.selectionAsIntBuffer.rewind();
 				this.pickContext.gl.glSelectBuffer( SELECTION_CAPACITY, this.selectionAsIntBuffer );

@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 /**
@@ -74,7 +74,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = rtImp.getCameraAtPixel( this.x, this.y );
 		edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters = new edu.cmu.cs.dennisc.render.gl.imp.PickParameters( rt, sgCamera, this.x, this.y, this.pickSubElementPolicy == edu.cmu.cs.dennisc.render.PickSubElementPolicy.REQUIRED, null );
 
-		AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
+		GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
 
 		this.selectionAsIntBuffer.rewind();
 		this.pickContext.gl.glSelectBuffer( SELECTION_CAPACITY, this.selectionAsIntBuffer );

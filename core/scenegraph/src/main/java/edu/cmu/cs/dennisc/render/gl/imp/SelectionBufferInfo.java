@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
 
 /**
  * @author Dennis Cosgrove
@@ -159,7 +159,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter;
 
 	private final float zFront;
 	private final float zBack;
-	private final VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter;
+	private final GlrVisual<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter;
 	private final boolean isFrontFacing;
 	private final int geometryIndex;
 	private final int subElement;

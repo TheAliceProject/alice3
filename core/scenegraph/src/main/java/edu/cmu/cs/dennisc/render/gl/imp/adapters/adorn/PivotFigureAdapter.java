@@ -52,15 +52,15 @@ public class PivotFigureAdapter extends AdornmentAdapter {
 	private static final float FULL = 1.0f;
 	private static final float ZERO = 0.0f;
 
-	private static void glPivotFigure( javax.media.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.render.gl.imp.adapters.CompositeAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Composite> parent ) {
+	private static void glPivotFigure( javax.media.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite> parent ) {
 		gl.glPushMatrix();
 		try {
 			gl.glMultMatrixd( ltParent );
-			Iterable<edu.cmu.cs.dennisc.render.gl.imp.adapters.ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component>> componentAdapters = parent.accessComponentAdapters();
+			Iterable<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component>> componentAdapters = parent.accessComponentAdapters();
 			synchronized( componentAdapters ) {
-				for( edu.cmu.cs.dennisc.render.gl.imp.adapters.ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter : componentAdapters ) {
-					if( componentAdapter instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.TransformableAdapter ) {
-						edu.cmu.cs.dennisc.render.gl.imp.adapters.TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> child = (edu.cmu.cs.dennisc.render.gl.imp.adapters.TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable>)componentAdapter;
+				for( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter : componentAdapters ) {
+					if( componentAdapter instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable ) {
+						edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> child = (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<? extends edu.cmu.cs.dennisc.scenegraph.Transformable>)componentAdapter;
 						java.nio.DoubleBuffer ltChild = child.accessLocalTransformationAsBuffer();
 						gl.glBegin( GL_LINES );
 						try {
@@ -92,7 +92,7 @@ public class PivotFigureAdapter extends AdornmentAdapter {
 	}
 
 	@Override
-	protected void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.CompositeAdapter adornmentRootAdapter ) {
+	protected void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite adornmentRootAdapter ) {
 		rc.gl.glDisable( GL_LIGHTING );
 		glPivotFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), adornmentRootAdapter );
 	}

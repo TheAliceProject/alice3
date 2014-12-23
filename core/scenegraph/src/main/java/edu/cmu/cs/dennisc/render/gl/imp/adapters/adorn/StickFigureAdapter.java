@@ -54,15 +54,15 @@ public class StickFigureAdapter extends AdornmentAdapter {
 	private static final int TRANSLATION_Z_INDEX = 14;
 	private static final float[] COLOR = { 1.0f, 1.0f, 0.0f, 1.0f };
 
-	private static void glStickFigure( javax.media.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.render.gl.imp.adapters.CompositeAdapter parent ) {
+	private static void glStickFigure( javax.media.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite parent ) {
 		gl.glPushMatrix();
 		try {
 			gl.glMultMatrixd( ltParent );
-			Iterable<edu.cmu.cs.dennisc.render.gl.imp.adapters.ComponentAdapter> componentAdapters = parent.accessComponentAdapters();
+			Iterable<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent> componentAdapters = parent.accessComponentAdapters();
 			synchronized( componentAdapters ) {
-				for( edu.cmu.cs.dennisc.render.gl.imp.adapters.ComponentAdapter componentAdapter : componentAdapters ) {
-					if( componentAdapter instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.TransformableAdapter ) {
-						edu.cmu.cs.dennisc.render.gl.imp.adapters.TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> child = (edu.cmu.cs.dennisc.render.gl.imp.adapters.TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable>)componentAdapter;
+				for( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent componentAdapter : componentAdapters ) {
+					if( componentAdapter instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable ) {
+						edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> child = (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<? extends edu.cmu.cs.dennisc.scenegraph.Transformable>)componentAdapter;
 						java.nio.DoubleBuffer ltChild = child.accessLocalTransformationAsBuffer();
 						gl.glBegin( GL_LINES );
 						try {
@@ -81,7 +81,7 @@ public class StickFigureAdapter extends AdornmentAdapter {
 	}
 
 	@Override
-	protected void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.CompositeAdapter adornmentRootAdapter ) {
+	protected void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite adornmentRootAdapter ) {
 		rc.gl.glDisable( GL_LIGHTING );
 		rc.setColor( COLOR, 1.0f );
 		glStickFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), adornmentRootAdapter );

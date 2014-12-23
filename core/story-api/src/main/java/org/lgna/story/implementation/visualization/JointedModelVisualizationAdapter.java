@@ -51,7 +51,7 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 /**
  * @author Dennis Cosgrove
  */
-public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adapters.LeafAdapter<JointedModelVisualization> {
+public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrLeaf<JointedModelVisualization> {
 	private static abstract class GlWalkObserver<C extends edu.cmu.cs.dennisc.render.gl.imp.Context> implements org.lgna.story.implementation.JointedModelImp.TreeWalkObserver {
 		private final C context;
 		private final org.lgna.story.implementation.ReferenceFrame asSeenBy;
@@ -248,7 +248,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.render.
 	}
 
 	@Override
-	public void renderGhost( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GhostAdapter root ) {
+	public void renderGhost( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGhost root ) {
 	}
 
 	@Override

@@ -44,9 +44,9 @@
 package edu.cmu.cs.dennisc.render.gl.imp;
 
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractCameraAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.SceneAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
 
 /**
  * @author Dennis Cosgrove
@@ -58,7 +58,7 @@ public class PickContext extends Context {
 		this.isSynchronous = isSynchronous;
 	}
 
-	public int getPickNameForVisualAdapter( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
+	public int getPickNameForVisualAdapter( GlrVisual<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter ) {
 		synchronized( m_pickNameMap ) {
 			int name = m_pickNameMap.size();
 			m_pickNameMap.put( new Integer( name ), visualAdapter );
@@ -74,7 +74,7 @@ public class PickContext extends Context {
 		}
 	}
 
-	public VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
+	public GlrVisual<? extends edu.cmu.cs.dennisc.scenegraph.Visual> getPickVisualAdapterForName( int name ) {
 		synchronized( m_pickNameMap ) {
 			return m_pickNameMap.get( name );
 		}
@@ -92,7 +92,7 @@ public class PickContext extends Context {
 		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
 	}
 
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
+	public void pickScene( GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, GlrScene sceneAdapter, PickParameters pickParameters ) {
 		gl.glMatrixMode( GL_MODELVIEW );
 		synchronized( cameraAdapter ) {
 			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
@@ -110,6 +110,6 @@ public class PickContext extends Context {
 	public void setAppearanceIndex( int index ) {
 	}
 
-	private final java.util.Map<Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final java.util.Map<Integer, GlrVisual<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_pickNameMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private final boolean isSynchronous;
 }

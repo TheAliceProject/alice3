@@ -43,28 +43,28 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractCameraAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractElementAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractTransformableAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.AppearanceAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.BackgroundAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.BufferedImageTextureAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.ComponentAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.CompositeAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.ElementAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.FrustumPerspectiveCameraAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GeometryAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GhostAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GraphicAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.LayerAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.MultipleAppearanceAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.OrthographicCameraAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.ProjectionCameraAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.SceneAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.SymmetricPerspectiveCameraAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.TextureAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.TexturedAppearanceAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.TransformableAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrFrustumPerspectiveCamera;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGhost;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractTransformable;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAppearance;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrBackground;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrBufferedImageTexture;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrElement;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGeometry;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGraphic;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrLayer;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrObject;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexture;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrMultipleAppearance;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrOrthographicCamera;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrProjectionCamera;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSymmetricPerspectiveCamera;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexturedAppearance;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable;
 
 //public class AdapterFactory {
 //	private static AdapterFactory s_singleton = new AdapterFactory();
@@ -83,22 +83,22 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.TransformableAdapter;
  * @author Dennis Cosgrove
  */
 public abstract class AdapterFactory {
-	private static java.util.Map<edu.cmu.cs.dennisc.pattern.AbstractReleasable, AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>> s_elementToAdapterMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static java.util.Map<Class<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>, Class<? extends AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>>> s_classToAdapterClassMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static java.util.Map<edu.cmu.cs.dennisc.pattern.AbstractReleasable, GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>> s_elementToAdapterMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static java.util.Map<Class<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>, Class<? extends GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>>> s_classToAdapterClassMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private static final String SCENEGRAPH_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.Element.class.getPackage().getName();
-	private static final String RENDERER_PACKAGE_NAME = ElementAdapter.class.getPackage().getName();
+	private static final String RENDERER_PACKAGE_NAME = GlrElement.class.getPackage().getName();
 	private static final String SCENEGRAPH_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.graphics.Text.class.getPackage().getName();
 	private static final String RENDERER_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics.TextAdapter.class.getPackage().getName();
 
 	static {
-		register( edu.cmu.cs.dennisc.texture.BufferedImageTexture.class, BufferedImageTextureAdapter.class );
+		register( edu.cmu.cs.dennisc.texture.BufferedImageTexture.class, GlrBufferedImageTexture.class );
 	}
 
-	public static void register( Class<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> sgClass, Class<? extends AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>> adapterClass ) {
+	public static void register( Class<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> sgClass, Class<? extends GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>> adapterClass ) {
 		s_classToAdapterClassMap.put( sgClass, adapterClass );
 	}
 
-	private static AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> createAdapterFor( edu.cmu.cs.dennisc.pattern.AbstractReleasable sgElement ) {
+	private static GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> createAdapterFor( edu.cmu.cs.dennisc.pattern.AbstractReleasable sgElement ) {
 		Class sgClass = sgElement.getClass();
 		Class cls = s_classToAdapterClassMap.get( sgClass );
 		if( cls != null ) {
@@ -122,17 +122,17 @@ public abstract class AdapterFactory {
 			}
 			assert sgClass != null;
 			sb.append( '.' );
+			sb.append( "Glr" );
 			sb.append( sgClass.getSimpleName() );
-			sb.append( "Adapter" );
 			cls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( sb.toString() );
 			if( cls != null ) {
 				register( sgClass, cls );
 			}
 		}
-		AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> rv;
+		GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> rv;
 		if( cls != null ) {
 			try {
-				rv = (AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
+				rv = (GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
 			} catch( Throwable t ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, cls );
 				rv = null;
@@ -150,8 +150,8 @@ public abstract class AdapterFactory {
 		}
 	}
 
-	public static AbstractElementAdapter<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> getAdapterForElement( edu.cmu.cs.dennisc.pattern.AbstractReleasable sgElement ) {
-		AbstractElementAdapter rv;
+	public static GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> getAdapterForElement( edu.cmu.cs.dennisc.pattern.AbstractReleasable sgElement ) {
+		GlrObject rv;
 		if( sgElement != null ) {
 			synchronized( s_elementToAdapterMap ) {
 				rv = s_elementToAdapterMap.get( sgElement );
@@ -182,87 +182,87 @@ public abstract class AdapterFactory {
 		return rv;
 	}
 
-	public static AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		return (AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera>)getAdapterForElement( sgCamera );
+	public static GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		return (GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera>)getAdapterForElement( sgCamera );
 	}
 
-	public static ProjectionCameraAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.ProjectionCamera sgProjectionCamera ) {
-		return (ProjectionCameraAdapter)getAdapterForElement( sgProjectionCamera );
+	public static GlrProjectionCamera getAdapterFor( edu.cmu.cs.dennisc.scenegraph.ProjectionCamera sgProjectionCamera ) {
+		return (GlrProjectionCamera)getAdapterForElement( sgProjectionCamera );
 	}
 
-	public static OrthographicCameraAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera ) {
-		return (OrthographicCameraAdapter)getAdapterForElement( sgOrthographicCamera );
+	public static GlrOrthographicCamera getAdapterFor( edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera ) {
+		return (GlrOrthographicCamera)getAdapterForElement( sgOrthographicCamera );
 	}
 
-	public static FrustumPerspectiveCameraAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera sgFrustumPerspectiveCamera ) {
-		return (FrustumPerspectiveCameraAdapter)getAdapterForElement( sgFrustumPerspectiveCamera );
+	public static GlrFrustumPerspectiveCamera getAdapterFor( edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera sgFrustumPerspectiveCamera ) {
+		return (GlrFrustumPerspectiveCamera)getAdapterForElement( sgFrustumPerspectiveCamera );
 	}
 
-	public static SymmetricPerspectiveCameraAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera ) {
-		return (SymmetricPerspectiveCameraAdapter)getAdapterForElement( sgSymmetricPerspectiveCamera );
+	public static GlrSymmetricPerspectiveCamera getAdapterFor( edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera ) {
+		return (GlrSymmetricPerspectiveCamera)getAdapterForElement( sgSymmetricPerspectiveCamera );
 	}
 
-	public static BackgroundAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Background sgBackground ) {
-		return (BackgroundAdapter)getAdapterForElement( sgBackground );
+	public static GlrBackground getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Background sgBackground ) {
+		return (GlrBackground)getAdapterForElement( sgBackground );
 	}
 
-	public static ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
-		return (ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component>)getAdapterForElement( sgComponent );
+	public static GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
+		return (GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component>)getAdapterForElement( sgComponent );
 	}
 
-	public static CompositeAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Composite> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Composite sgComposite ) {
-		return (CompositeAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Composite>)getAdapterForElement( sgComposite );
+	public static GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Composite sgComposite ) {
+		return (GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite>)getAdapterForElement( sgComposite );
 	}
 
-	public static AppearanceAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Appearance> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Appearance sgAppearance ) {
-		return (AppearanceAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Appearance>)getAdapterForElement( sgAppearance );
+	public static GlrAppearance<? extends edu.cmu.cs.dennisc.scenegraph.Appearance> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Appearance sgAppearance ) {
+		return (GlrAppearance<? extends edu.cmu.cs.dennisc.scenegraph.Appearance>)getAdapterForElement( sgAppearance );
 	}
 
-	public static TexturedAppearanceAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgSingleAppearance ) {
-		return (TexturedAppearanceAdapter)getAdapterForElement( sgSingleAppearance );
+	public static GlrTexturedAppearance getAdapterFor( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgSingleAppearance ) {
+		return (GlrTexturedAppearance)getAdapterForElement( sgSingleAppearance );
 	}
 
-	public static MultipleAppearanceAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.MultipleAppearance sgMultipleAppearance ) {
-		return (MultipleAppearanceAdapter)getAdapterForElement( sgMultipleAppearance );
+	public static GlrMultipleAppearance getAdapterFor( edu.cmu.cs.dennisc.scenegraph.MultipleAppearance sgMultipleAppearance ) {
+		return (GlrMultipleAppearance)getAdapterForElement( sgMultipleAppearance );
 	}
 
-	public static GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry ) {
-		return (GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>)getAdapterForElement( sgGeometry );
+	public static GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry ) {
+		return (GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>)getAdapterForElement( sgGeometry );
 	}
 
-	public static SceneAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Scene sgScene ) {
-		return (SceneAdapter)getAdapterForElement( sgScene );
+	public static GlrScene getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Scene sgScene ) {
+		return (GlrScene)getAdapterForElement( sgScene );
 	}
 
-	public static AbstractTransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable ) {
-		return (AbstractTransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable>)getAdapterForElement( sgTransformable );
+	public static GlrAbstractTransformable<? extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable ) {
+		return (GlrAbstractTransformable<? extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable>)getAdapterForElement( sgTransformable );
 	}
 
-	public static TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable ) {
-		return (TransformableAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Transformable>)getAdapterForElement( sgTransformable );
+	public static GlrTransformable<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable ) {
+		return (GlrTransformable<? extends edu.cmu.cs.dennisc.scenegraph.Transformable>)getAdapterForElement( sgTransformable );
 	}
 
-	public static GhostAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Ghost sgGhost ) {
-		return (GhostAdapter)getAdapterForElement( sgGhost );
+	public static GlrGhost getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Ghost sgGhost ) {
+		return (GlrGhost)getAdapterForElement( sgGhost );
 	}
 
-	public static TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> getAdapterFor( edu.cmu.cs.dennisc.texture.Texture texture ) {
-		return (TextureAdapter)getAdapterForElement( texture );
+	public static GlrTexture<? extends edu.cmu.cs.dennisc.texture.Texture> getAdapterFor( edu.cmu.cs.dennisc.texture.Texture texture ) {
+		return (GlrTexture)getAdapterForElement( texture );
 	}
 
-	public static LayerAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Layer sgLayer ) {
-		return (LayerAdapter)getAdapterForElement( sgLayer );
+	public static GlrLayer getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Layer sgLayer ) {
+		return (GlrLayer)getAdapterForElement( sgLayer );
 	}
 
-	public static GraphicAdapter<?> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Graphic sgGraphic ) {
-		return (GraphicAdapter<?>)getAdapterForElement( sgGraphic );
+	public static GlrGraphic<?> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Graphic sgGraphic ) {
+		return (GlrGraphic<?>)getAdapterForElement( sgGraphic );
 	}
 
-	public static edu.cmu.cs.dennisc.render.gl.imp.adapters.SilhouetteAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Silhouette sgSilhouette ) {
-		return (edu.cmu.cs.dennisc.render.gl.imp.adapters.SilhouetteAdapter)getAdapterForElement( sgSilhouette );
+	public static edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSilhouette getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Silhouette sgSilhouette ) {
+		return (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSilhouette)getAdapterForElement( sgSilhouette );
 	}
 
-	public static <E extends AbstractElementAdapter> E[] getAdaptersFor( edu.cmu.cs.dennisc.pattern.AbstractReleasable[] sgElements, Class<? extends E> componentType ) {
+	public static <E extends GlrObject> E[] getAdaptersFor( edu.cmu.cs.dennisc.pattern.AbstractReleasable[] sgElements, Class<? extends E> componentType ) {
 		if( sgElements != null ) {
 			E[] proxies = (E[])java.lang.reflect.Array.newInstance( componentType, sgElements.length );
 			for( int i = 0; i < sgElements.length; i++ ) {

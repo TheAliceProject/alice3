@@ -43,11 +43,11 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.ComponentAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.CompositeAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.ElementAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.LayerAdapter;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.TextureAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrElement;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrLayer;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexture;
 
 /**
  * @author Dennis Cosgrove
@@ -95,24 +95,24 @@ public abstract class ChangeHandler {
 	private static void handleEvent( edu.cmu.cs.dennisc.pattern.event.Event<?> event ) {
 		if( event instanceof edu.cmu.cs.dennisc.property.event.PropertyEvent ) {
 			edu.cmu.cs.dennisc.property.event.PropertyEvent propertyEvent = (edu.cmu.cs.dennisc.property.event.PropertyEvent)event;
-			ElementAdapter.handlePropertyChanged( (edu.cmu.cs.dennisc.property.InstanceProperty<?>)propertyEvent.getTypedSource() );
+			GlrElement.handlePropertyChanged( (edu.cmu.cs.dennisc.property.InstanceProperty<?>)propertyEvent.getTypedSource() );
 		} else if( event instanceof edu.cmu.cs.dennisc.pattern.event.ReleaseEvent ) {
-			ElementAdapter.handleReleased( (edu.cmu.cs.dennisc.pattern.event.ReleaseEvent)event );
+			GlrElement.handleReleased( (edu.cmu.cs.dennisc.pattern.event.ReleaseEvent)event );
 		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent ) {
 			edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent = (edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent)event;
-			ComponentAdapter.handleAbsoluteTransformationChanged( absoluteTransformationEvent.getTypedSource() );
+			GlrComponent.handleAbsoluteTransformationChanged( absoluteTransformationEvent.getTypedSource() );
 		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent ) {
-			ComponentAdapter.handleHierarchyChanged( (edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent)event );
+			GlrComponent.handleHierarchyChanged( (edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent)event );
 		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent ) {
-			CompositeAdapter.handleComponentAdded( (edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent)event );
+			GlrComposite.handleComponentAdded( (edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent)event );
 		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent ) {
-			CompositeAdapter.handleComponentRemoved( (edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent)event );
+			GlrComposite.handleComponentRemoved( (edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent)event );
 		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent ) {
-			LayerAdapter.handleGraphicAdded( (edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent)event );
+			GlrLayer.handleGraphicAdded( (edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent)event );
 		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent ) {
-			LayerAdapter.handleGraphicRemoved( (edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent)event );
+			GlrLayer.handleGraphicRemoved( (edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent)event );
 		} else if( event instanceof edu.cmu.cs.dennisc.texture.event.TextureEvent ) {
-			TextureAdapter.handleTextureChanged( (edu.cmu.cs.dennisc.texture.event.TextureEvent)event );
+			GlrTexture.handleTextureChanged( (edu.cmu.cs.dennisc.texture.event.TextureEvent)event );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "UNHANDLED EVENT:", event );
 		}
