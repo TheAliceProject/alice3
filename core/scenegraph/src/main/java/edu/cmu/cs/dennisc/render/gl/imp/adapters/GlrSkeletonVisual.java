@@ -52,11 +52,8 @@ import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -78,17 +75,18 @@ import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
 public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual<SkeletonVisual> implements PropertyListener, edu.cmu.cs.dennisc.scenegraph.SkeletonVisualBoundingBoxTracker {
 	private static class WeightedMeshControl {
-		protected WeightedMesh weightedMesh;
+		private WeightedMesh weightedMesh;
 
-		protected DoubleBuffer vertexBuffer;
-		protected FloatBuffer normalBuffer;
-		protected FloatBuffer textCoordBuffer;
-		protected IntBuffer indexBuffer;
+		private DoubleBuffer vertexBuffer;
+		private FloatBuffer normalBuffer;
+		private FloatBuffer textCoordBuffer;
+		private IntBuffer indexBuffer;
 
-		protected AffineMatrix4x4[] affineMatrices;
-		protected float[] weights;
-		protected List<Integer>[] normalIndices;
-		protected boolean needsInitialization = true;
+		private AffineMatrix4x4[] affineMatrices;
+		private float[] weights;
+		private boolean needsInitialization = true;
+
+		//note: no one seems to pay any attention to this. --dennisc
 		private boolean geometryIsChanged = true;
 
 		public void initialize( WeightedMesh weightedMesh ) {
@@ -206,18 +204,6 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 
 	private static float ALPHA_TEST_THRESHOLD = .5f;
 
-	private boolean skeletonIsDirty = true;
-	private Joint currentSkeleton = null;
-	protected Map<Integer, GlrTexturedAppearance> appearanceIdToAdapterMap = new HashMap<Integer, GlrTexturedAppearance>();
-	protected Map<Integer, WeightedMeshControl[]> appearanceIdToMeshControllersMap = new HashMap<Integer, WeightedMeshControl[]>();
-	protected Map<Integer, GlrMesh<Mesh>[]> appearanceIdToGeometryAdapaters = new HashMap<Integer, GlrMesh<Mesh>[]>();
-	private boolean isDataDirty = true;
-
-	public GlrSkeletonVisual()
-	{
-		super();
-	}
-
 	@Override
 	public void initialize( SkeletonVisual element )
 	{
@@ -291,11 +277,11 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 	public void handleReleased()
 	{
 		super.handleReleased();
-		for( Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
+		for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
 		{
 			releaseMappedAdapter( appearanceEntry.getValue() );
 		}
-		for( Entry<Integer, GlrMesh<Mesh>[]> meshEntry : this.appearanceIdToGeometryAdapaters.entrySet() )
+		for( java.util.Map.Entry<Integer, GlrMesh<Mesh>[]> meshEntry : this.appearanceIdToGeometryAdapaters.entrySet() )
 		{
 			for( int i = 0; i < meshEntry.getValue().length; i++ )
 			{
@@ -319,7 +305,7 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 			this.processWeightedMesh();
 		}
 		int i = 0;
-		for( Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
+		for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
 		{
 			WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get( appearanceEntry.getKey() );
 			if( weightedMeshControls != null ) {
@@ -391,7 +377,7 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 			this.processWeightedMesh();
 		}
 		int i = 0;
-		for( Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
+		for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
 		{
 			WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get( appearanceEntry.getKey() );
 			if( weightedMeshControls != null ) {
@@ -423,7 +409,7 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 		{
 			this.processWeightedMesh();
 		}
-		for( Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
+		for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
 		{
 			if( renderType == RenderType.SILHOUETTE ) {
 				//pass
@@ -545,7 +531,7 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 					return true;
 				}
 			}
-			for( Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
+			for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
 			{
 				GlrTexturedAppearance ta = appearanceIdToAdapterMap.get( controlEntry.getKey() );
 				if( ( ta != null ) && ta.isActuallyShowing() && !ta.isAlphaBlended() )
@@ -578,7 +564,7 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 					return true;
 				}
 			}
-			for( Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
+			for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
 			{
 				GlrTexturedAppearance ta = appearanceIdToAdapterMap.get( controlEntry.getKey() );
 				if( ( ta != null ) && ta.isActuallyShowing() && ta.isAlphaBlended() )
@@ -643,7 +629,7 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 		if( this.currentSkeleton != null )
 		{
 			synchronized( appearanceIdToMeshControllersMap ) {
-				for( Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
+				for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
 				{
 					for( WeightedMeshControl wmc : controlEntry.getValue() )
 					{
@@ -656,7 +642,7 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 				synchronized( this.currentSkeleton ) {
 					processWeightedMesh( this.currentSkeleton, oTransformationPre, inverseScale );
 				}
-				for( Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
+				for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
 				{
 					for( WeightedMeshControl wmc : controlEntry.getValue() )
 					{
@@ -686,7 +672,7 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 
 			if( currentNode instanceof Joint )
 			{
-				for( Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
+				for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
 				{
 					for( WeightedMeshControl wmc : controlEntry.getValue() )
 					{
@@ -709,7 +695,7 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 	protected void updateAppearanceIdToAdapterMap() {
 		synchronized( appearanceIdToAdapterMap ) {
 			List<GlrElement<? extends Element>> oldAdapters = new ArrayList<GlrElement<? extends Element>>();
-			for( Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
+			for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
 			{
 				if( !oldAdapters.contains( appearanceEntry.getValue() ) )
 				{
@@ -805,4 +791,11 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 			super.propertyChanged( property );
 		}
 	}
+
+	private boolean skeletonIsDirty = true;
+	private Joint currentSkeleton = null;
+	private java.util.Map<Integer, GlrTexturedAppearance> appearanceIdToAdapterMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private java.util.Map<Integer, WeightedMeshControl[]> appearanceIdToMeshControllersMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private java.util.Map<Integer, GlrMesh<Mesh>[]> appearanceIdToGeometryAdapaters = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private boolean isDataDirty = true;
 }
