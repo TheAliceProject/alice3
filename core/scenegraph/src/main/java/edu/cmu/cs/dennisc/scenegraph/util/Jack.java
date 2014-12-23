@@ -46,28 +46,27 @@ package edu.cmu.cs.dennisc.scenegraph.util;
  * @author Dennis Cosgrove
  */
 public class Jack extends edu.cmu.cs.dennisc.scenegraph.Transformable {
-	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes m_sgAxesModest = new edu.cmu.cs.dennisc.scenegraph.util.ModestAxes( 0.1 );
-	private edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes m_sgAxesOrnate = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 0.5 );
-
 	public Jack() {
-		m_sgAxesModest.setParent( this );
+		this.sgAxesModest.setParent( this );
 	}
 
 	//todo: rename
 	public boolean isModest() {
-		return m_sgAxesModest.getParent() == this;
+		return this.sgAxesModest.getParent() == this;
 	}
 
 	public void setModest( boolean isModest ) {
 		if( isModest != isModest() ) {
 			if( isModest ) {
-				m_sgAxesModest.setParent( this );
-				m_sgAxesOrnate.setParent( null );
+				this.sgAxesModest.setParent( this );
+				this.sgAxesOrnate.setParent( null );
 			} else {
-				m_sgAxesModest.setParent( null );
-				m_sgAxesOrnate.setParent( this );
+				this.sgAxesModest.setParent( null );
+				this.sgAxesOrnate.setParent( this );
 			}
 		}
 	}
 
+	private final edu.cmu.cs.dennisc.scenegraph.util.ModestAxes sgAxesModest = new edu.cmu.cs.dennisc.scenegraph.util.ModestAxes( 0.1 );
+	private final edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxesOrnate = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 0.5 );
 }

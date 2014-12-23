@@ -64,17 +64,9 @@ public abstract class VertexGeometry extends Geometry {
 
 		@Deprecated
 		public void touch() {
-			edu.cmu.cs.dennisc.property.InstancePropertyOwner owner = getOwner();
 			setValue( getValue() );
-			//todo
-			//			edu.cmu.cs.dennisc.property.event.PropertyEvent e = new edu.cmu.cs.dennisc.property.event.PropertyEvent( this, owner, getValue() );
-			//			//owner.firePropertyChanging( e );
-			//			//m_value = value;
-			//			owner.firePropertyChanged( e );
 		}
 	}
-
-	public final VerticesProperty vertices = new VerticesProperty( this );
 
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
@@ -116,4 +108,6 @@ public abstract class VertexGeometry extends Geometry {
 		}
 		vertices.touch();
 	}
+
+	public final VerticesProperty vertices = new VerticesProperty( this );
 }

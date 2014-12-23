@@ -47,14 +47,6 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class Sphere extends Shape {
-	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 0.5 ) {
-		@Override
-		public void setValue( Double value ) {
-			assert value >= 0.0;
-			super.setValue( value );
-		}
-	};
-
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
 		double d = radius.getValue();
@@ -67,4 +59,12 @@ public class Sphere extends Shape {
 		boundingSphere.center.set( 0, 0, 0 );
 		boundingSphere.radius = radius.getValue();
 	}
+
+	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 0.5 ) {
+		@Override
+		public void setValue( Double value ) {
+			assert value >= 0.0 : this;
+			super.setValue( value );
+		}
+	};
 }

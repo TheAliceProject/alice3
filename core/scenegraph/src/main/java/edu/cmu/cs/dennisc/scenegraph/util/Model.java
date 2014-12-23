@@ -51,26 +51,26 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  */
 @Deprecated
 public class Model extends Transformable {
-	private Visual m_sgVisual = new Visual();
-	private TexturedAppearance m_sgFrontFacingAppearance = new TexturedAppearance();
-
 	public Model() {
-		m_sgVisual.frontFacingAppearance.setValue( m_sgFrontFacingAppearance );
-		m_sgVisual.setParent( this );
+		this.sgVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
+		this.sgVisual.setParent( this );
 	}
 
 	public Visual getSGVisual() {
-		return m_sgVisual;
+		return this.sgVisual;
 	}
 
 	public TexturedAppearance getSGFrontFacingAppearance() {
-		return m_sgFrontFacingAppearance;
+		return this.sgFrontFacingAppearance;
 	}
 
 	@Override
 	public void setName( String name ) {
 		super.setName( name );
-		m_sgVisual.setName( name + ".m_sgVisual" );
-		m_sgFrontFacingAppearance.setName( name + ".m_sgFrontFacingAppearance" );
+		this.sgVisual.setName( name + ".sgVisual" );
+		this.sgFrontFacingAppearance.setName( name + ".sgFrontFacingAppearance" );
 	}
+
+	private final Visual sgVisual = new Visual();
+	private final TexturedAppearance sgFrontFacingAppearance = new TexturedAppearance();
 }

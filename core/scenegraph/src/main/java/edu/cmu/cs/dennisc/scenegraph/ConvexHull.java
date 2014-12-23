@@ -47,8 +47,6 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class ConvexHull extends Geometry {
-	public final edu.cmu.cs.dennisc.property.DoubleBufferProperty points = new edu.cmu.cs.dennisc.property.DoubleBufferProperty( this, new double[] {} );
-
 	@Override
 	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
 		java.nio.DoubleBuffer doubleBuffer = this.points.getValue();
@@ -88,4 +86,6 @@ public class ConvexHull extends Geometry {
 		translation.z = xyzs[ 2 ];
 		throw new RuntimeException( "todo" );
 	}
+
+	public final edu.cmu.cs.dennisc.property.DoubleBufferProperty points = new edu.cmu.cs.dennisc.property.DoubleBufferProperty( this, new double[] {} );
 }

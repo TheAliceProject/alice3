@@ -47,10 +47,6 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Geometry extends Element {
-	private java.util.List<edu.cmu.cs.dennisc.scenegraph.event.BoundListener> boundObservers = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
-	private edu.cmu.cs.dennisc.math.Sphere boundingSphere = new edu.cmu.cs.dennisc.math.Sphere();
-
 	protected abstract void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox );
 
 	protected abstract void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere );
@@ -76,9 +72,9 @@ public abstract class Geometry extends Element {
 		@Override
 		public void setValue( Double value ) {
 			//todo: check isEqual
-			Geometry.this.boundsChanging();
+			Geometry.this.markBoundsDirty();
 			super.setValue( value );
-			Geometry.this.fireBoundChange();
+			Geometry.this.fireBoundChanged();
 		};
 	}
 
@@ -107,27 +103,32 @@ public abstract class Geometry extends Element {
 		return getBoundingSphere( new edu.cmu.cs.dennisc.math.Sphere() );
 	}
 
-	public void addBoundObserver( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundObserver ) {
-		this.boundObservers.add( boundObserver );
+	public void addBoundListener( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundListener ) {
+		this.boundListeners.add( boundListener );
 	}
 
-	public void removeBoundObserver( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundObserver ) {
-		this.boundObservers.remove( boundObserver );
+	public void removeBoundListener( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundListener ) {
+		this.boundListeners.remove( boundListener );
 	}
 
-	public Iterable<edu.cmu.cs.dennisc.scenegraph.event.BoundListener> accessBoundObservers() {
-		return this.boundObservers;
+	public java.util.Collection<edu.cmu.cs.dennisc.scenegraph.event.BoundListener> getBoundListeners() {
+		return java.util.Collections.unmodifiableCollection( this.boundListeners );
 	}
 
-	protected void boundsChanging() {
+	protected void markBoundsDirty() {
 		this.boundingBox.setNaN();
 		this.boundingSphere.setNaN();
 	}
 
-	protected void fireBoundChange() {
+	protected void fireBoundChanged() {
 		edu.cmu.cs.dennisc.scenegraph.event.BoundEvent e = new edu.cmu.cs.dennisc.scenegraph.event.BoundEvent( this );
-		for( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundObserver : this.boundObservers ) {
-			boundObserver.boundChanged( e );
+		for( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundListener : this.boundListeners ) {
+			boundListener.boundChanged( e );
 		}
 	}
+
+	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.BoundListener> boundListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
+	private final edu.cmu.cs.dennisc.math.Sphere boundingSphere = new edu.cmu.cs.dennisc.math.Sphere();
+
 }

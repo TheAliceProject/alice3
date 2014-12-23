@@ -47,40 +47,6 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 
 public class SkeletonVisual extends Visual {
-
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> baseBoundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
-
-	private SkeletonVisualBoundingBoxTracker tracker = null;
-
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh> weightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
-	{
-		@Override
-		protected WeightedMesh[] createArray( int length ) {
-			return new WeightedMesh[ length ];
-		}
-
-		@Override
-		protected WeightedMesh createCopy( WeightedMesh src ) {
-			//todo?
-			return src;
-		}
-	};
-
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<TexturedAppearance> textures = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<TexturedAppearance>( this, new TexturedAppearance[ 0 ] )
-	{
-		@Override
-		protected TexturedAppearance[] createArray( int length ) {
-			return new TexturedAppearance[ length ];
-		}
-
-		@Override
-		protected TexturedAppearance createCopy( TexturedAppearance src ) {
-			//todo?
-			return src;
-		}
-	};
-
 	public SkeletonVisualBoundingBoxTracker getTracker() {
 		return this.tracker;
 	}
@@ -219,4 +185,37 @@ public class SkeletonVisual extends Visual {
 		}
 		return false;
 	}
+
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> baseBoundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
+
+	private SkeletonVisualBoundingBoxTracker tracker = null;
+
+	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh> weightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
+	{
+		@Override
+		protected WeightedMesh[] createArray( int length ) {
+			return new WeightedMesh[ length ];
+		}
+
+		@Override
+		protected WeightedMesh createCopy( WeightedMesh src ) {
+			//todo?
+			return src;
+		}
+	};
+
+	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<TexturedAppearance> textures = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<TexturedAppearance>( this, new TexturedAppearance[ 0 ] )
+	{
+		@Override
+		protected TexturedAppearance[] createArray( int length ) {
+			return new TexturedAppearance[ length ];
+		}
+
+		@Override
+		protected TexturedAppearance createCopy( TexturedAppearance src ) {
+			//todo?
+			return src;
+		}
+	};
 }

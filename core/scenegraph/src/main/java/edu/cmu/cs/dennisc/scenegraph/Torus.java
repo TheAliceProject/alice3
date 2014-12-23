@@ -47,40 +47,10 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class Torus extends Shape {
-	//todo: rename
-	//	private enum E {
-	//		YES( true ), NO( true );
-	//		private boolean is;
-	//		E( boolean is ) {
-	//			this.is = is;
-	//		}
-	//		public double get( double yesRadius, double noRadius ) {
-	//			if( this.is ) {
-	//				return yesRadius;
-	//			} else {
-	//				return noRadius;
-	//			}
-	//		}
-	//	};
-	public enum CoordinatePlane {
-		//		XY( E.YES, E.YES, E.NO ),
-		//		XZ( E.YES, E.NO,  E.YES ),
-		//		YZ( E.NO,  E.YES, E.YES );
-		//		private E x;
-		//		private E y;
-		//		private E z;
-		//		CoordinatePlane( E x, E y, E z ) {
-		//			this.x = x;
-		//			this.y = y;
-		//			this.z = z;
-		//		}
+	public static enum CoordinatePlane {
 		XY( true, true, false ),
 		XZ( true, false, true ),
 		YZ( false, true, true );
-		private boolean isX;
-		private boolean isY;
-		private boolean isZ;
-
 		CoordinatePlane( boolean isX, boolean isY, boolean isZ ) {
 			this.isX = isX;
 			this.isY = isY;
@@ -109,15 +79,33 @@ public class Torus extends Shape {
 			boundingBox.setMinimum( -x, -y, -z );
 			boundingBox.setMaximum( +x, +y, +z );
 		}
+
+		private final boolean isX;
+		private final boolean isY;
+		private final boolean isZ;
+	}
+
+	@Override
+	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
+		double yesRadius = majorRadius.getValue() + minorRadius.getValue();
+		double noRadius = minorRadius.getValue();
+		this.coordinatePlane.getValue().updateBoundingBox( boundingBox, yesRadius, noRadius );
+	}
+
+	@Override
+	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
+		double outerRadius = majorRadius.getValue() + minorRadius.getValue();
+		boundingSphere.center.set( 0, 0, 0 );
+		boundingSphere.radius = outerRadius;
 	}
 
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<CoordinatePlane> coordinatePlane = new edu.cmu.cs.dennisc.property.InstanceProperty<CoordinatePlane>( this, CoordinatePlane.XZ ) {
 		@Override
 		public void setValue( CoordinatePlane value ) {
 			//todo: check isEqual
-			Torus.this.boundsChanging();
+			Torus.this.markBoundsDirty();
 			super.setValue( value );
-			Torus.this.fireBoundChange();
+			Torus.this.fireBoundChanged();
 		};
 	};
 	public final BoundDoubleProperty minorRadius = new BoundDoubleProperty( this, 0.1 ) {
@@ -134,18 +122,4 @@ public class Torus extends Shape {
 			super.setValue( value );
 		}
 	};
-
-	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
-		double yesRadius = majorRadius.getValue() + minorRadius.getValue();
-		double noRadius = minorRadius.getValue();
-		this.coordinatePlane.getValue().updateBoundingBox( boundingBox, yesRadius, noRadius );
-	}
-
-	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		double outerRadius = majorRadius.getValue() + minorRadius.getValue();
-		boundingSphere.center.set( 0, 0, 0 );
-		boundingSphere.radius = outerRadius;
-	}
 }
