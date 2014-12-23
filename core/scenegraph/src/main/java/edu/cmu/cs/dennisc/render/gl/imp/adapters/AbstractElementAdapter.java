@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractElementAdapter<E extends edu.cmu.cs.dennisc.pattern.AbstractNameable> {
+public abstract class AbstractElementAdapter<E extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> {
 	public static void handleReleased( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent e ) {
 		edu.cmu.cs.dennisc.pattern.Releasable releasable = e.getTypedSource();
-		if( releasable instanceof edu.cmu.cs.dennisc.pattern.AbstractNameable ) {
-			edu.cmu.cs.dennisc.pattern.AbstractNameable element = (edu.cmu.cs.dennisc.pattern.AbstractNameable)releasable;
+		if( releasable instanceof edu.cmu.cs.dennisc.pattern.AbstractReleasable ) {
+			edu.cmu.cs.dennisc.pattern.AbstractReleasable element = (edu.cmu.cs.dennisc.pattern.AbstractReleasable)releasable;
 			AbstractElementAdapter elementAdapter = edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.getAdapterForElement( element );
 			if( elementAdapter != null ) {
 				elementAdapter.handleReleased();
