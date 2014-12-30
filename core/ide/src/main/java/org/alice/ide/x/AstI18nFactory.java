@@ -61,6 +61,10 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return true;
 	}
 
+	public boolean isLocalDraggable( org.lgna.project.ast.UserLocal local ) {
+		return true;
+	}
+
 	public org.lgna.croquet.views.SwingComponentView<?> createNameView( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		return new org.alice.ide.ast.components.DeclarationNameLabel( declaration );
 	}
@@ -169,7 +173,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 	}
 
 	protected org.lgna.croquet.views.SwingComponentView<?> createLocalPane( org.lgna.project.ast.UserLocal userLocal ) {
-		return new org.alice.ide.common.LocalPane( userLocal );
+		return new org.alice.ide.common.LocalPane( userLocal, this.isLocalDraggable( userLocal ) );
 	}
 
 	protected org.lgna.croquet.views.SwingComponentView<?> createGenericNodePropertyPane( org.lgna.project.ast.NodeProperty<?> nodeProperty ) {
