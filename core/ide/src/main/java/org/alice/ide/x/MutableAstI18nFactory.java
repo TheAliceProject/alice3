@@ -116,10 +116,16 @@ public abstract class MutableAstI18nFactory extends AstI18nFactory {
 		return rv;
 	}
 
+	protected boolean isStatementContextMenuDesiredFor( org.lgna.project.ast.Statement statement ) {
+		return true;
+	}
+
 	@Override
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( org.lgna.croquet.DragModel dragModel, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( dragModel, statement, statementListProperty );
-		abstractStatementPane.setPopupPrepModel( org.alice.ide.croquet.models.ast.StatementContextMenu.getInstance( statement ).getPopupPrepModel() );
+		if( this.isStatementContextMenuDesiredFor( statement ) ) {
+			abstractStatementPane.setPopupPrepModel( org.alice.ide.croquet.models.ast.StatementContextMenu.getInstance( statement ).getPopupPrepModel() );
+		}
 		return abstractStatementPane;
 	}
 
