@@ -4,7 +4,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
-public class GlrStandIn<E extends edu.cmu.cs.dennisc.scenegraph.Transformable> extends GlrComposite<E> {
+public class GlrStandIn<T extends edu.cmu.cs.dennisc.scenegraph.Transformable> extends GlrComposite<T> {
 	@Override
 	public void renderOpaque( RenderContext rc ) {
 		rc.gl.glPushMatrix();

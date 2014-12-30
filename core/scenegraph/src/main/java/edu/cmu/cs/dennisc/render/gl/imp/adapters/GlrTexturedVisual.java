@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 /**
  * @author alice
  */
-public class GlrTexturedVisual<E extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual> extends GlrVisual<E> {
+public class GlrTexturedVisual<T extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual> extends GlrVisual<T> {
 }

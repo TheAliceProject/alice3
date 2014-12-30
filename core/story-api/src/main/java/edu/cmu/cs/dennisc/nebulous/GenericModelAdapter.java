@@ -9,7 +9,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
 /**
  * @author Dennis Cosgrove
  */
-public class GenericModelAdapter<E extends Model> extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGeometry<E> {
+public class GenericModelAdapter<T extends Model> extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGeometry<T> {
 	@Override
 	protected boolean isDisplayListDesired() {
 		return false;

@@ -52,7 +52,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrAbstractCamera<E extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> extends GlrLeaf<E> {
+public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> extends GlrLeaf<T> {
 	private GlrBackground m_backgroundAdapter = null;
 	private GlrLayer[] m_layerAdapters = null;
 

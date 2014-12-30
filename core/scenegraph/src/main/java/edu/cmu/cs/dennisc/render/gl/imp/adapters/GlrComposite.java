@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrComposite<E extends edu.cmu.cs.dennisc.scenegraph.Composite> extends GlrComponent<E> {
+public abstract class GlrComposite<T extends edu.cmu.cs.dennisc.scenegraph.Composite> extends GlrComponent<T> {
 	public Iterable<GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component>> accessComponentAdapters() {
 		return m_componentAdapters;
 	}
@@ -91,7 +91,7 @@ public abstract class GlrComposite<E extends edu.cmu.cs.dennisc.scenegraph.Compo
 	}
 
 	@Override
-	public void initialize( E sgE ) {
+	public void initialize( T sgE ) {
 		super.initialize( sgE );
 		Iterable<edu.cmu.cs.dennisc.scenegraph.Component> sgComponents = owner.getComponents();
 		synchronized( sgComponents ) {

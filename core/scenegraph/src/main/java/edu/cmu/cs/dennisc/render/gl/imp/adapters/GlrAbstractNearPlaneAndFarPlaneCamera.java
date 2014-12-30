@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.Context;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrAbstractNearPlaneAndFarPlaneCamera<E extends edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera> extends GlrAbstractCamera<E> {
+public abstract class GlrAbstractNearPlaneAndFarPlaneCamera<T extends edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera> extends GlrAbstractCamera<T> {
 	private float m_near;
 	private float m_far;
 

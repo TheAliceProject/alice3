@@ -5,7 +5,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
 /**
  * @author Dennis Cosgrove
  */
-public class ModelAdapter<E extends Model> extends GenericModelAdapter<E> {
+public class ModelAdapter<T extends Model> extends GenericModelAdapter<T> {
 	@Override
 	protected boolean isDisplayListDesired() {
 		return false;

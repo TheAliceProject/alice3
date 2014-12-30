@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrGraphic<E extends edu.cmu.cs.dennisc.scenegraph.Graphic> extends GlrElement<E> {
+public abstract class GlrGraphic<T extends edu.cmu.cs.dennisc.scenegraph.Graphic> extends GlrElement<T> {
 	protected abstract void render( edu.cmu.cs.dennisc.render.Graphics2D g2, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera );
 
 	protected abstract void forget( edu.cmu.cs.dennisc.render.Graphics2D g2 );

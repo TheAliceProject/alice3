@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrAppearance<E extends edu.cmu.cs.dennisc.scenegraph.Appearance> extends GlrElement<E> {
+public abstract class GlrAppearance<T extends edu.cmu.cs.dennisc.scenegraph.Appearance> extends GlrElement<T> {
 	public abstract boolean isActuallyShowing();
 
 	public abstract boolean isAlphaBlended();

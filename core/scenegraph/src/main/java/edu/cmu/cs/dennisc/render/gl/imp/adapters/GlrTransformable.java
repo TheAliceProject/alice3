@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 /**
  * @author Dennis Cosgrove
  */
-public class GlrTransformable<E extends edu.cmu.cs.dennisc.scenegraph.Transformable> extends GlrAbstractTransformable<E> {
+public class GlrTransformable<T extends edu.cmu.cs.dennisc.scenegraph.Transformable> extends GlrAbstractTransformable<T> {
 	@Override
 	public java.nio.DoubleBuffer accessLocalTransformationAsBuffer() {
 		return this.localTransformationBuffer;

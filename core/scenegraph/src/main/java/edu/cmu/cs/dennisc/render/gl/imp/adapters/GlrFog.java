@@ -48,7 +48,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrFog<E extends edu.cmu.cs.dennisc.scenegraph.Fog> extends GlrAffector<E> {
+public abstract class GlrFog<T extends edu.cmu.cs.dennisc.scenegraph.Fog> extends GlrAffector<T> {
 	private float[] m_color = new float[ 4 ];
 
 	@Override

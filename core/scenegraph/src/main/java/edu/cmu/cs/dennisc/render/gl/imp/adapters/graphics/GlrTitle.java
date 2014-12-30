@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics;
 
-public abstract class GlrTitle<E extends edu.cmu.cs.dennisc.scenegraph.graphics.Title> extends GlrShapeEnclosedText<E> {
+public abstract class GlrTitle<T extends edu.cmu.cs.dennisc.scenegraph.graphics.Title> extends GlrShapeEnclosedText<T> {
 	protected static final float VERTICAL_MARGIN_TIMES_2 = 20.0f;
 	private java.awt.geom.Rectangle2D.Float backgroundBounds = new java.awt.geom.Rectangle2D.Float();
 

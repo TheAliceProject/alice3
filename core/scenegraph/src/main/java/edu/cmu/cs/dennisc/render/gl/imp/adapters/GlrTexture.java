@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrTexture<E extends edu.cmu.cs.dennisc.texture.Texture> extends GlrObject<E> {
+public abstract class GlrTexture<T extends edu.cmu.cs.dennisc.texture.Texture> extends GlrObject<T> {
 	/*package-private*/static void handleTextureChanged( edu.cmu.cs.dennisc.texture.event.TextureEvent e ) {
 		GlrTexture<?> textureAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		textureAdapter.handleTextureChanged();

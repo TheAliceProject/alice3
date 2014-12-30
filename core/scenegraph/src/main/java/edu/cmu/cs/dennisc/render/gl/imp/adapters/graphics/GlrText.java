@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics;
 
-public abstract class GlrText<E extends edu.cmu.cs.dennisc.scenegraph.graphics.Text> extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGraphic<E> {
+public abstract class GlrText<T extends edu.cmu.cs.dennisc.scenegraph.graphics.Text> extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGraphic<T> {
 	private edu.cmu.cs.dennisc.java.awt.MultilineText multilineText;
 	private java.awt.Font rememberedFont = null;
 	private java.awt.Color textColor = null;

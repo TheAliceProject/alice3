@@ -46,9 +46,9 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrElement<E extends edu.cmu.cs.dennisc.scenegraph.Element> extends GlrObject<E> {
+public abstract class GlrElement<T extends edu.cmu.cs.dennisc.scenegraph.Element> extends GlrObject<T> {
 	@Override
-	public void initialize( E element ) {
+	public void initialize( T element ) {
 		super.initialize( element );
 		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : owner.getProperties() ) {
 			propertyChanged( property );

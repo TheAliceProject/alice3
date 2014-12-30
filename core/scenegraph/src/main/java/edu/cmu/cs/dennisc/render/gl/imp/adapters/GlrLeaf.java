@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrLeaf<E extends edu.cmu.cs.dennisc.scenegraph.Leaf> extends GlrComponent<E> {
+public abstract class GlrLeaf<T extends edu.cmu.cs.dennisc.scenegraph.Leaf> extends GlrComponent<T> {
 }

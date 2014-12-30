@@ -47,12 +47,11 @@ import static javax.media.opengl.GL.GL_LINES;
 import static javax.media.opengl.GL2.GL_COMPILE_AND_EXECUTE;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrGeometry<E extends edu.cmu.cs.dennisc.scenegraph.Geometry> extends GlrElement<E> {
+public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geometry> extends GlrElement<T> {
 	private java.util.List<RenderContext> m_renderContexts = new java.util.LinkedList<RenderContext>();
 
 	public void addRenderContext( RenderContext rc ) {

@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrVertexGeometry<E extends edu.cmu.cs.dennisc.scenegraph.VertexGeometry> extends GlrGeometry<E> {
+public abstract class GlrVertexGeometry<T extends edu.cmu.cs.dennisc.scenegraph.VertexGeometry> extends GlrGeometry<T> {
 	private boolean m_isAlphaBlended;
 
 	//    private boolean m_isVertexColored;

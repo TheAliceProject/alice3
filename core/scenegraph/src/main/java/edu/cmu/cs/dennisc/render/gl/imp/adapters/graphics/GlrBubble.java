@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics;
 import edu.cmu.cs.dennisc.scenegraph.graphics.BubbleManager;
 import edu.cmu.cs.dennisc.scenegraph.graphics.OnscreenBubble;
 
-public abstract class GlrBubble<E extends edu.cmu.cs.dennisc.scenegraph.graphics.Bubble> extends GlrShapeEnclosedText<E> {
+public abstract class GlrBubble<T extends edu.cmu.cs.dennisc.scenegraph.graphics.Bubble> extends GlrShapeEnclosedText<T> {
 	private java.awt.geom.Point2D.Float originOfTail = new java.awt.geom.Point2D.Float();
 	private java.awt.geom.Point2D.Float bodyConnectionLocationOfTail = new java.awt.geom.Point2D.Float();
 	private java.awt.geom.Point2D.Float textBoundsOffset = new java.awt.geom.Point2D.Float();

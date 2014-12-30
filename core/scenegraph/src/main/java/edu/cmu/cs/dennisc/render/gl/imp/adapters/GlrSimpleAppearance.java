@@ -14,7 +14,7 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SHININESS;
 import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
-public class GlrSimpleAppearance<E extends edu.cmu.cs.dennisc.scenegraph.SimpleAppearance> extends GlrAppearance<E> {
+public class GlrSimpleAppearance<T extends edu.cmu.cs.dennisc.scenegraph.SimpleAppearance> extends GlrAppearance<T> {
 	@Override
 	public boolean isActuallyShowing() {
 		return this.isMaterialActuallyShowing;

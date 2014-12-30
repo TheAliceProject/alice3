@@ -5,7 +5,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
-public abstract class GlrAbstractTransformable<E extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable> extends GlrComposite<E> {
+public abstract class GlrAbstractTransformable<T extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable> extends GlrComposite<T> {
 	private static final int X_X = 0;
 	private static final int X_Y = 1;
 	private static final int X_Z = 2;

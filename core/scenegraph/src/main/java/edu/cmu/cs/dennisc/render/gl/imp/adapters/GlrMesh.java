@@ -65,7 +65,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.scenegraph.Mesh;
 
-public class GlrMesh<E extends Mesh> extends GlrGeometry<E> {
+public class GlrMesh<T extends Mesh> extends GlrGeometry<T> {
 	/*package-private*/static void renderMesh( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, DoubleBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer textCoordBuffer, IntBuffer indexBuffer ) {
 		int maxIndices = GetUtilities.getInteger( rc.gl, GL_MAX_ELEMENTS_INDICES );
 		int maxVertices = GetUtilities.getInteger( rc.gl, GL_MAX_ELEMENTS_VERTICES );

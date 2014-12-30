@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics;
 
-public abstract class GlrShapeEnclosedText<E extends edu.cmu.cs.dennisc.scenegraph.graphics.ShapeEnclosedText> extends GlrText<E> {
+public abstract class GlrShapeEnclosedText<T extends edu.cmu.cs.dennisc.scenegraph.graphics.ShapeEnclosedText> extends GlrText<T> {
 	private java.awt.Color fillColor = null;
 	private java.awt.Color outlineColor = null;
 

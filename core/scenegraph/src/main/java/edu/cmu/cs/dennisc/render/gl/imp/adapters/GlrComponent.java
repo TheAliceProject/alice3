@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrComponent<E extends edu.cmu.cs.dennisc.scenegraph.Component> extends GlrElement<E> implements edu.cmu.cs.dennisc.pattern.Visitable {
+public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Component> extends GlrElement<T> implements edu.cmu.cs.dennisc.pattern.Visitable {
 	private static edu.cmu.cs.dennisc.math.AffineMatrix4x4 s_buffer = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
 	private double[] m_absolute = new double[ 16 ];
 	private double[] m_inverseAbsolute = new double[ 16 ];

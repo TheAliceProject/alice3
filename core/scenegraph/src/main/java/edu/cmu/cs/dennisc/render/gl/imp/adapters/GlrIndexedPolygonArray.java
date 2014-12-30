@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrIndexedPolygonArray<E extends edu.cmu.cs.dennisc.scenegraph.IndexedPolygonArray> extends GlrVertexGeometry<E> {
+public abstract class GlrIndexedPolygonArray<T extends edu.cmu.cs.dennisc.scenegraph.IndexedPolygonArray> extends GlrVertexGeometry<T> {
 	public GlrIndexedPolygonArray( int mode, int indicesPerPolygon ) {
 		this.mode = mode;
 		this.indicesPerPolygon = indicesPerPolygon;
