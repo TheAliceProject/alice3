@@ -5,22 +5,11 @@ import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 public class GlrStandIn<E extends edu.cmu.cs.dennisc.scenegraph.Transformable> extends GlrComposite<E> {
-	private double[] m_localTransformation = new double[ 16 ];
-	private java.nio.DoubleBuffer m_localTransformationBuffer = java.nio.DoubleBuffer.wrap( m_localTransformation );
-
-	public double[] accessLocalTransformation() {
-		return m_localTransformation;
-	}
-
-	public java.nio.DoubleBuffer accessLocalTransformationAsBuffer() {
-		return m_localTransformationBuffer;
-	}
-
 	@Override
 	public void renderOpaque( RenderContext rc ) {
 		rc.gl.glPushMatrix();
 		try {
-			rc.gl.glMultMatrixd( accessLocalTransformationAsBuffer() );
+			rc.gl.glMultMatrixd( this.localTransformationBuffer );
 			super.renderOpaque( rc );
 		} finally {
 			rc.gl.glPopMatrix();
@@ -46,7 +35,7 @@ public class GlrStandIn<E extends edu.cmu.cs.dennisc.scenegraph.Transformable> e
 	public void pick( PickContext pc, PickParameters pickParameters ) {
 		pc.gl.glPushMatrix();
 		try {
-			pc.gl.glMultMatrixd( m_localTransformationBuffer );
+			pc.gl.glMultMatrixd( this.localTransformationBuffer );
 			super.pick( pc, pickParameters );
 		} finally {
 			pc.gl.glPopMatrix();
@@ -56,9 +45,12 @@ public class GlrStandIn<E extends edu.cmu.cs.dennisc.scenegraph.Transformable> e
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.localTransformation ) {
-			owner.localTransformation.getValue().getAsColumnMajorArray16( m_localTransformation );
+			owner.localTransformation.getValue().getAsColumnMajorArray16( this.localTransformation );
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private final double[] localTransformation = new double[ 16 ];
+	private final java.nio.DoubleBuffer localTransformationBuffer = java.nio.DoubleBuffer.wrap( this.localTransformation );
 }

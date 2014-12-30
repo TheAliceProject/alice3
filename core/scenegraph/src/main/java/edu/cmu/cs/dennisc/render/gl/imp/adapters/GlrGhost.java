@@ -49,12 +49,10 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public class GlrGhost extends GlrTransformable<edu.cmu.cs.dennisc.scenegraph.Ghost> {
-	private float m_opacity = Float.NaN;
-
 	@Override
 	public void renderGhost( RenderContext rc, GlrGhost root ) {
 		rc.pushGlobalOpacity();
-		rc.multiplyGlobalOpacity( m_opacity );
+		rc.multiplyGlobalOpacity( this.opacity );
 		try {
 			super.renderGhost( rc, root );
 		} finally {
@@ -70,9 +68,11 @@ public class GlrGhost extends GlrTransformable<edu.cmu.cs.dennisc.scenegraph.Gho
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.opacity ) {
-			m_opacity = owner.opacity.getValue();
+			this.opacity = owner.opacity.getValue();
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private float opacity = Float.NaN;
 }

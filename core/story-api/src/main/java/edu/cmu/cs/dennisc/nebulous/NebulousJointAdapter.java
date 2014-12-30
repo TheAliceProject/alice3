@@ -15,26 +15,8 @@ public class NebulousJointAdapter extends GlrAbstractTransformable<edu.cmu.cs.de
 	}
 
 	@Override
-	public double[] accessLocalTransformation() {
-		this.updateLocalTransformation();
-		return m_localTransformation;
-	}
-
-	@Override
 	public DoubleBuffer accessLocalTransformationAsBuffer() {
 		this.updateLocalTransformation();
 		return this.m_localTransformationBuffer;
 	}
-	//	@Override
-	//	public void renderOpaque( RenderContext rc ) {
-	//		//todo
-	//	}
-	//	@Override
-	//	public void renderGhost( RenderContext rc, GhostAdapter root ) {
-	//		//todo
-	//	}
-	//	@Override
-	//	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-	//		//todo
-	//	}
 }

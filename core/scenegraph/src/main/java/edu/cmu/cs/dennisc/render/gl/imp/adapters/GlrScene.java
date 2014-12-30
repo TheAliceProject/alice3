@@ -71,7 +71,7 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( owner, edu.cmu.cs.dennisc.scenegraph.Component.class ) ) {
 			addDescendant( AdapterFactory.getAdapterFor( sgComponent ) );
 		}
-		//		m_sgE.accept( new edu.cmu.cs.dennisc.pattern.FilteredVisitor< edu.cmu.cs.dennisc.scenegraph.Component >() {
+		//		this.sgE.accept( new edu.cmu.cs.dennisc.pattern.FilteredVisitor< edu.cmu.cs.dennisc.scenegraph.Component >() {
 		//			@Override
 		//			protected void filteredVisit( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
 		//				addDescendant( AdapterFactory.getAdapterFor( sgComponent ) );
@@ -80,21 +80,21 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 	}
 
 	public GlrBackground getBackgroundAdapter() {
-		return m_backgroundAdapter;
+		return this.backgroundAdapter;
 	}
 
 	public void addDescendant( GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter ) {
 		if( componentAdapter instanceof GlrGhost ) {
-			synchronized( m_ghostAdapters ) {
-				m_ghostAdapters.add( (GlrGhost)componentAdapter );
+			synchronized( this.ghostAdapters ) {
+				this.ghostAdapters.add( (GlrGhost)componentAdapter );
 			}
 		} else if( componentAdapter instanceof GlrVisual<?> ) {
-			synchronized( m_visualAdapters ) {
-				m_visualAdapters.add( (GlrVisual<?>)componentAdapter );
+			synchronized( this.visualAdapters ) {
+				this.visualAdapters.add( (GlrVisual<?>)componentAdapter );
 			}
 			if( componentAdapter instanceof GlrPlanarReflector ) {
-				synchronized( m_planarReflectorAdapters ) {
-					m_planarReflectorAdapters.add( (GlrPlanarReflector)componentAdapter );
+				synchronized( this.planarReflectorAdapters ) {
+					this.planarReflectorAdapters.add( (GlrPlanarReflector)componentAdapter );
 				}
 			}
 		}
@@ -102,16 +102,16 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 
 	public void removeDescendant( GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter ) {
 		if( componentAdapter instanceof GlrGhost ) {
-			synchronized( m_ghostAdapters ) {
-				m_ghostAdapters.remove( componentAdapter );
+			synchronized( this.ghostAdapters ) {
+				this.ghostAdapters.remove( componentAdapter );
 			}
 		} else if( componentAdapter instanceof GlrVisual<?> ) {
-			synchronized( m_visualAdapters ) {
-				m_visualAdapters.remove( componentAdapter );
+			synchronized( this.visualAdapters ) {
+				this.visualAdapters.remove( componentAdapter );
 			}
 			if( componentAdapter instanceof GlrPlanarReflector ) {
-				synchronized( m_planarReflectorAdapters ) {
-					m_planarReflectorAdapters.remove( componentAdapter );
+				synchronized( this.planarReflectorAdapters ) {
+					this.planarReflectorAdapters.remove( componentAdapter );
 				}
 			}
 		}
@@ -122,13 +122,13 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 		//rc.gl.glDisable( GL_DEPTH_TEST );
 		//		rc.gl.glDepthMask( false );
 		//		try {
-		synchronized( m_ghostAdapters ) {
-			for( GlrGhost ghostAdapter : m_ghostAdapters ) {
+		synchronized( this.ghostAdapters ) {
+			for( GlrGhost ghostAdapter : this.ghostAdapters ) {
 				ghostAdapter.renderGhost( rc, ghostAdapter );
 			}
 		}
-		synchronized( m_visualAdapters ) {
-			for( GlrVisual<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter : m_visualAdapters ) {
+		synchronized( this.visualAdapters ) {
+			for( GlrVisual<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter : this.visualAdapters ) {
 				if( visualAdapter.isAlphaBlended() ) {
 					//todo: adapters should be removed 
 					if( ( visualAdapter.owner != null ) && ( visualAdapter.owner.getRoot() instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) ) {
@@ -150,7 +150,7 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 
 	@Override
 	public void setup( RenderContext rc ) {
-		rc.setGlobalBrightness( m_globalBrightness );
+		rc.setGlobalBrightness( this.globalBrightness );
 		rc.beginAffectorSetup();
 		super.setup( rc );
 		rc.endAffectorSetup();
@@ -174,14 +174,14 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 		if( backgroundAdapter != null ) {
 			//pass
 		} else {
-			backgroundAdapter = m_backgroundAdapter;
+			backgroundAdapter = this.backgroundAdapter;
 		}
 		if( backgroundAdapter != null ) {
 			backgroundAdapter.setup( rc );
 		}
 
-		if( m_planarReflectorAdapters.size() > 0 ) {
-			GlrPlanarReflector planarReflectorAdapter = m_planarReflectorAdapters.get( 0 );
+		if( this.planarReflectorAdapters.size() > 0 ) {
+			GlrPlanarReflector planarReflectorAdapter = this.planarReflectorAdapters.get( 0 );
 			if( planarReflectorAdapter.isFacing( cameraAdapter ) ) {
 				rc.gl.glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
 				rc.gl.glColorMask( false, false, false, false );
@@ -223,18 +223,17 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.background ) {
-			m_backgroundAdapter = AdapterFactory.getAdapterFor( owner.background.getValue() );
+			this.backgroundAdapter = AdapterFactory.getAdapterFor( owner.background.getValue() );
 		} else if( property == owner.globalBrightness ) {
-			m_globalBrightness = owner.globalBrightness.getValue();
+			this.globalBrightness = owner.globalBrightness.getValue();
 		} else {
 			super.propertyChanged( property );
 		}
 	}
 
-	private GlrBackground m_backgroundAdapter = null;
-	private float m_globalBrightness;
-	private final java.util.List<GlrGhost> m_ghostAdapters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	//todo: reduce visibility
-	protected final java.util.List<GlrVisual<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_visualAdapters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final java.util.List<GlrPlanarReflector> m_planarReflectorAdapters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private GlrBackground backgroundAdapter;
+	private float globalBrightness;
+	private final java.util.List<GlrGhost> ghostAdapters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final java.util.List<GlrVisual<?>> visualAdapters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private final java.util.List<GlrPlanarReflector> planarReflectorAdapters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 }

@@ -50,11 +50,6 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public class GlrScalable extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scalable> {
-	private double x;
-	private double y;
-	private double z;
-	private boolean isIdentity = true;
-
 	@Override
 	public void renderOpaque( RenderContext rc ) {
 		if( this.isIdentity ) {
@@ -118,4 +113,9 @@ public class GlrScalable extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scal
 			super.propertyChanged( property );
 		}
 	}
+
+	private double x;
+	private double y;
+	private double z;
+	private boolean isIdentity = true;
 }

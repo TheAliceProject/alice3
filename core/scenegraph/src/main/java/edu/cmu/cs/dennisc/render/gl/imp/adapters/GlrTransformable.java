@@ -43,30 +43,24 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class GlrTransformable<E extends edu.cmu.cs.dennisc.scenegraph.Transformable> extends GlrAbstractTransformable<E> {
-	private double[] m_localTransformation = new double[ 16 ];
-	private java.nio.DoubleBuffer m_localTransformationBuffer = java.nio.DoubleBuffer.wrap( m_localTransformation );
-
-	@Override
-	public double[] accessLocalTransformation() {
-		return m_localTransformation;
-	}
-
 	@Override
 	public java.nio.DoubleBuffer accessLocalTransformationAsBuffer() {
-		return m_localTransformationBuffer;
+		return this.localTransformationBuffer;
 	}
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.localTransformation ) {
-			owner.localTransformation.getValue().getAsColumnMajorArray16( m_localTransformation );
+			owner.localTransformation.getValue().getAsColumnMajorArray16( this.localTransformation );
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private final double[] localTransformation = new double[ 16 ];
+	private final java.nio.DoubleBuffer localTransformationBuffer = java.nio.DoubleBuffer.wrap( this.localTransformation );
 }
