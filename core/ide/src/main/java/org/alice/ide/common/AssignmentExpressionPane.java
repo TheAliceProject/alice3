@@ -91,7 +91,7 @@ public class AssignmentExpressionPane extends org.lgna.croquet.views.LineAxisPan
 			} else if( expression instanceof org.lgna.project.ast.LocalAccess ) {
 				org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)expression;
 				org.lgna.project.ast.UserLocal local = localAccess.local.getValue();
-				parent.addComponent( new LocalPane( local, factory.isLocalDraggable( local ) ) );
+				parent.addComponent( new LocalPane( local, factory.isLocalDraggableAndMutable( local ) ) );
 			} else if( expression instanceof org.lgna.project.ast.ParameterAccess ) {
 				org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)expression;
 				org.lgna.project.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
