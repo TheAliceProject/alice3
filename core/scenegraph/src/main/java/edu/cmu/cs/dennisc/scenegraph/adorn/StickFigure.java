@@ -47,6 +47,6 @@ package edu.cmu.cs.dennisc.scenegraph.adorn;
  */
 public class StickFigure extends Adornment {
 	static {
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.register( StickFigure.class, edu.cmu.cs.dennisc.render.gl.imp.adapters.adorn.StickFigureAdapter.class );
+		edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.register( StickFigure.class, edu.cmu.cs.dennisc.render.gl.imp.adapters.adorn.GlrStickFigure.class );
 	}
 }

@@ -48,7 +48,7 @@ package org.lgna.story.implementation.visualization;
  */
 public class JointedModelVisualization extends edu.cmu.cs.dennisc.scenegraph.Leaf {
 	static {
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.register( JointedModelVisualization.class, JointedModelVisualizationAdapter.class );
+		edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.register( JointedModelVisualization.class, GlrJointedModelVisualization.class );
 	}
 
 	public JointedModelVisualization( org.lgna.story.implementation.JointedModelImp implementation ) {

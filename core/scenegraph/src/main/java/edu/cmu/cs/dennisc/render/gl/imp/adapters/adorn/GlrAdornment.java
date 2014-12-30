@@ -42,58 +42,47 @@
  */
 package edu.cmu.cs.dennisc.render.gl.imp.adapters.adorn;
 
-import static javax.media.opengl.GL.GL_LINES;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
-
 /**
  * @author Dennis Cosgrove
  */
-public class PivotFigureAdapter extends AdornmentAdapter {
-	private static final float FULL = 1.0f;
-	private static final float ZERO = 0.0f;
+public abstract class GlrAdornment extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<edu.cmu.cs.dennisc.scenegraph.adorn.Adornment> {
+	protected edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite> m_adornmentRootAdapter = null;
 
-	private static void glPivotFigure( javax.media.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite> parent ) {
-		gl.glPushMatrix();
-		try {
-			gl.glMultMatrixd( ltParent );
-			Iterable<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component>> componentAdapters = parent.accessComponentAdapters();
-			synchronized( componentAdapters ) {
-				for( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter : componentAdapters ) {
-					if( componentAdapter instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable ) {
-						edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> child = (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<? extends edu.cmu.cs.dennisc.scenegraph.Transformable>)componentAdapter;
-						java.nio.DoubleBuffer ltChild = child.accessLocalTransformationAsBuffer();
-						gl.glBegin( GL_LINES );
-						try {
+	protected abstract void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite> adornmentRootAdapter );
 
-							//todo: account for global brightness
+	@Override
+	public void setup( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc ) {
+		//pass
+	}
 
-							gl.glColor3f( FULL, ZERO, ZERO );
-							gl.glVertex3d( 0, 0, 0 );
-							gl.glVertex3d( 1, 0, 0 );
-							gl.glColor3f( ZERO, FULL, ZERO );
-							gl.glVertex3d( 0, 0, 0 );
-							gl.glVertex3d( 0, 1, 0 );
-							gl.glColor3f( ZERO, ZERO, FULL );
-							gl.glVertex3d( 0, 0, 0 );
-							gl.glVertex3d( 0, 0, 1 );
-							gl.glColor3f( FULL, FULL, FULL );
-							gl.glVertex3d( 0, 0, 0 );
-							gl.glVertex3d( 0, 0, -2 );
-						} finally {
-							gl.glEnd();
-						}
-						glPivotFigure( gl, ltChild, child );
-					}
-				}
-			}
-		} finally {
-			gl.glPopMatrix();
+	@Override
+	public void renderOpaque( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc ) {
+		if( m_adornmentRootAdapter != null ) {
+			rc.gl.glPushMatrix();
+			rc.gl.glMultMatrixd( accessInverseAbsoluteTransformationAsBuffer() );
+			actuallyRender( rc, m_adornmentRootAdapter );
+			rc.gl.glPopMatrix();
 		}
 	}
 
 	@Override
-	protected void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite adornmentRootAdapter ) {
-		rc.gl.glDisable( GL_LIGHTING );
-		glPivotFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), adornmentRootAdapter );
+	public void renderGhost( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGhost root ) {
+		//todo?
+		//pass
+	}
+
+	@Override
+	public void pick( edu.cmu.cs.dennisc.render.gl.imp.PickContext pc, edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters ) {
+		//todo?
+		//pass
+	}
+
+	@Override
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+		if( property == owner.adorningRoot ) {
+			m_adornmentRootAdapter = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( owner.adorningRoot.getValue() );
+		} else {
+			super.propertyChanged( property );
+		}
 	}
 }
