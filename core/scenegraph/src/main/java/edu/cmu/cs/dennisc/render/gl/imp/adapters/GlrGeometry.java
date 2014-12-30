@@ -59,7 +59,7 @@ public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geomet
 	}
 
 	public void removeRenderContext( RenderContext rc ) {
-		m_renderContexts.add( rc );
+		m_renderContexts.remove( rc );
 	}
 
 	@Override
