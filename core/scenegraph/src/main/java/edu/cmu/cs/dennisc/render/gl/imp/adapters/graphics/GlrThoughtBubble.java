@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.scenegraph.graphics.OnscreenBubble;
 /**
  * @author Dennis Cosgrove
  */
-public class ThoughtBubbleAdapter extends BubbleAdapter<edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble> {
+public class GlrThoughtBubble extends GlrBubble<edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble> {
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 2 );
 
 	private edu.cmu.cs.dennisc.java.awt.geom.Ellipse[] m_tailEllipses = null;

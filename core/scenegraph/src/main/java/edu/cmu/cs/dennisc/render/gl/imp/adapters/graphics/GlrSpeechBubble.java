@@ -44,7 +44,7 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics;
 
 import edu.cmu.cs.dennisc.scenegraph.graphics.OnscreenBubble;
 
-public class SpeechBubbleAdapter extends BubbleAdapter<edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble> {
+public class GlrSpeechBubble extends GlrBubble<edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble> {
 	//	protected abstract java.awt.Stroke getStroke();
 
 	private static double sine( double t, double theta0, double theta1 ) {

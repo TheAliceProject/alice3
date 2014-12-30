@@ -65,7 +65,7 @@ public abstract class AdapterFactory {
 	private static final String SCENEGRAPH_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.Element.class.getPackage().getName();
 	private static final String RENDERER_PACKAGE_NAME = GlrElement.class.getPackage().getName();
 	private static final String SCENEGRAPH_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.graphics.Text.class.getPackage().getName();
-	private static final String RENDERER_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics.TextAdapter.class.getPackage().getName();
+	private static final String RENDERER_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics.GlrText.class.getPackage().getName();
 
 	static {
 		register( edu.cmu.cs.dennisc.texture.BufferedImageTexture.class, GlrBufferedImageTexture.class );
