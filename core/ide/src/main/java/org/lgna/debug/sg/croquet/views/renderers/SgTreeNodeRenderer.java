@@ -46,9 +46,23 @@ package org.lgna.debug.sg.croquet.views.renderers;
  * @author Dennis Cosgrove
  */
 public class SgTreeNodeRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.lgna.debug.sg.core.SgTreeNode> {
+	public void setSgComponentsToMute( java.util.Set<edu.cmu.cs.dennisc.scenegraph.Component> sgComponentsToMute ) {
+		this.sgComponentsToMute = sgComponentsToMute;
+	}
+
 	@Override
 	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.lgna.debug.sg.core.SgTreeNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		rv.setText( java.util.Objects.toString( value.getSgComponent() ) );
+		edu.cmu.cs.dennisc.scenegraph.Component sgComponent = value.getSgComponent();
+		rv.setText( sgComponent.toString() );
+		if( sgComponentsToMute != null ) {
+			if( this.sgComponentsToMute.contains( sgComponent ) ) {
+				rv.setForeground( java.awt.Color.LIGHT_GRAY );
+			} else {
+				rv.setForeground( java.awt.Color.BLACK );
+			}
+		}
 		return rv;
 	}
+
+	private java.util.Set<edu.cmu.cs.dennisc.scenegraph.Component> sgComponentsToMute;
 }

@@ -92,7 +92,7 @@ public class SgTreeNode implements javax.swing.tree.TreeNode {
 
 	@Override
 	public boolean isLeaf() {
-		return this.children == null;
+		return ( this.sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) == false;
 	}
 
 	@Override

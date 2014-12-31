@@ -48,17 +48,40 @@ import org.lgna.debug.sg.core.SgTreeNode;
  * @author Dennis Cosgrove
  */
 public class DebugSgFrame extends org.lgna.croquet.FrameComposite<org.lgna.debug.sg.croquet.views.DebugSgFrameView> {
+	private static org.lgna.debug.sg.core.SgTreeNode capture() {
+		org.lgna.project.virtualmachine.UserInstance sceneUserInstance = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getActiveSceneInstance();
+		org.lgna.story.SScene scene = sceneUserInstance.getJavaInstance( org.lgna.story.SScene.class );
+		org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( scene );
+		final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
+		return new SgTreeNode( sgScene, null );
+	}
+
 	public DebugSgFrame() {
 		super( java.util.UUID.fromString( "8d282704-d6b6-4455-bd1d-80b6a529a19d" ) );
+		this.markOperation.setName( "mark" );
 		this.refreshOperation.setName( "refresh" );
+	}
+
+	public org.lgna.croquet.Operation getMarkOperation() {
+		return this.markOperation;
 	}
 
 	public org.lgna.croquet.Operation getRefreshOperation() {
 		return this.refreshOperation;
 	}
 
-	public javax.swing.tree.TreeModel getTreeModel() {
-		return this.treeModel.get();
+	public javax.swing.tree.TreeModel getMarkTreeModel() {
+		return this.markTreeModel;
+	}
+
+	public javax.swing.tree.TreeModel getCurrentTreeModel() {
+		return this.currentTreeModel;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.markOperation.fire();
 	}
 
 	@Override
@@ -66,22 +89,25 @@ public class DebugSgFrame extends org.lgna.croquet.FrameComposite<org.lgna.debug
 		return new org.lgna.debug.sg.croquet.views.DebugSgFrameView( this );
 	}
 
+	private final org.lgna.croquet.Operation markOperation = this.createActionOperation( "markOperation", new Action() {
+		@Override
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			SgTreeNode root = capture();
+			markTreeModel.setRoot( root );
+			currentTreeModel.setRoot( root );
+			getView().expandAllRowsAndUpdateCurrentSgTreeNodeRenderer();
+			return null;
+		}
+	} );
 	private final org.lgna.croquet.Operation refreshOperation = this.createActionOperation( "refreshOperation", new Action() {
 		@Override
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			getView().expandAllRows();
+			currentTreeModel.setRoot( capture() );
+			getView().expandAllRowsAndUpdateCurrentSgTreeNodeRenderer();
 			return null;
 		}
 	} );
 
-	private final edu.cmu.cs.dennisc.pattern.Lazy<javax.swing.tree.TreeModel> treeModel = new edu.cmu.cs.dennisc.pattern.Lazy<javax.swing.tree.TreeModel>() {
-		@Override
-		protected javax.swing.tree.TreeModel create() {
-			org.lgna.project.virtualmachine.UserInstance sceneUserInstance = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getActiveSceneInstance();
-			org.lgna.story.SScene scene = sceneUserInstance.getJavaInstance( org.lgna.story.SScene.class );
-			org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( scene );
-			final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
-			return new javax.swing.tree.DefaultTreeModel( new SgTreeNode( sgScene, null ) );
-		}
-	};
+	private final javax.swing.tree.DefaultTreeModel markTreeModel = new javax.swing.tree.DefaultTreeModel( null );
+	private final javax.swing.tree.DefaultTreeModel currentTreeModel = new javax.swing.tree.DefaultTreeModel( null );
 }
