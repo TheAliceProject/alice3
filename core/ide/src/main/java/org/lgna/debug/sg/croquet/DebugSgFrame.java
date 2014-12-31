@@ -51,11 +51,6 @@ public class DebugSgFrame extends org.lgna.croquet.FrameComposite<org.lgna.debug
 		this.refreshOperation.setName( "refresh" );
 	}
 
-	@Override
-	protected String findDefaultLocalizedText() {
-		return "Debug SceneGraph";
-	}
-
 	public org.lgna.croquet.Operation getRefreshOperation() {
 		return this.refreshOperation;
 	}
