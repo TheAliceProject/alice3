@@ -40,26 +40,67 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.debug.sg.croquet.views;
+package org.lgna.debug.sg.core;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DebugSgFrameView extends org.lgna.croquet.views.BorderPanel {
-	public DebugSgFrameView( org.lgna.debug.sg.croquet.DebugSgFrame composite ) {
-		super( composite );
-		this.addPageStartComponent( composite.getRefreshOperation().createButton() );
-
-		this.jTree = new javax.swing.JTree( composite.getTreeModel() );
-		this.jTree.setCellRenderer( new org.lgna.debug.sg.croquet.views.renderers.SgTreeNodeRenderer() );
-		this.getAwtComponent().add( new edu.cmu.cs.dennisc.javax.swing.components.JScrollPane( this.jTree ), java.awt.BorderLayout.CENTER );
-	}
-
-	public void expandAllRows() {
-		for( int i = 0; i < this.jTree.getRowCount(); i++ ) {
-			this.jTree.expandRow( i );
+public class SgTreeNode implements javax.swing.tree.TreeNode {
+	public SgTreeNode( edu.cmu.cs.dennisc.scenegraph.Component sgComponent, SgTreeNode parent ) {
+		this.sgComponent = sgComponent;
+		this.parent = parent;
+		if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
+			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgComponent;
+			java.util.List<SgTreeNode> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+			for( edu.cmu.cs.dennisc.scenegraph.Component sgChild : sgComposite.getComponents() ) {
+				list.add( new SgTreeNode( sgChild, this ) );
+			}
+			this.children = java.util.Collections.unmodifiableList( list );
+		} else {
+			this.children = java.util.Collections.emptyList();
 		}
 	}
 
-	private final javax.swing.JTree jTree;
+	public edu.cmu.cs.dennisc.scenegraph.Component getSgComponent() {
+		return this.sgComponent;
+	}
+
+	@Override
+	public javax.swing.tree.TreeNode getChildAt( int childIndex ) {
+		return this.children.get( childIndex );
+	}
+
+	@Override
+	public int getChildCount() {
+		return this.children.size();
+	}
+
+	@Override
+	public javax.swing.tree.TreeNode getParent() {
+		return this.parent;
+	}
+
+	@Override
+	public int getIndex( javax.swing.tree.TreeNode node ) {
+		return this.children.indexOf( node );
+	}
+
+	@Override
+	public boolean getAllowsChildren() {
+		return this.isLeaf() == false;
+	}
+
+	@Override
+	public boolean isLeaf() {
+		return this.children == null;
+	}
+
+	@Override
+	public java.util.Enumeration children() {
+		return java.util.Collections.enumeration( this.children );
+	}
+
+	private final edu.cmu.cs.dennisc.scenegraph.Component sgComponent;
+	private final SgTreeNode parent;
+	private final java.util.List<SgTreeNode> children;
 }

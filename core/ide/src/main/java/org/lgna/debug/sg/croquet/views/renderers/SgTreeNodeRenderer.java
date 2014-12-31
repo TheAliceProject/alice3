@@ -40,26 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.debug.sg.croquet.views;
+package org.lgna.debug.sg.croquet.views.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DebugSgFrameView extends org.lgna.croquet.views.BorderPanel {
-	public DebugSgFrameView( org.lgna.debug.sg.croquet.DebugSgFrame composite ) {
-		super( composite );
-		this.addPageStartComponent( composite.getRefreshOperation().createButton() );
-
-		this.jTree = new javax.swing.JTree( composite.getTreeModel() );
-		this.jTree.setCellRenderer( new org.lgna.debug.sg.croquet.views.renderers.SgTreeNodeRenderer() );
-		this.getAwtComponent().add( new edu.cmu.cs.dennisc.javax.swing.components.JScrollPane( this.jTree ), java.awt.BorderLayout.CENTER );
+public class SgTreeNodeRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.lgna.debug.sg.core.SgTreeNode> {
+	@Override
+	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.lgna.debug.sg.core.SgTreeNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		rv.setText( java.util.Objects.toString( value.getSgComponent() ) );
+		return rv;
 	}
-
-	public void expandAllRows() {
-		for( int i = 0; i < this.jTree.getRowCount(); i++ ) {
-			this.jTree.expandRow( i );
-		}
-	}
-
-	private final javax.swing.JTree jTree;
 }

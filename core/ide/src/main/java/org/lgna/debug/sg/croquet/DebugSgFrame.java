@@ -42,6 +42,8 @@
  */
 package org.lgna.debug.sg.croquet;
 
+import org.lgna.debug.sg.core.SgTreeNode;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -79,37 +81,7 @@ public class DebugSgFrame extends org.lgna.croquet.FrameComposite<org.lgna.debug
 			org.lgna.story.SScene scene = sceneUserInstance.getJavaInstance( org.lgna.story.SScene.class );
 			org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( scene );
 			final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
-			return new edu.cmu.cs.dennisc.javax.swing.models.AbstractTreeModel<edu.cmu.cs.dennisc.scenegraph.Component>() {
-				@Override
-				public edu.cmu.cs.dennisc.scenegraph.Component getRoot() {
-					return sgScene;
-				}
-
-				@Override
-				public edu.cmu.cs.dennisc.scenegraph.Component getChild( Object parent, int index ) {
-					return ( (edu.cmu.cs.dennisc.scenegraph.Composite)parent ).getComponentAt( index );
-				}
-
-				@Override
-				public int getChildCount( Object parent ) {
-					return ( (edu.cmu.cs.dennisc.scenegraph.Composite)parent ).getComponentCount();
-				}
-
-				@Override
-				public int getIndexOfChild( Object parent, Object child ) {
-					return ( (edu.cmu.cs.dennisc.scenegraph.Composite)parent ).getIndexOfComponent( (edu.cmu.cs.dennisc.scenegraph.Component)child );
-				}
-
-				@Override
-				public boolean isLeaf( Object parent ) {
-					return ( parent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) == false;
-				}
-
-				@Override
-				public javax.swing.tree.TreePath getTreePath( edu.cmu.cs.dennisc.scenegraph.Component e ) {
-					return null;
-				}
-			};
+			return new javax.swing.tree.DefaultTreeModel( new SgTreeNode( sgScene, null ) );
 		}
 	};
 }
