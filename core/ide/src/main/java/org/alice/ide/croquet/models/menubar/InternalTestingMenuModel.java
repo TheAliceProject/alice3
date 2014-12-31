@@ -56,6 +56,16 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 
 	private InternalTestingMenuModel() {
 		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
+				org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createInstance(
+						org.lgna.croquet.Application.INFORMATION_GROUP,
+						org.lgna.debug.sg.croquet.DebugSgFrame.class,
+						new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.debug.sg.croquet.DebugSgFrame>() {
+							@Override
+							protected org.lgna.debug.sg.croquet.DebugSgFrame create() {
+								return new org.lgna.debug.sg.croquet.DebugSgFrame();
+							}
+						} ).getMenuItemPrepModel(),
+				SEPARATOR,
 				org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel(),
 				SEPARATOR,
 				org.alice.ide.javacode.croquet.JavaCodeFrameComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),
