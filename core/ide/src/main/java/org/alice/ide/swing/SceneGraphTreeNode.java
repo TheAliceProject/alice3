@@ -1,6 +1,5 @@
-package edu.cmu.cs.dennisc.toolkit.scenegraph;
+package org.alice.ide.swing;
 
-import org.alice.ide.swing.BasicTreeNode;
 import org.alice.interact.handle.ManipulationHandle3D;
 
 import edu.cmu.cs.dennisc.color.Color4f;
@@ -13,7 +12,7 @@ import edu.cmu.cs.dennisc.scenegraph.Geometry;
 import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
-public class SceneGraphTreeNode extends BasicTreeNode
+/*package-private*/class SceneGraphTreeNode extends BasicTreeNode
 {
 	//	protected AffineMatrix4x4 localTransform;
 	public AffineMatrix4x4 absoluteTransform;
