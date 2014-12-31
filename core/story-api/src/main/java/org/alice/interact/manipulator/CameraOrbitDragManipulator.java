@@ -140,18 +140,20 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 		double leftRightRotationAngle = xChange * TURN_RATE;
 		double upDownRotationAngle = yChange * TURN_RATE;
 
+		this.manipulatedTransformable.setLocalTransformation( this.originalLocalTransformation );
+
 		StandIn standIn = new StandIn();
 		standIn.setName( "CameraOrbitStandIn" );
-
-		this.manipulatedTransformable.setLocalTransformation( this.originalLocalTransformation );
 		standIn.setVehicle( this.getCamera().getRoot() );
-		standIn.setTranslationOnly( this.pivotPoint, AsSeenBy.SCENE );
-		standIn.setAxesOnlyToPointAt( this.getCamera() );
-		standIn.setAxesOnlyToStandUp();
-		this.manipulatedTransformable.applyRotationAboutXAxis( new AngleInDegrees( upDownRotationAngle ), standIn );
-		this.manipulatedTransformable.applyRotationAboutYAxis( new AngleInDegrees( leftRightRotationAngle ), standIn );
-
-		standIn.setVehicle( null );
+		try {
+			standIn.setTranslationOnly( this.pivotPoint, AsSeenBy.SCENE );
+			standIn.setAxesOnlyToPointAt( this.getCamera() );
+			standIn.setAxesOnlyToStandUp();
+			this.manipulatedTransformable.applyRotationAboutXAxis( new AngleInDegrees( upDownRotationAngle ), standIn );
+			this.manipulatedTransformable.applyRotationAboutYAxis( new AngleInDegrees( leftRightRotationAngle ), standIn );
+		} finally {
+			standIn.setVehicle( null );
+		}
 	}
 
 	@Override

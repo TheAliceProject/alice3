@@ -187,12 +187,14 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 			StandIn standIn = new StandIn();
 			standIn.setName( "CameraOrbitStandIn" );
 			standIn.setVehicle( this.getCamera().getRoot() );
-			standIn.setTransformation( this.manipulatedTransformable.getAbsoluteTransformation(), AsSeenBy.SCENE );
-			standIn.setAxesOnlyToStandUp();
-			this.manipulatedTransformable.applyRotationAboutXAxis( yAngle, standIn );
-			this.manipulatedTransformable.applyRotationAboutYAxis( xAngle, standIn );
-
-			standIn.setVehicle( null );
+			try {
+				standIn.setTransformation( this.manipulatedTransformable.getAbsoluteTransformation(), AsSeenBy.SCENE );
+				standIn.setAxesOnlyToStandUp();
+				this.manipulatedTransformable.applyRotationAboutXAxis( yAngle, standIn );
+				this.manipulatedTransformable.applyRotationAboutYAxis( xAngle, standIn );
+			} finally {
+				standIn.setVehicle( null );
+			}
 
 			//Make sure the camera's x-axis is still horizontal
 			AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation();
