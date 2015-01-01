@@ -45,16 +45,16 @@ package org.lgna.debug.sg.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class DebugSgFrameView extends org.lgna.croquet.views.BorderPanel {
+public class DebugFrameView<T> extends org.lgna.croquet.views.BorderPanel {
 	private static org.lgna.croquet.views.Panel createPanel( org.lgna.croquet.Operation operation, javax.swing.JTree jTree ) {
 		org.lgna.croquet.views.BorderPanel rv = new org.lgna.croquet.views.BorderPanel();
 		rv.addPageStartComponent( operation.createButton() );
-		jTree.setCellRenderer( new org.lgna.debug.sg.croquet.views.renderers.SgTreeNodeRenderer() );
+		jTree.setCellRenderer( new org.lgna.debug.sg.croquet.views.renderers.ZTreeNodeRenderer() );
 		rv.getAwtComponent().add( new edu.cmu.cs.dennisc.javax.swing.components.JScrollPane( jTree ), java.awt.BorderLayout.CENTER );
 		return rv;
 	}
 
-	public DebugSgFrameView( org.lgna.debug.sg.croquet.DebugSgFrame composite ) {
+	public DebugFrameView( org.lgna.debug.sg.croquet.DebugFrame<T> composite ) {
 		super( composite );
 
 		this.jMarkTree = new javax.swing.JTree( composite.getMarkTreeModel() );
@@ -68,24 +68,24 @@ public class DebugSgFrameView extends org.lgna.croquet.views.BorderPanel {
 		this.getAwtComponent().add( jSplitPane, java.awt.BorderLayout.CENTER );
 	}
 
-	private static void updateSgComponents( java.util.Set<edu.cmu.cs.dennisc.scenegraph.Component> set, javax.swing.tree.TreeNode treeNode ) {
-		org.lgna.debug.sg.core.ZTreeNode<edu.cmu.cs.dennisc.scenegraph.Component> sgTreeNode = (org.lgna.debug.sg.core.ZTreeNode<edu.cmu.cs.dennisc.scenegraph.Component>)treeNode;
+	private void updateValuesToMute( java.util.Set<T> set, javax.swing.tree.TreeNode treeNode ) {
+		org.lgna.debug.sg.core.ZTreeNode<T> sgTreeNode = (org.lgna.debug.sg.core.ZTreeNode<T>)treeNode;
 		set.add( sgTreeNode.getValue() );
 		if( treeNode.isLeaf() ) {
 			//pass
 		} else {
 			java.util.Enumeration<javax.swing.tree.TreeNode> e = treeNode.children();
 			while( e.hasMoreElements() ) {
-				updateSgComponents( set, e.nextElement() );
+				updateValuesToMute( set, e.nextElement() );
 			}
 		}
 	}
 
-	public void expandAllRowsAndUpdateCurrentSgTreeNodeRenderer() {
-		org.lgna.debug.sg.croquet.views.renderers.SgTreeNodeRenderer currentSgTreeNodeRenderer = (org.lgna.debug.sg.croquet.views.renderers.SgTreeNodeRenderer)this.jCurrentTree.getCellRenderer();
-		java.util.Set<edu.cmu.cs.dennisc.scenegraph.Component> set = new java.util.HashSet<edu.cmu.cs.dennisc.scenegraph.Component>();
-		updateSgComponents( set, (javax.swing.tree.TreeNode)this.jMarkTree.getModel().getRoot() );
-		currentSgTreeNodeRenderer.setSgComponentsToMute( java.util.Collections.unmodifiableSet( set ) );
+	public void expandAllRowsAndUpdateCurrentTreeRenderer() {
+		org.lgna.debug.sg.croquet.views.renderers.ZTreeNodeRenderer<T> currentSgTreeNodeRenderer = (org.lgna.debug.sg.croquet.views.renderers.ZTreeNodeRenderer<T>)this.jCurrentTree.getCellRenderer();
+		java.util.Set<T> set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+		updateValuesToMute( set, (javax.swing.tree.TreeNode)this.jMarkTree.getModel().getRoot() );
+		currentSgTreeNodeRenderer.setValuesToMute( java.util.Collections.unmodifiableSet( set ) );
 
 		for( javax.swing.JTree jTree : new javax.swing.JTree[] { this.jMarkTree, this.jCurrentTree } ) {
 			for( int i = 0; i < jTree.getRowCount(); i++ ) {

@@ -62,11 +62,6 @@ public class DebugSgFrame extends DebugFrame<edu.cmu.cs.dennisc.scenegraph.Compo
 	}
 
 	@Override
-	protected org.lgna.debug.sg.croquet.views.DebugSgFrameView createView() {
-		return new org.lgna.debug.sg.croquet.views.DebugSgFrameView( this );
-	}
-
-	@Override
 	protected org.lgna.debug.sg.core.ZTreeNode<edu.cmu.cs.dennisc.scenegraph.Component> capture() {
 		org.lgna.project.virtualmachine.UserInstance sceneUserInstance = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getActiveSceneInstance();
 		org.lgna.story.SScene scene = sceneUserInstance.getJavaInstance( org.lgna.story.SScene.class );

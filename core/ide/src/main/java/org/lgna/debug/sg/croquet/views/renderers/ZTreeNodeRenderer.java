@@ -45,17 +45,13 @@ package org.lgna.debug.sg.croquet.views.renderers;
 /**
  * @author Dennis Cosgrove
  */
-public class SgTreeNodeRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.lgna.debug.sg.core.ZTreeNode<edu.cmu.cs.dennisc.scenegraph.Component>> {
-	public void setSgComponentsToMute( java.util.Set<edu.cmu.cs.dennisc.scenegraph.Component> sgComponentsToMute ) {
-		this.sgComponentsToMute = sgComponentsToMute;
-	}
-
+public class ZTreeNodeRenderer<T> extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.lgna.debug.sg.core.ZTreeNode<T>> {
 	@Override
-	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.lgna.debug.sg.core.ZTreeNode<edu.cmu.cs.dennisc.scenegraph.Component> value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		edu.cmu.cs.dennisc.scenegraph.Component sgComponent = value.getValue();
-		rv.setText( sgComponent.toString() );
-		if( sgComponentsToMute != null ) {
-			if( this.sgComponentsToMute.contains( sgComponent ) ) {
+	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.lgna.debug.sg.core.ZTreeNode<T> treeNode, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		T value = treeNode.getValue();
+		rv.setText( value.toString() );
+		if( this.valuesToMute != null ) {
+			if( this.valuesToMute.contains( value ) ) {
 				rv.setForeground( java.awt.Color.LIGHT_GRAY );
 			} else {
 				rv.setForeground( java.awt.Color.BLACK );
@@ -64,5 +60,9 @@ public class SgTreeNodeRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers
 		return rv;
 	}
 
-	private java.util.Set<edu.cmu.cs.dennisc.scenegraph.Component> sgComponentsToMute;
+	public void setValuesToMute( java.util.Set<T> valuesToMute ) {
+		this.valuesToMute = valuesToMute;
+	}
+
+	private java.util.Set<T> valuesToMute;
 }

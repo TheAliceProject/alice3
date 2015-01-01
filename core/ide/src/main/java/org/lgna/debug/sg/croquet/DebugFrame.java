@@ -45,7 +45,7 @@ package org.lgna.debug.sg.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.lgna.debug.sg.croquet.views.DebugSgFrameView> {
+public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.lgna.debug.sg.croquet.views.DebugFrameView<T>> {
 	public DebugFrame( java.util.UUID migrationId ) {
 		super( migrationId );
 		this.markOperation.setName( "mark" );
@@ -74,6 +74,11 @@ public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.
 		this.markOperation.fire();
 	}
 
+	@Override
+	protected org.lgna.debug.sg.croquet.views.DebugFrameView<T> createView() {
+		return new org.lgna.debug.sg.croquet.views.DebugFrameView<T>( this );
+	}
+
 	protected abstract org.lgna.debug.sg.core.ZTreeNode<T> capture();
 
 	private final org.lgna.croquet.Operation markOperation = this.createActionOperation( "markOperation", new Action() {
@@ -82,7 +87,7 @@ public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.
 			org.lgna.debug.sg.core.ZTreeNode<T> root = capture();
 			markTreeModel.setRoot( root );
 			currentTreeModel.setRoot( root );
-			getView().expandAllRowsAndUpdateCurrentSgTreeNodeRenderer();
+			getView().expandAllRowsAndUpdateCurrentTreeRenderer();
 			return null;
 		}
 	} );
@@ -91,7 +96,7 @@ public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.debug.sg.core.ZTreeNode<T> root = capture();
 			currentTreeModel.setRoot( root );
-			getView().expandAllRowsAndUpdateCurrentSgTreeNodeRenderer();
+			getView().expandAllRowsAndUpdateCurrentTreeRenderer();
 			return null;
 		}
 	} );
