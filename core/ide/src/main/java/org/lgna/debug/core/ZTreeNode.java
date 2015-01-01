@@ -40,33 +40,104 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.debug.sg.croquet;
+package org.lgna.debug.core;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SgDebugFrame extends DebugFrame<edu.cmu.cs.dennisc.scenegraph.Component> {
-	public static org.lgna.debug.sg.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component> createBuilder( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
-		org.lgna.debug.sg.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component> rv = new org.lgna.debug.sg.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component>( sgComponent, sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Leaf );
-		if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
-			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgComponent;
-			for( edu.cmu.cs.dennisc.scenegraph.Component sgChild : sgComposite.getComponents() ) {
-				rv.addChildBuilder( createBuilder( sgChild ) );
+public final class ZTreeNode<T> implements javax.swing.tree.TreeNode {
+	private static enum IsLeaf {
+		TRUE,
+		FALSE
+	};
+
+	public static class Builder<T> {
+		public Builder( T value, boolean isLeaf ) {
+			this.value = value;
+			if( isLeaf ) {
+				this.childBuilders = null;
+			} else {
+				this.childBuilders = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			}
 		}
-		return rv;
+
+		public void addChildBuilder( Builder<T> childBuilder ) {
+			assert this.childBuilders != null : this;
+			this.childBuilders.add( childBuilder );
+		}
+
+		public ZTreeNode<T> build() {
+			java.util.List<ZTreeNode<T>> children;
+			IsLeaf isLeaf;
+			if( this.childBuilders != null ) {
+				java.util.List<ZTreeNode<T>> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( this.childBuilders.size() );
+				for( Builder<T> childBuilder : this.childBuilders ) {
+					list.add( childBuilder.build() );
+				}
+				children = java.util.Collections.unmodifiableList( list );
+				isLeaf = IsLeaf.FALSE;
+			} else {
+				children = java.util.Collections.emptyList();
+				isLeaf = IsLeaf.TRUE;
+			}
+			ZTreeNode<T> rv = new ZTreeNode<T>( value, children, isLeaf );
+			for( ZTreeNode<T> child : children ) {
+				child.parent = rv;
+			}
+			return rv;
+		}
+
+		private final T value;
+		private final java.util.List<Builder<T>> childBuilders;
 	}
 
-	public SgDebugFrame() {
-		super( java.util.UUID.fromString( "8d282704-d6b6-4455-bd1d-80b6a529a19d" ) );
+	private ZTreeNode( T value, java.util.List<ZTreeNode<T>> children, IsLeaf isLeaf ) {
+		this.value = value;
+		this.children = children;
+		this.isLeaf = isLeaf;
+	}
+
+	public T getValue() {
+		return this.value;
 	}
 
 	@Override
-	protected org.lgna.debug.sg.core.ZTreeNode<edu.cmu.cs.dennisc.scenegraph.Component> capture() {
-		org.lgna.project.virtualmachine.UserInstance sceneUserInstance = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getActiveSceneInstance();
-		org.lgna.story.SScene scene = sceneUserInstance.getJavaInstance( org.lgna.story.SScene.class );
-		org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( scene );
-		edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
-		return createBuilder( sgScene ).build();
+	public javax.swing.tree.TreeNode getChildAt( int childIndex ) {
+		return this.children.get( childIndex );
 	}
+
+	@Override
+	public int getChildCount() {
+		return this.children.size();
+	}
+
+	@Override
+	public javax.swing.tree.TreeNode getParent() {
+		return this.parent;
+	}
+
+	@Override
+	public int getIndex( javax.swing.tree.TreeNode node ) {
+		return this.children.indexOf( node );
+	}
+
+	@Override
+	public boolean getAllowsChildren() {
+		return this.isLeaf() == false;
+	}
+
+	@Override
+	public boolean isLeaf() {
+		return this.isLeaf == IsLeaf.TRUE;
+	}
+
+	@Override
+	public java.util.Enumeration children() {
+		return java.util.Collections.enumeration( this.children );
+	}
+
+	private final T value;
+	private final java.util.List<ZTreeNode<T>> children;
+	private final IsLeaf isLeaf;
+	private/*pseudo-final*/ZTreeNode<T> parent;
 }

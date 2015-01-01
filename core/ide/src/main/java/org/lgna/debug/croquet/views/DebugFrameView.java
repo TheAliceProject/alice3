@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.debug.sg.croquet.views;
+package org.lgna.debug.croquet.views;
 
 /**
  * @author Dennis Cosgrove
@@ -49,12 +49,12 @@ public class DebugFrameView<T> extends org.lgna.croquet.views.BorderPanel {
 	private static org.lgna.croquet.views.Panel createPanel( org.lgna.croquet.Operation operation, javax.swing.JTree jTree ) {
 		org.lgna.croquet.views.BorderPanel rv = new org.lgna.croquet.views.BorderPanel();
 		rv.addPageStartComponent( operation.createButton() );
-		jTree.setCellRenderer( new org.lgna.debug.sg.croquet.views.renderers.ZTreeNodeRenderer() );
+		jTree.setCellRenderer( new org.lgna.debug.croquet.views.renderers.ZTreeNodeRenderer() );
 		rv.getAwtComponent().add( new edu.cmu.cs.dennisc.javax.swing.components.JScrollPane( jTree ), java.awt.BorderLayout.CENTER );
 		return rv;
 	}
 
-	public DebugFrameView( org.lgna.debug.sg.croquet.DebugFrame<T> composite ) {
+	public DebugFrameView( org.lgna.debug.croquet.DebugFrame<T> composite ) {
 		super( composite );
 
 		this.jMarkTree = new javax.swing.JTree( composite.getMarkTreeModel() );
@@ -69,7 +69,7 @@ public class DebugFrameView<T> extends org.lgna.croquet.views.BorderPanel {
 	}
 
 	private void updateValuesToMute( java.util.Set<T> set, javax.swing.tree.TreeNode treeNode ) {
-		org.lgna.debug.sg.core.ZTreeNode<T> sgTreeNode = (org.lgna.debug.sg.core.ZTreeNode<T>)treeNode;
+		org.lgna.debug.core.ZTreeNode<T> sgTreeNode = (org.lgna.debug.core.ZTreeNode<T>)treeNode;
 		set.add( sgTreeNode.getValue() );
 		if( treeNode.isLeaf() ) {
 			//pass
@@ -82,7 +82,7 @@ public class DebugFrameView<T> extends org.lgna.croquet.views.BorderPanel {
 	}
 
 	public void expandAllRowsAndUpdateCurrentTreeRenderer() {
-		org.lgna.debug.sg.croquet.views.renderers.ZTreeNodeRenderer<T> currentSgTreeNodeRenderer = (org.lgna.debug.sg.croquet.views.renderers.ZTreeNodeRenderer<T>)this.jCurrentTree.getCellRenderer();
+		org.lgna.debug.croquet.views.renderers.ZTreeNodeRenderer<T> currentSgTreeNodeRenderer = (org.lgna.debug.croquet.views.renderers.ZTreeNodeRenderer<T>)this.jCurrentTree.getCellRenderer();
 		java.util.Set<T> set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 		updateValuesToMute( set, (javax.swing.tree.TreeNode)this.jMarkTree.getModel().getRoot() );
 		currentSgTreeNodeRenderer.setValuesToMute( java.util.Collections.unmodifiableSet( set ) );
