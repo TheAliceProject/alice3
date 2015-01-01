@@ -64,7 +64,11 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 						return new org.lgna.debug.sg.croquet.SgDebugFrame();
 					}
 				} );
+
+		rv.initializeIfNecessary();
 		rv.setTextForBothTrueAndFalse( "Debug SceneGraph" );
+		rv.getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F8, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK ) );
+
 		return rv;
 	}
 
