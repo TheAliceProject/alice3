@@ -45,7 +45,7 @@ package org.lgna.debug.sg.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class DebugSgFrame extends DebugFrame<edu.cmu.cs.dennisc.scenegraph.Component> {
+public class SgDebugFrame extends DebugFrame<edu.cmu.cs.dennisc.scenegraph.Component> {
 	public static org.lgna.debug.sg.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component> createBuilder( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
 		org.lgna.debug.sg.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component> rv = new org.lgna.debug.sg.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component>( sgComponent, sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Leaf );
 		if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
@@ -57,7 +57,7 @@ public class DebugSgFrame extends DebugFrame<edu.cmu.cs.dennisc.scenegraph.Compo
 		return rv;
 	}
 
-	public DebugSgFrame() {
+	public SgDebugFrame() {
 		super( java.util.UUID.fromString( "8d282704-d6b6-4455-bd1d-80b6a529a19d" ) );
 	}
 

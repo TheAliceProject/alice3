@@ -57,11 +57,11 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 	private static org.lgna.croquet.BooleanState createDebugSgFrameLazyIsFrameShowingState() {
 		org.lgna.croquet.BooleanState rv = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createInstance(
 				org.lgna.croquet.Application.INFORMATION_GROUP,
-				org.lgna.debug.sg.croquet.DebugSgFrame.class,
-				new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.debug.sg.croquet.DebugSgFrame>() {
+				org.lgna.debug.sg.croquet.SgDebugFrame.class,
+				new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.debug.sg.croquet.SgDebugFrame>() {
 					@Override
-					protected org.lgna.debug.sg.croquet.DebugSgFrame create() {
-						return new org.lgna.debug.sg.croquet.DebugSgFrame();
+					protected org.lgna.debug.sg.croquet.SgDebugFrame create() {
+						return new org.lgna.debug.sg.croquet.SgDebugFrame();
 					}
 				} );
 		rv.setTextForBothTrueAndFalse( "Debug SceneGraph" );
