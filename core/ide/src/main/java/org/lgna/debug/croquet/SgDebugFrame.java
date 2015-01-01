@@ -62,11 +62,11 @@ public class SgDebugFrame extends DebugFrame<edu.cmu.cs.dennisc.scenegraph.Compo
 	}
 
 	@Override
-	protected org.lgna.debug.core.ZTreeNode<edu.cmu.cs.dennisc.scenegraph.Component> capture() {
+	protected org.lgna.debug.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component> capture() {
 		org.lgna.project.virtualmachine.UserInstance sceneUserInstance = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getActiveSceneInstance();
 		org.lgna.story.SScene scene = sceneUserInstance.getJavaInstance( org.lgna.story.SScene.class );
 		org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( scene );
 		edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
-		return createBuilder( sgScene ).build();
+		return createBuilder( sgScene );
 	}
 }

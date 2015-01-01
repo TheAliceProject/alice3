@@ -62,12 +62,12 @@ public class GlrDebugFrame extends DebugFrame<edu.cmu.cs.dennisc.render.gl.imp.a
 	}
 
 	@Override
-	protected org.lgna.debug.core.ZTreeNode<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> capture() {
+	protected org.lgna.debug.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> capture() {
 		org.lgna.project.virtualmachine.UserInstance sceneUserInstance = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getActiveSceneInstance();
 		org.lgna.story.SScene scene = sceneUserInstance.getJavaInstance( org.lgna.story.SScene.class );
 		org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( scene );
 		edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
 		edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene glrScene = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( sgScene );
-		return createBuilder( glrScene ).build();
+		return createBuilder( glrScene );
 	}
 }

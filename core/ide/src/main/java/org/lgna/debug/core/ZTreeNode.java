@@ -61,9 +61,27 @@ public final class ZTreeNode<T> implements javax.swing.tree.TreeNode {
 			}
 		}
 
+		public T getValue() {
+			return this.value;
+		}
+
 		public void addChildBuilder( Builder<T> childBuilder ) {
 			assert this.childBuilders != null : this;
 			this.childBuilders.add( childBuilder );
+		}
+
+		//for pruning
+		public java.util.Iterator<Builder<T>> getChildBuildersIterator() {
+			if( this.childBuilders != null ) {
+				return this.childBuilders.iterator();
+			} else {
+				return java.util.Collections.emptyIterator();
+			}
+		}
+
+		//for pruning
+		public boolean isEmpty() {
+			return this.childBuilders != null ? this.childBuilders.size() == 0 : true;
 		}
 
 		public ZTreeNode<T> build() {
