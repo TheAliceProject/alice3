@@ -45,14 +45,14 @@ package org.lgna.debug.sg.croquet.views.renderers;
 /**
  * @author Dennis Cosgrove
  */
-public class SgTreeNodeRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.lgna.debug.sg.core.SgTreeNode> {
+public class SgTreeNodeRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.lgna.debug.sg.core.ZTreeNode<edu.cmu.cs.dennisc.scenegraph.Component>> {
 	public void setSgComponentsToMute( java.util.Set<edu.cmu.cs.dennisc.scenegraph.Component> sgComponentsToMute ) {
 		this.sgComponentsToMute = sgComponentsToMute;
 	}
 
 	@Override
-	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.lgna.debug.sg.core.SgTreeNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		edu.cmu.cs.dennisc.scenegraph.Component sgComponent = value.getSgComponent();
+	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.lgna.debug.sg.core.ZTreeNode<edu.cmu.cs.dennisc.scenegraph.Component> value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		edu.cmu.cs.dennisc.scenegraph.Component sgComponent = value.getValue();
 		rv.setText( sgComponent.toString() );
 		if( sgComponentsToMute != null ) {
 			if( this.sgComponentsToMute.contains( sgComponent ) ) {

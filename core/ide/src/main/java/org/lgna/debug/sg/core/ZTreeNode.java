@@ -45,24 +45,60 @@ package org.lgna.debug.sg.core;
 /**
  * @author Dennis Cosgrove
  */
-public class SgTreeNode implements javax.swing.tree.TreeNode {
-	public SgTreeNode( edu.cmu.cs.dennisc.scenegraph.Component sgComponent, SgTreeNode parent ) {
-		this.sgComponent = sgComponent;
-		this.parent = parent;
-		if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
-			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgComponent;
-			java.util.List<SgTreeNode> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			for( edu.cmu.cs.dennisc.scenegraph.Component sgChild : sgComposite.getComponents() ) {
-				list.add( new SgTreeNode( sgChild, this ) );
+public final class ZTreeNode<T> implements javax.swing.tree.TreeNode {
+	private static enum IsLeaf {
+		TRUE,
+		FALSE
+	};
+
+	public static class Builder<T> {
+		public Builder( T value, boolean isLeaf ) {
+			this.value = value;
+			if( isLeaf ) {
+				this.childBuilders = null;
+			} else {
+				this.childBuilders = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			}
-			this.children = java.util.Collections.unmodifiableList( list );
-		} else {
-			this.children = java.util.Collections.emptyList();
 		}
+
+		public void addChildBuilder( Builder<T> childBuilder ) {
+			assert this.childBuilders != null : this;
+			this.childBuilders.add( childBuilder );
+		}
+
+		public ZTreeNode<T> build() {
+			java.util.List<ZTreeNode<T>> children;
+			IsLeaf isLeaf;
+			if( this.childBuilders != null ) {
+				java.util.List<ZTreeNode<T>> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( this.childBuilders.size() );
+				for( Builder<T> childBuilder : this.childBuilders ) {
+					list.add( childBuilder.build() );
+				}
+				children = java.util.Collections.unmodifiableList( list );
+				isLeaf = IsLeaf.FALSE;
+			} else {
+				children = java.util.Collections.emptyList();
+				isLeaf = IsLeaf.TRUE;
+			}
+			ZTreeNode<T> rv = new ZTreeNode<T>( value, children, isLeaf );
+			for( ZTreeNode<T> child : children ) {
+				child.parent = rv;
+			}
+			return rv;
+		}
+
+		private final T value;
+		private final java.util.List<Builder<T>> childBuilders;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Component getSgComponent() {
-		return this.sgComponent;
+	private ZTreeNode( T value, java.util.List<ZTreeNode<T>> children, IsLeaf isLeaf ) {
+		this.value = value;
+		this.children = children;
+		this.isLeaf = isLeaf;
+	}
+
+	public T getValue() {
+		return this.value;
 	}
 
 	@Override
@@ -92,7 +128,7 @@ public class SgTreeNode implements javax.swing.tree.TreeNode {
 
 	@Override
 	public boolean isLeaf() {
-		return ( this.sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) == false;
+		return this.isLeaf == IsLeaf.TRUE;
 	}
 
 	@Override
@@ -100,7 +136,8 @@ public class SgTreeNode implements javax.swing.tree.TreeNode {
 		return java.util.Collections.enumeration( this.children );
 	}
 
-	private final edu.cmu.cs.dennisc.scenegraph.Component sgComponent;
-	private final SgTreeNode parent;
-	private final java.util.List<SgTreeNode> children;
+	private final T value;
+	private final java.util.List<ZTreeNode<T>> children;
+	private final IsLeaf isLeaf;
+	private/*pseudo-final*/ZTreeNode<T> parent;
 }

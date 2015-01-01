@@ -69,8 +69,8 @@ public class DebugSgFrameView extends org.lgna.croquet.views.BorderPanel {
 	}
 
 	private static void updateSgComponents( java.util.Set<edu.cmu.cs.dennisc.scenegraph.Component> set, javax.swing.tree.TreeNode treeNode ) {
-		org.lgna.debug.sg.core.SgTreeNode sgTreeNode = (org.lgna.debug.sg.core.SgTreeNode)treeNode;
-		set.add( sgTreeNode.getSgComponent() );
+		org.lgna.debug.sg.core.ZTreeNode<edu.cmu.cs.dennisc.scenegraph.Component> sgTreeNode = (org.lgna.debug.sg.core.ZTreeNode<edu.cmu.cs.dennisc.scenegraph.Component>)treeNode;
+		set.add( sgTreeNode.getValue() );
 		if( treeNode.isLeaf() ) {
 			//pass
 		} else {

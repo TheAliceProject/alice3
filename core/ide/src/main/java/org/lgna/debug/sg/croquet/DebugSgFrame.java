@@ -42,18 +42,27 @@
  */
 package org.lgna.debug.sg.croquet;
 
-import org.lgna.debug.sg.core.SgTreeNode;
-
 /**
  * @author Dennis Cosgrove
  */
 public class DebugSgFrame extends org.lgna.croquet.FrameComposite<org.lgna.debug.sg.croquet.views.DebugSgFrameView> {
-	private static org.lgna.debug.sg.core.SgTreeNode capture() {
+	public static org.lgna.debug.sg.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component> createBuilder( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
+		org.lgna.debug.sg.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component> rv = new org.lgna.debug.sg.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component>( sgComponent, sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Leaf );
+		if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
+			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgComponent;
+			for( edu.cmu.cs.dennisc.scenegraph.Component sgChild : sgComposite.getComponents() ) {
+				rv.addChildBuilder( createBuilder( sgChild ) );
+			}
+		}
+		return rv;
+	}
+
+	private static org.lgna.debug.sg.core.ZTreeNode<edu.cmu.cs.dennisc.scenegraph.Component> capture() {
 		org.lgna.project.virtualmachine.UserInstance sceneUserInstance = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getActiveSceneInstance();
 		org.lgna.story.SScene scene = sceneUserInstance.getJavaInstance( org.lgna.story.SScene.class );
 		org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( scene );
-		final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
-		return new SgTreeNode( sgScene, null );
+		edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
+		return createBuilder( sgScene ).build();
 	}
 
 	public DebugSgFrame() {
@@ -92,7 +101,7 @@ public class DebugSgFrame extends org.lgna.croquet.FrameComposite<org.lgna.debug
 	private final org.lgna.croquet.Operation markOperation = this.createActionOperation( "markOperation", new Action() {
 		@Override
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			SgTreeNode root = capture();
+			org.lgna.debug.sg.core.ZTreeNode<edu.cmu.cs.dennisc.scenegraph.Component> root = capture();
 			markTreeModel.setRoot( root );
 			currentTreeModel.setRoot( root );
 			getView().expandAllRowsAndUpdateCurrentSgTreeNodeRenderer();
