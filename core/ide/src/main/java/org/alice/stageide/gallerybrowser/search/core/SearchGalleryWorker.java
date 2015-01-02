@@ -107,7 +107,7 @@ public class SearchGalleryWorker extends edu.cmu.cs.dennisc.worker.WorkerWithPro
 	}
 
 	@Override
-	protected java.util.List<org.alice.stageide.modelresource.ResourceNode> do_onBackgroundThread() throws java.lang.Exception {
+	protected java.util.List<org.alice.stageide.modelresource.ResourceNode> do_onBackgroundThread() throws Exception {
 		if( filter.length() > 0 ) {
 			org.alice.stageide.modelresource.ResourceNode root = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
 			java.util.List<org.alice.stageide.modelresource.ResourceNode> matchingNodes = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();

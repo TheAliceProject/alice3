@@ -85,7 +85,7 @@ public class ThisMethodInvocationFactory extends MethodInvocationFactory {
 	}
 
 	@Override
-	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
+	protected StringBuilder addAccessRepr( StringBuilder rv ) {
 		rv.append( "this" );
 		return rv;
 	}

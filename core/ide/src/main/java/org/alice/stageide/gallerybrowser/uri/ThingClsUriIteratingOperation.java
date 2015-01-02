@@ -64,7 +64,7 @@ public class ThingClsUriIteratingOperation extends ResourceKeyUriIteratingOperat
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
 		if( this.thingCls != null ) {
 			switch( subSteps.size() ) {
 			case 0:

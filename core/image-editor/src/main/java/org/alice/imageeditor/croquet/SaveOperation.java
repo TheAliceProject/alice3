@@ -74,7 +74,7 @@ public final class SaveOperation extends org.lgna.croquet.SingleThreadIteratingO
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
 		//note: could return from within switch, but switches without breaks seem ill advised at the moment
 		org.lgna.croquet.Model rv;
 		switch( subSteps.size() ) {

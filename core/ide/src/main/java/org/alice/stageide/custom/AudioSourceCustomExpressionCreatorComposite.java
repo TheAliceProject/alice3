@@ -70,7 +70,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 	};
 	private org.lgna.croquet.event.ValueListener<Integer> stopValueListiner = new org.lgna.croquet.event.ValueListener<Integer>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.Integer> e ) {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Integer> e ) {
 			updateStartValueIfNecessary();
 		}
 	};

@@ -139,7 +139,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFill
 	}
 
 	@Override
-	public org.alice.ide.instancefactory.InstanceFactory createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, java.lang.Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.alice.ide.instancefactory.InstanceFactory createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.value;
 	}
 

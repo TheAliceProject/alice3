@@ -85,7 +85,7 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 	}
 
 	@Override
-	public void appendUserRepr( java.lang.StringBuilder sb ) {
+	public void appendUserRepr( StringBuilder sb ) {
 		this.appendRepresentation( sb, this.getValue() );
 	}
 

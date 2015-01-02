@@ -190,7 +190,7 @@ public abstract class AddFieldComposite extends FieldComposite {
 	}
 
 	@Override
-	protected java.lang.String getNameInitialValue() {
+	protected String getNameInitialValue() {
 		if( this.isNameGenerationDesired() ) {
 			String baseName = generateNameFromInitializer();
 			boolean isNumberAppendedToNameOfFirstField = this.isNumberAppendedToNameOfFirstField();

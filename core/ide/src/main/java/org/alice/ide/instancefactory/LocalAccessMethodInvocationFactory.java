@@ -97,7 +97,7 @@ public class LocalAccessMethodInvocationFactory extends MethodInvocationFactory 
 	}
 
 	@Override
-	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
+	protected StringBuilder addAccessRepr( StringBuilder rv ) {
 		rv.append( this.local.getName() );
 		return rv;
 	}

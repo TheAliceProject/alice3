@@ -97,7 +97,7 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 	}
 
 	@Override
-	protected boolean isNameAvailable( java.lang.String name ) {
+	protected boolean isNameAvailable( String name ) {
 		return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableMethodName( name, this.getDeclaringType() );
 	}
 }

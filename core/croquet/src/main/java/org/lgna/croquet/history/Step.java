@@ -85,7 +85,7 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		}
 
 		@Override
-		public java.lang.String toString() {
+		public String toString() {
 			return this.repr;
 		}
 	}

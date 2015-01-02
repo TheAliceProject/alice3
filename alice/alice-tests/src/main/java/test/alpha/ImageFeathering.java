@@ -65,7 +65,7 @@ public class ImageFeathering {
 		mediaTracker.waitForAll();
 		final java.awt.image.BufferedImage alphaMaskedImage = ImageUtilities.createAlphaMaskedImage( image, new edu.cmu.cs.dennisc.java.awt.Painter<Void>() {
 			@Override
-			public void paint( java.awt.Graphics2D g2, java.lang.Void value, int width, int height ) {
+			public void paint( java.awt.Graphics2D g2, Void value, int width, int height ) {
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 				final boolean IS_GRADIENT_DESIRED = true;
 				if( IS_GRADIENT_DESIRED ) {

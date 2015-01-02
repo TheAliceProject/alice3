@@ -76,7 +76,7 @@ import org.lgna.croquet.CancelException;
 	}
 
 	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
+	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
 		return this.operation.getImp().getName();
 	}
 

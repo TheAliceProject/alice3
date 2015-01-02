@@ -103,7 +103,7 @@ public class ParameterAccessMethodInvocationMethodInvocationFactory extends Meth
 	}
 
 	@Override
-	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
+	protected StringBuilder addAccessRepr( StringBuilder rv ) {
 		rv.append( this.parameter.getName() );
 		rv.append( "." );
 		rv.append( this.innerMethod.getName() );

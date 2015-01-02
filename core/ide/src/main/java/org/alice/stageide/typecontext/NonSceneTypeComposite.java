@@ -46,7 +46,7 @@ package org.alice.stageide.typecontext;
 enum SceneTypeCallable implements java.util.concurrent.Callable<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> {
 	SINGLEON() {
 		@Override
-		public org.alice.ide.declarationseditor.TypeComposite call() throws java.lang.Exception {
+		public org.alice.ide.declarationseditor.TypeComposite call() throws Exception {
 			return org.alice.ide.declarationseditor.TypeComposite.getInstance( org.alice.stageide.StageIDE.getActiveInstance().getSceneType() );
 		}
 	};

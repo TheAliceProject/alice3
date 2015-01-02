@@ -111,7 +111,7 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 	public abstract edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals();
 
 	@Override
-	public void setName( java.lang.String name ) {
+	public void setName( String name ) {
 		super.setName( name );
 		int i = 0;
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {

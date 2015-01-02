@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.javax.swing;
 public abstract class AsynchronousWorkerIcon extends AsynchronousIcon {
 	private class IconWorker extends edu.cmu.cs.dennisc.worker.Worker<javax.swing.Icon> {
 		@Override
-		protected javax.swing.Icon do_onBackgroundThread() throws java.lang.Exception {
+		protected javax.swing.Icon do_onBackgroundThread() throws Exception {
 			return AsynchronousWorkerIcon.this.do_onBackgroundThread();
 		}
 
@@ -103,7 +103,7 @@ public abstract class AsynchronousWorkerIcon extends AsynchronousIcon {
 		}
 	}
 
-	protected abstract javax.swing.Icon do_onBackgroundThread() throws java.lang.Exception;
+	protected abstract javax.swing.Icon do_onBackgroundThread() throws Exception;
 
 	private void handleDone_onEventDispatchThread( javax.swing.Icon value ) {
 		this.repaintComponentsIfNecessary();

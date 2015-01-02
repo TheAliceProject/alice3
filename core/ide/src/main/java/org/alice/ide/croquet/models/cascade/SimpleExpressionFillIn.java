@@ -68,7 +68,7 @@ public class SimpleExpressionFillIn<E extends org.lgna.project.ast.Expression> e
 	}
 
 	@Override
-	protected javax.swing.Icon getLeadingIcon( org.lgna.croquet.imp.cascade.ItemNode<? super E, java.lang.Void> step ) {
+	protected javax.swing.Icon getLeadingIcon( org.lgna.croquet.imp.cascade.ItemNode<? super E, Void> step ) {
 		if( this.isLeadingIconDesired ) {
 			if( this.transientValue instanceof org.lgna.project.ast.FieldAccess ) {
 				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)this.transientValue;

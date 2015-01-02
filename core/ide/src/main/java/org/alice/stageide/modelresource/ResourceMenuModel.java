@@ -66,7 +66,7 @@ public class ResourceMenuModel extends org.lgna.croquet.CascadeMenuModel<Resourc
 	}
 
 	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, org.alice.stageide.modelresource.ResourceNode> node ) {
+	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.stageide.modelresource.ResourceNode, org.alice.stageide.modelresource.ResourceNode> node ) {
 		return this.resourceNode.getText();
 	}
 

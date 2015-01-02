@@ -68,7 +68,7 @@ public class GalleryResourceTypeFillIn extends org.alice.ide.croquet.models.casc
 	}
 
 	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression> step ) {
+	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression> step ) {
 		return org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( this.ancestorType ).getName();
 	}
 

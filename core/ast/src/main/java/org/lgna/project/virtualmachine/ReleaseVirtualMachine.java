@@ -417,7 +417,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	}
 
 	@Override
-	protected void pushLambdaFrame( org.lgna.project.virtualmachine.UserInstance instance, org.lgna.project.ast.UserLambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod, java.util.Map<org.lgna.project.ast.AbstractParameter, java.lang.Object> map ) {
+	protected void pushLambdaFrame( org.lgna.project.virtualmachine.UserInstance instance, org.lgna.project.ast.UserLambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod, java.util.Map<org.lgna.project.ast.AbstractParameter, Object> map ) {
 		Frame owner = getCurrentFrame();
 		this.pushFrame( new LambdaInvocationFrame( owner, map, instance, lambda, singleAbstractMethod ) );
 	}

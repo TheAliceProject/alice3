@@ -68,6 +68,6 @@ public class ConstructorInfo extends MemberWithParametersInfo {
 	}
 
 	@Override
-	protected void appendRepr( java.lang.StringBuilder sb ) {
+	protected void appendRepr( StringBuilder sb ) {
 	}
 }

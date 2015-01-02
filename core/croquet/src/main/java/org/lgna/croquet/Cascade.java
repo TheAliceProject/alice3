@@ -298,7 +298,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 	}
 
 	@Override
-	public void appendUserRepr( java.lang.StringBuilder sb ) {
+	public void appendUserRepr( StringBuilder sb ) {
 		sb.append( this.getRoot().getPopupPrepModel().getName() );
 	}
 

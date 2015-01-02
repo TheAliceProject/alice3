@@ -52,7 +52,7 @@ public abstract class ResourceBundleUtilities {
 
 	private static final class Utf8ResourceBundleControl extends java.util.ResourceBundle.Control {
 		@Override
-		public java.util.ResourceBundle newBundle( String baseName, java.util.Locale locale, String format, java.lang.ClassLoader loader, boolean reload ) throws java.lang.IllegalAccessException, java.lang.InstantiationException, java.io.IOException {
+		public java.util.ResourceBundle newBundle( String baseName, java.util.Locale locale, String format, ClassLoader loader, boolean reload ) throws java.lang.IllegalAccessException, java.lang.InstantiationException, java.io.IOException {
 			String bundleName = this.toBundleName( baseName, locale );
 			String resourceName = this.toResourceName( bundleName, "properties" );
 			java.io.InputStream stream = null;

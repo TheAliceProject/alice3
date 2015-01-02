@@ -56,7 +56,7 @@ public class FindComposite extends AbstractFindComposite {
 		}
 
 		@Override
-		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 			return FindComposite.this.getClassUsedForLocalization();
 		}
 

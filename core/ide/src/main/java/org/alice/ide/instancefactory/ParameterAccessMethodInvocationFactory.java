@@ -97,7 +97,7 @@ public class ParameterAccessMethodInvocationFactory extends MethodInvocationFact
 	}
 
 	@Override
-	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
+	protected StringBuilder addAccessRepr( StringBuilder rv ) {
 		rv.append( this.parameter.getName() );
 		return rv;
 	}

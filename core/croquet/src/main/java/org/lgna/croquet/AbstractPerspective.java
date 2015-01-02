@@ -78,7 +78,7 @@ public abstract class AbstractPerspective extends AbstractElement implements Per
 	}
 
 	@Override
-	protected void appendRepr( java.lang.StringBuilder sb ) {
+	protected void appendRepr( StringBuilder sb ) {
 		super.appendRepr( sb );
 		sb.append( this.getName() );
 	}

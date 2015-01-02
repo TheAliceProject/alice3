@@ -67,17 +67,17 @@ public class DeclarationCompositeFillIn extends org.lgna.croquet.ImmutableCascad
 	}
 
 	@Override
-	public org.alice.ide.declarationseditor.DeclarationComposite createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.alice.ide.declarationseditor.DeclarationComposite createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.declarationComposite;
 	}
 
 	@Override
-	public org.alice.ide.declarationseditor.DeclarationComposite getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void> node ) {
+	public org.alice.ide.declarationseditor.DeclarationComposite getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, Void> node ) {
 		return this.declarationComposite;
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, java.lang.Void> node ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.declarationseditor.DeclarationComposite, Void> node ) {
 		throw new AssertionError();
 	}
 

@@ -70,7 +70,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		}
 
 		@Override
-		protected java.lang.String getSubKeyForLocalization() {
+		protected String getSubKeyForLocalization() {
 			return this.root.getSubKeyForLocalization();
 		}
 

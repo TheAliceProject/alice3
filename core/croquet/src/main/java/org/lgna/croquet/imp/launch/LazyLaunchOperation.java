@@ -57,7 +57,7 @@ public class LazyLaunchOperation<C extends org.lgna.croquet.OperationOwningCompo
 	}
 
 	@Override
-	protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 		return this.cls;
 	}
 

@@ -95,7 +95,7 @@ public class ThisFieldAccessMethodInvocationFactory extends MethodInvocationFact
 	}
 
 	@Override
-	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
+	protected StringBuilder addAccessRepr( StringBuilder rv ) {
 		rv.append( "this." );
 		rv.append( this.field.getName() );
 		return rv;
