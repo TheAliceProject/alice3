@@ -87,18 +87,23 @@ public final class OwnedByCompositeOperation<T extends OperationOwningComposite<
 		return this.composite.modifyNameIfNecessary( this.subKey, super.modifyNameIfNecessary( text ) );
 	}
 
+	private org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfDesired() {
+		org.lgna.croquet.history.TransactionHistory transactionHistory;
+		if( this.composite.isSubTransactionHistoryRequired() ) {
+			transactionHistory = new org.lgna.croquet.history.TransactionHistory();
+		} else {
+			transactionHistory = null;
+		}
+		return transactionHistory;
+	}
+
 	@Override
 	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation<T>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation<T>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, this.createTransactionHistoryIfDesired() );
 		if( this.initializer != null ) {
 			this.initializer.initialize( this.composite );
 		}
 		this.composite.perform( this.subKey, completionStep );
-	}
-
-	@Override
-	protected boolean isSubTransactionHistoryRequired() {
-		return this.composite.isSubTransactionHistoryRequired();
 	}
 
 	private final T composite;

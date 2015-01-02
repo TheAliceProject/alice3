@@ -206,8 +206,4 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.C
 
 	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.views.Dialog dialog ) {
 	}
-
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
 }

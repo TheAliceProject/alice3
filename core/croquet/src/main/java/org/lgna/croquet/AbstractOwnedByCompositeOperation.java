@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,71 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	private final org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp imp;
-
-	public OperationInputDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
-		super( migrationId );
-		this.imp = new org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp( this, operationGroup );
+public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwningComposite<?>> extends Operation {
+	public AbstractOwnedByCompositeOperation( Group group, java.util.UUID migrationId, OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.Initializer<C> initializer ) {
+		super( group, migrationId );
+		this.subKey = subKey;
+		this.initializer = initializer;
 	}
 
-	protected org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp getImp() {
-		return this.imp;
-	}
+	protected abstract C getComposite();
 
-	public org.lgna.croquet.Operation getLaunchOperation( String subKeyText ) {
-		return this.imp.getLaunchOperation( subKeyText );
+	@Override
+	protected abstract Class<? extends Element> getClassUsedForLocalization();
+
+	@Override
+	protected final String getSubKeyForLocalization() {
+		return this.subKey.getText();
 	}
 
 	@Override
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
-
-	@Override
-	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
-		return defaultValue;
-	}
-
-	@Override
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
-		return text;
-	}
-
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
-
-	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
-		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-		if( isCommited != null ) { // close button condition
-			if( isCommited ) {
-				try {
-					org.lgna.croquet.edits.Edit edit = createEdit( completionStep );
-					if( edit != null ) {
-						completionStep.commitAndInvokeDo( edit );
-					} else {
-						completionStep.finish();
-					}
-				} catch( CancelException ce ) {
-					cancel( completionStep );
-				}
-			} else {
-				cancel( completionStep );
-			}
-		} else {
-			cancel( completionStep );
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		C composite = this.getComposite();
+		org.lgna.croquet.history.CompletionStep<AbstractOwnedByCompositeOperation<C>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+		if( this.initializer != null ) {
+			this.initializer.initialize( composite );
 		}
+		composite.perform( this.subKey, completionStep );
 	}
 
-	@Override
-	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		this.showDialog( completionStep );
-	}
+	private final OwnedByCompositeOperationSubKey subKey;
+	private final org.lgna.croquet.Initializer<C> initializer;
 }

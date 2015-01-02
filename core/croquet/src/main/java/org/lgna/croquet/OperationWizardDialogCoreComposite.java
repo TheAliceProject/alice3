@@ -63,6 +63,11 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 	}
 
 	@Override
+	public boolean isSubTransactionHistoryRequired() {
+		return true;
+	}
+
+	@Override
 	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
 		return defaultValue;
 	}

@@ -136,8 +136,4 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		sb.append( "group=" );
 		sb.append( this.getGroup() );
 	}
-
-	protected boolean isSubTransactionHistoryRequired() {
-		return false;
-	}
 }

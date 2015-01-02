@@ -60,4 +60,9 @@ public abstract class OperationUnadornedDialogCoreComposite<V extends org.lgna.c
 	public org.lgna.croquet.Operation getLaunchOperation( String subKeyText ) {
 		return this.imp.getLaunchOperation( subKeyText );
 	}
+
+	@Override
+	public boolean isSubTransactionHistoryRequired() {
+		return true;
+	}
 }
