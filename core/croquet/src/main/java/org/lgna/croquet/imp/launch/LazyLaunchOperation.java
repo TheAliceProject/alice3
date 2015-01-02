@@ -45,12 +45,26 @@ package org.lgna.croquet.imp.launch;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class LazyLaunchOperation<C extends org.lgna.croquet.OperationOwningComposite<?>> extends AbstractLaunchOperation {
+/*package-private*/final class LazyLaunchOperation<C extends org.lgna.croquet.OperationOwningComposite<?>> extends org.lgna.croquet.AbstractOwnedByCompositeOperation<C> {
 	public LazyLaunchOperation( LazyLaunchOperationFactory<C> factory, org.lgna.croquet.Group group, String subKeyText, org.lgna.croquet.Initializer<C> initializer ) {
-		super( group, java.util.UUID.fromString( "18050a9f-5354-4790-8e44-1724200f3cfa" ) );
-		this.factory = factory;
+		super( group, java.util.UUID.fromString( "18050a9f-5354-4790-8e44-1724200f3cfa" ), initializer );
 		this.subKeyText = subKeyText;
-		this.initializer = initializer;
+		this.factory = factory;
+	}
+
+	@Override
+	protected C getComposite() {
+		return this.factory.getLazy().get();
+	}
+
+	@Override
+	protected String getSubKeyForLocalization() {
+		return this.subKeyText;
+	}
+
+	@Override
+	protected org.lgna.croquet.OwnedByCompositeOperationSubKey getSubKey() {
+		return null;
 	}
 
 	@Override
@@ -60,5 +74,4 @@ package org.lgna.croquet.imp.launch;
 
 	private final LazyLaunchOperationFactory<C> factory;
 	private final String subKeyText;
-	private final org.lgna.croquet.Initializer<C> initializer;
 }

@@ -51,6 +51,10 @@ public class LazyLaunchOperationFactory<C extends org.lgna.croquet.OperationOwni
 		this.lazy = lazy;
 	}
 
+	public edu.cmu.cs.dennisc.pattern.Lazy<C> getLazy() {
+		return this.lazy;
+	}
+
 	/*package-private*/Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 		return this.cls;
 	}

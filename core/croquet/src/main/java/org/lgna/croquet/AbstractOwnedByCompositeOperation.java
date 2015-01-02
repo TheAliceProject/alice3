@@ -46,15 +46,12 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwningComposite<?>> extends Operation {
-	public AbstractOwnedByCompositeOperation( Group group, java.util.UUID migrationId, OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.Initializer<C> initializer ) {
+	public AbstractOwnedByCompositeOperation( Group group, java.util.UUID migrationId, org.lgna.croquet.Initializer<C> initializer ) {
 		super( group, migrationId );
-		this.subKey = subKey;
 		this.initializer = initializer;
 	}
 
-	protected OwnedByCompositeOperationSubKey getSubKey() {
-		return this.subKey;
-	}
+	protected abstract OwnedByCompositeOperationSubKey getSubKey();
 
 	protected abstract C getComposite();
 
@@ -62,9 +59,7 @@ public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwnin
 	protected abstract Class<? extends Element> getClassUsedForLocalization();
 
 	@Override
-	protected final String getSubKeyForLocalization() {
-		return this.subKey.getText();
-	}
+	protected abstract String getSubKeyForLocalization();
 
 	private org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfDesired( C composite ) {
 		org.lgna.croquet.history.TransactionHistory transactionHistory;
@@ -83,9 +78,9 @@ public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwnin
 		if( this.initializer != null ) {
 			this.initializer.initialize( composite );
 		}
-		composite.perform( this.subKey, completionStep );
+		OwnedByCompositeOperationSubKey subKey = this.getSubKey();
+		composite.perform( subKey, completionStep );
 	}
 
-	private final OwnedByCompositeOperationSubKey subKey;
 	private final org.lgna.croquet.Initializer<C> initializer;
 }
