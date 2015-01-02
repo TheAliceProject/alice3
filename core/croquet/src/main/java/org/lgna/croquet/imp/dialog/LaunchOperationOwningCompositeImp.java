@@ -87,6 +87,6 @@ public final class LaunchOperationOwningCompositeImp<T extends org.lgna.croquet.
 	private final T composite;
 	private final org.lgna.croquet.Group operationGroup;
 
-	private final java.util.Map<String, org.lgna.croquet.OwnedByCompositeOperation<T>> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private org.lgna.croquet.OwnedByCompositeOperation<T> nullKeyLaunchOperation;
+	private final java.util.Map<String, org.lgna.croquet.Operation> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private org.lgna.croquet.Operation nullKeyLaunchOperation;
 }

@@ -65,7 +65,7 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Pa
 		this.title = this.findLocalizedText( "title" );
 	}
 
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( String subKeyText ) {
+	public org.lgna.croquet.Operation getLaunchOperation( String subKeyText ) {
 		if( subKeyText != null ) {
 			throw new RuntimeException( "todo" );
 		} else {
@@ -74,7 +74,7 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Pa
 	}
 
 	@Deprecated
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
+	public org.lgna.croquet.Operation getLaunchOperation() {
 		return this.launchOperation;
 	}
 
