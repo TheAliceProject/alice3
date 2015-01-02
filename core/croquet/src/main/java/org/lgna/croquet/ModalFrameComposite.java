@@ -61,7 +61,6 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 		return this.imp;
 	}
 
-	@Override
 	public org.lgna.croquet.Operation getLaunchOperation( String subKeyText ) {
 		return this.imp.getLaunchOperation( subKeyText );
 	}

@@ -45,7 +45,7 @@ package org.lgna.croquet.imp.launch;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractLaunchOperation extends org.lgna.croquet.Operation {
+public abstract class AbstractLaunchOperation<C extends org.lgna.croquet.OperationOwningComposite<?>> extends org.lgna.croquet.Operation {
 	public AbstractLaunchOperation( org.lgna.croquet.Group group, java.util.UUID migrationId ) {
 		super( group, migrationId );
 	}

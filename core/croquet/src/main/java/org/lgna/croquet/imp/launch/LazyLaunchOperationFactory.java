@@ -40,64 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.imp.launch;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Panel> extends AbstractComposite<V> implements OperationOwningComposite<V> {
-	private final edu.cmu.cs.dennisc.javax.swing.option.MessageType messageType;
-	private String title;
-
-	private final OwnedByCompositeOperation launchOperation;
-
-	public MessageDialogComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.javax.swing.option.MessageType messageType ) {
-		super( migrationId );
-		this.messageType = messageType;
-		String text = null;
-		org.lgna.croquet.OwnedByCompositeOperationSubKey subKey = new org.lgna.croquet.OwnedByCompositeOperationSubKey( this, text );
-		this.launchOperation = new org.lgna.croquet.OwnedByCompositeOperation( Application.INFORMATION_GROUP, this, subKey, null );
+public class LazyLaunchOperationFactory<C extends org.lgna.croquet.OperationOwningComposite<?>> {
+	private LazyLaunchOperationFactory( Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy ) {
+		this.cls = cls;
+		this.lazy = lazy;
 	}
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.title = this.findLocalizedText( "title" );
+	/*package-private*/Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		return this.cls;
 	}
 
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( String subKeyText ) {
-		if( subKeyText != null ) {
-			throw new RuntimeException( "todo" );
-		} else {
-			return this.launchOperation;
-		}
+	public org.lgna.croquet.Operation createLaunchOperation( org.lgna.croquet.Group group, String subKeyText, org.lgna.croquet.Initializer<C> initializer ) {
+		return new LazyLaunchOperation<C>( this, group, subKeyText, initializer );
 	}
 
-	@Deprecated
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
-		return this.launchOperation;
-	}
-
-	@Override
-	public final void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		java.awt.Component awtComponent = null; //todo
-		//todo: Icon
-		javax.swing.JOptionPane.showMessageDialog( awtComponent, this.getRootComponent().getAwtComponent(), this.title, this.messageType.getInternal() );
-		completionStep.finish();
-	}
-
-	@Override
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
-		return text;
-	}
-
-	@Override
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
-	}
-
-	@Override
-	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
-		return defaultValue;
-	}
+	private final Class<C> cls;
+	private final edu.cmu.cs.dennisc.pattern.Lazy<C> lazy;
 }

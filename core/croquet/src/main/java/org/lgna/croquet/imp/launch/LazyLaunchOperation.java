@@ -45,23 +45,20 @@ package org.lgna.croquet.imp.launch;
 /**
  * @author Dennis Cosgrove
  */
-public class LazyLaunchOperation<C extends org.lgna.croquet.OperationOwningComposite<?>> extends AbstractLaunchOperation {
-	public static <C extends org.lgna.croquet.OperationOwningComposite<?>> org.lgna.croquet.Operation createInstance( org.lgna.croquet.Group group, Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy ) {
-		return new LazyLaunchOperation<C>( group, cls, lazy );
-	}
-
-	private LazyLaunchOperation( org.lgna.croquet.Group group, Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy ) {
-		super( group, java.util.UUID.fromString( "e6efce56-7da5-4798-9ec3-6fcaab3962b5" ) );
-		this.cls = cls;
-		this.lazy = lazy;
+/*package-private*/class LazyLaunchOperation<C extends org.lgna.croquet.OperationOwningComposite<?>> extends AbstractLaunchOperation {
+	public LazyLaunchOperation( LazyLaunchOperationFactory<C> factory, org.lgna.croquet.Group group, String subKeyText, org.lgna.croquet.Initializer<C> initializer ) {
+		super( group, java.util.UUID.fromString( "18050a9f-5354-4790-8e44-1724200f3cfa" ) );
+		this.factory = factory;
+		this.subKeyText = subKeyText;
+		this.initializer = initializer;
 	}
 
 	@Override
 	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
-		return this.cls;
+		return this.factory.getClassUsedForLocalization();
 	}
 
-	private final Class<C> cls;
-	private final edu.cmu.cs.dennisc.pattern.Lazy<C> lazy;
-
+	private final LazyLaunchOperationFactory<C> factory;
+	private final String subKeyText;
+	private final org.lgna.croquet.Initializer<C> initializer;
 }

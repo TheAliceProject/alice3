@@ -58,7 +58,6 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		return this.imp;
 	}
 
-	@Override
 	public org.lgna.croquet.Operation getLaunchOperation( String subKeyText ) {
 		return this.imp.getLaunchOperation( subKeyText );
 	}
