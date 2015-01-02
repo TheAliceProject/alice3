@@ -232,6 +232,7 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 		this.silhouetteAdapter.setup( rc, face );
 		this.renderGeometry( rc, RenderType.SILHOUETTE );
 		rc.gl.glDisable( javax.media.opengl.GL.GL_STENCIL_TEST );
+		rc.gl.glLineWidth( 1.0f );
 	}
 
 	protected void actuallyRender( RenderContext rc, RenderType renderType ) {
