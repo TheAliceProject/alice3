@@ -45,13 +45,11 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class OwnedByCompositeOperation<T extends OperationOwningComposite<?>> extends Operation {
-	public OwnedByCompositeOperation( Group group, T composite, OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.Initializer<T> initializer ) {
-		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ) );
+public final class OwnedByCompositeOperation<C extends OperationOwningComposite<?>> extends AbstractOwnedByCompositeOperation<C> {
+	public OwnedByCompositeOperation( Group group, C composite, OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.Initializer<C> initializer ) {
+		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ), subKey, initializer );
 		assert subKey != null : composite;
 		this.composite = composite;
-		this.subKey = subKey;
-		this.initializer = initializer;
 	}
 
 	@Override
@@ -62,10 +60,11 @@ public final class OwnedByCompositeOperation<T extends OperationOwningComposite<
 
 	@Override
 	public boolean isToolBarTextClobbered() {
-		return this.composite.isToolBarTextClobbered( this.subKey, super.isToolBarTextClobbered() );
+		return this.composite.isToolBarTextClobbered( this.getSubKey(), super.isToolBarTextClobbered() );
 	}
 
-	public T getComposite() {
+	@Override
+	public C getComposite() {
 		return this.composite;
 	}
 
@@ -75,38 +74,12 @@ public final class OwnedByCompositeOperation<T extends OperationOwningComposite<
 		return ( (AbstractComposite<?>)this.composite ).getClassUsedForLocalization();
 	}
 
-	@Override
-	protected String getSubKeyForLocalization() {
-		return this.subKey.getText();
-	}
-
 	//todo: pass subKey into composite methods
 
 	@Override
 	protected String modifyNameIfNecessary( String text ) {
-		return this.composite.modifyNameIfNecessary( this.subKey, super.modifyNameIfNecessary( text ) );
+		return this.composite.modifyNameIfNecessary( this.getSubKey(), super.modifyNameIfNecessary( text ) );
 	}
 
-	private org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfDesired() {
-		org.lgna.croquet.history.TransactionHistory transactionHistory;
-		if( this.composite.isSubTransactionHistoryRequired() ) {
-			transactionHistory = new org.lgna.croquet.history.TransactionHistory();
-		} else {
-			transactionHistory = null;
-		}
-		return transactionHistory;
-	}
-
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation<T>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, this.createTransactionHistoryIfDesired() );
-		if( this.initializer != null ) {
-			this.initializer.initialize( this.composite );
-		}
-		this.composite.perform( this.subKey, completionStep );
-	}
-
-	private final T composite;
-	private final OwnedByCompositeOperationSubKey subKey;
-	private final org.lgna.croquet.Initializer<T> initializer;
+	private final C composite;
 }

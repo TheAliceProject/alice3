@@ -52,6 +52,10 @@ public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwnin
 		this.initializer = initializer;
 	}
 
+	protected OwnedByCompositeOperationSubKey getSubKey() {
+		return this.subKey;
+	}
+
 	protected abstract C getComposite();
 
 	@Override
@@ -62,10 +66,20 @@ public abstract class AbstractOwnedByCompositeOperation<C extends OperationOwnin
 		return this.subKey.getText();
 	}
 
+	private org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfDesired( C composite ) {
+		org.lgna.croquet.history.TransactionHistory transactionHistory;
+		if( composite.isSubTransactionHistoryRequired() ) {
+			transactionHistory = new org.lgna.croquet.history.TransactionHistory();
+		} else {
+			transactionHistory = null;
+		}
+		return transactionHistory;
+	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		C composite = this.getComposite();
-		org.lgna.croquet.history.CompletionStep<AbstractOwnedByCompositeOperation<C>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+		org.lgna.croquet.history.CompletionStep<AbstractOwnedByCompositeOperation<C>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, this.createTransactionHistoryIfDesired( composite ) );
 		if( this.initializer != null ) {
 			this.initializer.initialize( composite );
 		}
