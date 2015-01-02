@@ -59,7 +59,7 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 	}
 
 	@Override
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKeyText ) {
+	public org.lgna.croquet.Operation getLaunchOperation( java.lang.String subKeyText ) {
 		return this.imp.getLaunchOperation( subKeyText );
 	}
 

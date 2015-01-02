@@ -59,7 +59,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 	}
 
 	@Override
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKeyText ) {
+	public org.lgna.croquet.Operation getLaunchOperation( java.lang.String subKeyText ) {
 		return this.imp.getLaunchOperation( subKeyText );
 	}
 

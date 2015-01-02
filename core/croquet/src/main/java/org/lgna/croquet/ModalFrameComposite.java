@@ -48,7 +48,7 @@ package org.lgna.croquet;
 public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractWindowComposite<V> implements OperationOwningComposite<V> {
 	public ModalFrameComposite( java.util.UUID id, Group launchOperationGroup ) {
 		super( id );
-		this.imp = new org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp( this, launchOperationGroup );
+		this.imp = new org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp<ModalFrameComposite<V>>( this, launchOperationGroup );
 	}
 
 	@Override
@@ -57,12 +57,12 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 		this.title = this.findLocalizedText( "title" );
 	}
 
-	protected org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp getImp() {
+	protected org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp<ModalFrameComposite<V>> getImp() {
 		return this.imp;
 	}
 
 	@Override
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKeyText ) {
+	public org.lgna.croquet.Operation getLaunchOperation( String subKeyText ) {
 		return this.imp.getLaunchOperation( subKeyText );
 	}
 
@@ -205,6 +205,6 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 		return true;
 	}
 
-	private final org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp imp;
+	private final org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp<ModalFrameComposite<V>> imp;
 	private String title;
 }

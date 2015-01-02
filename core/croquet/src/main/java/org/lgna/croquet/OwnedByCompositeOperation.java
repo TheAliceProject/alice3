@@ -45,8 +45,8 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class OwnedByCompositeOperation extends Operation {
-	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite, OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.Initializer<org.lgna.croquet.OperationOwningComposite> initializer ) {
+public final class OwnedByCompositeOperation<T extends OperationOwningComposite<?>> extends Operation {
+	public OwnedByCompositeOperation( Group group, T composite, OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.Initializer<T> initializer ) {
 		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ) );
 		assert subKey != null : composite;
 		this.composite = composite;
@@ -65,7 +65,7 @@ public final class OwnedByCompositeOperation extends Operation {
 		return this.composite.isToolBarTextClobbered( this.subKey, super.isToolBarTextClobbered() );
 	}
 
-	public OperationOwningComposite getComposite() {
+	public T getComposite() {
 		return this.composite;
 	}
 
@@ -89,7 +89,7 @@ public final class OwnedByCompositeOperation extends Operation {
 
 	@Override
 	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation<T>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
 		if( this.initializer != null ) {
 			this.initializer.initialize( this.composite );
 		}
@@ -101,7 +101,7 @@ public final class OwnedByCompositeOperation extends Operation {
 		return this.composite.isSubTransactionHistoryRequired();
 	}
 
-	private final OperationOwningComposite composite;
+	private final T composite;
 	private final OwnedByCompositeOperationSubKey subKey;
-	private final org.lgna.croquet.Initializer<org.lgna.croquet.OperationOwningComposite> initializer;
+	private final org.lgna.croquet.Initializer<T> initializer;
 }

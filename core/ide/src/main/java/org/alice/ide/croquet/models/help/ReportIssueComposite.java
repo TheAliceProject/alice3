@@ -59,17 +59,17 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 		return SingletonHolder.instance;
 	}
 
-	private static class IssueTypeInitializer implements org.lgna.croquet.Initializer<org.lgna.croquet.OperationOwningComposite> {
-		private final edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue;
-
+	private static class IssueTypeInitializer implements org.lgna.croquet.Initializer<ReportIssueComposite> {
 		public IssueTypeInitializer( edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue ) {
 			this.initialReportTypeValue = initialReportTypeValue;
 		}
 
 		@Override
-		public void initialize( org.lgna.croquet.OperationOwningComposite value ) {
-			( (ReportIssueComposite)value ).reportTypeState.setValueTransactionlessly( this.initialReportTypeValue );
+		public void initialize( ReportIssueComposite value ) {
+			value.reportTypeState.setValueTransactionlessly( this.initialReportTypeValue );
 		}
+
+		private final edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue;
 	}
 
 	private ReportIssueComposite() {

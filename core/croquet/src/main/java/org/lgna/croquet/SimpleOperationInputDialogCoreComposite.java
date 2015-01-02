@@ -57,7 +57,7 @@ public abstract class SimpleOperationInputDialogCoreComposite<V extends org.lgna
 		return launchOperation != null ? launchOperation.getImp().getName() : null;
 	}
 
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
+	public org.lgna.croquet.Operation getLaunchOperation() {
 		return this.getImp().getLaunchOperation( null );
 	}
 }
