@@ -43,12 +43,10 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
-import edu.cmu.cs.dennisc.render.gl.imp.GlDrawableUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
-class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.swing.JPanel> implements edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget {
+/*package-private*/class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.swing.JPanel> implements edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget {
 	private static final boolean IS_IMAGE_TRACKING_READY_FOR_PRIME_TIME = false;
 
 	private class RenderPane extends javax.media.opengl.awt.GLJPanel {
@@ -71,7 +69,7 @@ class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.s
 		}
 
 		public RenderPane( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
-			super( GlDrawableUtilities.createGlCapabilitiesForLightweightComponent( requestedCapabilities ), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser() );
+			super( GlDrawableUtils.createGlCapabilitiesForLightweightComponent( requestedCapabilities ), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser() );
 		}
 
 		@Override

@@ -300,15 +300,15 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 								}
 								sb.append( "</html>" );
 								new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
-								.title( "Recursion is disabled." )
-								.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.INFORMATION )
-								.buildAndShow();
+										.title( "Recursion is disabled." )
+										.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.INFORMATION )
+										.buildAndShow();
 								return null;
 							}
 						}
 					}
 					if( this.currentUnder != null ) {
-						edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
+						edu.cmu.cs.dennisc.property.InstancePropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 						BlockStatementIndexPair blockStatementIndexPair;
 						if( propertyOwner instanceof org.lgna.project.ast.BlockStatement ) {
 							blockStatementIndexPair = new BlockStatementIndexPair( (org.lgna.project.ast.BlockStatement)propertyOwner, index );
@@ -322,7 +322,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 					}
 				} else if( dragModel == org.alice.ide.clipboard.Clipboard.SINGLETON.getDragModel() ) {
 					if( this.currentUnder != null ) {
-						edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
+						edu.cmu.cs.dennisc.property.InstancePropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 						if( propertyOwner instanceof org.lgna.project.ast.BlockStatement ) {
 							BlockStatementIndexPair blockStatementIndexPair = new BlockStatementIndexPair( (org.lgna.project.ast.BlockStatement)propertyOwner, index );
 							boolean isCopy = edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.isQuoteControlUnquoteDown( eSource );
@@ -380,7 +380,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.views.B
 					}
 				} else if( dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel ) {
 					if( this.currentUnder != null ) {
-						edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
+						edu.cmu.cs.dennisc.property.InstancePropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 						BlockStatementIndexPair blockStatementIndexPair;
 						if( propertyOwner instanceof org.lgna.project.ast.BlockStatement ) {
 							blockStatementIndexPair = new BlockStatementIndexPair( (org.lgna.project.ast.BlockStatement)propertyOwner, index );

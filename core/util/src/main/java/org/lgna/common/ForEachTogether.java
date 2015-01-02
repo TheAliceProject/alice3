@@ -86,7 +86,7 @@ public class ForEachTogether {
 		if( iterable instanceof java.util.Collection<?> ) {
 			collection = (java.util.Collection<E>)iterable;
 		} else {
-			collection = new java.util.Vector<E>();
+			collection = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( E item : iterable ) {
 				collection.add( item );
 			}

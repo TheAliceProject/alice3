@@ -53,67 +53,66 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author Dennis Cosgrove
  */
 public class World extends Scene {
-	private Background m_sgBackground = new Background();
-	private AmbientLight m_sgAmbientLight = new AmbientLight();
-	private Transformable m_sgSunVehicle = new Transformable();
-	private DirectionalLight m_sgSunLight = new DirectionalLight();
-	private Transformable m_sgCameraVehicle = new Transformable();
-	private SymmetricPerspectiveCamera m_sgCamera = new SymmetricPerspectiveCamera();
-
 	public World() {
-		m_sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1, 1 ) );
-		background.setValue( m_sgBackground );
+		this.sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1, 1 ) );
+		background.setValue( this.sgBackground );
 
-		m_sgAmbientLight.setParent( this );
-		m_sgAmbientLight.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.2f, 0.2f, 0.2f, 1 ) );
+		this.sgAmbientLight.setParent( this );
+		this.sgAmbientLight.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.2f, 0.2f, 0.2f, 1 ) );
 
-		m_sgSunVehicle.setParent( this );
-		m_sgSunVehicle.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( -Math.PI / 2 ) ) );
+		this.sgSunVehicle.setParent( this );
+		this.sgSunVehicle.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( -Math.PI / 2 ) ) );
 
-		m_sgSunLight.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 1, 1, 1, 1 ) );
-		m_sgSunLight.setParent( m_sgSunVehicle );
+		this.sgSunLight.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 1, 1, 1, 1 ) );
+		this.sgSunLight.setParent( this.sgSunVehicle );
 
-		m_sgCameraVehicle.setParent( this );
+		this.sgCameraVehicle.setParent( this );
 
-		m_sgCameraVehicle.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createTranslation( 0, 0, 32 ) );
+		this.sgCameraVehicle.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createTranslation( 0, 0, 32 ) );
 
-		m_sgCamera.farClippingPlaneDistance.setValue( 1000.0 );
-		m_sgCamera.setParent( m_sgCameraVehicle );
+		this.sgCamera.farClippingPlaneDistance.setValue( 1000.0 );
+		this.sgCamera.setParent( this.sgCameraVehicle );
 	}
 
 	public Background getSGBackground() {
-		return m_sgBackground;
+		return this.sgBackground;
 	}
 
 	public AmbientLight getSGAmbientLight() {
-		return m_sgAmbientLight;
+		return this.sgAmbientLight;
 	}
 
 	public Transformable getSGSunVehicle() {
-		return m_sgSunVehicle;
+		return this.sgSunVehicle;
 	}
 
 	public DirectionalLight getSGSunLight() {
-		return m_sgSunLight;
+		return this.sgSunLight;
 	}
 
 	public Transformable getSGCameraVehicle() {
-		return m_sgCameraVehicle;
+		return this.sgCameraVehicle;
 	}
 
 	public SymmetricPerspectiveCamera getSGCamera() {
-		return m_sgCamera;
+		return this.sgCamera;
 	}
 
 	@Override
 	public void setName( String name ) {
 		super.setName( name );
-		m_sgBackground.setName( "m_sgBackground" );
-		m_sgAmbientLight.setName( "m_sgAmbientLight" );
-		m_sgSunVehicle.setName( "m_sgSunVehicle" );
-		m_sgSunLight.setName( "m_sgSunLight" );
-		m_sgCameraVehicle.setName( "m_sgCameraVehicle" );
-		m_sgCamera.setName( "m_sgCamera" );
+		this.sgBackground.setName( name + ".sgBackground" );
+		this.sgAmbientLight.setName( name + ".sgAmbientLight" );
+		this.sgSunVehicle.setName( name + ".sgSunVehicle" );
+		this.sgSunLight.setName( name + ".sgSunLight" );
+		this.sgCameraVehicle.setName( name + ".sgCameraVehicle" );
+		this.sgCamera.setName( name + ".sgCamera" );
 	}
 
+	private final Background sgBackground = new Background();
+	private final AmbientLight sgAmbientLight = new AmbientLight();
+	private final Transformable sgSunVehicle = new Transformable();
+	private final DirectionalLight sgSunLight = new DirectionalLight();
+	private final Transformable sgCameraVehicle = new Transformable();
+	private final SymmetricPerspectiveCamera sgCamera = new SymmetricPerspectiveCamera();
 }

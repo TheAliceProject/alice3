@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
+
 
 /**
  * @author Dennis Cosgrove
@@ -82,7 +84,7 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 			glCapabilities = (javax.media.opengl.GLCapabilities)glRequestedCapabilities.clone();
 			glCapabilities.setHardwareAccelerated( false );
 		}
-		this.glDrawable = GlDrawableUtilities.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser, width, height );
+		this.glDrawable = GlDrawableUtils.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser, width, height );
 		this.glDrawable.setRealized( true );
 		this.glContext = (jogamp.opengl.GLContextImpl)this.glDrawable.createContext( glShareContext );
 		//this.glContext.setSynchronized( true );

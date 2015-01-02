@@ -55,14 +55,6 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public class Arrow extends Transformable {
-
-	private Visual sgVisualCylinder;
-	private Visual sgVisualCone;
-	private Cylinder sgCone;
-	private Cylinder sgCylinder;
-	private Transformable sgTransformableCone;
-	private BottomToTopAxis bottomToTopAxis;
-
 	public Arrow( double lengthCylinder, double radiusCylinder, double lengthCone, double radiusCone, Cylinder.BottomToTopAxis bottomToTopAxis, SimpleAppearance cylinderFrontFacingAppearance, SimpleAppearance coneFrontFacingAppearance, boolean isBottomCapDesired ) {
 		this.bottomToTopAxis = bottomToTopAxis;
 
@@ -144,4 +136,11 @@ public class Arrow extends Transformable {
 		this.sgVisualCone.isShowing.setValue( isShowing );
 		this.sgVisualCylinder.isShowing.setValue( isShowing );
 	}
+
+	private final Visual sgVisualCylinder;
+	private final Visual sgVisualCone;
+	private final Cylinder sgCone;
+	private final Cylinder sgCylinder;
+	private final Transformable sgTransformableCone;
+	private final BottomToTopAxis bottomToTopAxis;
 }

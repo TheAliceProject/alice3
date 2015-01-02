@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
 
 /**
  * @author Dennis Cosgrove
@@ -100,9 +100,9 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter;
 		return this.zBack;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Visual getSGVisual() {
+	public edu.cmu.cs.dennisc.scenegraph.Visual getSgVisual() {
 		if( this.visualAdapter != null ) {
-			return this.visualAdapter.getElement();
+			return this.visualAdapter.getOwner();
 		} else {
 			return null;
 		}
@@ -117,7 +117,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter;
 	}
 
 	public edu.cmu.cs.dennisc.scenegraph.Geometry getSGGeometry() {
-		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSGVisual();
+		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisual();
 		if( sgVisual != null ) {
 			if( ( 0 <= this.geometryIndex ) && ( this.geometryIndex < sgVisual.getGeometryCount() ) ) {
 				return sgVisual.getGeometryAt( this.geometryIndex );
@@ -159,7 +159,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter;
 
 	private final float zFront;
 	private final float zBack;
-	private final VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter;
+	private final GlrVisual<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter;
 	private final boolean isFrontFacing;
 	private final int geometryIndex;
 	private final int subElement;

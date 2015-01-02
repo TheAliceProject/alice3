@@ -57,6 +57,8 @@ public interface RenderFactory {
 
 	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities );
 
+	ImageCaptureRenderTarget createImageCaptureRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities );
+
 	void acquireRenderingLock();
 
 	void releaseRenderingLock();

@@ -57,7 +57,7 @@ public final class LazyIsFrameShowingState<C extends org.lgna.croquet.FrameCompo
 	}
 
 	@Override
-	protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 		return this.cls;
 	}
 

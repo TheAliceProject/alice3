@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
-import edu.cmu.cs.dennisc.render.gl.imp.ChangeHandler;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.ChangeHandler;
 
 /**
  * @author Dennis Cosgrove
@@ -247,6 +247,11 @@ public class GlrRenderFactory implements edu.cmu.cs.dennisc.render.RenderFactory
 		olg.addReleaseListener( this.releaseListener );
 		this.offscreenLookingGlasses.add( olg );
 		return olg;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.render.ImageCaptureRenderTarget createImageCaptureRenderTarget( int width, int height, edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		return new GlrImageCaptureRenderTarget( this, width, height, (GlrRenderTarget)renderTargetToShareContextWith, requestedCapabilities );
 	}
 
 	@Override

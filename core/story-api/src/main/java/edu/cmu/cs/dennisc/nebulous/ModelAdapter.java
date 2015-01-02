@@ -1,11 +1,11 @@
 package edu.cmu.cs.dennisc.nebulous;
 
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ModelAdapter<E extends Model> extends GenericModelAdapter<E> {
+public class ModelAdapter<T extends Model> extends GenericModelAdapter<T> {
 	@Override
 	protected boolean isDisplayListDesired() {
 		return false;
@@ -19,19 +19,19 @@ public class ModelAdapter<E extends Model> extends GenericModelAdapter<E> {
 
 	@Override
 	protected void pickGeometry( edu.cmu.cs.dennisc.render.gl.imp.PickContext pc, boolean isSubElementRequired ) {
-		m_element.synchronizedPick();
+		owner.synchronizedPick();
 	}
 
 	@Override
-	protected void renderGeometry( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, VisualAdapter.RenderType renderType ) {
+	protected void renderGeometry( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, GlrVisual.RenderType renderType ) {
 		//		if( rc.isGLChanged() ) {
 		//			m_element.forget();
 		//		}
 		float globalBrightness = rc.getGlobalBrightness();
-		boolean renderAlpha = ( renderType == VisualAdapter.RenderType.ALPHA_BLENDED ) || ( renderType == VisualAdapter.RenderType.ALL );
-		boolean renderOpaque = ( renderType == VisualAdapter.RenderType.OPAQUE ) || ( renderType == VisualAdapter.RenderType.ALL );
+		boolean renderAlpha = ( renderType == GlrVisual.RenderType.ALPHA_BLENDED ) || ( renderType == GlrVisual.RenderType.ALL );
+		boolean renderOpaque = ( renderType == GlrVisual.RenderType.OPAQUE ) || ( renderType == GlrVisual.RenderType.ALL );
 		rc.clearDiffuseColorTextureAdapter();
-		m_element.synchronizedRender( rc.gl, globalBrightness, renderAlpha, renderOpaque );
+		owner.synchronizedRender( rc.gl, globalBrightness, renderAlpha, renderOpaque );
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class ModelAdapter<E extends Model> extends GenericModelAdapter<E> {
 			rv.setNaN();
 		} else {
 			direction.normalize();
-			edu.cmu.cs.dennisc.render.gl.imp.adapters.GeometryAdapter.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, direction.x, 0, direction.z );
+			edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGeometry.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, direction.x, 0, direction.z );
 		}
 		return rv;
 	}

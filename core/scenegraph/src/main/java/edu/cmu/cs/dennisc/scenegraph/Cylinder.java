@@ -47,13 +47,13 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class Cylinder extends Shape {
-	public enum OriginAlignment {
+	public static enum OriginAlignment {
 		TOP,
 		CENTER,
 		BOTTOM
 	}
 
-	public enum BottomToTopAxis {
+	public static enum BottomToTopAxis {
 		POSITIVE_X( +1, 0, 0 ),
 		POSITIVE_Y( 0, +1, 0 ),
 		POSITIVE_Z( 0, 0, +1 ),
@@ -61,18 +61,16 @@ public class Cylinder extends Shape {
 		NEGATIVE_Y( 0, -1, 0 ),
 		NEGATIVE_Z( 0, 0, -1 );
 
-		private edu.cmu.cs.dennisc.math.Vector3 m_axis = new edu.cmu.cs.dennisc.math.Vector3();
-
 		BottomToTopAxis( double x, double y, double z ) {
-			m_axis.set( x, y, z );
+			this.axis.set( x, y, z );
 		}
 
 		public edu.cmu.cs.dennisc.math.Vector3 accessVector() {
-			return m_axis;
+			return this.axis;
 		}
 
 		public edu.cmu.cs.dennisc.math.Vector3 getVector( edu.cmu.cs.dennisc.math.Vector3 rv ) {
-			rv.set( m_axis );
+			rv.set( this.axis );
 			return rv;
 		}
 
@@ -81,56 +79,11 @@ public class Cylinder extends Shape {
 		}
 
 		public boolean isPositive() {
-			return ( m_axis.x > 0 ) || ( m_axis.y > 0 ) || ( m_axis.z > 0 );
+			return ( this.axis.x > 0 ) || ( this.axis.y > 0 ) || ( this.axis.z > 0 );
 		}
+
+		private final edu.cmu.cs.dennisc.math.Vector3 axis = new edu.cmu.cs.dennisc.math.Vector3();
 	}
-
-	public final BoundDoubleProperty length = new BoundDoubleProperty( this, 1.0 ) {
-		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
-			assert value >= 0.0 : value;
-			super.setValue( owner, value );
-		}
-	};
-	public final BoundDoubleProperty bottomRadius = new BoundDoubleProperty( this, 1.0 ) {
-		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
-			assert value >= 0.0 : value;
-			super.setValue( owner, value );
-		}
-	};
-	public final BoundDoubleProperty topRadius = new BoundDoubleProperty( this, 1.0 ) {
-		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
-			assert value >= 0.0 : value;
-			super.setValue( owner, value );
-		}
-	};
-	//todo: change default to CENTER?
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<OriginAlignment> originAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<OriginAlignment>( this, OriginAlignment.BOTTOM ) {
-		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, OriginAlignment value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
-				Cylinder.this.boundsChanging();
-				super.setValue( owner, value );
-				Cylinder.this.fireBoundChange();
-			}
-		};
-	};
-
-	//todo: change default to POSITIVE_Z? NEGATIVE_Z?
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<BottomToTopAxis> bottomToTopAxis = new edu.cmu.cs.dennisc.property.InstanceProperty<BottomToTopAxis>( this, BottomToTopAxis.POSITIVE_Y ) {
-		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, BottomToTopAxis value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
-				Cylinder.this.boundsChanging();
-				super.setValue( owner, value );
-				Cylinder.this.fireBoundChange();
-			}
-		};
-	};
-	public final edu.cmu.cs.dennisc.property.BooleanProperty hasBottomCap = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty hasTopCap = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
 
 	public double getActualTopRadius() {
 		if( Double.isNaN( topRadius.getValue() ) ) {
@@ -291,4 +244,51 @@ public class Cylinder extends Shape {
 		double maxRadiusSquared = maxRadius * maxRadius;
 		boundingSphere.radius = Math.sqrt( halfLengthSquared + maxRadiusSquared + maxRadiusSquared );
 	}
+
+	public final BoundDoubleProperty length = new BoundDoubleProperty( this, 1.0 ) {
+		@Override
+		public void setValue( Double value ) {
+			assert value >= 0.0 : value;
+			super.setValue( value );
+		}
+	};
+	public final BoundDoubleProperty bottomRadius = new BoundDoubleProperty( this, 1.0 ) {
+		@Override
+		public void setValue( Double value ) {
+			assert value >= 0.0 : value;
+			super.setValue( value );
+		}
+	};
+	public final BoundDoubleProperty topRadius = new BoundDoubleProperty( this, 1.0 ) {
+		@Override
+		public void setValue( Double value ) {
+			assert value >= 0.0 : value;
+			super.setValue( value );
+		}
+	};
+	//todo: change default to CENTER?
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<OriginAlignment> originAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<OriginAlignment>( this, OriginAlignment.BOTTOM ) {
+		@Override
+		public void setValue( OriginAlignment value ) {
+			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+				Cylinder.this.markBoundsDirty();
+				super.setValue( value );
+				Cylinder.this.fireBoundChanged();
+			}
+		};
+	};
+
+	//todo: change default to POSITIVE_Z? NEGATIVE_Z?
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<BottomToTopAxis> bottomToTopAxis = new edu.cmu.cs.dennisc.property.InstanceProperty<BottomToTopAxis>( this, BottomToTopAxis.POSITIVE_Y ) {
+		@Override
+		public void setValue( BottomToTopAxis value ) {
+			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+				Cylinder.this.markBoundsDirty();
+				super.setValue( value );
+				Cylinder.this.fireBoundChanged();
+			}
+		};
+	};
+	public final edu.cmu.cs.dennisc.property.BooleanProperty hasBottomCap = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty hasTopCap = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
 }

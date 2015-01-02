@@ -43,21 +43,22 @@
 package edu.cmu.cs.dennisc.render.gl.imp;
 
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
-import edu.cmu.cs.dennisc.render.gl.GlrRenderTarget;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 
 /**
  * @author Dennis Cosgrove
  */
 public class RenderTargetImp {
-	public RenderTargetImp( edu.cmu.cs.dennisc.render.gl.GlrRenderTarget glrRT ) {
-		this.glrRT = glrRT;
+	public RenderTargetImp( edu.cmu.cs.dennisc.render.RenderTarget renderTarget ) {
+		this.renderTarget = renderTarget;
 		this.reusableLookingGlassRenderEvent = new ReusableLookingGlassRenderEvent( this.getRenderTarget(), new Graphics2D( this.renderContext ) );
 	}
 
-	public edu.cmu.cs.dennisc.render.gl.GlrRenderTarget getRenderTarget() {
-		return this.glrRT;
+	public edu.cmu.cs.dennisc.render.RenderTarget getRenderTarget() {
+		return this.renderTarget;
 	}
 
 	public edu.cmu.cs.dennisc.render.SynchronousPicker getSynchronousPicker() {
@@ -88,33 +89,32 @@ public class RenderTargetImp {
 		return java.util.Collections.unmodifiableList( this.renderTargetListeners );
 	}
 
-	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, javax.media.opengl.GLAutoDrawable glAutoDrawable ) {
 		assert sgCamera != null : this;
 		this.sgCameras.add( sgCamera );
 		if( this.isListening() ) {
 			//pass
 		} else {
-			javax.media.opengl.GLAutoDrawable glAutoDrawable = this.glrRT.getGLAutoDrawable();
 			this.startListening( glAutoDrawable );
 		}
 	}
 
-	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, javax.media.opengl.GLAutoDrawable glAutoDrawable ) {
 		assert sgCamera != null;
 		this.sgCameras.remove( sgCamera );
 		if( this.isListening() ) {
 			if( this.sgCameras.isEmpty() ) {
-				this.stopListening( this.glrRT.getGLAutoDrawable() );
+				this.stopListening( glAutoDrawable );
 			}
 		}
 	}
 
-	public void clearSgCameras() {
+	public void clearSgCameras( javax.media.opengl.GLAutoDrawable glAutoDrawable ) {
 		if( this.sgCameras.size() > 0 ) {
 			this.sgCameras.clear();
 		}
 		if( this.isListening() ) {
-			this.stopListening( this.glrRT.getGLAutoDrawable() );
+			this.stopListening( glAutoDrawable );
 		}
 	}
 
@@ -135,7 +135,7 @@ public class RenderTargetImp {
 		while( iterator.hasPrevious() ) {
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = iterator.previous();
 			synchronized( s_actualViewportBufferForReuse ) {
-				this.glrRT.getActualViewport( s_actualViewportBufferForReuse, sgCamera );
+				this.renderTarget.getActualViewport( s_actualViewportBufferForReuse, sgCamera );
 				if( s_actualViewportBufferForReuse.contains( xPixel, yPixel ) ) {
 					return sgCamera;
 				}
@@ -193,8 +193,8 @@ public class RenderTargetImp {
 	}
 
 	private static class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent {
-		public ReusableLookingGlassRenderEvent( GlrRenderTarget lookingGlass, Graphics2D g ) {
-			super( lookingGlass, g );
+		public ReusableLookingGlassRenderEvent( edu.cmu.cs.dennisc.render.RenderTarget renderTarget, Graphics2D g ) {
+			super( renderTarget, g );
 		}
 
 		@Override
@@ -299,7 +299,7 @@ public class RenderTargetImp {
 					if( rt.getSgCameraCount() > 0 ) {
 						this.renderContext.initialize();
 						for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : this.sgCameras ) {
-							AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( sgCamera );
+							GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( sgCamera );
 							cameraAdapterI.performClearAndRenderOffscreen( this.renderContext, this.width, this.height );
 							this.reusableLookingGlassRenderEvent.prologue();
 							try {
@@ -340,10 +340,10 @@ public class RenderTargetImp {
 
 	private java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
 		if( this.drawable != null ) {
-			if( ( this.width != GlDrawableUtilities.getGlDrawableWidth( this.drawable ) ) || ( this.height != GlDrawableUtilities.getGlDrawableHeight( this.drawable ) ) ) {
+			if( ( this.width != GlDrawableUtils.getGlDrawableWidth( this.drawable ) ) || ( this.height != GlDrawableUtils.getGlDrawableHeight( this.drawable ) ) ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
-				this.width = GlDrawableUtilities.getGlDrawableWidth( this.drawable );
-				this.height = GlDrawableUtilities.getGlDrawableHeight( this.drawable );
+				this.width = GlDrawableUtils.getGlDrawableWidth( this.drawable );
+				this.height = GlDrawableUtils.getGlDrawableHeight( this.drawable );
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: drawable null" );
@@ -466,11 +466,11 @@ public class RenderTargetImp {
 			}
 		}
 
-		this.width = GlDrawableUtilities.getGlDrawableWidth( drawable );
-		this.height = GlDrawableUtilities.getGlDrawableHeight( drawable );
+		this.width = GlDrawableUtils.getGlDrawableWidth( drawable );
+		this.height = GlDrawableUtils.getGlDrawableHeight( drawable );
 
 		this.renderContext.setGL( gl );
-		this.fireInitialized( new edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent( this.getRenderTarget(), GlDrawableUtilities.getGlDrawableWidth( this.drawable ), GlDrawableUtilities.getGlDrawableHeight( this.drawable ) ) );
+		this.fireInitialized( new edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent( this.getRenderTarget(), GlDrawableUtils.getGlDrawableWidth( this.drawable ), GlDrawableUtils.getGlDrawableHeight( this.drawable ) ) );
 	}
 
 	//todo: investigate not being invoked
@@ -494,8 +494,8 @@ public class RenderTargetImp {
 		if( ( this.width > 0 ) && ( this.height > 0 ) ) {
 			//pass
 		} else {
-			int nextWidth = GlDrawableUtilities.getGlDrawableWidth( drawable );
-			int nextHeight = GlDrawableUtilities.getGlDrawableHeight( drawable );
+			int nextWidth = GlDrawableUtils.getGlDrawableWidth( drawable );
+			int nextHeight = GlDrawableUtils.getGlDrawableHeight( drawable );
 			if( ( this.width != nextWidth ) || ( this.height != nextHeight ) ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, nextWidth, nextHeight );
 				this.width = nextWidth;
@@ -538,7 +538,7 @@ public class RenderTargetImp {
 	private boolean isDisplayIgnoredDueToPreviousException = false;
 	private final ReusableLookingGlassRenderEvent reusableLookingGlassRenderEvent;
 
-	private final edu.cmu.cs.dennisc.render.gl.GlrRenderTarget glrRT;
+	private final edu.cmu.cs.dennisc.render.RenderTarget renderTarget;
 
 	private final SynchronousPicker synchronousPicker = new SynchronousPicker( this );
 	private final SynchronousImageCapturer synchronousImageCapturer = new SynchronousImageCapturer( this );

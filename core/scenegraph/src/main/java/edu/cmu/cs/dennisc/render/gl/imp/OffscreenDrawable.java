@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
+
 
 /**
  * @author Dennis Cosgrove
@@ -55,7 +57,7 @@ package edu.cmu.cs.dennisc.render.gl.imp;
 
 	public static OffscreenDrawable createInstance( DisplayCallback callback, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
 		OffscreenDrawable od = null;
-		if( IS_HARDWARE_ACCELERATION_DESIRED && GlDrawableUtilities.canCreateGlPixelBuffer() ) {
+		if( IS_HARDWARE_ACCELERATION_DESIRED && GlDrawableUtils.canCreateGlPixelBuffer() ) {
 			od = new PixelBufferOffscreenDrawable( callback );
 			try {
 				od.initialize( glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
@@ -107,8 +109,8 @@ package edu.cmu.cs.dennisc.render.gl.imp;
 	public final java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		javax.media.opengl.GLDrawable glDrawable = this.getGlDrawable();
 		if( glDrawable != null ) {
-			rv.width = GlDrawableUtilities.getGlDrawableHeight( glDrawable );
-			rv.height = GlDrawableUtilities.getGlDrawableHeight( glDrawable );
+			rv.width = GlDrawableUtils.getGlDrawableHeight( glDrawable );
+			rv.height = GlDrawableUtils.getGlDrawableHeight( glDrawable );
 		} else {
 			//todo?
 			throw new javax.media.opengl.GLException();

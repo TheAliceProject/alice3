@@ -46,39 +46,32 @@ package edu.cmu.cs.dennisc.scenegraph;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner {
-	public static class Key<T> {
+public abstract class Element extends edu.cmu.cs.dennisc.pattern.AbstractInstancePropertyOwner {
+	public static final class Key<T> {
 		public static <T> Key<T> createInstance( String repr ) {
 			return new Key<T>( repr );
 		}
-
-		private final String repr;
 
 		private Key( String repr ) {
 			this.repr = repr;
 		}
 
 		@Override
-		public java.lang.String toString() {
+		public String toString() {
 			return this.repr;
 		}
+
+		private final String repr;
 	}
 
 	public static final Key<StackTraceElement[]> DEBUG_CONSTRUCTION_STACK_TRACE_KEY = Key.createInstance( "DEBUG_CONSTRUCTION_STACK_TRACE_KEY" );
 	private static boolean isCreationStackTraceDesired = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.scenegraph.Element.isCreationStackTraceDesired" );
-
-	private final java.util.Map/* < Key<T>, T > */dataMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public Element() {
 		if( isCreationStackTraceDesired ) {
 			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 			this.putBonusDataFor( DEBUG_CONSTRUCTION_STACK_TRACE_KEY, stackTrace );
 		}
-	}
-
-	@Override
-	public boolean isComposedOfGetterAndSetterProperties() {
-		return false;
 	}
 
 	public <T> boolean containsBonusDataFor( Key<T> key ) {
@@ -102,15 +95,15 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 	public Element newCopy() {
 		Element rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.getClass() );
 		rv.setName( this.getName() );
-		for( edu.cmu.cs.dennisc.property.Property property : this.getProperties() ) {
+		for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : this.getProperties() ) {
 			Object value;
-			if( property instanceof edu.cmu.cs.dennisc.property.CopyableProperty ) {
-				value = ( (edu.cmu.cs.dennisc.property.CopyableProperty)property ).getCopy( this );
+			if( property instanceof edu.cmu.cs.dennisc.property.CopyableInstanceProperty<?> ) {
+				value = ( (edu.cmu.cs.dennisc.property.CopyableInstanceProperty<?>)property ).getCopy();
 			} else {
-				value = property.getValue( this );
+				value = property.getValue();
 			}
-			edu.cmu.cs.dennisc.property.Property rvProperty = rv.getPropertyNamed( property.getName() );
-			rvProperty.setValue( rv, value );
+			edu.cmu.cs.dennisc.property.InstanceProperty rvProperty = rv.getPropertyNamed( property.getName() );
+			rvProperty.setValue( value );
 		}
 		return rv;
 	}
@@ -128,4 +121,6 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 		sb.append( "]" );
 		return sb.toString();
 	}
+
+	private final java.util.Map/*<Key<T>, T>*/dataMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 }

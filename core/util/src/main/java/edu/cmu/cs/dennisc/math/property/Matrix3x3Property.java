@@ -45,25 +45,25 @@ package edu.cmu.cs.dennisc.math.property;
 /**
  * @author Dennis Cosgrove
  */
-public class Matrix3x3Property extends edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.math.Matrix3x3> implements edu.cmu.cs.dennisc.property.CopyableProperty<edu.cmu.cs.dennisc.math.Matrix3x3> {
+public class Matrix3x3Property extends edu.cmu.cs.dennisc.property.CopyableInstanceProperty<edu.cmu.cs.dennisc.math.Matrix3x3> {
 	public Matrix3x3Property( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Matrix3x3 value ) {
 		super( owner, value );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Matrix3x3 getCopy( edu.cmu.cs.dennisc.math.Matrix3x3 rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
-		rv.setValue( getValue( owner ) );
+	public edu.cmu.cs.dennisc.math.Matrix3x3 getCopy( edu.cmu.cs.dennisc.math.Matrix3x3 rv ) {
+		rv.setValue( this.getValue() );
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Matrix3x3 getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
-		return getCopy( edu.cmu.cs.dennisc.math.Matrix3x3.createNaN(), owner );
+	public final edu.cmu.cs.dennisc.math.Matrix3x3 getCopy() {
+		return this.getCopy( edu.cmu.cs.dennisc.math.Matrix3x3.createNaN() );
 	}
 
 	@Override
-	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Matrix3x3 value ) {
+	public void setCopy( edu.cmu.cs.dennisc.math.Matrix3x3 value ) {
 		//todo?
-		setValue( owner, new edu.cmu.cs.dennisc.math.Matrix3x3( value ) );
+		this.setValue( new edu.cmu.cs.dennisc.math.Matrix3x3( value ) );
 	}
 }

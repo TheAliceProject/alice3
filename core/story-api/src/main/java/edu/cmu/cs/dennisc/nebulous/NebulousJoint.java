@@ -43,18 +43,13 @@
 
 package edu.cmu.cs.dennisc.nebulous;
 
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-
 /**
  * @author Dennis Cosgrove
  */
 public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable implements edu.cmu.cs.dennisc.scenegraph.ModelJoint {
 	static {
-		edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.register( NebulousJoint.class, NebulousJointAdapter.class );
+		edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.register( NebulousJoint.class, GlrNebulousJoint.class );
 	}
-	private final edu.cmu.cs.dennisc.nebulous.Model nebModel;
-	private final org.lgna.story.resources.JointId jointId;
-	private edu.cmu.cs.dennisc.math.Point3 actualTranslation;
 
 	public NebulousJoint( edu.cmu.cs.dennisc.nebulous.Model nebModel, org.lgna.story.resources.JointId jointId ) {
 		this.nebModel = nebModel;
@@ -112,7 +107,7 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	//    }
 	//    
 	@Override
-	protected Composite getVehicle()
+	protected edu.cmu.cs.dennisc.scenegraph.Composite getVehicle()
 	{
 		return this.getParent();
 	}
@@ -190,4 +185,7 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	//		rv.invert();
 	//		return rv;
 	//	}
+	private final edu.cmu.cs.dennisc.nebulous.Model nebModel;
+	private final org.lgna.story.resources.JointId jointId;
+	private edu.cmu.cs.dennisc.math.Point3 actualTranslation;
 }

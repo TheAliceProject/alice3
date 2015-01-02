@@ -43,29 +43,27 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
-import edu.cmu.cs.dennisc.render.gl.imp.GlDrawableUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
-class GlrOffscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.OffscreenRenderTarget {
+/*package-private*/class GlrOffscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.OffscreenRenderTarget {
 	private final javax.media.opengl.GLOffscreenAutoDrawable glPbuffer;
 
-	/* package-private */GlrOffscreenRenderTarget( GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget lookingGlassToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	/* package-private */GlrOffscreenRenderTarget( GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		super( lookingGlassFactory, requestedCapabilities );
 		javax.media.opengl.GLContext share;
-		if( lookingGlassToShareContextWith != null ) {
-			share = lookingGlassToShareContextWith.getGLAutoDrawable().getContext();
+		if( renderTargetToShareContextWith != null ) {
+			share = renderTargetToShareContextWith.getGLAutoDrawable().getContext();
 		} else {
 			share = null;
 		}
-		this.glPbuffer = GlDrawableUtilities.createGlPixelBuffer( GlDrawableUtilities.createGlCapabilities( requestedCapabilities ), GlDrawableUtilities.getPerhapsMultisampledGlCapabilitiesChooser(), width, height, share );
+		this.glPbuffer = GlDrawableUtils.createGlPixelBuffer( GlDrawableUtils.createGlCapabilities( requestedCapabilities ), GlDrawableUtils.getPerhapsMultisampledGlCapabilitiesChooser(), width, height, share );
 	}
 
 	@Override
 	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
 		if( this.glPbuffer != null ) {
-			rv.setSize( GlDrawableUtilities.getGlDrawableWidth( this.glPbuffer ), GlDrawableUtilities.getGlDrawableHeight( this.glPbuffer ) );
+			rv.setSize( GlDrawableUtils.getGlDrawableWidth( this.glPbuffer ), GlDrawableUtils.getGlDrawableHeight( this.glPbuffer ) );
 		} else {
 			rv.setSize( 0, 0 );
 		}

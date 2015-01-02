@@ -52,11 +52,8 @@ public abstract class NodePropertyCrawler implements edu.cmu.cs.dennisc.pattern.
 	public final void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 		if( crawlable instanceof org.lgna.project.ast.Node ) {
 			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)crawlable;
-			for( edu.cmu.cs.dennisc.property.Property<?> property : node.getProperties() ) {
-				if( property instanceof edu.cmu.cs.dennisc.property.InstanceProperty<?> ) {
-					edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty = (edu.cmu.cs.dennisc.property.InstanceProperty<?>)property;
-					this.visitNodeProperty( node, instanceProperty );
-				}
+			for( edu.cmu.cs.dennisc.property.InstanceProperty<?> property : node.getProperties() ) {
+				this.visitNodeProperty( node, property );
 			}
 		}
 	}

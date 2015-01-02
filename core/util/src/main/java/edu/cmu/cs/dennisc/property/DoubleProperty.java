@@ -46,11 +46,9 @@ package edu.cmu.cs.dennisc.property;
  * @author Dennis Cosgrove
  */
 public class DoubleProperty extends InstanceProperty<Double> {
-	private boolean m_isNaNAcceptable;
-
 	public DoubleProperty( InstancePropertyOwner owner, Double value, boolean isNaNAcceptable ) {
 		super( owner, value );
-		m_isNaNAcceptable = isNaNAcceptable;
+		this.isNaNAcceptable = isNaNAcceptable;
 	}
 
 	public DoubleProperty( InstancePropertyOwner owner, Double value ) {
@@ -58,11 +56,13 @@ public class DoubleProperty extends InstanceProperty<Double> {
 	}
 
 	@Override
-	public void setValue( PropertyOwner owner, Double value ) {
+	public void setValue( Double value ) {
 		assert value != null : this;
-		assert ( Double.isNaN( value ) == false ) || m_isNaNAcceptable : this;
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
-			super.setValue( owner, value );
+		assert ( Double.isNaN( value ) == false ) || this.isNaNAcceptable : this;
+		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+			super.setValue( value );
 		}
 	}
+
+	private final boolean isNaNAcceptable;
 }

@@ -43,22 +43,20 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import edu.cmu.cs.dennisc.render.gl.GlrRenderTarget;
-
 /**
  * @author Dennis Cosgrove
  */
 public class PickParameters {
 	private final java.util.List<edu.cmu.cs.dennisc.render.PickResult> pickResults = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private final GlrRenderTarget lookingGlass;
+	private final edu.cmu.cs.dennisc.render.RenderTarget renderTarget;
 	private final edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera;
 	private final int x;
 	private final int y;
 	private final boolean isSubElementRequired;
 	private final edu.cmu.cs.dennisc.render.PickObserver pickObserver;
 
-	public PickParameters( GlrRenderTarget lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.render.PickObserver pickObserver ) {
-		this.lookingGlass = lookingGlass;
+	public PickParameters( edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.render.PickObserver pickObserver ) {
+		this.renderTarget = renderTarget;
 		this.sgCamera = sgCamera;
 		this.x = x;
 		this.y = y;
@@ -84,8 +82,8 @@ public class PickParameters {
 		return rv;
 	}
 
-	public GlrRenderTarget getLookingGlass() {
-		return this.lookingGlass;
+	public edu.cmu.cs.dennisc.render.RenderTarget getRenderTarget() {
+		return this.renderTarget;
 	}
 
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
