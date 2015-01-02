@@ -100,7 +100,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 		return ObjectMarkerMoveActionOperation.class;
 	}
 
