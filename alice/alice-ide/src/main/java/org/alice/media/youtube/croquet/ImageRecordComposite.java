@@ -112,8 +112,13 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 
 	private final edu.cmu.cs.dennisc.animation.FrameObserver frameListener = new edu.cmu.cs.dennisc.animation.FrameObserver() {
 		@Override
-		public void update( double tCurrent ) {
-			getView().updateTime( tCurrent );
+		public void update( final double tCurrent ) {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				@Override
+				public void run() {
+					getView().updateTime( tCurrent );
+				}
+			} );
 			edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> renderTarget = programContext.getProgramImp().getOnscreenRenderTarget();
 			if( renderTarget instanceof edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget ) {
 				edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget captureLookingGlass = (edu.cmu.cs.dennisc.render.gl.GlrCaptureFauxOnscreenRenderTarget)renderTarget;
