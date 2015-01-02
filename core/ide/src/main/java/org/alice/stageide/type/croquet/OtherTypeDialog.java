@@ -42,9 +42,6 @@
  */
 package org.alice.stageide.type.croquet;
 
-import org.lgna.croquet.AbstractElement;
-import org.lgna.croquet.CancelException;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -64,7 +61,7 @@ public class OtherTypeDialog extends org.lgna.croquet.ValueCreatorInputDialogCor
 		}
 
 		@Override
-		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 			return OtherTypeDialog.class;
 		}
 
@@ -76,7 +73,7 @@ public class OtherTypeDialog extends org.lgna.croquet.ValueCreatorInputDialogCor
 
 			org.lgna.project.ast.AbstractType<?, ?, ?> value = OtherTypeDialog.this.createValue( completionStep );
 			if( completionStep.isCanceled() ) {
-				throw new CancelException();
+				throw new org.lgna.croquet.CancelException();
 			} else {
 				return value;
 			}

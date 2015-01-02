@@ -70,7 +70,7 @@ public final class OwnedByCompositeOperation<T extends OperationOwningComposite<
 	}
 
 	@Override
-	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+	protected Class<? extends Element> getClassUsedForLocalization() {
 		//todo
 		return ( (AbstractComposite<?>)this.composite ).getClassUsedForLocalization();
 	}

@@ -54,7 +54,7 @@ public abstract class ValueConverter<T, TPRIME> extends ValueCreator<TPRIME> {
 	}
 
 	@Override
-	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+	protected Class<? extends Element> getClassUsedForLocalization() {
 		return this.source.getClassUsedForLocalization();
 	}
 

@@ -65,7 +65,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		}
 
 		@Override
-		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected Class<? extends Element> getClassUsedForLocalization() {
 			return this.root.getClassUsedForLocalization();
 		}
 
@@ -176,7 +176,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+	protected Class<? extends Element> getClassUsedForLocalization() {
 		return this.getCompletionModel().getClassUsedForLocalization();
 	}
 

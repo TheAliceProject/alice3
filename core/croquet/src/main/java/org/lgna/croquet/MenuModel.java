@@ -70,7 +70,7 @@ public abstract class MenuModel extends AbstractMenuModel {
 		}
 
 		@Override
-		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected Class<? extends Element> getClassUsedForLocalization() {
 			return this.menuModel.getClassUsedForLocalization();
 		}
 

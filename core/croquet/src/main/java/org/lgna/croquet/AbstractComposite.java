@@ -123,7 +123,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -159,7 +159,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -196,7 +196,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -226,7 +226,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -256,7 +256,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -286,7 +286,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -316,7 +316,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -346,7 +346,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -376,7 +376,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -406,7 +406,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -438,7 +438,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -474,7 +474,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -510,7 +510,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -562,7 +562,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.views.Composi
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 

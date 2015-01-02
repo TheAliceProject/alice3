@@ -62,7 +62,7 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 		}
 
 		@Override
-		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected Class<? extends Element> getClassUsedForLocalization() {
 			return this.coreComposite.getClassUsedForLocalization();
 		}
 	}

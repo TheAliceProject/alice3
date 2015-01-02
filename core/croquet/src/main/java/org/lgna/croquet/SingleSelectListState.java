@@ -465,7 +465,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		}
 
 		@Override
-		protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 			return SingleSelectListState.this.getClassUsedForLocalization();
 		}
 

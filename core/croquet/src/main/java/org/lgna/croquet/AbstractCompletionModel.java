@@ -58,7 +58,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends Element> getClassUsedForLocalization() {
 			return this.completionModel.getClassUsedForLocalization();
 		}
 

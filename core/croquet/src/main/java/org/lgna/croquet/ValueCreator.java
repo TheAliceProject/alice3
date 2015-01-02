@@ -70,7 +70,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 
 		@Override
-		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected Class<? extends Element> getClassUsedForLocalization() {
 			return this.valueCreator.getClassUsedForLocalization();
 		}
 

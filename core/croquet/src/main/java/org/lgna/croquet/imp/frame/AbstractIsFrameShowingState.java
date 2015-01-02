@@ -57,7 +57,7 @@ public abstract class AbstractIsFrameShowingState extends org.lgna.croquet.Boole
 	}
 
 	@Override
-	protected abstract Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization();
+	protected abstract Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization();
 
 	public abstract org.lgna.croquet.FrameComposite<?> getFrameComposite();
 

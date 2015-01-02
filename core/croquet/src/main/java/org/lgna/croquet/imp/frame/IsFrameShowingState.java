@@ -52,7 +52,7 @@ public final class IsFrameShowingState extends AbstractIsFrameShowingState {
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 		//return this.frameComposite.getClassUsedForLocalization();
 		return this.frameComposite.getClass();
 	}
