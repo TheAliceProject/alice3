@@ -66,11 +66,6 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 	}
 
 	@Override
-	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
-		return defaultValue;
-	}
-
-	@Override
 	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
 		return text;
 	}

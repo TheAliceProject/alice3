@@ -95,9 +95,4 @@ public abstract class MessageDialogComposite<V extends org.lgna.croquet.views.Pa
 	public boolean isSubTransactionHistoryRequired() {
 		return true;
 	}
-
-	@Override
-	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
-		return defaultValue;
-	}
 }

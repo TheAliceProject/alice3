@@ -50,7 +50,5 @@ public interface OperationOwningComposite<V extends org.lgna.croquet.views.Compo
 
 	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep );
 
-	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue );
-
 	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text );
 }

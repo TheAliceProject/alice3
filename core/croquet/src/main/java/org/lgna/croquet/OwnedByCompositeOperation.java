@@ -59,11 +59,6 @@ public final class OwnedByCompositeOperation<C extends OperationOwningComposite<
 	}
 
 	@Override
-	public boolean isToolBarTextClobbered() {
-		return this.composite.isToolBarTextClobbered( this.getSubKey(), super.isToolBarTextClobbered() );
-	}
-
-	@Override
 	public C getComposite() {
 		return this.composite;
 	}

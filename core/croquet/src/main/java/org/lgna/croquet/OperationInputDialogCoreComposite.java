@@ -68,11 +68,6 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 	}
 
 	@Override
-	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
-		return defaultValue;
-	}
-
-	@Override
 	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
 		return text;
 	}
