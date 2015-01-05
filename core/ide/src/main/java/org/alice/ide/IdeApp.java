@@ -81,7 +81,7 @@ public enum IdeApp {
 	}
 
 	public org.lgna.croquet.Operation getWarningDialogLaunchOperation() {
-		return this.warningDialogComposite.getLaunchOperation();
+		return this.warningDialogLaunchOperation;
 	}
 
 	public org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite getShowClassPathPropertyComposite() {
@@ -150,7 +150,14 @@ public enum IdeApp {
 
 	private final org.alice.ide.croquet.models.help.ReportIssueComposite reportIssueComposite = new org.alice.ide.croquet.models.help.ReportIssueComposite();
 
-	private final org.alice.ide.warning.WarningDialogComposite warningDialogComposite = new org.alice.ide.warning.WarningDialogComposite();
+	private final org.lgna.croquet.Operation warningDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
+			org.alice.ide.warning.WarningDialogComposite.class,
+			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.warning.WarningDialogComposite>() {
+				@Override
+				protected org.alice.ide.warning.WarningDialogComposite create() {
+					return new org.alice.ide.warning.WarningDialogComposite();
+				}
+			}, org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
 
 	private final org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite showClassPathPropertyComposite = new org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite();
 

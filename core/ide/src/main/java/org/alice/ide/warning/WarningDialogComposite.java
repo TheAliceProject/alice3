@@ -45,19 +45,13 @@ package org.alice.ide.warning;
 /**
  * @author Dennis Cosgrove
  */
-public class WarningDialogComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.warning.components.WarningView> {
+public class WarningDialogComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.ide.warning.components.WarningView> {
 	public WarningDialogComposite() {
-		super( java.util.UUID.fromString( "741c9139-a58d-46d6-ba0e-9a8e51f27980" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+		super( java.util.UUID.fromString( "741c9139-a58d-46d6-ba0e-9a8e51f27980" ) );
 	}
 
 	@Override
 	protected org.alice.ide.warning.components.WarningView createView() {
 		return new org.alice.ide.warning.components.WarningView( this );
-	}
-
-	public static void main( String[] args ) {
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		new WarningDialogComposite().getLaunchOperation().fire();
-		System.exit( 0 );
 	}
 }
