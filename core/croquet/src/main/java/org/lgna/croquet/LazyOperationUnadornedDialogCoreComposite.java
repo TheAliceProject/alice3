@@ -40,29 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.imp.launch;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LazyLaunchOperationFactory<C extends org.lgna.croquet.OperationOwningComposite<?>> {
-	public LazyLaunchOperationFactory( Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy ) {
-		this.cls = cls;
-		this.lazy = lazy;
+public abstract class LazyOperationUnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends OperationUnadornedDialogCoreComposite<V> {
+	public LazyOperationUnadornedDialogCoreComposite( java.util.UUID migrationId ) {
+		super( migrationId, IsModal.TRUE );
 	}
 
-	public edu.cmu.cs.dennisc.pattern.Lazy<C> getLazy() {
-		return this.lazy;
+	@Override
+	protected void localize() {
+		super.localize();
+		this.name = this.findDefaultLocalizedText();
 	}
 
-	/*package-private*/Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
-		return this.cls;
+	@Override
+	protected String getName() {
+		return this.name;
 	}
 
-	protected org.lgna.croquet.Operation createLaunchOperation( org.lgna.croquet.Group group, String subKeyText, org.lgna.croquet.Initializer<C> initializer ) {
-		return new LazyLaunchOperation<C>( this, group, subKeyText, initializer );
-	}
-
-	private final Class<C> cls;
-	private final edu.cmu.cs.dennisc.pattern.Lazy<C> lazy;
+	private String name;
 }

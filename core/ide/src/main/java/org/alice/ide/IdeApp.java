@@ -61,7 +61,7 @@ public enum IdeApp {
 	}
 
 	public org.lgna.croquet.Operation getHelpDialogLaunchOperation() {
-		return this.helpComposite.getLaunchOperation();
+		return this.helpDialogLaunchOperation;
 	}
 
 	public org.lgna.croquet.Operation getGraphicsHelpDialogLaunchOperation() {
@@ -122,7 +122,16 @@ public enum IdeApp {
 
 	private final org.lgna.croquet.MenuModel contributorMenuModel = new org.alice.ide.croquet.models.menubar.ContributorMenuModel( localizeReviewIsShowingState );
 
-	private final org.alice.ide.help.HelpComposite helpComposite = new org.alice.ide.help.HelpComposite();
+	//private final org.alice.ide.help.HelpComposite helpComposite = new org.alice.ide.help.HelpComposite();
+
+	private final org.lgna.croquet.Operation helpDialogLaunchOperation = new org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory<org.alice.ide.help.HelpComposite>(
+			org.alice.ide.help.HelpComposite.class,
+			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.help.HelpComposite>() {
+				@Override
+				protected org.alice.ide.help.HelpComposite create() {
+					return new org.alice.ide.help.HelpComposite();
+				}
+			}, org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
 
 	private final org.alice.ide.croquet.models.help.GraphicsHelpComposite graphicsHelpComposite = new org.alice.ide.croquet.models.help.GraphicsHelpComposite();
 
