@@ -646,33 +646,5 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.highlightStencil;
 	}
 
-	public org.lgna.croquet.BooleanState getMemoryUsageFrameIsShowingState() {
-		return this.memoryUsageFrameIsShowingState;
-	}
-
-	public org.lgna.croquet.BooleanState getLocalizeReviewIsShowingState() {
-		return this.localizeReviewIsShowingState;
-	}
-
 	private final ProjectDocumentFrame projectDocumentFrame;
-
-	private final org.lgna.croquet.BooleanState memoryUsageFrameIsShowingState = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createInstance(
-			INFORMATION_GROUP,
-			org.alice.ide.croquet.models.ui.MemoryUsageComposite.class,
-			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.croquet.models.ui.MemoryUsageComposite>() {
-				@Override
-				protected org.alice.ide.croquet.models.ui.MemoryUsageComposite create() {
-					return new org.alice.ide.croquet.models.ui.MemoryUsageComposite();
-				}
-			} );
-
-	private final org.lgna.croquet.BooleanState localizeReviewIsShowingState = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createInstance(
-			INFORMATION_GROUP,
-			org.alice.ide.localize.review.croquet.LocalizeReviewFrame.class,
-			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.localize.review.croquet.LocalizeReviewFrame>() {
-				@Override
-				protected org.alice.ide.localize.review.croquet.LocalizeReviewFrame create() {
-					return new org.alice.ide.localize.review.croquet.LocalizeReviewFrame();
-				}
-			} );
 }

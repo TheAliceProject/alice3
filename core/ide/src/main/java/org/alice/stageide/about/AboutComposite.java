@@ -47,15 +47,7 @@ package org.alice.stageide.about;
  * @author Dennis Cosgrove
  */
 public final class AboutComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.stageide.about.views.AboutView> {
-	private static class SingletonHolder {
-		private static AboutComposite instance = new AboutComposite();
-	}
-
-	public static AboutComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private AboutComposite() {
+	public AboutComposite() {
 		super( java.util.UUID.fromString( "c3c2bc1a-697e-4934-b605-1019605ce4ea" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 	}
 
@@ -67,7 +59,7 @@ public final class AboutComposite extends org.lgna.croquet.SimpleOperationUnador
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		AboutComposite.getInstance().getLaunchOperation().fire();
+		new AboutComposite().getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 }

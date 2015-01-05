@@ -51,14 +51,6 @@ import org.lgna.croquet.event.ValueListener;
  * @author Matt May
  */
 public final class ReportIssueComposite extends AbstractIssueComposite<ReportIssueView> {
-	private static class SingletonHolder {
-		private static ReportIssueComposite instance = new ReportIssueComposite();
-	}
-
-	public static ReportIssueComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private static class IssueTypeInitializer implements org.lgna.croquet.Initializer<ReportIssueComposite> {
 		public IssueTypeInitializer( edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue ) {
 			this.initialReportTypeValue = initialReportTypeValue;
@@ -72,7 +64,7 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 		private final edu.cmu.cs.dennisc.issue.IssueType initialReportTypeValue;
 	}
 
-	private ReportIssueComposite() {
+	public ReportIssueComposite() {
 		super( java.util.UUID.fromString( "96e23d44-c8b1-4da1-8d59-aea9f7ee7b42" ), IsModal.FALSE );
 		this.reportTypeState = createImmutableListStateForEnum( "reportTypeState", edu.cmu.cs.dennisc.issue.IssueType.class, null );
 		this.registerSubComposite( logInOutComposite );

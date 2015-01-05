@@ -46,15 +46,7 @@ package org.alice.ide.warning;
  * @author Dennis Cosgrove
  */
 public class WarningDialogComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.warning.components.WarningView> {
-	private static class SingletonHolder {
-		private static WarningDialogComposite instance = new WarningDialogComposite();
-	}
-
-	public static WarningDialogComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private WarningDialogComposite() {
+	public WarningDialogComposite() {
 		super( java.util.UUID.fromString( "741c9139-a58d-46d6-ba0e-9a8e51f27980" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 	}
 
@@ -65,7 +57,7 @@ public class WarningDialogComposite extends org.lgna.croquet.SimpleOperationUnad
 
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		WarningDialogComposite.getInstance().getLaunchOperation().fire();
+		new WarningDialogComposite().getLaunchOperation().fire();
 		System.exit( 0 );
 	}
 }
