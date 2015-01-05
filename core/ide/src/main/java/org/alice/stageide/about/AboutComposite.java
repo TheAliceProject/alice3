@@ -46,20 +46,13 @@ package org.alice.stageide.about;
 /**
  * @author Dennis Cosgrove
  */
-public final class AboutComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.stageide.about.views.AboutView> {
+public final class AboutComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.stageide.about.views.AboutView> {
 	public AboutComposite() {
-		super( java.util.UUID.fromString( "c3c2bc1a-697e-4934-b605-1019605ce4ea" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+		super( java.util.UUID.fromString( "c3c2bc1a-697e-4934-b605-1019605ce4ea" ) );
 	}
 
 	@Override
 	protected org.alice.stageide.about.views.AboutView createView() {
 		return new org.alice.stageide.about.views.AboutView( this );
-	}
-
-	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		new AboutComposite().getLaunchOperation().fire();
-		System.exit( 0 );
 	}
 }
