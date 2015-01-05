@@ -130,8 +130,6 @@ public enum IdeApp {
 
 	private final org.lgna.croquet.MenuModel contributorMenuModel = new org.alice.ide.croquet.models.menubar.ContributorMenuModel( localizeReviewIsShowingState );
 
-	//private final org.alice.ide.help.HelpComposite helpComposite = new org.alice.ide.help.HelpComposite();
-
 	private final org.lgna.croquet.Operation helpDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
 			org.alice.ide.help.HelpComposite.class,
 			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.help.HelpComposite>() {
