@@ -45,19 +45,13 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class ShowSystemPropertiesComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.croquet.models.help.views.ShowSystemPropertiesView> {
+public class ShowSystemPropertiesComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.ide.croquet.models.help.views.ShowSystemPropertiesView> {
 	public ShowSystemPropertiesComposite() {
-		super( java.util.UUID.fromString( "497ed779-82e4-4d6e-9198-f79d2328587a" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+		super( java.util.UUID.fromString( "497ed779-82e4-4d6e-9198-f79d2328587a" ) );
 	}
 
 	@Override
 	protected org.alice.ide.croquet.models.help.views.ShowSystemPropertiesView createView() {
 		return new org.alice.ide.croquet.models.help.views.ShowSystemPropertiesView( this );
-	}
-
-	public static void main( String[] args ) {
-		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
-		new ShowSystemPropertiesComposite().getLaunchOperation().fire();
-		System.exit( 0 );
 	}
 }

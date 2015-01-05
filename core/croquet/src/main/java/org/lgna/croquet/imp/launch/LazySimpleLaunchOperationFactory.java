@@ -46,7 +46,11 @@ package org.lgna.croquet.imp.launch;
  * @author Dennis Cosgrove
  */
 public final class LazySimpleLaunchOperationFactory<C extends org.lgna.croquet.OperationOwningComposite<?>> extends LazyLaunchOperationFactory<C> {
-	public LazySimpleLaunchOperationFactory( Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy, org.lgna.croquet.Group launchGroup ) {
+	public static <C extends org.lgna.croquet.OperationOwningComposite<?>> LazySimpleLaunchOperationFactory<C> createInstance( Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy, org.lgna.croquet.Group launchGroup ) {
+		return new LazySimpleLaunchOperationFactory<C>( cls, lazy, launchGroup );
+	}
+
+	private LazySimpleLaunchOperationFactory( Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy, org.lgna.croquet.Group launchGroup ) {
 		super( cls, lazy );
 		this.launchOperation = this.createLaunchOperation( launchGroup, null, null );
 	}

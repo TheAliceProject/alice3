@@ -84,8 +84,16 @@ public enum IdeApp {
 		return this.warningDialogComposite.getLaunchOperation();
 	}
 
+	public org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite getShowClassPathPropertyComposite() {
+		return this.showClassPathPropertyComposite;
+	}
+
+	public org.alice.ide.croquet.models.help.ShowLibraryPathPropertyComposite getShowLibraryPathPropertyComposite() {
+		return this.showLibraryPathPropertyComposite;
+	}
+
 	public org.lgna.croquet.Operation getShowSystemPropertiesDialogLaunchOperation() {
-		return this.showSystemPropertiesComposite.getLaunchOperation();
+		return this.showSystemPropertiesDialogLaunchOperation;
 	}
 
 	public org.lgna.croquet.Operation getBrowseReleaseNotesOperation() {
@@ -124,7 +132,7 @@ public enum IdeApp {
 
 	//private final org.alice.ide.help.HelpComposite helpComposite = new org.alice.ide.help.HelpComposite();
 
-	private final org.lgna.croquet.Operation helpDialogLaunchOperation = new org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory<org.alice.ide.help.HelpComposite>(
+	private final org.lgna.croquet.Operation helpDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
 			org.alice.ide.help.HelpComposite.class,
 			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.help.HelpComposite>() {
 				@Override
@@ -139,7 +147,18 @@ public enum IdeApp {
 
 	private final org.alice.ide.warning.WarningDialogComposite warningDialogComposite = new org.alice.ide.warning.WarningDialogComposite();
 
-	private final org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite showSystemPropertiesComposite = new org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite();
+	private final org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite showClassPathPropertyComposite = new org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite();
+
+	private final org.alice.ide.croquet.models.help.ShowLibraryPathPropertyComposite showLibraryPathPropertyComposite = new org.alice.ide.croquet.models.help.ShowLibraryPathPropertyComposite();
+
+	private final org.lgna.croquet.Operation showSystemPropertiesDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
+			org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite.class,
+			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite>() {
+				@Override
+				protected org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite create() {
+					return new org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite();
+				}
+			}, org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
 
 	private final org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation browseReleaseNotesOperation = new org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation();
 

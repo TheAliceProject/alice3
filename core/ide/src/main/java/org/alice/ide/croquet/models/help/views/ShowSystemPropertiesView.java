@@ -60,8 +60,8 @@ public class ShowSystemPropertiesView extends org.lgna.croquet.views.FormPanel {
 		}
 		rows.add( new org.lgna.croquet.views.LabeledFormRow( null, org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) ) );
 		org.alice.ide.croquet.models.help.ShowPathPropertyComposite[] showPathPropertyComposites = {
-				org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite.getInstance(),
-				org.alice.ide.croquet.models.help.ShowLibraryPathPropertyComposite.getInstance(),
+				org.alice.ide.IdeApp.INSTANCE.getShowClassPathPropertyComposite(),
+				org.alice.ide.IdeApp.INSTANCE.getShowLibraryPathPropertyComposite()
 		};
 		for( org.alice.ide.croquet.models.help.ShowPathPropertyComposite showPathPropertyComposite : showPathPropertyComposites ) {
 			String propertyName = showPathPropertyComposite.getPropertyName();
