@@ -48,7 +48,7 @@ package org.alice.ide.croquet.models.help;
 public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.models.help.views.AbstractIssueView> extends org.lgna.croquet.LaunchOperationUnadornedDialogCoreComposite<V> implements edu.cmu.cs.dennisc.issue.ReportGenerator {
 	public static final org.lgna.croquet.Group ISSUE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "af49d17b-9299-4a0d-b931-0a18a8abf0dd" ), "ISSUE_GROUP" );
 
-	public AbstractIssueComposite( java.util.UUID migrationId, boolean isModal ) {
+	public AbstractIssueComposite( java.util.UUID migrationId, IsModal isModal ) {
 		super( migrationId, isModal, ISSUE_GROUP );
 		this.environmentState.setEnabled( false );
 	}

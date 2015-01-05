@@ -46,13 +46,13 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class SimpleOperationUnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends LaunchOperationUnadornedDialogCoreComposite<V> {
-	public SimpleOperationUnadornedDialogCoreComposite( java.util.UUID migrationId, boolean isModal, Group operationGroup ) {
+	public SimpleOperationUnadornedDialogCoreComposite( java.util.UUID migrationId, IsModal isModal, Group operationGroup ) {
 		super( migrationId, isModal, operationGroup );
 		this.getImp().createAndRegisterNullKeyLaunchOperation();
 	}
 
 	public SimpleOperationUnadornedDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
-		this( migrationId, true, operationGroup );
+		this( migrationId, IsModal.TRUE, operationGroup );
 	}
 
 	@Override

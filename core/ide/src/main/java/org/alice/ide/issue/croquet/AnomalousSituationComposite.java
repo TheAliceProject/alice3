@@ -71,7 +71,7 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 	private final String description;
 
 	private AnomalousSituationComposite( Throwable throwable, String description ) {
-		super( java.util.UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ), true );
+		super( java.util.UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ), IsModal.TRUE );
 		this.thread = Thread.currentThread();
 		this.throwable = throwable;
 		this.description = description;

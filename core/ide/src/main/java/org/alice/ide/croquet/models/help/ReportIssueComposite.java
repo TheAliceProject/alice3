@@ -73,7 +73,7 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 	}
 
 	private ReportIssueComposite() {
-		super( java.util.UUID.fromString( "96e23d44-c8b1-4da1-8d59-aea9f7ee7b42" ), false );
+		super( java.util.UUID.fromString( "96e23d44-c8b1-4da1-8d59-aea9f7ee7b42" ), IsModal.FALSE );
 		this.reportTypeState = createImmutableListStateForEnum( "reportTypeState", edu.cmu.cs.dennisc.issue.IssueType.class, null );
 		this.registerSubComposite( logInOutComposite );
 		this.reportBugLaunchOperation = this.getImp().createAndRegisterLaunchOperation( "reportBug", new IssueTypeInitializer( edu.cmu.cs.dennisc.issue.IssueType.BUG ) );

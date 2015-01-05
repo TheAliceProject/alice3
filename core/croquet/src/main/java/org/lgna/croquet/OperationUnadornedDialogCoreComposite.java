@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class OperationUnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends UnadornedDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	public OperationUnadornedDialogCoreComposite( java.util.UUID migrationId, boolean isModal ) {
+	public OperationUnadornedDialogCoreComposite( java.util.UUID migrationId, IsModal isModal ) {
 		super( migrationId, isModal );
 	}
 

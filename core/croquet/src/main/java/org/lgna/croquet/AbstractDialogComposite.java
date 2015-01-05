@@ -49,12 +49,22 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.C
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "4e436a8e-cfbc-447c-8c80-bc488d318f5b" ), "DIALOG_IMPLEMENTATION_GROUP" );
 	protected static final org.lgna.croquet.history.Step.Key<org.lgna.croquet.views.Dialog> DIALOG_KEY = org.lgna.croquet.history.Step.Key.createInstance( "AbstractDialogComposite.DIALOG_KEY" );
 
+	protected static enum IsModal {
+		TRUE( true ),
+		FALSE( true );
+		private IsModal( boolean value ) {
+			this.value = value;
+		}
+
+		private final boolean value;
+	}
+
 	private final boolean isModal;
 	private String title;
 
-	public AbstractDialogComposite( java.util.UUID migrationId, boolean isModal ) {
+	public AbstractDialogComposite( java.util.UUID migrationId, IsModal isModal ) {
 		super( migrationId );
-		this.isModal = isModal;
+		this.isModal = isModal.value;
 	}
 
 	protected void showDialog( org.lgna.croquet.history.CompletionStep<?> step ) {

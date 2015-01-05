@@ -158,7 +158,7 @@ public abstract class AdornedDialogCoreComposite<V extends org.lgna.croquet.view
 	private final InternalCancelOperation cancelOperation = new InternalCancelOperation( this );
 
 	public AdornedDialogCoreComposite( java.util.UUID migrationId ) {
-		super( migrationId, true );
+		super( migrationId, IsModal.TRUE );
 	}
 
 	protected abstract DCC getDialogContentComposite();
