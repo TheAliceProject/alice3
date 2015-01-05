@@ -65,7 +65,7 @@ public enum IdeApp {
 	}
 
 	public org.lgna.croquet.Operation getGraphicsHelpDialogLaunchOperation() {
-		return this.graphicsHelpComposite.getLaunchOperation();
+		return this.graphicsHelpDialogLaunchOperation;
 	}
 
 	public org.lgna.croquet.Operation getReportBugLaunchOperation() {
@@ -139,7 +139,14 @@ public enum IdeApp {
 				}
 			}, org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
 
-	private final org.alice.ide.croquet.models.help.GraphicsHelpComposite graphicsHelpComposite = new org.alice.ide.croquet.models.help.GraphicsHelpComposite();
+	private final org.lgna.croquet.Operation graphicsHelpDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
+			org.alice.ide.croquet.models.help.GraphicsHelpComposite.class,
+			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.croquet.models.help.GraphicsHelpComposite>() {
+				@Override
+				protected org.alice.ide.croquet.models.help.GraphicsHelpComposite create() {
+					return new org.alice.ide.croquet.models.help.GraphicsHelpComposite();
+				}
+			}, org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
 
 	private final org.alice.ide.croquet.models.help.ReportIssueComposite reportIssueComposite = new org.alice.ide.croquet.models.help.ReportIssueComposite();
 
