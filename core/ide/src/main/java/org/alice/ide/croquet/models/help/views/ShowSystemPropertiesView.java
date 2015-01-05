@@ -71,6 +71,6 @@ public class ShowSystemPropertiesView extends org.lgna.croquet.views.FormPanel {
 					) );
 		}
 		rows.add( new org.lgna.croquet.views.LabeledFormRow( null, org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) ) );
-		rows.add( new org.lgna.croquet.views.LabeledFormRow( null, org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite.getInstance().getLaunchOperation().createHyperlink() ) );
+		rows.add( new org.lgna.croquet.views.LabeledFormRow( null, org.alice.ide.IdeApp.INSTANCE.getShowAllSystemPropertiesComposite().getLaunchOperation().createHyperlink() ) );
 	}
 }

@@ -92,6 +92,10 @@ public enum IdeApp {
 		return this.showLibraryPathPropertyComposite;
 	}
 
+	public org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite getShowAllSystemPropertiesComposite() {
+		return this.showAllSystemPropertiesComposite;
+	}
+
 	public org.lgna.croquet.Operation getShowSystemPropertiesDialogLaunchOperation() {
 		return this.showSystemPropertiesDialogLaunchOperation;
 	}
@@ -162,6 +166,8 @@ public enum IdeApp {
 	private final org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite showClassPathPropertyComposite = new org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite();
 
 	private final org.alice.ide.croquet.models.help.ShowLibraryPathPropertyComposite showLibraryPathPropertyComposite = new org.alice.ide.croquet.models.help.ShowLibraryPathPropertyComposite();
+
+	private final org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite showAllSystemPropertiesComposite = new org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite();
 
 	private final org.lgna.croquet.Operation showSystemPropertiesDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
 			org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite.class,
