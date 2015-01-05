@@ -42,12 +42,11 @@
  */
 package org.lgna.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class UnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractDialogComposite<V> {
-	public UnadornedDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, boolean isModal ) {
+	public UnadornedDialogCoreComposite( java.util.UUID migrationId, boolean isModal ) {
 		super( migrationId, isModal );
 	}
 
