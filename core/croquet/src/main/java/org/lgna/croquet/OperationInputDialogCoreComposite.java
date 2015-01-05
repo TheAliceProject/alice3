@@ -47,19 +47,8 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	private final org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp imp;
-
-	public OperationInputDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
+	public OperationInputDialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
-		this.imp = new org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp( this, operationGroup );
-	}
-
-	protected org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp getImp() {
-		return this.imp;
-	}
-
-	public org.lgna.croquet.Operation getLaunchOperation( String subKeyText ) {
-		return this.imp.getLaunchOperation( subKeyText );
 	}
 
 	@Override

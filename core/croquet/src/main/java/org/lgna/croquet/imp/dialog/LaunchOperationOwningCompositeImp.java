@@ -45,13 +45,13 @@ package org.lgna.croquet.imp.dialog;
 /**
  * @author Dennis Cosgrove
  */
-public final class LaunchOperationOwningCompositeImp<T extends org.lgna.croquet.OperationOwningComposite<?>> {
-	public LaunchOperationOwningCompositeImp( T composite, org.lgna.croquet.Group operationGroup ) {
+public final class LaunchOperationOwningCompositeImp<C extends org.lgna.croquet.OperationOwningComposite<?>> {
+	public LaunchOperationOwningCompositeImp( C composite, org.lgna.croquet.Group operationGroup ) {
 		this.composite = composite;
 		this.operationGroup = operationGroup;
 	}
 
-	public T getComposite() {
+	public C getComposite() {
 		return this.composite;
 	}
 
@@ -59,9 +59,9 @@ public final class LaunchOperationOwningCompositeImp<T extends org.lgna.croquet.
 		return this.operationGroup;
 	}
 
-	public org.lgna.croquet.Operation createAndRegisterLaunchOperation( String subKeyText, org.lgna.croquet.Initializer<T> initializer ) {
+	public org.lgna.croquet.Operation createAndRegisterLaunchOperation( String subKeyText, org.lgna.croquet.Initializer<C> initializer ) {
 		org.lgna.croquet.OwnedByCompositeOperationSubKey subKey = new org.lgna.croquet.OwnedByCompositeOperationSubKey( this.composite, subKeyText );
-		org.lgna.croquet.OwnedByCompositeOperation<T> rv = new org.lgna.croquet.OwnedByCompositeOperation<T>( this.operationGroup, this.composite, subKey, initializer );
+		org.lgna.croquet.OwnedByCompositeOperation<C> rv = new org.lgna.croquet.OwnedByCompositeOperation<C>( this.operationGroup, this.composite, subKey, initializer );
 		if( subKeyText != null ) {
 			assert mapSubKeyToInitializerLaunchOperation.containsKey( subKeyText ) == false : subKeyText;
 			this.mapSubKeyToInitializerLaunchOperation.put( subKeyText, rv );
@@ -84,7 +84,7 @@ public final class LaunchOperationOwningCompositeImp<T extends org.lgna.croquet.
 		}
 	}
 
-	private final T composite;
+	private final C composite;
 	private final org.lgna.croquet.Group operationGroup;
 
 	private final java.util.Map<String, org.lgna.croquet.Operation> mapSubKeyToInitializerLaunchOperation = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
