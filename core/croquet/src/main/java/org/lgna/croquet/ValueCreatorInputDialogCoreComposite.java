@@ -47,8 +47,6 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>, T> extends InputDialogCoreComposite<V> implements ValueCreatorOwningComposite<V, T> {
-	private String name;
-
 	public ValueCreatorInputDialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
@@ -56,12 +54,12 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.cr
 	@Override
 	protected void localize() {
 		super.localize();
-		this.name = this.findDefaultLocalizedText();
+		this.defaultTitleText = this.findDefaultLocalizedText();
 	}
 
 	@Override
-	protected String getName() {
-		return this.name;
+	protected String getDefaultTitleText() {
+		return this.defaultTitleText;
 	}
 
 	@Override
@@ -94,4 +92,6 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.cr
 		this.showDialog( completionStep );
 		return this.value;
 	}
+
+	private String defaultTitleText;
 }

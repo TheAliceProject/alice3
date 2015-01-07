@@ -52,7 +52,7 @@ public abstract class SimpleOperationInputDialogCoreComposite<V extends org.lgna
 	}
 
 	@Override
-	protected String getName() {
+	protected String getDefaultTitleText() {
 		Operation launchOperation = this.getLaunchOperation();
 		return launchOperation != null ? launchOperation.getImp().getName() : null;
 	}

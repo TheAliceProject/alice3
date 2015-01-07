@@ -179,7 +179,7 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.C
 		return true;
 	}
 
-	protected abstract String getName();
+	protected abstract String getDefaultTitleText();
 
 	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.initializeIfNecessary();
@@ -187,7 +187,7 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.C
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = this.getName();
+			rv = this.getDefaultTitleText();
 			if( rv != null ) {
 				rv = rv.replaceAll( "<[a-z]*>", "" );
 				rv = rv.replaceAll( "</[a-z]*>", "" );

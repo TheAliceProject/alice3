@@ -74,7 +74,7 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 	}
 
 	@Override
-	protected String getName() {
+	protected String getDefaultTitleText() {
 		//todo
 		return null;
 	}

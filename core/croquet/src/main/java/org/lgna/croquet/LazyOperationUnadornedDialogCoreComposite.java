@@ -53,13 +53,13 @@ public abstract class LazyOperationUnadornedDialogCoreComposite<V extends org.lg
 	@Override
 	protected void localize() {
 		super.localize();
-		this.name = this.findDefaultLocalizedText();
+		this.defaultTitleText = this.findDefaultLocalizedText();
 	}
 
 	@Override
-	protected String getName() {
-		return this.name;
+	protected String getDefaultTitleText() {
+		return this.defaultTitleText;
 	}
 
-	private String name;
+	private String defaultTitleText;
 }

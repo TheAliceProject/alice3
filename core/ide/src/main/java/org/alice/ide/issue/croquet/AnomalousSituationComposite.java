@@ -91,7 +91,7 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 	}
 
 	@Override
-	protected String getName() {
+	protected String getDefaultTitleText() {
 		Operation launchOperation = this.getLaunchOperation();
 		return launchOperation != null ? launchOperation.getImp().getName() : null;
 	}
