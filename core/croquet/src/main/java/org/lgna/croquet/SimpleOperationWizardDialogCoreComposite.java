@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SimpleOperationWizardDialogCoreComposite extends OperationWizardDialogCoreComposite {
+public abstract class SimpleOperationWizardDialogCoreComposite extends LaunchOperationWizardDialogCoreComposite {
 	public SimpleOperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
 		super( migrationId, operationGroup );
 		this.getImp().createAndRegisterNullKeyLaunchOperation();

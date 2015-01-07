@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,82 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<org.lgna.croquet.views.Panel> {
-	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?, ?>... wizardPages ) {
+public abstract class LaunchOperationWizardDialogCoreComposite extends OperationWizardDialogCoreComposite {
+	public LaunchOperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, WizardPageComposite<?, ?>... wizardPages ) {
 		super( migrationId, wizardPages );
+		this.imp = new org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp( this, operationGroup );
 	}
 
-	@Override
-	public boolean isSubTransactionHistoryRequired() {
-		return true;
+	protected org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp getImp() {
+		return this.imp;
 	}
 
-	@Override
-	public String modifyNameIfNecessary( OwnedByCompositeOperationSubKey subKey, String text ) {
-		return text;
+	public org.lgna.croquet.Operation getLaunchOperation( String subKeyText ) {
+		return this.imp.getLaunchOperation( subKeyText );
 	}
 
-	protected boolean isAutoCommitWorthAttempting() {
-		return false;
-	}
-
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
-
-	private void createAndCommitEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		try {
-			org.lgna.croquet.edits.Edit edit = this.createEdit( completionStep );
-			if( edit != null ) {
-				completionStep.commitAndInvokeDo( edit );
-			} else {
-				completionStep.finish();
-			}
-		} catch( CancelException ce ) {
-			cancel( completionStep );
-		}
-	}
-
-	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
-		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-		if( isCommited != null ) { // close button condition
-			if( isCommited ) {
-				createAndCommitEdit( completionStep );
-			} else {
-				cancel( completionStep );
-			}
-		} else {
-			cancel( completionStep );
-		}
-	}
-
-	@Override
-	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		boolean isAutoCommitDesired;
-		if( this.isAutoCommitWorthAttempting() ) {
-			java.util.Iterator<WizardPageComposite<?, ?>> iterator = this.getWizardPageIterator();
-			isAutoCommitDesired = true;
-			while( iterator.hasNext() ) {
-				WizardPageComposite<?, ?> page = iterator.next();
-				if( page.isAutoAdvanceDesired( completionStep ) ) {
-					//pass
-				} else {
-					isAutoCommitDesired = false;
-				}
-			}
-		} else {
-			isAutoCommitDesired = false;
-		}
-		if( isAutoCommitDesired ) {
-			this.createAndCommitEdit( completionStep );
-		} else {
-			this.showDialog( completionStep );
-		}
-	}
+	private final org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp imp;
 }
