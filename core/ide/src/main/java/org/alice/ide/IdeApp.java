@@ -112,6 +112,10 @@ public enum IdeApp {
 		return this.simsArtEulaDialogLaunchOperation;
 	}
 
+	public org.lgna.croquet.Operation getCreditsDialogLaunchOperation() {
+		return this.creditsDialogLaunchOperation;
+	}
+
 	public org.lgna.croquet.Operation getAboutDialogLaunchOperation() {
 		return this.aboutDialogLaunchOperation;
 	}
@@ -196,6 +200,7 @@ public enum IdeApp {
 					return new org.alice.stageide.about.SystemEulaComposite();
 				}
 			}, org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
+
 	private final org.lgna.croquet.Operation simsArtEulaDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
 			org.alice.stageide.about.SimsArtAssetsEulaComposite.class,
 			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.stageide.about.SimsArtAssetsEulaComposite>() {
@@ -204,6 +209,16 @@ public enum IdeApp {
 					return new org.alice.stageide.about.SimsArtAssetsEulaComposite();
 				}
 			}, org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
+
+	private final org.lgna.croquet.Operation creditsDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
+			org.alice.stageide.about.CreditsComposite.class,
+			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.stageide.about.CreditsComposite>() {
+				@Override
+				protected org.alice.stageide.about.CreditsComposite create() {
+					return new org.alice.stageide.about.CreditsComposite();
+				}
+			}, org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
+
 	private final org.lgna.croquet.Operation aboutDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
 			org.alice.stageide.about.AboutComposite.class,
 			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.stageide.about.AboutComposite>() {

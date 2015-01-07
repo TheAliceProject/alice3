@@ -91,7 +91,7 @@ public class AboutView extends org.lgna.croquet.views.BorderPanel {
 		org.lgna.croquet.views.FormPanel formPanel = new org.lgna.croquet.views.FormPanel() {
 			@Override
 			protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
-				for( org.lgna.croquet.Operation operation : composite.getEulaOperations() ) {
+				for( org.lgna.croquet.Operation operation : composite.getEulaDialogLaunchOperations() ) {
 					rows.add( new org.lgna.croquet.views.LabeledFormRow( operation.getSidekickLabel(), operation.createButton() ) );
 				}
 			}
@@ -106,7 +106,7 @@ public class AboutView extends org.lgna.croquet.views.BorderPanel {
 		//		);
 		//		otherPanel.addComponent( lineAxisPanel );
 		otherPanel.addComponent( org.alice.stageide.about.MainSiteBrowserOperation.getInstance().createHyperlink() );
-		otherPanel.addComponent( org.alice.stageide.about.CreditsComposite.getInstance().getLaunchOperation().createHyperlink() );
+		otherPanel.addComponent( composite.getCreditsDialogLaunchOperation().createHyperlink() );
 		otherPanel.addComponent( new org.lgna.croquet.views.HtmlMultiLineLabel( "current version: " + org.lgna.project.ProjectVersion.getCurrentVersionText() ) );
 		otherPanel.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 16 ) );
 		otherPanel.addComponent( new org.lgna.croquet.views.HtmlMultiLineLabel( "Alice 3 is dedicated to Randy." ) );

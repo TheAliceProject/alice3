@@ -51,8 +51,12 @@ public final class AboutComposite extends org.lgna.croquet.LazyOperationUnadorne
 		super( java.util.UUID.fromString( "c3c2bc1a-697e-4934-b605-1019605ce4ea" ) );
 	}
 
-	public org.lgna.croquet.Operation[] getEulaOperations() {
+	public org.lgna.croquet.Operation[] getEulaDialogLaunchOperations() {
 		return new org.lgna.croquet.Operation[] { org.alice.ide.IdeApp.INSTANCE.getSystemEulaDialogLaunchOperation(), org.alice.ide.IdeApp.INSTANCE.getSimsArtEulaDialogLaunchOperation() };
+	}
+
+	public org.lgna.croquet.Operation getCreditsDialogLaunchOperation() {
+		return org.alice.ide.IdeApp.INSTANCE.getCreditsDialogLaunchOperation();
 	}
 
 	@Override
