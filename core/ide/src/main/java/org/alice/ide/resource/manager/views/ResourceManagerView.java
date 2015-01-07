@@ -142,8 +142,8 @@ public class ResourceManagerView extends org.lgna.croquet.views.BorderPanel {
 		this.addCenterComponent( scrollPane );
 
 		org.lgna.croquet.views.Panel lineEndPanel = org.lgna.croquet.views.GridPanel.createSingleColumnGridPane(
-				org.alice.ide.resource.manager.ImportAudioResourceOperation.getInstance().createButton(),
-				org.alice.ide.resource.manager.ImportImageResourceOperation.getInstance().createButton(),
+				composite.getImportAudioResourceOperation().createButton(),
+				composite.getImportImageResourceOperation().createButton(),
 				composite.getRemoveResourceOperation().createButton(),
 				new org.lgna.croquet.views.Label(),
 				composite.getRenameResourceComposite().getLaunchOperation().createButton(),

@@ -51,6 +51,14 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 		super( java.util.UUID.fromString( "7351e244-fcd7-4b21-9b54-83254fc44db7" ) );
 	}
 
+	public ImportAudioResourceOperation getImportAudioResourceOperation() {
+		return this.importAudioResourceOperation;
+	}
+
+	public ImportImageResourceOperation getImportImageResourceOperation() {
+		return this.importImageResourceOperation;
+	}
+
 	public ResourceSingleSelectTableRowState getResourcesState() {
 		return this.resourcesState;
 	}
@@ -204,5 +212,8 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 	private final org.lgna.croquet.Operation reloadContentOperation = new ReloadContentResourceOperation( this.resourcesState );
 	private final org.lgna.croquet.Operation removeResourceOperation = new RemoveResourceOperation( this.resourcesState );
 	private final RenameResourceComposite renameResourceComposite = new RenameResourceComposite( this.resourcesState );
+	private final ImportImageResourceOperation importImageResourceOperation = new ImportImageResourceOperation();
+	private final ImportAudioResourceOperation importAudioResourceOperation = new ImportAudioResourceOperation();
+
 	private java.util.Collection<org.lgna.common.Resource> previousResources = java.util.Collections.emptyList();
 }
