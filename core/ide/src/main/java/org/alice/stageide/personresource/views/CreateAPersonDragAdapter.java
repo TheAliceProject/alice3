@@ -57,6 +57,7 @@ import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 import org.alice.interact.manipulator.ObjectRotateKeyManipulator;
+import org.lgna.story.implementation.AbstractTransformableImp;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
@@ -128,6 +129,10 @@ public class CreateAPersonDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
+	protected void updateHandleSelection( AbstractTransformableImp selected ) {
+	}
+
+	@Override
 	public void setSGCamera( AbstractCamera camera )
 	{
 		super.setSGCamera( camera );
@@ -149,12 +154,6 @@ public class CreateAPersonDragAdapter extends AbstractDragAdapter {
 				( (CameraTranslateKeyManipulator)manipulator ).setBounds( cameraBounds );
 			}
 		}
-	}
-
-	@Override
-	protected org.lgna.croquet.SingleSelectListState<org.alice.interact.handle.HandleStyle, ?> getHandleStyleState() {
-		//todo
-		return null;
 	}
 
 	@Override

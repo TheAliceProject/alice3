@@ -509,4 +509,9 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 			return false;
 		}
 	}
+
+	@Override
+	public org.alice.ide.iconfactory.IconFactoryManager createIconFactoryManager() {
+		return new org.alice.stageide.iconfactory.StoryIconFactoryManager();
+	}
 }

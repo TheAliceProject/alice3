@@ -46,22 +46,7 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.lgna.project.ast.ConstructorBlockStatement;
-import org.lgna.project.ast.ConstructorInvocationStatement;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.JavaConstructor;
-import org.lgna.project.ast.JavaConstructorParameter;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.SuperConstructorInvocationStatement;
-import org.lgna.project.ast.UserPackage;
-import org.lgna.project.ast.UserParameter;
 import org.lgna.story.resources.ModelResource;
-import org.lgna.story.resourceutilities.ConstructorParameterPair;
 
 /**
  * @author dculyba
@@ -244,84 +229,6 @@ public class AliceResourceClassUtilities {
 			}
 		}
 		return fieldsOfType.toArray( new Field[ fieldsOfType.size() ] );
-	}
-
-	public static UserPackage getAlicePackage( Class<?> resourceClass, Class<?> rootClass )
-	{
-		String resourcePackage = resourceClass.getPackage().getName();
-		String rootPackage = rootClass.getPackage().getName();
-		int rootIndex = resourcePackage.indexOf( rootPackage );
-		if( rootIndex != -1 )
-		{
-			resourcePackage = resourcePackage.substring( rootIndex + rootPackage.length() );
-			if( resourcePackage.startsWith( "." ) )
-			{
-				resourcePackage = resourcePackage.substring( 1 );
-			}
-		}
-		resourcePackage = DEFAULT_PACKAGE + resourcePackage;
-		return new UserPackage( resourcePackage );
-	}
-
-	public static NamedUserConstructor createConstructorForResourceClass( Class<?> resourceClass, ConstructorParameterPair constructorAndParameter )
-	{
-		UserParameter parameter = new UserParameter( "modelResource", resourceClass );
-		ParameterAccess parameterAccessor = new ParameterAccess( parameter );
-		SimpleArgument superArgument = new SimpleArgument( constructorAndParameter.getParameter(), parameterAccessor );
-		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement( constructorAndParameter.getConstructor(), superArgument );
-		ConstructorBlockStatement blockStatement = new ConstructorBlockStatement( superInvocation );
-		UserParameter[] parameters = { parameter };
-		NamedUserConstructor constructor = new NamedUserConstructor( parameters, blockStatement );
-		return constructor;
-	}
-
-	public static NamedUserConstructor createConstructorForResourceField( Field resourceField, ConstructorParameterPair constructorAndParameter )
-	{
-		JavaField javaField = JavaField.getInstance( resourceField );
-		FieldAccess fieldAccess = org.lgna.project.ast.AstUtilities.createStaticFieldAccess( javaField );
-		SimpleArgument superArgument = new SimpleArgument( constructorAndParameter.getParameter(), fieldAccess );
-		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement( constructorAndParameter.getConstructor(), superArgument );
-		ConstructorBlockStatement blockStatement = new ConstructorBlockStatement( superInvocation );
-		UserParameter[] parameters = {};
-		NamedUserConstructor constructor = new NamedUserConstructor( parameters, blockStatement );
-		return constructor;
-	}
-
-	public static ConstructorParameterPair getConstructorAndParameterForAliceClass( NamedUserType aliceType )
-	{
-		for( int i = 0; i < aliceType.constructors.size(); i++ )
-		{
-			NamedUserConstructor constructor = aliceType.constructors.get( i );
-			if( constructor.requiredParameters.size() == 1 )
-			{
-				UserParameter parameter = constructor.requiredParameters.get( 0 );
-				if( parameter.getValueType().isAssignableTo( ModelResource.class ) )
-				{
-					return new ConstructorParameterPair( constructor, parameter );
-				}
-			}
-		}
-		return null;
-	}
-
-	public static ConstructorParameterPair getConstructorAndParameterForJavaClass( Class<?> javaClass )
-	{
-		JavaType javeType = JavaType.getInstance( javaClass );
-		List<JavaConstructor> constructors = javeType.getDeclaredConstructors();
-		for( JavaConstructor constructor : constructors )
-		{
-			List<JavaConstructorParameter> parameters = (List<JavaConstructorParameter>)constructor.getRequiredParameters();
-			if( parameters.size() == 1 )
-			{
-				JavaConstructorParameter parameter = parameters.get( 0 );
-				JavaType javaType = parameter.getValueType();
-				if( javaType.isAssignableTo( ModelResource.class ) )
-				{
-					return new ConstructorParameterPair( constructor, parameter );
-				}
-			}
-		}
-		return null;
 	}
 
 }

@@ -99,7 +99,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 		return this.tableModel;
 	}
 
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<java.util.Locale> localeState = this.createImmutableListState( "localeState", java.util.Locale.class, org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON, 0,
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<java.util.Locale> localeState = this.createImmutableListState( "localeState", java.util.Locale.class, org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON, 13,
 			new java.util.Locale( "pt" ),
 			new java.util.Locale( "pt", "BR" ),
 			new java.util.Locale( "es" ),
@@ -176,6 +176,8 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 
 			java.util.List<Item> _allItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
+			java.util.Locale prevLocale = java.util.Locale.getDefault();
+			java.util.Locale.setDefault( new java.util.Locale( "en", "US" ) );
 			for( String classPathEntry : classPathEntries ) {
 				String bundleName = classPathEntry.substring( 0, classPathEntry.length() - SUFFIX.length() );
 				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName );
@@ -183,6 +185,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 					_allItems.add( new Item( bundleName, key, resourceBundle.getString( key ) ) );
 				}
 			}
+			java.util.Locale.setDefault( prevLocale );
 
 			this.allItems = java.util.Collections.unmodifiableList( _allItems );
 		}
@@ -191,7 +194,12 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 			java.util.List<Item> _translatedItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( Item item : this.allItems ) {
 				java.util.ResourceBundle resourceBundleB = java.util.ResourceBundle.getBundle( item.bundleName, locale );
-				item.localizedValue = resourceBundleB.getString( item.key );
+				try {
+					item.localizedValue = resourceBundleB.getString( item.key );
+				} catch( java.util.MissingResourceException mre ) {
+					item.localizedValue = "MissingResourceException";
+					mre.printStackTrace();
+				}
 			}
 			this.translatedItems = java.util.Collections.unmodifiableList( _translatedItems );
 			this.fireTableDataChanged();

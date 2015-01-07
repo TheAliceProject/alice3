@@ -179,6 +179,10 @@ public final class Ray {
 		//		this.direction = LinearAlgebra.newVector3d( transformedDirection );
 	}
 
+	public edu.cmu.cs.dennisc.math.immutable.MRay createImmutable() {
+		return new edu.cmu.cs.dennisc.math.immutable.MRay( this.origin.createImmutable(), this.direction.createImmutable() );
+	}
+
 	@Override
 	public String toString() {
 		return "Ray[origin=" + this.origin + ",direction=" + this.direction + "]";

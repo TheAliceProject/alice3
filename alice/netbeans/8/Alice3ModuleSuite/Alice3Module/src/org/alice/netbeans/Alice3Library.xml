@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE library PUBLIC "-//NetBeans//DTD Library Declaration 1.0//EN" "http://www.netbeans.org/dtds/library-declaration-1_0.dtd">
+<library version="1.0">
+    <name>Alice3Library</name>
+    <type>j2se</type>
+    <localizing-bundle>org.alice.netbeans.Bundle</localizing-bundle>
+    <volume>
+		<type>classpath</type>
+
+		<resource>jar:nbinst://org.alice.netbeans/modules/ext/gluegen-rt-2.2.4.jar!/</resource>
+		<resource>jar:nbinst://org.alice.netbeans/modules/ext/jogl-all-2.2.4.jar!/</resource>
+
+		<resource>jar:nbinst://org.alice.netbeans/modules/ext/jmf-2.1.1e.jar!/</resource>
+		<resource>jar:nbinst://org.alice.netbeans/modules/ext/javamp3-1.0.jar!/</resource>
+
+		<resource>jar:nbinst://org.alice.netbeans/modules/ext/util-0.0.1-SNAPSHOT.jar!/</resource>
+		<resource>jar:nbinst://org.alice.netbeans/modules/ext/scenegraph-0.0.1-SNAPSHOT.jar!/</resource>
+		<resource>jar:nbinst://org.alice.netbeans/modules/ext/story-api-0.0.1-SNAPSHOT.jar!/</resource>
+		<resource>jar:nbinst://org.alice.netbeans/modules/ext/alice-model-source-2014.08.20.jar!/</resource>
+		<resource>jar:nbinst://org.alice.netbeans/modules/ext/nebulous-model-source-2014.08.20.jar!/</resource>
+
+
+
+		<resource>jar:nbinst://org.alice.netbeans/modules/ext/ast-0.0.1-SNAPSHOT.jar!/</resource>
+<!--		<resource>jar:nbinst://org.alice.netbeans/modules/ext/story-api-migration-0.0.1-SNAPSHOT.jar!/</resource>-->
+
+
+
+	</volume>
+    <volume>
+		<type>src</type>
+		<resource>jar:nbinst://org.alice.netbeans/src/aliceSource.jar!/</resource>
+    </volume>
+    <volume>
+		<type>javadoc</type>
+		<resource>jar:nbinst://org.alice.netbeans/doc/aliceDocs.zip!/</resource>
+    </volume>
+</library>

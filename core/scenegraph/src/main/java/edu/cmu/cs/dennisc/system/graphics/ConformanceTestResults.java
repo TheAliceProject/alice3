@@ -56,8 +56,8 @@ import static javax.media.opengl.GL2.GL_RENDER;
 import static javax.media.opengl.GL2.GL_SELECT;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
-import edu.cmu.cs.dennisc.lookingglass.opengl.GetUtilities;
-import edu.cmu.cs.dennisc.lookingglass.opengl.PickContext;
+import edu.cmu.cs.dennisc.render.gl.imp.GetUtilities;
+import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 
 /**
  * @author Dennis Cosgrove
@@ -106,7 +106,7 @@ public enum ConformanceTestResults {
 		}
 	}
 
-	public static class PickDetails {
+	public static abstract class PickDetails {
 		private static final long FISHY_PICK_VALUE = ( PickContext.MAX_UNSIGNED_INTEGER / 2 ) + 1;
 
 		private static long convertZValueToLong( int zValue ) {
@@ -121,14 +121,9 @@ public enum ConformanceTestResults {
 			return zFront;
 		}
 
-		private final boolean isReportingPickCanBeHardwareAccelerated;
-		private final boolean isPickActuallyHardwareAccelerated;
 		private final boolean isPickFunctioningCorrectly;
 
-		private PickDetails( boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated, javax.media.opengl.GL2 gl ) {
-			this.isReportingPickCanBeHardwareAccelerated = isReportingPickCanBeHardwareAccelerated;
-			this.isPickActuallyHardwareAccelerated = isPickActuallyHardwareAccelerated;
-
+		private PickDetails( javax.media.opengl.GL2 gl ) {
 			//int n = GetUtilities.getInteger(gl, GL_NUM_EXTENSIONS);
 
 			final int SELECTION_CAPACITY = 256;
@@ -227,6 +222,21 @@ public enum ConformanceTestResults {
 			//			}
 		}
 
+		public boolean isPickFunctioningCorrectly() {
+			return this.isPickFunctioningCorrectly;
+		}
+	}
+
+	public static final class SynchronousPickDetails extends PickDetails {
+		private final boolean isReportingPickCanBeHardwareAccelerated;
+		private final boolean isPickActuallyHardwareAccelerated;
+
+		private SynchronousPickDetails( javax.media.opengl.GL2 gl, boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated ) {
+			super( gl );
+			this.isReportingPickCanBeHardwareAccelerated = isReportingPickCanBeHardwareAccelerated;
+			this.isPickActuallyHardwareAccelerated = isPickActuallyHardwareAccelerated;
+		}
+
 		public boolean isReportingPickCanBeHardwareAccelerated() {
 			return this.isReportingPickCanBeHardwareAccelerated;
 		}
@@ -234,14 +244,17 @@ public enum ConformanceTestResults {
 		public boolean isPickActuallyHardwareAccelerated() {
 			return this.isPickActuallyHardwareAccelerated;
 		}
+	}
 
-		public boolean isPickFunctioningCorrectly() {
-			return this.isPickFunctioningCorrectly;
+	public static final class AsynchronousPickDetails extends PickDetails {
+		public AsynchronousPickDetails( javax.media.opengl.GL2 gl ) {
+			super( gl );
 		}
 	}
 
 	private SharedDetails sharedDetails;
-	private PickDetails pickDetails;
+	private SynchronousPickDetails synchronousPickDetails;
+	private AsynchronousPickDetails asynchronousPickDetails;
 
 	private void updateSharedDetailsfNecessary( javax.media.opengl.GL gl ) {
 		if( this.sharedDetails != null ) {
@@ -255,12 +268,21 @@ public enum ConformanceTestResults {
 		this.updateSharedDetailsfNecessary( gl );
 	}
 
-	public void updatePickInformationIfNecessary( boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated, javax.media.opengl.GL2 gl ) {
+	public void updateSynchronousPickInformationIfNecessary( javax.media.opengl.GL2 gl, boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated ) {
 		this.updateSharedDetailsfNecessary( gl );
-		if( this.pickDetails != null ) {
+		if( this.synchronousPickDetails != null ) {
 			//pass
 		} else {
-			this.pickDetails = new PickDetails( isReportingPickCanBeHardwareAccelerated, isPickActuallyHardwareAccelerated, gl );
+			this.synchronousPickDetails = new SynchronousPickDetails( gl, isReportingPickCanBeHardwareAccelerated, isPickActuallyHardwareAccelerated );
+		}
+	}
+
+	public void updateAsynchronousPickInformationIfNecessary( javax.media.opengl.GL2 gl ) {
+		this.updateSharedDetailsfNecessary( gl );
+		if( this.asynchronousPickDetails != null ) {
+			//pass
+		} else {
+			this.asynchronousPickDetails = new AsynchronousPickDetails( gl );
 		}
 	}
 
@@ -268,7 +290,11 @@ public enum ConformanceTestResults {
 		return this.sharedDetails;
 	}
 
-	public PickDetails getPickDetails() {
-		return this.pickDetails;
+	public SynchronousPickDetails getSynchronousPickDetails() {
+		return this.synchronousPickDetails;
+	}
+
+	public AsynchronousPickDetails getAsynchronousPickDetails() {
+		return this.asynchronousPickDetails;
 	}
 }
