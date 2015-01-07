@@ -46,11 +46,11 @@ package org.alice.stageide.about;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EulaComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.stageide.about.views.EulaView> {
+public abstract class EulaComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.stageide.about.views.EulaView> {
 	private final String eulaText;
 
 	public EulaComposite( java.util.UUID migrationId, String text ) {
-		super( migrationId, org.lgna.croquet.Application.INFORMATION_GROUP );
+		super( migrationId );
 		this.eulaText = text;
 	}
 

@@ -104,6 +104,14 @@ public enum IdeApp {
 		return this.browseReleaseNotesOperation;
 	}
 
+	public org.lgna.croquet.Operation getSystemEulaDialogLaunchOperation() {
+		return this.systemEulaDialogLaunchOperation;
+	}
+
+	public org.lgna.croquet.Operation getSimsArtEulaDialogLaunchOperation() {
+		return this.simsArtEulaDialogLaunchOperation;
+	}
+
 	public org.lgna.croquet.Operation getAboutDialogLaunchOperation() {
 		return this.aboutDialogLaunchOperation;
 	}
@@ -180,6 +188,22 @@ public enum IdeApp {
 
 	private final org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation browseReleaseNotesOperation = new org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation();
 
+	private final org.lgna.croquet.Operation systemEulaDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
+			org.alice.stageide.about.SystemEulaComposite.class,
+			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.stageide.about.SystemEulaComposite>() {
+				@Override
+				protected org.alice.stageide.about.SystemEulaComposite create() {
+					return new org.alice.stageide.about.SystemEulaComposite();
+				}
+			}, org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
+	private final org.lgna.croquet.Operation simsArtEulaDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
+			org.alice.stageide.about.SimsArtAssetsEulaComposite.class,
+			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.stageide.about.SimsArtAssetsEulaComposite>() {
+				@Override
+				protected org.alice.stageide.about.SimsArtAssetsEulaComposite create() {
+					return new org.alice.stageide.about.SimsArtAssetsEulaComposite();
+				}
+			}, org.lgna.croquet.Application.INFORMATION_GROUP ).getLaunchOperation();
 	private final org.lgna.croquet.Operation aboutDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
 			org.alice.stageide.about.AboutComposite.class,
 			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.stageide.about.AboutComposite>() {

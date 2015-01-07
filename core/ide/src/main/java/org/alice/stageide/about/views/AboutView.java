@@ -65,7 +65,7 @@ public class AboutView extends org.lgna.croquet.views.BorderPanel {
 		}
 	}
 
-	public AboutView( org.alice.stageide.about.AboutComposite composite ) {
+	public AboutView( final org.alice.stageide.about.AboutComposite composite ) {
 		super( composite );
 
 		StringBuilder sb = new StringBuilder();
@@ -91,8 +91,8 @@ public class AboutView extends org.lgna.croquet.views.BorderPanel {
 		org.lgna.croquet.views.FormPanel formPanel = new org.lgna.croquet.views.FormPanel() {
 			@Override
 			protected void appendRows( java.util.List<org.lgna.croquet.views.LabeledFormRow> rows ) {
-				for( org.alice.stageide.about.EulaComposite eulaComposite : new org.alice.stageide.about.EulaComposite[] { org.alice.stageide.about.SystemEulaComposite.getInstance(), org.alice.stageide.about.SimsArtAssetsEulaComposite.getInstance() } ) {
-					rows.add( new org.lgna.croquet.views.LabeledFormRow( eulaComposite.getLaunchOperation().getSidekickLabel(), eulaComposite.getLaunchOperation().createButton() ) );
+				for( org.lgna.croquet.Operation operation : composite.getEulaOperations() ) {
+					rows.add( new org.lgna.croquet.views.LabeledFormRow( operation.getSidekickLabel(), operation.createButton() ) );
 				}
 			}
 		};
