@@ -56,8 +56,8 @@ public enum IdeApp {
 		return this.localizeReviewIsShowingState;
 	}
 
-	public org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite getIsRecursionAllowedPreferenceDialogComposite() {
-		return this.isRecursionAllowedPreferenceDialogComposite;
+	public org.lgna.croquet.Operation getIsRecursionAllowedPreferenceDialogLaunchOperation() {
+		return this.isRecursionAllowedPreferenceDialogLaunchOperation;
 	}
 
 	public org.lgna.croquet.MenuModel getContributorMenuModel() {
@@ -148,7 +148,14 @@ public enum IdeApp {
 				}
 			} );
 
-	private final org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite isRecursionAllowedPreferenceDialogComposite = new org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite( 0 );
+	private final org.lgna.croquet.Operation isRecursionAllowedPreferenceDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
+			org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite.class,
+			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite>() {
+				@Override
+				protected org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite create() {
+					return new org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite();
+				}
+			}, org.lgna.croquet.Application.APPLICATION_UI_GROUP ).getLaunchOperation();
 
 	private final org.lgna.croquet.MenuModel contributorMenuModel = new org.alice.ide.croquet.models.menubar.ContributorMenuModel( localizeReviewIsShowingState );
 

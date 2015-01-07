@@ -45,10 +45,22 @@ package org.alice.ide.preferences.recursion;
 /**
  * @author Dennis Cosgrove
  */
-public final class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView> {
-	public IsRecursionAllowedPreferenceDialogComposite( int index ) {
-		super( java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+public final class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView> {
+	private IsRecursionAllowedPreferenceDialogComposite( int index ) {
+		super( java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ) );
 		this.depth = index;
+		this.next = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
+				org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite.class,
+				new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite>() {
+					@Override
+					protected org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite create() {
+						return new org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite( depth + 1 );
+					}
+				}, org.lgna.croquet.Application.APPLICATION_UI_GROUP ).getLaunchOperation();
+	}
+
+	public IsRecursionAllowedPreferenceDialogComposite() {
+		this( 0 );
 	}
 
 	@Override
@@ -64,17 +76,12 @@ public final class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.
 		return this.recursiveButtonText;
 	}
 
-	public IsRecursionAllowedPreferenceDialogComposite getNext() {
-		if( this.next != null ) {
-			//pass
-		} else {
-			this.next = new IsRecursionAllowedPreferenceDialogComposite( this.depth + 1 );
-		}
+	public org.lgna.croquet.Operation getNext() {
 		return this.next;
 	}
 
 	private final org.lgna.croquet.PlainStringValue descriptionText = this.createStringValue( "descriptionText" );
 	private final org.lgna.croquet.PlainStringValue recursiveButtonText = this.createStringValue( "recursiveButtonText" );
 	private final int depth;
-	private IsRecursionAllowedPreferenceDialogComposite next;
+	private final org.lgna.croquet.Operation next;
 }
