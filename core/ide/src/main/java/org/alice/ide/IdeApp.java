@@ -56,6 +56,10 @@ public enum IdeApp {
 		return this.localizeReviewIsShowingState;
 	}
 
+	public org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite getIsRecursionAllowedPreferenceDialogComposite() {
+		return this.isRecursionAllowedPreferenceDialogComposite;
+	}
+
 	public org.lgna.croquet.MenuModel getContributorMenuModel() {
 		return this.contributorMenuModel;
 	}
@@ -143,6 +147,8 @@ public enum IdeApp {
 					return new org.alice.ide.localize.review.croquet.LocalizeReviewFrame();
 				}
 			} );
+
+	private final org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite isRecursionAllowedPreferenceDialogComposite = new org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite( 0 );
 
 	private final org.lgna.croquet.MenuModel contributorMenuModel = new org.alice.ide.croquet.models.menubar.ContributorMenuModel( localizeReviewIsShowingState );
 

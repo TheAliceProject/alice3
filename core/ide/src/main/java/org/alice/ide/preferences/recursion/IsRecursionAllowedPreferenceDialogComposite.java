@@ -46,20 +46,7 @@ package org.alice.ide.preferences.recursion;
  * @author Dennis Cosgrove
  */
 public final class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView> {
-	private static class SingletonHolder {
-		private static IsRecursionAllowedPreferenceDialogComposite instance = new IsRecursionAllowedPreferenceDialogComposite( 0 );
-	}
-
-	public static IsRecursionAllowedPreferenceDialogComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final org.lgna.croquet.PlainStringValue descriptionText = this.createStringValue( "descriptionText" );
-	private final org.lgna.croquet.PlainStringValue recursiveButtonText = this.createStringValue( "recursiveButtonText" );
-	private final int depth;
-	private IsRecursionAllowedPreferenceDialogComposite next;
-
-	private IsRecursionAllowedPreferenceDialogComposite( int index ) {
+	public IsRecursionAllowedPreferenceDialogComposite( int index ) {
 		super( java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
 		this.depth = index;
 	}
@@ -85,4 +72,9 @@ public final class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.
 		}
 		return this.next;
 	}
+
+	private final org.lgna.croquet.PlainStringValue descriptionText = this.createStringValue( "descriptionText" );
+	private final org.lgna.croquet.PlainStringValue recursiveButtonText = this.createStringValue( "recursiveButtonText" );
+	private final int depth;
+	private IsRecursionAllowedPreferenceDialogComposite next;
 }
