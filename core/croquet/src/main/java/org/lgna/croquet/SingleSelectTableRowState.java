@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleSelectTableRowState<T> extends ItemState<T> {
+public abstract class SingleSelectTableRowState<T> extends ItemState<T> implements Iterable<T> {
 	public class SwingModel {
 		private final javax.swing.table.TableModel tableModel;
 		private final javax.swing.ListSelectionModel listSelectionModel;
@@ -102,7 +102,25 @@ public abstract class SingleSelectTableRowState<T> extends ItemState<T> {
 	protected void localize() {
 	}
 
-	protected abstract T getActualValueAt( int selectionIndex );
+	public abstract T getItemAt( int index );
+
+	public int getItemCount() {
+		return this.swingModel.tableModel.getRowCount();
+	}
+
+	public java.util.Collection<T> getItems() {
+		final int N = this.getItemCount();
+		java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( N );
+		for( int i = 0; i < N; i++ ) {
+			rv.add( this.getItemAt( i ) );
+		}
+		return rv;
+	}
+
+	@Override
+	public java.util.Iterator<T> iterator() {
+		return this.getItems().iterator();
+	}
 
 	@Override
 	protected final T getSwingValue() {
@@ -113,7 +131,7 @@ public abstract class SingleSelectTableRowState<T> extends ItemState<T> {
 		} else {
 			final int N = this.swingModel.getTableModel().getRowCount();
 			if( selectionIndex < N ) {
-				return this.getActualValueAt( selectionIndex );
+				return this.getItemAt( selectionIndex );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( selectionIndex, N, this );
 				return null;

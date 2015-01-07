@@ -46,36 +46,9 @@ package org.alice.ide.resource.manager;
 /**
  * @author Dennis Cosgrove
  */
-public final class ResourceManagerComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.resource.manager.views.ResourceManagerView> {
-	private static class SingletonHolder {
-		private static ResourceManagerComposite instance = new ResourceManagerComposite();
-	}
-
-	public static ResourceManagerComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final org.lgna.project.event.ResourceListener resourceListener = new org.lgna.project.event.ResourceListener() {
-		@Override
-		public void resourceAdded( org.lgna.project.event.ResourceEvent e ) {
-			reloadTableModel();
-		}
-
-		@Override
-		public void resourceRemoved( org.lgna.project.event.ResourceEvent e ) {
-			reloadTableModel();
-		}
-	};
-
-	private final org.lgna.croquet.event.ValueListener<org.lgna.common.Resource> rowListener = new org.lgna.croquet.event.ValueListener<org.lgna.common.Resource>() {
-		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.common.Resource> e ) {
-			handleSelection( e.getNextValue() );
-		}
-	};
-
-	private ResourceManagerComposite() {
-		super( java.util.UUID.fromString( "7351e244-fcd7-4b21-9b54-83254fc44db7" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
+public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.ide.resource.manager.views.ResourceManagerView> {
+	public ResourceManagerComposite() {
+		super( java.util.UUID.fromString( "7351e244-fcd7-4b21-9b54-83254fc44db7" ) );
 	}
 
 	public ResourceSingleSelectTableRowState getResourceState() {
@@ -89,6 +62,22 @@ public final class ResourceManagerComposite extends org.lgna.croquet.SimpleOpera
 
 	private void reloadTableModel( org.lgna.project.Project project ) {
 		this.getResourceState().reloadTableModel( project );
+		java.util.Collection<org.lgna.common.Resource> currentResources = this.getResourceState().getItems();
+		for( org.lgna.common.Resource resource : this.previousResources ) {
+			if( currentResources.contains( resource ) ) {
+				//pass
+			} else {
+				resource.removeNameListener( this.nameListener );
+			}
+		}
+		for( org.lgna.common.Resource resource : currentResources ) {
+			if( this.previousResources.contains( resource ) ) {
+				//pass
+			} else {
+				resource.addNameListener( this.nameListener );
+			}
+		}
+		this.previousResources = currentResources;
 	}
 
 	private void reloadTableModel() {
@@ -129,6 +118,10 @@ public final class ResourceManagerComposite extends org.lgna.croquet.SimpleOpera
 			}
 		}
 		this.getResourceState().removeNewSchoolValueListener( this.rowListener );
+		for( org.lgna.common.Resource resource : this.previousResources ) {
+			resource.removeNameListener( this.nameListener );
+		}
+		this.previousResources = java.util.Collections.emptyList();
 		super.handlePostDeactivation();
 	}
 
@@ -164,10 +157,36 @@ public final class ResourceManagerComposite extends org.lgna.croquet.SimpleOpera
 		RemoveResourceOperation.getInstance().setToolTipText( removeToolTipText );
 	}
 
-	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		ResourceManagerComposite.getInstance().getLaunchOperation().fire();
-		System.exit( 0 );
-	}
+	private final org.lgna.project.event.ResourceListener resourceListener = new org.lgna.project.event.ResourceListener() {
+		@Override
+		public void resourceAdded( org.lgna.project.event.ResourceEvent e ) {
+			reloadTableModel();
+		}
+
+		@Override
+		public void resourceRemoved( org.lgna.project.event.ResourceEvent e ) {
+			reloadTableModel();
+		}
+	};
+
+	private final edu.cmu.cs.dennisc.pattern.event.NameListener nameListener = new edu.cmu.cs.dennisc.pattern.event.NameListener() {
+		@Override
+		public void nameChanging( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
+		}
+
+		@Override
+		public void nameChanged( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nameEvent );
+			getView().repaint();
+		}
+	};
+
+	private final org.lgna.croquet.event.ValueListener<org.lgna.common.Resource> rowListener = new org.lgna.croquet.event.ValueListener<org.lgna.common.Resource>() {
+		@Override
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.common.Resource> e ) {
+			handleSelection( e.getNextValue() );
+		}
+	};
+
+	private java.util.Collection<org.lgna.common.Resource> previousResources = java.util.Collections.emptyList();
 }

@@ -127,19 +127,6 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer<org.lgna.c
  * @author Dennis Cosgrove
  */
 public class ResourceManagerView extends org.lgna.croquet.views.BorderPanel {
-	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
-		@Override
-		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickUnquoteCount ) {
-			if( quoteClickUnquoteCount == 2 ) {
-				if( org.alice.ide.resource.manager.ResourceSingleSelectTableRowState.getInstance().getValue() != null ) {
-					org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getLaunchOperation().fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
-				}
-			}
-		}
-	};
-
-	private final org.lgna.croquet.views.Table<org.lgna.common.Resource> table;
-
 	public ResourceManagerView( org.alice.ide.resource.manager.ResourceManagerComposite composite ) {
 		super( composite, 8, 8 );
 
@@ -182,4 +169,17 @@ public class ResourceManagerView extends org.lgna.croquet.views.BorderPanel {
 		this.table.removeMouseListener( this.mouseAdapter );
 		super.handleUndisplayable();
 	}
+
+	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
+		@Override
+		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickUnquoteCount ) {
+			if( quoteClickUnquoteCount == 2 ) {
+				if( org.alice.ide.resource.manager.ResourceSingleSelectTableRowState.getInstance().getValue() != null ) {
+					org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getLaunchOperation().fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
+				}
+			}
+		}
+	};
+
+	private final org.lgna.croquet.views.Table<org.lgna.common.Resource> table;
 }

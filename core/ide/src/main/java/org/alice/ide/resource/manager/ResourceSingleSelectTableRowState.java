@@ -126,9 +126,9 @@ public class ResourceSingleSelectTableRowState extends org.lgna.croquet.SingleSe
 	}
 
 	@Override
-	protected org.lgna.common.Resource getActualValueAt( int selectionIndex ) {
+	public org.lgna.common.Resource getItemAt( int index ) {
 		ResourceTableModel resourceTableModel = (ResourceTableModel)this.getSwingModel().getTableModel();
-		return resourceTableModel.getResources()[ selectionIndex ];
+		return resourceTableModel.getResources()[ index ];
 	}
 
 	@Override
