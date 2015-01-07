@@ -113,15 +113,7 @@ public class ResourceSingleSelectTableRowState extends org.lgna.croquet.SingleSe
 	public static final int TYPE_COLUMN_INDEX = 1;
 	public static final int IS_REFERENCED_COLUMN_INDEX = 2;
 
-	private static class SingletonHolder {
-		private static ResourceSingleSelectTableRowState instance = new ResourceSingleSelectTableRowState();
-	}
-
-	public static ResourceSingleSelectTableRowState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ResourceSingleSelectTableRowState() {
+	public ResourceSingleSelectTableRowState() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2b630438-6852-4b4d-b234-a1fba69f81f8" ), null, org.alice.ide.croquet.codecs.ResourceCodec.getInstance( org.lgna.common.Resource.class ), new ResourceTableModel() );
 	}
 

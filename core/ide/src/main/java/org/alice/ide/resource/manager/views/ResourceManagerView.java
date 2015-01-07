@@ -130,7 +130,7 @@ public class ResourceManagerView extends org.lgna.croquet.views.BorderPanel {
 	public ResourceManagerView( org.alice.ide.resource.manager.ResourceManagerComposite composite ) {
 		super( composite, 8, 8 );
 
-		this.table = composite.getResourceState().createTable();
+		this.table = composite.getResourcesState().createTable();
 		javax.swing.JTable jTable = this.table.getAwtComponent();
 		javax.swing.table.JTableHeader tableHeader = jTable.getTableHeader();
 		tableHeader.setReorderingAllowed( false );
@@ -144,10 +144,10 @@ public class ResourceManagerView extends org.lgna.croquet.views.BorderPanel {
 		org.lgna.croquet.views.Panel lineEndPanel = org.lgna.croquet.views.GridPanel.createSingleColumnGridPane(
 				org.alice.ide.resource.manager.ImportAudioResourceOperation.getInstance().createButton(),
 				org.alice.ide.resource.manager.ImportImageResourceOperation.getInstance().createButton(),
-				org.alice.ide.resource.manager.RemoveResourceOperation.getInstance().createButton(),
+				composite.getRemoveResourceOperation().createButton(),
 				new org.lgna.croquet.views.Label(),
-				org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getLaunchOperation().createButton(),
-				org.alice.ide.resource.manager.ReloadContentResourceOperation.getInstance().createButton()
+				composite.getRenameResourceComposite().getLaunchOperation().createButton(),
+				composite.getReloadContentOperation().createButton()
 				);
 		this.addLineEndComponent( new org.lgna.croquet.views.BorderPanel.Builder()
 				.pageStart( lineEndPanel )
@@ -174,8 +174,9 @@ public class ResourceManagerView extends org.lgna.croquet.views.BorderPanel {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickUnquoteCount ) {
 			if( quoteClickUnquoteCount == 2 ) {
-				if( org.alice.ide.resource.manager.ResourceSingleSelectTableRowState.getInstance().getValue() != null ) {
-					org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getLaunchOperation().fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
+				org.alice.ide.resource.manager.ResourceManagerComposite composite = (org.alice.ide.resource.manager.ResourceManagerComposite)getComposite();
+				if( composite.getResourcesState().getValue() != null ) {
+					composite.getRenameResourceComposite().getLaunchOperation().fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
 				}
 			}
 		}

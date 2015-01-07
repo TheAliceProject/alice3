@@ -47,20 +47,13 @@ package org.alice.ide.resource.manager;
  * @author Dennis Cosgrove
  */
 public class RenameResourceComposite extends org.alice.ide.ast.rename.RenameComposite<org.alice.ide.resource.manager.views.ResourceRenamePanel> {
-	private static class SingletonHolder {
-		private static RenameResourceComposite instance = new RenameResourceComposite();
-	}
-
-	public static RenameResourceComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private RenameResourceComposite() {
+	public RenameResourceComposite( org.lgna.croquet.ItemState<org.lgna.common.Resource> resourceState ) {
 		super( java.util.UUID.fromString( "52410415-1293-4857-9e35-4d52bc4f2a9d" ), new org.alice.ide.name.validators.ResourceNameValidator() );
+		this.resourceState = resourceState;
 	}
 
 	private org.lgna.common.Resource getResource() {
-		return ResourceSingleSelectTableRowState.getInstance().getValue();
+		return this.resourceState.getValue();
 	}
 
 	@Override
@@ -86,9 +79,11 @@ public class RenameResourceComposite extends org.alice.ide.ast.rename.RenameComp
 
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.common.Resource resource = ResourceSingleSelectTableRowState.getInstance().getValue();
+		org.lgna.common.Resource resource = this.resourceState.getValue();
 		( (org.alice.ide.name.validators.ResourceNameValidator)this.getNameValidator() ).setResource( resource );
 		this.getView().setResource( resource );
 		super.handlePreShowDialog( step );
 	}
+
+	private final org.lgna.croquet.ItemState<org.lgna.common.Resource> resourceState;
 }

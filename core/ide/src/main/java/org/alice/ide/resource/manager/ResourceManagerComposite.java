@@ -51,8 +51,20 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 		super( java.util.UUID.fromString( "7351e244-fcd7-4b21-9b54-83254fc44db7" ) );
 	}
 
-	public ResourceSingleSelectTableRowState getResourceState() {
-		return ResourceSingleSelectTableRowState.getInstance();
+	public ResourceSingleSelectTableRowState getResourcesState() {
+		return this.resourcesState;
+	}
+
+	public RenameResourceComposite getRenameResourceComposite() {
+		return this.renameResourceComposite;
+	}
+
+	public org.lgna.croquet.Operation getRemoveResourceOperation() {
+		return this.removeResourceOperation;
+	}
+
+	public org.lgna.croquet.Operation getReloadContentOperation() {
+		return this.reloadContentOperation;
 	}
 
 	@Override
@@ -61,8 +73,8 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 	}
 
 	private void reloadTableModel( org.lgna.project.Project project ) {
-		this.getResourceState().reloadTableModel( project );
-		java.util.Collection<org.lgna.common.Resource> currentResources = this.getResourceState().getItems();
+		this.resourcesState.reloadTableModel( project );
+		java.util.Collection<org.lgna.common.Resource> currentResources = this.resourcesState.getItems();
 		for( org.lgna.common.Resource resource : this.previousResources ) {
 			if( currentResources.contains( resource ) ) {
 				//pass
@@ -104,7 +116,7 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 			project = null;
 		}
 		this.reloadTableModel( project );
-		this.getResourceState().addAndInvokeNewSchoolValueListener( this.rowListener );
+		this.resourcesState.addAndInvokeNewSchoolValueListener( this.rowListener );
 		super.handlePreActivation();
 	}
 
@@ -117,7 +129,7 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 				project.removeResourceListener( this.resourceListener );
 			}
 		}
-		this.getResourceState().removeNewSchoolValueListener( this.rowListener );
+		this.resourcesState.removeNewSchoolValueListener( this.rowListener );
 		for( org.lgna.common.Resource resource : this.previousResources ) {
 			resource.removeNameListener( this.nameListener );
 		}
@@ -133,8 +145,8 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 		boolean isReferenced;
 		if( isSelected ) {
 
-			javax.swing.table.TableModel resourceTableModel = this.getResourceState().getSwingModel().getTableModel();
-			javax.swing.ListSelectionModel listSelectionModel = this.getResourceState().getSwingModel().getListSelectionModel();
+			javax.swing.table.TableModel resourceTableModel = this.resourcesState.getSwingModel().getTableModel();
+			javax.swing.ListSelectionModel listSelectionModel = this.resourcesState.getSwingModel().getListSelectionModel();
 
 			isReferenced = (Boolean)resourceTableModel.getValueAt( listSelectionModel.getLeadSelectionIndex(), ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX );
 			renameAndReplaceToolTipText = null;
@@ -148,13 +160,13 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 			renameAndReplaceToolTipText = "select resource";
 			removeToolTipText = renameAndReplaceToolTipText;
 		}
-		RenameResourceComposite.getInstance().getLaunchOperation().setEnabled( isSelected );
-		RenameResourceComposite.getInstance().getLaunchOperation().setToolTipText( renameAndReplaceToolTipText );
-		ReloadContentResourceOperation.getInstance().setEnabled( isSelected );
-		ReloadContentResourceOperation.getInstance().setToolTipText( renameAndReplaceToolTipText );
+		this.renameResourceComposite.getLaunchOperation().setEnabled( isSelected );
+		this.renameResourceComposite.getLaunchOperation().setToolTipText( renameAndReplaceToolTipText );
+		this.reloadContentOperation.setEnabled( isSelected );
+		this.reloadContentOperation.setToolTipText( renameAndReplaceToolTipText );
 
-		RemoveResourceOperation.getInstance().setEnabled( isSelected && ( isReferenced == false ) );
-		RemoveResourceOperation.getInstance().setToolTipText( removeToolTipText );
+		this.removeResourceOperation.setEnabled( isSelected && ( isReferenced == false ) );
+		this.removeResourceOperation.setToolTipText( removeToolTipText );
 	}
 
 	private final org.lgna.project.event.ResourceListener resourceListener = new org.lgna.project.event.ResourceListener() {
@@ -188,5 +200,9 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 		}
 	};
 
+	private final ResourceSingleSelectTableRowState resourcesState = new ResourceSingleSelectTableRowState();
+	private final org.lgna.croquet.Operation reloadContentOperation = new ReloadContentResourceOperation( this.resourcesState );
+	private final org.lgna.croquet.Operation removeResourceOperation = new RemoveResourceOperation( this.resourcesState );
+	private final RenameResourceComposite renameResourceComposite = new RenameResourceComposite( this.resourcesState );
 	private java.util.Collection<org.lgna.common.Resource> previousResources = java.util.Collections.emptyList();
 }

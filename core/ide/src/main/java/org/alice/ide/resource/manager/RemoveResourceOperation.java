@@ -45,17 +45,9 @@ package org.alice.ide.resource.manager;
 /**
  * @author Dennis Cosgrove
  */
-public final class RemoveResourceOperation extends SelectedResourceOperation {
-	private static class SingletonHolder {
-		private static RemoveResourceOperation instance = new RemoveResourceOperation();
-	}
-
-	public static RemoveResourceOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private RemoveResourceOperation() {
-		super( java.util.UUID.fromString( "a1df4e40-3d74-46b7-8d57-9b55d793cea6" ) );
+/*package-private*/final class RemoveResourceOperation extends SelectedResourceOperation {
+	public RemoveResourceOperation( org.lgna.croquet.ItemState<org.lgna.common.Resource> resourceState ) {
+		super( java.util.UUID.fromString( "a1df4e40-3d74-46b7-8d57-9b55d793cea6" ), resourceState );
 	}
 
 	@Override
