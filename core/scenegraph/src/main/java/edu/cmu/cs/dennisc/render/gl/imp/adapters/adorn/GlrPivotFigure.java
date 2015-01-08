@@ -52,16 +52,16 @@ public class GlrPivotFigure extends GlrAdornment<edu.cmu.cs.dennisc.scenegraph.a
 	private static final float FULL = 1.0f;
 	private static final float ZERO = 0.0f;
 
-	private static void glPivotFigure( javax.media.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite> parent ) {
+	private static void glPivotFigure( javax.media.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> glrParent ) {
 		gl.glPushMatrix();
 		try {
 			gl.glMultMatrixd( ltParent );
-			Iterable<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> componentAdapters = parent.accessChildren();
-			synchronized( componentAdapters ) {
-				for( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?> componentAdapter : componentAdapters ) {
-					if( componentAdapter instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<?> ) {
-						edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<?> child = (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<?>)componentAdapter;
-						java.nio.DoubleBuffer ltChild = child.accessLocalTransformationAsBuffer();
+			Iterable<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> glrChildren = glrParent.accessChildren();
+			synchronized( glrChildren ) {
+				for( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?> glrChild : glrChildren ) {
+					if( glrChild instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<?> ) {
+						edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<?> glrTransformable = (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<?>)glrChild;
+						java.nio.DoubleBuffer ltChild = glrTransformable.accessLocalTransformationAsBuffer();
 						gl.glBegin( GL_LINES );
 						try {
 
@@ -82,7 +82,7 @@ public class GlrPivotFigure extends GlrAdornment<edu.cmu.cs.dennisc.scenegraph.a
 						} finally {
 							gl.glEnd();
 						}
-						glPivotFigure( gl, ltChild, child );
+						glPivotFigure( gl, ltChild, glrTransformable );
 					}
 				}
 			}
