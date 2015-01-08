@@ -205,11 +205,6 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 		m_backFacingAppearanceAdapter = null;
 	}
 
-	@Override
-	public void setup( RenderContext rc ) {
-		//pass
-	}
-
 	protected void renderGeometry( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, RenderType renderType ) {
 		synchronized( m_geometryAdapters ) {
 			for( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : m_geometryAdapters ) {

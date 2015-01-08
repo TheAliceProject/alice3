@@ -45,7 +45,6 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import static javax.media.opengl.GL2ES1.GL_CLIP_PLANE0;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;
 
 /**
  * @author Dennis Cosgrove
@@ -113,11 +112,6 @@ public class GlrPlanarReflector extends GlrVisual<edu.cmu.cs.dennisc.scenegraph.
 		if( property == owner.geometries ) {
 			updateGeometryTransformation();
 		}
-	}
-
-	@Override
-	public void setup( RenderContext rc ) {
-		//pass
 	}
 
 	@Override

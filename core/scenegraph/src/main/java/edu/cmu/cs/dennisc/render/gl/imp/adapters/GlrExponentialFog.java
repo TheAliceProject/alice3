@@ -55,8 +55,8 @@ public class GlrExponentialFog extends GlrFog<edu.cmu.cs.dennisc.scenegraph.Expo
 	private float m_density;
 
 	@Override
-	public void setup( RenderContext rc ) {
-		super.setup( rc );
+	public void setupAffectors( RenderContext rc ) {
+		super.setupAffectors( rc );
 		rc.gl.glFogi( GL_FOG_MODE, GL_EXP );
 		rc.gl.glFogf( GL_FOG_DENSITY, m_density );
 	}

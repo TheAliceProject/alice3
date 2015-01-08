@@ -57,8 +57,8 @@ public class GlrLinearFog extends GlrFog<edu.cmu.cs.dennisc.scenegraph.LinearFog
 	private float m_far;
 
 	@Override
-	public void setup( RenderContext rc ) {
-		super.setup( rc );
+	public void setupAffectors( RenderContext rc ) {
+		super.setupAffectors( rc );
 		rc.gl.glFogi( GL_FOG_MODE, GL_LINEAR );
 		rc.gl.glFogf( GL_FOG_START, m_near );
 		rc.gl.glFogf( GL_FOG_END, m_far );

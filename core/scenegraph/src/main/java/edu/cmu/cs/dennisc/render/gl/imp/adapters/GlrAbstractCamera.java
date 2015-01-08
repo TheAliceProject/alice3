@@ -101,11 +101,6 @@ public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.
 		m_isLetterboxedAsOpposedToDistorted = isLetterboxedAsOpposedToDistorted;
 	}
 
-	@Override
-	public void setup( RenderContext rc ) {
-		//pass
-	}
-
 	protected abstract void setupProjection( Context context, java.awt.Rectangle actualViewport );
 
 	public void performClearAndRenderOffscreen( RenderContext rc, int surfaceWidth, int surfaceHeight ) {

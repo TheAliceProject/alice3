@@ -49,11 +49,6 @@ public abstract class GlrAdornment<A extends edu.cmu.cs.dennisc.scenegraph.adorn
 	protected abstract void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> adornmentRootAdapter );
 
 	@Override
-	public void setup( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc ) {
-		//pass
-	}
-
-	@Override
 	public void renderOpaque( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc ) {
 		if( glrAdornmentRoot != null ) {
 			rc.gl.glPushMatrix();

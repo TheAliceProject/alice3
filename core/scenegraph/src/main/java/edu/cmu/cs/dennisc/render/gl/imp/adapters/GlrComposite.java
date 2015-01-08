@@ -97,11 +97,17 @@ public abstract class GlrComposite<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 		}
 	}
 
-	@Override
-	public void setup( RenderContext rc ) {
+	public void setupAffectors( RenderContext rc ) {
 		synchronized( this.glrChildren ) {
 			for( GlrComponent<?> glrChild : this.glrChildren ) {
-				glrChild.setup( rc );
+				if( glrChild instanceof GlrAffector<?> ) {
+					GlrAffector<?> glrAffector = (GlrAffector<?>)glrChild;
+					glrAffector.setupAffectors( rc );
+				}
+				if( glrChild instanceof GlrComposite<?> ) {
+					GlrComposite<?> glrComposite = (GlrComposite<?>)glrChild;
+					glrComposite.setupAffectors( rc );
+				}
 			}
 		}
 	}

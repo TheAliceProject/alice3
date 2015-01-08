@@ -52,7 +52,7 @@ public abstract class GlrFog<T extends edu.cmu.cs.dennisc.scenegraph.Fog> extend
 	private float[] m_color = new float[ 4 ];
 
 	@Override
-	public void setup( RenderContext rc ) {
+	public void setupAffectors( RenderContext rc ) {
 		rc.setIsFogEnabled( true );
 		rc.setFogColor( m_color );
 	}

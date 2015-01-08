@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  */
 public class GlrClippingPlane extends GlrAffector<edu.cmu.cs.dennisc.scenegraph.ClippingPlane> {
 	@Override
-	public void setup( RenderContext rc ) {
+	public void setupAffectors( RenderContext rc ) {
 		throw new RuntimeException( "todo" );
 	}
 }

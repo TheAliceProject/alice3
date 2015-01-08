@@ -138,7 +138,7 @@ public abstract class GlrLight<T extends edu.cmu.cs.dennisc.scenegraph.Light> ex
 	}
 
 	@Override
-	public void setup( RenderContext rc ) {
+	public void setupAffectors( RenderContext rc ) {
 		if( this instanceof GlrAmbientLight ) {
 			rc.addAmbient( m_color, m_brightness );
 		} else {

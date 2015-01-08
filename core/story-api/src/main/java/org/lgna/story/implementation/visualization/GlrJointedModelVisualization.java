@@ -307,8 +307,4 @@ public class GlrJointedModelVisualization extends edu.cmu.cs.dennisc.render.gl.i
 		implementation.treeWalk( new RenderWalkObserver( rc, implementation ) );
 		this.popOffset( rc.gl );
 	}
-
-	@Override
-	public void setup( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc ) {
-	}
 }

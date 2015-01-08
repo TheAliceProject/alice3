@@ -166,8 +166,6 @@ public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 
 	public abstract void renderOpaque( RenderContext rc );
 
-	public abstract void setup( RenderContext rc );
-
 	public abstract void pick( PickContext pc, PickParameters pickParameters );
 
 	private double[] m_absolute = new double[ 16 ];

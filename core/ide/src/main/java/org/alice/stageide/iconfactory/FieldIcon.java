@@ -132,7 +132,7 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 								glu.gluLookAt( p.x + 1, p.y + 1, p.z - 1, p.x, p.y, p.z, 0, 1, 0 );
 
 								edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene sceneAdapter = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( sgScene );
-								sceneAdapter.setup( rc );
+								sceneAdapter.setupAffectors( rc );
 								gl.glEnable( javax.media.opengl.GL.GL_DEPTH_TEST );
 
 								//todo: support alpha

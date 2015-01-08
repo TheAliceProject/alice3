@@ -150,10 +150,10 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 	}
 
 	@Override
-	public void setup( RenderContext rc ) {
+	public void setupAffectors( RenderContext rc ) {
 		rc.setGlobalBrightness( this.globalBrightness );
 		rc.beginAffectorSetup();
-		super.setup( rc );
+		super.setupAffectors( rc );
 		rc.endAffectorSetup();
 	}
 
@@ -199,24 +199,24 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 				rc.gl.glPushMatrix();
 				planarReflectorAdapter.applyReflection( rc );
 				rc.gl.glFrontFace( GL_CW );
-				setup( rc );
+				setupAffectors( rc );
 				renderScene( rc );
 				rc.gl.glFrontFace( GL_CCW );
 				rc.gl.glPopMatrix();
 				rc.gl.glDisable( GL_CLIP_PLANE0 );
 				rc.gl.glDisable( GL_STENCIL_TEST );
-				setup( rc );
+				setupAffectors( rc );
 				rc.gl.glEnable( GL_BLEND );
 				rc.gl.glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 				planarReflectorAdapter.renderStencil( rc, GlrVisual.RenderType.ALPHA_BLENDED );
 				rc.gl.glDisable( GL_BLEND );
 			} else {
 				rc.gl.glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-				setup( rc );
+				setupAffectors( rc );
 			}
 		} else {
 			rc.gl.glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-			setup( rc );
+			setupAffectors( rc );
 		}
 		renderScene( rc );
 	}
