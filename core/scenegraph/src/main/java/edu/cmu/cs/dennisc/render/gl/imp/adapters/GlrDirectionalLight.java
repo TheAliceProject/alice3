@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 /**
  * @author Dennis Cosgrove
  */
-public class GlrDirectionalLight extends GLrLight<edu.cmu.cs.dennisc.scenegraph.DirectionalLight> {
+public class GlrDirectionalLight extends GlrLight<edu.cmu.cs.dennisc.scenegraph.DirectionalLight> {
 	private double[] s_absoluteBufferForReuse = new double[ 16 ];
 
 	@Override

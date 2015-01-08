@@ -56,7 +56,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GLrLight<T extends edu.cmu.cs.dennisc.scenegraph.Light> extends GlrAffector<T> {
+public abstract class GlrLight<T extends edu.cmu.cs.dennisc.scenegraph.Light> extends GlrAffector<T> {
 	private static java.nio.FloatBuffer s_ambientBlackBuffer = null;
 
 	private static float[] s_position = new float[ 4 ];

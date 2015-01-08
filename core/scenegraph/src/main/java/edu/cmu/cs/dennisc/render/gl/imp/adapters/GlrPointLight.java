@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 /**
  * @author Dennis Cosgrove
  */
-public class GlrPointLight<T extends edu.cmu.cs.dennisc.scenegraph.PointLight> extends GLrLight<T> {
+public class GlrPointLight<T extends edu.cmu.cs.dennisc.scenegraph.PointLight> extends GlrLight<T> {
 	private float m_constant;
 	private float m_linear;
 	private float m_quadratic;
