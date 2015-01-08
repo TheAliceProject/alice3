@@ -75,8 +75,6 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 		return getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
 	}
 
-	private static edu.cmu.cs.dennisc.math.AffineMatrix4x4 s_bufferMatrixForReuse = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
-
 	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
 		if( this.vehicle != null ) {

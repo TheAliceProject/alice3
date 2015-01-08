@@ -73,7 +73,7 @@ public class GlrTexturedAppearance extends GlrSimpleAppearance<edu.cmu.cs.dennis
 	}
 
 	@Override
-	public void handleReleased()
+	protected void handleReleased()
 	{
 		super.handleReleased();
 		if( ( m_diffuseColorTextureAdapter != null ) && ( m_diffuseColorTextureAdapter.owner != null ) )

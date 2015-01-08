@@ -82,7 +82,7 @@ public abstract class GlrTexture<T extends edu.cmu.cs.dennisc.texture.Texture> e
 	}
 
 	@Override
-	public void handleReleased() {
+	protected void handleReleased() {
 		super.handleReleased();
 		if( this.renderContexts.size() > 0 ) {
 			for( RenderContext rc : this.renderContexts ) {

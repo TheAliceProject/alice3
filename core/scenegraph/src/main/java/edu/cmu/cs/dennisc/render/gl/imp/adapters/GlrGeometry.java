@@ -63,7 +63,7 @@ public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geomet
 	}
 
 	@Override
-	public void handleReleased() {
+	protected void handleReleased() {
 		super.handleReleased();
 		if( m_renderContexts.size() > 0 ) {
 			RenderContext[] renderContexts = new RenderContext[ m_renderContexts.size() ];

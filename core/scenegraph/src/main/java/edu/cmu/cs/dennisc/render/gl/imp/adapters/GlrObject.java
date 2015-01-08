@@ -49,9 +49,9 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 public abstract class GlrObject<T extends edu.cmu.cs.dennisc.pattern.Releasable> {
 	/*package-private*/static void handleReleased( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent e ) {
 		edu.cmu.cs.dennisc.pattern.Releasable releasable = e.getTypedSource();
-		GlrObject<?> elementAdapter = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( releasable );
-		if( elementAdapter != null ) {
-			elementAdapter.handleReleased();
+		GlrObject<?> glrObject = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( releasable );
+		if( glrObject != null ) {
+			glrObject.handleReleased();
 		}
 	}
 
@@ -59,7 +59,7 @@ public abstract class GlrObject<T extends edu.cmu.cs.dennisc.pattern.Releasable>
 		return this.owner;
 	}
 
-	public void handleReleased() {
+	protected void handleReleased() {
 		if( this.owner == null ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "TRYING TO RELEASE NULL ELEMENT IN " + this.hashCode() );
 		}

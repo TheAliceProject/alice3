@@ -49,8 +49,8 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 public abstract class GlrElement<T extends edu.cmu.cs.dennisc.scenegraph.Element> extends GlrObject<T> {
 	/*package-private*/static void handlePropertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty ) {
 		edu.cmu.cs.dennisc.scenegraph.Element sgElement = (edu.cmu.cs.dennisc.scenegraph.Element)instanceProperty.getOwner();
-		GlrElement<?> elementAdapter = AdapterFactory.getAdapterFor( sgElement );
-		elementAdapter.propertyChanged( instanceProperty );
+		GlrElement<?> glrElement = AdapterFactory.getAdapterFor( sgElement );
+		glrElement.propertyChanged( instanceProperty );
 	}
 
 	@Override

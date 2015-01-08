@@ -52,14 +52,8 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  */
 public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Component> extends GlrElement<T> implements edu.cmu.cs.dennisc.pattern.Visitable {
 	private static edu.cmu.cs.dennisc.math.AffineMatrix4x4 s_buffer = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
-	private double[] m_absolute = new double[ 16 ];
-	private double[] m_inverseAbsolute = new double[ 16 ];
-	private java.nio.DoubleBuffer m_absoluteBuffer = java.nio.DoubleBuffer.wrap( m_absolute );
-	private java.nio.DoubleBuffer m_inverseAbsoluteBuffer = java.nio.DoubleBuffer.wrap( m_inverseAbsolute );
 
-	private GlrScene m_sceneAdapter = null;
-
-	protected GlrComponent() {
+	public GlrComponent() {
 		handleAbsoluteTransformationChanged();
 	}
 
@@ -68,14 +62,6 @@ public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 		visitor.visit( this );
 	}
 
-	//	@Override
-	//	protected void propertyChanged( String propertyName ) {
-	//		if( propertyName == edu.cmu.cs.dennisc.scenegraph.Component.VEHICLE_PROPERTY_NAME ) {
-	//			//pass
-	//		} else {
-	//			super.propertyChanged( propertyName );
-	//		}
-	//	}
 	protected void handleAbsoluteTransformationChanged() {
 		synchronized( m_absolute ) {
 			m_absolute[ 0 ] = Double.NaN;
@@ -127,9 +113,9 @@ public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 	}
 
 	private void updateAbsoluteTransformationIfNecessary() {
-		synchronized( s_buffer ) {
-			synchronized( m_absolute ) {
-				if( Double.isNaN( m_absolute[ 0 ] ) ) {
+		synchronized( m_absolute ) {
+			if( Double.isNaN( m_absolute[ 0 ] ) ) {
+				synchronized( s_buffer ) {
 					owner.getAbsoluteTransformation( s_buffer );
 					assert s_buffer.isNaN() == false;
 					s_buffer.getAsColumnMajorArray16( m_absolute );
@@ -139,9 +125,9 @@ public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 	}
 
 	private void updateInverseAbsoluteTransformationIfNecessary() {
-		synchronized( s_buffer ) {
-			synchronized( m_inverseAbsolute ) {
-				if( Double.isNaN( m_inverseAbsolute[ 0 ] ) ) {
+		synchronized( m_inverseAbsolute ) {
+			if( Double.isNaN( m_inverseAbsolute[ 0 ] ) ) {
+				synchronized( s_buffer ) {
 					owner.getInverseAbsoluteTransformation( s_buffer );
 					assert s_buffer.isNaN() == false;
 					s_buffer.getAsColumnMajorArray16( m_inverseAbsolute );
@@ -184,4 +170,10 @@ public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 
 	public abstract void pick( PickContext pc, PickParameters pickParameters );
 
+	private double[] m_absolute = new double[ 16 ];
+	private double[] m_inverseAbsolute = new double[ 16 ];
+	private java.nio.DoubleBuffer m_absoluteBuffer = java.nio.DoubleBuffer.wrap( m_absolute );
+	private java.nio.DoubleBuffer m_inverseAbsoluteBuffer = java.nio.DoubleBuffer.wrap( m_inverseAbsolute );
+
+	private GlrScene m_sceneAdapter = null;
 }

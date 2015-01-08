@@ -181,8 +181,9 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 	}
 
 	@Override
-	public void handleReleased()
+	protected void handleReleased()
 	{
+		super.handleReleased();
 		synchronized( m_geometryAdapters ) {
 			for( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : m_geometryAdapters ) {
 				if( geometryAdapter.owner != null )
