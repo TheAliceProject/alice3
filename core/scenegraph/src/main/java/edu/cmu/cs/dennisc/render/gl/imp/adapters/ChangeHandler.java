@@ -120,7 +120,7 @@ public class ChangeHandler {
 		synchronized( bufferedEvents ) {
 			for( edu.cmu.cs.dennisc.pattern.event.Event<?> event : bufferedEvents ) {
 				handleEvent( event );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "handling buffered event", event );
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "handling buffered event", event );
 			}
 			bufferedEvents.clear();
 		}
