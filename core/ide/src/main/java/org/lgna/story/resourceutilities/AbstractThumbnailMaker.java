@@ -111,7 +111,7 @@ public abstract class AbstractThumbnailMaker {
 				edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene sceneAdapter = cameraAdapterI.getGlrScene();
 				edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?> componentAdapter = AdapterFactory.getAdapterFor( sgComponent );
 				if( componentAdapter != null ) {
-					sceneAdapter.removeDescendant( componentAdapter );
+					sceneAdapter.EPIC_HACK_FOR_THUMBNAIL_MAKER_removeDescendant( componentAdapter );
 				}
 			}
 		}
