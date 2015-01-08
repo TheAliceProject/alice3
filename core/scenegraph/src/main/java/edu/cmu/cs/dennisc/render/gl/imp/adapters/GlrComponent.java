@@ -43,9 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
-import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
-import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 /**
  * @author Dennis Cosgrove
@@ -161,12 +158,6 @@ public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 		updateInverseAbsoluteTransformationIfNecessary();
 		return m_inverseAbsoluteBuffer;
 	}
-
-	public abstract void renderGhost( RenderContext rc, GlrGhost root );
-
-	public abstract void renderOpaque( RenderContext rc );
-
-	public abstract void pick( PickContext pc, PickParameters pickParameters );
 
 	private double[] m_absolute = new double[ 16 ];
 	private double[] m_inverseAbsolute = new double[ 16 ];

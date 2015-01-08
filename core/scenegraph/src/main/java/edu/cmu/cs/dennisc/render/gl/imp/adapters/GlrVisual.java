@@ -55,7 +55,7 @@ import edu.cmu.cs.dennisc.scenegraph.Appearance;
 /**
  * @author Dennis Cosgrove
  */
-public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends GlrLeaf<T> {
+public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends GlrLeaf<T> implements edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrRenderContributor {
 
 	public enum RenderType {
 		OPAQUE,

@@ -100,40 +100,55 @@ public abstract class GlrComposite<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 	public void setupAffectors( RenderContext rc ) {
 		synchronized( this.glrChildren ) {
 			for( GlrComponent<?> glrChild : this.glrChildren ) {
-				if( glrChild instanceof GlrAffector<?> ) {
-					GlrAffector<?> glrAffector = (GlrAffector<?>)glrChild;
-					glrAffector.setupAffectors( rc );
-				} else if( glrChild instanceof GlrComposite<?> ) {
+				if( glrChild instanceof GlrComposite<?> ) {
 					GlrComposite<?> glrComposite = (GlrComposite<?>)glrChild;
 					glrComposite.setupAffectors( rc );
+				} else if( glrChild instanceof GlrAffector<?> ) {
+					GlrAffector<?> glrAffector = (GlrAffector<?>)glrChild;
+					glrAffector.setupAffectors( rc );
 				}
 			}
 		}
 	}
 
-	@Override
 	public void renderGhost( RenderContext rc, GlrGhost root ) {
 		synchronized( this.glrChildren ) {
 			for( GlrComponent<?> glrChild : this.glrChildren ) {
-				glrChild.renderGhost( rc, root );
+				if( glrChild instanceof GlrComposite<?> ) {
+					GlrComposite<?> glrComposite = (GlrComposite<?>)glrChild;
+					glrComposite.renderGhost( rc, root );
+				} else if( glrChild instanceof GlrRenderContributor ) {
+					GlrRenderContributor glrRenderContributor = (GlrRenderContributor)glrChild;
+					glrRenderContributor.renderGhost( rc, root );
+				}
 			}
 		}
 	}
 
-	@Override
 	public void renderOpaque( RenderContext rc ) {
 		synchronized( this.glrChildren ) {
 			for( GlrComponent<?> glrChild : this.glrChildren ) {
-				glrChild.renderOpaque( rc );
+				if( glrChild instanceof GlrComposite<?> ) {
+					GlrComposite<?> glrComposite = (GlrComposite<?>)glrChild;
+					glrComposite.renderOpaque( rc );
+				} else if( glrChild instanceof GlrRenderContributor ) {
+					GlrRenderContributor glrRenderContributor = (GlrRenderContributor)glrChild;
+					glrRenderContributor.renderOpaque( rc );
+				}
 			}
 		}
 	}
 
-	@Override
 	public void pick( PickContext pc, PickParameters pickParameters ) {
 		synchronized( this.glrChildren ) {
 			for( GlrComponent<?> glrChild : this.glrChildren ) {
-				glrChild.pick( pc, pickParameters );
+				if( glrChild instanceof GlrComposite<?> ) {
+					GlrComposite<?> glrComposite = (GlrComposite<?>)glrChild;
+					glrComposite.pick( pc, pickParameters );
+				} else if( glrChild instanceof GlrRenderContributor ) {
+					GlrRenderContributor glrRenderContributor = (GlrRenderContributor)glrChild;
+					glrRenderContributor.pick( pc, pickParameters );
+				}
 			}
 		}
 	}

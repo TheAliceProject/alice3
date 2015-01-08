@@ -148,18 +148,6 @@ public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.
 	}
 
 	@Override
-	public void renderGhost( RenderContext rc, GlrGhost root ) {
-	}
-
-	@Override
-	public void renderOpaque( RenderContext rc ) {
-	}
-
-	@Override
-	public void pick( PickContext pc, PickParameters pickParameters ) {
-	}
-
-	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.background ) {
 			m_backgroundAdapter = AdapterFactory.getAdapterFor( owner.background.getValue() );

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,44 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.render.gl.imp.adapters.adorn;
+package edu.cmu.cs.dennisc.render.gl.imp.adapters;
+
+import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
+import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
+import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrAdornment<A extends edu.cmu.cs.dennisc.scenegraph.adorn.Adornment> extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<A> implements edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrRenderContributor {
-	protected abstract void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> adornmentRootAdapter );
+public interface GlrRenderContributor {
+	public void renderGhost( RenderContext rc, GlrGhost root );
 
-	@Override
-	public void renderOpaque( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc ) {
-		if( glrAdornmentRoot != null ) {
-			rc.gl.glPushMatrix();
-			rc.gl.glMultMatrixd( accessInverseAbsoluteTransformationAsBuffer() );
-			actuallyRender( rc, glrAdornmentRoot );
-			rc.gl.glPopMatrix();
-		}
-	}
+	public void renderOpaque( RenderContext rc );
 
-	@Override
-	public void renderGhost( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGhost root ) {
-		//todo?
-		//pass
-	}
-
-	@Override
-	public void pick( edu.cmu.cs.dennisc.render.gl.imp.PickContext pc, edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters ) {
-		//todo?
-		//pass
-	}
-
-	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == owner.adorningRoot ) {
-			this.glrAdornmentRoot = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( owner.adorningRoot.getValue() );
-		} else {
-			super.propertyChanged( property );
-		}
-	}
-
-	private edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> glrAdornmentRoot = null;
+	public void pick( PickContext pc, PickParameters pickParameters );
 }

@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
-import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 /**
@@ -52,16 +50,4 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  */
 public abstract class GlrAffector<T extends edu.cmu.cs.dennisc.scenegraph.Affector> extends GlrLeaf<T> {
 	public abstract void setupAffectors( RenderContext rc );
-
-	@Override
-	public void renderGhost( RenderContext rc, GlrGhost root ) {
-	}
-
-	@Override
-	public void renderOpaque( RenderContext rc ) {
-	}
-
-	@Override
-	public void pick( PickContext pc, PickParameters pickParameters ) {
-	}
 }
