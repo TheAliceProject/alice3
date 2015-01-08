@@ -103,8 +103,7 @@ public abstract class GlrComposite<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 				if( glrChild instanceof GlrAffector<?> ) {
 					GlrAffector<?> glrAffector = (GlrAffector<?>)glrChild;
 					glrAffector.setupAffectors( rc );
-				}
-				if( glrChild instanceof GlrComposite<?> ) {
+				} else if( glrChild instanceof GlrComposite<?> ) {
 					GlrComposite<?> glrComposite = (GlrComposite<?>)glrChild;
 					glrComposite.setupAffectors( rc );
 				}
