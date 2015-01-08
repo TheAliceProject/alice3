@@ -48,7 +48,7 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 /**
  * @author Dennis Cosgrove
  */
-public class GlrStickFigure extends GlrAdornment {
+public class GlrStickFigure extends GlrAdornment<edu.cmu.cs.dennisc.scenegraph.adorn.StickFigure> {
 	private static final int TRANSLATION_X_INDEX = 12;
 	private static final int TRANSLATION_Y_INDEX = 13;
 	private static final int TRANSLATION_Z_INDEX = 14;

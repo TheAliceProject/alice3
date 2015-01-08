@@ -69,7 +69,8 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 	public void initialize( edu.cmu.cs.dennisc.scenegraph.Scene sgElement ) {
 		super.initialize( sgElement );
 		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( owner, edu.cmu.cs.dennisc.scenegraph.Component.class ) ) {
-			addDescendant( AdapterFactory.getAdapterFor( sgComponent ) );
+			GlrComponent<?> glrComponent = AdapterFactory.getAdapterFor( sgComponent );
+			addDescendant( glrComponent );
 		}
 		//		this.sgE.accept( new edu.cmu.cs.dennisc.pattern.FilteredVisitor< edu.cmu.cs.dennisc.scenegraph.Component >() {
 		//			@Override

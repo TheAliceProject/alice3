@@ -47,6 +47,12 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
  * @author Dennis Cosgrove
  */
 public abstract class GlrElement<T extends edu.cmu.cs.dennisc.scenegraph.Element> extends GlrObject<T> {
+	/*package-private*/static void handlePropertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty ) {
+		edu.cmu.cs.dennisc.scenegraph.Element sgElement = (edu.cmu.cs.dennisc.scenegraph.Element)instanceProperty.getOwner();
+		GlrElement<?> elementAdapter = AdapterFactory.getAdapterFor( sgElement );
+		elementAdapter.propertyChanged( instanceProperty );
+	}
+
 	@Override
 	public void initialize( T element ) {
 		super.initialize( element );
@@ -57,12 +63,6 @@ public abstract class GlrElement<T extends edu.cmu.cs.dennisc.scenegraph.Element
 
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "unhandled property:", property );
-	}
-
-	/*package-private*/static void handlePropertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> instanceProperty ) {
-		edu.cmu.cs.dennisc.scenegraph.Element sgElement = (edu.cmu.cs.dennisc.scenegraph.Element)instanceProperty.getOwner();
-		GlrElement elementAdapter = (GlrElement)AdapterFactory.getAdapterForElement( sgElement );
-		elementAdapter.propertyChanged( instanceProperty );
 	}
 
 	@Override

@@ -96,7 +96,8 @@ public abstract class GlrComposite<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 		Iterable<edu.cmu.cs.dennisc.scenegraph.Component> sgComponents = owner.getComponents();
 		synchronized( sgComponents ) {
 			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComponents ) {
-				handleComponentAdded( AdapterFactory.getAdapterFor( sgComponent ) );
+				GlrComponent<?> glrComponent = AdapterFactory.getAdapterFor( sgComponent );
+				this.handleComponentAdded( glrComponent );
 			}
 		}
 	}

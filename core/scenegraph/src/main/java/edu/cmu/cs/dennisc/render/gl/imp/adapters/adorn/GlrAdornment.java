@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters.adorn;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrAdornment extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<edu.cmu.cs.dennisc.scenegraph.adorn.Adornment> {
+public abstract class GlrAdornment<A extends edu.cmu.cs.dennisc.scenegraph.adorn.Adornment> extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<A> {
 	protected edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite> m_adornmentRootAdapter = null;
 
 	protected abstract void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite> adornmentRootAdapter );

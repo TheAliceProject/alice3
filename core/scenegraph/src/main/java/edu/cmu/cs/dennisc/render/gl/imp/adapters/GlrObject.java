@@ -46,17 +46,12 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GlrObject<T extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> {
+public abstract class GlrObject<T extends edu.cmu.cs.dennisc.pattern.Releasable> {
 	/*package-private*/static void handleReleased( edu.cmu.cs.dennisc.pattern.event.ReleaseEvent e ) {
 		edu.cmu.cs.dennisc.pattern.Releasable releasable = e.getTypedSource();
-		if( releasable instanceof edu.cmu.cs.dennisc.pattern.AbstractReleasable ) {
-			edu.cmu.cs.dennisc.pattern.AbstractReleasable element = (edu.cmu.cs.dennisc.pattern.AbstractReleasable)releasable;
-			GlrObject elementAdapter = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterForElement( element );
-			if( elementAdapter != null ) {
-				elementAdapter.handleReleased();
-			}
-		} else {
-			throw new Error( "this should never occur" );
+		GlrObject<?> elementAdapter = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( releasable );
+		if( elementAdapter != null ) {
+			elementAdapter.handleReleased();
 		}
 	}
 

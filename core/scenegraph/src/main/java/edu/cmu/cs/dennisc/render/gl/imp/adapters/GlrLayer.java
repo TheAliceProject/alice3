@@ -78,7 +78,8 @@ public class GlrLayer extends GlrElement<edu.cmu.cs.dennisc.scenegraph.Layer> {
 	public void initialize( edu.cmu.cs.dennisc.scenegraph.Layer sgLayer ) {
 		super.initialize( sgLayer );
 		for( edu.cmu.cs.dennisc.scenegraph.Graphic sgGraphic : sgLayer.getGraphics() ) {
-			handleGraphicAdded( AdapterFactory.getAdapterFor( sgGraphic ) );
+			GlrGraphic<?> glrGraphic = AdapterFactory.getAdapterFor( sgGraphic );
+			handleGraphicAdded( glrGraphic );
 		}
 	}
 

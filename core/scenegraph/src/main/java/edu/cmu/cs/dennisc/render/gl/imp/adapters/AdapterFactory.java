@@ -43,25 +43,13 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-//public class AdapterFactory {
-//	private static AdapterFactory s_singleton = new AdapterFactory();
-//	private AdapterFactory() {
-//	}
-//	public static AdapterFactory getSingleton() {
-//		if( s_singleton != null ) {
-//			//pass
-//		} else {
-//			s_singleton = new AdapterFactory();
-//		}
-//		return s_singleton;
-//	}
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AdapterFactory {
-	private static java.util.Map<edu.cmu.cs.dennisc.pattern.AbstractReleasable, GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>> s_elementToAdapterMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private static java.util.Map<Class<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>, Class<? extends GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>>> s_classToAdapterClassMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class AdapterFactory {
+	private static final java.util.Map<edu.cmu.cs.dennisc.pattern.Releasable, GlrObject<? extends edu.cmu.cs.dennisc.pattern.Releasable>> s_elementToAdapterMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static final java.util.Map<Class<? extends edu.cmu.cs.dennisc.pattern.Releasable>, Class<? extends GlrObject<? extends edu.cmu.cs.dennisc.pattern.Releasable>>> s_classToAdapterClassMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+
 	private static final String SCENEGRAPH_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.Element.class.getPackage().getName();
 	private static final String RENDERER_PACKAGE_NAME = GlrElement.class.getPackage().getName();
 	private static final String SCENEGRAPH_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.graphics.Text.class.getPackage().getName();
@@ -71,11 +59,25 @@ public abstract class AdapterFactory {
 		register( edu.cmu.cs.dennisc.texture.BufferedImageTexture.class, GlrBufferedImageTexture.class );
 	}
 
-	public static void register( Class<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> sgClass, Class<? extends GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>> adapterClass ) {
+	private AdapterFactory() {
+		throw new AssertionError();
+	}
+
+	public static <SG extends edu.cmu.cs.dennisc.pattern.Releasable, GLR extends GlrObject<SG>> void register( Class<SG> sgClass, Class<GLR> adapterClass ) {
 		s_classToAdapterClassMap.put( sgClass, adapterClass );
 	}
 
-	private static GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> createAdapterFor( edu.cmu.cs.dennisc.pattern.AbstractReleasable sgElement ) {
+	private static void createNecessaryProxies( edu.cmu.cs.dennisc.pattern.Releasable sgElement ) {
+		GlrObject<?> unused = getAdapterForElement( sgElement );
+		if( sgElement instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
+			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgElement;
+			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComposite.getComponents() ) {
+				createNecessaryProxies( sgComponent );
+			}
+		}
+	}
+
+	private static <SG extends edu.cmu.cs.dennisc.pattern.Releasable, GLR extends GlrObject<SG>> GLR createAdapterFor( SG sgElement ) {
 		Class sgClass = sgElement.getClass();
 		Class cls = s_classToAdapterClassMap.get( sgClass );
 		if( cls != null ) {
@@ -106,10 +108,10 @@ public abstract class AdapterFactory {
 				register( sgClass, cls );
 			}
 		}
-		GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable> rv;
+		GLR rv;
 		if( cls != null ) {
 			try {
-				rv = (GlrObject<? extends edu.cmu.cs.dennisc.pattern.AbstractReleasable>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
+				rv = (GLR)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
 			} catch( Throwable t ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, cls );
 				rv = null;
@@ -121,17 +123,11 @@ public abstract class AdapterFactory {
 		return rv;
 	}
 
-	public static void forget( edu.cmu.cs.dennisc.pattern.AbstractReleasable sgElement ) {
-		synchronized( s_elementToAdapterMap ) {
-			s_elementToAdapterMap.remove( sgElement );
-		}
-	}
-
-	public static GlrObject<?> getAdapterForElement( edu.cmu.cs.dennisc.pattern.AbstractReleasable sgElement ) {
-		GlrObject rv;
+	private static <SG extends edu.cmu.cs.dennisc.pattern.Releasable, GLR extends GlrObject<SG>> GLR getAdapterForElement( SG sgElement ) {
+		GLR rv;
 		if( sgElement != null ) {
 			synchronized( s_elementToAdapterMap ) {
-				rv = s_elementToAdapterMap.get( sgElement );
+				rv = (GLR)s_elementToAdapterMap.get( sgElement );
 				if( rv == null ) {
 					rv = createAdapterFor( sgElement );
 					if( rv != null ) {
@@ -159,8 +155,16 @@ public abstract class AdapterFactory {
 		return rv;
 	}
 
-	public static GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
-		return (GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera>)getAdapterForElement( sgCamera );
+	public static GlrObject<?> getAdapterFor( edu.cmu.cs.dennisc.pattern.Releasable releasable ) {
+		return (GlrObject<?>)getAdapterForElement( releasable );
+	}
+
+	public static GlrElement<?> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+		return (GlrElement<?>)getAdapterForElement( sgElement );
+	}
+
+	public static GlrAbstractCamera<?> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		return (GlrAbstractCamera<?>)getAdapterForElement( sgCamera );
 	}
 
 	public static GlrProjectionCamera getAdapterFor( edu.cmu.cs.dennisc.scenegraph.ProjectionCamera sgProjectionCamera ) {
@@ -183,16 +187,16 @@ public abstract class AdapterFactory {
 		return (GlrBackground)getAdapterForElement( sgBackground );
 	}
 
-	public static GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
-		return (GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component>)getAdapterForElement( sgComponent );
+	public static GlrComponent<?> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
+		return (GlrComponent<?>)getAdapterForElement( sgComponent );
 	}
 
-	public static GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Composite sgComposite ) {
-		return (GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite>)getAdapterForElement( sgComposite );
+	public static GlrComposite<?> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Composite sgComposite ) {
+		return (GlrComposite<?>)getAdapterForElement( sgComposite );
 	}
 
-	public static GlrAppearance<? extends edu.cmu.cs.dennisc.scenegraph.Appearance> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Appearance sgAppearance ) {
-		return (GlrAppearance<? extends edu.cmu.cs.dennisc.scenegraph.Appearance>)getAdapterForElement( sgAppearance );
+	public static GlrAppearance<?> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Appearance sgAppearance ) {
+		return (GlrAppearance<?>)getAdapterForElement( sgAppearance );
 	}
 
 	public static GlrTexturedAppearance getAdapterFor( edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgSingleAppearance ) {
@@ -203,28 +207,28 @@ public abstract class AdapterFactory {
 		return (GlrMultipleAppearance)getAdapterForElement( sgMultipleAppearance );
 	}
 
-	public static GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry ) {
-		return (GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>)getAdapterForElement( sgGeometry );
+	public static GlrGeometry<?> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry ) {
+		return (GlrGeometry<?>)getAdapterForElement( sgGeometry );
 	}
 
 	public static GlrScene getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Scene sgScene ) {
 		return (GlrScene)getAdapterForElement( sgScene );
 	}
 
-	public static GlrAbstractTransformable<? extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable ) {
-		return (GlrAbstractTransformable<? extends edu.cmu.cs.dennisc.scenegraph.AbstractTransformable>)getAdapterForElement( sgTransformable );
+	public static GlrAbstractTransformable<?> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable ) {
+		return (GlrAbstractTransformable<?>)getAdapterForElement( sgTransformable );
 	}
 
-	public static GlrTransformable<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable ) {
-		return (GlrTransformable<? extends edu.cmu.cs.dennisc.scenegraph.Transformable>)getAdapterForElement( sgTransformable );
+	public static GlrTransformable<?> getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable ) {
+		return (GlrTransformable<?>)getAdapterForElement( sgTransformable );
 	}
 
 	public static GlrGhost getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Ghost sgGhost ) {
 		return (GlrGhost)getAdapterForElement( sgGhost );
 	}
 
-	public static GlrTexture<? extends edu.cmu.cs.dennisc.texture.Texture> getAdapterFor( edu.cmu.cs.dennisc.texture.Texture texture ) {
-		return (GlrTexture)getAdapterForElement( texture );
+	public static GlrTexture<?> getAdapterFor( edu.cmu.cs.dennisc.texture.Texture texture ) {
+		return (GlrTexture<?>)getAdapterForElement( texture );
 	}
 
 	public static GlrLayer getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Layer sgLayer ) {
@@ -239,7 +243,7 @@ public abstract class AdapterFactory {
 		return (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrSilhouette)getAdapterForElement( sgSilhouette );
 	}
 
-	public static <E extends GlrObject> E[] getAdaptersFor( edu.cmu.cs.dennisc.pattern.AbstractReleasable[] sgElements, Class<? extends E> componentType ) {
+	public static <E extends GlrObject> E[] getAdaptersFor( edu.cmu.cs.dennisc.pattern.Releasable[] sgElements, Class<? extends E> componentType ) {
 		if( sgElements != null ) {
 			E[] proxies = (E[])java.lang.reflect.Array.newInstance( componentType, sgElements.length );
 			for( int i = 0; i < sgElements.length; i++ ) {
@@ -251,13 +255,9 @@ public abstract class AdapterFactory {
 		}
 	}
 
-	public static void createNecessaryProxies( edu.cmu.cs.dennisc.pattern.AbstractReleasable sgElement ) {
-		getAdapterForElement( sgElement );
-		if( sgElement instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
-			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgElement;
-			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComposite.getComponents() ) {
-				createNecessaryProxies( sgComponent );
-			}
+	public static void forget( edu.cmu.cs.dennisc.pattern.Releasable sgElement ) {
+		synchronized( s_elementToAdapterMap ) {
+			s_elementToAdapterMap.remove( sgElement );
 		}
 	}
 }

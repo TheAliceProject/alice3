@@ -194,7 +194,8 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 
 	@Override
 	public java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
-		return getActualViewport( rv, AdapterFactory.getAdapterFor( camera ) );
+		edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera<?> glrCamera = AdapterFactory.getAdapterFor( camera );
+		return getActualViewport( rv, glrCamera );
 	}
 
 	@Override

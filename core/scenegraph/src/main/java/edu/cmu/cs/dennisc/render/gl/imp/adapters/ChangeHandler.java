@@ -196,7 +196,7 @@ public class ChangeHandler {
 		}
 	};
 
-	/*package-private*/static void addListeners( edu.cmu.cs.dennisc.pattern.AbstractReleasable element ) {
+	/*package-private*/static void addListeners( edu.cmu.cs.dennisc.pattern.Releasable element ) {
 		element.addReleaseListener( s_releaseListener );
 		if( element instanceof edu.cmu.cs.dennisc.scenegraph.Element ) {
 			( (edu.cmu.cs.dennisc.scenegraph.Element)element ).addPropertyListener( s_propertyListener );
@@ -214,7 +214,7 @@ public class ChangeHandler {
 		}
 	}
 
-	/*package-private*/static void removeListeners( edu.cmu.cs.dennisc.pattern.AbstractReleasable element ) {
+	/*package-private*/static void removeListeners( edu.cmu.cs.dennisc.pattern.Releasable element ) {
 		element.removeReleaseListener( s_releaseListener );
 		if( element instanceof edu.cmu.cs.dennisc.scenegraph.Element ) {
 			( (edu.cmu.cs.dennisc.scenegraph.Element)element ).removePropertyListener( s_propertyListener );

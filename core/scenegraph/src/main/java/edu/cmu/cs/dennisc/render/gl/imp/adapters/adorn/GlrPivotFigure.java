@@ -48,7 +48,7 @@ import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 /**
  * @author Dennis Cosgrove
  */
-public class GlrPivotFigure extends GlrAdornment {
+public class GlrPivotFigure extends GlrAdornment<edu.cmu.cs.dennisc.scenegraph.adorn.PivotFigure> {
 	private static final float FULL = 1.0f;
 	private static final float ZERO = 0.0f;
 
