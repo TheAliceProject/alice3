@@ -58,7 +58,7 @@ public class GlrStickFigure extends GlrAdornment<edu.cmu.cs.dennisc.scenegraph.a
 		gl.glPushMatrix();
 		try {
 			gl.glMultMatrixd( ltParent );
-			Iterable<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent> componentAdapters = parent.accessComponentAdapters();
+			Iterable<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent> componentAdapters = parent.accessChildren();
 			synchronized( componentAdapters ) {
 				for( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent componentAdapter : componentAdapters ) {
 					if( componentAdapter instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable ) {

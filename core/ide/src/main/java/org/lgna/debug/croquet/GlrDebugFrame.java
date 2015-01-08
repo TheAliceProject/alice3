@@ -50,7 +50,7 @@ public class GlrDebugFrame extends DebugFrame<edu.cmu.cs.dennisc.render.gl.imp.a
 		org.lgna.debug.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> rv = new org.lgna.debug.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>>( glrComponent, glrComponent instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrLeaf<?> );
 		if( glrComponent instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> ) {
 			edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> glrComposite = (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?>)glrComponent;
-			for( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?> glrChild : glrComposite.accessComponentAdapters() ) {
+			for( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?> glrChild : glrComposite.accessChildren() ) {
 				rv.addChildBuilder( createBuilder( glrChild ) );
 			}
 		}
