@@ -108,7 +108,7 @@ public abstract class AbstractThumbnailMaker {
 		if( this.offscreenRenderTarget.getSgCameraCount() > 0 ) {
 			for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : this.offscreenRenderTarget.getSgCameras() ) {
 				GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
-				edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene sceneAdapter = cameraAdapterI.getSceneAdapter();
+				edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene sceneAdapter = cameraAdapterI.getGlrScene();
 				edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?> componentAdapter = AdapterFactory.getAdapterFor( sgComponent );
 				if( componentAdapter != null ) {
 					sceneAdapter.removeDescendant( componentAdapter );

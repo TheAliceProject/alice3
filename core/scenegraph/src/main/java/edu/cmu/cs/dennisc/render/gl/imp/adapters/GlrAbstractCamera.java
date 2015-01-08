@@ -104,7 +104,7 @@ public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.
 	protected abstract void setupProjection( Context context, java.awt.Rectangle actualViewport );
 
 	public void performClearAndRenderOffscreen( RenderContext rc, int surfaceWidth, int surfaceHeight ) {
-		GlrScene sceneAdapter = getSceneAdapter();
+		GlrScene sceneAdapter = getGlrScene();
 		if( sceneAdapter != null ) {
 			java.awt.Rectangle actualViewport = getActualViewport( new java.awt.Rectangle(), surfaceWidth, surfaceHeight );
 			rc.gl.glMatrixMode( GL_PROJECTION );
@@ -125,7 +125,7 @@ public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.
 	}
 
 	public void performPick( PickContext pc, PickParameters pickParameters, java.awt.Rectangle actualViewport ) {
-		GlrScene sceneAdapter = getSceneAdapter();
+		GlrScene sceneAdapter = getGlrScene();
 		if( sceneAdapter != null ) {
 
 			pc.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );

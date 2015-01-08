@@ -43,52 +43,11 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Component> extends GlrElement<T> implements edu.cmu.cs.dennisc.pattern.Visitable {
 	private static edu.cmu.cs.dennisc.math.AffineMatrix4x4 s_buffer = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
-
-	public GlrComponent() {
-		handleAbsoluteTransformationChanged();
-	}
-
-	@Override
-	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
-		visitor.visit( this );
-	}
-
-	protected void handleAbsoluteTransformationChanged() {
-		synchronized( m_absolute ) {
-			m_absolute[ 0 ] = Double.NaN;
-		}
-		synchronized( m_inverseAbsolute ) {
-			m_inverseAbsolute[ 0 ] = Double.NaN;
-		}
-	}
-
-	protected void handleHierarchyChanged() {
-		GlrScene sceneAdapter;
-		edu.cmu.cs.dennisc.scenegraph.Composite sgRoot = owner.getRoot();
-		if( sgRoot instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) {
-			//edu.cmu.cs.dennisc.scenegraph.Scene sgScene = (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot;
-			sceneAdapter = AdapterFactory.getAdapterFor( (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot );
-		} else {
-			sceneAdapter = null;
-		}
-
-		if( m_sceneAdapter != sceneAdapter ) {
-			if( m_sceneAdapter != null ) {
-				m_sceneAdapter.removeDescendant( this );
-			}
-			m_sceneAdapter = sceneAdapter;
-			if( m_sceneAdapter != null ) {
-				m_sceneAdapter.addDescendant( this );
-			}
-		}
-
-	}
 
 	/*package-private*/static void handleAbsoluteTransformationChanged( edu.cmu.cs.dennisc.scenegraph.Component component ) {
 		GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter = AdapterFactory.getAdapterFor( component );
@@ -100,7 +59,47 @@ public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 		componentAdapter.handleHierarchyChanged();
 	}
 
-	public GlrScene getSceneAdapter() {
+	public GlrComponent() {
+		this.handleAbsoluteTransformationChanged();
+	}
+
+	@Override
+	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
+		visitor.visit( this );
+	}
+
+	private void handleAbsoluteTransformationChanged() {
+		synchronized( this.absolute ) {
+			this.absolute[ 0 ] = Double.NaN;
+		}
+		synchronized( this.inverseAbsolute ) {
+			this.inverseAbsolute[ 0 ] = Double.NaN;
+		}
+	}
+
+	private void handleHierarchyChanged() {
+		GlrScene glrScene;
+		edu.cmu.cs.dennisc.scenegraph.Composite sgRoot = owner.getRoot();
+		if( sgRoot instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) {
+			//edu.cmu.cs.dennisc.scenegraph.Scene sgScene = (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot;
+			glrScene = AdapterFactory.getAdapterFor( (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot );
+		} else {
+			glrScene = null;
+		}
+
+		if( this.glrScene != glrScene ) {
+			if( this.glrScene != null ) {
+				this.glrScene.removeDescendant( this );
+			}
+			this.glrScene = glrScene;
+			if( this.glrScene != null ) {
+				this.glrScene.addDescendant( this );
+			}
+		}
+
+	}
+
+	public GlrScene getGlrScene() {
 		edu.cmu.cs.dennisc.scenegraph.Composite sgRoot = owner.getRoot();
 		if( sgRoot instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) {
 			return AdapterFactory.getAdapterFor( (edu.cmu.cs.dennisc.scenegraph.Scene)sgRoot );
@@ -110,59 +109,43 @@ public abstract class GlrComponent<T extends edu.cmu.cs.dennisc.scenegraph.Compo
 	}
 
 	private void updateAbsoluteTransformationIfNecessary() {
-		synchronized( m_absolute ) {
-			if( Double.isNaN( m_absolute[ 0 ] ) ) {
+		synchronized( this.absolute ) {
+			if( Double.isNaN( this.absolute[ 0 ] ) ) {
 				synchronized( s_buffer ) {
 					owner.getAbsoluteTransformation( s_buffer );
 					assert s_buffer.isNaN() == false;
-					s_buffer.getAsColumnMajorArray16( m_absolute );
+					s_buffer.getAsColumnMajorArray16( this.absolute );
 				}
 			}
 		}
 	}
 
 	private void updateInverseAbsoluteTransformationIfNecessary() {
-		synchronized( m_inverseAbsolute ) {
-			if( Double.isNaN( m_inverseAbsolute[ 0 ] ) ) {
+		synchronized( this.inverseAbsolute ) {
+			if( Double.isNaN( this.inverseAbsolute[ 0 ] ) ) {
 				synchronized( s_buffer ) {
 					owner.getInverseAbsoluteTransformation( s_buffer );
 					assert s_buffer.isNaN() == false;
-					s_buffer.getAsColumnMajorArray16( m_inverseAbsolute );
+					s_buffer.getAsColumnMajorArray16( this.inverseAbsolute );
 				}
 			}
 		}
 	}
 
-	protected double[] getAbsoluteTransformation( double[] rv ) {
-		updateAbsoluteTransformationIfNecessary();
-		synchronized( m_absolute ) {
-			System.arraycopy( m_absolute, 0, rv, 0, rv.length );
-		}
-		return rv;
-	}
-
-	protected double[] getInverseAbsoluteTransformation( double[] rv ) {
-		updateInverseAbsoluteTransformationIfNecessary();
-		synchronized( m_inverseAbsolute ) {
-			System.arraycopy( m_inverseAbsolute, 0, rv, 0, rv.length );
-		}
-		return rv;
-	}
-
 	public java.nio.DoubleBuffer accessAbsoluteTransformationAsBuffer() {
-		updateAbsoluteTransformationIfNecessary();
-		return m_absoluteBuffer;
+		this.updateAbsoluteTransformationIfNecessary();
+		return this.absoluteBuffer;
 	}
 
 	public java.nio.DoubleBuffer accessInverseAbsoluteTransformationAsBuffer() {
-		updateInverseAbsoluteTransformationIfNecessary();
-		return m_inverseAbsoluteBuffer;
+		this.updateInverseAbsoluteTransformationIfNecessary();
+		return this.inverseAbsoluteBuffer;
 	}
 
-	private double[] m_absolute = new double[ 16 ];
-	private double[] m_inverseAbsolute = new double[ 16 ];
-	private java.nio.DoubleBuffer m_absoluteBuffer = java.nio.DoubleBuffer.wrap( m_absolute );
-	private java.nio.DoubleBuffer m_inverseAbsoluteBuffer = java.nio.DoubleBuffer.wrap( m_inverseAbsolute );
+	private final double[] absolute = new double[ 16 ];
+	private final double[] inverseAbsolute = new double[ 16 ];
+	private final java.nio.DoubleBuffer absoluteBuffer = java.nio.DoubleBuffer.wrap( this.absolute );
+	private final java.nio.DoubleBuffer inverseAbsoluteBuffer = java.nio.DoubleBuffer.wrap( this.inverseAbsolute );
 
-	private GlrScene m_sceneAdapter = null;
+	private GlrScene glrScene;
 }
