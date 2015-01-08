@@ -46,9 +46,7 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters.adorn;
  * @author Dennis Cosgrove
  */
 public abstract class GlrAdornment<A extends edu.cmu.cs.dennisc.scenegraph.adorn.Adornment> extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<A> {
-	protected edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite> m_adornmentRootAdapter = null;
-
-	protected abstract void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<? extends edu.cmu.cs.dennisc.scenegraph.Composite> adornmentRootAdapter );
+	protected abstract void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> adornmentRootAdapter );
 
 	@Override
 	public void setup( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc ) {
@@ -57,10 +55,10 @@ public abstract class GlrAdornment<A extends edu.cmu.cs.dennisc.scenegraph.adorn
 
 	@Override
 	public void renderOpaque( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc ) {
-		if( m_adornmentRootAdapter != null ) {
+		if( glrAdornmentRoot != null ) {
 			rc.gl.glPushMatrix();
 			rc.gl.glMultMatrixd( accessInverseAbsoluteTransformationAsBuffer() );
-			actuallyRender( rc, m_adornmentRootAdapter );
+			actuallyRender( rc, glrAdornmentRoot );
 			rc.gl.glPopMatrix();
 		}
 	}
@@ -80,9 +78,11 @@ public abstract class GlrAdornment<A extends edu.cmu.cs.dennisc.scenegraph.adorn
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.adorningRoot ) {
-			m_adornmentRootAdapter = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( owner.adorningRoot.getValue() );
+			this.glrAdornmentRoot = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( owner.adorningRoot.getValue() );
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> glrAdornmentRoot = null;
 }

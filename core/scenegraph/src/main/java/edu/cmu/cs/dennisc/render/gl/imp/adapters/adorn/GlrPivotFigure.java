@@ -56,11 +56,11 @@ public class GlrPivotFigure extends GlrAdornment<edu.cmu.cs.dennisc.scenegraph.a
 		gl.glPushMatrix();
 		try {
 			gl.glMultMatrixd( ltParent );
-			Iterable<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component>> componentAdapters = parent.accessChildren();
+			Iterable<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> componentAdapters = parent.accessChildren();
 			synchronized( componentAdapters ) {
-				for( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter : componentAdapters ) {
-					if( componentAdapter instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable ) {
-						edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<? extends edu.cmu.cs.dennisc.scenegraph.Transformable> child = (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<? extends edu.cmu.cs.dennisc.scenegraph.Transformable>)componentAdapter;
+				for( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?> componentAdapter : componentAdapters ) {
+					if( componentAdapter instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<?> ) {
+						edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<?> child = (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<?>)componentAdapter;
 						java.nio.DoubleBuffer ltChild = child.accessLocalTransformationAsBuffer();
 						gl.glBegin( GL_LINES );
 						try {
@@ -92,8 +92,8 @@ public class GlrPivotFigure extends GlrAdornment<edu.cmu.cs.dennisc.scenegraph.a
 	}
 
 	@Override
-	protected void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite adornmentRootAdapter ) {
+	protected void actuallyRender( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> glrAdornmentRoot ) {
 		rc.gl.glDisable( GL_LIGHTING );
-		glPivotFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), adornmentRootAdapter );
+		glPivotFigure( rc.gl, accessAbsoluteTransformationAsBuffer(), glrAdornmentRoot );
 	}
 }
