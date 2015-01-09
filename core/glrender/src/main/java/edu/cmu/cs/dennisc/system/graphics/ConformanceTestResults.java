@@ -66,11 +66,6 @@ public enum ConformanceTestResults {
 	SINGLETON;
 
 	public static class SharedDetails {
-		private final String version;
-		private final String vendor;
-		private final String renderer;
-		private final String[] extensions;
-
 		private SharedDetails( javax.media.opengl.GL gl ) {
 			this.version = gl.glGetString( GL_VERSION );
 			this.vendor = gl.glGetString( GL_VENDOR );
@@ -104,6 +99,11 @@ public enum ConformanceTestResults {
 		public String[] getExtensions() {
 			return this.extensions;
 		}
+
+		private final String version;
+		private final String vendor;
+		private final String renderer;
+		private final String[] extensions;
 	}
 
 	public static abstract class PickDetails {
