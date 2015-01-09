@@ -54,6 +54,8 @@ public class AdapterFactory {
 	private static final String RENDERER_PACKAGE_NAME = GlrElement.class.getPackage().getName();
 	private static final String SCENEGRAPH_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.graphics.Text.class.getPackage().getName();
 	private static final String RENDERER_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.render.gl.imp.adapters.graphics.GlrText.class.getPackage().getName();
+	private static final String SCENEGRAPH_ADORN_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.adorn.StickFigure.class.getPackage().getName();
+	private static final String RENDERER_ADORN_PACKAGE_NAME = edu.cmu.cs.dennisc.render.gl.imp.adapters.adorn.GlrStickFigure.class.getPackage().getName();
 
 	static {
 		register( edu.cmu.cs.dennisc.texture.BufferedImageTexture.class, GlrBufferedImageTexture.class );
@@ -94,6 +96,9 @@ public class AdapterFactory {
 					break;
 				} else if( ( sgPackage != null ) && sgPackage.getName().equals( SCENEGRAPH_GRAPHICS_PACKAGE_NAME ) ) {
 					sb.append( RENDERER_GRAPHICS_PACKAGE_NAME );
+					break;
+				} else if( ( sgPackage != null ) && sgPackage.getName().equals( SCENEGRAPH_ADORN_PACKAGE_NAME ) ) {
+					sb.append( RENDERER_ADORN_PACKAGE_NAME );
 					break;
 				} else {
 					sgClass = sgClass.getSuperclass();
