@@ -47,8 +47,9 @@ package org.alice.ide.resource.manager;
  * @author Dennis Cosgrove
  */
 public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.ide.resource.manager.views.ResourceManagerView> {
-	public ResourceManagerComposite() {
+	public ResourceManagerComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( java.util.UUID.fromString( "7351e244-fcd7-4b21-9b54-83254fc44db7" ) );
+		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
 	public ImportAudioResourceOperation getImportAudioResourceOperation() {
@@ -100,7 +101,8 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 		this.previousResources = currentResources;
 	}
 
-	private void reloadTableModel() {
+	private org.lgna.project.Project getProject() {
+		//TODO: use this.projectDocumentFrame
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project;
 		if( ide != null ) {
@@ -108,34 +110,28 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 		} else {
 			project = null;
 		}
-		this.reloadTableModel( project );
+		return project;
+	}
+
+	private void reloadTableModel() {
+		this.reloadTableModel( this.getProject() );
 	}
 
 	@Override
 	public void handlePreActivation() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project;
-		if( ide != null ) {
-			project = ide.getProject();
-			if( project != null ) {
-				project.addResourceListener( this.resourceListener );
-			}
-		} else {
-			project = null;
+		this.projectBeingListenedTo = this.getProject();
+		if( this.projectBeingListenedTo != null ) {
+			this.projectBeingListenedTo.addResourceListener( this.resourceListener );
 		}
-		this.reloadTableModel( project );
+		this.reloadTableModel( this.projectBeingListenedTo );
 		this.resourcesState.addAndInvokeNewSchoolValueListener( this.rowListener );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		if( ide != null ) {
-			org.lgna.project.Project project = ide.getProject();
-			if( project != null ) {
-				project.removeResourceListener( this.resourceListener );
-			}
+		if( this.projectBeingListenedTo != null ) {
+			this.projectBeingListenedTo.removeResourceListener( this.resourceListener );
 		}
 		this.resourcesState.removeNewSchoolValueListener( this.rowListener );
 		for( org.lgna.common.Resource resource : this.previousResources ) {
@@ -208,6 +204,7 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 		}
 	};
 
+	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
 	private final ResourceSingleSelectTableRowState resourcesState = new ResourceSingleSelectTableRowState();
 	private final org.lgna.croquet.Operation reloadContentOperation = new ReloadContentResourceOperation( this.resourcesState );
 	private final org.lgna.croquet.Operation removeResourceOperation = new RemoveResourceOperation( this.resourcesState );
@@ -216,4 +213,5 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 	private final ImportAudioResourceOperation importAudioResourceOperation = new ImportAudioResourceOperation();
 
 	private java.util.Collection<org.lgna.common.Resource> previousResources = java.util.Collections.emptyList();
+	private org.lgna.project.Project projectBeingListenedTo;
 }

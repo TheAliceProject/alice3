@@ -137,7 +137,7 @@ public class ProjectDocumentFrame {
 			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.resource.manager.ResourceManagerComposite>() {
 				@Override
 				protected org.alice.ide.resource.manager.ResourceManagerComposite create() {
-					return new org.alice.ide.resource.manager.ResourceManagerComposite();
+					return new org.alice.ide.resource.manager.ResourceManagerComposite( ProjectDocumentFrame.this );
 				}
 			}, org.lgna.croquet.Application.DOCUMENT_UI_GROUP ).getLaunchOperation();
 
