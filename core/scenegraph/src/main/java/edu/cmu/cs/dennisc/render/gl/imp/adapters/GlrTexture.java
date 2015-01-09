@@ -68,11 +68,6 @@ public abstract class GlrTexture<T extends edu.cmu.cs.dennisc.texture.Texture> e
 		}
 	}
 
-	private final TextureBinding textureBinding = new TextureBinding();
-	private final java.util.List<RenderContext> renderContexts = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private com.jogamp.opengl.util.texture.TextureData textureData;
-	private boolean isTextureDataDirty = true;
-
 	public void addRenderContext( RenderContext rc ) {
 		this.renderContexts.add( rc );
 	}
@@ -132,4 +127,9 @@ public abstract class GlrTexture<T extends edu.cmu.cs.dennisc.texture.Texture> e
 		this.textureBinding.ensureUpToDate( rc, this.textureData );
 		return this.textureBinding;
 	}
+
+	private final TextureBinding textureBinding = new TextureBinding();
+	private final java.util.List<RenderContext> renderContexts = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private com.jogamp.opengl.util.texture.TextureData textureData;
+	private boolean isTextureDataDirty = true;
 }

@@ -53,25 +53,25 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public class GlrLinearFog extends GlrFog<edu.cmu.cs.dennisc.scenegraph.LinearFog> {
-	private float m_near;
-	private float m_far;
-
 	@Override
 	public void setupAffectors( RenderContext rc ) {
 		super.setupAffectors( rc );
 		rc.gl.glFogi( GL_FOG_MODE, GL_LINEAR );
-		rc.gl.glFogf( GL_FOG_START, m_near );
-		rc.gl.glFogf( GL_FOG_END, m_far );
+		rc.gl.glFogf( GL_FOG_START, this.near );
+		rc.gl.glFogf( GL_FOG_END, this.far );
 	}
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.nearDistance ) {
-			m_near = owner.nearDistance.getValue().floatValue();
+			this.near = owner.nearDistance.getValue().floatValue();
 		} else if( property == owner.farDistance ) {
-			m_far = owner.farDistance.getValue().floatValue();
+			this.far = owner.farDistance.getValue().floatValue();
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private float near;
+	private float far;
 }

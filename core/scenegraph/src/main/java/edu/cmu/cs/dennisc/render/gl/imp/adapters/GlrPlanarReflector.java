@@ -50,14 +50,12 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public class GlrPlanarReflector extends GlrVisual<edu.cmu.cs.dennisc.scenegraph.PlanarReflector> {
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_geometryTransformation = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
-
 	private void updateGeometryTransformation() {
 		edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = owner.geometries.getValue();
 		if( ( sgGeometries != null ) && ( sgGeometries.length > 0 ) ) {
 			edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = sgGeometries[ 0 ];
 
-			sgGeometry.getPlane( m_geometryTransformation );
+			sgGeometry.getPlane( this.geometryTransformation );
 			//			edu.cmu.cs.dennisc.math.PointD3 point0;
 			//			edu.cmu.cs.dennisc.math.PointD3 point1;
 			//			edu.cmu.cs.dennisc.math.VectorF3 normal;
@@ -99,10 +97,10 @@ public class GlrPlanarReflector extends GlrVisual<edu.cmu.cs.dennisc.scenegraph.
 			//
 			//			edu.cmu.cs.dennisc.math.MatrixD3x3 axes = LinearAlgebra.newMatrix3d( forward, upGuide );
 			//			
-			//			m_geometryTransformation.setRow( 0, axes.right.x, axes.up.x, axes.backward.x, translation.x );
-			//			m_geometryTransformation.setRow( 1, axes.right.y, axes.up.y, axes.backward.y, translation.y );
-			//			m_geometryTransformation.setRow( 2, axes.right.z, axes.up.z, axes.backward.z, translation.z );
-			//			m_geometryTransformation.setRow( 3, 0       , 0       , 0       , 1             );			
+			//			this.geometryTransformation.setRow( 0, axes.right.x, axes.up.x, axes.backward.x, translation.x );
+			//			this.geometryTransformation.setRow( 1, axes.right.y, axes.up.y, axes.backward.y, translation.y );
+			//			this.geometryTransformation.setRow( 2, axes.right.z, axes.up.z, axes.backward.z, translation.z );
+			//			this.geometryTransformation.setRow( 3, 0       , 0       , 0       , 1             );			
 		}
 	}
 
@@ -126,7 +124,7 @@ public class GlrPlanarReflector extends GlrVisual<edu.cmu.cs.dennisc.scenegraph.
 
 	//	@Override
 	//	public void pick( PickContext pc, PickParameters pickParameters ) {
-	//		m_geometryAdapter.pick( pc, pickParameters.isSubElementRequired() );
+	//		this.geometryAdapter.pick( pc, pickParameters.isSubElementRequired() );
 	//	}
 
 	public boolean isFacing( GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter ) {
@@ -134,18 +132,13 @@ public class GlrPlanarReflector extends GlrVisual<edu.cmu.cs.dennisc.scenegraph.
 		return m.orientation.backward.z > 0;
 	}
 
-	private double[] m_reflection = new double[ 16 ];
-	private double[] m_equation = new double[ 4 ];
-	private java.nio.DoubleBuffer m_reflectionBuffer = java.nio.DoubleBuffer.wrap( m_reflection );
-	private java.nio.DoubleBuffer m_equationBuffer = java.nio.DoubleBuffer.wrap( m_equation );
-
 	public synchronized void applyReflection( RenderContext rc ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = owner.getAbsoluteTransformation();
-		m.multiply( m_geometryTransformation );
+		m.multiply( this.geometryTransformation );
 
 		edu.cmu.cs.dennisc.math.Plane plane = edu.cmu.cs.dennisc.math.Plane.createInstance( m );
-		plane.getEquation( m_equation );
-		rc.gl.glClipPlane( GL_CLIP_PLANE0, m_equationBuffer );
+		plane.getEquation( this.equation );
+		rc.gl.glClipPlane( GL_CLIP_PLANE0, this.equationBuffer );
 
 		edu.cmu.cs.dennisc.math.Point3 p = m.translation;
 		edu.cmu.cs.dennisc.math.Vector3 v = new edu.cmu.cs.dennisc.math.Vector3( -m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z );
@@ -171,8 +164,8 @@ public class GlrPlanarReflector extends GlrVisual<edu.cmu.cs.dennisc.scenegraph.
 		r.backward.w = 0;
 		r.translation.w = 1;
 
-		r.getAsColumnMajorArray16( m_reflection );
-		rc.gl.glMultMatrixd( m_reflectionBuffer );
+		r.getAsColumnMajorArray16( this.reflection );
+		rc.gl.glMultMatrixd( this.reflectionBuffer );
 	}
 
 	public void renderStencil( RenderContext rc, GlrVisual.RenderType renderType ) {
@@ -183,4 +176,10 @@ public class GlrPlanarReflector extends GlrVisual<edu.cmu.cs.dennisc.scenegraph.
 		actuallyRender( rc, renderType );
 		rc.gl.glPopMatrix();
 	}
+
+	private final edu.cmu.cs.dennisc.math.AffineMatrix4x4 geometryTransformation = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
+	private final double[] reflection = new double[ 16 ];
+	private final java.nio.DoubleBuffer reflectionBuffer = java.nio.DoubleBuffer.wrap( this.reflection );
+	private final double[] equation = new double[ 4 ];
+	private final java.nio.DoubleBuffer equationBuffer = java.nio.DoubleBuffer.wrap( this.equation );
 }

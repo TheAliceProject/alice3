@@ -49,20 +49,20 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public abstract class GlrFog<T extends edu.cmu.cs.dennisc.scenegraph.Fog> extends GlrAffector<T> {
-	private float[] m_color = new float[ 4 ];
-
 	@Override
 	public void setupAffectors( RenderContext rc ) {
 		rc.setIsFogEnabled( true );
-		rc.setFogColor( m_color );
+		rc.setFogColor( this.color );
 	}
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.color ) {
-			owner.color.getValue().getAsArray( m_color );
+			owner.color.getValue().getAsArray( this.color );
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private final float[] color = new float[ 4 ];
 }

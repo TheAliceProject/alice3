@@ -52,29 +52,25 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geometry> extends GlrElement<T> {
-	private java.util.List<RenderContext> m_renderContexts = new java.util.LinkedList<RenderContext>();
-
 	public void addRenderContext( RenderContext rc ) {
-		m_renderContexts.add( rc );
+		this.renderContexts.add( rc );
 	}
 
 	public void removeRenderContext( RenderContext rc ) {
-		m_renderContexts.remove( rc );
+		this.renderContexts.remove( rc );
 	}
 
 	@Override
 	protected void handleReleased() {
 		super.handleReleased();
-		if( m_renderContexts.size() > 0 ) {
-			RenderContext[] renderContexts = new RenderContext[ m_renderContexts.size() ];
-			m_renderContexts.toArray( renderContexts );
+		if( this.renderContexts.size() > 0 ) {
+			RenderContext[] renderContexts = new RenderContext[ this.renderContexts.size() ];
+			this.renderContexts.toArray( renderContexts );
 			for( RenderContext rc : renderContexts ) {
 				rc.forgetGeometryAdapter( this, true );
 			}
 		}
 	}
-
-	private boolean m_isGeometryChanged;
 
 	public abstract boolean isAlphaBlended();
 
@@ -83,7 +79,7 @@ public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geomet
 	}
 
 	protected boolean isGeometryChanged() {
-		return m_isGeometryChanged;
+		return this.isGeometryChanged;
 	}
 
 	protected boolean isDisplayListDesired() {
@@ -95,7 +91,7 @@ public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geomet
 	}
 
 	protected void setIsGeometryChanged( boolean isGeometryChanged ) {
-		m_isGeometryChanged = isGeometryChanged;
+		this.isGeometryChanged = isGeometryChanged;
 	}
 
 	//todo: better name
@@ -161,4 +157,7 @@ public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geomet
 	}
 
 	public abstract edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement );
+
+	private final java.util.List<RenderContext> renderContexts = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private boolean isGeometryChanged;
 }

@@ -49,24 +49,25 @@ import edu.cmu.cs.dennisc.render.gl.imp.Context;
  * @author Dennis Cosgrove
  */
 public abstract class GlrAbstractNearPlaneAndFarPlaneCamera<T extends edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera> extends GlrAbstractCamera<T> {
-	private float m_near;
-	private float m_far;
-
 	protected abstract void setupProjection( Context context, java.awt.Rectangle actualViewport, float near, float far );
 
 	@Override
 	protected void setupProjection( edu.cmu.cs.dennisc.render.gl.imp.Context context, java.awt.Rectangle actualViewport ) {
-		setupProjection( context, actualViewport, m_near, m_far );
+		setupProjection( context, actualViewport, this.near, this.far );
 	}
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.nearClippingPlaneDistance ) {
-			m_near = owner.nearClippingPlaneDistance.getValue().floatValue();
+			this.near = owner.nearClippingPlaneDistance.getValue().floatValue();
 		} else if( property == owner.farClippingPlaneDistance ) {
-			m_far = owner.farClippingPlaneDistance.getValue().floatValue();
+			this.far = owner.farClippingPlaneDistance.getValue().floatValue();
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private float near;
+	private float far;
+
 }

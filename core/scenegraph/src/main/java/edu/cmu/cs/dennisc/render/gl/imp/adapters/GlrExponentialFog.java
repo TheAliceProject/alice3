@@ -52,21 +52,21 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public class GlrExponentialFog extends GlrFog<edu.cmu.cs.dennisc.scenegraph.ExponentialFog> {
-	private float m_density;
-
 	@Override
 	public void setupAffectors( RenderContext rc ) {
 		super.setupAffectors( rc );
 		rc.gl.glFogi( GL_FOG_MODE, GL_EXP );
-		rc.gl.glFogf( GL_FOG_DENSITY, m_density );
+		rc.gl.glFogf( GL_FOG_DENSITY, this.density );
 	}
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.density ) {
-			m_density = owner.density.getValue().floatValue();
+			this.density = owner.density.getValue().floatValue();
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private float density;
 }

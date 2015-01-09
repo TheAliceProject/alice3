@@ -50,14 +50,9 @@ import edu.cmu.cs.dennisc.texture.Texture;
  * @author Dennis Cosgrove
  */
 public class GlrTexturedAppearance extends GlrSimpleAppearance<edu.cmu.cs.dennisc.scenegraph.TexturedAppearance> {
-	private GlrTexture<? extends edu.cmu.cs.dennisc.texture.Texture> m_diffuseColorTextureAdapter;
-	private boolean m_isDiffuseColorTextureAlphaBlended;
-	private boolean m_isDiffuseColorTextureClamped;
-	private GlrTexture<? extends edu.cmu.cs.dennisc.texture.Texture> m_bumpTextureAdapter;
-
 	@Override
 	public boolean isAlphaBlended() {
-		return super.isAlphaBlended() || m_isDiffuseColorTextureAlphaBlended;
+		return super.isAlphaBlended() || this.isDiffuseColorTextureAlphaBlended;
 	}
 
 	@Override
@@ -68,21 +63,21 @@ public class GlrTexturedAppearance extends GlrSimpleAppearance<edu.cmu.cs.dennis
 
 	public void setTexturePipelineState( RenderContext rc )
 	{
-		rc.setDiffuseColorTextureAdapter( m_diffuseColorTextureAdapter, m_isDiffuseColorTextureClamped );
-		rc.setBumpTextureAdapter( m_bumpTextureAdapter );
+		rc.setDiffuseColorTextureAdapter( this.diffuseColorTextureAdapter, this.isDiffuseColorTextureClamped );
+		rc.setBumpTextureAdapter( this.bumpTextureAdapter );
 	}
 
 	@Override
 	protected void handleReleased()
 	{
 		super.handleReleased();
-		if( ( m_diffuseColorTextureAdapter != null ) && ( m_diffuseColorTextureAdapter.owner != null ) )
+		if( ( this.diffuseColorTextureAdapter != null ) && ( this.diffuseColorTextureAdapter.owner != null ) )
 		{
-			m_diffuseColorTextureAdapter.handleReleased();
+			this.diffuseColorTextureAdapter.handleReleased();
 		}
-		if( ( m_bumpTextureAdapter != null ) && ( m_bumpTextureAdapter.owner != null ) )
+		if( ( this.bumpTextureAdapter != null ) && ( this.bumpTextureAdapter.owner != null ) )
 		{
-			m_bumpTextureAdapter.handleReleased();
+			this.bumpTextureAdapter.handleReleased();
 		}
 	}
 
@@ -90,27 +85,27 @@ public class GlrTexturedAppearance extends GlrSimpleAppearance<edu.cmu.cs.dennis
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.diffuseColorTexture ) {
 			GlrTexture<? extends Texture> newAdapter = AdapterFactory.getAdapterFor( owner.diffuseColorTexture.getValue() );
-			if( m_diffuseColorTextureAdapter != newAdapter )
+			if( this.diffuseColorTextureAdapter != newAdapter )
 			{
-				if( m_diffuseColorTextureAdapter != null )
+				if( this.diffuseColorTextureAdapter != null )
 				{
-					m_diffuseColorTextureAdapter.handleReleased();
+					this.diffuseColorTextureAdapter.handleReleased();
 				}
-				m_diffuseColorTextureAdapter = newAdapter;
+				this.diffuseColorTextureAdapter = newAdapter;
 			}
 		} else if( property == owner.isDiffuseColorTextureAlphaBlended ) {
-			m_isDiffuseColorTextureAlphaBlended = owner.isDiffuseColorTextureAlphaBlended.getValue();
+			this.isDiffuseColorTextureAlphaBlended = owner.isDiffuseColorTextureAlphaBlended.getValue();
 		} else if( property == owner.isDiffuseColorTextureClamped ) {
-			m_isDiffuseColorTextureClamped = owner.isDiffuseColorTextureClamped.getValue();
+			this.isDiffuseColorTextureClamped = owner.isDiffuseColorTextureClamped.getValue();
 		} else if( property == owner.bumpTexture ) {
 			GlrTexture<? extends Texture> newAdapter = AdapterFactory.getAdapterFor( owner.bumpTexture.getValue() );
-			if( m_bumpTextureAdapter != newAdapter )
+			if( this.bumpTextureAdapter != newAdapter )
 			{
-				if( m_bumpTextureAdapter != null )
+				if( this.bumpTextureAdapter != null )
 				{
-					m_bumpTextureAdapter.handleReleased();
+					this.bumpTextureAdapter.handleReleased();
 				}
-				m_bumpTextureAdapter = newAdapter;
+				this.bumpTextureAdapter = newAdapter;
 			}
 		} else if( property == owner.textureId ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle textureId?", property.getValue(), this.owner.hashCode(), this.owner );
@@ -118,4 +113,9 @@ public class GlrTexturedAppearance extends GlrSimpleAppearance<edu.cmu.cs.dennis
 			super.propertyChanged( property );
 		}
 	}
+
+	private GlrTexture<?> diffuseColorTextureAdapter;
+	private boolean isDiffuseColorTextureAlphaBlended;
+	private boolean isDiffuseColorTextureClamped;
+	private GlrTexture<?> bumpTextureAdapter;
 }

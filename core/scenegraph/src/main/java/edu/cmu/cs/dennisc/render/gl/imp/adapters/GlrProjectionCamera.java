@@ -49,12 +49,9 @@ import edu.cmu.cs.dennisc.render.gl.imp.Context;
  * @author Dennis Cosgrove
  */
 public class GlrProjectionCamera extends GlrAbstractCamera<edu.cmu.cs.dennisc.scenegraph.ProjectionCamera> {
-	private double[] m_projection = new double[ 16 ];
-	private java.nio.DoubleBuffer m_projectionBuffer = java.nio.DoubleBuffer.wrap( m_projection );
-
 	@Override
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
-		throw new RuntimeException( "TODO" );
+		throw new RuntimeException( "todo" );
 	}
 
 	@Override
@@ -70,15 +67,18 @@ public class GlrProjectionCamera extends GlrAbstractCamera<edu.cmu.cs.dennisc.sc
 
 	@Override
 	protected void setupProjection( Context context, java.awt.Rectangle actualViewport ) {
-		context.gl.glLoadMatrixd( m_projectionBuffer );
+		context.gl.glLoadMatrixd( this.projectionBuffer );
 	}
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.projection ) {
-			owner.projection.getValue().getAsColumnMajorArray16( m_projection );
+			owner.projection.getValue().getAsColumnMajorArray16( this.projection );
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private final double[] projection = new double[ 16 ];
+	private final java.nio.DoubleBuffer projectionBuffer = java.nio.DoubleBuffer.wrap( this.projection );
 }

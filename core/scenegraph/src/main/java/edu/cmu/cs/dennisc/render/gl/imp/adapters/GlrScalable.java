@@ -114,8 +114,8 @@ public class GlrScalable extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scal
 		}
 	}
 
-	private double x;
-	private double y;
-	private double z;
-	private boolean isIdentity = true;
+	private double x = Double.NaN;
+	private double y = Double.NaN;
+	private double z = Double.NaN;
+	private boolean isIdentity;
 }

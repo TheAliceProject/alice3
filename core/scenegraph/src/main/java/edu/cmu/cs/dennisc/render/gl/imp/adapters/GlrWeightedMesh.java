@@ -45,7 +45,6 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
 public class GlrWeightedMesh<E extends WeightedMesh> extends GlrMesh<E>
@@ -60,6 +59,7 @@ public class GlrWeightedMesh<E extends WeightedMesh> extends GlrMesh<E>
 				( property == owner.weightInfo ) ||
 				( property == owner.skeleton ) )
 		{
+			//pass
 		}
 		else {
 			super.propertyChanged( property );

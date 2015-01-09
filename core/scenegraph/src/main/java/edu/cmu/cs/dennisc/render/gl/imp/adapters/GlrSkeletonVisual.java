@@ -238,7 +238,7 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 				this.skeletonIsDirty = true;
 			}
 			if( owner.renderBackfaces() ) {
-				this.m_backFacingAppearanceAdapter = this.m_frontFacingAppearanceAdapter;
+				this.glrBackFacingAppearance = this.glrFrontFacingAppearance;
 			}
 			updateAppearanceToGeometryAdapterMap();
 			updateAppearanceToMeshControllersMap();
@@ -248,12 +248,12 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 
 	private void releaseMappedAdapter( GlrElement<? extends Element> adapter )
 	{
-		if( ( adapter != this.m_backFacingAppearanceAdapter ) && ( adapter != this.m_frontFacingAppearanceAdapter ) )
+		if( ( adapter != this.glrBackFacingAppearance ) && ( adapter != this.glrFrontFacingAppearance ) )
 		{
 			boolean matchesGeometry = false;
-			if( m_geometryAdapters != null )
+			if( this.glrGeometries != null )
 			{
-				for( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : this.m_geometryAdapters )
+				for( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : this.glrGeometries )
 				{
 					if( adapter == geometryAdapter )
 					{
@@ -482,15 +482,15 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 		{
 			return true;
 		}
-		if( m_isShowing && ( appearanceIdToMeshControllersMap != null ) && ( appearanceIdToMeshControllersMap.size() > 0 ) )
+		if( this.isShowing && ( appearanceIdToMeshControllersMap != null ) && ( appearanceIdToMeshControllersMap.size() > 0 ) )
 		{
-			if( m_frontFacingAppearanceAdapter != null ) {
-				if( m_frontFacingAppearanceAdapter.isActuallyShowing() ) {
+			if( this.glrFrontFacingAppearance != null ) {
+				if( this.glrFrontFacingAppearance.isActuallyShowing() ) {
 					return true;
 				}
 			}
-			if( m_backFacingAppearanceAdapter != null ) {
-				if( m_backFacingAppearanceAdapter.isActuallyShowing() ) {
+			if( this.glrBackFacingAppearance != null ) {
+				if( this.glrBackFacingAppearance.isActuallyShowing() ) {
 					return true;
 				}
 			}
@@ -507,26 +507,26 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 		}
 		//Check the base adapter to see if it's set to be alpha (through a sub 1 opacity setting)
 		//If it's alpha, return false
-		if( m_frontFacingAppearanceAdapter != null ) {
-			if( m_frontFacingAppearanceAdapter.isAllAlphaBlended() ) {
+		if( this.glrFrontFacingAppearance != null ) {
+			if( this.glrFrontFacingAppearance.isAllAlphaBlended() ) {
 				return false;
 			}
 		}
-		if( m_backFacingAppearanceAdapter != null ) {
-			if( m_backFacingAppearanceAdapter.isAllAlphaBlended() ) {
+		if( this.glrBackFacingAppearance != null ) {
+			if( this.glrBackFacingAppearance.isAllAlphaBlended() ) {
 				return false;
 			}
 		}
 		//Check to see if there are non-alpha textures or none "all" alpha values
 		if( ( appearanceIdToMeshControllersMap != null ) && ( appearanceIdToMeshControllersMap.size() > 0 ) )
 		{
-			if( m_frontFacingAppearanceAdapter != null ) {
-				if( !m_frontFacingAppearanceAdapter.isAlphaBlended() ) {
+			if( this.glrFrontFacingAppearance != null ) {
+				if( !this.glrFrontFacingAppearance.isAlphaBlended() ) {
 					return true;
 				}
 			}
-			if( m_backFacingAppearanceAdapter != null ) {
-				if( !m_backFacingAppearanceAdapter.isAlphaBlended() ) {
+			if( this.glrBackFacingAppearance != null ) {
+				if( !this.glrBackFacingAppearance.isAlphaBlended() ) {
 					return true;
 				}
 			}
@@ -553,13 +553,13 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 
 		if( ( appearanceIdToMeshControllersMap != null ) && ( appearanceIdToMeshControllersMap.size() > 0 ) )
 		{
-			if( m_frontFacingAppearanceAdapter != null ) {
-				if( m_frontFacingAppearanceAdapter.isAlphaBlended() ) {
+			if( this.glrFrontFacingAppearance != null ) {
+				if( this.glrFrontFacingAppearance.isAlphaBlended() ) {
 					return true;
 				}
 			}
-			if( m_backFacingAppearanceAdapter != null ) {
-				if( m_backFacingAppearanceAdapter.isAlphaBlended() ) {
+			if( this.glrBackFacingAppearance != null ) {
+				if( this.glrBackFacingAppearance.isAlphaBlended() ) {
 					return true;
 				}
 			}
@@ -727,12 +727,12 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 			appearanceIdToGeometryAdapaters.clear();
 			for( TexturedAppearance ta : this.owner.textures.getValue() )
 			{
-				List<GlrMesh<Mesh>> meshAdapters = new LinkedList<GlrMesh<Mesh>>();
-				for( GlrGeometry adapter : this.m_geometryAdapters )
+				List<GlrMesh<?>> meshAdapters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				for( GlrGeometry<?> adapter : this.glrGeometries )
 				{
 					if( adapter instanceof GlrMesh<?> )
 					{
-						GlrMesh<Mesh> ma = (GlrMesh<Mesh>)adapter;
+						GlrMesh<?> ma = (GlrMesh<?>)adapter;
 						if( ma.owner.textureId.getValue() == ta.textureId.getValue() )
 						{
 							meshAdapters.add( ma );
@@ -772,21 +772,15 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( property == owner.skeleton )
-		{
+		if( property == owner.skeleton ) {
 			handleNewSkeleton();
-		}
-		else if( property == owner.weightedMeshes )
-		{
+		} else if( property == owner.weightedMeshes ) {
 			updateAppearanceToMeshControllersMap();
-		}
-		else if( property == owner.textures ) {
+		} else if( property == owner.textures ) {
 			updateAppearanceIdToAdapterMap();
-		}
-		else if( property == owner.baseBoundingBox ) {
+		} else if( property == owner.baseBoundingBox ) {
 			//pass
-		}
-		else {
+		} else {
 			super.propertyChanged( property );
 		}
 	}

@@ -64,9 +64,6 @@ public abstract class GlrLight<T extends edu.cmu.cs.dennisc.scenegraph.Light> ex
 	private static float[] s_spotDirection = new float[ 3 ];
 	private static java.nio.FloatBuffer s_spotDirectionBuffer = java.nio.FloatBuffer.wrap( s_spotDirection );
 
-	private float[] m_color = { Float.NaN, Float.NaN, Float.NaN, Float.NaN };
-	private float m_brightness = Float.NaN;
-
 	protected float[] getPosition( float[] rv ) {
 		rv[ 0 ] = 0;
 		rv[ 1 ] = 0;
@@ -117,10 +114,10 @@ public abstract class GlrLight<T extends edu.cmu.cs.dennisc.scenegraph.Light> ex
 		rc.gl.glLightfv( id, GL_AMBIENT, s_ambientBlackBuffer );
 
 		//todo: should lights' diffuse and specular colors be separated in the scenegraph?
-		rc.setLightColor( id, m_color, m_brightness );
+		rc.setLightColor( id, this.color, this.brightness );
 
-		//        rc.gl.glLightfv( id, GL_DIFFUSE, m_colorTimesBrightnessBuffer );
-		//        rc.gl.glLightfv( id, GL_SPECULAR, m_colorTimesBrightnessBuffer );
+		//        rc.gl.glLightfv( id, GL_DIFFUSE, this.colorTimesBrightnessBuffer );
+		//        rc.gl.glLightfv( id, GL_SPECULAR, this.colorTimesBrightnessBuffer );
 
 		synchronized( s_position ) {
 			getPosition( s_position );
@@ -140,7 +137,7 @@ public abstract class GlrLight<T extends edu.cmu.cs.dennisc.scenegraph.Light> ex
 	@Override
 	public void setupAffectors( RenderContext rc ) {
 		if( this instanceof GlrAmbientLight ) {
-			rc.addAmbient( m_color, m_brightness );
+			rc.addAmbient( this.color, this.brightness );
 		} else {
 			int id = rc.getNextLightID();
 			setup( rc, id );
@@ -150,11 +147,14 @@ public abstract class GlrLight<T extends edu.cmu.cs.dennisc.scenegraph.Light> ex
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.color ) {
-			owner.color.getValue().getAsArray( m_color );
+			owner.color.getValue().getAsArray( this.color );
 		} else if( property == owner.brightness ) {
-			m_brightness = owner.brightness.getValue();
+			this.brightness = owner.brightness.getValue();
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private final float[] color = { Float.NaN, Float.NaN, Float.NaN, Float.NaN };
+	private float brightness = Float.NaN;
 }

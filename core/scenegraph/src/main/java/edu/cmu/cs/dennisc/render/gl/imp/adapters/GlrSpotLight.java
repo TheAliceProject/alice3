@@ -47,8 +47,6 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
  * @author Dennis Cosgrove
  */
 public class GlrSpotLight extends GlrPointLight<edu.cmu.cs.dennisc.scenegraph.SpotLight> {
-	private float m_outerBeamAngleInDegrees;
-
 	@Override
 	protected float[] getSpotDirection( float[] rv ) {
 		java.nio.DoubleBuffer db = accessAbsoluteTransformationAsBuffer();
@@ -64,17 +62,20 @@ public class GlrSpotLight extends GlrPointLight<edu.cmu.cs.dennisc.scenegraph.Sp
 	//}
 	@Override
 	protected float getSpotCutoff() {
-		return m_outerBeamAngleInDegrees;
+		return this.outerBeamInDegrees;
 	}
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.innerBeamAngle ) {
 		} else if( property == owner.outerBeamAngle ) {
-			m_outerBeamAngleInDegrees = (float)owner.outerBeamAngle.getValue().getAsDegrees();
+			this.outerBeamInDegrees = (float)owner.outerBeamAngle.getValue().getAsDegrees();
 		} else if( property == owner.falloff ) {
+			//pass
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private float outerBeamInDegrees;
 }

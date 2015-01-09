@@ -46,19 +46,17 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GlrSphere extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Sphere> {
-	private double m_radius;
 	//todo: add scenegraph hint
-	private int m_stacks = 50;
-	private int m_slices = 50;
+	private static final int STACK_COUNT = 50;
+	private static final int SLICE_COUNT = 50;
 
 	private void glSphere( Context c ) {
-		c.glu.gluSphere( c.getQuadric(), m_radius, m_slices, m_stacks );
+		c.glu.gluSphere( c.getQuadric(), this.radius, SLICE_COUNT, STACK_COUNT );
 	}
 
 	@Override
@@ -77,7 +75,7 @@ public class GlrSphere extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Sphere> {
 		edu.cmu.cs.dennisc.math.Point3 origin = new edu.cmu.cs.dennisc.math.Point3( 0, 0, 0 );
 		edu.cmu.cs.dennisc.math.Vector3 dst = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( ray.accessOrigin(), origin );
 		double b = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( dst, ray.accessDirection() );
-		double c = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( dst, dst ) - m_radius;
+		double c = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( dst, dst ) - this.radius;
 		double d = ( b * b ) - c;
 		if( d > 0 ) {
 			double t = -b - Math.sqrt( d );
@@ -104,10 +102,12 @@ public class GlrSphere extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Sphere> {
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.radius ) {
-			m_radius = owner.radius.getValue();
+			this.radius = owner.radius.getValue();
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private double radius;
 }

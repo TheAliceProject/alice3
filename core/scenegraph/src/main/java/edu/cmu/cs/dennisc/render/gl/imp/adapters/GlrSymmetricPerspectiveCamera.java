@@ -49,9 +49,6 @@ import edu.cmu.cs.dennisc.render.gl.imp.Context;
  * @author Dennis Cosgrove
  */
 public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera> {
-	private double m_verticalInDegrees;
-	private double m_horizontalInDegrees;
-
 	@Override
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
 		double vertical = getActualVerticalViewingAngle( actualViewport ).getAsRadians();
@@ -105,10 +102,10 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 
 	@Override
 	protected java.awt.Rectangle performLetterboxing( java.awt.Rectangle rv ) {
-		if( Double.isNaN( m_horizontalInDegrees ) || Double.isNaN( m_verticalInDegrees ) ) {
+		if( Double.isNaN( this.horizontalInDegrees ) || Double.isNaN( this.verticalInDegrees ) ) {
 			//pass
 		} else {
-			double aspect = m_horizontalInDegrees / m_verticalInDegrees;
+			double aspect = this.horizontalInDegrees / this.verticalInDegrees;
 			double pixelAspect = rv.width / (double)rv.height;
 			if( aspect > pixelAspect ) {
 				int letterBoxedHeight = (int)( ( rv.width / aspect ) + 0.5 );
@@ -127,30 +124,30 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 
 	public edu.cmu.cs.dennisc.math.Angle getActualHorizontalViewingAngle( java.awt.Rectangle actualViewport ) {
 		double horizontalInDegrees;
-		if( Double.isNaN( m_horizontalInDegrees ) ) {
+		if( Double.isNaN( this.horizontalInDegrees ) ) {
 			double aspect = actualViewport.width / (double)actualViewport.height;
-			if( Double.isNaN( m_verticalInDegrees ) ) {
+			if( Double.isNaN( this.verticalInDegrees ) ) {
 				horizontalInDegrees = DEFAULT_ACTUAL_VERTICAL_IN_DEGREES * aspect;
 			} else {
-				horizontalInDegrees = m_verticalInDegrees * aspect;
+				horizontalInDegrees = this.verticalInDegrees * aspect;
 			}
 		} else {
-			horizontalInDegrees = m_horizontalInDegrees;
+			horizontalInDegrees = this.horizontalInDegrees;
 		}
 		return new edu.cmu.cs.dennisc.math.AngleInDegrees( horizontalInDegrees );
 	}
 
 	public edu.cmu.cs.dennisc.math.Angle getActualVerticalViewingAngle( java.awt.Rectangle actualViewport ) {
 		double verticalInDegrees;
-		if( Double.isNaN( m_verticalInDegrees ) ) {
+		if( Double.isNaN( this.verticalInDegrees ) ) {
 			double aspect = actualViewport.width / (double)actualViewport.height;
-			if( Double.isNaN( m_horizontalInDegrees ) ) {
+			if( Double.isNaN( this.horizontalInDegrees ) ) {
 				verticalInDegrees = DEFAULT_ACTUAL_VERTICAL_IN_DEGREES;
 			} else {
-				verticalInDegrees = m_horizontalInDegrees / aspect;
+				verticalInDegrees = this.horizontalInDegrees / aspect;
 			}
 		} else {
-			verticalInDegrees = m_verticalInDegrees;
+			verticalInDegrees = this.verticalInDegrees;
 		}
 		return new edu.cmu.cs.dennisc.math.AngleInDegrees( verticalInDegrees );
 	}
@@ -263,11 +260,14 @@ public class GlrSymmetricPerspectiveCamera extends GlrAbstractPerspectiveCamera<
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.verticalViewingAngle ) {
-			m_verticalInDegrees = owner.verticalViewingAngle.getValue().getAsDegrees();
+			this.verticalInDegrees = owner.verticalViewingAngle.getValue().getAsDegrees();
 		} else if( property == owner.horizontalViewingAngle ) {
-			m_horizontalInDegrees = owner.horizontalViewingAngle.getValue().getAsDegrees();
+			this.horizontalInDegrees = owner.horizontalViewingAngle.getValue().getAsDegrees();
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private double verticalInDegrees;
+	private double horizontalInDegrees;
 }

@@ -126,8 +126,8 @@ public abstract class GlrAbstractTransformable<T extends edu.cmu.cs.dennisc.scen
 		}
 	}
 
-	private static double[] unscaling = new double[ 16 ];
-	private static java.nio.DoubleBuffer unscalingBuffer = java.nio.DoubleBuffer.wrap( unscaling );
+	private static final double[] unscaling = new double[ 16 ];
+	private static final java.nio.DoubleBuffer unscalingBuffer = java.nio.DoubleBuffer.wrap( unscaling );
 
 	//public abstract double[] accessLocalTransformation();
 

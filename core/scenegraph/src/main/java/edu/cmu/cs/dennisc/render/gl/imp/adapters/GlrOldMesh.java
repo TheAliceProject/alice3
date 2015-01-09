@@ -53,28 +53,11 @@ import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_TEXTURE_COORD_ARRAY;
 import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMesh> {
-	private double[] xyzs;
-	private float[] ijks;
-	private float[] uvs;
-	private short[] xyzTriangleIndices;
-	private short[] ijkTriangleIndices;
-	private short[] uvTriangleIndices;
-	private short[] xyzQuadrangleIndices;
-	private short[] ijkQuadrangleIndices;
-	private short[] uvQuadrangleIndices;
-
-	private java.nio.DoubleBuffer xyzBuffer;
-	private java.nio.FloatBuffer ijkBuffer;
-	private java.nio.FloatBuffer uvBuffer;
-	private java.nio.ShortBuffer triangleIndexBuffer;
-	private java.nio.ShortBuffer quadrangleIndexBuffer;
-
 	@Override
 	public boolean isAlphaBlended() {
 		return false;
@@ -249,4 +232,20 @@ public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMes
 		rv.setNaN();
 		return rv;
 	}
+
+	private double[] xyzs;
+	private float[] ijks;
+	private float[] uvs;
+	private short[] xyzTriangleIndices;
+	private short[] ijkTriangleIndices;
+	private short[] uvTriangleIndices;
+	private short[] xyzQuadrangleIndices;
+	private short[] ijkQuadrangleIndices;
+	private short[] uvQuadrangleIndices;
+
+	private java.nio.DoubleBuffer xyzBuffer;
+	private java.nio.FloatBuffer ijkBuffer;
+	private java.nio.FloatBuffer uvBuffer;
+	private java.nio.ShortBuffer triangleIndexBuffer;
+	private java.nio.ShortBuffer quadrangleIndexBuffer;
 }

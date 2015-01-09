@@ -49,18 +49,18 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public class GlrBackground extends GlrElement<edu.cmu.cs.dennisc.scenegraph.Background> {
-	private float[] m_color = new float[ 4 ];
-
 	public void setup( RenderContext rc ) {
-		rc.setClearColor( m_color );
+		rc.setClearColor( this.color );
 	}
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.color ) {
-			owner.color.getValue().getAsArray( m_color );
+			owner.color.getValue().getAsArray( this.color );
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private final float[] color = new float[ 4 ];
 }

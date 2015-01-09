@@ -49,12 +49,10 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public class GlrMultipleAppearance extends GlrAppearance<edu.cmu.cs.dennisc.scenegraph.MultipleAppearance> {
-	private GlrTexturedAppearance[] m_singleAppearanceAdapters;
-
 	@Override
 	public boolean isActuallyShowing() {
-		assert m_singleAppearanceAdapters != null;
-		for( GlrTexturedAppearance sao : m_singleAppearanceAdapters ) {
+		assert this.glrSingleAppearances != null;
+		for( GlrTexturedAppearance sao : this.glrSingleAppearances ) {
 			assert sao != null;
 			if( sao.isActuallyShowing() ) {
 				return true;
@@ -65,8 +63,8 @@ public class GlrMultipleAppearance extends GlrAppearance<edu.cmu.cs.dennisc.scen
 
 	@Override
 	public boolean isAlphaBlended() {
-		assert m_singleAppearanceAdapters != null;
-		for( GlrTexturedAppearance sao : m_singleAppearanceAdapters ) {
+		assert this.glrSingleAppearances != null;
+		for( GlrTexturedAppearance sao : this.glrSingleAppearances ) {
 			assert sao != null;
 			if( sao.isAlphaBlended() ) {
 				return true;
@@ -77,8 +75,8 @@ public class GlrMultipleAppearance extends GlrAppearance<edu.cmu.cs.dennisc.scen
 
 	@Override
 	public boolean isAllAlphaBlended() {
-		assert m_singleAppearanceAdapters != null;
-		for( GlrTexturedAppearance sao : m_singleAppearanceAdapters ) {
+		assert this.glrSingleAppearances != null;
+		for( GlrTexturedAppearance sao : this.glrSingleAppearances ) {
 			assert sao != null;
 			if( !sao.isAllAlphaBlended() ) {
 				return false;
@@ -89,8 +87,8 @@ public class GlrMultipleAppearance extends GlrAppearance<edu.cmu.cs.dennisc.scen
 
 	@Override
 	public boolean isEthereal() {
-		assert m_singleAppearanceAdapters != null;
-		for( GlrTexturedAppearance sao : m_singleAppearanceAdapters ) {
+		assert this.glrSingleAppearances != null;
+		for( GlrTexturedAppearance sao : this.glrSingleAppearances ) {
 			assert sao != null;
 			if( sao.isEthereal() ) {
 				//pass
@@ -107,15 +105,17 @@ public class GlrMultipleAppearance extends GlrAppearance<edu.cmu.cs.dennisc.scen
 	}
 
 	public void setPipelineState( RenderContext rc, int face, int index ) {
-		m_singleAppearanceAdapters[ index ].setPipelineState( rc, face );
+		this.glrSingleAppearances[ index ].setPipelineState( rc, face );
 	}
 
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.singleAppearances ) {
-			m_singleAppearanceAdapters = AdapterFactory.getAdaptersFor( owner.singleAppearances.getValue(), GlrTexturedAppearance.class );
+			this.glrSingleAppearances = AdapterFactory.getAdaptersFor( owner.singleAppearances.getValue(), GlrTexturedAppearance.class );
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private GlrTexturedAppearance[] glrSingleAppearances;
 }

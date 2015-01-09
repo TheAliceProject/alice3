@@ -53,23 +53,17 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> extends GlrLeaf<T> {
-	private GlrBackground m_backgroundAdapter = null;
-	private GlrLayer[] m_layerAdapters = null;
-
-	private java.awt.Rectangle m_specifiedViewport = null;
-	private boolean m_isLetterboxedAsOpposedToDistorted = true;
-
 	public abstract edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport );
 
 	protected abstract java.awt.Rectangle performLetterboxing( java.awt.Rectangle rv );
 
 	public java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, int surfaceWidth, int surfaceHeight ) {
-		if( m_specifiedViewport != null ) {
-			rv.setBounds( m_specifiedViewport );
+		if( this.specifiedViewport != null ) {
+			rv.setBounds( this.specifiedViewport );
 		} else {
 			rv.setBounds( 0, 0, surfaceWidth, surfaceHeight );
 		}
-		if( m_isLetterboxedAsOpposedToDistorted ) {
+		if( this.isLetterboxedAsOpposedToDistorted ) {
 			performLetterboxing( rv );
 		}
 		return rv;
@@ -78,8 +72,8 @@ public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.
 	public abstract edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, java.awt.Rectangle actualViewport );
 
 	public java.awt.Rectangle getSpecifiedViewport() {
-		if( m_specifiedViewport != null ) {
-			return new java.awt.Rectangle( m_specifiedViewport );
+		if( this.specifiedViewport != null ) {
+			return new java.awt.Rectangle( this.specifiedViewport );
 		} else {
 			return null;
 		}
@@ -87,18 +81,18 @@ public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.
 
 	public void setSpecifiedViewport( java.awt.Rectangle specifiedViewport ) {
 		if( specifiedViewport != null ) {
-			m_specifiedViewport = new java.awt.Rectangle( specifiedViewport );
+			this.specifiedViewport = new java.awt.Rectangle( specifiedViewport );
 		} else {
-			m_specifiedViewport = null;
+			this.specifiedViewport = null;
 		}
 	}
 
 	public boolean isLetterboxedAsOpposedToDistorted() {
-		return m_isLetterboxedAsOpposedToDistorted;
+		return this.isLetterboxedAsOpposedToDistorted;
 	}
 
 	public void setIsLetterboxedAsOpposedToDistorted( boolean isLetterboxedAsOpposedToDistorted ) {
-		m_isLetterboxedAsOpposedToDistorted = isLetterboxedAsOpposedToDistorted;
+		this.isLetterboxedAsOpposedToDistorted = isLetterboxedAsOpposedToDistorted;
 	}
 
 	protected abstract void setupProjection( Context context, java.awt.Rectangle actualViewport );
@@ -111,14 +105,14 @@ public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.
 			rc.gl.glLoadIdentity();
 			setupProjection( rc, actualViewport );
 			rc.setViewportAndAddToClearRect( actualViewport );
-			sceneAdapter.renderScene( rc, this, m_backgroundAdapter );
+			sceneAdapter.renderScene( rc, this, this.glrBackground );
 		}
 	}
 
 	public void postRender( RenderContext rc, int surfaceWidth, int surfaceHeight, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.render.Graphics2D g2 ) {
-		if( this.m_layerAdapters != null ) {
+		if( this.glrLayers != null ) {
 			java.awt.Rectangle actualViewport = getActualViewport( new java.awt.Rectangle(), surfaceWidth, surfaceHeight );
-			for( GlrLayer layerAdapter : this.m_layerAdapters ) {
+			for( GlrLayer layerAdapter : this.glrLayers ) {
 				layerAdapter.render( g2, renderTarget, actualViewport, this.owner );
 			}
 		}
@@ -150,11 +144,17 @@ public abstract class GlrAbstractCamera<T extends edu.cmu.cs.dennisc.scenegraph.
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.background ) {
-			m_backgroundAdapter = AdapterFactory.getAdapterFor( owner.background.getValue() );
+			this.glrBackground = AdapterFactory.getAdapterFor( owner.background.getValue() );
 		} else if( property == owner.postRenderLayers ) {
-			m_layerAdapters = AdapterFactory.getAdaptersFor( owner.postRenderLayers.getValue(), GlrLayer.class );
+			this.glrLayers = AdapterFactory.getAdaptersFor( owner.postRenderLayers.getValue(), GlrLayer.class );
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private GlrBackground glrBackground;
+	private GlrLayer[] glrLayers;
+
+	private java.awt.Rectangle specifiedViewport;
+	private boolean isLetterboxedAsOpposedToDistorted = true;
 }

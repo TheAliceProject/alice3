@@ -127,6 +127,7 @@ public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.picturePlane ) {
+			//pass
 		} else {
 			super.propertyChanged( property );
 		}

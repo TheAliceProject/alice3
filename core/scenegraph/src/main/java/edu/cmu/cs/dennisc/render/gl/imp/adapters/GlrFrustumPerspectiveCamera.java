@@ -49,7 +49,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.Context;
  * @author Dennis Cosgrove
  */
 public class GlrFrustumPerspectiveCamera extends GlrAbstractPerspectiveCamera<edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera> {
-	private static edu.cmu.cs.dennisc.math.ClippedZPlane s_actualPicturePlaneBufferForReuse = edu.cmu.cs.dennisc.math.ClippedZPlane.createNaN();
+	private static final edu.cmu.cs.dennisc.math.ClippedZPlane s_actualPicturePlaneBufferForReuse = edu.cmu.cs.dennisc.math.ClippedZPlane.createNaN();
 
 	@Override
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
@@ -97,6 +97,7 @@ public class GlrFrustumPerspectiveCamera extends GlrAbstractPerspectiveCamera<ed
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.picturePlane ) {
+			//pass
 		} else {
 			super.propertyChanged( property );
 		}

@@ -50,25 +50,22 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public abstract class GlrVertexGeometry<T extends edu.cmu.cs.dennisc.scenegraph.VertexGeometry> extends GlrGeometry<T> {
-	private boolean m_isAlphaBlended;
-
-	//    private boolean m_isVertexColored;
 	private void updateVertices() {
-		//	    edu.cmu.cs.dennisc.scenegraph.VertexGeometry vg = m_sgE;
+		//	    edu.cmu.cs.dennisc.scenegraph.VertexGeometry vg = this.sgE;
 		//	    int vertexCount = vg.getVertexCount();
-		//	    if( vertexCount != m_vertices.length ) {
-		//	        m_vertices = vg.getVertices();
+		//	    if( vertexCount != this.vertices.length ) {
+		//	        this.vertices = vg.getVertices();
 		//	    } else {
-		//	        m_vertices = vg.getVertices( m_vertices );
+		//	        this.vertices = vg.getVertices( this.vertices );
 		//	    }
 		setIsGeometryChanged( true );
-		m_isAlphaBlended = false;
-		//	    m_isVertexColored = false;
+		this.isAlphaBlended = false;
+		//	    this.isVertexColored = false;
 		for( edu.cmu.cs.dennisc.scenegraph.Vertex v : owner.vertices.getValue() ) {
 			if( v.diffuseColor.isNaN() == false ) {
-				//m_isVertexColored = true;
+				//this.isVertexColored = true;
 				if( v.diffuseColor.alpha < 1.0f ) {
-					m_isAlphaBlended = true;
+					this.isAlphaBlended = true;
 					break;
 				}
 			}
@@ -77,11 +74,11 @@ public abstract class GlrVertexGeometry<T extends edu.cmu.cs.dennisc.scenegraph.
 
 	@Override
 	public boolean isAlphaBlended() {
-		return m_isAlphaBlended;
+		return this.isAlphaBlended;
 	}
 
 	//    public boolean isVertexColored() {
-	//    	return m_isVertexColored;
+	//    	return this.isVertexColored;
 	//    }
 
 	protected edu.cmu.cs.dennisc.scenegraph.Vertex accessVertexAt( int index ) {
@@ -115,4 +112,7 @@ public abstract class GlrVertexGeometry<T extends edu.cmu.cs.dennisc.scenegraph.
 			super.propertyChanged( property );
 		}
 	}
+
+	//    private boolean isVertexColored;
+	private boolean isAlphaBlended;
 }

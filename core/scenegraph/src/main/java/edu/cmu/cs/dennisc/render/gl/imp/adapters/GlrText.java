@@ -63,84 +63,77 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 /**
  * @author Dennis Cosgrove
  */
-class MyTessAdapter extends javax.media.opengl.glu.GLUtessellatorCallbackAdapter {
-	private javax.media.opengl.GL2 m_gl;
-	private javax.media.opengl.glu.GLU m_glu;
-	private double m_xOffset;
-	private double m_yOffset;
-	private double m_z;
-	private boolean m_isFront;
-
-	private String getErrorString( int error ) {
-		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( m_glu.gluErrorString( error ) );
-		switch( error ) {
-		case GLU_TESS_MISSING_BEGIN_POLYGON:
-			return "GLU_TESS_MISSING_BEGIN_POLYGON";
-		case GLU_TESS_MISSING_END_POLYGON:
-			return "GLU_TESS_MISSING_END_POLYGON";
-		case GLU_TESS_MISSING_BEGIN_CONTOUR:
-			return "GLU_TESS_MISSING_BEGIN_CONTOUR";
-		case GLU_TESS_MISSING_END_CONTOUR:
-			return "GLU_TESS_MISSING_END_CONTOUR";
-		case GLU_TESS_COORD_TOO_LARGE:
-			return "GLU_TESS_COORD_TOO_LARGE";
-		case GLU_TESS_NEED_COMBINE_CALLBACK:
-			return "GLU_TESS_NEED_COMBINE_CALLBACK";
-		case GLU_OUT_OF_MEMORY:
-			return "GLU_OUT_OF_MEMORY";
-		default:
-			return "UNKNOWN";
-		}
-	}
-
-	public void set( javax.media.opengl.GL2 gl, javax.media.opengl.glu.GLU glu, double xOffset, double yOffset, double z, boolean isFront ) {
-		m_gl = gl;
-		m_glu = glu;
-		m_xOffset = xOffset;
-		m_yOffset = yOffset;
-		m_z = z;
-		m_isFront = isFront;
-	}
-
-	@Override
-	public void begin( int primitiveType ) {
-		m_gl.glBegin( primitiveType );
-		if( m_isFront ) {
-			m_gl.glNormal3d( 0.0, 0.0, -1.0 );
-		} else {
-			m_gl.glNormal3d( 0.0, 0.0, 1.0 );
-		}
-	}
-
-	@Override
-	public void vertex( Object data ) {
-		double[] vertex = (double[])data;
-		m_gl.glVertex3d( vertex[ 0 ] + m_xOffset, vertex[ 1 ] + m_yOffset, m_z );
-	}
-
-	@Override
-	public void end() {
-		m_gl.glEnd();
-	}
-
-	@Override
-	public void combine( double[] coords, Object[] data, float[] weight, Object[] outData ) {
-		outData[ 0 ] = new double[] { coords[ 0 ], coords[ 1 ], coords[ 2 ] };
-	}
-
-	@Override
-	public void error( int arg0 ) {
-		super.error( arg0 );
-		//todo: investigate error GLU_TESS_MISSING_END_CONTOUR 100154 
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "error", getErrorString( arg0 ), arg0 );
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
 public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
-	private static MyTessAdapter s_tessAdapter = new MyTessAdapter();
+	private static class MyTessAdapter extends javax.media.opengl.glu.GLUtessellatorCallbackAdapter {
+		public void set( javax.media.opengl.GL2 gl, double xOffset, double yOffset, double z, boolean isFront ) {
+			this.gl = gl;
+			this.xOffset = xOffset;
+			this.yOffset = yOffset;
+			this.z = z;
+			this.isFront = isFront;
+		}
+
+		@Override
+		public void begin( int primitiveType ) {
+			this.gl.glBegin( primitiveType );
+			if( this.isFront ) {
+				this.gl.glNormal3d( 0.0, 0.0, -1.0 );
+			} else {
+				this.gl.glNormal3d( 0.0, 0.0, 1.0 );
+			}
+		}
+
+		@Override
+		public void vertex( Object data ) {
+			double[] vertex = (double[])data;
+			this.gl.glVertex3d( vertex[ 0 ] + this.xOffset, vertex[ 1 ] + this.yOffset, this.z );
+		}
+
+		@Override
+		public void end() {
+			this.gl.glEnd();
+		}
+
+		@Override
+		public void combine( double[] coords, Object[] data, float[] weight, Object[] outData ) {
+			outData[ 0 ] = new double[] { coords[ 0 ], coords[ 1 ], coords[ 2 ] };
+		}
+
+		private String getErrorString( int error ) {
+			switch( error ) {
+			case GLU_TESS_MISSING_BEGIN_POLYGON:
+				return "GLU_TESS_MISSING_BEGIN_POLYGON";
+			case GLU_TESS_MISSING_END_POLYGON:
+				return "GLU_TESS_MISSING_END_POLYGON";
+			case GLU_TESS_MISSING_BEGIN_CONTOUR:
+				return "GLU_TESS_MISSING_BEGIN_CONTOUR";
+			case GLU_TESS_MISSING_END_CONTOUR:
+				return "GLU_TESS_MISSING_END_CONTOUR";
+			case GLU_TESS_COORD_TOO_LARGE:
+				return "GLU_TESS_COORD_TOO_LARGE";
+			case GLU_TESS_NEED_COMBINE_CALLBACK:
+				return "GLU_TESS_NEED_COMBINE_CALLBACK";
+			case GLU_OUT_OF_MEMORY:
+				return "GLU_OUT_OF_MEMORY";
+			default:
+				return "UNKNOWN";
+			}
+		}
+
+		@Override
+		public void error( int arg0 ) {
+			super.error( arg0 );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( getErrorString( arg0 ), arg0 );
+		}
+
+		private javax.media.opengl.GL2 gl;
+		private double xOffset;
+		private double yOffset;
+		private double z;
+		private boolean isFront;
+	}
+
+	private static final MyTessAdapter s_tessAdapter = new MyTessAdapter();
 
 	@Override
 	public boolean isAlphaBlended() {
@@ -152,7 +145,7 @@ public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
 
 			java.util.List<java.util.List<edu.cmu.cs.dennisc.math.Point2f>> faceContours = owner.getGlyphVector().acquireFaceContours();
 
-			s_tessAdapter.set( context.gl, context.glu, xOffset, yOffset, z, isFront );
+			s_tessAdapter.set( context.gl, xOffset, yOffset, z, isFront );
 
 			javax.media.opengl.glu.GLUtessellator tesselator = javax.media.opengl.glu.GLU.gluNewTess();
 			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_BEGIN, s_tessAdapter );
@@ -160,7 +153,10 @@ public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
 			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_END, s_tessAdapter );
 			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_COMBINE, s_tessAdapter );
 			//			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_COMBINE_DATA, s_tessAdapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_ERROR, s_tessAdapter );
+			final boolean IS_ERROR_OUTPUT_DESIRED = false;
+			if( IS_ERROR_OUTPUT_DESIRED ) {
+				javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_ERROR, s_tessAdapter );
+			}
 			//			context.glu.gluTessCallback( tesselator, GLU_TESS_ERROR_DATA, s_tessAdapter );
 			try {
 				javax.media.opengl.glu.GLU.gluBeginPolygon( tesselator );

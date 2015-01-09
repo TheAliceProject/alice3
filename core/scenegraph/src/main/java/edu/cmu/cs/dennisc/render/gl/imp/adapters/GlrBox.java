@@ -47,19 +47,11 @@ import static javax.media.opengl.GL2GL3.GL_QUADS;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;
 
 /**
  * @author Dennis Cosgrove
  */
 public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
-	private double m_xMin;
-	private double m_xMax;
-	private double m_yMin;
-	private double m_yMax;
-	private double m_zMin;
-	private double m_zMax;
-
 	private void glBox( Context c, boolean isLightingEnabled, boolean isSubElementRequired ) {
 		//todo: revist vertex ordering
 		//xMin face
@@ -73,10 +65,10 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( -1, 0, 0 );
 		}
-		c.gl.glVertex3d( m_xMin, m_yMin, m_zMax );
-		c.gl.glVertex3d( m_xMin, m_yMax, m_zMax );
-		c.gl.glVertex3d( m_xMin, m_yMax, m_zMin );
-		c.gl.glVertex3d( m_xMin, m_yMin, m_zMin );
+		c.gl.glVertex3d( this.xMin, this.yMin, this.zMax );
+		c.gl.glVertex3d( this.xMin, this.yMax, this.zMax );
+		c.gl.glVertex3d( this.xMin, this.yMax, this.zMin );
+		c.gl.glVertex3d( this.xMin, this.yMin, this.zMin );
 
 		//xMax face
 		//c.gl.glColor3d( 1,0,0 );
@@ -86,10 +78,10 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 1, 0, 0 );
 		}
-		c.gl.glVertex3d( m_xMax, m_yMin, m_zMin );
-		c.gl.glVertex3d( m_xMax, m_yMax, m_zMin );
-		c.gl.glVertex3d( m_xMax, m_yMax, m_zMax );
-		c.gl.glVertex3d( m_xMax, m_yMin, m_zMax );
+		c.gl.glVertex3d( this.xMax, this.yMin, this.zMin );
+		c.gl.glVertex3d( this.xMax, this.yMax, this.zMin );
+		c.gl.glVertex3d( this.xMax, this.yMax, this.zMax );
+		c.gl.glVertex3d( this.xMax, this.yMin, this.zMax );
 
 		//yMin face
 		//c.gl.glColor3d( 1,1,1 );
@@ -99,10 +91,10 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 0, -1, 0 );
 		}
-		c.gl.glVertex3d( m_xMin, m_yMin, m_zMin );
-		c.gl.glVertex3d( m_xMax, m_yMin, m_zMin );
-		c.gl.glVertex3d( m_xMax, m_yMin, m_zMax );
-		c.gl.glVertex3d( m_xMin, m_yMin, m_zMax );
+		c.gl.glVertex3d( this.xMin, this.yMin, this.zMin );
+		c.gl.glVertex3d( this.xMax, this.yMin, this.zMin );
+		c.gl.glVertex3d( this.xMax, this.yMin, this.zMax );
+		c.gl.glVertex3d( this.xMin, this.yMin, this.zMax );
 
 		//yMax face
 		//c.gl.glColor3d( 0,1,0 );
@@ -112,10 +104,10 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 0, 1, 0 );
 		}
-		c.gl.glVertex3d( m_xMin, m_yMax, m_zMax );
-		c.gl.glVertex3d( m_xMax, m_yMax, m_zMax );
-		c.gl.glVertex3d( m_xMax, m_yMax, m_zMin );
-		c.gl.glVertex3d( m_xMin, m_yMax, m_zMin );
+		c.gl.glVertex3d( this.xMin, this.yMax, this.zMax );
+		c.gl.glVertex3d( this.xMax, this.yMax, this.zMax );
+		c.gl.glVertex3d( this.xMax, this.yMax, this.zMin );
+		c.gl.glVertex3d( this.xMin, this.yMax, this.zMin );
 
 		//zMin face
 		//c.gl.glColor3d( 1,1,1 );
@@ -125,10 +117,10 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 0, 0, -1 );
 		}
-		c.gl.glVertex3d( m_xMin, m_yMax, m_zMin );
-		c.gl.glVertex3d( m_xMax, m_yMax, m_zMin );
-		c.gl.glVertex3d( m_xMax, m_yMin, m_zMin );
-		c.gl.glVertex3d( m_xMin, m_yMin, m_zMin );
+		c.gl.glVertex3d( this.xMin, this.yMax, this.zMin );
+		c.gl.glVertex3d( this.xMax, this.yMax, this.zMin );
+		c.gl.glVertex3d( this.xMax, this.yMin, this.zMin );
+		c.gl.glVertex3d( this.xMin, this.yMin, this.zMin );
 
 		//zMax face
 		//c.gl.glColor3d( 0,0,1 );
@@ -138,10 +130,10 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 0, 0, 1 );
 		}
-		c.gl.glVertex3d( m_xMin, m_yMin, m_zMax );
-		c.gl.glVertex3d( m_xMax, m_yMin, m_zMax );
-		c.gl.glVertex3d( m_xMax, m_yMax, m_zMax );
-		c.gl.glVertex3d( m_xMin, m_yMax, m_zMax );
+		c.gl.glVertex3d( this.xMin, this.yMin, this.zMax );
+		c.gl.glVertex3d( this.xMax, this.yMin, this.zMax );
+		c.gl.glVertex3d( this.xMax, this.yMax, this.zMax );
+		c.gl.glVertex3d( this.xMin, this.yMax, this.zMax );
 
 		c.gl.glEnd();
 	}
@@ -164,27 +156,27 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		edu.cmu.cs.dennisc.math.Vector3 direction = new edu.cmu.cs.dennisc.math.Vector3( 0, 0, 0 );
 		switch( subElement ) {
 		case 0:
-			origin.x = m_xMin;
+			origin.x = this.xMin;
 			direction.x = -1;
 			break;
 		case 1:
-			origin.x = m_xMax;
+			origin.x = this.xMax;
 			direction.x = 1;
 			break;
 		case 2:
-			origin.y = m_yMin;
+			origin.y = this.yMin;
 			direction.y = -1;
 			break;
 		case 3:
-			origin.y = m_yMax;
+			origin.y = this.yMax;
 			direction.y = 1;
 			break;
 		case 4:
-			origin.z = m_zMin;
+			origin.z = this.zMin;
 			direction.z = -1;
 			break;
 		case 5:
-			origin.z = m_zMax;
+			origin.z = this.zMax;
 			direction.z = 1;
 			break;
 		default:
@@ -198,25 +190,32 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == owner.xMinimum ) {
-			m_xMin = owner.xMinimum.getValue();
+			this.xMin = owner.xMinimum.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == owner.xMaximum ) {
-			m_xMax = owner.xMaximum.getValue();
+			this.xMax = owner.xMaximum.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == owner.yMinimum ) {
-			m_yMin = owner.yMinimum.getValue();
+			this.yMin = owner.yMinimum.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == owner.yMaximum ) {
-			m_yMax = owner.yMaximum.getValue();
+			this.yMax = owner.yMaximum.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == owner.zMinimum ) {
-			m_zMin = owner.zMinimum.getValue();
+			this.zMin = owner.zMinimum.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == owner.zMaximum ) {
-			m_zMax = owner.zMaximum.getValue();
+			this.zMax = owner.zMaximum.getValue();
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );
 		}
 	}
+
+	private double xMin;
+	private double xMax;
+	private double yMin;
+	private double yMax;
+	private double zMin;
+	private double zMax;
 }
