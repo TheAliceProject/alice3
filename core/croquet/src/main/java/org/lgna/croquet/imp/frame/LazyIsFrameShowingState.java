@@ -50,6 +50,29 @@ public final class LazyIsFrameShowingState<C extends org.lgna.croquet.FrameCompo
 		return new LazyIsFrameShowingState<C>( group, cls, lazy );
 	}
 
+	public static <C extends org.lgna.croquet.FrameComposite<?>> org.lgna.croquet.BooleanState createNoArgumentConstructorInstance( org.lgna.croquet.Group group, Class<C> cls ) {
+		try {
+			final java.lang.reflect.Constructor<C> jConstructor = cls.getConstructor();
+			assert java.lang.reflect.Modifier.isPublic( jConstructor.getModifiers() ) : jConstructor;
+			return createInstance( group, cls, new edu.cmu.cs.dennisc.pattern.Lazy<C>() {
+				@Override
+				protected C create() {
+					try {
+						return jConstructor.newInstance();
+					} catch( java.lang.reflect.InvocationTargetException ite ) {
+						throw new RuntimeException( jConstructor.toString(), ite );
+					} catch( IllegalAccessException iae ) {
+						throw new RuntimeException( jConstructor.toString(), iae );
+					} catch( InstantiationException ie ) {
+						throw new RuntimeException( jConstructor.toString(), ie );
+					}
+				}
+			} );
+		} catch( NoSuchMethodException nsme ) {
+			throw new RuntimeException( nsme );
+		}
+	}
+
 	private LazyIsFrameShowingState( org.lgna.croquet.Group group, Class<C> cls, edu.cmu.cs.dennisc.pattern.Lazy<C> lazy ) {
 		super( group, java.util.UUID.fromString( "e6efce56-7da5-4798-9ec3-6fcaab3962b5" ) );
 		this.cls = cls;

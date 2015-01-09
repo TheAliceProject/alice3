@@ -128,25 +128,13 @@ public enum IdeApp {
 		return this.helpMenu;
 	}
 
-	private final org.lgna.croquet.BooleanState memoryUsageFrameIsShowingState = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createInstance(
+	private final org.lgna.croquet.BooleanState memoryUsageFrameIsShowingState = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createNoArgumentConstructorInstance(
 			org.lgna.croquet.Application.INFORMATION_GROUP,
-			org.alice.ide.croquet.models.ui.MemoryUsageComposite.class,
-			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.croquet.models.ui.MemoryUsageComposite>() {
-				@Override
-				protected org.alice.ide.croquet.models.ui.MemoryUsageComposite create() {
-					return new org.alice.ide.croquet.models.ui.MemoryUsageComposite();
-				}
-			} );
+			org.alice.ide.croquet.models.ui.MemoryUsageComposite.class );
 
-	private final org.lgna.croquet.BooleanState localizeReviewIsShowingState = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createInstance(
+	private final org.lgna.croquet.BooleanState localizeReviewIsShowingState = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createNoArgumentConstructorInstance(
 			org.lgna.croquet.Application.INFORMATION_GROUP,
-			org.alice.ide.localize.review.croquet.LocalizeReviewFrame.class,
-			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.localize.review.croquet.LocalizeReviewFrame>() {
-				@Override
-				protected org.alice.ide.localize.review.croquet.LocalizeReviewFrame create() {
-					return new org.alice.ide.localize.review.croquet.LocalizeReviewFrame();
-				}
-			} );
+			org.alice.ide.localize.review.croquet.LocalizeReviewFrame.class );
 
 	private final org.lgna.croquet.Operation isRecursionAllowedPreferenceDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
 			org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite.class,
