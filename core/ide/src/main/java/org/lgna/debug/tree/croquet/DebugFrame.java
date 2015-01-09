@@ -40,12 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.debug.croquet;
+package org.lgna.debug.tree.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.lgna.debug.croquet.views.DebugFrameView<T>> {
+public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.lgna.debug.tree.croquet.views.DebugFrameView<T>> {
 	public DebugFrame( java.util.UUID migrationId ) {
 		super( migrationId );
 		this.markOperation.setName( "mark" );
@@ -88,34 +88,34 @@ public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.
 	}
 
 	@Override
-	protected org.lgna.debug.croquet.views.DebugFrameView<T> createView() {
-		return new org.lgna.debug.croquet.views.DebugFrameView<T>( this );
+	protected org.lgna.debug.tree.croquet.views.DebugFrameView<T> createView() {
+		return new org.lgna.debug.tree.croquet.views.DebugFrameView<T>( this );
 	}
 
-	protected abstract org.lgna.debug.core.ZTreeNode.Builder<T> capture();
+	protected abstract org.lgna.debug.tree.core.ZTreeNode.Builder<T> capture();
 
-	private static <T> void updateValuesToMute( java.util.Set<T> set, org.lgna.debug.core.ZTreeNode<T> zTreeNode ) {
+	private static <T> void updateValuesToMute( java.util.Set<T> set, org.lgna.debug.tree.core.ZTreeNode<T> zTreeNode ) {
 		set.add( zTreeNode.getValue() );
 		if( zTreeNode.isLeaf() ) {
 			//pass
 		} else {
-			java.util.Enumeration<org.lgna.debug.core.ZTreeNode<T>> e = zTreeNode.children();
+			java.util.Enumeration<org.lgna.debug.tree.core.ZTreeNode<T>> e = zTreeNode.children();
 			while( e.hasMoreElements() ) {
 				updateValuesToMute( set, e.nextElement() );
 			}
 		}
 	}
 
-	private static <T> java.util.Set<T> createValuesToMute( org.lgna.debug.core.ZTreeNode<T> markRoot ) {
+	private static <T> java.util.Set<T> createValuesToMute( org.lgna.debug.tree.core.ZTreeNode<T> markRoot ) {
 		java.util.Set<T> valuesToMute = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 		updateValuesToMute( valuesToMute, markRoot );
 		return java.util.Collections.unmodifiableSet( valuesToMute );
 	}
 
-	private static <T> void prune( org.lgna.debug.core.ZTreeNode.Builder<T> builder, java.util.Set<T> valuesToMute ) {
-		java.util.Iterator<org.lgna.debug.core.ZTreeNode.Builder<T>> iterator = builder.getChildBuildersIterator();
+	private static <T> void prune( org.lgna.debug.tree.core.ZTreeNode.Builder<T> builder, java.util.Set<T> valuesToMute ) {
+		java.util.Iterator<org.lgna.debug.tree.core.ZTreeNode.Builder<T>> iterator = builder.getChildBuildersIterator();
 		while( iterator.hasNext() ) {
-			org.lgna.debug.core.ZTreeNode.Builder<T> childBuilder = iterator.next();
+			org.lgna.debug.tree.core.ZTreeNode.Builder<T> childBuilder = iterator.next();
 			prune( childBuilder, valuesToMute );
 			T childValue = childBuilder.getValue();
 			if( childBuilder.isEmpty() && valuesToMute.contains( childValue ) ) {
@@ -127,8 +127,8 @@ public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.
 	private final org.lgna.croquet.Operation markOperation = this.createActionOperation( "markOperation", new Action() {
 		@Override
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			org.lgna.debug.core.ZTreeNode.Builder<T> builder = capture();
-			org.lgna.debug.core.ZTreeNode<T> markRoot = builder.build();
+			org.lgna.debug.tree.core.ZTreeNode.Builder<T> builder = capture();
+			org.lgna.debug.tree.core.ZTreeNode<T> markRoot = builder.build();
 			markTreeModel.setRoot( markRoot );
 			java.util.Set<T> valuesToMute;
 			if( isPruningDesiredState.getValue() ) {
@@ -145,12 +145,12 @@ public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.
 	private final org.lgna.croquet.Operation refreshOperation = this.createActionOperation( "refreshOperation", new Action() {
 		@Override
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			org.lgna.debug.core.ZTreeNode<T> markRoot = (org.lgna.debug.core.ZTreeNode<T>)markTreeModel.getRoot();
+			org.lgna.debug.tree.core.ZTreeNode<T> markRoot = (org.lgna.debug.tree.core.ZTreeNode<T>)markTreeModel.getRoot();
 			java.util.Set<T> valuesToMute = createValuesToMute( markRoot );
 
-			org.lgna.debug.core.ZTreeNode.Builder<T> builder = capture();
+			org.lgna.debug.tree.core.ZTreeNode.Builder<T> builder = capture();
 
-			org.lgna.debug.core.ZTreeNode<T> currentRoot;
+			org.lgna.debug.tree.core.ZTreeNode<T> currentRoot;
 			if( isPruningDesiredState.getValue() ) {
 				prune( builder, valuesToMute );
 				if( builder.isEmpty() && valuesToMute.contains( builder.getValue() ) ) {

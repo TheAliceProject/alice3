@@ -40,50 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.debug.croquet.views;
+package org.lgna.debug.tree.croquet.views.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DebugFrameView<T> extends org.lgna.croquet.views.BorderPanel {
-	private static org.lgna.croquet.views.Panel createPanel( org.lgna.croquet.Operation operation, org.lgna.croquet.BooleanState isPruneDesiredState, javax.swing.JTree jTree ) {
-		org.lgna.croquet.views.BorderPanel rv = new org.lgna.croquet.views.BorderPanel();
-		if( isPruneDesiredState != null ) {
-			rv.addPageStartComponent( new org.lgna.croquet.views.FlowPanel( operation.createButton(), isPruneDesiredState.createCheckBox() ) );
-		} else {
-			rv.addPageStartComponent( operation.createButton() );
+public class ZTreeNodeRenderer<T> extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.lgna.debug.tree.core.ZTreeNode<T>> {
+	@Override
+	protected javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, org.lgna.debug.tree.core.ZTreeNode<T> treeNode, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		T value = treeNode.getValue();
+		rv.setText( value.toString() );
+		if( this.valuesToMute != null ) {
+			if( this.valuesToMute.contains( value ) ) {
+				rv.setForeground( java.awt.Color.LIGHT_GRAY );
+			} else {
+				rv.setForeground( java.awt.Color.BLACK );
+			}
 		}
-		jTree.setCellRenderer( new org.lgna.debug.croquet.views.renderers.ZTreeNodeRenderer() );
-		rv.getAwtComponent().add( new edu.cmu.cs.dennisc.javax.swing.components.JScrollPane( jTree ), java.awt.BorderLayout.CENTER );
 		return rv;
 	}
 
-	public DebugFrameView( org.lgna.debug.croquet.DebugFrame<T> composite ) {
-		super( composite );
-
-		this.jMarkTree = new javax.swing.JTree( composite.getMarkTreeModel() );
-		this.jCurrentTree = new javax.swing.JTree( composite.getCurrentTreeModel() );
-
-		org.lgna.croquet.views.Panel markPanel = createPanel( composite.getMarkOperation(), null, this.jMarkTree );
-		org.lgna.croquet.views.Panel currentPanel = createPanel( composite.getRefreshOperation(), composite.getIsPruningDesiredState(), this.jCurrentTree );
-
-		javax.swing.JSplitPane jSplitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, markPanel.getAwtComponent(), currentPanel.getAwtComponent() );
-		jSplitPane.setDividerLocation( 0.5 );
-		this.getAwtComponent().add( jSplitPane, java.awt.BorderLayout.CENTER );
+	public void setValuesToMute( java.util.Set<T> valuesToMute ) {
+		this.valuesToMute = valuesToMute;
 	}
 
-	public void expandAllRowsAndUpdateCurrentTreeRenderer( java.util.Set<T> set ) {
-		org.lgna.debug.croquet.views.renderers.ZTreeNodeRenderer<T> currentSgTreeNodeRenderer = (org.lgna.debug.croquet.views.renderers.ZTreeNodeRenderer<T>)this.jCurrentTree.getCellRenderer();
-		currentSgTreeNodeRenderer.setValuesToMute( set );
-
-		for( javax.swing.JTree jTree : new javax.swing.JTree[] { this.jMarkTree, this.jCurrentTree } ) {
-			for( int i = 0; i < jTree.getRowCount(); i++ ) {
-				jTree.expandRow( i );
-			}
-		}
-		this.repaint();
-	}
-
-	private final javax.swing.JTree jMarkTree;
-	private final javax.swing.JTree jCurrentTree;
+	private java.util.Set<T> valuesToMute;
 }

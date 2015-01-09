@@ -40,33 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.debug.croquet;
+package org.lgna.debug.tree.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SgDebugFrame extends DebugFrame<edu.cmu.cs.dennisc.scenegraph.Component> {
-	public static org.lgna.debug.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component> createBuilder( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
-		org.lgna.debug.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component> rv = new org.lgna.debug.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component>( sgComponent, sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Leaf );
-		if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
-			edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgComponent;
-			for( edu.cmu.cs.dennisc.scenegraph.Component sgChild : sgComposite.getComponents() ) {
-				rv.addChildBuilder( createBuilder( sgChild ) );
+public class GlrDebugFrame extends DebugFrame<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> {
+	public static org.lgna.debug.tree.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> createBuilder( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?> glrComponent ) {
+		org.lgna.debug.tree.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> rv = new org.lgna.debug.tree.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>>( glrComponent, glrComponent instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrLeaf<?> );
+		if( glrComponent instanceof edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> ) {
+			edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> glrComposite = (edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?>)glrComponent;
+			for( edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?> glrChild : glrComposite.accessChildren() ) {
+				rv.addChildBuilder( createBuilder( glrChild ) );
 			}
 		}
 		return rv;
 	}
 
-	public SgDebugFrame() {
-		super( java.util.UUID.fromString( "8d282704-d6b6-4455-bd1d-80b6a529a19d" ) );
+	public GlrDebugFrame() {
+		super( java.util.UUID.fromString( "502e2f7e-cd4a-4ae5-a06d-20890d8e1eb6" ) );
 	}
 
 	@Override
-	protected org.lgna.debug.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.scenegraph.Component> capture() {
+	protected org.lgna.debug.tree.core.ZTreeNode.Builder<edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComponent<?>> capture() {
 		org.lgna.project.virtualmachine.UserInstance sceneUserInstance = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getActiveSceneInstance();
 		org.lgna.story.SScene scene = sceneUserInstance.getJavaInstance( org.lgna.story.SScene.class );
 		org.lgna.story.implementation.SceneImp sceneImp = org.lgna.story.EmployeesOnly.getImplementation( scene );
 		edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
-		return createBuilder( sgScene );
+		edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene glrScene = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( sgScene );
+		return createBuilder( glrScene );
 	}
 }

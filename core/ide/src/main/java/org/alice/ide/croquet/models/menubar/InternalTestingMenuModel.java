@@ -57,11 +57,11 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 	private static org.lgna.croquet.BooleanState createSgDebugFrameLazyIsFrameShowingState() {
 		org.lgna.croquet.BooleanState rv = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createInstance(
 				org.lgna.croquet.Application.INFORMATION_GROUP,
-				org.lgna.debug.croquet.SgDebugFrame.class,
-				new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.debug.croquet.SgDebugFrame>() {
+				org.lgna.debug.tree.croquet.SgDebugFrame.class,
+				new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.debug.tree.croquet.SgDebugFrame>() {
 					@Override
-					protected org.lgna.debug.croquet.SgDebugFrame create() {
-						return new org.lgna.debug.croquet.SgDebugFrame();
+					protected org.lgna.debug.tree.croquet.SgDebugFrame create() {
+						return new org.lgna.debug.tree.croquet.SgDebugFrame();
 					}
 				} );
 
@@ -75,11 +75,11 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 	private static org.lgna.croquet.BooleanState createGlrDebugFrameLazyIsFrameShowingState() {
 		org.lgna.croquet.BooleanState rv = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createInstance(
 				org.lgna.croquet.Application.INFORMATION_GROUP,
-				org.lgna.debug.croquet.GlrDebugFrame.class,
-				new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.debug.croquet.GlrDebugFrame>() {
+				org.lgna.debug.tree.croquet.GlrDebugFrame.class,
+				new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.debug.tree.croquet.GlrDebugFrame>() {
 					@Override
-					protected org.lgna.debug.croquet.GlrDebugFrame create() {
-						return new org.lgna.debug.croquet.GlrDebugFrame();
+					protected org.lgna.debug.tree.croquet.GlrDebugFrame create() {
+						return new org.lgna.debug.tree.croquet.GlrDebugFrame();
 					}
 				} );
 
