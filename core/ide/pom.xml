@@ -40,6 +40,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
+			<artifactId>glrender</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.alice</groupId>
 			<artifactId>story-api</artifactId>
 		</dependency>
 		<dependency>

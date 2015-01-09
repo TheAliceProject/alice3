@@ -9,13 +9,22 @@
 		<relativePath>../../core/</relativePath>
 	</parent>
 
-	<artifactId>scenegraph</artifactId>
+	<artifactId>glrender</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.alice</groupId>
-			<artifactId>util</artifactId>
+			<artifactId>scenegraph</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jogamp.jogl</groupId>
+			<artifactId>jogl-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.gluegen</groupId>
+			<artifactId>gluegen-rt</artifactId>
 		</dependency>
 	</dependencies>
 

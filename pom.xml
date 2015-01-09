@@ -89,6 +89,7 @@
 		<module>core/issue-reporting</module>
 		<module>core/resources</module>
 		<module>core/scenegraph</module>
+		<module>core/glrender</module>
 		<module>core/story-api-migration</module>
 		<module>core/story-api</module>
 		<module>core/util</module>
@@ -122,6 +123,11 @@
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>scenegraph</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.alice</groupId>
+				<artifactId>glrender</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
