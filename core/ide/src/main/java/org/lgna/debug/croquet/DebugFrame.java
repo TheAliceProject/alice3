@@ -94,20 +94,19 @@ public abstract class DebugFrame<T> extends org.lgna.croquet.FrameComposite<org.
 
 	protected abstract org.lgna.debug.core.ZTreeNode.Builder<T> capture();
 
-	private static <T> void updateValuesToMute( java.util.Set<T> set, javax.swing.tree.TreeNode treeNode ) {
-		org.lgna.debug.core.ZTreeNode<T> sgTreeNode = (org.lgna.debug.core.ZTreeNode<T>)treeNode;
-		set.add( sgTreeNode.getValue() );
-		if( treeNode.isLeaf() ) {
+	private static <T> void updateValuesToMute( java.util.Set<T> set, org.lgna.debug.core.ZTreeNode<T> zTreeNode ) {
+		set.add( zTreeNode.getValue() );
+		if( zTreeNode.isLeaf() ) {
 			//pass
 		} else {
-			java.util.Enumeration<javax.swing.tree.TreeNode> e = treeNode.children();
+			java.util.Enumeration<org.lgna.debug.core.ZTreeNode<T>> e = zTreeNode.children();
 			while( e.hasMoreElements() ) {
 				updateValuesToMute( set, e.nextElement() );
 			}
 		}
 	}
 
-	private static <T> java.util.Set<T> createValuesToMute( javax.swing.tree.TreeNode markRoot ) {
+	private static <T> java.util.Set<T> createValuesToMute( org.lgna.debug.core.ZTreeNode<T> markRoot ) {
 		java.util.Set<T> valuesToMute = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 		updateValuesToMute( valuesToMute, markRoot );
 		return java.util.Collections.unmodifiableSet( valuesToMute );

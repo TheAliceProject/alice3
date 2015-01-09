@@ -150,7 +150,7 @@ public final class ZTreeNode<T> implements javax.swing.tree.TreeNode {
 	}
 
 	@Override
-	public java.util.Enumeration children() {
+	public java.util.Enumeration<ZTreeNode<T>> children() {
 		return java.util.Collections.enumeration( this.children );
 	}
 
