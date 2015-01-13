@@ -40,14 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.nebulous;
+package org.lgna.story;
 
 /**
- * @author alice
- * 
+ * @author Dennis Cosgrove
  */
-public interface NebulousPaint extends org.lgna.story.Paint {
+public interface NonfreeTexturePaint extends Paint {
+	boolean isTextureValid();
 
-	public NebulousTexture getTexture();
+	edu.cmu.cs.dennisc.texture.Texture getTexture();
 
+	Paint getFallback();
 }

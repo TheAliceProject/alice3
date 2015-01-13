@@ -46,12 +46,21 @@ package edu.cmu.cs.dennisc.nebulous;
  * @author alice
  * 
  */
-public enum Texture implements NebulousPaint {
+@Deprecated
+public enum Texture implements org.lgna.story.NonfreeTexturePaint {
 	COOL_WALL,
 	COOL_WOOD_FLOOR,
 	CHECKERS_CEILING;
 
-	private NebulousTexture nebulousTexture;
+	@Override
+	public boolean isTextureValid() {
+		return true;
+	}
+
+	@Override
+	public org.lgna.story.Paint getFallback() {
+		return org.lgna.story.Color.RED;
+	}
 
 	@Override
 	public NebulousTexture getTexture() {
@@ -60,4 +69,6 @@ public enum Texture implements NebulousPaint {
 		}
 		return this.nebulousTexture;
 	}
+
+	private NebulousTexture nebulousTexture;
 }
