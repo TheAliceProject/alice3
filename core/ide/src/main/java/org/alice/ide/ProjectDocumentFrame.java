@@ -151,7 +151,7 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		if( this.typeMetaState != null ) {
 			//pass
 		} else {
-			org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+			org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = this.declarationsEditorComposite.getTabState();
 			this.typeMetaState = new org.lgna.croquet.meta.StateTrackingMetaState<org.lgna.project.ast.NamedUserType, DeclarationComposite<?, ?>>( declarationTabState ) {
 				@Override
 				protected org.lgna.project.ast.NamedUserType getValue( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> state ) {
@@ -169,6 +169,10 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 
 	public org.alice.ide.iconfactory.IconFactoryManager getIconFactoryManager() {
 		return this.iconFactoryManager;
+	}
+
+	public org.alice.ide.declarationseditor.DeclarationsEditorComposite getDeclarationsEditorComposite() {
+		return this.declarationsEditorComposite;
 	}
 
 	public org.lgna.croquet.Operation getResourcesDialogLaunchOperation() {
@@ -193,6 +197,8 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 	private final org.alice.stageide.perspectives.PerspectiveState perspectiveState;
 
 	private final org.alice.ide.iconfactory.IconFactoryManager iconFactoryManager;
+
+	private final org.alice.ide.declarationseditor.DeclarationsEditorComposite declarationsEditorComposite = new org.alice.ide.declarationseditor.DeclarationsEditorComposite();
 
 	private final org.lgna.croquet.Operation resourcesDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
 			org.alice.ide.resource.manager.ResourceManagerComposite.class,

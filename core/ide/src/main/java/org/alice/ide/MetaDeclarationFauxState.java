@@ -77,7 +77,7 @@ public class MetaDeclarationFauxState {
 
 	private MetaDeclarationFauxState() {
 		IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addNewSchoolValueListener( this.declarationTabListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( this.declarationTabListener );
 		this.prevDeclaration = this.getValue();
 	}
 
@@ -86,7 +86,7 @@ public class MetaDeclarationFauxState {
 		if( ide.getDocumentFrame().isInSetupScenePerspective() ) {
 			return ide != null ? ide.getPerformEditorGeneratedSetUpMethod() : null;
 		} else {
-			org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
+			org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
 			return declarationComposite != null ? declarationComposite.getDeclaration() : null;
 		}
 	}

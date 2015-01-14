@@ -47,19 +47,7 @@ package org.alice.ide.declarationseditor;
  * @author Dennis Cosgrove
  */
 public class DeclarationsEditorComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.declarationseditor.components.TypeEditor> {
-	private static class SingletonHolder {
-		private static DeclarationsEditorComposite instance = new DeclarationsEditorComposite();
-	}
-
-	public static DeclarationsEditorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final org.alice.ide.declarationseditor.DeclarationMenu declarationMenu = new org.alice.ide.declarationseditor.DeclarationMenu();
-	private final DeclarationTabState tabState = new DeclarationTabState();
-	private final BackwardForwardComposite backwardForwardComposite;
-
-	private DeclarationsEditorComposite() {
+	public DeclarationsEditorComposite() {
 		super( java.util.UUID.fromString( "bdf8f46f-1c77-4e01-83d1-952cbf63504e" ) );
 		this.backwardForwardComposite = this.registerSubComposite( new BackwardForwardComposite() );
 		this.registerTabState( this.tabState );
@@ -81,4 +69,8 @@ public class DeclarationsEditorComposite extends org.lgna.croquet.SimpleComposit
 	protected org.alice.ide.declarationseditor.components.TypeEditor createView() {
 		return new org.alice.ide.declarationseditor.components.TypeEditor( this );
 	}
+
+	private final org.alice.ide.declarationseditor.DeclarationMenu declarationMenu = new org.alice.ide.declarationseditor.DeclarationMenu();
+	private final DeclarationTabState tabState = new DeclarationTabState();
+	private final BackwardForwardComposite backwardForwardComposite;
 }

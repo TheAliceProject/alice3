@@ -270,14 +270,14 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		super.handlePreActivation();
 		this.instanceFactoryListener.setActive( true );
 		this.getSortState().addNewSchoolValueListener( this.sortListener );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addNewSchoolValueListener( this.declarationCompositeListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( this.declarationCompositeListener );
 		this.refreshContentsLater();
 		this.repaintTitles();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeNewSchoolValueListener( this.declarationCompositeListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationCompositeListener );
 		this.getSortState().removeNewSchoolValueListener( this.sortListener );
 		this.instanceFactoryListener.setActive( false );
 		super.handlePostDeactivation();
