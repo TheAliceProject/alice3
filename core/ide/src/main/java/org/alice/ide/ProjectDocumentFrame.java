@@ -47,7 +47,7 @@ import org.alice.ide.declarationseditor.DeclarationComposite;
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectDocumentFrame {
+public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFrame {
 	public ProjectDocumentFrame( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager ) {
 		this.apiConfigurationManager = apiConfigurationManager;
 		this.findComposite = new org.alice.ide.croquet.models.project.find.croquet.FindComposite( this );
@@ -59,6 +59,44 @@ public class ProjectDocumentFrame {
 		this.perspectiveState.addItem( this.codePerspective );
 		this.perspectiveState.addItem( this.setupScenePerspective );
 		this.iconFactoryManager = apiConfigurationManager.createIconFactoryManager();
+	}
+
+	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_WINDOW_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.SHIFT_MASK );
+	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK );
+	private static final javax.swing.KeyStroke CAPTURE_RECTANGLE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, 0 );
+
+	private void registerScreenCaptureKeyStrokes( org.lgna.croquet.views.AbstractWindow<?> window ) {
+		org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite = org.alice.ide.capture.ImageCaptureComposite.getInstance();
+		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getImp().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
+		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireWindowOperation().getImp().getSwingModel().getAction(), CAPTURE_ENTIRE_WINDOW_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
+		if( window == this.getFrame() ) {
+			//pass
+		} else {
+			window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureRectangleOperation().getImp().getSwingModel().getAction(), CAPTURE_RECTANGLE_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
+		}
+	}
+
+	private void unregisterScreenCaptureKeyStrokes( org.lgna.croquet.views.AbstractWindow<?> window ) {
+		window.getContentPane().unregisterKeyboardAction( CAPTURE_ENTIRE_WINDOW_KEY_STROKE );
+		window.getContentPane().unregisterKeyboardAction( CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE );
+		window.getContentPane().unregisterKeyboardAction( CAPTURE_RECTANGLE_KEY_STROKE );
+	}
+
+	/*package-private*/void initialize() {
+		this.registerScreenCaptureKeyStrokes( this.getFrame() );
+	}
+
+	@Override
+	public void pushWindow( final org.lgna.croquet.views.AbstractWindow<?> window ) {
+		this.registerScreenCaptureKeyStrokes( window );
+		super.pushWindow( window );
+	}
+
+	@Override
+	public org.lgna.croquet.views.AbstractWindow<?> popWindow() {
+		org.lgna.croquet.views.AbstractWindow<?> window = super.popWindow();
+		this.unregisterScreenCaptureKeyStrokes( window );
+		return window;
 	}
 
 	public ApiConfigurationManager getApiConfigurationManager() {

@@ -79,6 +79,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private final edu.cmu.cs.dennisc.crash.CrashDetector crashDetector;
 
 	public IDE( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
+		super( ideConfiguration, apiConfigurationManager );
 		this.ideConfiguration = ideConfiguration;
 		this.crashDetector = crashDetector;
 		StringBuffer sb = new StringBuffer();
@@ -86,7 +87,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		sb.append( getApplicationName() );
 		IDE.exceptionHandler.setTitle( sb.toString() );
 		IDE.exceptionHandler.setApplicationName( getApplicationName() );
-		this.projectDocumentFrame = new ProjectDocumentFrame( ideConfiguration, apiConfigurationManager );
 
 		//initialize locale
 
@@ -103,20 +103,16 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.ideConfiguration;
 	}
 
-	public ProjectDocumentFrame getProjectDocumentFrame() {
-		return this.projectDocumentFrame;
-	}
-
 	public org.alice.stageide.perspectives.CodePerspective getCodePerspective() {
-		return this.projectDocumentFrame.getCodePerspective();
+		return this.getDocumentFrame().getCodePerspective();
 	}
 
 	public org.alice.stageide.perspectives.SetupScenePerspective getSetupScenePerspective() {
-		return this.projectDocumentFrame.getSetupScenePerspective();
+		return this.getDocumentFrame().getSetupScenePerspective();
 	}
 
 	public final org.alice.stageide.perspectives.PerspectiveState getPerspectiveState() {
-		return this.projectDocumentFrame.getPerspectiveState();
+		return this.getDocumentFrame().getPerspectiveState();
 	}
 
 	public org.lgna.croquet.Operation getSetToCodePerspectiveOperation() {
@@ -144,41 +140,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public final ApiConfigurationManager getApiConfigurationManager() {
-		return this.projectDocumentFrame.getApiConfigurationManager();
-	}
-
-	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_WINDOW_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.SHIFT_MASK );
-	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK );
-	private static final javax.swing.KeyStroke CAPTURE_RECTANGLE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, 0 );
-
-	private void registerScreenCaptureKeyStrokes( org.lgna.croquet.views.AbstractWindow<?> window ) {
-		org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite = org.alice.ide.capture.ImageCaptureComposite.getInstance();
-		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getImp().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
-		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireWindowOperation().getImp().getSwingModel().getAction(), CAPTURE_ENTIRE_WINDOW_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
-		if( window == this.getDocumentFrame().getFrame() ) {
-			//pass
-		} else {
-			window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureRectangleOperation().getImp().getSwingModel().getAction(), CAPTURE_RECTANGLE_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
-		}
-	}
-
-	private void unregisterScreenCaptureKeyStrokes( org.lgna.croquet.views.AbstractWindow<?> window ) {
-		window.getContentPane().unregisterKeyboardAction( CAPTURE_ENTIRE_WINDOW_KEY_STROKE );
-		window.getContentPane().unregisterKeyboardAction( CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE );
-		window.getContentPane().unregisterKeyboardAction( CAPTURE_RECTANGLE_KEY_STROKE );
-	}
-
-	@Override
-	public void pushWindow( final org.lgna.croquet.views.AbstractWindow<?> window ) {
-		this.registerScreenCaptureKeyStrokes( window );
-		super.pushWindow( window );
-	}
-
-	@Override
-	public org.lgna.croquet.views.AbstractWindow<?> popWindow() {
-		org.lgna.croquet.views.AbstractWindow<?> window = super.popWindow();
-		this.unregisterScreenCaptureKeyStrokes( window );
-		return window;
+		return this.getDocumentFrame().getApiConfigurationManager();
 	}
 
 	@Override
@@ -186,7 +148,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		super.initialize( args );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionObserver );
 		this.getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
-		this.registerScreenCaptureKeyStrokes( this.getDocumentFrame().getFrame() );
+		this.getDocumentFrame().initialize();
 	}
 
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
@@ -645,6 +607,4 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 		return this.highlightStencil;
 	}
-
-	private final ProjectDocumentFrame projectDocumentFrame;
 }

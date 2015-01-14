@@ -46,7 +46,7 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApplication {
+public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApplication<ProjectDocumentFrame> {
 	public static final org.lgna.croquet.Group HISTORY_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
 	public static final org.lgna.croquet.Group URI_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
 
@@ -56,7 +56,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	private org.lgna.croquet.undo.event.HistoryListener projectHistoryListener;
 
-	public ProjectApplication() {
+	public ProjectApplication( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager ) {
+		this.projectDocumentFrame = new ProjectDocumentFrame( ideConfiguration, apiConfigurationManager );
 		this.projectHistoryListener = new org.lgna.croquet.undo.event.HistoryListener() {
 			@Override
 			public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
@@ -84,6 +85,11 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			}
 		};
 		this.updateTitle();
+	}
+
+	@Override
+	public org.alice.ide.ProjectDocumentFrame getDocumentFrame() {
+		return this.projectDocumentFrame;
 	}
 
 	private void updateUndoRedoEnabled() {
@@ -421,4 +427,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	public abstract void ensureProjectCodeUpToDate();
+
+	private final ProjectDocumentFrame projectDocumentFrame;
 }

@@ -48,25 +48,15 @@ import org.lgna.croquet.undo.UndoHistory;
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleApplication extends org.lgna.croquet.Application {
-	private final org.lgna.croquet.Document document = new org.lgna.croquet.Document() {
-		private final org.lgna.croquet.history.TransactionHistory transactionHistory = new org.lgna.croquet.history.TransactionHistory();
-
-		@Override
-		public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
-			return this.transactionHistory;
-		}
-
-		@Override
-		public UndoHistory getUndoHistory( Group group ) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-	};
-
+public class SimpleApplication extends org.lgna.croquet.Application<org.lgna.croquet.DocumentFrame> {
 	@Override
 	public org.lgna.croquet.Document getDocument() {
 		return this.document;
+	}
+
+	@Override
+	public org.lgna.croquet.DocumentFrame getDocumentFrame() {
+		return this.documentFrame;
 	}
 
 	@Override
@@ -91,4 +81,20 @@ public class SimpleApplication extends org.lgna.croquet.Application {
 	protected org.lgna.croquet.Operation getPreferencesOperation() {
 		return null;
 	}
+
+	private final org.lgna.croquet.DocumentFrame documentFrame = new org.lgna.croquet.DocumentFrame();
+	private final org.lgna.croquet.Document document = new org.lgna.croquet.Document() {
+		private final org.lgna.croquet.history.TransactionHistory transactionHistory = new org.lgna.croquet.history.TransactionHistory();
+
+		@Override
+		public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
+			return this.transactionHistory;
+		}
+
+		@Override
+		public UndoHistory getUndoHistory( Group group ) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+	};
 }

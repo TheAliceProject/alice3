@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Application {
+public abstract class Application<D extends DocumentFrame> {
 
 	public static final Group APPLICATION_UI_GROUP = Group.getInstance( java.util.UUID.fromString( "0d3393ba-8769-419d-915c-fd5038a5853a" ), "APPLICATION_UI_GROUP" );
 	public static final Group DOCUMENT_UI_GROUP = Group.getInstance( java.util.UUID.fromString( "d92c1a48-a6ae-473b-9b9f-94734e1606c1" ), "DOCUMENT_UI_GROUP" );
@@ -62,9 +62,9 @@ public abstract class Application {
 		}
 	};
 
-	private static Application singleton;
+	private static Application<?> singleton;
 
-	public static Application getActiveInstance() {
+	public static Application<?> getActiveInstance() {
 		return singleton;
 	}
 
@@ -73,13 +73,9 @@ public abstract class Application {
 		Application.singleton = this;
 		this.transactionHistory = new org.lgna.croquet.history.TransactionHistory();
 		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( this.menuSelectionChangeListener );
-		this.documentFrame = new DocumentFrame();
-		this.stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack( this.documentFrame.getFrame() );
 	}
 
-	public DocumentFrame getDocumentFrame() {
-		return this.documentFrame;
-	}
+	public abstract D getDocumentFrame();
 
 	public org.lgna.croquet.history.TransactionHistory getTransactionHistory() {
 		return this.transactionHistory;
@@ -96,25 +92,6 @@ public abstract class Application {
 	}
 
 	public abstract Document getDocument();
-
-	public void pushWindow( org.lgna.croquet.views.AbstractWindow<?> window ) {
-		this.stack.push( window );
-	}
-
-	public org.lgna.croquet.views.AbstractWindow<?> popWindow() {
-		org.lgna.croquet.views.AbstractWindow<?> rv = this.stack.peek();
-		this.stack.pop();
-		return rv;
-	}
-
-	public org.lgna.croquet.views.AbstractWindow<?> peekWindow() {
-		if( this.stack.size() > 0 ) {
-			return this.stack.peek();
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "window stack is empty" );
-			return null;
-		}
-	}
 
 	public void initialize( String[] args ) {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
@@ -176,7 +153,7 @@ public abstract class Application {
 				//todo?
 				//javax.swing.UIManager.getLookAndFeel().uninitialize();
 				//javax.swing.UIManager.getLookAndFeel().initialize();
-				for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.documentFrame.getFrame().getAwtComponent(), javax.swing.JComponent.class ) ) {
+				for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.getDocumentFrame().getFrame().getAwtComponent(), javax.swing.JComponent.class ) ) {
 					component.setLocale( locale );
 					component.setComponentOrientation( java.awt.ComponentOrientation.getOrientation( locale ) );
 					component.revalidate();
@@ -223,7 +200,4 @@ public abstract class Application {
 			this.getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction().addMenuSelection( menuSelection );
 		}
 	}
-
-	private final edu.cmu.cs.dennisc.java.util.DStack<org.lgna.croquet.views.AbstractWindow<?>> stack;
-	private final DocumentFrame documentFrame;
 }
