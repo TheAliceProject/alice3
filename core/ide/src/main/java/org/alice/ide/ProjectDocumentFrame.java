@@ -119,6 +119,14 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		return this.perspectiveState;
 	}
 
+	public boolean isInCodePerspective() {
+		return this.getPerspectiveState().getValue() == this.getCodePerspective();
+	}
+
+	public boolean isInSetupScenePerspective() {
+		return this.getPerspectiveState().getValue() == this.getSetupScenePerspective();
+	}
+
 	public org.lgna.croquet.Operation getSetToCodePerspectiveOperation() {
 		return this.getPerspectiveState().getItemSelectionOperation( this.getCodePerspective() );
 	}

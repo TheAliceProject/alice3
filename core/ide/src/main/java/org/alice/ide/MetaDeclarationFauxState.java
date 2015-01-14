@@ -76,14 +76,14 @@ public class MetaDeclarationFauxState {
 	private org.lgna.project.ast.AbstractDeclaration prevDeclaration;
 
 	private MetaDeclarationFauxState() {
-		IDE.getActiveInstance().getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
+		IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addNewSchoolValueListener( this.declarationTabListener );
 		this.prevDeclaration = this.getValue();
 	}
 
 	public org.lgna.project.ast.AbstractDeclaration getValue() {
 		IDE ide = IDE.getActiveInstance();
-		if( ide.isInSetupScenePerspective() ) {
+		if( ide.getDocumentFrame().isInSetupScenePerspective() ) {
 			return ide != null ? ide.getPerformEditorGeneratedSetUpMethod() : null;
 		} else {
 			org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();

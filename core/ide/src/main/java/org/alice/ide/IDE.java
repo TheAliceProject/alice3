@@ -103,26 +103,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.ideConfiguration;
 	}
 
-	public org.alice.stageide.perspectives.CodePerspective getCodePerspective() {
-		return this.getDocumentFrame().getCodePerspective();
-	}
-
-	public org.alice.stageide.perspectives.SetupScenePerspective getSetupScenePerspective() {
-		return this.getDocumentFrame().getSetupScenePerspective();
-	}
-
-	public final org.alice.stageide.perspectives.PerspectiveState getPerspectiveState() {
-		return this.getDocumentFrame().getPerspectiveState();
-	}
-
-	public boolean isInCodePerspective() {
-		return this.getPerspectiveState().getValue() == this.getCodePerspective();
-	}
-
-	public boolean isInSetupScenePerspective() {
-		return this.getPerspectiveState().getValue() == this.getSetupScenePerspective();
-	}
-
 	public final ApiConfigurationManager getApiConfigurationManager() {
 		return this.getDocumentFrame().getApiConfigurationManager();
 	}
@@ -131,7 +111,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void initialize( String[] args ) {
 		super.initialize( args );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionObserver );
-		this.getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
+		this.getDocumentFrame().getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
 		this.getDocumentFrame().initialize();
 	}
 
@@ -370,12 +350,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		boolean isScenePerspectiveDesiredByDefault = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "org.alice.ide.IDE.isScenePerspectiveDesiredByDefault", false );
-		org.alice.ide.perspectives.ProjectPerspective defaultPerspective = isScenePerspectiveDesiredByDefault ? this.getSetupScenePerspective() : this.getCodePerspective();
-		this.getPerspectiveState().setValueTransactionlessly( defaultPerspective );
+		ProjectDocumentFrame documentFrame = this.getDocumentFrame();
+		org.alice.ide.perspectives.ProjectPerspective defaultPerspective = isScenePerspectiveDesiredByDefault ? documentFrame.getSetupScenePerspective() : documentFrame.getCodePerspective();
+		documentFrame.getPerspectiveState().setValueTransactionlessly( defaultPerspective );
 		super.setProject( project );
 		org.lgna.croquet.Perspective perspective = this.getPerspective();
 		if( ( perspective == null ) || ( perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) ) {
-			this.setPerspective( this.getPerspectiveState().getValue() );
+			this.setPerspective( documentFrame.getPerspectiveState().getValue() );
 		}
 	}
 
@@ -498,7 +479,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeEditorInFocus() {
-		org.alice.ide.perspectives.ProjectPerspective perspective = this.getPerspectiveState().getValue();
+		org.alice.ide.perspectives.ProjectPerspective perspective = this.getDocumentFrame().getPerspectiveState().getValue();
 		if( perspective != null ) {
 			return perspective.getCodeDropReceptorInFocus();
 		} else {

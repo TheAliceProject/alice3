@@ -123,7 +123,7 @@ public abstract class ProgramContext {
 		this.rendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN;
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			ide.getPerspectiveState().disableRendering( rendering );
+			ide.getDocumentFrame().getPerspectiveState().disableRendering( rendering );
 		}
 	}
 
@@ -150,7 +150,7 @@ public abstract class ProgramContext {
 		if( this.rendering != null ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			if( ide != null ) {
-				ide.getPerspectiveState().enableRendering();
+				ide.getDocumentFrame().getPerspectiveState().enableRendering();
 			}
 			this.rendering = null;
 		}
