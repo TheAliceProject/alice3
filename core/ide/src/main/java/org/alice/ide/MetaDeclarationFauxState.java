@@ -51,42 +51,18 @@ public class MetaDeclarationFauxState {
 		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue );
 	};
 
-	private static class SingletonHolder {
-		private static MetaDeclarationFauxState instance = new MetaDeclarationFauxState();
-	}
-
-	public static MetaDeclarationFauxState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final java.util.List<ValueListener> valueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
-		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
-			MetaDeclarationFauxState.this.handleIsSceneEditorExpandedChanged();
-		}
-	};
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> declarationTabListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>>() {
-		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> e ) {
-			MetaDeclarationFauxState.this.handleDeclarationTabChanged();
-		}
-	};
-
-	private org.lgna.project.ast.AbstractDeclaration prevDeclaration;
-
-	private MetaDeclarationFauxState() {
-		IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
-		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( this.declarationTabListener );
+	public MetaDeclarationFauxState( ProjectDocumentFrame projectDocumentFrame ) {
+		this.projectDocumentFrame = projectDocumentFrame;
+		this.projectDocumentFrame.getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
+		this.projectDocumentFrame.getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( this.declarationTabListener );
 		this.prevDeclaration = this.getValue();
 	}
 
 	public org.lgna.project.ast.AbstractDeclaration getValue() {
-		IDE ide = IDE.getActiveInstance();
-		if( ide.getDocumentFrame().isInSetupScenePerspective() ) {
-			return ide != null ? ide.getPerformEditorGeneratedSetUpMethod() : null;
+		if( this.projectDocumentFrame.isInSetupScenePerspective() ) {
+			return IDE.getActiveInstance().getPerformEditorGeneratedSetUpMethod();
 		} else {
-			org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
+			org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = this.projectDocumentFrame.getDeclarationsEditorComposite().getTabState().getValue();
 			return declarationComposite != null ? declarationComposite.getDeclaration() : null;
 		}
 	}
@@ -140,4 +116,20 @@ public class MetaDeclarationFauxState {
 	private void handleDeclarationTabChanged() {
 		this.fireChanged();
 	}
+
+	private final ProjectDocumentFrame projectDocumentFrame;
+	private final java.util.List<ValueListener> valueListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
+		@Override
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.perspectives.ProjectPerspective> e ) {
+			MetaDeclarationFauxState.this.handleIsSceneEditorExpandedChanged();
+		}
+	};
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> declarationTabListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>>() {
+		@Override
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> e ) {
+			MetaDeclarationFauxState.this.handleDeclarationTabChanged();
+		}
+	};
+	private org.lgna.project.ast.AbstractDeclaration prevDeclaration;
 }

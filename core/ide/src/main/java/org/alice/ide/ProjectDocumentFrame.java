@@ -50,14 +50,18 @@ import org.alice.ide.declarationseditor.DeclarationComposite;
 public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFrame {
 	public ProjectDocumentFrame( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager ) {
 		this.apiConfigurationManager = apiConfigurationManager;
-		this.findComposite = new org.alice.ide.croquet.models.project.find.croquet.FindComposite( this );
+
 		this.perspectiveState = new org.alice.stageide.perspectives.PerspectiveState();
-		this.uploadOperations = ideConfiguration != null ? ideConfiguration.createUploadOperations( this ) : new org.lgna.croquet.Operation[ 0 ];
 		org.alice.ide.croquet.models.AliceMenuBar aliceMenuBar = new org.alice.ide.croquet.models.AliceMenuBar( this );
 		this.codePerspective = new org.alice.stageide.perspectives.CodePerspective( this, aliceMenuBar );
 		this.setupScenePerspective = new org.alice.stageide.perspectives.SetupScenePerspective( this, aliceMenuBar );
 		this.perspectiveState.addItem( this.codePerspective );
 		this.perspectiveState.addItem( this.setupScenePerspective );
+
+		this.metaDeclarationFauxState = new MetaDeclarationFauxState( this );
+		this.instanceFactoryState = new org.alice.ide.instancefactory.croquet.InstanceFactoryState( this );
+		this.findComposite = new org.alice.ide.croquet.models.project.find.croquet.FindComposite( this );
+		this.uploadOperations = ideConfiguration != null ? ideConfiguration.createUploadOperations( this ) : new org.lgna.croquet.Operation[ 0 ];
 		this.iconFactoryManager = apiConfigurationManager.createIconFactoryManager();
 	}
 
@@ -105,6 +109,14 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 
 	public org.lgna.croquet.Operation[] getUploadOperations() {
 		return this.uploadOperations;
+	}
+
+	public org.alice.ide.instancefactory.croquet.InstanceFactoryState getInstanceFactoryState() {
+		return this.instanceFactoryState;
+	}
+
+	public MetaDeclarationFauxState getMetaDeclarationFauxState() {
+		return this.metaDeclarationFauxState;
 	}
 
 	public org.alice.stageide.perspectives.CodePerspective getCodePerspective() {
@@ -195,6 +207,10 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 	private final org.alice.stageide.perspectives.SetupScenePerspective setupScenePerspective;
 
 	private final org.alice.stageide.perspectives.PerspectiveState perspectiveState;
+
+	private final MetaDeclarationFauxState metaDeclarationFauxState;
+
+	private final org.alice.ide.instancefactory.croquet.InstanceFactoryState instanceFactoryState;
 
 	private final org.alice.ide.iconfactory.IconFactoryManager iconFactoryManager;
 

@@ -49,12 +49,8 @@ import org.alice.ide.instancefactory.InstanceFactory;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithInternalBlank<InstanceFactory> {
-	private static class SingletonHolder {
-		private static InstanceFactoryState instance = new InstanceFactoryState();
-	}
-
 	public static InstanceFactoryState getInstance() {
-		return SingletonHolder.instance;
+		return org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState();
 	}
 
 	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {
@@ -74,9 +70,9 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		}
 	};
 
-	private InstanceFactoryState() {
+	public InstanceFactoryState( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), null, org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
-		org.alice.ide.MetaDeclarationFauxState.getInstance().addValueListener( declarationListener );
+		projectDocumentFrame.getMetaDeclarationFauxState().addValueListener( declarationListener );
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
 	}
 
@@ -199,7 +195,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 					createFillInMenuComboIfNecessary(
 							InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ),
 							apiConfigurationManager.getInstanceFactorySubMenuForThis( type )
-							)
+					)
 					);
 		}
 		if( type instanceof org.lgna.project.ast.NamedUserType ) {
@@ -255,7 +251,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 								createFillInMenuComboIfNecessary(
 										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessFactory.getInstance( parameter ) ),
 										apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess( parameter )
-										)
+								)
 								);
 					}
 				}
@@ -271,7 +267,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 								createFillInMenuComboIfNecessary(
 										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessFactory.getInstance( local ) ),
 										apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess( local )
-										)
+								)
 								);
 					}
 				}
@@ -330,7 +326,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 																	createFillInMenuComboIfNecessary(
 																			InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( parameter, parameterMethod ) ),
 																			apiConfigurationManager.getInstanceFactorySubMenuForParameterAccessMethodInvocation( parameter, parameterMethod )
-																			)
+																	)
 																	);
 														}
 													}
