@@ -46,7 +46,7 @@ package org.alice.stageide.perspectives;
 /**
  * @author Dennis Cosgrove
  */
-public class PerspectiveState extends org.lgna.croquet.MutableDataSingleSelectListState<org.alice.ide.perspectives.ProjectPerspective> {
+public class PerspectiveState extends org.lgna.croquet.ImmutableDataSingleSelectListState<org.alice.ide.perspectives.ProjectPerspective> {
 	public PerspectiveState( org.alice.ide.perspectives.ProjectPerspective... perspectives ) {
 		super(
 				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,

@@ -51,12 +51,10 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 	public ProjectDocumentFrame( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager ) {
 		this.apiConfigurationManager = apiConfigurationManager;
 
-		this.perspectiveState = new org.alice.stageide.perspectives.PerspectiveState();
 		org.alice.ide.croquet.models.AliceMenuBar aliceMenuBar = new org.alice.ide.croquet.models.AliceMenuBar( this );
 		this.codePerspective = new org.alice.stageide.perspectives.CodePerspective( this, aliceMenuBar );
 		this.setupScenePerspective = new org.alice.stageide.perspectives.SetupScenePerspective( this, aliceMenuBar );
-		this.perspectiveState.addItem( this.codePerspective );
-		this.perspectiveState.addItem( this.setupScenePerspective );
+		this.perspectiveState = new org.alice.stageide.perspectives.PerspectiveState( this.codePerspective, this.setupScenePerspective );
 
 		this.metaDeclarationFauxState = new MetaDeclarationFauxState( this );
 		this.instanceFactoryState = new org.alice.ide.instancefactory.croquet.InstanceFactoryState( this );
