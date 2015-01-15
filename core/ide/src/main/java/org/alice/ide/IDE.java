@@ -111,7 +111,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void initialize( String[] args ) {
 		super.initialize( args );
 		ProjectDocumentFrame documentFrame = this.getDocumentFrame();
-		documentFrame.getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionObserver );
 		documentFrame.getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
 		documentFrame.initialize();
 	}
@@ -306,20 +305,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return ( ( expression instanceof org.lgna.project.ast.TypeExpression ) || ( expression instanceof org.lgna.project.ast.ResourceExpression ) ) == false;
 	}
 
-	private final java.util.Map<org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory> mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
-		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
-			org.alice.ide.instancefactory.InstanceFactory nextValue = e.getNextValue();
-			if( nextValue != null ) {
-				org.lgna.project.ast.AbstractCode code = IDE.this.getFocusedCode();
-				if( code != null ) {
-					mapCodeToInstanceFactory.put( code, nextValue );
-				}
-			}
-		}
-	};
-
 	public abstract org.alice.ide.cascade.ExpressionCascadeManager getExpressionCascadeManager();
 
 	public org.alice.ide.stencil.PotentialDropReceptorsFeedbackView getPotentialDropReceptorsFeedbackView() {
@@ -438,12 +423,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public org.lgna.project.ast.AbstractCode getFocusedCode() {
-		org.lgna.project.ast.AbstractDeclaration declaration = this.getDocumentFrame().getMetaDeclarationFauxState().getValue();
-		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
-			return (org.lgna.project.ast.AbstractCode)declaration;
-		} else {
-			return null;
-		}
+		return this.getDocumentFrame().getFocusedCode();
 	}
 
 	public void setFocusedCode( org.lgna.project.ast.AbstractCode nextFocusedCode ) {

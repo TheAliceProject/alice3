@@ -86,6 +86,7 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 
 	/*package-private*/void initialize() {
 		this.registerScreenCaptureKeyStrokes( this.getFrame() );
+		this.getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
 	}
 
 	@Override
@@ -223,6 +224,15 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		return this.highlightStencil;
 	}
 
+	public org.lgna.project.ast.AbstractCode getFocusedCode() {
+		org.lgna.project.ast.AbstractDeclaration declaration = this.getMetaDeclarationFauxState().getValue();
+		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
+			return (org.lgna.project.ast.AbstractCode)declaration;
+		} else {
+			return null;
+		}
+	}
+
 	private final ApiConfigurationManager apiConfigurationManager;
 
 	private org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> typeMetaState;
@@ -263,6 +273,20 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 				}
 			} );
 	private final edu.cmu.cs.dennisc.java.util.DStack<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+
+	private final java.util.Map<org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory> mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		@Override
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
+			org.alice.ide.instancefactory.InstanceFactory nextValue = e.getNextValue();
+			if( nextValue != null ) {
+				org.lgna.project.ast.AbstractCode code = getFocusedCode();
+				if( code != null ) {
+					mapCodeToInstanceFactory.put( code, nextValue );
+				}
+			}
+		}
+	};
 
 	private org.alice.ide.highlight.IdeHighlightStencil highlightStencil;
 }
