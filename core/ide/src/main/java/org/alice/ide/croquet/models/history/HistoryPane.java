@@ -158,7 +158,7 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 		this.list.addListSelectionListener( this.listSelectionListener );
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.list );
 		this.add( scrollPane );
-		this.initializeProjectHistory( org.alice.ide.IDE.getActiveInstance().getDocument() );
+		this.initializeProjectHistory( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDocument() );
 	}
 
 	public void initializeProjectHistory( org.alice.ide.ProjectDocument projectDocument ) {

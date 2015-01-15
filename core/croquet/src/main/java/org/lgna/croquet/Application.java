@@ -84,14 +84,18 @@ public abstract class Application<D extends DocumentFrame> {
 	// TODO: Fix this the right way... if we *ever* support multiple documents... this is a hack for now...
 	@Deprecated
 	public org.lgna.croquet.history.TransactionHistory getApplicationOrDocumentTransactionHistory() {
-		if( this.getDocument() == null ) {
-			return this.getTransactionHistory();
+		DocumentFrame documentFrame = this.getDocumentFrame();
+		if( documentFrame != null ) {
+			Document document = documentFrame.getDocument();
+			if( document == null ) {
+				return this.getTransactionHistory();
+			} else {
+				return document.getRootTransactionHistory();
+			}
 		} else {
-			return this.getDocument().getRootTransactionHistory();
+			return this.getTransactionHistory();
 		}
 	}
-
-	public abstract Document getDocument();
 
 	public void initialize( String[] args ) {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {

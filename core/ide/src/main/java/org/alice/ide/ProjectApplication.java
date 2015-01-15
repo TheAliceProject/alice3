@@ -288,8 +288,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		this.getDocumentFrame().getFrame().setTitle( this.frameTitleGenerator.generateTitle( this.getUri(), this.isProjectUpToDateWithFile() ) );
 	}
 
-	@Override
-	public ProjectDocument getDocument() {
+	private ProjectDocument getDocument() {
 		return org.alice.ide.project.ProjectDocumentState.getInstance().getValue();
 	}
 

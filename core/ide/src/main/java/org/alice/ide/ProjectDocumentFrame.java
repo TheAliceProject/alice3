@@ -117,6 +117,11 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		}
 	}
 
+	@Override
+	public ProjectDocument getDocument() {
+		return org.alice.ide.project.ProjectDocumentState.getInstance().getValue();
+	}
+
 	public ApiConfigurationManager getApiConfigurationManager() {
 		return this.apiConfigurationManager;
 	}

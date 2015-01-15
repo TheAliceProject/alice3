@@ -426,7 +426,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		if( EPIC_HACK_isFirstAddedTo ) {
-			org.alice.ide.ProjectDocument projectDocument = org.alice.ide.ProjectApplication.getActiveInstance().getDocument();
+			org.alice.ide.ProjectDocument projectDocument = org.alice.ide.ProjectApplication.getActiveInstance().getDocumentFrame().getDocument();
 			if( projectDocument != null ) {
 				this.projectListener.changed( null, null, projectDocument, false );
 				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "remove firing changed", projectDocument );

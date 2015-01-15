@@ -45,14 +45,14 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public/*abstract*/class DocumentFrame {
+public abstract class DocumentFrame {
 	public DocumentFrame() {
 		this.frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.DO_NOTHING );
 		this.frame.addWindowListener( this.windowListener );
 		this.stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack( this.getFrame() );
 	}
 
-	//public abstract Document getDocument();
+	public abstract Document getDocument();
 
 	public org.lgna.croquet.views.Frame getFrame() {
 		return this.frame;
