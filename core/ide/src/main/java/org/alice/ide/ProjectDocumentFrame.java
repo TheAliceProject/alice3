@@ -141,7 +141,7 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		return this.setupScenePerspective;
 	}
 
-	public org.alice.stageide.perspectives.PerspectiveState getPerspectiveState() {
+	public org.lgna.croquet.ItemState<org.alice.ide.perspectives.ProjectPerspective> getPerspectiveState() {
 		return this.perspectiveState;
 	}
 
