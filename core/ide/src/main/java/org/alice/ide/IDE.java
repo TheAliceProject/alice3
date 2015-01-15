@@ -552,16 +552,4 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType userType );
-
-	private static final Integer HIGHLIGHT_STENCIL_LAYER = javax.swing.JLayeredPane.POPUP_LAYER - 2;
-	private org.alice.ide.highlight.IdeHighlightStencil highlightStencil;
-
-	public org.alice.ide.highlight.IdeHighlightStencil getHighlightStencil() {
-		if( this.highlightStencil != null ) {
-			//pass
-		} else {
-			this.highlightStencil = new org.alice.ide.highlight.IdeHighlightStencil( this.getDocumentFrame().getFrame(), HIGHLIGHT_STENCIL_LAYER );
-		}
-		return this.highlightStencil;
-	}
 }

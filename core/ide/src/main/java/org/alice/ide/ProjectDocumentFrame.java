@@ -212,6 +212,17 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		return this.stasticsFrameIsShowingState;
 	}
 
+	private static final Integer HIGHLIGHT_STENCIL_LAYER = javax.swing.JLayeredPane.POPUP_LAYER - 2;
+
+	public org.alice.ide.highlight.IdeHighlightStencil getHighlightStencil() {
+		if( this.highlightStencil != null ) {
+			//pass
+		} else {
+			this.highlightStencil = new org.alice.ide.highlight.IdeHighlightStencil( this.getFrame(), HIGHLIGHT_STENCIL_LAYER );
+		}
+		return this.highlightStencil;
+	}
+
 	private final ApiConfigurationManager apiConfigurationManager;
 
 	private org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> typeMetaState;
@@ -252,4 +263,6 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 				}
 			} );
 	private final edu.cmu.cs.dennisc.java.util.DStack<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+
+	private org.alice.ide.highlight.IdeHighlightStencil highlightStencil;
 }

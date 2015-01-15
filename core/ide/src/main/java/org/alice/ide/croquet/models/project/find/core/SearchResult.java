@@ -127,18 +127,18 @@ public class SearchResult {
 		assert reference != null;
 		if( declaration instanceof AbstractField ) {
 			assert reference instanceof FieldAccess;
-			IDE.getActiveInstance().getHighlightStencil().showHighlightOverExpression( reference, "" );
+			IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression( reference, "" );
 		} else if( declaration instanceof AbstractMethod ) {
 			assert reference instanceof MethodInvocation;
 			Statement statement = reference.getFirstAncestorAssignableTo( Statement.class );
 			assert statement != null;
-			IDE.getActiveInstance().getHighlightStencil().showHighlightOverStatement( statement, "" );
+			IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverStatement( statement, "" );
 		} else if( declaration instanceof UserParameter ) {
 			assert reference instanceof ParameterAccess;
-			IDE.getActiveInstance().getHighlightStencil().showHighlightOverExpression( reference, "" );
+			IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression( reference, "" );
 		} else if( declaration instanceof UserLocal ) {
 			assert reference instanceof LocalAccess;
-			IDE.getActiveInstance().getHighlightStencil().showHighlightOverExpression( reference, "" );
+			IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverExpression( reference, "" );
 		} else {
 			assert false : declaration.getClass();
 		}

@@ -130,7 +130,7 @@ public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompos
 					searchResultsState.getValue().stencilHighlightForReference( (Expression)nextValue.getValue() );
 				} else {
 					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getChildren().get( 0 ).getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
-					IDE.getActiveInstance().getHighlightStencil().hideIfNecessary();
+					IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().hideIfNecessary();
 				}
 			}
 		}
