@@ -53,23 +53,6 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		return org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState();
 	}
 
-	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {
-		@Override
-		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
-			InstanceFactoryState.this.handleDeclarationChanged( prevValue, nextValue );
-		}
-	};
-	//todo: map AbstractCode to Stack< InstanceFactory >
-	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private InstanceFactory value;
-
-	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
-		@Override
-		public void projectChanged() {
-			handleAstChangeThatCouldBeOfInterest();
-		}
-	};
-
 	public InstanceFactoryState( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), null, org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
 		projectDocumentFrame.getMetaDeclarationFauxState().addValueListener( declarationListener );
@@ -371,4 +354,21 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 			this.handleAstChangeThatCouldBeOfInterest();
 		}
 	}
+
+	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {
+		@Override
+		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
+			InstanceFactoryState.this.handleDeclarationChanged( prevValue, nextValue );
+		}
+	};
+	//todo: map AbstractCode to Stack< InstanceFactory >
+	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private InstanceFactory value;
+
+	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+		@Override
+		public void projectChanged() {
+			handleAstChangeThatCouldBeOfInterest();
+		}
+	};
 }
