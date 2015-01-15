@@ -479,15 +479,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( declaration ) );
 	}
 
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeEditorInFocus() {
-		org.alice.ide.perspectives.ProjectPerspective perspective = this.getDocumentFrame().getPerspectiveState().getValue();
-		if( perspective != null ) {
-			return perspective.getCodeDropReceptorInFocus();
-		} else {
-			return null;
-		}
-	}
-
 	private static final String GENERATED_CODE_WARNING = "DO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT\n\nThis code is automatically generated.  Any work you perform in this method will be overwritten.\n\nDO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT";
 
 	private void generateCodeForSceneSetUp() {
