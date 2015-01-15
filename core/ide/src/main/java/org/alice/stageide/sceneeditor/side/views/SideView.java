@@ -97,7 +97,7 @@ public class SideView extends org.lgna.croquet.views.BorderPanel {
 		migPanel.addComponent( toolPaletteView, "wrap" );
 
 		//this.addComponent( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "align right" );
-		migPanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ), "wrap" );
+		migPanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() ), "wrap" );
 
 		//todo
 		//migPanel.addComponent( composite.getAreJointsShowingState().createCheckBox(), "wrap" );

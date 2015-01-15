@@ -136,7 +136,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 	@Override
 	protected void initialize() {
 		super.initialize();
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addNewSchoolValueListener( this.instanceFactoryListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addNewSchoolValueListener( this.instanceFactoryListener );
 	}
 
 	public abstract org.lgna.croquet.ImmutableDataSingleSelectListState<String> getSortState();
@@ -181,7 +181,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 
 		java.util.List<org.lgna.project.ast.JavaMethod> javaMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 		if( instanceFactory != null ) {
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceFactory.getValueType();
 			while( type != null ) {

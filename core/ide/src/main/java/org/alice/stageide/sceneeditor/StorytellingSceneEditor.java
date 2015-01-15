@@ -457,13 +457,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 				if( !this.selectionIsFromInstanceSelector )
 				{
 					org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
+					InstanceFactoryState instanceFactoryState = ide.getDocumentFrame().getInstanceFactoryState();
 					if( field == this.getActiveSceneField() )
 					{
-						InstanceFactoryState.getInstance().setValueTransactionlessly( ide.getInstanceFactoryForScene() );
+						instanceFactoryState.setValueTransactionlessly( ide.getInstanceFactoryForScene() );
 					}
 					else if( field != null )
 					{
-						InstanceFactoryState.getInstance().setValueTransactionlessly( ide.getInstanceFactoryForSceneField( field ) );
+						instanceFactoryState.setValueTransactionlessly( ide.getInstanceFactoryForSceneField( field ) );
 					}
 				}
 			}
@@ -755,7 +756,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			SnapState.getInstance().getIsSnapEnabledState().addAndInvokeNewSchoolValueListener( this.snapEnabledListener );
 			SnapState.getInstance().getSnapGridSpacingState().addAndInvokeNewSchoolValueListener( this.snapGridSpacingListener );
 
-			InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionListener );
+			org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionListener );
 
 			this.globalDragAdapter = new org.alice.stageide.sceneeditor.interact.GlobalDragAdapter( this );
 			this.globalDragAdapter.setOnscreenRenderTarget( onscreenRenderTarget );

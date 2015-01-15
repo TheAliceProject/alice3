@@ -54,7 +54,7 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			this.getLaunchOperation().addContextFactory( projectDocumentFrame.getDeclarationsEditorComposite().getTabState() );
 		} else {
-			this.getLaunchOperation().addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+			this.getLaunchOperation().addContextFactory( projectDocumentFrame.getInstanceFactoryState() );
 			this.getLaunchOperation().addContextFactory( org.alice.ide.members.MembersComposite.getInstance().getTabState() );
 		}
 		this.declaringType = declaringType;

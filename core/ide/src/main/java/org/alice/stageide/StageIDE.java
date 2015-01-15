@@ -324,7 +324,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 						org.lgna.project.ast.UserField field = type.fields.get( i );
 						if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
 							if( getApiConfigurationManager().isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-								org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+								getDocumentFrame().getInstanceFactoryState().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
 								break;
 							}
 						}
@@ -339,11 +339,11 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
 
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushIgnoreAstChanges();
+		this.getDocumentFrame().getInstanceFactoryState().pushIgnoreAstChanges();
 		try {
 			this.setRootField( this.getSceneField() );
 		} finally {
-			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popIgnoreAstChanges();
+			this.getDocumentFrame().getInstanceFactoryState().popIgnoreAstChanges();
 		}
 
 		org.alice.ide.declarationseditor.DeclarationTabState tabState = this.getDocumentFrame().getDeclarationsEditorComposite().getTabState();

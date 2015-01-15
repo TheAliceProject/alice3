@@ -110,9 +110,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void initialize( String[] args ) {
 		super.initialize( args );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionObserver );
-		this.getDocumentFrame().getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
-		this.getDocumentFrame().initialize();
+		ProjectDocumentFrame documentFrame = this.getDocumentFrame();
+		documentFrame.getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionObserver );
+		documentFrame.getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
+		documentFrame.initialize();
 	}
 
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();

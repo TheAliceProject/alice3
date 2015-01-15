@@ -49,10 +49,6 @@ import org.alice.ide.instancefactory.InstanceFactory;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithInternalBlank<InstanceFactory> {
-	public static InstanceFactoryState getInstance() {
-		return org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState();
-	}
-
 	public InstanceFactoryState( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), null, org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
 		projectDocumentFrame.getMetaDeclarationFauxState().addValueListener( declarationListener );

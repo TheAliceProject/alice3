@@ -67,7 +67,7 @@ public class ProcedureInvocationTemplateDragModel extends StatementTemplateDragM
 		this.method = method;
 		assert this.method.isProcedure();
 
-		this.addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+		this.addContextFactory( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() );
 		this.addContextFactory( org.alice.ide.members.MembersComposite.getInstance().getTabState() );
 	}
 

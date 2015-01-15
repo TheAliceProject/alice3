@@ -51,7 +51,7 @@ public abstract class AddMethodMenuModel extends org.lgna.croquet.MenuModel {
 	}
 
 	private org.lgna.project.ast.NamedUserType getInstanceFactoryNamedUserType() {
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 		if( instanceFactory != null ) {
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceFactory.getValueType();
 			if( type instanceof org.lgna.project.ast.NamedUserType ) {
