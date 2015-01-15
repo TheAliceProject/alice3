@@ -216,7 +216,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 				}
 			}
 
-			org.lgna.project.ast.AbstractCode code = ide.getFocusedCode();
+			org.lgna.project.ast.AbstractCode code = ide.getDocumentFrame().getFocusedCode();
 			if( code instanceof org.lgna.project.ast.UserCode ) {
 
 				java.util.List<org.lgna.croquet.CascadeBlankChild> parameters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();

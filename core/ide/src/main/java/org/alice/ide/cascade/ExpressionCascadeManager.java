@@ -296,7 +296,7 @@ public abstract class ExpressionCascadeManager {
 			}
 		}
 
-		org.lgna.project.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
+		org.lgna.project.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getFocusedCode();
 		if( codeInFocus instanceof org.lgna.project.ast.UserCode ) {
 			org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)codeInFocus;
 			for( org.lgna.project.ast.UserParameter parameter : userCode.getRequiredParamtersProperty() ) {

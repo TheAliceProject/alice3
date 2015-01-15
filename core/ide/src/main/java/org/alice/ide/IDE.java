@@ -422,43 +422,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return vm;
 	}
 
-	public org.lgna.project.ast.AbstractCode getFocusedCode() {
-		return this.getDocumentFrame().getFocusedCode();
-	}
-
-	public void setFocusedCode( org.lgna.project.ast.AbstractCode nextFocusedCode ) {
-		this.selectDeclaration( nextFocusedCode );
-	}
-
-	public void selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
-		if( declarationComposite != null ) {
-			org.lgna.project.ast.AbstractDeclaration declaration = declarationComposite.getDeclaration();
-			//			org.lgna.project.ast.AbstractType<?, ?, ?> type;
-			//			if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-			//				type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
-			//			} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
-			//				org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;
-			//				type = code.getDeclaringType();
-			//			} else {
-			//				type = null;
-			//			}
-			//			if( type instanceof org.lgna.project.ast.NamedUserType ) {
-			//				org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)type );
-			//			}
-			org.alice.ide.declarationseditor.DeclarationTabState tabState = this.getDocumentFrame().getDeclarationsEditorComposite().getTabState();
-			//			if( tabState.containsItem( declarationComposite ) ) {
-			//				//pass
-			//			} else {
-			//				tabState.addItem( declarationComposite );
-			//			}
-			tabState.setValueTransactionlessly( declarationComposite );
-		}
-	}
-
-	private void selectDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		this.selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( declaration ) );
-	}
-
 	private static final String GENERATED_CODE_WARNING = "DO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT\n\nThis code is automatically generated.  Any work you perform in this method will be overwritten.\n\nDO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT";
 
 	private void generateCodeForSceneSetUp() {
@@ -484,7 +447,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			if( accessible instanceof org.lgna.project.ast.AbstractField ) {
 				org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)accessible;
 				text = field.getName();
-				org.lgna.project.ast.AbstractCode focusedCode = getFocusedCode();
+				org.lgna.project.ast.AbstractCode focusedCode = this.getDocumentFrame().getFocusedCode();
 				if( focusedCode != null ) {
 					org.lgna.project.ast.AbstractType<?, ?, ?> scopeType = focusedCode.getDeclaringType();
 					if( field.getValueType() == scopeType ) {
@@ -514,13 +477,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		}
 		return (E)ancestor;
-	}
-
-	protected void ensureNodeVisible( org.lgna.project.ast.Node node ) {
-		org.lgna.project.ast.AbstractCode nextFocusedCode = getAncestor( node, org.lgna.project.ast.AbstractCode.class );
-		if( nextFocusedCode != null ) {
-			this.setFocusedCode( nextFocusedCode );
-		}
 	}
 
 	public org.lgna.croquet.views.AwtComponentView<?> getPrefixPaneForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
