@@ -103,6 +103,20 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		return window;
 	}
 
+	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
+		this.stack.push( reasonToDisableSomeAmountOfRendering );
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().disableRendering( reasonToDisableSomeAmountOfRendering );
+	}
+
+	public void enableRendering() {
+		if( this.stack.isEmpty() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		} else {
+			org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
+			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
+		}
+	}
+
 	public ApiConfigurationManager getApiConfigurationManager() {
 		return this.apiConfigurationManager;
 	}
@@ -234,4 +248,5 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 					return new org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite( ProjectDocumentFrame.this );
 				}
 			} );
+	private final edu.cmu.cs.dennisc.java.util.DStack<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 }

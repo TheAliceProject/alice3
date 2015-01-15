@@ -252,7 +252,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			ide.getDocumentFrame().getPerspectiveState().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
+			ide.getDocumentFrame().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
 		}
 		super.handlePreShowDialog( completionStep );
 	}
@@ -262,7 +262,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		super.handleFinally( step, dialog );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			ide.getDocumentFrame().getPerspectiveState().enableRendering();
+			ide.getDocumentFrame().enableRendering();
 		}
 	}
 
