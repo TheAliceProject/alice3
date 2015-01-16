@@ -209,6 +209,18 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		}
 	}
 
+	public void setRandomSelectedValue() {
+		final int N = this.getItemCount();
+		int i;
+		if( N > 0 ) {
+			java.util.Random random = new java.util.Random();
+			i = random.nextInt( N );
+		} else {
+			i = -1;
+		}
+		this.setSelectedIndex( i );
+	}
+
 	public final void clearSelection() {
 		this.setSelectedIndex( -1 );
 	}
@@ -362,18 +374,6 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
 		}
-	}
-
-	public void setRandomSelectedValue() {
-		final int N = this.getItemCount();
-		int i;
-		if( N > 0 ) {
-			java.util.Random random = new java.util.Random();
-			i = random.nextInt( N );
-		} else {
-			i = -1;
-		}
-		this.setSelectedIndex( i );
 	}
 
 	public org.lgna.croquet.views.List<T> createList() {
