@@ -238,26 +238,22 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		return this.dataIndexPair.data.iterator();
 	}
 
-	private void internalAddItem( int index, T item ) {
-		this.dataIndexPair.data.internalAddItem( index, item );
+	protected void fireContentsChanged( int index0, int index1 ) {
+		this.imp.getSwingModel().ACCESS_fireContentsChanged( this, index0, index1 );
 	}
 
-	private void internalAddItem( T item ) {
-		this.dataIndexPair.data.internalAddItem( item );
+	protected void fireIntervalAdded( int index0, int index1 ) {
+		this.imp.getSwingModel().ACCESS_fireIntervalAdded( this, index0, index1 );
 	}
 
-	private void internalRemoveItem( T item ) {
-		this.dataIndexPair.data.internalRemoveItem( item );
-	}
-
-	private void internalSetItems( java.util.Collection<T> items ) {
-		this.dataIndexPair.data.internalSetAllItems( items );
+	protected void fireIntervalRemoved( int index0, int index1 ) {
+		this.imp.getSwingModel().ACCESS_fireIntervalRemoved( this, index0, index1 );
 	}
 
 	public final void addItem( int index, T item ) {
 		this.pushIsInTheMidstOfAtomicChange();
 		try {
-			this.internalAddItem( index, item );
+			this.dataIndexPair.data.internalAddItem( index, item );
 			this.fireIntervalAdded( index, index );
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
@@ -267,7 +263,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 	public final void addItem( T item ) {
 		this.pushIsInTheMidstOfAtomicChange();
 		try {
-			this.internalAddItem( item );
+			this.dataIndexPair.data.internalAddItem( item );
 
 			int index = this.getItemCount() - 1;
 			this.fireIntervalAdded( index, index );
@@ -280,7 +276,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		this.pushIsInTheMidstOfAtomicChange();
 		try {
 			int index = this.indexOf( item );
-			this.internalRemoveItem( item );
+			this.dataIndexPair.data.internalRemoveItem( item );
 			this.fireIntervalRemoved( index, index );
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
@@ -323,7 +319,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 
 			T previousSelectedValue = this.getValue();
 
-			this.internalSetItems( items );
+			this.dataIndexPair.data.internalSetAllItems( items );
 
 			//			if( items.contains( previousSelectedValue ) ) {
 			this.dataIndexPair.index = this.indexOf( previousSelectedValue );
@@ -335,18 +331,6 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
 		}
-	}
-
-	protected void fireContentsChanged( int index0, int index1 ) {
-		this.imp.getSwingModel().ACCESS_fireContentsChanged( this, index0, index1 );
-	}
-
-	protected void fireIntervalAdded( int index0, int index1 ) {
-		this.imp.getSwingModel().ACCESS_fireIntervalAdded( this, index0, index1 );
-	}
-
-	protected void fireIntervalRemoved( int index0, int index1 ) {
-		this.imp.getSwingModel().ACCESS_fireIntervalRemoved( this, index0, index1 );
 	}
 
 	public final void setItems( T... items ) {
@@ -392,18 +376,6 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		this.setSelectedIndex( i );
 	}
 
-	protected String getMenuText( T item ) {
-		if( item != null ) {
-			return item.toString();
-		} else {
-			return null;
-		}
-	}
-
-	protected javax.swing.Icon getMenuSmallIcon( T item ) {
-		return null;
-	}
-
 	public org.lgna.croquet.views.List<T> createList() {
 		return new org.lgna.croquet.views.List<T>( this );
 	}
@@ -431,7 +403,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		}
 	}
 
-	public synchronized MenuModel getMenuModel() {
+	public MenuModel getMenuModel() {
 		return this.imp.getMenuModel();
 	}
 
