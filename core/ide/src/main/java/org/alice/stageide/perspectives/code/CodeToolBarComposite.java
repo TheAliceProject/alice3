@@ -46,22 +46,12 @@ package org.alice.stageide.perspectives.code;
  * @author Dennis Cosgrove
  */
 public final class CodeToolBarComposite extends org.alice.ide.toolbar.croquet.IdeToolBar {
-	private static class SingletonHolder {
-		private static CodeToolBarComposite instance = new CodeToolBarComposite();
-	}
-
-	public static CodeToolBarComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final java.util.List<? extends org.lgna.croquet.Element> subElements;
-
-	private CodeToolBarComposite() {
+	public CodeToolBarComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( java.util.UUID.fromString( "633d89d9-9ddf-470b-a56b-e0169f3ba1d4" ) );
 		java.util.List<org.lgna.croquet.Element> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		org.alice.stageide.perspectives.ToolBarUtilities.appendDocumentSubElements( list );
-		org.alice.stageide.perspectives.ToolBarUtilities.appendUndoRedoSubElements( list );
-		org.alice.stageide.perspectives.ToolBarUtilities.appendRunSubElements( list );
+		org.alice.stageide.perspectives.ToolBarUtilities.appendDocumentSubElements( projectDocumentFrame, list );
+		org.alice.stageide.perspectives.ToolBarUtilities.appendUndoRedoSubElements( projectDocumentFrame, list );
+		org.alice.stageide.perspectives.ToolBarUtilities.appendRunSubElements( projectDocumentFrame, list );
 		list.add( org.lgna.croquet.PushToolBarSeparator.getInstance() );
 		list.add( org.alice.ide.clipboard.Clipboard.SINGLETON.getDragModel() );
 		this.subElements = java.util.Collections.unmodifiableList( list );
@@ -71,4 +61,6 @@ public final class CodeToolBarComposite extends org.alice.ide.toolbar.croquet.Id
 	public Iterable<? extends org.lgna.croquet.Element> getSubElements() {
 		return this.subElements;
 	}
+
+	private final java.util.List<? extends org.lgna.croquet.Element> subElements;
 }
