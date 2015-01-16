@@ -75,7 +75,7 @@ public final class ZTreeNode<T> implements javax.swing.tree.TreeNode {
 			if( this.childBuilders != null ) {
 				return this.childBuilders.iterator();
 			} else {
-				return java.util.Collections.emptyIterator();
+				return edu.cmu.cs.dennisc.java.util.Iterators.emptyIterator();
 			}
 		}
 
