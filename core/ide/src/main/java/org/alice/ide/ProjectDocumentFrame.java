@@ -279,6 +279,14 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		return this.openProjectOperation;
 	}
 
+	public org.lgna.croquet.Operation getUndoOperation() {
+		return this.undoOperation;
+	}
+
+	public org.lgna.croquet.Operation getRedoOperation() {
+		return this.redoOperation;
+	}
+
 	private final ApiConfigurationManager apiConfigurationManager;
 
 	private org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> typeMetaState;
@@ -339,4 +347,7 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 
 	private final org.lgna.croquet.Operation newProjectOperation = new org.alice.ide.croquet.models.projecturi.NewProjectOperation( this );
 	private final org.lgna.croquet.Operation openProjectOperation = new org.alice.ide.croquet.models.projecturi.OpenProjectOperation( this );
+
+	private final org.lgna.croquet.Operation undoOperation = new org.alice.ide.croquet.models.history.UndoOperation( this );
+	private final org.lgna.croquet.Operation redoOperation = new org.alice.ide.croquet.models.history.RedoOperation( this );
 }

@@ -105,8 +105,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			isUndoEnabled = false;
 			isRedoEnabled = false;
 		}
-		org.alice.ide.croquet.models.history.UndoOperation.getInstance().setEnabled( isUndoEnabled );
-		org.alice.ide.croquet.models.history.RedoOperation.getInstance().setEnabled( isRedoEnabled );
+
+		ProjectDocumentFrame documentFrame = this.getDocumentFrame();
+		documentFrame.getUndoOperation().setEnabled( isUndoEnabled );
+		documentFrame.getRedoOperation().setEnabled( isRedoEnabled );
 	}
 
 	protected void handleInsertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {

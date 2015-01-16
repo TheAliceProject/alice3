@@ -59,10 +59,11 @@ public class SideView extends org.lgna.croquet.views.BorderPanel {
 		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
 			//pass
 		} else {
+			org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
 			org.lgna.croquet.views.FlowPanel undoRedoPanel = new org.lgna.croquet.views.FlowPanel(
 					org.lgna.croquet.views.FlowPanel.Alignment.CENTER,
-					org.alice.ide.croquet.models.history.UndoOperation.getInstance().createButton(),
-					org.alice.ide.croquet.models.history.RedoOperation.getInstance().createButton()
+					projectDocumentFrame.getUndoOperation().createButton(),
+					projectDocumentFrame.getRedoOperation().createButton()
 					);
 
 			undoRedoPanel.setBorder( createSeparatorBorder( 0, 1, theme.getSecondaryBackgroundColor() ) );

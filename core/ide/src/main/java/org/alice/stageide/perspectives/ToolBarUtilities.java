@@ -57,8 +57,8 @@ public class ToolBarUtilities {
 	}
 
 	public static void appendUndoRedoSubElements( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, java.util.List<org.lgna.croquet.Element> subElements ) {
-		subElements.add( org.alice.ide.croquet.models.history.UndoOperation.getInstance() );
-		subElements.add( org.alice.ide.croquet.models.history.RedoOperation.getInstance() );
+		subElements.add( projectDocumentFrame.getUndoOperation() );
+		subElements.add( projectDocumentFrame.getRedoOperation() );
 		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
 	}
 

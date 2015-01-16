@@ -98,7 +98,7 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 						if( lastEdit instanceof org.alice.stageide.sceneeditor.interact.croquet.edits.GetAGoodLookAtEdit ) {
 							org.alice.stageide.sceneeditor.interact.croquet.edits.GetAGoodLookAtEdit edit = (org.alice.stageide.sceneeditor.interact.croquet.edits.GetAGoodLookAtEdit)lastEdit;
 							if( ( edit.getCamera() == storytellingCamera ) && ( edit.getTarget() == toLookAtEntity ) ) {
-								org.alice.ide.croquet.models.history.UndoOperation.getInstance().fire();
+								org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getUndoOperation().fire();
 								return;
 							}
 						}
