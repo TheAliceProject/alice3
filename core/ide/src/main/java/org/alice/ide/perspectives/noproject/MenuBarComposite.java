@@ -46,17 +46,9 @@ package org.alice.ide.perspectives.noproject;
  * @author Dennis Cosgrove
  */
 public class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
-	private static class SingletonHolder {
-		private static MenuBarComposite instance = new MenuBarComposite();
-	}
-
-	public static MenuBarComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private MenuBarComposite() {
+	public MenuBarComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( java.util.UUID.fromString( "fe8aa489-bee2-4f68-be47-881d5657bab7" ) );
-		this.addItem( FileMenuModel.getInstance() );
+		this.addItem( new FileMenuModel( projectDocumentFrame ) );
 		this.addItem( org.alice.ide.IdeApp.INSTANCE.getHelpMenu() );
 	}
 }

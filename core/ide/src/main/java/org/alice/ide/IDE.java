@@ -341,7 +341,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		documentFrame.getPerspectiveState().setValueTransactionlessly( defaultPerspective );
 		super.setProject( project );
 		org.lgna.croquet.Perspective perspective = this.getPerspective();
-		if( ( perspective == null ) || ( perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) ) {
+		if( ( perspective == null ) || ( perspective == documentFrame.getNoProjectPerspective() ) ) {
 			this.setPerspective( documentFrame.getPerspectiveState().getValue() );
 		}
 	}
@@ -382,8 +382,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( this.getUri() != null ) {
 			//pass
 		} else {
-			this.setPerspective( org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() );
-			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
+			this.setPerspective( this.getDocumentFrame().getNoProjectPerspective() );
+			this.getDocumentFrame().getNewProjectOperation().fire( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 		}
 	}
 
@@ -399,7 +399,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	private final org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation clearanceCheckingExitOperation = new org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation();
+	private final org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation clearanceCheckingExitOperation = new org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation( this.getDocumentFrame() );
 
 	@Override
 	public final void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {

@@ -53,16 +53,14 @@ public class OpenRecentProjectOperation extends UriPotentialClearanceIteratingOp
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new OpenRecentProjectOperation( uri );
+			rv = new OpenRecentProjectOperation( org.alice.ide.IDE.getActiveInstance().getDocumentFrame(), uri );
 			map.put( uri, rv );
 		}
 		return rv;
 	}
 
-	private final java.net.URI uri;
-
-	private OpenRecentProjectOperation( java.net.URI uri ) {
-		super( java.util.UUID.fromString( "f51873eb-06ad-4974-9890-7345adff3ac4" ), null );
+	private OpenRecentProjectOperation( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, java.net.URI uri ) {
+		super( java.util.UUID.fromString( "f51873eb-06ad-4974-9890-7345adff3ac4" ), projectDocumentFrame, null );
 		this.uri = uri;
 	}
 
@@ -77,4 +75,6 @@ public class OpenRecentProjectOperation extends UriPotentialClearanceIteratingOp
 	protected org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
 		return new org.alice.ide.uricontent.FileProjectLoader( new java.io.File( this.uri ) );
 	}
+
+	private final java.net.URI uri;
 }

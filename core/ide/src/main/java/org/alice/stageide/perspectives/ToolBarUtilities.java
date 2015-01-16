@@ -51,7 +51,7 @@ public class ToolBarUtilities {
 	}
 
 	public static void appendDocumentSubElements( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, java.util.List<org.lgna.croquet.Element> subElements ) {
-		subElements.add( org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance() );
+		subElements.add( projectDocumentFrame.getOpenProjectOperation() );
 		subElements.add( org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance() );
 		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
 	}

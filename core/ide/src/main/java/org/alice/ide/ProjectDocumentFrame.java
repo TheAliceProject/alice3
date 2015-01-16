@@ -51,6 +51,7 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 	public ProjectDocumentFrame( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager ) {
 		this.apiConfigurationManager = apiConfigurationManager;
 
+		this.noProjectPerspective = new org.alice.ide.perspectives.noproject.NoProjectPerspective( this );
 		org.alice.ide.croquet.models.AliceMenuBar aliceMenuBar = new org.alice.ide.croquet.models.AliceMenuBar( this );
 		this.codePerspective = new org.alice.stageide.perspectives.CodePerspective( this, aliceMenuBar );
 		this.setupScenePerspective = new org.alice.stageide.perspectives.SetupScenePerspective( this, aliceMenuBar );
@@ -135,6 +136,10 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 
 	public MetaDeclarationFauxState getMetaDeclarationFauxState() {
 		return this.metaDeclarationFauxState;
+	}
+
+	public org.alice.ide.perspectives.noproject.NoProjectPerspective getNoProjectPerspective() {
+		return this.noProjectPerspective;
 	}
 
 	public org.alice.stageide.perspectives.CodePerspective getCodePerspective() {
@@ -266,6 +271,14 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 		this.selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( declaration ) );
 	}
 
+	public org.lgna.croquet.Operation getNewProjectOperation() {
+		return this.newProjectOperation;
+	}
+
+	public org.lgna.croquet.Operation getOpenProjectOperation() {
+		return this.openProjectOperation;
+	}
+
 	private final ApiConfigurationManager apiConfigurationManager;
 
 	private org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> typeMetaState;
@@ -274,6 +287,7 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 
 	private final org.alice.ide.croquet.models.project.find.croquet.FindComposite findComposite;
 
+	private final org.alice.ide.perspectives.noproject.NoProjectPerspective noProjectPerspective;
 	private final org.alice.stageide.perspectives.CodePerspective codePerspective;
 	private final org.alice.stageide.perspectives.SetupScenePerspective setupScenePerspective;
 
@@ -322,4 +336,7 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 	};
 
 	private org.alice.ide.highlight.IdeHighlightStencil highlightStencil;
+
+	private final org.lgna.croquet.Operation newProjectOperation = new org.alice.ide.croquet.models.projecturi.NewProjectOperation( this );
+	private final org.lgna.croquet.Operation openProjectOperation = new org.alice.ide.croquet.models.projecturi.OpenProjectOperation( this );
 }
