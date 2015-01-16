@@ -241,25 +241,19 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		return this.dataIndexPair.data.iterator();
 	}
 
-	protected void handleItemAdded( T item ) {
-	}
-
-	protected void handleItemRemoved( T item ) {
-	}
-
-	protected final void internalAddItem( int index, T item ) {
+	private void internalAddItem( int index, T item ) {
 		this.dataIndexPair.data.internalAddItem( index, item );
 	}
 
-	protected final void internalAddItem( T item ) {
+	private void internalAddItem( T item ) {
 		this.dataIndexPair.data.internalAddItem( item );
 	}
 
-	protected final void internalRemoveItem( T item ) {
+	private void internalRemoveItem( T item ) {
 		this.dataIndexPair.data.internalRemoveItem( item );
 	}
 
-	protected final void internalSetItems( java.util.Collection<T> items ) {
+	private void internalSetItems( java.util.Collection<T> items ) {
 		this.dataIndexPair.data.internalSetAllItems( items );
 	}
 
@@ -268,7 +262,6 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		try {
 			this.internalAddItem( index, item );
 			this.fireIntervalAdded( index, index );
-			this.handleItemAdded( item );
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
 		}
@@ -281,7 +274,6 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 
 			int index = this.getItemCount() - 1;
 			this.fireIntervalAdded( index, index );
-			this.handleItemAdded( item );
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
 		}
@@ -293,7 +285,6 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 			int index = this.indexOf( item );
 			this.internalRemoveItem( item );
 			this.fireIntervalRemoved( index, index );
-			this.handleItemRemoved( item );
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
 		}
@@ -344,13 +335,6 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 			//			}
 
 			this.fireContentsChanged( 0, this.getItemCount() );
-			for( T item : removed ) {
-				this.handleItemRemoved( item );
-			}
-			for( T item : added ) {
-				this.handleItemAdded( item );
-			}
-
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
 		}
