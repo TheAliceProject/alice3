@@ -148,13 +148,8 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		return this.emptyConditionText;
 	}
 
-	public synchronized SingleSelectListStateComboBoxPrepModel<T, D> getPrepModel() {
-		if( this.prepModel != null ) {
-			//pass
-		} else {
-			this.prepModel = new SingleSelectListStateComboBoxPrepModel<T, D>( this );
-		}
-		return this.prepModel;
+	public SingleSelectListStateComboBoxPrepModel<T, D> getPrepModel() {
+		return this.comboBoxPrepModelLazy.get();
 	}
 
 	@Override
@@ -503,6 +498,11 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		}
 	};
 
-	private SingleSelectListStateComboBoxPrepModel<T, D> prepModel;
+	private final edu.cmu.cs.dennisc.pattern.Lazy<SingleSelectListStateComboBoxPrepModel<T, D>> comboBoxPrepModelLazy = new edu.cmu.cs.dennisc.pattern.Lazy<SingleSelectListStateComboBoxPrepModel<T, D>>() {
+		@Override
+		protected org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<T, D> create() {
+			return new SingleSelectListStateComboBoxPrepModel<T, D>( SingleSelectListState.this );
+		}
+	};
 	private boolean isInTheMidstOfSettingSwingValue;
 }
