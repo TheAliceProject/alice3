@@ -158,9 +158,6 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		return java.util.Collections.emptyList();
 	}
 
-	protected void handleMissingItem( T missingItem ) {
-	}
-
 	@Override
 	protected boolean isSwingValueValid() {
 		int index = this.imp.getSwingModel().getSelectionIndex();
