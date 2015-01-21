@@ -22,6 +22,7 @@ LOCATION_OF_PROJECT_TEMPLATE_8 = java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, 
 projectNames = [
 	"util",
 	"scenegraph",
+	"glrender",
 	"story-api",
 	"ast",
 	"story-api-migration"
@@ -97,7 +98,7 @@ def substituteVersionTexts( text ):
 	return rv
 
 def setUpNetbeans8Plugin():
-	#MavenUtilities.runMavenCleanCompilePackage()
+	MavenUtilities.runMavenCleanCompilePackage()
 	#MavenUtilities.runMavenCompilePackage()
 	#MavenUtilities.runMavenPackage()
 	_copyJars()
