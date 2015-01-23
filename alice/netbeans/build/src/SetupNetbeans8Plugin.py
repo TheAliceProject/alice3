@@ -98,7 +98,7 @@ def substituteVersionTexts( text ):
 	return rv
 
 def setUpNetbeans8Plugin():
-	MavenUtilities.runMavenCleanCompilePackage()
+	#MavenUtilities.runMavenCleanCompilePackage()
 	#MavenUtilities.runMavenCompilePackage()
 	#MavenUtilities.runMavenPackage()
 	_copyJars()

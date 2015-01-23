@@ -869,6 +869,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
   </mediaSets>
   <buildIds buildAll="false">
     <mediaSet refId="101" />
+    <mediaSet refId="105" />
+    <mediaSet refId="111" />
+    <mediaSet refId="117" />
   </buildIds>
   <buildOptions verbose="false" faster="false" disableSigning="false" debug="false" />
 </install4j>

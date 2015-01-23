@@ -45,7 +45,7 @@ def _copyResourcesDirectory():
 		shutil.copytree(LOCATION_OF_RESOURCES.getAbsolutePath() + "/" + name, LOCATION_FOR_INSTALL_DATA_ROOT.getAbsolutePath() + "/" + name)
 
 #edu.cmu.cs.dennisc.java.io.FileUtilities.delete( LOCATION_FOR_INSTALL_DATA_ROOT )
-#_copyJars()
+_copyJars()
 #_copyResourcesDirectory()
 
 import re
