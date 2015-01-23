@@ -30,7 +30,6 @@ jarsToCopy = [
 	] )
 ]
 
-#edu.cmu.cs.dennisc.java.io.FileUtilities.delete( LOCATION_FOR_INSTALL_DATA_ROOT )
 
 def _copyJars():
 	for dirName, projectNames in jarsToCopy:
@@ -41,10 +40,13 @@ def _copyJars():
 			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile(src, dst)
 			print dst
 
-#_copyJars()
+def _copyResourcesDirectory():
+	for name in ["application", "platform"]:
+		shutil.copytree(LOCATION_OF_RESOURCES.getAbsolutePath() + "/" + name, LOCATION_FOR_INSTALL_DATA_ROOT.getAbsolutePath() + "/" + name)
 
-#for name in ["application", "platform"]:
-#	shutil.copytree(LOCATION_OF_RESOURCES.getAbsolutePath() + "/" + name, LOCATION_FOR_INSTALL_DATA_ROOT.getAbsolutePath() + "/" + name)
+#edu.cmu.cs.dennisc.java.io.FileUtilities.delete( LOCATION_FOR_INSTALL_DATA_ROOT )
+#_copyJars()
+#_copyResourcesDirectory()
 
 import re
 print LOCATION_FOR_INSTALL_DATA_ROOT
