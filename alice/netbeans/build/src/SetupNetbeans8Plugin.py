@@ -22,6 +22,7 @@ LOCATION_OF_PROJECT_TEMPLATE_8 = java.io.File(LOCATION_OF_ROOT_FOR_DEVELOPMENT, 
 projectNames = [
 	"util",
 	"scenegraph",
+	"glrender",
 	"story-api",
 	"ast",
 	"story-api-migration"
