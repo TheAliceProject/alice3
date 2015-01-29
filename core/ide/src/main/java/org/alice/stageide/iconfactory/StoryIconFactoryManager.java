@@ -51,10 +51,10 @@ public class StoryIconFactoryManager implements org.alice.ide.iconfactory.IconFa
 
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory( org.lgna.project.ast.UserField field, org.lgna.croquet.icon.IconFactory fallbackIconFactory ) {
-		final boolean IS_READY_FOR_PRIME_TIME = false;
+		final boolean IS_READY_FOR_PRIME_TIME = true;
 		if( IS_READY_FOR_PRIME_TIME ) {
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
-			if( type.isAssignableTo( org.lgna.story.SShape.class ) ) {
+			if( type.isAssignableTo( org.lgna.story.SShape.class ) || type.isAssignableFrom( org.lgna.story.SRoom.class ) || type.isAssignableFrom( org.lgna.story.SGround.class ) ) {
 				synchronized( this.mapFieldToIconFactory ) {
 					org.lgna.croquet.icon.IconFactory iconFactory = this.mapFieldToIconFactory.get( field );
 					if( iconFactory != null ) {

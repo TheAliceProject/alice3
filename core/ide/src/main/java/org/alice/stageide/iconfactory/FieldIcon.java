@@ -92,6 +92,14 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 				org.lgna.story.implementation.SceneImp sceneImp = sceneEditor.getActiveSceneImplementation();
 				final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = sceneImp.getSgComposite();
 
+				final edu.cmu.cs.dennisc.scenegraph.Visual sgVisual;
+				if( fieldImp instanceof org.lgna.story.implementation.SingleVisualModelImp ) {
+					org.lgna.story.implementation.SingleVisualModelImp singleVisualModelImp = (org.lgna.story.implementation.SingleVisualModelImp)fieldImp;
+					sgVisual = singleVisualModelImp.getSgVisuals()[ 0 ];
+				} else {
+					sgVisual = null;
+				}
+
 				edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> renderTarget = sceneEditor.getOnscreenRenderTarget();
 				renderTarget.getAsynchronousImageCapturer().captureImageBuffer(
 						new edu.cmu.cs.dennisc.render.RenderTask() {
@@ -120,7 +128,9 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 								gl.glMatrixMode( javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION );
 								gl.glLoadIdentity();
 
-								glu.gluPerspective( 45.0, viewport.width / (double)viewport.height, 0.1, 100.0 );
+								edu.cmu.cs.dennisc.math.Angle verticalViewingAngle = new edu.cmu.cs.dennisc.math.AngleInRadians( 0.5 );
+								double aspectRatio = viewport.width / (double)viewport.height;
+								glu.gluPerspective( verticalViewingAngle.getAsDegrees(), aspectRatio, 0.1, 100.0 );
 
 								edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractTransformable<?> transformableAdapter = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( sgTransformable );
 								edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc = new edu.cmu.cs.dennisc.render.gl.imp.RenderContext();
@@ -128,8 +138,22 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 								rc.initialize();
 
 								gl.glMatrixMode( javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW );
-								gl.glLoadIdentity();
-								glu.gluLookAt( p.x + 1, p.y + 1, p.z - 1, p.x, p.y, p.z, 0, 1, 0 );
+
+								edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
+								if( sgVisual != null ) {
+									m = edu.cmu.cs.dennisc.scenegraph.util.GoodLookAtUtils.calculateGoodLookAt( sgVisual, verticalViewingAngle, aspectRatio );
+								} else {
+									m = null;
+								}
+								if( ( m != null ) && ( m.isNaN() == false ) ) {
+									double[] array = new double[ 16 ];
+									java.nio.DoubleBuffer buffer = java.nio.DoubleBuffer.wrap( array );
+									m.getAsColumnMajorArray16( array );
+									gl.glLoadMatrixd( buffer );
+								} else {
+									gl.glLoadIdentity();
+									glu.gluLookAt( p.x + 8, p.y + 8, p.z - 8, p.x, p.y, p.z, 0, 1, 0 );
+								}
 
 								edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene sceneAdapter = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( sgScene );
 								sceneAdapter.setupAffectors( rc );
