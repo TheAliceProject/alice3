@@ -86,7 +86,8 @@ public class ProjectHistoryManager {
 	}
 
 	private static int IS_POSSIBLY_OPENING_SCENE = 0x1;
-	private static int IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED = 0x3;
+	private static int IS_ANIMATED = 0x2;
+	private static int IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED = IS_POSSIBLY_OPENING_SCENE | IS_ANIMATED;
 
 	private int isPossiblyOpeningSceneEdit( org.lgna.croquet.edits.Edit edit ) {
 		if( edit instanceof org.alice.ide.properties.adapter.croquet.edits.PropertyValueEdit ) {
@@ -113,7 +114,9 @@ public class ProjectHistoryManager {
 		projectDocumentFrame.getIconFactoryManager().markIconFactoryForFieldDirty( userField );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( thisFieldAccessFactory ).markDirty();
 		for( org.lgna.croquet.views.SwingComponentView<?> component : org.lgna.croquet.views.ComponentManager.getComponents( projectDocumentFrame.getInstanceFactoryState().getCascadeRoot().getPopupPrepModel() ) ) {
-			component.repaint();
+			//note: rendering artifact for faux combo boxes when only invoking repaint.
+			//component.repaint();
+			component.revalidateAndRepaint();
 		}
 	}
 
@@ -132,7 +135,7 @@ public class ProjectHistoryManager {
 				org.alice.ide.instancefactory.InstanceFactory instanceFactory = instanceFactoryState.getValue();
 				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
 					final org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
-					if( value == IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED ) {
+					if( ( value & IS_ANIMATED ) != 0 ) {
 						new Thread() {
 							@Override
 							public void run() {
