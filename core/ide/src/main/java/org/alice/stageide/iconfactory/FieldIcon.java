@@ -51,6 +51,11 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 		this.fallbackIcon = fallbackIcon;
 	}
 
+	public void markDirty() {
+		this.imageIcon = null;
+		this.isStarted = false;
+	}
+
 	@Override
 	protected int getIconWidthFallback() {
 		return this.fallbackIcon.getIconWidth();

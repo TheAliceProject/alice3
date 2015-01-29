@@ -56,7 +56,7 @@ public class StoryIconFactoryManager implements org.alice.ide.iconfactory.IconFa
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
 			if( type.isAssignableTo( org.lgna.story.SShape.class ) || type.isAssignableFrom( org.lgna.story.SRoom.class ) || type.isAssignableFrom( org.lgna.story.SGround.class ) ) {
 				synchronized( this.mapFieldToIconFactory ) {
-					org.lgna.croquet.icon.IconFactory iconFactory = this.mapFieldToIconFactory.get( field );
+					FieldIconFactory iconFactory = this.mapFieldToIconFactory.get( field );
 					if( iconFactory != null ) {
 						//pass
 					} else {
@@ -73,5 +73,13 @@ public class StoryIconFactoryManager implements org.alice.ide.iconfactory.IconFa
 		}
 	}
 
-	private final java.util.Map<org.lgna.project.ast.UserField, org.lgna.croquet.icon.IconFactory> mapFieldToIconFactory = edu.cmu.cs.dennisc.java.util.Maps.newWeakHashMap();
+	@Override
+	public void markIconFactoryForFieldDirty( org.lgna.project.ast.UserField field ) {
+		FieldIconFactory iconFactory = this.mapFieldToIconFactory.get( field );
+		if( iconFactory != null ) {
+			iconFactory.markAllIconsDirty();
+		}
+	}
+
+	private final java.util.Map<org.lgna.project.ast.UserField, FieldIconFactory> mapFieldToIconFactory = edu.cmu.cs.dennisc.java.util.Maps.newWeakHashMap();
 }
