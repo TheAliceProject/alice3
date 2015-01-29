@@ -102,7 +102,14 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 					org.lgna.story.implementation.SingleVisualModelImp singleVisualModelImp = (org.lgna.story.implementation.SingleVisualModelImp)fieldImp;
 					sgVisual = singleVisualModelImp.getSgVisuals()[ 0 ];
 				} else {
-					sgVisual = null;
+					edu.cmu.cs.dennisc.scenegraph.Visual sgFoundVisual = null;
+					for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgTransformable.getComponents() ) {
+						if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Visual ) {
+							sgFoundVisual = (edu.cmu.cs.dennisc.scenegraph.Visual)sgComponent;
+							break;
+						}
+					}
+					sgVisual = sgFoundVisual;
 				}
 
 				edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> renderTarget = sceneEditor.getOnscreenRenderTarget();
