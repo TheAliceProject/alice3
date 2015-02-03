@@ -42,7 +42,7 @@
  */
 package org.alice.stageide.sceneeditor;
 
-import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.project.ast.AbstractType;
 
 /**
  * @author Dennis Cosgrove
@@ -216,6 +216,10 @@ public class SetUpMethodGenerator {
 		return new org.lgna.project.ast.ExpressionStatement( createSetterInvocation( isThis, field, setter, expression ) );
 	}
 
+	private static boolean shouldPlaceModelAboveGround( AbstractType<?, ?, ?> type ) {
+		return false;
+	}
+
 	public static org.lgna.project.ast.Statement[] getSetupStatementsForField( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle, edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform )
 	{
 		java.util.List<org.lgna.project.ast.Statement> statements = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
@@ -241,7 +245,7 @@ public class SetUpMethodGenerator {
 					statements.add( createPositionStatement( isThis, field, org.lgna.story.EmployeesOnly.createPosition( initialTransform.translation ), 0 ) );
 
 					//todo
-					if( ( initialTransform.translation.y == 0.0 ) && AliceResourceUtilties.shouldPlaceModelAboveGround( abstractType ) ) {
+					if( ( initialTransform.translation.y == 0.0 ) && shouldPlaceModelAboveGround( abstractType ) ) {
 						//place above ground
 						org.lgna.project.ast.Expression targetExpression = new org.lgna.project.ast.NullLiteral();
 						org.lgna.project.ast.ExpressionStatement placeStatement = createStatement(
