@@ -113,7 +113,11 @@ public class EmployeesOnly {
 	}
 
 	public static Color createColor( java.awt.Color awtColor ) {
-		return createColor( awtColor != null ? new edu.cmu.cs.dennisc.color.Color4f( awtColor ) : null );
+		return createColor( awtColor != null ? createColor4f( awtColor ) : null );
+	}
+
+	public static edu.cmu.cs.dennisc.color.Color4f createColor4f( java.awt.Color awtColor ) {
+		return edu.cmu.cs.dennisc.color.Color4f.createFromRgbaInts( awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), awtColor.getAlpha() );
 	}
 
 	public static edu.cmu.cs.dennisc.color.Color4f getColor4f( Color color ) {

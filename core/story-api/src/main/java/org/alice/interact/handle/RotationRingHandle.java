@@ -144,9 +144,9 @@ public class RotationRingHandle extends ManipulationHandle3D {
 	protected void initColor( Color4f color ) {
 		this.baseColor = color;
 		Color colorColor = new Color( this.getBaseColor().red, this.getBaseColor().green, this.getBaseColor().blue );
-		this.activeColor = new Color4f( ColorUtilities.shiftHSB( colorColor, 0.0d, 0.0d, .1d ) );
-		this.mutedColor = new Color4f( ColorUtilities.shiftHSB( colorColor, 0.0d, -.6d, -.5d ) );
-		this.rolloverColor = new Color4f( ColorUtilities.shiftHSB( colorColor, 0.0d, -.4d, -.3d ) );
+		this.activeColor = org.lgna.story.EmployeesOnly.createColor4f( ColorUtilities.shiftHSB( colorColor, 0.0d, 0.0d, .1d ) );
+		this.mutedColor = org.lgna.story.EmployeesOnly.createColor4f( ColorUtilities.shiftHSB( colorColor, 0.0d, -.6d, -.5d ) );
+		this.rolloverColor = org.lgna.story.EmployeesOnly.createColor4f( ColorUtilities.shiftHSB( colorColor, 0.0d, -.4d, -.3d ) );
 		setCurrentColorInternal();
 	}
 
