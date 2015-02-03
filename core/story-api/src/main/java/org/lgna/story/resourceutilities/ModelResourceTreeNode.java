@@ -52,30 +52,14 @@ import org.lgna.story.resources.ModelResource;
  * 
  */
 public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType>, Comparable<ModelResourceTreeNode> {
-
-	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> parent;
-	private java.util.List<ModelResourceTreeNode> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-	private NamedUserType userType;
-	private Class<? extends org.lgna.story.resources.ModelResource> resourceClass;
-
-	private JavaType resourceJavaType;
-
-	private Class<? extends org.lgna.story.SModel> modelClass = null;
-	private JavaField resourceJavaField = null;
-	private ModelResource modelResourceInstance = null;
-	private String name;
-	private boolean isSorted = false;
-
 	public ModelResourceTreeNode( NamedUserType aliceClass, Class<? extends org.lgna.story.resources.ModelResource> resourceClass, Class<? extends org.lgna.story.SModel> modelClass ) {
 		this.userType = aliceClass;
-		if( this.userType != null )
-		{
+		if( this.userType != null ) {
 			this.name = this.userType.getName();
 		}
 		this.resourceClass = resourceClass;
 		this.modelClass = modelClass;
 		this.resourceJavaType = org.lgna.project.ast.JavaType.getInstance( this.resourceClass );
-
 	}
 
 	@Override
@@ -164,17 +148,13 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 
 	public ModelResourceTreeNode getDescendant( NamedUserType resourceClass ) {
 		ModelResourceTreeNode rv = this.getChildWithValue( resourceClass );
-		if( rv != null )
-		{
+		if( rv != null ) {
 			return rv;
 		}
-		if( this.getChildCount() > 0 )
-		{
-			for( ModelResourceTreeNode child : this.children )
-			{
+		if( this.getChildCount() > 0 ) {
+			for( ModelResourceTreeNode child : this.children ) {
 				ModelResourceTreeNode result = child.getDescendant( resourceClass );
-				if( result != null )
-				{
+				if( result != null ) {
 					return result;
 				}
 			}
@@ -193,17 +173,13 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 
 	public ModelResourceTreeNode getDescendantOfJavaType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		ModelResourceTreeNode rv = this.getChildWithJavaType( type );
-		if( rv != null )
-		{
+		if( rv != null ) {
 			return rv;
 		}
-		if( this.getChildCount() > 0 )
-		{
-			for( ModelResourceTreeNode child : this.children )
-			{
+		if( this.getChildCount() > 0 ) {
+			for( ModelResourceTreeNode child : this.children ) {
 				ModelResourceTreeNode result = child.getDescendantOfJavaType( type );
-				if( result != null )
-				{
+				if( result != null ) {
 					return result;
 				}
 			}
@@ -222,17 +198,13 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 
 	public ModelResourceTreeNode getDescendantOfUserType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		ModelResourceTreeNode rv = this.getChildWithUserType( type );
-		if( rv != null )
-		{
+		if( rv != null ) {
 			return rv;
 		}
-		if( this.getChildCount() > 0 )
-		{
-			for( ModelResourceTreeNode child : this.children )
-			{
+		if( this.getChildCount() > 0 ) {
+			for( ModelResourceTreeNode child : this.children ) {
 				ModelResourceTreeNode result = child.getDescendantOfUserType( type );
-				if( result != null )
-				{
+				if( result != null ) {
 					return result;
 				}
 			}
@@ -240,13 +212,11 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return null;
 	}
 
-	public void setUserType( NamedUserType type )
-	{
+	public void setUserType( NamedUserType type ) {
 		this.userType = type;
 	}
 
-	public NamedUserType getUserType()
-	{
+	public NamedUserType getUserType() {
 		return this.userType;
 	}
 
@@ -259,43 +229,35 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return this.name;
 	}
 
-	public Class<? extends org.lgna.story.resources.ModelResource> getResourceClass()
-	{
+	public Class<? extends org.lgna.story.resources.ModelResource> getResourceClass() {
 		return this.resourceClass;
 	}
 
-	public Class<? extends org.lgna.story.SModel> getModelClass()
-	{
+	public Class<? extends org.lgna.story.SModel> getModelClass() {
 		return this.modelClass;
 	}
 
-	public boolean hasModelClass()
-	{
+	public boolean hasModelClass() {
 		return this.modelClass != null;
 	}
 
-	public JavaType getResourceJavaType()
-	{
+	public JavaType getResourceJavaType() {
 		return this.resourceJavaType;
 	}
 
-	public void setModelResourceInstance( ModelResource modelResource )
-	{
+	public void setModelResourceInstance( ModelResource modelResource ) {
 		this.modelResourceInstance = modelResource;
 	}
 
-	public ModelResource getModelResourceInstance()
-	{
+	public ModelResource getModelResourceInstance() {
 		return this.modelResourceInstance;
 	}
 
-	public void setJavaField( JavaField field )
-	{
+	public void setJavaField( JavaField field ) {
 		this.resourceJavaField = field;
 	}
 
-	public JavaField getJavaField()
-	{
+	public JavaField getJavaField() {
 		return this.resourceJavaField;
 	}
 
@@ -322,19 +284,28 @@ public class ModelResourceTreeNode implements edu.cmu.cs.dennisc.javax.swing.mod
 		return value != null ? value.getName() : null;
 	}
 
-	public void printTree()
-	{
+	public void printTree() {
 		this.printTree( "" );
 	}
 
-	private void printTree( String indent )
-	{
+	private void printTree( String indent ) {
 		System.out.println( indent + "+" + this.name + " : " + this.userType );
 		indent += "  ";
-		for( ModelResourceTreeNode child : this.children )
-		{
+		for( ModelResourceTreeNode child : this.children ) {
 			child.printTree( indent );
 		}
 	}
 
+	private edu.cmu.cs.dennisc.javax.swing.models.TreeNode<JavaType> parent;
+	private java.util.List<ModelResourceTreeNode> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private NamedUserType userType;
+	private Class<? extends org.lgna.story.resources.ModelResource> resourceClass;
+
+	private JavaType resourceJavaType;
+
+	private Class<? extends org.lgna.story.SModel> modelClass = null;
+	private JavaField resourceJavaField = null;
+	private ModelResource modelResourceInstance = null;
+	private String name;
+	private boolean isSorted = false;
 }
