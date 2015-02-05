@@ -93,7 +93,7 @@ public abstract class ResourceKeyUriIteratingOperation extends org.lgna.croquet.
 	protected abstract int getStepCount();
 
 	@Override
-	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
 		return subSteps.size() < this.getStepCount();
 	}
 
@@ -127,7 +127,7 @@ public abstract class ResourceKeyUriIteratingOperation extends org.lgna.croquet.
 	}
 
 	@Override
-	protected abstract org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData );
+	protected abstract org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData );
 
 	@Override
 	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {

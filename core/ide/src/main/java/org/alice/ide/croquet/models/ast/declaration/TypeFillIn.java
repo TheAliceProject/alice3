@@ -67,11 +67,6 @@ public class TypeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<TypeFillIn> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<TypeFillIn>( this, org.lgna.project.ast.AbstractType.class, this.type );
-	}
-
-	@Override
 	public org.lgna.project.ast.AbstractType createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.type;
 	}
@@ -106,7 +101,7 @@ public class TypeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna
 	}
 
 	@Override
-	protected void appendRepr( java.lang.StringBuilder sb ) {
+	protected void appendRepr( StringBuilder sb ) {
 		super.appendRepr( sb );
 		sb.append( this.type );
 	}

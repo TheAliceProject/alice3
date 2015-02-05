@@ -122,7 +122,7 @@ public abstract class AbstractWindowComposite<V extends org.lgna.croquet.views.C
 		}
 	}
 
-	protected final void updateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
+	public final void updateWindowSize( org.lgna.croquet.views.AbstractWindow<?> window ) {
 		window.setSize( this.calculateWindowSize( window ) );
 		window.getContentPane().revalidateAndRepaint();
 	}

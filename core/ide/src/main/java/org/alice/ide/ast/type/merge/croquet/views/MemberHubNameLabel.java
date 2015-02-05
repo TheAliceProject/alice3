@@ -50,7 +50,7 @@ public class MemberHubNameLabel extends org.lgna.croquet.views.Label {
 
 	private final org.lgna.croquet.event.ValueListener<String> nameListener = new org.lgna.croquet.event.ValueListener<String>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.String> e ) {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<String> e ) {
 			updateText();
 		}
 	};

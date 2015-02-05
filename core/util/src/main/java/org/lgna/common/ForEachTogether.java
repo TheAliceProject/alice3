@@ -65,7 +65,7 @@ class ForEachRunnableAdapter<E> implements Runnable {
  */
 @Deprecated
 public class ForEachTogether {
-	public static <E extends Object> void invokeAndWait( E[] array, ForEachRunnable<E> forEachRunnable ) {
+	public static <E> void invokeAndWait( E[] array, ForEachRunnable<E> forEachRunnable ) {
 		switch( array.length ) {
 		case 0:
 			break;
@@ -81,12 +81,12 @@ public class ForEachTogether {
 		}
 	}
 
-	public static <E extends Object> void invokeAndWait( Iterable<E> iterable, final ForEachRunnable<E> forEachRunnable ) {
+	public static <E> void invokeAndWait( Iterable<E> iterable, final ForEachRunnable<E> forEachRunnable ) {
 		java.util.Collection<E> collection;
 		if( iterable instanceof java.util.Collection<?> ) {
 			collection = (java.util.Collection<E>)iterable;
 		} else {
-			collection = new java.util.Vector<E>();
+			collection = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( E item : iterable ) {
 				collection.add( item );
 			}

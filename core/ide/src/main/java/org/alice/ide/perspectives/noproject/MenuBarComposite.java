@@ -57,6 +57,6 @@ public class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
 	private MenuBarComposite() {
 		super( java.util.UUID.fromString( "fe8aa489-bee2-4f68-be47-881d5657bab7" ) );
 		this.addItem( FileMenuModel.getInstance() );
-		this.addItem( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
+		this.addItem( org.alice.ide.IdeApp.INSTANCE.getHelpMenu() );
 	}
 }

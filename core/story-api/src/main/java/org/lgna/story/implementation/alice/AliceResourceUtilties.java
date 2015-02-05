@@ -119,6 +119,15 @@ public class AliceResourceUtilties {
 			return this.key.hashCode();
 		}
 
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append( "ResourceIdentifier[" );
+			sb.append( this.key );
+			sb.append( "]" );
+			return sb.toString();
+		}
+
 	}
 
 	/*private*/protected AliceResourceUtilties() {
@@ -127,13 +136,11 @@ public class AliceResourceUtilties {
 	private static String findLocalizedText( String bundleName, String key, Locale locale ) {
 		if( ( bundleName != null ) && ( key != null ) ) {
 			try {
-				java.util.ResourceBundle resourceBundle = StorytellingResources.getInstance().getLocalizationBundle( bundleName, locale );
+				java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
 				String rv = resourceBundle.getString( key );
 				return rv;
 			} catch( java.util.MissingResourceException mre ) {
-				//				if( !locale.getLanguage().equals( "en" ) ) {
-				//					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to find localized text for " + bundleName + ": " + key + " in " + locale );
-				//				}
+				//Logger.errln( bundleName, key );
 				return null;
 			}
 		} else {
@@ -436,7 +443,13 @@ public class AliceResourceUtilties {
 		if( !resourceIdentifierToResourceNamesMap.containsKey( identifier ) ) {
 			findAndStoreResourceNames( resourceClass, resourceName );
 		}
-		return resourceIdentifierToResourceNamesMap.get( identifier ).textureName;
+		ResourceNames resourceNames = resourceIdentifierToResourceNamesMap.get( identifier );
+		if( resourceNames != null ) {
+			return resourceNames.textureName;
+		} else {
+			Logger.severe( identifier );
+			return null;
+		}
 	}
 
 	public static String getTextureResourceFileName( Class<?> resourceClass, String resourceName ) {
@@ -495,7 +508,7 @@ public class AliceResourceUtilties {
 		else if( textureName.length() > 0 ) {
 			textureName = "_" + makeEnumName( textureName );
 		}
-		return modelName.toLowerCase() + textureName;
+		return ( modelName != null ? modelName.toLowerCase() : null ) + textureName;
 	}
 
 	public static String getThumbnailResourceFileName( String modelName, String textureName ) {

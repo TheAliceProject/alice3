@@ -47,16 +47,8 @@ package org.alice.ide.croquet.models.ui;
  * @author Dennis Cosgrove
  */
 public class MemoryUsageComposite extends org.lgna.croquet.FrameComposite<edu.cmu.cs.dennisc.memory.MemoryUsagePanel> {
-	private static class SingletonHolder {
-		private static MemoryUsageComposite instance = new MemoryUsageComposite();
-	}
-
-	public static MemoryUsageComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private MemoryUsageComposite() {
-		super( java.util.UUID.fromString( "1169c7f0-076e-43b8-85ae-41d466969db5" ), org.alice.ide.ProjectApplication.INFORMATION_GROUP );
+	public MemoryUsageComposite() {
+		super( java.util.UUID.fromString( "1169c7f0-076e-43b8-85ae-41d466969db5" ) );
 	}
 
 	@Override

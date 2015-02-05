@@ -79,13 +79,6 @@ public final class StateEdit<T> extends org.lgna.croquet.edits.AbstractEdit<org.
 	}
 
 	@Override
-	public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		this.prevValue = retargeter.retarget( this.prevValue );
-		this.nextValue = retargeter.retarget( this.nextValue );
-	}
-
-	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "select " );
 		org.lgna.croquet.State<T> state = this.getModel();

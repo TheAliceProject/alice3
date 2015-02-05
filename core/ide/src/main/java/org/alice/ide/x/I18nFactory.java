@@ -62,7 +62,7 @@ public abstract class I18nFactory {
 	private org.lgna.croquet.views.SwingComponentView<?> createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		int underscoreCount = propertyChunk.getUnderscoreCount();
 		String propertyName = propertyChunk.getPropertyName();
-		edu.cmu.cs.dennisc.property.InstanceProperty<?> property = owner.getInstancePropertyNamed( propertyName );
+		edu.cmu.cs.dennisc.property.InstanceProperty<?> property = owner.getPropertyNamed( propertyName );
 		if( property != null ) {
 			return createPropertyComponent( property, underscoreCount );
 		} else {

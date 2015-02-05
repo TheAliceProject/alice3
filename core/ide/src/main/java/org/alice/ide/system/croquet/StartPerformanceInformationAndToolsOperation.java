@@ -59,8 +59,7 @@ public final class StartPerformanceInformationAndToolsOperation extends org.lgna
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		ProcessBuilder processBuilder = new ProcessBuilder( "control", "/name", "Microsoft.PerformanceInformationAndTools" );
 		try {
 			Process process = processBuilder.start();

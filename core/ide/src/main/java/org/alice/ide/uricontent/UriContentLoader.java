@@ -71,7 +71,7 @@ public abstract class UriContentLoader<T> {
 		public Worker() {
 			this.futureTask = new java.util.concurrent.FutureTask<T>( new java.util.concurrent.Callable<T>() {
 				@Override
-				public T call() throws java.lang.Exception {
+				public T call() throws Exception {
 					return loadContent();
 				}
 			} ) {

@@ -44,9 +44,6 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 public class Layer extends Element {
-	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener> graphicsListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();;
-	private final java.util.List<Graphic> graphics = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-
 	public void addGraphic( Graphic graphic ) {
 		graphic.setParent( this );
 	}
@@ -59,8 +56,8 @@ public class Layer extends Element {
 		}
 	}
 
-	public Iterable<Graphic> getGraphics() {
-		return this.graphics;
+	public java.util.Collection<Graphic> getGraphics() {
+		return java.util.Collections.unmodifiableCollection( this.graphics );
 	}
 
 	public void addGraphicsListener( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l ) {
@@ -71,19 +68,30 @@ public class Layer extends Element {
 		this.graphicsListeners.remove( l );
 	}
 
+	public java.util.Collection<edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener> getGraphicsListeners() {
+		return java.util.Collections.unmodifiableCollection( this.graphicsListeners );
+	}
+
 	/* package-private */void addGraphicAndFireListeners( Graphic graphic ) {
 		this.graphics.add( graphic );
-		edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent( this, graphic );
-		for( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l : this.graphicsListeners ) {
-			l.graphicAdded( e );
+		if( this.graphicsListeners.size() > 0 ) {
+			edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent( this, graphic );
+			for( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l : this.graphicsListeners ) {
+				l.graphicAdded( e );
+			}
 		}
 	}
 
 	/* package-private */void removeGraphicAndFireListeners( Graphic graphic ) {
 		this.graphics.remove( graphic );
-		edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent( this, graphic );
-		for( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l : this.graphicsListeners ) {
-			l.graphicRemoved( e );
+		if( this.graphicsListeners.size() > 0 ) {
+			edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent( this, graphic );
+			for( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l : this.graphicsListeners ) {
+				l.graphicRemoved( e );
+			}
 		}
 	}
+
+	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener> graphicsListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();;
+	private final java.util.List<Graphic> graphics = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 }

@@ -67,7 +67,7 @@ public class PrintAllOperation extends PrintOperation {
 					return NO_SUCH_PAGE;
 				} else {
 					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					org.lgna.croquet.views.Frame frame = org.lgna.croquet.Application.getActiveInstance().getFrame();
+					org.lgna.croquet.views.Frame frame = org.lgna.croquet.Application.getActiveInstance().getDocumentFrame().getFrame();
 					int width = frame.getWidth();
 					int height = frame.getHeight();
 					double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale( pageFormat, width, height );

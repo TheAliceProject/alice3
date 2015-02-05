@@ -47,15 +47,9 @@ package org.alice.ide.croquet.models;
  * @author Dennis Cosgrove
  */
 public interface ResponsibleModel {
-	public void retarget( org.lgna.croquet.Retargeter retargeter );
-
 	public void doOrRedoInternal( boolean isDo );
 
 	public void undoInternal();
 
 	public void appendDescription( StringBuilder rv, boolean isDetailed );
-
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.AbstractEdit<?> replacementCandidate );
-
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit<?> edit );
 }

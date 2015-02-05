@@ -44,13 +44,13 @@ package edu.cmu.cs.dennisc.nebulous;
 
 import edu.cmu.cs.dennisc.render.gl.ForgettableBinding;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.TextureAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexture;
 
 /**
  * @author alice
  * 
  */
-public class NebulousTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.nebulous.NebulousTexture> {
+public class NebulousTextureAdapter extends GlrTexture<edu.cmu.cs.dennisc.nebulous.NebulousTexture> {
 
 	private final NebulousTextureBinding nebulousBinding = new NebulousTextureBinding();
 
@@ -61,7 +61,7 @@ public class NebulousTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.ne
 
 	@Override
 	public ForgettableBinding bindTexture( RenderContext rc ) {
-		this.nebulousBinding.bind( rc, this.m_element );
+		this.nebulousBinding.bind( rc, this.owner );
 		return this.nebulousBinding;
 	}
 

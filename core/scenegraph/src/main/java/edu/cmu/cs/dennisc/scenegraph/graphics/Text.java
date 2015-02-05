@@ -47,12 +47,12 @@ package edu.cmu.cs.dennisc.scenegraph.graphics;
  * @author Dennis Cosgrove
  */
 public abstract class Text extends edu.cmu.cs.dennisc.scenegraph.Graphic {
-	public final edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );
-	public final edu.cmu.cs.dennisc.color.property.Color4fProperty textColor;
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<java.awt.Font> font;
-
 	public Text( edu.cmu.cs.dennisc.color.Color4f textColor, java.awt.Font font ) {
 		this.textColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, textColor, false );
 		this.font = new edu.cmu.cs.dennisc.property.InstanceProperty<java.awt.Font>( this, font );
 	}
+
+	public final edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );
+	public final edu.cmu.cs.dennisc.color.property.Color4fProperty textColor;
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<java.awt.Font> font;
 }

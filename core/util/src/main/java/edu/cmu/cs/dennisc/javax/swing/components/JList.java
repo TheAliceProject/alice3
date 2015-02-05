@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 /**
  * @author Dennis Cosgrove
  */
-public class JList<E extends Object> extends javax.swing.JList {
+public class JList<E> extends javax.swing.JList {
 	private java.util.List<java.awt.event.ActionListener> m_actionListeners = new java.util.LinkedList<java.awt.event.ActionListener>();
 
 	public JList() {

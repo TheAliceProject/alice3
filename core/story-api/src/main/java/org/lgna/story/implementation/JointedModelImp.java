@@ -386,12 +386,11 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			this.opacity.setValue( originalOpacity );
 			this.paint.setValue( originalPaint );
 
-			edu.cmu.cs.dennisc.property.InstanceProperty[] newScaleProperties = this.getScaleProperties();
+			edu.cmu.cs.dennisc.property.InstanceProperty<?>[] newScaleProperties = this.getScaleProperties();
 			for( int i = 0; i < oldScaleProperties.length; i++ ) {
-				edu.cmu.cs.dennisc.property.InstanceProperty oldProp = oldScaleProperties[ i ];
+				edu.cmu.cs.dennisc.property.InstanceProperty<?> oldProp = oldScaleProperties[ i ];
 				assert oldProp != null : i;
-				for( edu.cmu.cs.dennisc.property.event.PropertyListener propListener : (Iterable<edu.cmu.cs.dennisc.property.event.PropertyListener>)oldProp.accessPropertyListeners() )
-				{
+				for( edu.cmu.cs.dennisc.property.event.PropertyListener propListener : oldProp.getPropertyListeners() ) {
 					newScaleProperties[ i ].addPropertyListener( propListener );
 				}
 			}
@@ -504,7 +503,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	}
 
 	@Override
-	protected final edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
+	public final edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
 		return this.visualData.getSgVisuals();
 	}
 

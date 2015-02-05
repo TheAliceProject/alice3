@@ -52,12 +52,6 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public class ExtravagantAxes extends Transformable {
-	private java.util.Map<Cylinder.BottomToTopAxis, SimpleAppearance> axisToSGAppearanceMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final Arrow sgXAxis;
-	private final Arrow sgYAxis;
-	private final Arrow sgZAxis;
-	private final Arrow sgFAxis;
-
 	private static final double CYLINDER_PORTION = 0.8;
 	private static final double CONE_PORTION = 1.0 - CYLINDER_PORTION;
 
@@ -165,4 +159,10 @@ public class ExtravagantAxes extends Transformable {
 			}
 		}
 	}
+
+	private final java.util.Map<Cylinder.BottomToTopAxis, SimpleAppearance> axisToSGAppearanceMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private final Arrow sgXAxis;
+	private final Arrow sgYAxis;
+	private final Arrow sgZAxis;
+	private final Arrow sgFAxis;
 }

@@ -100,7 +100,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 		return ObjectMarkerMoveActionOperation.class;
 	}
 
@@ -159,8 +159,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( ( this.toMoveField != null ) && ( this.toMoveToField != null ) ) {
 			org.lgna.project.ast.Expression toMoveToExpression = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.toMoveToField );
 			AbstractMethod method = org.lgna.project.ast.AstUtilities.lookupMethod( org.lgna.story.SMovableTurnable.class, "moveAndOrientTo", new Class<?>[] { org.lgna.story.SThing.class, org.lgna.story.MoveAndOrientTo.Detail[].class } );

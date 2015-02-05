@@ -71,8 +71,7 @@ public class GetAGoodLookAtActionOperation extends org.lgna.croquet.ActionOperat
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.project.ast.UserField cameraField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( this.camera );
 		org.lgna.project.ast.UserField toLookAtField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( this.toLookAt );
 		org.alice.ide.instancefactory.ThisFieldAccessFactory cameraInstanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( cameraField );

@@ -74,7 +74,7 @@ public abstract class InsertStatementComposite<S extends org.lgna.project.ast.St
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, this.blockStatementIndexPair, this.createStatement(), new org.lgna.project.ast.Expression[ 0 ], this.isEnveloping );
 	}
 

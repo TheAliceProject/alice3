@@ -81,7 +81,7 @@ public class IconRenderTest {
 
 				if( IS_USING_OFFSCREEN_RENDER_TARGET ) {
 					java.awt.Dimension size = new java.awt.Dimension( 512, 512 );
-					renderTarget = renderFactory.createOffscreenRenderTarget( size.width, size.height, null );
+					renderTarget = renderFactory.createOffscreenRenderTarget( size.width, size.height, null, new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build() );
 					org.lgna.story.implementation.CameraImp<?> impCamera = org.lgna.story.EmployeesOnly.getImplementation( scene.getCamera() );
 					renderTarget.addSgCamera( impCamera.getSgCamera() );
 				} else {
@@ -136,7 +136,7 @@ public class IconRenderTest {
 
 							edu.cmu.cs.dennisc.math.Point3 p = sgTransformable.getAbsoluteTransformation().translation;
 
-							edu.cmu.cs.dennisc.render.gl.imp.adapters.TransformableAdapter<?> transformableAdapter = edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.getAdapterFor( sgTransformable );
+							edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTransformable<?> transformableAdapter = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( sgTransformable );
 							edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc = new edu.cmu.cs.dennisc.render.gl.imp.RenderContext();
 							rc.setGL( gl );
 							rc.initialize();
@@ -145,8 +145,8 @@ public class IconRenderTest {
 							gl.glLoadIdentity();
 							glu.gluLookAt( p.x + 2, p.y + 2, p.z - 2, p.x, p.y, p.z, 0, 1, 0 );
 
-							edu.cmu.cs.dennisc.render.gl.imp.adapters.SceneAdapter sceneAdapter = edu.cmu.cs.dennisc.render.gl.imp.AdapterFactory.getAdapterFor( sgScene );
-							sceneAdapter.setup( rc );
+							edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene sceneAdapter = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( sgScene );
+							sceneAdapter.setupAffectors( rc );
 							gl.glEnable( javax.media.opengl.GL.GL_DEPTH_TEST );
 							//							gl.glDisable( javax.media.opengl.GL.GL_BLEND );
 							transformableAdapter.renderOpaque( rc );

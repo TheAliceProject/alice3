@@ -54,8 +54,4 @@ public class MenuNode<F, B> extends BlankOwnerNode<F, B, org.lgna.croquet.Abstra
 	private MenuNode( org.lgna.croquet.AbstractCascadeMenuModel<F, B> model ) {
 		super( model );
 	}
-
-	public MenuNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
 }

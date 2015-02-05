@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class ImportTypeOperation extends org.lgna.croquet.ActionOperation { //todo: ValueOperation?
+public class ImportTypeOperation extends org.lgna.croquet.Operation { //todo: ValueOperation?
 	private static class SingletonHolder {
 		private static ImportTypeOperation instance = new ImportTypeOperation();
 	}

@@ -47,13 +47,6 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class Box extends Shape {
-	public final BoundDoubleProperty xMinimum = new BoundDoubleProperty( this, -0.5 );
-	public final BoundDoubleProperty xMaximum = new BoundDoubleProperty( this, +0.5 );
-	public final BoundDoubleProperty yMinimum = new BoundDoubleProperty( this, -0.5 );
-	public final BoundDoubleProperty yMaximum = new BoundDoubleProperty( this, +0.5 );
-	public final BoundDoubleProperty zMinimum = new BoundDoubleProperty( this, -0.5 );
-	public final BoundDoubleProperty zMaximum = new BoundDoubleProperty( this, +0.5 );
-
 	public edu.cmu.cs.dennisc.math.Point3 getMinimum( edu.cmu.cs.dennisc.math.Point3 rv ) {
 		rv.set( xMinimum.getValue(), yMinimum.getValue(), zMinimum.getValue() );
 		return rv;
@@ -119,4 +112,11 @@ public class Box extends Shape {
 		double depth = zMaximum.getValue() - zMinimum.getValue();
 		boundingSphere.radius = Math.max( Math.max( width, height ), depth ) * 0.5;
 	}
+
+	public final BoundDoubleProperty xMinimum = new BoundDoubleProperty( this, -0.5 );
+	public final BoundDoubleProperty xMaximum = new BoundDoubleProperty( this, +0.5 );
+	public final BoundDoubleProperty yMinimum = new BoundDoubleProperty( this, -0.5 );
+	public final BoundDoubleProperty yMaximum = new BoundDoubleProperty( this, +0.5 );
+	public final BoundDoubleProperty zMinimum = new BoundDoubleProperty( this, -0.5 );
+	public final BoundDoubleProperty zMaximum = new BoundDoubleProperty( this, +0.5 );
 }

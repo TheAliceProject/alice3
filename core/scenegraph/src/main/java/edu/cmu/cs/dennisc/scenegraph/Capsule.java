@@ -47,36 +47,11 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class Capsule extends Shape {
-	public enum Axis {
+	public static enum Axis {
 		X,
 		Y,
 		Z
 	}
-
-	public final BoundDoubleProperty distanceBetweenSphereCenters = new BoundDoubleProperty( this, 1.0 ) {
-		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
-			assert value >= 0.0;
-			super.setValue( owner, value );
-		}
-	};
-	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 1.0 ) {
-		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
-			assert value >= 0.0;
-			super.setValue( owner, value );
-		}
-	};
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Axis> axis = new edu.cmu.cs.dennisc.property.InstanceProperty<Axis>( this, Axis.Y ) {
-		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Axis value ) {
-			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
-				Capsule.this.boundsChanging();
-				super.setValue( owner, value );
-				Capsule.this.fireBoundChange();
-			}
-		};
-	};
 
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
@@ -102,4 +77,29 @@ public class Capsule extends Shape {
 		boundingSphere.center.set( 0, 0, 0 );
 		boundingSphere.radius = this.distanceBetweenSphereCenters.getValue() + ( this.radius.getValue() * 2 );
 	}
+
+	public final BoundDoubleProperty distanceBetweenSphereCenters = new BoundDoubleProperty( this, 1.0 ) {
+		@Override
+		public void setValue( Double value ) {
+			assert value >= 0.0;
+			super.setValue( value );
+		}
+	};
+	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 1.0 ) {
+		@Override
+		public void setValue( Double value ) {
+			assert value >= 0.0;
+			super.setValue( value );
+		}
+	};
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Axis> axis = new edu.cmu.cs.dennisc.property.InstanceProperty<Axis>( this, Axis.Y ) {
+		@Override
+		public void setValue( Axis value ) {
+			if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+				Capsule.this.markBoundsDirty();
+				super.setValue( value );
+				Capsule.this.fireBoundChanged();
+			}
+		};
+	};
 }

@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -19,7 +17,6 @@ import org.lgna.project.ast.JavaType;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.java.util.CollectionUtilities;
 import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
 import edu.cmu.cs.dennisc.nebulous.Manager;
 
@@ -443,11 +440,9 @@ public class StorytellingResources {
 		{
 			if( modelPath.exists() ) {
 				if( modelPath.isDirectory() ) {
-					resourceFiles = CollectionUtilities.addAll( resourceFiles, FileUtilities.listFiles( modelPath, "jar" ) );
-					resourceFiles = CollectionUtilities.addAll( resourceFiles, FileUtilities.listDirectories( modelPath ) );
-
-				}
-				else {
+					java.util.Collections.addAll( resourceFiles, FileUtilities.listFiles( modelPath, "jar" ) );
+					java.util.Collections.addAll( resourceFiles, FileUtilities.listDirectories( modelPath ) );
+				} else {
 					resourceFiles.add( modelPath );
 				}
 			}
@@ -702,21 +697,6 @@ public class StorytellingResources {
 			}
 		}
 		return foundResource;
-	}
-
-	public ResourceBundle getLocalizationBundle( String bundleKey, Locale locale )
-	{
-		java.util.ResourceBundle resourceBundle = null;
-		for( URLClassLoader cl : this.resourceClassLoaders ) {
-			resourceBundle = java.util.ResourceBundle.getBundle( bundleKey, locale, cl );
-			if( resourceBundle != null ) {
-				break;
-			}
-		}
-		if( resourceBundle != null ) {
-			return resourceBundle;
-		}
-		return java.util.ResourceBundle.getBundle( bundleKey, locale );
 	}
 
 	public InputStream getAliceResourceAsStream( String resourceString ) {

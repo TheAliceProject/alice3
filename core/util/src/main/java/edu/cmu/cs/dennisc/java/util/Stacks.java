@@ -50,19 +50,59 @@ public class Stacks {
 		throw new Error();
 	}
 
-	public static <E> java.util.Stack<E> newStack() {
-		return new java.util.Stack<E>();
+	private static class StackImp<E> implements DStack<E> {
+		@Override
+		public E peek() {
+			return this.imp.peek();
+		}
+
+		@Override
+		public E pop() {
+			return this.imp.pop();
+		}
+
+		@Override
+		public void push( E item ) {
+			this.imp.push( item );
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return this.imp.isEmpty();
+		}
+
+		@Override
+		public int size() {
+			return this.imp.size();
+		}
+
+		@Override
+		public E get( int index ) {
+			return this.imp.get( index );
+		}
+
+		@Override
+		public void clear() {
+			this.imp.clear();
+		}
+
+		@Override
+		public void setSize( int size ) {
+			this.imp.setSize( size );
+		}
+
+		private final java.util.Stack<E> imp = new java.util.Stack<E>();
 	}
 
-	public static <E> java.util.Stack<E> newStack( E... array ) {
-		java.util.Stack<E> rv = new java.util.Stack<E>();
-		edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
-		return rv;
+	public static <E> DStack<E> newStack() {
+		return new StackImp<E>();
 	}
 
-	public static <E> java.util.Stack<E> newStack( java.util.Collection<E> other ) {
-		java.util.Stack<E> rv = new java.util.Stack<E>();
-		rv.addAll( other );
+	public static <E, X extends E> DStack<E> newStack( X... items ) {
+		DStack<E> rv = newStack();
+		for( X item : items ) {
+			rv.push( item );
+		}
 		return rv;
 	}
 }

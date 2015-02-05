@@ -55,10 +55,6 @@ public abstract class PrepStep<M extends org.lgna.croquet.PrepModel> extends Ste
 		}
 	}
 
-	public PrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
 	public void cancelTransaction( org.lgna.croquet.triggers.Trigger trigger ) {
 		CompletionStep step = CompletionStep.createAndAddToTransaction( this.getOwner(), null, trigger, null );
 		step.cancel();

@@ -46,15 +46,7 @@ package org.alice.ide.croquet.models.help;
  * @author Dennis Cosgrove
  */
 public class ShowAllSystemPropertiesComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.croquet.models.help.views.ShowAllSystemPropertiesView> {
-	private static class SingletonHolder {
-		private static ShowAllSystemPropertiesComposite instance = new ShowAllSystemPropertiesComposite();
-	}
-
-	public static ShowAllSystemPropertiesComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ShowAllSystemPropertiesComposite() {
+	public ShowAllSystemPropertiesComposite() {
 		super( java.util.UUID.fromString( "17e79b9b-9a19-4edd-bef5-15685681a88e" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 	}
 

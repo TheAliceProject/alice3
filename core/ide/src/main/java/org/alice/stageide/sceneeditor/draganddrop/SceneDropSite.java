@@ -70,11 +70,6 @@ public final class SceneDropSite implements org.lgna.croquet.DropSite {
 	}
 
 	@Override
-	public SceneDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
-		return this;
-	}
-
-	@Override
 	public boolean equals( Object o ) {
 		if( o == this ) {
 			return true;

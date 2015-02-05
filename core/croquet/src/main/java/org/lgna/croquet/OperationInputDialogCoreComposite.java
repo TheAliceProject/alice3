@@ -47,25 +47,13 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends InputDialogCoreComposite<V> implements OperationOwningComposite<V> {
-	private final org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp imp;
-
-	public OperationInputDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
+	public OperationInputDialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
-		this.imp = new org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp( this, operationGroup );
-	}
-
-	protected org.lgna.croquet.imp.dialog.LaunchOperationOwningCompositeImp getImp() {
-		return this.imp;
 	}
 
 	@Override
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation( java.lang.String subKeyText ) {
-		return this.imp.getLaunchOperation( subKeyText );
-	}
-
-	@Override
-	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {
-		return defaultValue;
+	public boolean isSubTransactionHistoryRequired() {
+		return true;
 	}
 
 	@Override
@@ -73,34 +61,34 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 		return text;
 	}
 
-	protected abstract org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+
+	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		super.handlePostHideDialog( completionStep );
+		Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
+		if( isCommited != null ) { // close button condition
+			if( isCommited ) {
+				try {
+					org.lgna.croquet.edits.Edit edit = createEdit( completionStep );
+					if( edit != null ) {
+						completionStep.commitAndInvokeDo( edit );
+					} else {
+						completionStep.finish();
+					}
+				} catch( CancelException ce ) {
+					cancel( completionStep );
+				}
+			} else {
+				cancel( completionStep );
+			}
+		} else {
+			cancel( completionStep );
+		}
+	}
 
 	@Override
 	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
-			@Override
-			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-				super.handlePostHideDialog( completionStep );
-				Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-				if( isCommited != null ) { // close button condition
-					if( isCommited ) {
-						try {
-							org.lgna.croquet.edits.AbstractEdit edit = createEdit( completionStep );
-							if( edit != null ) {
-								completionStep.commitAndInvokeDo( edit );
-							} else {
-								completionStep.finish();
-							}
-						} catch( CancelException ce ) {
-							cancel( completionStep );
-						}
-					} else {
-						cancel( completionStep );
-					}
-				} else {
-					cancel( completionStep );
-				}
-			}
-		}, completionStep );
+		this.showDialog( completionStep );
 	}
 }

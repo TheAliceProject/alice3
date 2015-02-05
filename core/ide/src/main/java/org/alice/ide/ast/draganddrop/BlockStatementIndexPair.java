@@ -89,24 +89,6 @@ public final class BlockStatementIndexPair implements org.lgna.croquet.DropSite 
 	}
 
 	@Override
-	public BlockStatementIndexPair createReplacement( org.lgna.croquet.Retargeter retargeter ) {
-		BlockStatementIndexPair replacement = retargeter.retarget( this );
-		if( replacement != this ) {
-			return replacement;
-		} else {
-			org.lgna.project.ast.BlockStatement replacementBlockStatement = retargeter.retarget( this.blockStatement );
-			if( this.blockStatement != replacementBlockStatement ) {
-				BlockStatementIndexPair rv = new BlockStatementIndexPair( replacementBlockStatement, this.index );
-				//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "original:", this, this.hashCode() );
-				//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replacement:", rv, rv.hashCode() );
-				return rv;
-			} else {
-				return this;
-			}
-		}
-	}
-
-	@Override
 	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 		org.lgna.project.ast.AbstractCode code = this.blockStatement.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );
 		return org.alice.ide.declarationseditor.CodeComposite.getInstance( code ).getView().getCodePanelWithDropReceptor().getDropReceptor();

@@ -83,13 +83,13 @@ public abstract class PotentialClearanceIteratingOperation extends org.lgna.croq
 	}
 
 	@Override
-	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
 		java.util.Iterator<org.lgna.croquet.Model> iterator = (java.util.Iterator<org.lgna.croquet.Model>)iteratingData;
 		return iterator.hasNext();
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
 		java.util.Iterator<org.lgna.croquet.Model> iterator = (java.util.Iterator<org.lgna.croquet.Model>)iteratingData;
 		return iterator.next();
 	}

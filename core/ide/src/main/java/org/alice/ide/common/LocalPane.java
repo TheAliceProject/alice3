@@ -46,10 +46,12 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class LocalPane extends TransientPane {
-	public LocalPane( org.lgna.project.ast.UserLocal local ) {
-		super( org.alice.ide.ast.draganddrop.expression.LocalAccessDragModel.getInstance( local ) );
+	public LocalPane( org.lgna.project.ast.UserLocal local, boolean isLocalDraggableAndMutable ) {
+		super( isLocalDraggableAndMutable ? org.alice.ide.ast.draganddrop.expression.LocalAccessDragModel.getInstance( local ) : null );
+		if( isLocalDraggableAndMutable ) {
+			this.setPopupPrepModel( org.alice.ide.croquet.models.ast.LocalMenuModel.getInstance( local ).getPopupPrepModel() );
+		}
 		this.addComponent( new org.alice.ide.ast.components.LocalValidNameLabel( local ) );
-		this.setPopupPrepModel( org.alice.ide.croquet.models.ast.LocalMenuModel.getInstance( local ).getPopupPrepModel() );
 		this.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.LocalAccess.class ) );
 	}
 }

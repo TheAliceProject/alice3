@@ -55,10 +55,10 @@ public class StringProperty extends InstanceProperty<String> {
 	}
 
 	@Override
-	public void setValue( PropertyOwner owner, String value ) {
+	public void setValue( String value ) {
 		assert ( value != null ) || isNullAcceptable() : this;
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
-			super.setValue( owner, value );
+		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+			super.setValue( value );
 		}
 	}
 }

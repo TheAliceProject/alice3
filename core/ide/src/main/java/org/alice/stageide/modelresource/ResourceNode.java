@@ -195,7 +195,7 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 	}
 
 	@Override
-	protected void appendRepr( java.lang.StringBuilder sb ) {
+	protected void appendRepr( StringBuilder sb ) {
 		super.appendRepr( sb );
 		sb.append( "key=" );
 		sb.append( this.resourceKey );

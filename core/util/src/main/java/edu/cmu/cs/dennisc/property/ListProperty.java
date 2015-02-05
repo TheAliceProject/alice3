@@ -42,39 +42,32 @@
  */
 package edu.cmu.cs.dennisc.property;
 
-//public class ListProperty<E> extends Property<E> implements java.util.List<E> {
 /**
  * @author Dennis Cosgrove
  */
 public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> implements Iterable<E> {
-	private java.util.List<edu.cmu.cs.dennisc.property.event.ListPropertyListener<E>> m_listPropertyListeners = null;
-
 	public ListProperty( InstancePropertyOwner owner ) {
 		super( owner, new java.util.ArrayList<E>() );
 	}
 
 	public void addListPropertyListener( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l ) {
-		if( m_listPropertyListeners != null ) {
+		if( this.listPropertyListeners != null ) {
 			//pass
 		} else {
-			m_listPropertyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+			this.listPropertyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 		}
-		synchronized( m_listPropertyListeners ) {
-			m_listPropertyListeners.add( l );
-		}
+		this.listPropertyListeners.add( l );
 	}
 
 	public void removeListPropertyListener( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l ) {
-		assert m_listPropertyListeners != null : this;
-		synchronized( m_listPropertyListeners ) {
-			m_listPropertyListeners.remove( l );
-		}
+		assert this.listPropertyListeners != null : this;
+		this.listPropertyListeners.remove( l );
 	}
 
 	private void fireAdding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e ) {
 		getOwner().fireAdding( e );
-		if( m_listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : m_listPropertyListeners ) {
+		if( this.listPropertyListeners != null ) {
+			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.adding( e );
 			}
 		}
@@ -82,8 +75,8 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 
 	private void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e ) {
 		getOwner().fireAdded( e );
-		if( m_listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : m_listPropertyListeners ) {
+		if( this.listPropertyListeners != null ) {
+			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.added( e );
 			}
 		}
@@ -91,8 +84,8 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 
 	private void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> e ) {
 		getOwner().fireClearing( e );
-		if( m_listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : m_listPropertyListeners ) {
+		if( this.listPropertyListeners != null ) {
+			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.clearing( e );
 			}
 		}
@@ -100,8 +93,8 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 
 	private void fireCleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> e ) {
 		getOwner().fireCleared( e );
-		if( m_listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : m_listPropertyListeners ) {
+		if( this.listPropertyListeners != null ) {
+			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.cleared( e );
 			}
 		}
@@ -109,8 +102,8 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 
 	private void fireRemoving( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E> e ) {
 		getOwner().fireRemoving( e );
-		if( m_listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : m_listPropertyListeners ) {
+		if( this.listPropertyListeners != null ) {
+			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.removing( e );
 			}
 		}
@@ -118,8 +111,8 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 
 	private void fireRemoved( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E> e ) {
 		getOwner().fireRemoved( e );
-		if( m_listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : m_listPropertyListeners ) {
+		if( this.listPropertyListeners != null ) {
+			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.removed( e );
 			}
 		}
@@ -127,8 +120,8 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 
 	private void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e ) {
 		getOwner().fireSetting( e );
-		if( m_listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : m_listPropertyListeners ) {
+		if( this.listPropertyListeners != null ) {
+			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.setting( e );
 			}
 		}
@@ -136,8 +129,8 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 
 	private void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e ) {
 		getOwner().fireSet( e );
-		if( m_listPropertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : m_listPropertyListeners ) {
+		if( this.listPropertyListeners != null ) {
+			for( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l : this.listPropertyListeners ) {
 				l.set( e );
 			}
 		}
@@ -194,38 +187,12 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 		return getValue().get( index );
 	}
 
-	//todo: investigate returning iterator that could allow modification when isLocked 
 	@Override
 	public java.util.Iterator<E> iterator() {
 		return getValue().iterator();
 	}
 
-	//	//todo: investigate returning iterator that could allow modification when isLocked 
-	//	public java.util.ListIterator<E> listIterator() {
-	//		return m_list.listIterator();
-	//	}
-	//
-	//	//todo: investigate returning iterator that could allow modification when isLocked 
-	//	public java.util.ListIterator<E> listIterator( int index ) {
-	//		return m_list.listIterator( arg0 );
-	//	}
-
-	//todo
-	//	public boolean remove( Object o ) {
-	//		assert isLocked() == false;
-	//		return getValue().remove( o );
-	//	}
-	//	public boolean removeAll( java.util.Collection<?> c ) {
-	//		assert isLocked() == false;
-	//		return getValue().removeAll( c ); 
-	//	}
-	//	public boolean retainAll( java.util.Collection<?> c ) {
-	//		assert isLocked() == false;
-	//		return getValue().retainAll( c );
-	//	}
-
 	public void add( int index, E... elements ) {
-		//assert isLocked() == false;
 		edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e = new edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E>( this, index, elements );
 		fireAdding( e );
 		getValue().ensureCapacity( size() + elements.length );
@@ -241,11 +208,6 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 	}
 
 	public boolean addAll( int index, java.util.Collection<? extends E> collection ) {
-		//assert isLocked() == false;
-		//		E[] array = (E[])java.lang.reflect.Array.newInstance( E.class, collection.size() );
-		//		E[] array = new E[ collection.size() ];
-		//		collection.toArray( array );
-
 		edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e = new edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E>( this, index, collection );
 		fireAdding( e );
 		boolean rv = getValue().addAll( index, collection );
@@ -286,7 +248,6 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 	}
 
 	public void set( int index, E... elements ) {
-		//assert isLocked() == false;
 		edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e = new edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E>( this, index, elements );
 		fireSetting( e );
 		for( int i = 0; i < elements.length; i++ ) {
@@ -296,7 +257,6 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 	}
 
 	public void set( int index, java.util.List<E> elements ) {
-		//assert isLocked() == false;
 		edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e = new edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E>( this, index, elements );
 		fireSetting( e );
 		for( int i = 0; i < elements.size(); i++ ) {
@@ -339,7 +299,7 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 	}
 
 	@Override
-	public void setValue( PropertyOwner owner, java.util.ArrayList<E> value ) {
+	public void setValue( java.util.ArrayList<E> value ) {
 
 		//todo?
 
@@ -347,44 +307,10 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 		edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> eAdd = new edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E>( this, 0, value );
 		fireClearing( eClear );
 		fireAdding( eAdd );
-		super.setValue( owner, value );
+		super.setValue( value );
 		fireCleared( eClear );
 		fireAdded( eAdd );
 	}
 
-	//	@Override
-	//	public void encodeXML( org.w3c.dom.Document xmlDocument, org.w3c.dom.Element xmlElement ) {
-	//		org.w3c.dom.Element xmlChild = xmlDocument.createElement( getName() );
-	//		for( E e : getValue() ) {
-	//			org.w3c.dom.Element xmlItem = xmlDocument.createElement( "item" );
-	//			encodeXML( xmlDocument, xmlChild, xmlItem, e );
-	//		}
-	//		xmlElement.appendChild( xmlChild );
-	//	}
-	//	@Override
-	//	public void decodeXML( org.w3c.dom.Document xmlDocument, org.w3c.dom.Element xmlElement ) {
-	//
-	//	}
-	//
-	//	@Override
-	//	public void appendValue( StringBuffer sb ) {
-	//		sb.append( "{" );
-	//		boolean isFirst = true;
-	//		for( E e : getValue() ) {
-	//			if( isFirst ) {
-	//				//pass
-	//			} else {
-	//				sb.append( ", " );
-	//			}
-	//			//todo
-	//			if( e instanceof Node ) {
-	//				sb.append( "instance of " );
-	//				sb.append( e.getClass() );
-	//			} else {
-	//				sb.append( e );
-	//			}
-	//			isFirst = false;
-	//		}
-	//		sb.append( "}" );
-	//	}
+	private java.util.List<edu.cmu.cs.dennisc.property.event.ListPropertyListener<E>> listPropertyListeners = null;
 }

@@ -73,9 +73,4 @@ public class KeyedMoreCascade extends org.lgna.croquet.ImmutableCascade<org.lgna
 		javaKeyedArgument.parameter.setValue( this.argumentOwner.getParameterOwnerProperty().getValue().getKeyedParameter() );
 		return new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, this.argumentOwner, javaKeyedArgument );
 	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<KeyedMoreCascade> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<KeyedMoreCascade>( this, org.lgna.project.ast.ArgumentOwner.class, this.argumentOwner );
-	}
 }

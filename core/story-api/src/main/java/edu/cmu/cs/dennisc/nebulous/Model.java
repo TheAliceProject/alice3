@@ -26,11 +26,6 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 		//		Manager.setDebugDraw( true );
 	}
 
-	protected edu.cmu.cs.dennisc.scenegraph.Composite sgParent;
-	protected edu.cmu.cs.dennisc.scenegraph.Visual associatedVisual;
-
-	protected final Object renderLock = new Object();
-
 	public Model() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		Manager.initializeIfNecessary();
 	}
@@ -93,7 +88,7 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	private native void getAbsoluteTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
 
 	public void setVisual( edu.cmu.cs.dennisc.scenegraph.Visual visual ) {
-		this.associatedVisual = visual;
+		this.sgAssociatedVisual = visual;
 	}
 
 	public void setSGParent( edu.cmu.cs.dennisc.scenegraph.Composite parent ) {
@@ -149,7 +144,7 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 		double[] bboxData = new double[ 6 ];
 		getAxisAlignedBoundingBoxForJoint( joint, joint.getParent(), bboxData );
 		AxisAlignedBox bbox = new AxisAlignedBox( bboxData[ 0 ], bboxData[ 1 ], bboxData[ 2 ], bboxData[ 3 ], bboxData[ 4 ], bboxData[ 5 ] );
-		bbox.scale( this.associatedVisual.scale.getValue() );
+		bbox.scale( this.sgAssociatedVisual.scale.getValue() );
 		return bbox;
 	}
 
@@ -171,4 +166,9 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
 		throw new RuntimeException( "todo" );
 	}
+
+	protected edu.cmu.cs.dennisc.scenegraph.Composite sgParent;
+	protected edu.cmu.cs.dennisc.scenegraph.Visual sgAssociatedVisual;
+
+	protected final Object renderLock = new Object();
 }

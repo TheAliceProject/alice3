@@ -46,11 +46,9 @@ package edu.cmu.cs.dennisc.property;
  * @author Dennis Cosgrove
  */
 public class NumberProperty extends InstanceProperty<Number> {
-	private boolean m_isNaNAcceptable;
-
 	public NumberProperty( InstancePropertyOwner owner, Number value, boolean isNaNAcceptable ) {
 		super( owner, value );
-		m_isNaNAcceptable = isNaNAcceptable;
+		this.isNaNAcceptable = isNaNAcceptable;
 	}
 
 	public NumberProperty( InstancePropertyOwner owner, Number value ) {
@@ -58,16 +56,18 @@ public class NumberProperty extends InstanceProperty<Number> {
 	}
 
 	@Override
-	public void setValue( PropertyOwner owner, Number value ) {
+	public void setValue( Number value ) {
 		assert value != null : this;
 		if( value instanceof Float ) {
-			assert ( Float.isNaN( (Float)value ) == false ) || m_isNaNAcceptable : this;
+			assert ( Float.isNaN( (Float)value ) == false ) || this.isNaNAcceptable : this;
 		}
 		if( value instanceof Double ) {
-			assert ( Double.isNaN( (Double)value ) == false ) || m_isNaNAcceptable : this;
+			assert ( Double.isNaN( (Double)value ) == false ) || this.isNaNAcceptable : this;
 		}
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
-			super.setValue( owner, value );
+		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+			super.setValue( value );
 		}
 	}
+
+	private final boolean isNaNAcceptable;
 }

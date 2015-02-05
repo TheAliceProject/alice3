@@ -71,9 +71,4 @@ public class DoInOrderInsertOperation extends TemplateStatementInsertOperation {
 	protected final org.lgna.project.ast.Statement createStatement() {
 		return org.lgna.project.ast.AstUtilities.createDoInOrder();
 	}
-
-	@Override
-	protected org.lgna.croquet.resolvers.Resolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndBooleanStaticGetInstanceResolver( this, this.getBlockStatementIndexPair(), this.isEnveloping() );
-	}
 }

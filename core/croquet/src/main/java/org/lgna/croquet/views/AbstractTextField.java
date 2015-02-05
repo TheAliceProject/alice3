@@ -57,14 +57,14 @@ public abstract class AbstractTextField<V extends javax.swing.JTextField> extend
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		if( this.operation != null ) {
-			this.getAwtComponent().addActionListener( this.operation.getSwingModel().getAction() );
+			this.getAwtComponent().addActionListener( this.operation.getImp().getSwingModel().getAction() );
 		}
 	}
 
 	@Override
 	protected void handleUndisplayable() {
 		if( this.operation != null ) {
-			this.getAwtComponent().removeActionListener( this.operation.getSwingModel().getAction() );
+			this.getAwtComponent().removeActionListener( this.operation.getImp().getSwingModel().getAction() );
 		}
 		super.handleUndisplayable();
 	}

@@ -93,10 +93,6 @@ public class DragStep extends PrepStep<org.lgna.croquet.DragModel> {
 		super( parent, model, trigger );
 	}
 
-	public DragStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
 	private DropReceptorInfo[] getPotentialDropReceptorInfos() {
 		if( this.potentialDropReceptorInfos != null ) {
 			//pass

@@ -51,5 +51,5 @@ public interface NameChangeListenable {
 
 	public void removeNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener );
 
-	public Iterable<edu.cmu.cs.dennisc.pattern.event.NameListener> getNameListeners();
+	public java.util.Collection<edu.cmu.cs.dennisc.pattern.event.NameListener> getNameListeners();
 }

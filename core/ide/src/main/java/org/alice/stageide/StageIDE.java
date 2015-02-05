@@ -57,7 +57,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 
 	public StageIDE( org.alice.ide.IdeConfiguration ideConfiguration, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
 		super( ideConfiguration, StoryApiConfigurationManager.getInstance(), crashDetector );
-		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
+		this.getDocumentFrame().getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
 			@Override
 			public void windowStateChanged( java.awt.event.WindowEvent e ) {
 				int oldState = e.getOldState();
@@ -303,7 +303,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 
 	@Override
 	public org.lgna.croquet.Operation getAboutOperation() {
-		return org.alice.stageide.about.AboutComposite.getInstance().getLaunchOperation();
+		return org.alice.ide.IdeApp.INSTANCE.getAboutDialogLaunchOperation();
 	}
 
 	public java.util.List<org.lgna.project.ast.UserMethod> getUserMethodsInvokedFromSceneActivationListeners() {

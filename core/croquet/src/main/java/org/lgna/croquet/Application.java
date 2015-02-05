@@ -68,14 +68,17 @@ public abstract class Application {
 		return singleton;
 	}
 
-	private final org.lgna.croquet.views.Frame frame = org.lgna.croquet.views.Frame.getApplicationRootFrame();
-	private final java.util.Stack<org.lgna.croquet.views.AbstractWindow<?>> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack( new org.lgna.croquet.views.AbstractWindow<?>[] { this.frame } );
-
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
 		this.transactionHistory = new org.lgna.croquet.history.TransactionHistory();
 		javax.swing.MenuSelectionManager.defaultManager().addChangeListener( this.menuSelectionChangeListener );
+		this.documentFrame = new DocumentFrame();
+		this.stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack( this.documentFrame.getFrame() );
+	}
+
+	public DocumentFrame getDocumentFrame() {
+		return this.documentFrame;
 	}
 
 	public org.lgna.croquet.history.TransactionHistory getTransactionHistory() {
@@ -113,44 +116,7 @@ public abstract class Application {
 		}
 	}
 
-	public org.lgna.croquet.views.Frame getFrame() {
-		return this.frame;
-	}
-
 	public void initialize( String[] args ) {
-		this.frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.DO_NOTHING );
-		this.frame.addWindowListener( new java.awt.event.WindowListener() {
-			@Override
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				Application.this.handleWindowOpened( e );
-			}
-
-			@Override
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				Application.this.handleQuit( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
-			}
-
-			@Override
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-			}
-
-			@Override
-			public void windowActivated( java.awt.event.WindowEvent e ) {
-			}
-
-			@Override
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
-			}
-
-			@Override
-			public void windowIconified( java.awt.event.WindowEvent e ) {
-			}
-
-			@Override
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
-			}
-		} );
-
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			com.apple.eawt.Application application = com.apple.eawt.Application.getApplication();
 			application.setAboutHandler( new com.apple.eawt.AboutHandler() {
@@ -210,7 +176,7 @@ public abstract class Application {
 				//todo?
 				//javax.swing.UIManager.getLookAndFeel().uninitialize();
 				//javax.swing.UIManager.getLookAndFeel().initialize();
-				for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.frame.getAwtComponent(), javax.swing.JComponent.class ) ) {
+				for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this.documentFrame.getFrame().getAwtComponent(), javax.swing.JComponent.class ) ) {
 					component.setLocale( locale );
 					component.setComponentOrientation( java.awt.ComponentOrientation.getOrientation( locale ) );
 					component.revalidate();
@@ -236,102 +202,6 @@ public abstract class Application {
 
 	public abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
 
-	//	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-	//		if( message instanceof org.lgna.croquet.components.Component<?> ) {
-	//			message = ( (org.lgna.croquet.components.Component<?>)message ).getAwtComponent();
-	//		}
-	//		javax.swing.JOptionPane.showMessageDialog( this.frame.getAwtComponent(), message, title, messageType.getInternal(), icon );
-	//	}
-	//
-	//	public void showMessageDialog( Object message, String title, MessageType messageType ) {
-	//		showMessageDialog( message, title, messageType, null );
-	//	}
-	//
-	//	public void showMessageDialog( Object message, String title ) {
-	//		showMessageDialog( message, title, MessageType.QUESTION );
-	//	}
-	//
-	//	public void showMessageDialog( Object message ) {
-	//		showMessageDialog( message, null );
-	//	}
-
-	//	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-	//		return YesNoCancelOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.getInternal(), icon ) );
-	//	}
-	//
-	//	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType ) {
-	//		return showYesNoCancelConfirmDialog( message, title, messageType, null );
-	//	}
-	//
-	//	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title ) {
-	//		return showYesNoCancelConfirmDialog( message, title, MessageType.QUESTION );
-	//	}
-	//
-	//	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message ) {
-	//		return showYesNoCancelConfirmDialog( message, null );
-	//	}
-
-	//	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
-	//		return YesNoOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAwtComponent(), message, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.getInternal(), icon ) );
-	//	}
-	//
-	//	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType ) {
-	//		return showYesNoConfirmDialog( message, title, messageType, null );
-	//	}
-	//
-	//	public YesNoOption showYesNoConfirmDialog( Object message, String title ) {
-	//		return showYesNoConfirmDialog( message, title, MessageType.QUESTION );
-	//	}
-	//
-	//	public YesNoOption showYesNoConfirmDialog( Object message ) {
-	//		return showYesNoConfirmDialog( message, null );
-	//	}
-
-	//	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, int initialValueIndex ) {
-	//		Object[] options = { optionA, optionB };
-	//		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
-	//		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtComponent(), text, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.getInternal(), icon, options, initialValue );
-	//		switch( result ) {
-	//		case javax.swing.JOptionPane.YES_OPTION:
-	//			return options[ 0 ];
-	//		case javax.swing.JOptionPane.NO_OPTION:
-	//			return options[ 1 ];
-	//		default:
-	//			return null;
-	//		}
-	//	}
-	//
-	//	public Object showOptionDialog( String text, String title, MessageType messageType, javax.swing.Icon icon, Object optionA, Object optionB, Object optionC, int initialValueIndex ) {
-	//		Object[] options = { optionA, optionB, optionC };
-	//		Object initialValue = initialValueIndex >= 0 ? options[ initialValueIndex ] : null;
-	//		int result = javax.swing.JOptionPane.showOptionDialog( this.frame.getAwtComponent(), text, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.getInternal(), icon, options, initialValue );
-	//		switch( result ) {
-	//		case javax.swing.JOptionPane.YES_OPTION:
-	//			return options[ 0 ];
-	//		case javax.swing.JOptionPane.NO_OPTION:
-	//			return options[ 1 ];
-	//		case javax.swing.JOptionPane.CANCEL_OPTION:
-	//			return options[ 2 ];
-	//		default:
-	//			return null;
-	//		}
-	//
-	//	}
-
-	@Deprecated
-	public java.io.File showOpenFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
-	}
-
-	@Deprecated
-	public java.io.File showSaveFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAwtComponent(), directory, filename, extension, isSharingDesired );
-	}
-
-	public java.io.File showOpenFileDialog( java.util.UUID sharingId, String dialogTitle, java.io.File initialDirectory, String initialFilename, java.io.FilenameFilter filenameFilter ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( sharingId, this.peekWindow().getAwtComponent(), dialogTitle, initialDirectory, initialFilename, filenameFilter );
-	}
-
 	private boolean isDragInProgress = false;
 
 	@Deprecated
@@ -353,4 +223,7 @@ public abstract class Application {
 			this.getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction().addMenuSelection( menuSelection );
 		}
 	}
+
+	private final edu.cmu.cs.dennisc.java.util.DStack<org.lgna.croquet.views.AbstractWindow<?>> stack;
+	private final DocumentFrame documentFrame;
 }

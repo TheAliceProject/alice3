@@ -42,6 +42,7 @@
  */
 package org.alice.ide.croquet.models.menubar;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,8 +55,48 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 		return SingletonHolder.instance;
 	}
 
+	private static org.lgna.croquet.BooleanState createSgDebugFrameLazyIsFrameShowingState() {
+		org.lgna.croquet.BooleanState rv = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createNoArgumentConstructorInstance(
+				org.lgna.croquet.Application.INFORMATION_GROUP,
+				org.lgna.debug.tree.croquet.SgDebugFrame.class );
+
+		rv.initializeIfNecessary();
+		rv.setTextForBothTrueAndFalse( "Debug SceneGraph" );
+		rv.getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F7, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK ) );
+
+		return rv;
+	}
+
+	private static org.lgna.croquet.BooleanState createGlrDebugFrameLazyIsFrameShowingState() {
+		org.lgna.croquet.BooleanState rv = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createNoArgumentConstructorInstance(
+				org.lgna.croquet.Application.INFORMATION_GROUP,
+				org.lgna.debug.tree.croquet.GlrDebugFrame.class );
+
+		rv.initializeIfNecessary();
+		rv.setTextForBothTrueAndFalse( "Debug Render" );
+		rv.getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F8, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK ) );
+
+		return rv;
+	}
+
+	private static org.lgna.croquet.BooleanState createPickDebugFrameLazyIsFrameShowingState() {
+		org.lgna.croquet.BooleanState rv = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createNoArgumentConstructorInstance(
+				org.lgna.croquet.Application.INFORMATION_GROUP,
+				org.lgna.debug.pick.croquet.PickDebugFrame.class );
+
+		rv.initializeIfNecessary();
+		rv.setTextForBothTrueAndFalse( "Debug Pick" );
+		rv.getImp().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK ) );
+
+		return rv;
+	}
+
 	private InternalTestingMenuModel() {
 		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
+				createSgDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
+				createGlrDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
+				createPickDebugFrameLazyIsFrameShowingState().getMenuItemPrepModel(),
+				SEPARATOR,
 				org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel(),
 				SEPARATOR,
 				org.alice.ide.javacode.croquet.JavaCodeFrameComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel(),

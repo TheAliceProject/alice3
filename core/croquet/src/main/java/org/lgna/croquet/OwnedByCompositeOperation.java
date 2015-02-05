@@ -45,38 +45,12 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class OwnedByCompositeOperation extends ActionOperation {
-	public static final class Resolver extends IndirectResolver<OwnedByCompositeOperation, OperationOwningComposite<?>> {
-		private final String subKeyText;
-
-		private Resolver( OperationOwningComposite<?> indirect, String subKeyText ) {
-			super( indirect );
-			this.subKeyText = subKeyText;
-		}
-
-		public Resolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-			this.subKeyText = binaryDecoder.decodeString();
-		}
-
-		@Override
-		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-			super.encode( binaryEncoder );
-			binaryEncoder.encode( this.subKeyText );
-		}
-
-		@Override
-		protected OwnedByCompositeOperation getDirect( OperationOwningComposite<?> indirect ) {
-			return indirect.getLaunchOperation( this.subKeyText );
-		}
-	}
-
-	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite, OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.Initializer<org.lgna.croquet.OperationOwningComposite> initializer ) {
-		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ) );
+public final class OwnedByCompositeOperation<C extends OperationOwningComposite<?>> extends AbstractOwnedByCompositeOperation<C> {
+	public OwnedByCompositeOperation( Group group, C composite, OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.Initializer<C> initializer ) {
+		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ), initializer );
 		assert subKey != null : composite;
 		this.composite = composite;
 		this.subKey = subKey;
-		this.initializer = initializer;
 	}
 
 	@Override
@@ -86,52 +60,33 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	}
 
 	@Override
-	public boolean isToolBarTextClobbered() {
-		return this.composite.isToolBarTextClobbered( this.subKey, super.isToolBarTextClobbered() );
+	protected String getSubKeyForLocalization() {
+		return this.subKey.getText();
 	}
 
-	public OperationOwningComposite getComposite() {
+	@Override
+	public C getComposite() {
 		return this.composite;
 	}
 
 	@Override
-	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
-		//todo
-		return ( (AbstractComposite<?>)this.composite ).getClassUsedForLocalization();
+	protected org.lgna.croquet.OwnedByCompositeOperationSubKey getSubKey() {
+		return this.subKey;
 	}
 
 	@Override
-	protected String getSubKeyForLocalization() {
-		return this.subKey.getText();
+	protected Class<? extends Element> getClassUsedForLocalization() {
+		//todo
+		return ( (AbstractComposite<?>)this.composite ).getClassUsedForLocalization();
 	}
 
 	//todo: pass subKey into composite methods
 
 	@Override
 	protected String modifyNameIfNecessary( String text ) {
-		return this.composite.modifyNameIfNecessary( this.subKey, super.modifyNameIfNecessary( text ) );
+		return this.composite.modifyNameIfNecessary( this.getSubKey(), super.modifyNameIfNecessary( text ) );
 	}
 
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
-		if( this.initializer != null ) {
-			this.initializer.initialize( this.composite );
-		}
-		this.composite.perform( this.subKey, completionStep );
-	}
-
-	@Override
-	protected boolean isSubTransactionHistoryRequired() {
-		return this.composite.isSubTransactionHistoryRequired();
-	}
-
-	@Override
-	protected Resolver createResolver() {
-		return new Resolver( this.composite, this.subKey.getText() );
-	}
-
-	private final OperationOwningComposite composite;
+	private final C composite;
 	private final OwnedByCompositeOperationSubKey subKey;
-	private final org.lgna.croquet.Initializer<org.lgna.croquet.OperationOwningComposite> initializer;
 }

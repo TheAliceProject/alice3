@@ -49,9 +49,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 
-public class BasicTreeNode extends DefaultMutableTreeNode implements Comparable {
+/*package-private*/class BasicTreeNode extends DefaultMutableTreeNode implements Comparable {
 
-	public enum Difference
+	public static enum Difference
 	{
 		NONE,
 		NEW_NODE,

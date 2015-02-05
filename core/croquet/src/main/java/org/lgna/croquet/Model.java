@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface Model extends Element, org.lgna.croquet.resolvers.RuntimeResolver<Model> {
+public interface Model extends Element {
 	public Iterable<ContextFactory<?>> getContextFactories();
 
 	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );

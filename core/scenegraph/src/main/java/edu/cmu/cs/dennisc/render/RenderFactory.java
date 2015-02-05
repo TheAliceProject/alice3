@@ -51,11 +51,13 @@ public interface RenderFactory {
 
 	ImageBuffer createTransparentBackgroundImageBuffer();
 
-	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget();
+	HeavyweightOnscreenRenderTarget createHeavyweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities );
 
-	LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget();
+	LightweightOnscreenRenderTarget createLightweightOnscreenRenderTarget( RenderCapabilities requestedCapabilities );
 
-	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith );
+	OffscreenRenderTarget createOffscreenRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities );
+
+	ImageCaptureRenderTarget createImageCaptureRenderTarget( int width, int height, RenderTarget renderTargetToShareContextWith, RenderCapabilities requestedCapabilities );
 
 	void acquireRenderingLock();
 

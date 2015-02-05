@@ -57,25 +57,6 @@ public abstract class MethodInvocationEdit extends org.lgna.croquet.edits.Abstra
 		this.argumentExpressions = argumentExpressions;
 	}
 
-	public MethodInvocationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		org.lgna.project.Project project = org.alice.ide.IDE.getActiveInstance().getProject();
-		//todo: support retarget
-		org.lgna.croquet.resolvers.Resolver<org.alice.ide.instancefactory.InstanceFactory> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.instanceFactory = resolver.getResolved();
-		this.method = org.lgna.project.io.IoUtilities.decodeNode( project, binaryDecoder );
-		this.argumentExpressions = null;
-		assert false : this.argumentExpressions;
-	}
-
-	@Override
-	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.instanceFactory.getResolver() );
-		org.lgna.project.io.IoUtilities.encodeNode( binaryEncoder, this.method );
-		assert false : this.argumentExpressions;
-	}
-
 	protected abstract void preserveUndoInfo( Object instance, boolean isDo );
 
 	@Override

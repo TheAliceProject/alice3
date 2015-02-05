@@ -80,7 +80,7 @@ public class ImportTypeWizard extends org.lgna.croquet.SimpleOperationWizardDial
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return this.addMembersPage.createEdit( completionStep );
 	}
 

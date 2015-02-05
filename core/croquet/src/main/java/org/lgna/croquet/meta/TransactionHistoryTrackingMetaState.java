@@ -57,7 +57,7 @@ public abstract class TransactionHistoryTrackingMetaState<T> extends MetaState<T
 		}
 	};
 
-	private final java.util.Stack<org.lgna.croquet.history.TransactionNode<?>> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<org.lgna.croquet.history.TransactionNode<?>> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	public void pushActivation( org.lgna.croquet.history.TransactionNode<?> transactionNode ) {
 		if( this.stack.size() > 0 ) {

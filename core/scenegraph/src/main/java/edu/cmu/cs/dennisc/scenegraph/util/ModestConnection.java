@@ -51,15 +51,13 @@ import edu.cmu.cs.dennisc.scenegraph.Vertex;
  * @author Dennis Cosgrove
  */
 public class ModestConnection extends Connection {
-	private LineStrip m_sgLineStrip = new LineStrip();
-
 	public ModestConnection() {
 		Vertex[] vertices = new Vertex[ 32 ];
 		for( int i = 0; i < vertices.length; i++ ) {
 			vertices[ i ] = Vertex.createXYZ( 0, 0, 0 );
 		}
-		m_sgLineStrip.vertices.setValue( vertices );
-		geometries.setValue( new Geometry[] { m_sgLineStrip } );
+		this.sgLineStrip.vertices.setValue( vertices );
+		geometries.setValue( new Geometry[] { this.sgLineStrip } );
 		getSGFrontFacingAppearance().setShadingStyle( ShadingStyle.NONE );
 	}
 
@@ -70,7 +68,7 @@ public class ModestConnection extends Connection {
 		edu.cmu.cs.dennisc.math.polynomial.HermiteCubic x = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( 0, m.translation.x, 0, s * m.orientation.backward.x );
 		edu.cmu.cs.dennisc.math.polynomial.HermiteCubic y = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( 0, m.translation.y, 0, s * m.orientation.backward.y );
 		edu.cmu.cs.dennisc.math.polynomial.HermiteCubic z = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( 0, m.translation.z, -s, -s * m.orientation.backward.z );
-		Vertex[] vertices = m_sgLineStrip.vertices.getValue();
+		Vertex[] vertices = this.sgLineStrip.vertices.getValue();
 		synchronized( vertices ) {
 			double tDelta = 1.0 / ( vertices.length - 1 );
 			double t = tDelta;
@@ -78,7 +76,9 @@ public class ModestConnection extends Connection {
 				vertices[ i ].position.set( x.evaluate( t ), y.evaluate( t ), z.evaluate( t ) );
 				t += tDelta;
 			}
-			m_sgLineStrip.vertices.touch();
+			this.sgLineStrip.vertices.touch();
 		}
 	}
+
+	private final LineStrip sgLineStrip = new LineStrip();
 }

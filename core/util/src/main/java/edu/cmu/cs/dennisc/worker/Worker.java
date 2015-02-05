@@ -49,7 +49,7 @@ public abstract class Worker<T> extends AbstractWorker<T, Void> {
 	private final InternalSwingWorker swingWorker = new InternalSwingWorker();
 
 	@Override
-	protected javax.swing.SwingWorker<T, java.lang.Void> getSwingWorker() {
+	protected javax.swing.SwingWorker<T, Void> getSwingWorker() {
 		return this.swingWorker;
 	}
 }

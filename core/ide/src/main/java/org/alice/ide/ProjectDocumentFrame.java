@@ -109,6 +109,14 @@ public class ProjectDocumentFrame {
 		return this.iconFactoryManager;
 	}
 
+	public org.lgna.croquet.Operation getResourcesDialogLaunchOperation() {
+		return this.resourcesDialogLaunchOperation;
+	}
+
+	public org.lgna.croquet.BooleanState getStasticsFrameIsShowingState() {
+		return this.stasticsFrameIsShowingState;
+	}
+
 	private final ApiConfigurationManager apiConfigurationManager;
 
 	private org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> typeMetaState;
@@ -123,4 +131,23 @@ public class ProjectDocumentFrame {
 	private final org.alice.stageide.perspectives.PerspectiveState perspectiveState;
 
 	private final org.alice.ide.iconfactory.IconFactoryManager iconFactoryManager;
+
+	private final org.lgna.croquet.Operation resourcesDialogLaunchOperation = org.lgna.croquet.imp.launch.LazySimpleLaunchOperationFactory.createInstance(
+			org.alice.ide.resource.manager.ResourceManagerComposite.class,
+			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.resource.manager.ResourceManagerComposite>() {
+				@Override
+				protected org.alice.ide.resource.manager.ResourceManagerComposite create() {
+					return new org.alice.ide.resource.manager.ResourceManagerComposite( ProjectDocumentFrame.this );
+				}
+			}, org.lgna.croquet.Application.DOCUMENT_UI_GROUP ).getLaunchOperation();
+
+	private final org.lgna.croquet.BooleanState stasticsFrameIsShowingState = org.lgna.croquet.imp.frame.LazyIsFrameShowingState.createInstance(
+			org.lgna.croquet.Application.INFORMATION_GROUP,
+			org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite.class,
+			new edu.cmu.cs.dennisc.pattern.Lazy<org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite>() {
+				@Override
+				protected org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite create() {
+					return new org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite( ProjectDocumentFrame.this );
+				}
+			} );
 }

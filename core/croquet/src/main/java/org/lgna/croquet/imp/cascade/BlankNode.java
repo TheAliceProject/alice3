@@ -57,10 +57,6 @@ public class BlankNode<B> extends CascadeNode<AbstractItemNode<B, ?, org.lgna.cr
 
 	private RtBlank<B> rtBlank;
 
-	public BlankNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
 	/* package-private */void setRtBlank( RtBlank<B> rtBlank ) {
 		this.rtBlank = rtBlank;
 	}

@@ -54,7 +54,7 @@ public class AliceIssueSubmissionProgressWorker extends org.lgna.issue.IssueSubm
 	}
 
 	@Override
-	protected Boolean doInternal_onBackgroundThread( edu.cmu.cs.dennisc.issue.Issue.Builder issueBuilder ) throws java.lang.Exception {
+	protected Boolean doInternal_onBackgroundThread( edu.cmu.cs.dennisc.issue.Issue.Builder issueBuilder ) throws Exception {
 		this.publish( "issueBuilder: " + issueBuilder );
 		this.publish( "attach project: " + this.isProjectAttachmentDesired );
 		for( int i = 0; i < 20; i++ ) {

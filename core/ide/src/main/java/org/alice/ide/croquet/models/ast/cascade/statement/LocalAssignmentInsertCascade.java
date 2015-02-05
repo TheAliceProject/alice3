@@ -55,7 +55,7 @@ public class LocalAssignmentInsertCascade extends SimpleAssignmentInsertCascade 
 	}
 
 	@Override
-	protected java.lang.String getDeclarationName() {
+	protected String getDeclarationName() {
 		return this.local.getName();
 	}
 

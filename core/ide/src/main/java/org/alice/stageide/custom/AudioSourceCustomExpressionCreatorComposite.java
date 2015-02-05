@@ -70,7 +70,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 	};
 	private org.lgna.croquet.event.ValueListener<Integer> stopValueListiner = new org.lgna.croquet.event.ValueListener<Integer>() {
 		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<java.lang.Integer> e ) {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<Integer> e ) {
 			updateStartValueIfNecessary();
 		}
 	};
@@ -146,7 +146,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 
 	private final org.lgna.croquet.Operation testOperation = this.createActionOperation( "test", new Action() {
 		@Override
-		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.common.resources.AudioResource audioResource = getAudioResourceExpressionState().getAudioResource();
 			double volume = VolumeLevelUtilities.toDouble( getVolumeState().getValue() );
 			double startTime = getStartMarkerTime();

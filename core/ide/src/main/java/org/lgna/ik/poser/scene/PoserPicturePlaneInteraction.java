@@ -62,7 +62,6 @@ import edu.cmu.cs.dennisc.render.OnscreenRenderTarget;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
-import examples.math.pictureplane.PicturePlaneInteraction;
 
 /**
  * @author Matt May

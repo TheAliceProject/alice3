@@ -43,7 +43,6 @@
 
 package org.alice.interact.manipulator.scenegraph;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.interact.manipulator.SnapUtilities;
@@ -84,8 +83,6 @@ public class SnapGrid extends Transformable implements PropertyListener {
 		this.sgGridVisual.geometries.setValue( new Geometry[] { this.sgXLines, this.sgZLines } );
 		this.sgGridVisual.setParent( this );
 
-		this.camerasToTrack = new LinkedList<AbstractCamera>();
-
 		this.setOpacity( .3f );
 		this.setGridLines( .5 );
 		this.setColor( Color4f.PINK );
@@ -104,7 +101,6 @@ public class SnapGrid extends Transformable implements PropertyListener {
 	public void setCurrentCamera( AbstractCamera camera ) {
 		this.currentCamera = camera;
 		setSnapGridBasedOnCameraPosition();
-
 	}
 
 	public void addCamera( AbstractCamera camera ) {
@@ -230,14 +226,14 @@ public class SnapGrid extends Transformable implements PropertyListener {
 	public void propertyChanging( PropertyEvent e ) {
 	}
 
-	private SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
-	private LineArray sgXLines;
-	private LineArray sgZLines;
-	private Visual sgGridVisual;
+	private final SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
+	private final LineArray sgXLines;
+	private final LineArray sgZLines;
+	private final Visual sgGridVisual;
 	private double gridSpacing = .5d;
 
 	private float opacity = .5f;
 
-	private List<AbstractCamera> camerasToTrack;
+	private final List<AbstractCamera> camerasToTrack = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private AbstractCamera currentCamera;
 }

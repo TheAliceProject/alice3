@@ -42,25 +42,23 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.util;
 
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-
 /**
  * @author Dennis Cosgrove
  */
-public class ModelTransformable extends Transformable {
-	private ModelVisual m_sgVisual = new ModelVisual();
-
+public class ModelTransformable extends edu.cmu.cs.dennisc.scenegraph.Transformable {
 	public ModelTransformable() {
-		m_sgVisual.setParent( this );
+		this.sgVisual.setParent( this );
 	}
 
 	public ModelVisual getSGVisual() {
-		return m_sgVisual;
+		return this.sgVisual;
 	}
 
 	@Override
 	public void setName( String name ) {
 		super.setName( name );
-		m_sgVisual.setName( name + ".m_sgVisual" );
+		this.sgVisual.setName( name + ".sgVisual" );
 	}
+
+	private final ModelVisual sgVisual = new ModelVisual();
 }

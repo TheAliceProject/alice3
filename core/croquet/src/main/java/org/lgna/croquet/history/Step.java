@@ -48,17 +48,13 @@ package org.lgna.croquet.history;
 public abstract class Step<M extends org.lgna.croquet.Model> extends TransactionNode<Transaction> {
 
 	private final java.util.List<org.lgna.croquet.Context> contexts;
-	private final org.lgna.croquet.resolvers.Resolver<M> modelResolver;
+	private final M model;
 	private final org.lgna.croquet.triggers.Trigger trigger;
 	private final java.util.UUID id;
 
 	public Step( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent );
-		if( model != null ) {
-			this.modelResolver = model.getResolver();
-		} else {
-			this.modelResolver = new org.lgna.croquet.resolvers.NullResolver<M>();
-		}
+		this.model = model;
 		if( trigger != null ) {
 			this.trigger = trigger;
 		} else {
@@ -77,15 +73,6 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		this.contexts = java.util.Collections.unmodifiableList( contexts );
 	}
 
-	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.trigger = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		this.id = binaryDecoder.decodeId();
-		org.lgna.croquet.Context[] contexts = binaryDecoder.decodeBinaryEncodableAndDecodableArray( org.lgna.croquet.Context.class );
-		this.contexts = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( contexts ) );
-	}
-
 	public static class Key<T> {
 		public static <T> Key<T> createInstance( String repr ) {
 			return new Key<T>( repr );
@@ -98,7 +85,7 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 		}
 
 		@Override
-		public java.lang.String toString() {
+		public String toString() {
 			return this.repr;
 		}
 	}
@@ -119,15 +106,6 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 
 	public <T> void removeEphemeralDataFor( Key<T> key ) {
 		this.dataMap.remove( key );
-	}
-
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.modelResolver );
-		binaryEncoder.encode( this.trigger );
-		binaryEncoder.encode( this.id );
-		org.lgna.croquet.Context[] contexts = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.contexts, org.lgna.croquet.Context.class );
-		binaryEncoder.encode( contexts );
 	}
 
 	@Override
@@ -170,20 +148,12 @@ public abstract class Step<M extends org.lgna.croquet.Model> extends Transaction
 	}
 
 	public M getModel() {
-		return this.modelResolver.getResolved();
+		return this.model;
 	}
 
 	/* This is here to clarify the structure of the transaction history tree */
 	public Transaction getOwnerTransaction() {
 		return this.getOwner();
-	}
-
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		for( org.lgna.croquet.Context context : this.contexts ) {
-			context.retarget( retargeter );
-		}
-		this.modelResolver.retarget( retargeter );
-		this.trigger.retarget( retargeter );
 	}
 
 	protected StringBuilder updateRepr( StringBuilder rv ) {

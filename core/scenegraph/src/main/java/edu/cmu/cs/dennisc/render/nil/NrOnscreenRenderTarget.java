@@ -48,7 +48,8 @@ import java.awt.Dimension;
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class NrOnscreenRenderTarget<C extends java.awt.Component> extends NrRenderTarget implements edu.cmu.cs.dennisc.render.OnscreenRenderTarget<C> {
-	public NrOnscreenRenderTarget( C awtComponent ) {
+	public NrOnscreenRenderTarget( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities, C awtComponent ) {
+		super( requestedCapabilities );
 		this.awtComponent = awtComponent;
 	}
 

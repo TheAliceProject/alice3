@@ -54,10 +54,10 @@ public class Vectors {
 		return new java.util.Vector<E>();
 	}
 
-	public static <E> java.util.Vector<E> newVector( E... array ) {
+	public static <E, X extends E> java.util.Vector<E> newVector( X... array ) {
 		java.util.Vector<E> rv = new java.util.Vector<E>();
 		if( array != null ) {
-			edu.cmu.cs.dennisc.java.lang.ArrayUtilities.set( rv, array );
+			java.util.Collections.addAll( rv, array );
 		}
 		return rv;
 	}

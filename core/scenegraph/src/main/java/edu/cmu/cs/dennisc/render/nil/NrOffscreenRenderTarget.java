@@ -46,7 +46,8 @@ package edu.cmu.cs.dennisc.render.nil;
  * @author Dennis Cosgrove
  */
 /*package-private*/class NrOffscreenRenderTarget extends NrRenderTarget implements edu.cmu.cs.dennisc.render.OffscreenRenderTarget {
-	public NrOffscreenRenderTarget( int width, int height, edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith ) {
+	public NrOffscreenRenderTarget( int width, int height, edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		super( requestedCapabilities );
 		this.surfaceSize = new java.awt.Dimension( width, height );
 		this.renderTargetToShareContextWith = renderTargetToShareContextWith;
 	}

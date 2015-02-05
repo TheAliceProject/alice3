@@ -55,13 +55,15 @@ public enum IdePerspectiveCodec implements org.lgna.croquet.ItemCodec<org.alice.
 
 	@Override
 	public org.alice.ide.perspectives.ProjectPerspective decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.lgna.croquet.resolvers.Resolver<org.alice.ide.perspectives.ProjectPerspective> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		return resolver.getResolved();
+		throw new RuntimeException( "todo" );
+		//org.lgna.croquet.resolvers.Resolver<org.alice.ide.perspectives.ProjectPerspective> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		//return resolver.getResolved();
 	}
 
 	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.perspectives.ProjectPerspective value ) {
-		binaryEncoder.encode( value.getResolver() );
+		throw new RuntimeException( "todo" );
+		//binaryEncoder.encode( value.getResolver() );
 	}
 
 	@Override

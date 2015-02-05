@@ -48,16 +48,8 @@ package org.alice.ide.localize.review.croquet;
 public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.alice.ide.localize.review.croquet.views.LocalizeReviewFrameView> {
 	private static final String SUFFIX = ".properties";
 
-	private static class SingletonHolder {
-		private static LocalizeReviewFrame instance = new LocalizeReviewFrame();
-	}
-
-	public static LocalizeReviewFrame getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private LocalizeReviewFrame() {
-		super( java.util.UUID.fromString( "2652798a-f27d-4658-8907-3f0b6bb0aac2" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+	public LocalizeReviewFrame() {
+		super( java.util.UUID.fromString( "2652798a-f27d-4658-8907-3f0b6bb0aac2" ) );
 		this.tableModel = new LocalizationTableModel();
 	}
 
@@ -99,7 +91,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 		return this.tableModel;
 	}
 
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<java.util.Locale> localeState = this.createImmutableListState( "localeState", java.util.Locale.class, org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON, 0,
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<java.util.Locale> localeState = this.createImmutableListState( "localeState", java.util.Locale.class, org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON, 13,
 			new java.util.Locale( "pt" ),
 			new java.util.Locale( "pt", "BR" ),
 			new java.util.Locale( "es" ),
@@ -176,6 +168,8 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 
 			java.util.List<Item> _allItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
+			java.util.Locale prevLocale = java.util.Locale.getDefault();
+			java.util.Locale.setDefault( new java.util.Locale( "en", "US" ) );
 			for( String classPathEntry : classPathEntries ) {
 				String bundleName = classPathEntry.substring( 0, classPathEntry.length() - SUFFIX.length() );
 				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName );
@@ -183,6 +177,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 					_allItems.add( new Item( bundleName, key, resourceBundle.getString( key ) ) );
 				}
 			}
+			java.util.Locale.setDefault( prevLocale );
 
 			this.allItems = java.util.Collections.unmodifiableList( _allItems );
 		}
@@ -190,8 +185,13 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 		public void setLocale( java.util.Locale locale ) {
 			java.util.List<Item> _translatedItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( Item item : this.allItems ) {
-				java.util.ResourceBundle resourceBundleB = java.util.ResourceBundle.getBundle( item.bundleName, locale );
-				item.localizedValue = resourceBundleB.getString( item.key );
+				java.util.ResourceBundle resourceBundleB = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( item.bundleName, locale );
+				try {
+					item.localizedValue = resourceBundleB.getString( item.key );
+				} catch( java.util.MissingResourceException mre ) {
+					item.localizedValue = "MissingResourceException";
+					mre.printStackTrace();
+				}
 			}
 			this.translatedItems = java.util.Collections.unmodifiableList( _translatedItems );
 			this.fireTableDataChanged();
@@ -257,16 +257,5 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 		private final java.util.List<Item> allItems;
 		private java.util.List<Item> translatedItems;
 		private boolean isIncludingUntranslated;
-	}
-
-	public static void main( String[] args ) throws Exception {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-				LocalizeReviewFrame.getInstance().getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
-			}
-		} );
 	}
 }

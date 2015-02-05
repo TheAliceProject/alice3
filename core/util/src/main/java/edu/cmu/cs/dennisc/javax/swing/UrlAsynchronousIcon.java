@@ -60,7 +60,7 @@ public class UrlAsynchronousIcon extends AsynchronousWorkerIcon {
 	}
 
 	@Override
-	protected javax.swing.Icon do_onBackgroundThread() throws java.lang.Exception {
+	protected javax.swing.Icon do_onBackgroundThread() throws Exception {
 		return IconUtilities.createImageIcon( this.url );
 	}
 

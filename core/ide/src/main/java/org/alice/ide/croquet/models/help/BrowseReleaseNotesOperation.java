@@ -46,15 +46,7 @@ package org.alice.ide.croquet.models.help;
  * @author Dennis Cosgrove
  */
 public class BrowseReleaseNotesOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
-	private static class SingletonHolder {
-		private static BrowseReleaseNotesOperation instance = new BrowseReleaseNotesOperation();
-	}
-
-	public static BrowseReleaseNotesOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private BrowseReleaseNotesOperation() {
+	public BrowseReleaseNotesOperation() {
 		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ), org.alice.ide.help.HelpBrowserOperation.HELP_URL_SPEC + "w/page/57571480/Release%20Notes%20Alice%203_1" );
 	}
 }

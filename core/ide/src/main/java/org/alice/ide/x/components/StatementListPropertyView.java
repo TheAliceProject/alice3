@@ -283,7 +283,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	}
 
 	private org.lgna.project.ast.Node getOwningBlockStatementOwningNode() {
-		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.getProperty().getOwner();
+		edu.cmu.cs.dennisc.property.InstancePropertyOwner owner = this.getProperty().getOwner();
 		if( owner instanceof org.lgna.project.ast.BlockStatement ) {
 			org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)owner;
 			return blockStatement.getParent();

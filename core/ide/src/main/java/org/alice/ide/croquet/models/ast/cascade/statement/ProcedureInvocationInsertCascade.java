@@ -75,9 +75,4 @@ public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertC
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createMethodInvocation( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue().createExpression(), this.method, expressions );
 	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndMethodStaticGetInstanceResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairAndMethodStaticGetInstanceResolver( this );
-	}
 }
