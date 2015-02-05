@@ -76,6 +76,6 @@ public class ThisExpressionDragModel extends AbstractExpressionDragModel {
 
 	@Override
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
-		return org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().getValue();
+		return org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
 	}
 }

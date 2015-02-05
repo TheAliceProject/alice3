@@ -124,7 +124,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		default:
 			break; //Do nothing
 		}
-		return new Color4f( desiredColor );
+		return org.lgna.story.EmployeesOnly.createColor4f( desiredColor );
 	}
 
 	protected abstract void createShape();

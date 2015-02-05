@@ -139,7 +139,8 @@ public class IncompleteAstUtilities {
 	}
 
 	public static org.lgna.project.ast.MethodInvocation completeMethodInvocation( org.lgna.project.ast.MethodInvocation rv, org.lgna.project.ast.Expression... argumentExpressions ) {
-		return org.lgna.project.ast.AstUtilities.completeMethodInvocation( rv, org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue().createExpression(), argumentExpressions );
+		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
+		return org.lgna.project.ast.AstUtilities.completeMethodInvocation( rv, projectDocumentFrame.getInstanceFactoryState().getValue().createExpression(), argumentExpressions );
 	}
 
 	public static org.lgna.project.ast.FieldAccess createIncompleteFieldAccess( org.lgna.project.ast.AbstractField field ) {

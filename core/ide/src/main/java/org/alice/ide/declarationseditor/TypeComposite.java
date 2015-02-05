@@ -134,7 +134,7 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 
 	@Override
 	public boolean isCloseable() {
-		DeclarationTabState tabState = DeclarationsEditorComposite.getInstance().getTabState();
+		DeclarationTabState tabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		for( DeclarationComposite tab : tabState ) {
 			if( tab != null ) {
 				if( ( tab != this ) && ( tab.getType() == this.getDeclaration() ) ) {

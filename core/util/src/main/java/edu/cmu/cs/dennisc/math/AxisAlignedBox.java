@@ -354,7 +354,7 @@ public final class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEnco
 		}
 	}
 
-	public Hexahedron getHexahedron( Hexahedron rv ) {
+	public Point3[] getPoints() {
 		Point3[] points = {
 				new Point3( this.minimum.x, this.minimum.y, this.minimum.z ),
 				new Point3( this.maximum.x, this.minimum.y, this.minimum.z ),
@@ -365,6 +365,11 @@ public final class AxisAlignedBox implements edu.cmu.cs.dennisc.codec.BinaryEnco
 				new Point3( this.minimum.x, this.maximum.y, this.maximum.z ),
 				new Point3( this.maximum.x, this.maximum.y, this.maximum.z )
 		};
+		return points;
+	}
+
+	public Hexahedron getHexahedron( Hexahedron rv ) {
+		Point3[] points = this.getPoints();
 		Vector3[] normals = {
 				new Vector3( +1, 0, 0 ),
 				new Vector3( -1, 0, 0 ),

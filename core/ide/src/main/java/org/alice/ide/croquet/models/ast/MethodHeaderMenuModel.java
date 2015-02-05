@@ -67,7 +67,7 @@ public class MethodHeaderMenuModel extends org.lgna.croquet.StaticMenuModel {
 	@Override
 	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
 		//todo
-		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame();
+		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
 		return new org.lgna.croquet.StandardMenuItemPrepModel[] {
 				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( this.method ).getLaunchOperation().getMenuItemPrepModel(),
 				projectDocumentFrame.getFindComposite().getMemberReferencesOperationInstance( this.method ).getMenuItemPrepModel()

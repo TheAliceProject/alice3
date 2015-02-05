@@ -64,7 +64,7 @@ public class MethodTemplateMenuModel extends org.lgna.croquet.PredeterminedMenuM
 	private MethodTemplateMenuModel( org.lgna.project.ast.UserMethod method ) {
 		super( java.util.UUID.fromString( "96831579-1fb6-4c15-a509-ccdcc51458a8" ),
 				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getLaunchOperation().getMenuItemPrepModel(),
-				org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getItemSelectionOperationForMethod( method ).getMenuItemPrepModel(),
+				org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod( method ).getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( method ).getMenuItemPrepModel() );
 		this.method = method;

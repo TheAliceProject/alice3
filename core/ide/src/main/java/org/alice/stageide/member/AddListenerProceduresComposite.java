@@ -74,7 +74,7 @@ public class AddListenerProceduresComposite extends org.alice.ide.member.Filtere
 
 	@Override
 	public boolean isShowingDesired() {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite composite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance();
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite composite = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite();
 		if( composite != null ) {
 			org.alice.ide.declarationseditor.DeclarationTabState tabState = composite.getTabState();
 			if( tabState != null ) {

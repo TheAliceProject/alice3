@@ -86,8 +86,7 @@ public class TreeUtilities {
 	}
 
 	private static ClassHierarchyBasedResourceNode createTreeBasedOnClassHierarchy() {
-		org.lgna.story.resourceutilities.StorytellingResources storytellingResources = org.lgna.story.resourceutilities.StorytellingResources.getInstance();
-		org.lgna.story.resourceutilities.ModelResourceTreeNode root = storytellingResources.getGalleryTree();
+		org.lgna.story.resourceutilities.ModelResourceTreeNode root = org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils.INSTANCE.getGalleryTree();
 		return createNode( root, new RootResourceKey( "all classes" ) );
 	}
 

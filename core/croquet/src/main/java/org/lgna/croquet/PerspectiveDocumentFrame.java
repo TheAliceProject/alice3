@@ -40,43 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.scenesetup.croquet;
+package org.lgna.croquet;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class SceneSetupPerspective extends org.alice.ide.perspectives.ProjectPerspective {
-	public SceneSetupPerspective( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.alice.ide.croquet.models.MenuBarComposite menuBar ) {
-		super( java.util.UUID.fromString( "7b59bece-fa31-4a4c-ac94-5a8f17dfccd3" ), projectDocumentFrame, menuBar );
+public abstract class PerspectiveDocumentFrame extends org.lgna.croquet.DocumentFrame {
+	private Perspective perspective;
+
+	public Perspective getPerspective() {
+		return this.perspective;
 	}
 
-	@Override
-	public SceneSetupMainComposite getMainComposite() {
-		return this.mainComposite;
-	}
-
-	@Override
-	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
-		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
-			return org.alice.stageide.perspectives.scenesetup.SetupSceneToolBarComposite.getInstance();
-		} else {
-			return null;
+	public void setPerspective( Perspective perspective ) {
+		if( this.perspective != perspective ) {
+			this.perspective = perspective;
+			MenuBarComposite menuBarComposite;
+			ToolBarComposite toolBarComposite;
+			Composite<?> mainComposite;
+			if( this.perspective != null ) {
+				menuBarComposite = this.perspective.getMenuBarComposite();
+				toolBarComposite = this.perspective.getToolBarComposite();
+				mainComposite = this.perspective.getMainComposite();
+			} else {
+				menuBarComposite = null;
+				toolBarComposite = null;
+				mainComposite = null;
+			}
+			org.lgna.croquet.views.Frame frame = this.getFrame();
+			frame.setMenuBarComposite( menuBarComposite );
+			frame.setToolBarComposite( toolBarComposite );
+			frame.setMainComposite( mainComposite );
 		}
 	}
-
-	@Override
-	public org.lgna.croquet.views.TrackableShape getRenderWindow() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
-	}
-
-	@Override
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		return null;
-	}
-
-	@Override
-	protected void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
-	}
-
-	private final SceneSetupMainComposite mainComposite = new SceneSetupMainComposite();
 }

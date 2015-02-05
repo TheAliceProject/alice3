@@ -40,14 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.nebulous;
+package org.lgna.croquet.simple;
 
 /**
- * @author alice
- * 
+ * @author Dennis Cosgrove
  */
-public interface NebulousPaint extends org.lgna.story.Paint {
+/*package-private*/class SimpleDocumentFrame extends org.lgna.croquet.DocumentFrame {
 
-	public NebulousTexture getTexture();
+	@Override
+	public org.lgna.croquet.Document getDocument() {
+		return this.document;
+	}
 
+	private final org.lgna.croquet.Document document = new org.lgna.croquet.Document() {
+		private final org.lgna.croquet.history.TransactionHistory transactionHistory = new org.lgna.croquet.history.TransactionHistory();
+
+		@Override
+		public org.lgna.croquet.history.TransactionHistory getRootTransactionHistory() {
+			return this.transactionHistory;
+		}
+
+		@Override
+		public org.lgna.croquet.undo.UndoHistory getUndoHistory( org.lgna.croquet.Group group ) {
+			return null;
+		}
+	};
 }

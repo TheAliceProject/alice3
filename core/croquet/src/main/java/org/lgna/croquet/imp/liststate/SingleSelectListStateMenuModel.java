@@ -49,7 +49,7 @@ import org.lgna.croquet.SingleSelectListState;
 /**
  * @author Dennis Cosgrove
  */
-public class SingleSelectListStateMenuModel<T, D extends org.lgna.croquet.data.ListData<T>> extends MenuModel {
+/*package-private*/class SingleSelectListStateMenuModel<T, D extends org.lgna.croquet.data.ListData<T>> extends MenuModel {
 	/*package-private*/SingleSelectListStateMenuModel( SingleSelectListState<T, D> listSelectionState ) {
 		super( java.util.UUID.fromString( "e33bc1ff-3790-4715-b88c-3c978aa16947" ), listSelectionState.getClass() );
 		this.listSelectionState = listSelectionState;

@@ -61,7 +61,7 @@ public final class NonSceneTypeComposite extends org.lgna.croquet.SimpleComposit
 	}
 
 	public org.lgna.croquet.Operation getSelectSceneTypeOperation() {
-		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
+		return org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
 	}
 
 	@Override

@@ -40,31 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.scenesetup.croquet;
+package edu.cmu.cs.dennisc.math.immutable;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SceneSetupMainComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.scenesetup.croquet.views.SceneSetupMainPane> {
-	public SceneSetupMainComposite() {
-		super( java.util.UUID.fromString( "e9b6f450-0b21-4d73-b14c-d8b2ae20e71a" ) );
+public final class MPoint2I {
+	public MPoint2I( int x, int y ) {
+		this.x = x;
+		this.y = y;
 	}
 
-	@Override
-	protected org.alice.stageide.scenesetup.croquet.views.SceneSetupMainPane createView() {
-		return new org.alice.stageide.scenesetup.croquet.views.SceneSetupMainPane( this );
-	}
-
-	public org.lgna.croquet.SplitComposite getSplitComposite() {
-		return this.splitComposite;
-	}
-
-	public org.alice.stageide.gallerybrowser.GalleryComposite getGalleryComposite() {
-		return this.galleryComposite;
-	}
-
-	private final SceneComposite sceneComposite = new SceneComposite();
-	private final org.alice.stageide.sceneeditor.side.SideComposite sideComposite = new org.alice.stageide.sceneeditor.side.SideComposite();
-	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( this.sceneComposite, this.sideComposite, 1.0 );
-	private final org.alice.stageide.gallerybrowser.GalleryComposite galleryComposite = new org.alice.stageide.gallerybrowser.GalleryComposite();
+	public final int x;
+	public final int y;
 }

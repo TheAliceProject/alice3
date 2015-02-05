@@ -50,10 +50,11 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 
 	public AddMethodComposite( java.util.UUID migrationId, Details details, org.lgna.project.ast.UserType<?> declaringType ) {
 		super( migrationId, details );
+		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			this.getLaunchOperation().addContextFactory( org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState() );
+			this.getLaunchOperation().addContextFactory( projectDocumentFrame.getDeclarationsEditorComposite().getTabState() );
 		} else {
-			this.getLaunchOperation().addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+			this.getLaunchOperation().addContextFactory( projectDocumentFrame.getInstanceFactoryState() );
 			this.getLaunchOperation().addContextFactory( org.alice.ide.members.MembersComposite.getInstance().getTabState() );
 		}
 		this.declaringType = declaringType;

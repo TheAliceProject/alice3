@@ -46,21 +46,15 @@ package org.alice.ide.perspectives.noproject;
  * @author Dennis Cosgrove
  */
 public class NoProjectPerspective extends org.lgna.croquet.AbstractPerspective {
-	private static class SingletonHolder {
-		private static NoProjectPerspective instance = new NoProjectPerspective();
-	}
-
-	public static NoProjectPerspective getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private NoProjectPerspective() {
+	public NoProjectPerspective( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( java.util.UUID.fromString( "b907ab09-7537-4e93-9999-f3a55b561a0c" ) );
+		this.menuBarComposite = new MenuBarComposite( projectDocumentFrame );
+		this.mainComposite = new MainComposite( projectDocumentFrame );
 	}
 
 	@Override
 	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
-		return MenuBarComposite.getInstance();
+		return this.menuBarComposite;
 	}
 
 	@Override
@@ -70,6 +64,9 @@ public class NoProjectPerspective extends org.lgna.croquet.AbstractPerspective {
 
 	@Override
 	public org.lgna.croquet.Composite<?> getMainComposite() {
-		return MainComposite.getInstance();
+		return this.mainComposite;
 	}
+
+	private final MainComposite mainComposite;
+	private final MenuBarComposite menuBarComposite;
 }

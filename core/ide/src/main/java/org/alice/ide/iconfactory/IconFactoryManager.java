@@ -47,4 +47,6 @@ package org.alice.ide.iconfactory;
  */
 public interface IconFactoryManager {
 	org.lgna.croquet.icon.IconFactory getIconFactory( org.lgna.project.ast.UserField field, org.lgna.croquet.icon.IconFactory defaultIconFactory );
+
+	void markIconFactoryForFieldDirty( org.lgna.project.ast.UserField field );
 }

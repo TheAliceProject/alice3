@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<install4j version="5.1.12" transformSequenceNumber="4">
+<install4j version="5.1.15" transformSequenceNumber="4">
   <directoryPresets config="./installerFiles" />
-  <application name="Alice 3" distributionSourceDir="" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="Alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="http://www.alice.org" version="3.1.93.0.0" allPathsRelative="true" backupOnSave="false" autoSave="true" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.6" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
+  <application name="Alice 3" distributionSourceDir="" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="Alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="http://www.alice.org" version="3.2.4.0.0" allPathsRelative="true" backupOnSave="false" autoSave="true" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.6" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
       <principalLanguage id="en" customLocalizationFile="" />
       <additionalLanguages>
@@ -137,7 +137,7 @@
       <component name="aliceCore" id="87" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="false" hidden="true">
         <description />
         <include all="false">
-          <entry location="lib/alice" fileType="regular" />
+          <entry location="lib" fileType="regular" />
         </include>
         <dependencies />
       </component>
@@ -158,11 +158,18 @@
         </include>
         <dependencies />
       </component>
+      <component name="aliceStarterProjects" id="200" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="true" downloadable="false" hidden="false">
+        <description />
+        <include all="false">
+          <entry location="application/starter-projects" fileType="regular" />
+        </include>
+        <dependencies />
+      </component>
     </components>
   </files>
   <launchers>
     <launcher name="Alice 3" id="24" customizedId="" external="false" excludeFromMenu="false" unixMode="755" menuName="" icnsFile="./installerFiles/macIcon_flat.icns" customMacBundleIdentifier="false" macBundleIdentifier="" swtApp="false" fileset="" macBundleBinary="JavaApplicationStub" addMacEntitlements="false" macEntitlementsFile="">
-      <executable name="Alice 3" type="1" iconSet="true" iconFile="" executableDir="." redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="false" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false">
+      <executable name="Alice 3" type="1" iconSet="true" iconFile="" executableDir="." redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="false" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false" singleInstanceActivate="true">
         <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" />
       </executable>
       <splashScreen show="true" autoOff="true" alwaysOnTop="true" width="684" height="301" bitmapFile="./installerFiles/SplashScreen.png" java6SplashScreen="false">
@@ -199,11 +206,13 @@
           <archive location="ext/javax/media/jmf/2.1.1e/jmf-2.1.1e.jar" failOnError="true" />
           <archive location="ext/net/java/dev/jna/jna/3.5.2/jna-3.5.2.jar" failOnError="true" />
           <archive location="ext/net/java/dev/jna/platform/3.5.2/platform-3.5.2.jar" failOnError="true" />
+          <archive location="ext/org/alice/alice-model-source/2014.08.20/alice-model-source-2014.08.20.jar" failOnError="true" />
           <archive location="ext/org/alice/external/wrapped-flow-layout/1.0/wrapped-flow-layout-1.0.jar" failOnError="true" />
+          <archive location="ext/org/alice/nonfree/nebulous-model-source/2014.09.11/nebulous-model-source-2014.09.11.jar" failOnError="true" />
           <archive location="ext/org/apache/httpcomponents/httpclient/4.0.3/httpclient-4.0.3.jar" failOnError="true" />
           <archive location="ext/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar" failOnError="true" />
-          <archive location="ext/org/jogamp/gluegen/gluegen-rt/2.1.5-01/gluegen-rt-2.1.5-01.jar" failOnError="true" />
-          <archive location="ext/org/jogamp/jogl/jogl-all/2.1.5-01/jogl-all-2.1.5-01.jar" failOnError="true" />
+          <archive location="ext/org/jogamp/gluegen/gluegen-rt/2.2.4/gluegen-rt-2.2.4.jar" failOnError="true" />
+          <archive location="ext/org/jogamp/jogl/jogl-all/2.2.4/jogl-all-2.2.4.jar" failOnError="true" />
           <archive location="ext/org/mortbay/jetty/jetty/6.1.26/jetty-6.1.26.jar" failOnError="true" />
           <archive location="ext/org/mortbay/jetty/jetty-util/6.1.26/jetty-util-6.1.26.jar" failOnError="true" />
           <archive location="ext/org/mortbay/jetty/servlet-api/2.5-20081211/servlet-api-2.5-20081211.jar" failOnError="true" />
@@ -212,9 +221,18 @@
           <archive location="ext/uk/co/mmscomputing/mmsc/1.0/mmsc-1.0.jar" failOnError="true" />
           <archive location="ext/wsdl4j/wsdl4j/1.5.1/wsdl4j-1.5.1.jar" failOnError="true" />
           <archive location="ext/xpp3/xpp3/1.1.4c/xpp3-1.1.4c.jar" failOnError="true" />
-          <archive location="lib/alice/alicecore.jar" failOnError="true" />
-          <archive location="ext/org/alice/alice-model-source/alice-model-source-*.jar" failOnError="true" />
-          <archive location="ext/org/alice/nonfree/nebulous-model-source/nebulous-model-source-*.jar" failOnError="true" />
+          <archive location="lib/alice-ide-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/ast-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/croquet-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/glrender-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/i18n-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/ide-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/image-editor-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/issue-reporting-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/scenegraph-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/story-api-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/story-api-migration-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/util-0.0.1-SNAPSHOT.jar" failOnError="true" />
         </classPath>
         <nativeLibraryDirectories />
       </java>
@@ -351,6 +369,94 @@
                 <condition>context.getBooleanVariable("sys.confirmedUpdateInstallation")</condition>
               </action>
             </actions>
+            <formComponents />
+          </screen>
+          <screen name="" id="253" customizedId="" beanClass="com.install4j.runtime.beans.screens.LicenseScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="false" wizardIndexChangeType="unchanged" wizardIndexKey="">
+            <serializedBean>
+              <java class="java.beans.XMLDecoder">
+                <object class="com.install4j.runtime.beans.screens.LicenseScreen">
+                  <void property="displayedText">
+                    <string>Alice 3 End User License Agreement
+
+Copyright (c) 2006-2015, Carnegie Mellon University. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+3. Products derived from the software may not be called "Alice", nor may "Alice" appear in their name, without prior written permission of Carnegie Mellon University.
+
+4. All advertising materials mentioning features or use of this software must display the following acknowledgement: "This product includes software developed by Carnegie Mellon University"
+
+5. The gallery of art assets and animations provided with this software is contributed by Electronic Arts Inc. and may be used for personal, non-commercial, and academic use only. Redistributions of any program source code that utilizes The Sims 2 Assets must also retain the copyright notice, list of conditions and the disclaimer contained in The Alice 3.0 Art Gallery License.
+
+DISCLAIMER:
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+---
+
+THE ALICE 3.0 ART GALLERY LICENSE.
+
+The Alice 3.0 gallery of The Sims 2 art assets and animations is provided by Electronic Arts Inc. pursuant to this license.  Copyright (c) 2004 Electronic Arts Inc. All rights reserved.
+
+Redistribution and use of the The Sims 2 art assets, animations, and other materials ("The Sims 2 Assets"), without modification, are permitted solely with programs written with Alice 3.0 for personal, non-commercial, and academic use only, provided that the following conditions are met:
+
+1. Redistributions of any program source code that uses The Sims 2 Assets must retain the above copyright notice, this list of conditions and the following disclaimer. 
+
+2. Redistributions of any program in binary form that uses The Sims 2 Assets must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the Electronic Arts Inc. nor any of its trademarks, including the trademark THE SIMS 2, may be used to endorse or promote programs or products derived from Alice 3.0 without specific prior written permission from Electronic Arts Inc.
+
+4. All promotional materials mentioning features or use of Alice 3.0 must display the following acknowledgement: "This program/product includes art and animations developed by Electronic Arts Inc."
+
+THE SIMS 2 ASSETS ARE PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO THE USE OF OR OTHER DEALINGS WITH THE SIMS 2 ASSETS, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+---
+
+Looking Glass Walk And Touch API End User License Agreement
+
+Copyright (c) 2008-2015, Washington University in St. Louis. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+3. Products derived from the software may not be called "Looking Glass", nor may "Looking Glass" appear in their name, without prior written permission of Washington University in St. Louis.
+
+4. All advertising materials mentioning features or use of this software must display the following acknowledgement: "This product includes software developed by Washington University in St. Louis"
+
+5. The gallery of art assets and animations provided with this software is contributed by Electronic Arts Inc. and may be used for personal, non-commercial, and academic use only. Redistributions of any program source code that utilizes The Sims 2 Assets must also retain the copyright notice, list of conditions and the disclaimer contained in The Alice 3.0 Art Gallery License.
+
+DISCLAIMER:
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</string>
+                  </void>
+                  <void property="displayedTextFile">
+                    <void property="languageIdToExternalFile">
+                      <void method="put">
+                        <string>en</string>
+                        <object class="com.install4j.api.beans.ExternalFile">
+                          <string>${installer:sys.contentDir}/application/EULA_Alice3.txt</string>
+                        </object>
+                      </void>
+                    </void>
+                  </void>
+                  <void property="textSource">
+                    <object class="com.install4j.runtime.beans.screens.components.TextSource" field="DIRECT" />
+                  </void>
+                </object>
+              </java>
+            </serializedBean>
+            <condition />
+            <validation />
+            <preActivation />
+            <postActivation />
+            <actions />
             <formComponents />
           </screen>
           <screen name="" id="4" customizedId="" beanClass="com.install4j.runtime.beans.screens.InstallationDirectoryScreen" enabled="true" commentSet="false" comment="" actionElevationType="inherit" rollbackBarrier="false" backButton="2" finishScreen="false" wizardIndexChangeType="unchanged" wizardIndexKey="">
@@ -670,7 +776,7 @@
     </applications>
   </installerGui>
   <mediaSets>
-    <windows name="Windows 64 Offline" id="101" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="64" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="windows-amd64-1.7.0_67" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-amd64-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerDataTest" verifyIntegrity="true">
+    <windows name="Windows 64 Offline" id="101" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="64" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="windows-amd64-1.8.0_31" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-amd64-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerDataTest" verifyIntegrity="true">
       <excludedLaunchers />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
@@ -688,7 +794,7 @@
       <excludedComponents />
       <includedDownloadableComponents />
     </windows>
-    <macos name="Mac OS X Single Bundle Offline" id="105" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="macosx-amd64-1.7.0_67" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/macosx-amd64-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" appleJre="false" requiredVmIdPrefix="" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" signLaunchers="false" launcherId="24">
+    <macos name="Mac OS X Single Bundle Offline" id="105" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="macosx-amd64-1.8.0_31_unpacked" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/macosx-amd64-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" appleJre="false" requiredVmIdPrefix="" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" launcherId="24">
       <excludedBeans>
         <bean refId="142" />
       </excludedBeans>
@@ -727,7 +833,7 @@
         <content />
       </installerScript>
     </unixInstaller>
-    <windows name="Windows 32 Offline" id="117" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="windows-x86-1.7.0_67" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-x86-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" verifyIntegrity="true">
+    <windows name="Windows 32 Offline" id="117" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="windows-x86-1.8.0_31" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-x86-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" verifyIntegrity="true">
       <excludedLaunchers />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />

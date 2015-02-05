@@ -21,7 +21,7 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 		}
 		else
 		{
-			StorytellingResources.getInstance().loadSimsBundles();
+			StorytellingResources.INSTANCE.loadSimsBundles();
 		}
 		//		Manager.setDebugDraw( true );
 	}

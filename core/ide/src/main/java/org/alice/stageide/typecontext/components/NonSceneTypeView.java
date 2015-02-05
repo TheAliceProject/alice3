@@ -79,12 +79,12 @@ class SelectedTypeView extends org.lgna.croquet.views.BorderPanel {
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		super.handleAddedTo( parent );
-		org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().addAndInvokeValueListener( this.typeListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addAndInvokeValueListener( this.typeListener );
 	}
 
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.views.AwtComponentView<?> parent ) {
-		org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().removeValueListener( this.typeListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().removeValueListener( this.typeListener );
 		super.handleRemovedFrom( parent );
 	}
 }

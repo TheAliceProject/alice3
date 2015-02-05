@@ -70,7 +70,7 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 	private static org.lgna.croquet.undo.UndoHistory getProjectUndoHistory() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			org.alice.ide.ProjectDocument document = ide.getDocument();
+			org.alice.ide.ProjectDocument document = ide.getDocumentFrame().getDocument();
 			if( document != null ) {
 				return document.getUndoHistory( org.alice.ide.IDE.PROJECT_GROUP );
 			}

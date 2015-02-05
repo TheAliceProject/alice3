@@ -68,8 +68,9 @@ public class DeclarationMeta {
 
 	private static org.lgna.project.ast.AbstractDeclaration prevDeclaration;
 	static {
-		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().addNewSchoolValueListener( perspectiveListener );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addNewSchoolValueListener( declarationTabListener );
+		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
+		projectDocumentFrame.getPerspectiveState().addNewSchoolValueListener( perspectiveListener );
+		projectDocumentFrame.getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( declarationTabListener );
 		prevDeclaration = getDeclaration();
 	}
 
@@ -91,10 +92,10 @@ public class DeclarationMeta {
 
 	public static org.lgna.project.ast.AbstractDeclaration getDeclaration() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		if( ide.isInSetupScenePerspective() ) {
+		if( ide.getDocumentFrame().isInSetupScenePerspective() ) {
 			return ide != null ? ide.getPerformEditorGeneratedSetUpMethod() : null;
 		} else {
-			org.alice.ide.declarationseditor.DeclarationComposite declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
+			org.alice.ide.declarationseditor.DeclarationComposite declarationComposite = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
 			return declarationComposite != null ? declarationComposite.getDeclaration() : null;
 		}
 	}

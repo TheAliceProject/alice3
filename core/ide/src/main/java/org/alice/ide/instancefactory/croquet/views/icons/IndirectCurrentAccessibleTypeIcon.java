@@ -51,7 +51,7 @@ public enum IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
 	private static final java.awt.Dimension SIZE = new java.awt.Dimension( 32, 24 );
 
 	private org.lgna.croquet.icon.IconFactory getCurrentAccessibleTypeIconFactory() {
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 		if( instanceFactory != null ) {
 			org.lgna.croquet.icon.IconFactory rv = null;
 			if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {

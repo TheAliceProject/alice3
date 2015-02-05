@@ -219,7 +219,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
 			@Override
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( InternalButton.this.instanceFactory );
+				org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().setValueTransactionlessly( InternalButton.this.instanceFactory );
 			}
 
 		};
@@ -305,7 +305,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 	private static final class InternalPanel extends org.lgna.croquet.views.Panel {
 		public InternalPanel() {
 			this.setBackgroundColor( null );
-			this.dropDown = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
+			this.dropDown = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getCascadeRoot().getPopupPrepModel().createPopupButton();
 		}
 
 		private InternalButton getButtonFor( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
@@ -348,7 +348,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 			}
 
 			this.internalAddComponent( this.dropDown );
-			this.setSelected( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue() );
+			this.setSelected( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue() );
 		}
 
 		private void setSelected( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
@@ -374,7 +374,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.views.PanelV
 	}
 
 	public InstanceFactorySelectionPanel() {
-		super( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance(), new InternalPanel() );
+		super( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState(), new InternalPanel() );
 		this.setBackgroundColor( null );
 		this.getAwtComponent().setOpaque( false );
 	}

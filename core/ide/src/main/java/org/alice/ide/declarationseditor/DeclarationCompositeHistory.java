@@ -73,7 +73,7 @@ public class DeclarationCompositeHistory {
 
 	private DeclarationCompositeHistory() {
 		org.alice.ide.project.ProjectDocumentState.getInstance().addNewSchoolValueListener( this.projectListener );
-		DeclarationsEditorComposite.getInstance().getTabState().addNewSchoolValueListener( this.declarationListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addNewSchoolValueListener( this.declarationListener );
 		this.resetStack();
 	}
 
@@ -146,7 +146,7 @@ public class DeclarationCompositeHistory {
 	private void resetStack() {
 		this.history.clear();
 		this.index = -1;
-		this.appendIfAppropriate( DeclarationsEditorComposite.getInstance().getTabState().getValue() );
+		this.appendIfAppropriate( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue() );
 		this.update();
 	}
 
@@ -155,7 +155,7 @@ public class DeclarationCompositeHistory {
 		try {
 			this.index = index;
 			this.update();
-			org.alice.ide.IDE.getActiveInstance().selectDeclarationComposite( this.history.get( this.index ) );
+			org.alice.ide.IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( this.history.get( this.index ) );
 			//			DeclarationTabState.getInstance().setValue( this.history.get( this.index ) );
 		} finally {
 			this.popIgnore();

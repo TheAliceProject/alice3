@@ -48,8 +48,8 @@ package org.alice.ide.croquet.models.menubar;
 public class EditMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	public EditMenuModel( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ),
-				org.alice.ide.croquet.models.history.UndoOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.history.RedoOperation.getInstance().getMenuItemPrepModel(),
+				projectDocumentFrame.getUndoOperation().getMenuItemPrepModel(),
+				projectDocumentFrame.getRedoOperation().getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.croquet.models.clipboard.CutOperation.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.clipboard.CopyOperation.getInstance().getMenuItemPrepModel(),

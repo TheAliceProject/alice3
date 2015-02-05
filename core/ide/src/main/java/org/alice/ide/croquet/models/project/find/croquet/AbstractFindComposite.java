@@ -126,11 +126,11 @@ public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompos
 			SearchTreeNode nextValue = e.getNextValue();
 			if( isNavigationEnabledState.getValue() && ( nextValue != null ) ) {
 				if( nextValue.getValue() instanceof Expression ) {
-					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
+					IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
 					searchResultsState.getValue().stencilHighlightForReference( (Expression)nextValue.getValue() );
 				} else {
-					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getChildren().get( 0 ).getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
-					IDE.getActiveInstance().getHighlightStencil().hideIfNecessary();
+					IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getChildren().get( 0 ).getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
+					IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().hideIfNecessary();
 				}
 			}
 		}

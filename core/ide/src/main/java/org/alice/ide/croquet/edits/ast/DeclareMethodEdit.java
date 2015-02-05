@@ -121,7 +121,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 			//todo: create new every time?
 			this.method = new org.lgna.project.ast.UserMethod( this.methodName, this.returnType, new org.lgna.project.ast.UserParameter[ 0 ], this.body );
 		}
-		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		this.prevDeclarationComposite = declarationTabState.getValue();
 		this.declaringType.methods.add( this.method );
 		declarationTabState.setValueTransactionlessly( org.alice.ide.declarationseditor.CodeComposite.getInstance( this.method ) );
@@ -132,7 +132,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 		int index = this.declaringType.methods.indexOf( this.method );
 		if( index != -1 ) {
 			this.declaringType.methods.remove( index );
-			org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+			org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 			if( this.prevDeclarationComposite != null ) {
 				if( declarationTabState.containsItem( this.prevDeclarationComposite ) ) {
 					declarationTabState.setValueTransactionlessly( this.prevDeclarationComposite );

@@ -48,8 +48,8 @@ package org.alice.ide.croquet.models.projecturi;
 public abstract class PotentialClearanceUriCreatorIteratingOperation extends UriPotentialClearanceIteratingOperation {
 	private final boolean isNew;
 
-	public PotentialClearanceUriCreatorIteratingOperation( java.util.UUID migrationId, boolean isNew ) {
-		super( migrationId, org.alice.ide.projecturi.SelectProjectUriComposite.getInstance().getValueCreator() );
+	public PotentialClearanceUriCreatorIteratingOperation( java.util.UUID migrationId, org.alice.ide.ProjectDocumentFrame projectDocumentFrame, boolean isNew ) {
+		super( migrationId, projectDocumentFrame, org.alice.ide.projecturi.SelectProjectUriComposite.getInstance().getValueCreator() );
 		this.isNew = isNew;
 	}
 

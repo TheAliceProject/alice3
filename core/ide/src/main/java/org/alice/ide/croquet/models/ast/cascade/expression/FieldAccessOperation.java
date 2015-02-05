@@ -70,7 +70,7 @@ public class FieldAccessOperation extends org.alice.ide.croquet.models.ast.casca
 	@Override
 	protected org.lgna.project.ast.Expression createExpression() {
 		return org.lgna.project.ast.AstUtilities.createFieldAccess(
-				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue().createExpression(),
+				org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue().createExpression(),
 				this.field
 				);
 	}

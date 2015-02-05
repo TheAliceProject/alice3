@@ -86,7 +86,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 
 	@Override
 	protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		DeclarationTabState declarationTabState = DeclarationsEditorComposite.getInstance().getTabState();
+		DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> procedureModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> functionModels = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
@@ -136,10 +136,9 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		procedureModels.add( org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( this.type ).getLaunchOperation().getMenuItemPrepModel() );
 		functionModels.add( org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( this.type ).getLaunchOperation().getMenuItemPrepModel() );
 
-		DeclarationTabState tabState = DeclarationsEditorComposite.getInstance().getTabState();
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
-		org.lgna.croquet.Operation operation = tabState.getItemSelectionOperationForType( type );
+		org.lgna.croquet.Operation operation = declarationTabState.getItemSelectionOperationForType( type );
 		operation.setName( type.getName() );
 
 		if( data.contains( DeclarationComposite.getInstance( type ) ) ) {

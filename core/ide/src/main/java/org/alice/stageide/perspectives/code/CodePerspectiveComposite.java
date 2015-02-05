@@ -59,7 +59,7 @@ public class CodePerspectiveComposite extends org.lgna.croquet.LazyImmutableSpli
 
 	@Override
 	protected org.lgna.croquet.Composite<?> createTrailingComposite() {
-		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance();
+		return this.projectDocumentFrame.getDeclarationsEditorComposite();
 	}
 
 	public void incrementIgnoreDividerLocationChangeCount() {

@@ -45,36 +45,37 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public/*abstract*/class DocumentFrame {
+public abstract class DocumentFrame {
 	public DocumentFrame() {
 		this.frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.DO_NOTHING );
 		this.frame.addWindowListener( this.windowListener );
+		this.stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack( this.getFrame() );
 	}
 
-	//public abstract Document getDocument();
+	public abstract Document getDocument();
 
 	public org.lgna.croquet.views.Frame getFrame() {
 		return this.frame;
 	}
 
-	//	public void pushWindow( org.lgna.croquet.views.AbstractWindow<?> window ) {
-	//		this.stack.push( window );
-	//	}
-	//
-	//	public org.lgna.croquet.views.AbstractWindow<?> popWindow() {
-	//		org.lgna.croquet.views.AbstractWindow<?> rv = this.stack.peek();
-	//		this.stack.pop();
-	//		return rv;
-	//	}
-	//
-	//	public org.lgna.croquet.views.AbstractWindow<?> peekWindow() {
-	//		if( this.stack.size() > 0 ) {
-	//			return this.stack.peek();
-	//		} else {
-	//			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "window stack is empty" );
-	//			return null;
-	//		}
-	//	}
+	public void pushWindow( org.lgna.croquet.views.AbstractWindow<?> window ) {
+		this.stack.push( window );
+	}
+
+	public org.lgna.croquet.views.AbstractWindow<?> popWindow() {
+		org.lgna.croquet.views.AbstractWindow<?> rv = this.stack.peek();
+		this.stack.pop();
+		return rv;
+	}
+
+	public org.lgna.croquet.views.AbstractWindow<?> peekWindow() {
+		if( this.stack.size() > 0 ) {
+			return this.stack.peek();
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "window stack is empty" );
+			return null;
+		}
+	}
 
 	@Deprecated
 	public java.io.File showOpenFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
@@ -87,7 +88,7 @@ public/*abstract*/class DocumentFrame {
 	}
 
 	public java.io.File showOpenFileDialog( java.util.UUID sharingId, String dialogTitle, java.io.File initialDirectory, String initialFilename, java.io.FilenameFilter filenameFilter ) {
-		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( sharingId, Application.getActiveInstance().peekWindow().getAwtComponent(), dialogTitle, initialDirectory, initialFilename, filenameFilter );
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( sharingId, this.peekWindow().getAwtComponent(), dialogTitle, initialDirectory, initialFilename, filenameFilter );
 	}
 
 	private final org.lgna.croquet.views.Frame frame = org.lgna.croquet.views.Frame.getApplicationRootFrame();
@@ -123,4 +124,5 @@ public/*abstract*/class DocumentFrame {
 		public void windowDeiconified( java.awt.event.WindowEvent e ) {
 		}
 	};
+	private final edu.cmu.cs.dennisc.java.util.DStack<org.lgna.croquet.views.AbstractWindow<?>> stack;
 }

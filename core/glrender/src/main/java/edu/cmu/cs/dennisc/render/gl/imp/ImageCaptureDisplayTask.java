@@ -67,6 +67,7 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
 			if( this.renderTask != null ) {
 				this.renderTask.render( new GlrRenderContext( this.viewport, drawable ) );
 			}
+			gl.glFlush();
 
 			int x;
 			int y;

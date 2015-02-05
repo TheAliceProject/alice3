@@ -110,7 +110,7 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 			fallbackIconFactory = super.getIconFactory();
 		}
 
-		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame();
+		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
 		if( projectDocumentFrame != null ) {
 			return projectDocumentFrame.getIconFactoryManager().getIconFactory( this.field, fallbackIconFactory );
 		} else {

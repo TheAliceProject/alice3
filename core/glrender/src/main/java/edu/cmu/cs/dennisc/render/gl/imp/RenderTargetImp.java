@@ -319,6 +319,7 @@ public class RenderTargetImp {
 					} finally {
 						this.reusableLookingGlassRenderEvent.epilogue();
 					}
+					this.renderContext.gl.glFlush();
 					if( ( this.rvColorBuffer != null ) || ( this.rvDepthBuffer != null ) ) {
 						this.renderContext.captureBuffers( this.rvColorBuffer, this.rvDepthBuffer, this.atIsUpsideDown );
 					}

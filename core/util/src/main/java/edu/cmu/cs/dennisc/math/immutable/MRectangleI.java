@@ -40,18 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.scenesetup.croquet;
+package edu.cmu.cs.dennisc.math.immutable;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SceneComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.views.Panel> {
-	public SceneComposite() {
-		super( java.util.UUID.fromString( "69ab798c-8ce4-432d-90d0-ea829a5eda3a" ) );
+public final class MRectangleI {
+	public MRectangleI( int x, int y, int width, int height ) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
 	}
 
-	@Override
-	protected org.lgna.croquet.views.Panel createView() {
-		return new org.lgna.croquet.views.BorderPanel();
-	}
+	public final int x;
+	public final int y;
+	public final int width;
+	public final int height;
 }

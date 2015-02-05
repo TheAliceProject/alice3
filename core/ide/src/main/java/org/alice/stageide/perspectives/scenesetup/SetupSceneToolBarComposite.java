@@ -46,22 +46,12 @@ package org.alice.stageide.perspectives.scenesetup;
  * @author Dennis Cosgrove
  */
 public class SetupSceneToolBarComposite extends org.alice.ide.toolbar.croquet.IdeToolBar {
-	private static class SingletonHolder {
-		private static SetupSceneToolBarComposite instance = new SetupSceneToolBarComposite();
-	}
-
-	public static SetupSceneToolBarComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final java.util.List<? extends org.lgna.croquet.Element> subElements;
-
-	private SetupSceneToolBarComposite() {
+	public SetupSceneToolBarComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( java.util.UUID.fromString( "c8f85598-a2dc-4b49-bf68-ef374763596f" ) );
 		java.util.List<org.lgna.croquet.Element> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		org.alice.stageide.perspectives.ToolBarUtilities.appendDocumentSubElements( list );
-		org.alice.stageide.perspectives.ToolBarUtilities.appendUndoRedoSubElements( list );
-		org.alice.stageide.perspectives.ToolBarUtilities.appendRunSubElements( list );
+		org.alice.stageide.perspectives.ToolBarUtilities.appendDocumentSubElements( projectDocumentFrame, list );
+		org.alice.stageide.perspectives.ToolBarUtilities.appendUndoRedoSubElements( projectDocumentFrame, list );
+		org.alice.stageide.perspectives.ToolBarUtilities.appendRunSubElements( projectDocumentFrame, list );
 		this.subElements = java.util.Collections.unmodifiableList( list );
 	}
 
@@ -69,4 +59,6 @@ public class SetupSceneToolBarComposite extends org.alice.ide.toolbar.croquet.Id
 	public Iterable<? extends org.lgna.croquet.Element> getSubElements() {
 		return this.subElements;
 	}
+
+	private final java.util.List<? extends org.lgna.croquet.Element> subElements;
 }

@@ -62,6 +62,15 @@ package org.alice.stageide.iconfactory;
 		return sizeIfResolutionIndependent;
 	}
 
+	public void markAllIconsDirty() {
+		for( javax.swing.Icon icon : this.getMapValues() ) {
+			if( icon instanceof FieldIcon ) {
+				FieldIcon fieldIcon = (FieldIcon)icon;
+				fieldIcon.markDirty();
+			}
+		}
+	}
+
 	private final org.lgna.project.ast.UserField field;
 	private final org.lgna.croquet.icon.IconFactory fallbackIconFactory;
 }

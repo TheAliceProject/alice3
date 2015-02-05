@@ -25,6 +25,7 @@ ALICE_3_LIBRARY_XML_TEXT = """
 
 		<resource>jar:nbinst://org.alice.netbeans/modules/ext/util-0.0.1-SNAPSHOT.jar!/</resource>
 		<resource>jar:nbinst://org.alice.netbeans/modules/ext/scenegraph-0.0.1-SNAPSHOT.jar!/</resource>
+		<resource>jar:nbinst://org.alice.netbeans/modules/ext/glrender-0.0.1-SNAPSHOT.jar!/</resource>
 		<resource>jar:nbinst://org.alice.netbeans/modules/ext/story-api-0.0.1-SNAPSHOT.jar!/</resource>
 		<resource>jar:nbinst://org.alice.netbeans/modules/ext/alice-model-source-___ALICE_MODEL_SOURCE_VERSION___.jar!/</resource>
 		<resource>jar:nbinst://org.alice.netbeans/modules/ext/nebulous-model-source-___NEBULOUS_MODEL_SOURCE_VERSION___.jar!/</resource>
@@ -262,6 +263,10 @@ PROJECT_XML_TEXT = """
             <class-path-extension>
                 <runtime-relative-path>ext/scenegraph-0.0.1-SNAPSHOT.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/scenegraph-0.0.1-SNAPSHOT.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/glrender-0.0.1-SNAPSHOT.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/glrender-0.0.1-SNAPSHOT.jar</binary-origin>
             </class-path-extension>
         </data>
     </configuration>

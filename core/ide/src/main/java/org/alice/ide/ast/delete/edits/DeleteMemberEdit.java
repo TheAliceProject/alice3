@@ -84,7 +84,7 @@ public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember
 		owner.remove( this.index );
 		//todo: remove
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		declarationTabState.removeAllOrphans();
 	}
 

@@ -61,7 +61,7 @@ public class DynamicOneShotMenuModel extends org.lgna.croquet.MenuModel {
 	@Override
 	public void handlePopupMenuPrologue( org.lgna.croquet.views.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 		org.lgna.croquet.views.MenuItemContainerUtilities.setMenuElements( popupMenu, OneShotUtilities.createMenuItemPrepModels( instanceFactory ) );
 	}
 

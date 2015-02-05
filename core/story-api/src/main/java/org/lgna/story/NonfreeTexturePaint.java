@@ -40,24 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.nebulous;
+package org.lgna.story;
 
 /**
- * @author alice
- * 
+ * @author Dennis Cosgrove
  */
-public enum Texture implements NebulousPaint {
-	COOL_WALL,
-	COOL_WOOD_FLOOR,
-	CHECKERS_CEILING;
+public interface NonfreeTexturePaint extends Paint {
+	boolean isTextureValid();
 
-	private NebulousTexture nebulousTexture;
+	edu.cmu.cs.dennisc.texture.Texture getTexture();
 
-	@Override
-	public NebulousTexture getTexture() {
-		if( this.nebulousTexture == null ) {
-			this.nebulousTexture = new NebulousTexture( this.toString() );
-		}
-		return this.nebulousTexture;
-	}
+	Paint getFallback();
 }

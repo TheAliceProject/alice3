@@ -68,10 +68,10 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.views.C
 	}
 
 	protected void showDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+		org.lgna.croquet.Application<?> application = org.lgna.croquet.Application.getActiveInstance();
 		org.lgna.croquet.DocumentFrame documentFrame = application.getDocumentFrame();
 
-		org.lgna.croquet.views.AbstractWindow<?> window = application.peekWindow();
+		org.lgna.croquet.views.AbstractWindow<?> window = documentFrame.peekWindow();
 
 		org.lgna.croquet.views.ScreenElement owner;
 		if( window != null ) {

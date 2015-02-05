@@ -72,7 +72,9 @@ public class JavaKeyedArgumentFillIn extends org.lgna.croquet.ImmutableCascadeFi
 
 	@Override
 	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
-		return this.transientValue.getKeyMethod().getName();
+		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
+		org.lgna.project.ast.JavaMethod method = this.transientValue.getKeyMethod();
+		return formatter.getNameForDeclaration( method );
 	}
 
 	@Override

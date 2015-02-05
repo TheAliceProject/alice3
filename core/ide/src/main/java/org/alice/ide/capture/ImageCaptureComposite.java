@@ -72,7 +72,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameCompositeWithIn
 		@Override
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
-			org.lgna.croquet.views.AbstractWindow<?> window = app.peekWindow();
+			org.lgna.croquet.views.AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
 			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureComplete( window.getAwtComponent(), getDpi() );
 			image = convertToRgbaIfNecessary( image );
 
@@ -87,7 +87,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameCompositeWithIn
 		@Override
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
-			org.lgna.croquet.views.AbstractWindow<?> window = app.peekWindow();
+			org.lgna.croquet.views.AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
 			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureComplete( window.getRootPane().getAwtComponent(), getDpi() );
 			image = convertToRgbaIfNecessary( image );
 			org.alice.ide.capture.views.ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
@@ -101,7 +101,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameCompositeWithIn
 		@Override
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
-			org.lgna.croquet.views.AbstractWindow<?> window = app.peekWindow();
+			org.lgna.croquet.views.AbstractWindow<?> window = app.getDocumentFrame().peekWindow();
 			org.alice.ide.capture.views.ImageCaptureRectangleStencilView stencilView = getImageCaptureRectangleStencilView( window );
 			stencilView.setStencilShowing( stencilView.isStencilShowing() == false );
 			return null;

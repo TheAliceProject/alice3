@@ -82,7 +82,7 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 	private java.util.List<MethodsSubComposite> getByReturnTypeSubComposites() {
 		java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, java.util.List<org.lgna.project.ast.AbstractMethod>> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 		if( instanceFactory != null ) {
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceFactory.getValueType();
 			while( type != null ) {

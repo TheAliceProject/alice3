@@ -274,7 +274,7 @@ public abstract class ExpressionCascadeManager {
 			arrayLengthFillIns = null;
 		}
 
-		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().getValue();
+		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
 		if( this.isApplicableForFillInAndPossiblyPartFillIns( type, selectedType ) ) {
 			this.appendFillInAndPossiblyPartFillIns( blankChildren, type, new org.lgna.project.ast.ThisExpression(), selectedType );
 		}
@@ -297,7 +297,7 @@ public abstract class ExpressionCascadeManager {
 			}
 		}
 
-		org.lgna.project.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
+		org.lgna.project.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getFocusedCode();
 		if( codeInFocus instanceof org.lgna.project.ast.UserCode ) {
 			org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)codeInFocus;
 			for( org.lgna.project.ast.UserParameter parameter : userCode.getRequiredParamtersProperty() ) {

@@ -40,15 +40,61 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.scenesetup.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SceneSetupMainPane extends org.lgna.croquet.views.BorderPanel {
-	public SceneSetupMainPane( org.alice.stageide.scenesetup.croquet.SceneSetupMainComposite composite ) {
-		super( composite );
-		this.addCenterComponent( composite.getSplitComposite().getRootComponent() );
-		this.addPageEndComponent( composite.getGalleryComposite().getRootComponent() );
+public class GenerateJointI18nSeed {
+	private static String fixName( String methodName ) {
+		StringBuilder sb = new StringBuilder();
+		for( char ch : methodName.substring( 3 ).toCharArray() ) {
+			if( Character.isUpperCase( ch ) || Character.isDigit( ch ) ) {
+				sb.append( ' ' );
+			}
+			sb.append( Character.toLowerCase( ch ) );
+		}
+		return sb.toString().trim();
+	}
+
+	public static void main( String[] args ) throws Exception {
+		Class<?>[] clses = {
+				org.lgna.story.SBiped.class,
+				org.lgna.story.SQuadruped.class,
+				org.lgna.story.SFlyer.class,
+				org.lgna.story.SSwimmer.class,
+				org.lgna.story.STransport.class
+		};
+		java.util.Set<String> methodNames = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
+		for( Class<?> cls : clses ) {
+			for( java.lang.reflect.Method method : cls.getDeclaredMethods() ) {
+				if( org.lgna.story.SJoint.class.isAssignableFrom( method.getReturnType() ) ) {
+					if( method.getParameterTypes().length == 0 ) {
+						if( java.lang.reflect.Modifier.isPublic( method.getModifiers() ) ) {
+							String methodName = method.getName();
+							if( methodName.startsWith( "get" ) ) {
+								methodNames.add( method.getName() );
+							}
+						}
+					}
+				}
+			}
+		}
+		java.util.List<String> list = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( methodNames );
+		java.util.Collections.sort( list );
+		StringBuilder sb = new StringBuilder();
+		for( String methodName : list ) {
+			sb.append( methodName );
+			sb.append( " = </expression/>'s " );
+			sb.append( fixName( methodName ) );
+			sb.append( "\n" );
+		}
+
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sb );
+
+		//		java.io.File repoRoot = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "/gits/alice/" );
+		//		java.io.File srcRoot = new java.io.File( repoRoot, "core/i18n/src/main/resources" );//"core/ide/src/main/java/" );
+		//		java.io.File packageDirectory = new java.io.File( srcRoot, "org/lgna/story/resources" );
+		//		java.io.File namesFile = new java.io.File( packageDirectory, "GalleryNames.properties" );
+		//		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( namesFile, sbNames.toString() );
 	}
 }

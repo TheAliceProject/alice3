@@ -46,16 +46,19 @@ package org.alice.ide.croquet.models.history;
  * @author Dennis Cosgrove
  */
 public abstract class HistoryOperation extends org.lgna.croquet.ActionOperation {
-	public HistoryOperation( java.util.UUID id ) {
+	public HistoryOperation( java.util.UUID id, org.lgna.croquet.DocumentFrame documentFrame ) {
 		super( org.alice.ide.ProjectApplication.HISTORY_GROUP, id );
+		this.documentFrame = documentFrame;
 	}
 
 	protected abstract void performInternal( org.lgna.croquet.undo.UndoHistory historyManager );
 
 	@Override
 	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.undo.UndoHistory historyManager = org.alice.ide.ProjectApplication.getActiveInstance().getDocument().getUndoHistory( org.lgna.croquet.Application.PROJECT_GROUP );
+		org.lgna.croquet.undo.UndoHistory historyManager = this.documentFrame.getDocument().getUndoHistory( org.lgna.croquet.Application.PROJECT_GROUP );
 		this.performInternal( historyManager );
 		step.finish();
 	}
+
+	private final org.lgna.croquet.DocumentFrame documentFrame;
 }

@@ -55,7 +55,7 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 			//pass
 		} else {
 			mapResourceTypeToAbstractionType = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-			java.util.List<org.lgna.project.ast.JavaType> abstractionTypes = org.lgna.story.resourceutilities.StorytellingResources.getInstance().getTopLevelGalleryTypes();
+			java.util.List<org.lgna.project.ast.JavaType> abstractionTypes = org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes();
 			for( org.lgna.project.ast.JavaType abstractionType : abstractionTypes ) {
 				org.lgna.project.ast.JavaType resourceType = (org.lgna.project.ast.JavaType)abstractionType.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
 				mapResourceTypeToAbstractionType.put( resourceType, abstractionType );

@@ -48,8 +48,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.alice.ide.croquet.models.project.stats.croquet.views.StatisticsFlowControlFrequencyView;
+import org.lgna.croquet.MutableDataSingleSelectListState;
 import org.lgna.croquet.SimpleTabComposite;
-import org.lgna.croquet.SingleSelectListState;
 import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 
@@ -57,7 +57,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 
 public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<StatisticsFlowControlFrequencyView> {
 	private final Map<UserMethod, List<Statement>> methodToConstructMap = Maps.newHashMap();
-	private final SingleSelectListState<UserMethod, ?> userMethodList = createMutableListState( "userMethodList", UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
+	private final MutableDataSingleSelectListState<UserMethod> userMethodList = createMutableListState( "userMethodList", UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public final static UserMethod root = new UserMethod();
 
 	public StatisticsFlowControlFrequencyComposite() {
@@ -75,7 +75,7 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 		return this.methodToConstructMap;
 	}
 
-	public SingleSelectListState<UserMethod, ?> getUserMethodList() {
+	public MutableDataSingleSelectListState<UserMethod> getUserMethodList() {
 		return this.userMethodList;
 	}
 

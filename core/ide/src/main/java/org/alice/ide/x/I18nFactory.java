@@ -176,8 +176,25 @@ public abstract class I18nFactory {
 		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
 		org.lgna.croquet.views.SwingComponentView<?> rv;
 		if( owner != null ) {
-			Class<?> cls = owner.getClass();
-			String value = formatter.getTemplateText( cls );
+			String value;
+			if( owner instanceof org.lgna.project.ast.MethodInvocation ) {
+				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)owner;
+				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+				String text = formatter.getNameForDeclaration( method );
+				if( text.contains( "</expression/>" ) ) {
+					value = text;
+				} else {
+					value = null;
+				}
+			} else {
+				value = null;
+			}
+			if( value != null ) {
+				//pass
+			} else {
+				Class<?> cls = owner.getClass();
+				value = formatter.getTemplateText( cls );
+			}
 			org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
 			rv = createComponent( page, owner );
 		} else {
