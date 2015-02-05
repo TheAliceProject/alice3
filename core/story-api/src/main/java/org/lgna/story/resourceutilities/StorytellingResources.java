@@ -13,21 +13,13 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.lgna.project.ast.JavaType;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
-import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
 import edu.cmu.cs.dennisc.nebulous.Manager;
 
-public class StorytellingResources {
-	private static class SingletonHolder {
-		private static StorytellingResources instance = new StorytellingResources();
-	}
-
-	public static StorytellingResources getInstance() {
-		return SingletonHolder.instance;
-	}
+public enum StorytellingResources {
+	INSTANCE;
 
 	private static final String NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY = "NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY";
 	private static final String ALICE_RESOURCE_DIRECTORY_PREF_KEY = "ALICE_RESOURCE_DIRECTORY_PREF_KEY";
@@ -36,10 +28,8 @@ public class StorytellingResources {
 	private static final String NEBULOUS_RESOURCE_INSTALL_PATH = "assets/sims";
 	private static final String ALICE_RESOURCE_INSTALL_PATH = "assets/alice";
 
-	private ModelResourceTree galleryTree;
 	private final List<File> simsPathsLoaded = new LinkedList<File>();
 	private List<Class<? extends org.lgna.story.resources.ModelResource>> aliceClassesLoaded = null;
-	private List<org.lgna.project.ast.JavaType> rootTypes = null;
 
 	private List<URLClassLoader> resourceClassLoaders;
 	private static final java.io.FileFilter DIR_FILE_FILTER = new java.io.FileFilter() {
@@ -473,15 +463,6 @@ public class StorytellingResources {
 	//		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
 	//	}
 
-	private void buildGalleryTreeWithJars( File... resourceJars ) {
-		java.util.ArrayList<File> jarFiles = new java.util.ArrayList<File>();
-		for( File resourceJar : resourceJars ) {
-			jarFiles.add( resourceJar );
-		}
-		List<Class<? extends org.lgna.story.resources.ModelResource>> modelResourceClasses = this.getAndLoadModelResourceClasses( jarFiles );
-		this.galleryTree = new ModelResourceTree( modelResourceClasses );
-	}
-
 	private void clearAliceResourceInfo()
 	{
 		ResourcePathManager.clearPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
@@ -500,7 +481,7 @@ public class StorytellingResources {
 
 	}
 
-	public void findAndLoadAliceResourcesIfNecessary() {
+	/*package-private*/List<Class<? extends org.lgna.story.resources.ModelResource>> findAndLoadAliceResourcesIfNecessary() {
 		if( this.aliceClassesLoaded == null ) {
 			List<File> resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
 			if( resourcePaths.size() == 0 ) {
@@ -559,6 +540,7 @@ public class StorytellingResources {
 				setAliceResourceDirs( galleryDirs );
 			}
 		}
+		return this.aliceClassesLoaded;
 	}
 
 	private int loadSimsBundlesFromPaths( List<File> resourcePaths ) {
@@ -656,36 +638,6 @@ public class StorytellingResources {
 		}
 	}
 
-	public List<org.lgna.project.ast.JavaType> getTopLevelGalleryTypes() {
-		if( this.rootTypes == null ) {
-			List<ModelResourceTreeNode> rootNodes = this.getGalleryTreeInternal().getSModelBasedNodes();
-			this.rootTypes = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-			for( ModelResourceTreeNode node : rootNodes ) {
-				this.rootTypes.add( node.getUserType().getFirstEncounteredJavaType() );
-			}
-		}
-
-		return this.rootTypes;
-	}
-
-	public org.lgna.project.ast.JavaType getGalleryResourceParentFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		TreeNode<JavaType> child = this.getGalleryResourceTreeNodeForJavaType( type );
-		if( child != null ) {
-			ModelResourceTreeNode parent = (ModelResourceTreeNode)child.getParent();
-			//Go up an extra level if the node we're returning is a node with a single child (this mirrors what is happening in getResourceChildren)
-			if( ( parent != null ) && hasSingleLeafChild( parent ) ) {
-				parent = (ModelResourceTreeNode)parent.getParent();
-			}
-			return parent.getResourceJavaType();
-		} else {
-			return null;
-		}
-	}
-
-	private boolean hasSingleLeafChild( TreeNode<?> node ) {
-		return ( ( node.getChildCount() == 1 ) && ( node.getChildAt( 0 ).getChildCount() == 0 ) );
-	}
-
 	public URL getAliceResource( String resourceString ) {
 		this.findAndLoadAliceResourcesIfNecessary();
 		assert this.resourceClassLoaders != null;
@@ -711,53 +663,4 @@ public class StorytellingResources {
 		}
 		return foundResource;
 	}
-
-	public List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		//System.out.println( "Getting children for type: " + type );
-		java.util.List<org.lgna.project.ast.AbstractDeclaration> toReturn = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
-		TreeNode<JavaType> typeNode = this.getGalleryResourceTreeNodeForJavaType( type );
-		if( typeNode != null ) {
-			for( int i = 0; i < typeNode.getChildCount(); i++ ) {
-				TreeNode<JavaType> child = typeNode.getChildAt( i );
-				//If the child has a single leaf child, go down a level and return that
-				if( hasSingleLeafChild( child ) ) {
-					child = child.getChildAt( 0 );
-				}
-				ModelResourceTreeNode node = (ModelResourceTreeNode)child;
-				if( node.isLeaf() && ( node.getJavaField() != null ) ) {
-					//System.out.println( "  Returning field: " + node.getJavaField() );
-					toReturn.add( node.getJavaField() );
-				} else {
-					//System.out.println( "  Returning type: " + node.getResourceJavaType() );
-					toReturn.add( node.getResourceJavaType() );
-				}
-			}
-		}
-		return toReturn;
-	}
-
-	public void initializeGalleryTreeWithJars( File... resourceJars ) {
-		this.buildGalleryTreeWithJars( resourceJars );
-	}
-
-	private ModelResourceTree getGalleryTreeInternal() {
-		if( this.galleryTree == null ) {
-			findAndLoadAliceResourcesIfNecessary();
-			this.galleryTree = new ModelResourceTree( this.aliceClassesLoaded );
-		}
-		return this.galleryTree;
-	}
-
-	private ModelResourceTreeNode getGalleryResourceTreeNodeForJavaType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		return this.getGalleryTreeInternal().getGalleryResourceTreeNodeForJavaType( type );
-	}
-
-	public ModelResourceTreeNode getGalleryResourceTreeNodeForUserType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		return getGalleryTreeInternal().getGalleryResourceTreeNodeForUserType( type );
-	}
-
-	public ModelResourceTreeNode getGalleryTree() {
-		return getGalleryTreeInternal().getTree();
-	}
-
 }

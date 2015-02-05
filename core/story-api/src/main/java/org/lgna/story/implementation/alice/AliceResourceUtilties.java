@@ -209,11 +209,11 @@ public class AliceResourceUtilties {
 	}
 
 	public static InputStream getAliceResourceAsStream( Class<?> cls, String resourceString ) {
-		return StorytellingResources.getInstance().getAliceResourceAsStream( cls.getPackage().getName().replace( ".", "/" ) + "/" + resourceString );
+		return StorytellingResources.INSTANCE.getAliceResourceAsStream( cls.getPackage().getName().replace( ".", "/" ) + "/" + resourceString );
 	}
 
 	public static URL getAliceResource( Class<?> cls, String resourceString ) {
-		return StorytellingResources.getInstance().getAliceResource( cls.getPackage().getName().replace( ".", "/" ) + "/" + resourceString );
+		return StorytellingResources.INSTANCE.getAliceResource( cls.getPackage().getName().replace( ".", "/" ) + "/" + resourceString );
 	}
 
 	public static String enumToCamelCase( String enumName, boolean startWithLowerCase ) {

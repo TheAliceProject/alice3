@@ -61,7 +61,7 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 		}
 		else
 		{
-			StorytellingResources.getInstance().loadSimsBundles();
+			StorytellingResources.INSTANCE.loadSimsBundles();
 		}
 	}
 
