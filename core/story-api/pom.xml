@@ -20,10 +20,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
-			<artifactId>ast</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.alice</groupId>
 			<artifactId>scenegraph</artifactId>
 		</dependency>
 		<dependency>
