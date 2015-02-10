@@ -46,7 +46,7 @@ def _copyResourcesDirectory():
 
 #edu.cmu.cs.dennisc.java.io.FileUtilities.delete( LOCATION_FOR_INSTALL_DATA_ROOT )
 _copyJars()
-#_copyResourcesDirectory()
+_copyResourcesDirectory()
 
 import re
 print LOCATION_FOR_INSTALL_DATA_ROOT
