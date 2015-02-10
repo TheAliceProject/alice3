@@ -46,6 +46,27 @@ package edu.cmu.cs.dennisc.scenegraph.util;
  * @author Dennis Cosgrove
  */
 public class GoodLookAtUtils {
+	private static edu.cmu.cs.dennisc.math.AffineMatrix4x4 createLookAtMatrix( double eyeX, double eyeY, double eyeZ, double centerX, double centerY, double centerZ, double upX, double upY, double upZ ) {
+		edu.cmu.cs.dennisc.math.Vector3 f = new edu.cmu.cs.dennisc.math.Vector3( centerX - eyeX, centerY - eyeY, centerZ - eyeZ );
+		f.normalize();
+
+		edu.cmu.cs.dennisc.math.Vector3 up = new edu.cmu.cs.dennisc.math.Vector3( upX, upY, upZ );
+		up.normalize();
+
+		edu.cmu.cs.dennisc.math.Vector3 s = edu.cmu.cs.dennisc.math.Vector3.createCrossProduct( f, up );
+
+		edu.cmu.cs.dennisc.math.Vector3 u = edu.cmu.cs.dennisc.math.Vector3.createCrossProduct( s, f );
+
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+		m.orientation.right.set( s );
+		m.orientation.up.set( u );
+		m.orientation.right.set( -f.x, -f.y, -f.z );
+
+		m.applyTranslation( -eyeX, -eyeY, -eyeZ );
+
+		return m;
+	}
+
 	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateGoodLookAt( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, edu.cmu.cs.dennisc.math.Angle verticalViewingAngle, double aspectRatio ) {
 		edu.cmu.cs.dennisc.math.AxisAlignedBox axisAlignedBox = sgVisual.getAxisAlignedMinimumBoundingBox();
 		final double THRESHOLD = 100.0;
