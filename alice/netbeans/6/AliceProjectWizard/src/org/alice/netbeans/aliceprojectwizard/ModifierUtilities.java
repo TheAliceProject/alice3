@@ -60,6 +60,7 @@ public class ModifierUtilities {
 	}
 
 	public static ModifiersTree generateModifiersTree(TreeMaker treeMaker, javax.lang.model.element.Modifier... modifiers) {
-		return generateModifiersTree(treeMaker, Sets.newHashSet(modifiers));
+		java.util.Set<javax.lang.model.element.Modifier> set = Sets.newHashSet(modifiers);
+		return generateModifiersTree(treeMaker, set);
 	}
 }
