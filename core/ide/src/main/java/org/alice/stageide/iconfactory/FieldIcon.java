@@ -113,6 +113,8 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 				}
 
 				edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> renderTarget = sceneEditor.getOnscreenRenderTarget();
+
+				final edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = renderTarget.getSgCameraAt( 0 );
 				renderTarget.getAsynchronousImageCapturer().captureImageBuffer(
 						new edu.cmu.cs.dennisc.render.RenderTask() {
 							@Override
@@ -151,17 +153,28 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 
 								gl.glMatrixMode( javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW );
 
-								edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
+								double distance;
 								if( sgVisual != null ) {
-									m = edu.cmu.cs.dennisc.scenegraph.util.GoodLookAtUtils.calculateGoodLookAt( sgVisual, verticalViewingAngle, aspectRatio );
+									distance = edu.cmu.cs.dennisc.scenegraph.util.GoodLookAtUtils.calculateGoodLookAtDistance( sgVisual, verticalViewingAngle, aspectRatio, sgCamera );
 								} else {
-									m = null;
+									distance = Double.NaN;
 								}
-								if( ( m != null ) && ( m.isNaN() == false ) ) {
-									double[] array = new double[ 16 ];
-									java.nio.DoubleBuffer buffer = java.nio.DoubleBuffer.wrap( array );
-									m.getAsColumnMajorArray16( array );
-									gl.glLoadMatrixd( buffer );
+								//m = null;
+								if( Double.isNaN( distance ) == false ) {
+									//									double[] array = new double[ 16 ];
+									//									java.nio.DoubleBuffer buffer = java.nio.DoubleBuffer.wrap( array );
+									//									m.getAsColumnMajorArray16( array );
+									//									gl.glLoadMatrixd( buffer );
+
+									edu.cmu.cs.dennisc.math.AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation();
+
+									edu.cmu.cs.dennisc.math.Vector3 v = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( cameraAbsolute.translation, p );
+									v.normalize();
+									v.multiply( distance );
+									v.add( p );
+
+									gl.glLoadIdentity();
+									glu.gluLookAt( v.x, v.y, v.z, p.x, p.y, p.z, cameraAbsolute.orientation.up.x, cameraAbsolute.orientation.up.y, cameraAbsolute.orientation.up.z );
 								} else {
 									gl.glLoadIdentity();
 									glu.gluLookAt( p.x + 8, p.y + 8, p.z - 8, p.x, p.y, p.z, 0, 1, 0 );
@@ -173,7 +186,7 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 
 								//todo: support alpha
 								//							gl.glDisable( javax.media.opengl.GL.GL_BLEND );
-								transformableAdapter.renderOpaque( rc );
+								transformableAdapter.EPIC_HACK_FOR_ICON_CAPTURE_renderOpaque( rc );
 								//							gl.glEnable( javax.media.opengl.GL.GL_BLEND );
 								//							gl.glBlendFunc( javax.media.opengl.GL.GL_SRC_ALPHA, javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA );
 								//							transformableAdapter.renderAlphaBlended( rc );

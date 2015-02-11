@@ -67,18 +67,22 @@ public class GoodLookAtUtils {
 		return m;
 	}
 
-	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateGoodLookAt( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, edu.cmu.cs.dennisc.math.Angle verticalViewingAngle, double aspectRatio ) {
+	private static edu.cmu.cs.dennisc.math.AffineMatrix4x4 createLookAtMatrix( edu.cmu.cs.dennisc.math.Point3 eye, edu.cmu.cs.dennisc.math.Point3 center, edu.cmu.cs.dennisc.math.Vector3 up ) {
+		return createLookAtMatrix( eye.x, eye.y, eye.z, center.x, center.y, center.z, up.x, up.y, up.z );
+	}
+
+	public static double calculateGoodLookAtDistance( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, edu.cmu.cs.dennisc.math.Angle verticalViewingAngle, double aspectRatio, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		edu.cmu.cs.dennisc.math.AxisAlignedBox axisAlignedBox = sgVisual.getAxisAlignedMinimumBoundingBox();
 		final double THRESHOLD = 100.0;
 		if( axisAlignedBox.getWidth() > THRESHOLD ) {
-			return null;
+			return Double.NaN;
 		} else {
 			edu.cmu.cs.dennisc.math.Point3[] localPoints = axisAlignedBox.getPoints();
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 absoluteM = sgVisual.getAbsoluteTransformation();
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 visualAbsolute = sgVisual.getAbsoluteTransformation();
 
 			edu.cmu.cs.dennisc.math.Point3[] transformedPoints = new edu.cmu.cs.dennisc.math.Point3[ localPoints.length ];
 			for( int i = 0; i < localPoints.length; i++ ) {
-				transformedPoints[ i ] = absoluteM.createTransformed( localPoints[ i ] );
+				transformedPoints[ i ] = visualAbsolute.createTransformed( localPoints[ i ] );
 			}
 
 			edu.cmu.cs.dennisc.math.Point3 averageAbsolutePoint = edu.cmu.cs.dennisc.math.Point3.createZero();
@@ -96,13 +100,14 @@ public class GoodLookAtUtils {
 			if( IS_STRAIGHT_ON_VIEWING_DESIRED ) {
 				//pass
 			} else {
-				m.applyRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInDegrees( -30.0 ) );
-				m.applyRotationAboutZAxis( new edu.cmu.cs.dennisc.math.AngleInDegrees( 30.0 ) );
 
-				edu.cmu.cs.dennisc.math.AffineMatrix4x4 inverseM = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createInverse( m );
+				//todo: investigate
+				edu.cmu.cs.dennisc.math.AffineMatrix4x4 cameraAbsolute = sgCamera.getAbsoluteTransformation();
+
+				m = createLookAtMatrix( cameraAbsolute.translation, visualAbsolute.translation, cameraAbsolute.orientation.up );
 
 				for( int i = 0; i < localPoints.length; i++ ) {
-					transformedPoints[ i ] = inverseM.createTransformed( transformedPoints[ i ] );
+					transformedPoints[ i ] = m.createTransformed( transformedPoints[ i ] );
 				}
 			}
 
@@ -132,12 +137,15 @@ public class GoodLookAtUtils {
 				maxValue = Math.max( maxValue, value );
 			}
 
-			m.translation.set( averageAbsolutePoint );
-			m.applyTranslation( 0, 0, maxValue );
-
-			m.invert();
-
-			return m;
+			//			m.translation.set( averageAbsolutePoint );
+			//			m.applyTranslation( 0, 0, maxValue );
+			//
+			//			m.invert();
+			//
+			//			return m;
+			//lookAtM.translation.set( 0, 0, 0 );
+			//lookAtM.applyTranslation( 0, 0, -maxValue );
+			return maxValue;
 		}
 	}
 }
