@@ -107,7 +107,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 				edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = joint.getAxisAlignedMinimumBoundingBox();
 				//              boundingBox = null;
 				if( boundingBox != null ) {
-					context.gl.glColor3f( 1.0f, 1.0f, 1.0f );
+					context.gl.glColor3f( 1.0f, 1.0f, .5f );
 					edu.cmu.cs.dennisc.math.Point3 min = boundingBox.getMinimum();
 					edu.cmu.cs.dennisc.math.Point3 max = boundingBox.getMaximum();
 
@@ -262,7 +262,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 		if( boundingBox != null ) {
 			rc.gl.glDisable( GL_LIGHTING );
 			rc.gl.glDisable( GL_TEXTURE_2D );
-			rc.gl.glColor3f( 1.0f, 1.0f, 1.0f );
+			rc.gl.glColor3f( 1.0f, .5f, 1.0f );
 			edu.cmu.cs.dennisc.math.Point3 min = boundingBox.getMinimum();
 			edu.cmu.cs.dennisc.math.Point3 max = boundingBox.getMaximum();
 

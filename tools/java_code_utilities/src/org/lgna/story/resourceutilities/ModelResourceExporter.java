@@ -1370,13 +1370,17 @@ public class ModelResourceExporter {
 					Class poseType = getPoseTypeForSuperClass( classData.superClass );
 					Class poseBuilderType = getPoseBuilderTypeForSuperClass( classData.superClass );
 					sb.append( "\n\tpublic static final " + poseType.getName() + " " + fullPoseName + " = new " + poseBuilderType.getName() + "()." );
+					sb.append( JavaCodeUtilities.LINE_RETURN );
+					int count = 0;
 					for( Entry<String, AffineMatrix4x4> poseDataEntry : poseData.entrySet() ) {
+						count++;
 						UnitQuaternion quat = poseDataEntry.getValue().orientation.createUnitQuaternion();
-
-						//TODO: Do we need to specify the class name to reference the field? No, I don't think so.
-						sb.append( "joint(" + poseDataEntry.getKey() + ", " + quat.x + ", " + quat.y + ", " + quat.z + ", " + quat.w + ")." );
+						sb.append( "\t\tjoint( " + poseDataEntry.getKey() + ", new org.lgna.story.Orientation(" + quat.x + ", " + quat.y + ", " + quat.z + ", " + quat.w + ") )." );
+						if( count != poseData.size() ) {
+							sb.append( JavaCodeUtilities.LINE_RETURN );
+						}
 					}
-					sb.append( "build();" + JavaCodeUtilities.LINE_RETURN );
+					sb.append( "build();" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
 					if( needsAccessor ) {
 						String poseAccessorName = getAccessorMethodName( fullPoseName );
 						sb.append( "\tpublic " + poseType.getName() + " " + poseAccessorName + "(){" + JavaCodeUtilities.LINE_RETURN );
@@ -1783,7 +1787,6 @@ public class ModelResourceExporter {
 		//TODO: Handle this error in a better way
 		try {
 			BufferedImage classThumb = createClassThumb( ImageUtilities.read( firstThumbFile ) );
-
 			ImageUtilities.write( classThumbFile, classThumb );
 			thumbnailFiles.add( classThumbFile );
 		} catch( IOException ioe ) {

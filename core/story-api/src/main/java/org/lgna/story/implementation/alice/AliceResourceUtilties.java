@@ -436,7 +436,11 @@ public class AliceResourceUtilties {
 		if( !resourceIdentifierToResourceNamesMap.containsKey( identifier ) ) {
 			findAndStoreResourceNames( resourceClass, resourceName );
 		}
-		return resourceIdentifierToResourceNamesMap.get( identifier ).textureName;
+		ResourceNames names = resourceIdentifierToResourceNamesMap.get( identifier );
+		if( names == null ) {
+			return null;
+		}
+		return names.textureName;
 	}
 
 	public static String getTextureResourceFileName( Class<?> resourceClass, String resourceName ) {
@@ -486,6 +490,9 @@ public class AliceResourceUtilties {
 	}
 
 	private static String createTextureBaseName( String modelName, String textureName ) {
+		if( modelName == null ) {
+			return null;
+		}
 		if( textureName == null ) {
 			textureName = "_cls";
 		}
@@ -588,6 +595,8 @@ public class AliceResourceUtilties {
 		edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = sgOriginal.geometries.getValue();
 		edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgTextureAppearances = sgOriginal.textures.getValue();
 		edu.cmu.cs.dennisc.scenegraph.WeightedMesh[] sgWeightedMeshes = sgOriginal.weightedMeshes.getValue();
+		edu.cmu.cs.dennisc.scenegraph.WeightedMesh[] sgDefaultPoseWeightedMeshes = sgOriginal.defaultPoseWeightedMeshes.getValue();
+		boolean hasDefaultPoseWeightedMeshes = sgOriginal.hasDefaultPoseWeightedMeshes.getValue();
 		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
 		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = sgOriginal.baseBoundingBox.getValue();
 		edu.cmu.cs.dennisc.math.Matrix3x3 scaleCopy = new edu.cmu.cs.dennisc.math.Matrix3x3( sgOriginal.scale.getValue() );
@@ -620,6 +629,8 @@ public class AliceResourceUtilties {
 		rv.skeleton.setValue( sgSkeletonRootCopy );
 		rv.geometries.setValue( sgGeometries );
 		rv.weightedMeshes.setValue( sgWeightedMeshes );
+		rv.defaultPoseWeightedMeshes.setValue( sgDefaultPoseWeightedMeshes );
+		rv.hasDefaultPoseWeightedMeshes.setValue( hasDefaultPoseWeightedMeshes );
 		rv.textures.setValue( sgTextureAppearances );
 		rv.frontFacingAppearance.setValue( sgFrontAppearanceCopy );
 		rv.backFacingAppearance.setValue( sgBackAppearanceCopy );

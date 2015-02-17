@@ -77,6 +77,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 	protected Map<Integer, TexturedAppearanceAdapter> appearanceIdToAdapterMap = new HashMap<Integer, TexturedAppearanceAdapter>();
 	protected Map<Integer, WeightedMeshControl[]> appearanceIdToMeshControllersMap = new HashMap<Integer, WeightedMeshControl[]>();
 	protected Map<Integer, MeshAdapter<Mesh>[]> appearanceIdToGeometryAdapaters = new HashMap<Integer, MeshAdapter<Mesh>[]>();
+
 	private boolean isDataDirty = true;
 
 	public SkeletonVisualAdapter()
@@ -110,7 +111,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 			if( this.currentSkeleton != null )
 			{
 				this.setListeningOnSkeleton( this.currentSkeleton, false );
-				System.out.println( "SWITCHING SKELETON FROM " + this.currentSkeleton.hashCode() + " TO " + m_element.skeleton.getValue().hashCode() );
+				//				System.out.println( "SWITCHING SKELETON FROM " + this.currentSkeleton.hashCode() + " TO " + m_element.skeleton.getValue().hashCode() );
 			}
 			this.currentSkeleton = m_element.skeleton.getValue();
 			if( this.currentSkeleton != null )

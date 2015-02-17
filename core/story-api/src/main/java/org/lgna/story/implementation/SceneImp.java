@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -131,7 +132,19 @@ public class SceneImp extends EntityImp {
 		this.setProgram( programImp );
 		this.setGlobalBrightness( 0.0f );
 		this.changeActiveStatus( program, true, activeCount );
+
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.stageide.sceneeditor.StorytellingSceneEditor.showJointedModelVisualizations" ) ) {
+			for( edu.cmu.cs.dennisc.scenegraph.Component c : this.getSgComposite().getComponents() )
+			{
+				EntityImp imp = org.lgna.story.implementation.EntityImp.getInstance( c );
+				if( imp instanceof JointedModelImp ) {
+					( (JointedModelImp)imp ).showVisualization();
+				}
+			}
+		}
+
 		this.animateGlobalBrightness( 1.0f, 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+
 	}
 
 	public void deactivate( ProgramImp programImp ) {
