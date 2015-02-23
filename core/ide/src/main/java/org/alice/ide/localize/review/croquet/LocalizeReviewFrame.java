@@ -46,6 +46,8 @@ package org.alice.ide.localize.review.croquet;
  * @author Dennis Cosgrove
  */
 public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.alice.ide.localize.review.croquet.views.LocalizeReviewFrameView> {
+	private static final String ZANATA_PROJECT_NAME = "alice";
+	private static final String ZANATA_DOC_NAME = "org.alice";
 	private static final String SUFFIX = ".properties";
 	private static final java.util.Map<java.util.Locale, java.util.Locale> mapLocaleToLocale;
 	static {
@@ -165,13 +167,16 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 			public java.net.URI createUri( String localeTag ) {
 				StringBuilder sb = new StringBuilder();
 
-				sb.append( "https://translate.zanata.org/zanata/webtrans/Application.seam?project=alice&iteration=master" );
+				sb.append( "https://translate.zanata.org/zanata/webtrans/Application.seam?project=" );
+				sb.append( ZANATA_PROJECT_NAME );
+				sb.append( "&iteration=master" );
 
 				sb.append( "&localeId=" );
 				sb.append( localeTag );
 
-				sb.append( "#view:doc;doc:org.alice/" );
-				//todo
+				sb.append( "#view:doc;doc:" );
+				sb.append( ZANATA_DOC_NAME );
+				sb.append( "/" );
 				sb.append( this.projectName );
 				sb.append( "/java/" );
 				sb.append( bundleName );
