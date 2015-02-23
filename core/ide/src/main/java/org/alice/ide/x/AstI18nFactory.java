@@ -57,6 +57,10 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return paint;
 	}
 
+	public boolean isCommentMutable( org.lgna.project.ast.Comment comment ) {
+		return false;
+	}
+
 	public boolean isSignatureLocked( org.lgna.project.ast.Code code ) {
 		return true;
 	}
