@@ -95,9 +95,9 @@ public class ImportTypeWizard extends org.lgna.croquet.SimpleOperationWizardDial
 
 		java.io.File typeFile = new java.io.File( args[ 1 ] );
 
-		edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> tuple = org.lgna.project.io.IoUtilities.readType( typeFile );
-		org.lgna.project.ast.NamedUserType importedRootType = tuple.getA();
-		java.util.Set<org.lgna.common.Resource> importedResources = tuple.getB();
+		org.lgna.project.io.TypeResourcesPair typeResourcesPair = org.lgna.project.io.IoUtilities.readType( typeFile );
+		org.lgna.project.ast.NamedUserType importedRootType = typeResourcesPair.getType();
+		java.util.Set<org.lgna.common.Resource> importedResources = typeResourcesPair.getResources();
 		org.lgna.project.ast.NamedUserType srcType = importedRootType;
 		org.lgna.project.ast.NamedUserType dstType = MergeUtilities.findMatchingTypeInExistingTypes( srcType );
 		if( dstType != null ) {

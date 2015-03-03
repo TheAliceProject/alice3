@@ -110,8 +110,8 @@ public class TypeFromUriProducer extends UriCreator<org.lgna.project.ast.NamedUs
 			if( zipFile != null ) {
 				org.lgna.project.ast.NamedUserType type;
 				try {
-					edu.cmu.cs.dennisc.pattern.Tuple2<? extends org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> tuple = org.lgna.project.io.IoUtilities.readType( zipFile );
-					type = tuple.getA();
+					org.lgna.project.io.TypeResourcesPair typeResourcesPair = org.lgna.project.io.IoUtilities.readType( zipFile );
+					type = typeResourcesPair.getType();
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
 				} catch( org.lgna.project.VersionNotSupportedException vnse ) {
 					type = null;
