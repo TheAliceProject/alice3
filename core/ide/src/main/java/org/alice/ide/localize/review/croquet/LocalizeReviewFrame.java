@@ -231,10 +231,14 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 						classPathEntries = edu.cmu.cs.dennisc.classpath.ClassPathUtilities.getClassPathEntries( clsProjectNamePair.cls, new edu.cmu.cs.dennisc.pattern.Criterion<String>() {
 							@Override
 							public boolean accept( String path ) {
-								if( path.endsWith( SUFFIX ) ) {
-									return path.contains( "_" ) == false;
-								} else {
+								if( path.startsWith( "META-INF/" ) ) {
 									return false;
+								} else {
+									if( path.endsWith( SUFFIX ) ) {
+										return path.contains( "_" ) == false;
+									} else {
+										return false;
+									}
 								}
 							}
 						} );
@@ -243,9 +247,13 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 					}
 					for( String classPathEntry : classPathEntries ) {
 						String bundleName = classPathEntry.substring( 0, classPathEntry.length() - SUFFIX.length() );
-						java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName );
-						for( String key : resourceBundle.keySet() ) {
-							_allItems.add( new Item( clsProjectNamePair.projectName, bundleName, key, resourceBundle.getString( key ) ) );
+						try {
+							java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName );
+							for( String key : resourceBundle.keySet() ) {
+								_allItems.add( new Item( clsProjectNamePair.projectName, bundleName, key, resourceBundle.getString( key ) ) );
+							}
+						} catch( Throwable t ) {
+							javax.swing.JOptionPane.showMessageDialog( null, "unable to get resource bundle for:" + bundleName );
 						}
 					}
 				}
