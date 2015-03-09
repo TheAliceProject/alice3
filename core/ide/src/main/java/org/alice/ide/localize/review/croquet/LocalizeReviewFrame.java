@@ -108,7 +108,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 		if( mapLocaleToLocale.containsKey( locale ) ) {
 			locale = mapLocaleToLocale.get( locale );
 		}
-		String localeTag = locale.toLanguageTag();
+		String localeTag = edu.cmu.cs.dennisc.java.util.LocaleUtilities.toLanguageTag( locale );
 		return this.tableModel.getItems().get( row ).createUri( localeTag );
 	}
 
