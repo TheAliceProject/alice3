@@ -253,7 +253,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 								_allItems.add( new Item( clsProjectNamePair.projectName, bundleName, key, resourceBundle.getString( key ) ) );
 							}
 						} catch( Throwable t ) {
-							javax.swing.JOptionPane.showMessageDialog( null, "unable to get resource bundle for:" + bundleName );
+							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to get resource bundle for:", bundleName );
 						}
 					}
 				}
