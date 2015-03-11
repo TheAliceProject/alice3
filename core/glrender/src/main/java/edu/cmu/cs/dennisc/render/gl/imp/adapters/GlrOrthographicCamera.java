@@ -112,7 +112,7 @@ public class GlrOrthographicCamera extends GlrAbstractNearPlaneAndFarPlaneCamera
 
 	public final edu.cmu.cs.dennisc.math.ClippedZPlane getActualPicturePlane( edu.cmu.cs.dennisc.math.ClippedZPlane rv, java.awt.Rectangle actualViewport ) {
 		//		rv.set( m_picturePlane, actualViewport );
-		rv.set( owner.picturePlane.getValue(), actualViewport );
+		rv.set( owner.picturePlane.getValue(), edu.cmu.cs.dennisc.java.awt.RectangleUtilities.toMRectangleI( actualViewport ) );
 		return rv;
 	}
 

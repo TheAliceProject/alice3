@@ -118,7 +118,7 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		double dotProd = Vector3.calculateDotProduct( cameraTransform.orientation.up, Vector3.accessPositiveYAxis() );
 		if( ( dotProd == 1 ) || ( dotProd == -1 ) ) {
 			Point3 cameraPosition = orthoCamera.getAbsoluteTransformation().translation;
-			ClippedZPlane dummyPlane = new ClippedZPlane( orthoCamera.picturePlane.getValue(), this.onscreenRenderTarget.getActualViewportAsAwtRectangle( orthoCamera ) );
+			ClippedZPlane dummyPlane = new ClippedZPlane( orthoCamera.picturePlane.getValue(), this.onscreenRenderTarget.getActualViewport( orthoCamera ) );
 			double yRatio = this.onscreenRenderTarget.getSurfaceHeight() / dummyPlane.getHeight();
 			double horizonInCameraSpace = 0.0d - cameraPosition.y;
 			double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
