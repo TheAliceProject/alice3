@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.animation.interpolation.geom;
+package edu.cmu.cs.dennisc.java.awt.geom.animation;
 
 import edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation;
 
