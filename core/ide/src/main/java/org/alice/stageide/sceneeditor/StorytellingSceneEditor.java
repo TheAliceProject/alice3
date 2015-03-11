@@ -1185,7 +1185,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			Point3 cameraPosition = camera.getAbsoluteTransformation().translation;
 
-			ClippedZPlane dummyPlane = new ClippedZPlane( camera.picturePlane.getValue(), renderTarget.getActualViewport( camera ) );
+			ClippedZPlane dummyPlane = new ClippedZPlane( camera.picturePlane.getValue(), renderTarget.getActualViewportAsAwtRectangle( camera ) );
 
 			double lookingGlassHeight = lookingGlassSize.getHeight();
 

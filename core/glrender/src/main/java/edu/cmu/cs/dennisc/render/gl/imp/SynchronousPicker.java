@@ -131,7 +131,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 				this.pickContext.gl.glInitNames();
 
 				edu.cmu.cs.dennisc.render.RenderTarget renderTarget = pickParameters.getRenderTarget();
-				java.awt.Rectangle actualViewport = renderTarget.getActualViewport( sgCamera );
+				java.awt.Rectangle actualViewport = renderTarget.getActualViewportAsAwtRectangle( sgCamera );
 				this.pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
 				cameraAdapter.performPick( this.pickContext, pickParameters, actualViewport );
 				this.pickContext.gl.glFlush();

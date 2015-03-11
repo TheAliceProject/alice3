@@ -135,7 +135,7 @@ public class RenderTargetImp {
 		while( iterator.hasPrevious() ) {
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = iterator.previous();
 			synchronized( s_actualViewportBufferForReuse ) {
-				this.renderTarget.getActualViewport( s_actualViewportBufferForReuse, sgCamera );
+				this.renderTarget.getActualViewportAsAwtRectangle( s_actualViewportBufferForReuse, sgCamera );
 				if( s_actualViewportBufferForReuse.contains( xPixel, yPixel ) ) {
 					return sgCamera;
 				}
