@@ -88,6 +88,7 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 	/*package-private*/void initialize() {
 		this.registerScreenCaptureKeyStrokes( this.getFrame() );
 		this.getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
+		org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().addNewSchoolValueListener( this.formatterListener );
 	}
 
 	@Override
@@ -340,6 +341,13 @@ public class ProjectDocumentFrame extends org.lgna.croquet.PerspectiveDocumentFr
 					mapCodeToInstanceFactory.put( code, nextValue );
 				}
 			}
+		}
+	};
+
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.formatter.Formatter> formatterListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.formatter.Formatter>() {
+		@Override
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.formatter.Formatter> e ) {
+			edu.cmu.cs.dennisc.java.awt.ComponentUtilities.revalidateTree( getFrame().getAwtComponent() );
 		}
 	};
 

@@ -61,58 +61,73 @@ public class GetsPane extends org.lgna.croquet.views.Label {
 		return new java.awt.GradientPaint( 0.0f, 0.0f, color0, width, 0.0f, color1 );
 	}
 
-	private boolean isTowardLeadingEdge;
-	private int length;
-
 	private GetsPane( boolean isTowardLeadingEdge, int length ) {
 		this.isTowardLeadingEdge = isTowardLeadingEdge;
 		this.length = length;
 		this.setIcon( new javax.swing.Icon() {
+			private java.awt.FontMetrics getFontMetrics() {
+				return GetsPane.this.getAwtComponent().getFontMetrics( GetsPane.this.getFont() );
+			}
+
 			@Override
 			public int getIconWidth() {
-				return ( this.getIconHeight() * GetsPane.this.length ) + 1;
+				if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
+					java.awt.FontMetrics fontMetrics = this.getFontMetrics();
+					return fontMetrics.getHeight();
+				} else {
+					return ( this.getIconHeight() * GetsPane.this.length ) + 1;
+				}
 			}
 
 			@Override
 			public int getIconHeight() {
-				return (int)( GetsPane.this.getFont().getSize2D() * 1.4f );
+				if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
+					java.awt.FontMetrics fontMetrics = this.getFontMetrics();
+					return fontMetrics.charWidth( '=' );
+				} else {
+					return (int)( GetsPane.this.getFont().getSize2D() * 1.4f );
+				}
 			}
 
 			@Override
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 				int width = this.getIconWidth();
 				int height = this.getIconHeight();
+				if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, "=", x, y, width, height );
+				} else {
 
-				int halfLineSize = height / 5;
-				int yTop = 0;
-				int yBottom = getHeight() - 1;
-				int yCenter = ( yTop + yBottom ) / 2;
-				int yTopLine = yCenter - halfLineSize;
-				int yBottomLine = yCenter + halfLineSize;
+					int halfLineSize = height / 5;
+					int yTop = 0;
+					int yBottom = getHeight() - 1;
+					int yCenter = ( yTop + yBottom ) / 2;
+					int yTopLine = yCenter - halfLineSize;
+					int yBottomLine = yCenter + halfLineSize;
 
-				final int INSET = 2;
-				int xLeft = INSET;
-				int xHeadRight = yBottom;
-				int xHeadRightInABit = ( xHeadRight * 4 ) / 5;
-				int xRight = getWidth() - 1 - ( INSET * 2 );
+					final int INSET = 2;
+					int xLeft = INSET;
+					int xHeadRight = yBottom;
+					int xHeadRightInABit = ( xHeadRight * 4 ) / 5;
+					int xRight = getWidth() - 1 - ( INSET * 2 );
 
-				int[] xPoints = { xLeft, xHeadRight, xHeadRightInABit, xRight, xRight, xHeadRightInABit, xHeadRight };
-				int[] yPoints = { yCenter, yTop, yTopLine, yTopLine, yBottomLine, yBottomLine, yBottom };
+					int[] xPoints = { xLeft, xHeadRight, xHeadRightInABit, xRight, xRight, xHeadRightInABit, xHeadRight };
+					int[] yPoints = { yCenter, yTop, yTopLine, yTopLine, yBottomLine, yBottomLine, yBottom };
 
-				boolean isReversalDesired = GetsPane.this.isReversalDesired();
-				if( isReversalDesired ) {
-					for( int i = 0; i < xPoints.length; i++ ) {
-						xPoints[ i ] = getWidth() - xPoints[ i ];
+					boolean isReversalDesired = GetsPane.this.isReversalDesired();
+					if( isReversalDesired ) {
+						for( int i = 0; i < xPoints.length; i++ ) {
+							xPoints[ i ] = getWidth() - xPoints[ i ];
+						}
 					}
+
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setRenderingHint( g2, java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+
+					g2.setPaint( GetsPane.createGradientPaint( width, isReversalDesired ) );
+					g2.fillPolygon( xPoints, yPoints, xPoints.length );
+					g2.setColor( java.awt.Color.GRAY );
+					g2.drawPolygon( xPoints, yPoints, xPoints.length );
 				}
-
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setRenderingHint( g2, java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-
-				g2.setPaint( GetsPane.createGradientPaint( width, isReversalDesired ) );
-				g2.fillPolygon( xPoints, yPoints, xPoints.length );
-				g2.setColor( java.awt.Color.GRAY );
-				g2.drawPolygon( xPoints, yPoints, xPoints.length );
 			}
 		} );
 	}
@@ -129,12 +144,7 @@ public class GetsPane extends org.lgna.croquet.views.Label {
 			return isTowardLeadingEdge;
 		}
 	}
-	// public static void main( String[] args ) {
-	// javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "ar" ) );
-	// javax.swing.JFrame frame = new javax.swing.JFrame();
-	// frame.getContentPane().add( new GetsPane( false ) );
-	// frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-	// frame.setSize( 640, 480 );
-	// frame.setVisible( true );
-	// }
+
+	private final boolean isTowardLeadingEdge;
+	private final int length;
 }
