@@ -411,7 +411,13 @@ public class AliceResourceUtilties {
 		if( !resourceIdentifierToResourceNamesMap.containsKey( identifier ) ) {
 			findAndStoreResourceNames( resourceClass, resourceName );
 		}
-		return resourceIdentifierToResourceNamesMap.get( identifier ).textureName;
+		ResourceNames resourceNames = resourceIdentifierToResourceNamesMap.get( identifier );
+		if( resourceNames != null ) {
+			return resourceNames.textureName;
+		} else {
+			Logger.severe( resourceClass, resourceName, identifier );
+			return null;
+		}
 	}
 
 	public static String getTextureResourceFileName( Class<?> resourceClass, String resourceName ) {
@@ -445,7 +451,12 @@ public class AliceResourceUtilties {
 	public static String getThumbnailResourceFileName( Class<?> resourceClass, String resourceName ) {
 		String modelName = getModelNameFromClassAndResource( resourceClass, resourceName );
 		String textureName = getTextureNameFromClassAndResource( resourceClass, resourceName );
-		return getThumbnailResourceFileName( modelName, textureName );
+		if( ( modelName != null ) && ( textureName != null ) ) {
+			return getThumbnailResourceFileName( modelName, textureName );
+		} else {
+			Logger.severe( resourceClass, resourceName, modelName, textureName );
+			return null;
+		}
 	}
 
 	public static String getThumbnailResourceFileName( Object resource ) {

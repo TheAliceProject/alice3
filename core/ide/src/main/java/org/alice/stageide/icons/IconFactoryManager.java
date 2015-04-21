@@ -126,7 +126,12 @@ public class IconFactoryManager {
 			//					}
 			//				}
 			//			}
-			java.net.URL url = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
+			java.net.URL url;
+			if( modelResourceCls != null ) {
+				url = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
+			} else {
+				url = null;
+			}
 			if( url != null ) {
 				return new org.lgna.croquet.icon.TrimmedImageIconFactory( url, 160, 120 );
 			} else {
@@ -139,7 +144,7 @@ public class IconFactoryManager {
 				//						return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 				//					}
 				//				} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( modelResourceCls, modelResourceName );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, this.getClass(), modelResourceCls, modelResourceName );
 				return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 				//				}
 			}
