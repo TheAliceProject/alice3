@@ -451,7 +451,7 @@ public class AliceResourceUtilties {
 	public static String getThumbnailResourceFileName( Class<?> resourceClass, String resourceName ) {
 		String modelName = getModelNameFromClassAndResource( resourceClass, resourceName );
 		String textureName = getTextureNameFromClassAndResource( resourceClass, resourceName );
-		if( ( modelName != null ) && ( textureName != null ) ) {
+		if( modelName != null ) {
 			return getThumbnailResourceFileName( modelName, textureName );
 		} else {
 			Logger.severe( resourceClass, resourceName, modelName, textureName );
