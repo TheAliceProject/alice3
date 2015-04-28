@@ -76,7 +76,7 @@ public class ExtensionFileFilter extends javax.swing.filechooser.FileFilter {
 		} else {
 			String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
 			if( extension != null ) {
-				return this.extensions.contains( extension.toLowerCase() );
+				return this.extensions.contains( extension.toLowerCase( java.util.Locale.ENGLISH ) );
 			} else {
 				return false;
 			}

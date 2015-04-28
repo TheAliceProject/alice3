@@ -159,7 +159,7 @@ public class AliceResourceClassUtilities {
 		if( s.length() <= 1 ) {
 			return s.toUpperCase();
 		}
-		return s.substring( 0, 1 ).toUpperCase() + s.substring( 1 ).toLowerCase();
+		return s.substring( 0, 1 ).toUpperCase( java.util.Locale.ENGLISH ) + s.substring( 1 ).toLowerCase( java.util.Locale.ENGLISH );
 	}
 
 	public static String[] fullStringSplit( String name ) {

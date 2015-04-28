@@ -476,7 +476,7 @@ public class AliceResourceUtilties {
 		} else if( textureName.length() > 0 ) {
 			textureName = "_" + makeEnumName( textureName );
 		}
-		return modelName.toLowerCase() + textureName;
+		return modelName.toLowerCase( java.util.Locale.ENGLISH ) + textureName;
 	}
 
 	public static String getThumbnailResourceFileName( String modelName, String textureName ) {
@@ -488,7 +488,7 @@ public class AliceResourceUtilties {
 	}
 
 	public static String getVisualResourceFileNameFromModelName( String modelName ) {
-		return modelName.toLowerCase() + "." + MODEL_RESOURCE_EXTENSION;
+		return modelName.toLowerCase( java.util.Locale.ENGLISH ) + "." + MODEL_RESOURCE_EXTENSION;
 	}
 
 	/*private*/protected static java.net.URL getThumbnailURLInternal( Class<?> modelResource, String resourceName ) {

@@ -143,7 +143,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
 		sb.append( "new " );
 		if( this.lifeStage != null ) {
 			sb.append( this.lifeStage.name().charAt( 0 ) );
-			sb.append( this.lifeStage.name().substring( 1 ).toLowerCase() );
+			sb.append( this.lifeStage.name().substring( 1 ).toLowerCase( java.util.Locale.ENGLISH ) );
 		} else {
 			sb.append( "Person" );
 		}

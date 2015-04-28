@@ -46,7 +46,7 @@ public class BrowserUtilities {
 	//this code is heavily based on public domain software by Dem Pilafian
 	//http://www.centerkey.com/java/browser/
 	public static void browse( String url ) throws Exception {
-		String lcOSName = System.getProperty( "os.name" ).toLowerCase();
+		String lcOSName = System.getProperty( "os.name" ).toLowerCase( java.util.Locale.ENGLISH );
 		if( lcOSName.startsWith( "mac os" ) ) {
 			Class<?> fileMgr = Class.forName( "com.apple.eio.FileManager" );
 			java.lang.reflect.Method openURL = fileMgr.getDeclaredMethod( "openURL", new Class[] { String.class } );

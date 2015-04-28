@@ -109,8 +109,8 @@ public final class HairHatStyle implements Comparable<HairHatStyle> {
 	private int compareClsName( org.alice.stageide.personresource.data.HairHatStyle other ) {
 		Class<? extends org.lgna.story.resources.sims2.Hair> thisHairCls = this.getHairCls();
 		Class<? extends org.lgna.story.resources.sims2.Hair> otherHairCls = other.getHairCls();
-		String thisSimpleName = thisHairCls.getSimpleName().toLowerCase();
-		String otherSimpleName = otherHairCls.getSimpleName().toLowerCase();
+		String thisSimpleName = thisHairCls.getSimpleName().toLowerCase( java.util.Locale.ENGLISH );
+		String otherSimpleName = otherHairCls.getSimpleName().toLowerCase( java.util.Locale.ENGLISH );
 		String[] thisSplit = thisSimpleName.split( "hair", 2 );
 		assert thisSplit.length == 2 : thisHairCls;
 		String[] otherSplit = otherSimpleName.split( "hair", 2 );

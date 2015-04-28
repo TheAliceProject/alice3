@@ -53,7 +53,7 @@ public class AudioResource extends org.lgna.common.Resource {
 
 	public static String getContentType( String path ) {
 		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( path );
-		String contentType = AudioResource.extensionToContentTypeMap.get( extension.toLowerCase() );
+		String contentType = AudioResource.extensionToContentTypeMap.get( extension.toLowerCase( java.util.Locale.ENGLISH ) );
 		return contentType;
 	}
 
