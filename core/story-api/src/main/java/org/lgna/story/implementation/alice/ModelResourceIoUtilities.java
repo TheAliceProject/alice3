@@ -54,7 +54,7 @@ public class ModelResourceIoUtilities {
 
 	public static String getResourceSubDirWithSeparator( String className ) {
 		className = AliceResourceClassUtilities.getAliceClassName( className );
-		String classDir = ( className != null ) && ( className.length() > 0 ) ? className.toLowerCase() + "/" : "";
+		String classDir = ( className != null ) && ( className.length() > 0 ) ? className.toLowerCase( java.util.Locale.ENGLISH ) + "/" : "";
 
 		if( ( RESOURCE_SUB_DIR == null ) || ( RESOURCE_SUB_DIR.length() == 0 ) ) {
 			return classDir;

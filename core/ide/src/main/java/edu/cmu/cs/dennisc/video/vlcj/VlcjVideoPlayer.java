@@ -175,6 +175,22 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		public void endOfSubItems( MediaPlayer mediaPlayer ) {
 		}
 
+		@Override
+		public void elementaryStreamAdded( MediaPlayer mediaPlayer, int type, int id ) {
+		}
+
+		@Override
+		public void elementaryStreamDeleted( MediaPlayer mediaPlayer, int type, int id ) {
+		}
+
+		@Override
+		public void elementaryStreamSelected( MediaPlayer mediaPlayer, int type, int id ) {
+		}
+
+		@Override
+		public void scrambledChanged( MediaPlayer mediaPlayer, int newScrambled ) {
+
+		}
 	};
 	private final java.util.List<edu.cmu.cs.dennisc.video.event.MediaListener> mediaListeners = new java.util.concurrent.CopyOnWriteArrayList<edu.cmu.cs.dennisc.video.event.MediaListener>();
 	private final VlcjMediaPlayerComponent mediaPlayerComponent;

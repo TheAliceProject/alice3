@@ -46,16 +46,8 @@ package org.alice.ide.croquet.models.history;
  * @author Dennis Cosgrove
  */
 public class RedoOperation extends HistoryOperation {
-	private static class SingletonHolder {
-		private static RedoOperation instance = new RedoOperation();
-	}
-
-	public static RedoOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private RedoOperation() {
-		super( java.util.UUID.fromString( "6391ae51-0ae5-4592-8fd9-441a72bb814a" ) );
+	public RedoOperation( org.lgna.croquet.DocumentFrame documentFrame ) {
+		super( java.util.UUID.fromString( "6391ae51-0ae5-4592-8fd9-441a72bb814a" ), documentFrame );
 		this.setButtonIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RedoOperation.class.getResource( "images/redo.png" ) ) );
 	}
 

@@ -46,13 +46,131 @@ package org.alice.ide.resource.manager;
 /**
  * @author Dennis Cosgrove
  */
-public final class ResourceManagerComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.resource.manager.views.ResourceManagerView> {
-	private static class SingletonHolder {
-		private static ResourceManagerComposite instance = new ResourceManagerComposite();
+public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.ide.resource.manager.views.ResourceManagerView> {
+	public ResourceManagerComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
+		super( java.util.UUID.fromString( "7351e244-fcd7-4b21-9b54-83254fc44db7" ) );
+		this.projectDocumentFrame = projectDocumentFrame;
 	}
 
-	public static ResourceManagerComposite getInstance() {
-		return SingletonHolder.instance;
+	public ImportAudioResourceOperation getImportAudioResourceOperation() {
+		return this.importAudioResourceOperation;
+	}
+
+	public ImportImageResourceOperation getImportImageResourceOperation() {
+		return this.importImageResourceOperation;
+	}
+
+	public ResourceSingleSelectTableRowState getResourcesState() {
+		return this.resourcesState;
+	}
+
+	public RenameResourceComposite getRenameResourceComposite() {
+		return this.renameResourceComposite;
+	}
+
+	public org.lgna.croquet.Operation getRemoveResourceOperation() {
+		return this.removeResourceOperation;
+	}
+
+	public org.lgna.croquet.Operation getReloadContentOperation() {
+		return this.reloadContentOperation;
+	}
+
+	@Override
+	protected org.alice.ide.resource.manager.views.ResourceManagerView createView() {
+		return new org.alice.ide.resource.manager.views.ResourceManagerView( this );
+	}
+
+	private void reloadTableModel( org.lgna.project.Project project ) {
+		this.resourcesState.reloadTableModel( project );
+		java.util.Collection<org.lgna.common.Resource> currentResources = this.resourcesState.getItems();
+		for( org.lgna.common.Resource resource : this.previousResources ) {
+			if( currentResources.contains( resource ) ) {
+				//pass
+			} else {
+				resource.removeNameListener( this.nameListener );
+			}
+		}
+		for( org.lgna.common.Resource resource : currentResources ) {
+			if( this.previousResources.contains( resource ) ) {
+				//pass
+			} else {
+				resource.addNameListener( this.nameListener );
+			}
+		}
+		this.previousResources = currentResources;
+	}
+
+	private org.lgna.project.Project getProject() {
+		//TODO: use this.projectDocumentFrame
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.lgna.project.Project project;
+		if( ide != null ) {
+			project = ide.getProject();
+		} else {
+			project = null;
+		}
+		return project;
+	}
+
+	private void reloadTableModel() {
+		this.reloadTableModel( this.getProject() );
+	}
+
+	@Override
+	public void handlePreActivation() {
+		this.projectBeingListenedTo = this.getProject();
+		if( this.projectBeingListenedTo != null ) {
+			this.projectBeingListenedTo.addResourceListener( this.resourceListener );
+		}
+		this.reloadTableModel( this.projectBeingListenedTo );
+		this.resourcesState.addAndInvokeNewSchoolValueListener( this.rowListener );
+		super.handlePreActivation();
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		if( this.projectBeingListenedTo != null ) {
+			this.projectBeingListenedTo.removeResourceListener( this.resourceListener );
+		}
+		this.resourcesState.removeNewSchoolValueListener( this.rowListener );
+		for( org.lgna.common.Resource resource : this.previousResources ) {
+			resource.removeNameListener( this.nameListener );
+		}
+		this.previousResources = java.util.Collections.emptyList();
+		super.handlePostDeactivation();
+	}
+
+	private void handleSelection( org.lgna.common.Resource nextValue ) {
+		boolean isSelected = nextValue != null;
+		String renameAndReplaceToolTipText;
+
+		String removeToolTipText;
+		boolean isReferenced;
+		if( isSelected ) {
+
+			javax.swing.table.TableModel resourceTableModel = this.resourcesState.getSwingModel().getTableModel();
+			javax.swing.ListSelectionModel listSelectionModel = this.resourcesState.getSwingModel().getListSelectionModel();
+
+			isReferenced = (Boolean)resourceTableModel.getValueAt( listSelectionModel.getLeadSelectionIndex(), ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX );
+			renameAndReplaceToolTipText = null;
+			if( isReferenced ) {
+				removeToolTipText = null;
+			} else {
+				removeToolTipText = "cannot remove resources that are referenced";
+			}
+		} else {
+			isReferenced = false;
+			renameAndReplaceToolTipText = "select resource";
+			removeToolTipText = renameAndReplaceToolTipText;
+		}
+		this.renameResourceComposite.getLaunchOperation().setEnabled( isSelected );
+		this.renameResourceComposite.getLaunchOperation().setToolTipText( renameAndReplaceToolTipText );
+		this.reloadContentOperation.setEnabled( isSelected );
+		this.reloadContentOperation.setToolTipText( renameAndReplaceToolTipText );
+
+		this.removeResourceOperation.setEnabled( isSelected && ( isReferenced == false ) );
+		this.removeResourceOperation.setToolTipText( removeToolTipText );
 	}
 
 	private final org.lgna.project.event.ResourceListener resourceListener = new org.lgna.project.event.ResourceListener() {
@@ -67,6 +185,18 @@ public final class ResourceManagerComposite extends org.lgna.croquet.SimpleOpera
 		}
 	};
 
+	private final edu.cmu.cs.dennisc.pattern.event.NameListener nameListener = new edu.cmu.cs.dennisc.pattern.event.NameListener() {
+		@Override
+		public void nameChanging( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
+		}
+
+		@Override
+		public void nameChanged( edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nameEvent );
+			getView().repaint();
+		}
+	};
+
 	private final org.lgna.croquet.event.ValueListener<org.lgna.common.Resource> rowListener = new org.lgna.croquet.event.ValueListener<org.lgna.common.Resource>() {
 		@Override
 		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.common.Resource> e ) {
@@ -74,100 +204,14 @@ public final class ResourceManagerComposite extends org.lgna.croquet.SimpleOpera
 		}
 	};
 
-	private ResourceManagerComposite() {
-		super( java.util.UUID.fromString( "7351e244-fcd7-4b21-9b54-83254fc44db7" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
-	}
+	private final org.alice.ide.ProjectDocumentFrame projectDocumentFrame;
+	private final ResourceSingleSelectTableRowState resourcesState = new ResourceSingleSelectTableRowState();
+	private final org.lgna.croquet.Operation reloadContentOperation = new ReloadContentResourceOperation( this.resourcesState );
+	private final org.lgna.croquet.Operation removeResourceOperation = new RemoveResourceOperation( this.resourcesState );
+	private final RenameResourceComposite renameResourceComposite = new RenameResourceComposite( this.resourcesState );
+	private final ImportImageResourceOperation importImageResourceOperation = new ImportImageResourceOperation();
+	private final ImportAudioResourceOperation importAudioResourceOperation = new ImportAudioResourceOperation();
 
-	public ResourceSingleSelectTableRowState getResourceState() {
-		return ResourceSingleSelectTableRowState.getInstance();
-	}
-
-	@Override
-	protected org.alice.ide.resource.manager.views.ResourceManagerView createView() {
-		return new org.alice.ide.resource.manager.views.ResourceManagerView( this );
-	}
-
-	private void reloadTableModel( org.lgna.project.Project project ) {
-		this.getResourceState().reloadTableModel( project );
-	}
-
-	private void reloadTableModel() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project;
-		if( ide != null ) {
-			project = ide.getProject();
-		} else {
-			project = null;
-		}
-		this.reloadTableModel( project );
-	}
-
-	@Override
-	public void handlePreActivation() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.Project project;
-		if( ide != null ) {
-			project = ide.getProject();
-			if( project != null ) {
-				project.addResourceListener( this.resourceListener );
-			}
-		} else {
-			project = null;
-		}
-		this.reloadTableModel( project );
-		this.getResourceState().addAndInvokeNewSchoolValueListener( this.rowListener );
-		super.handlePreActivation();
-	}
-
-	@Override
-	public void handlePostDeactivation() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		if( ide != null ) {
-			org.lgna.project.Project project = ide.getProject();
-			if( project != null ) {
-				project.removeResourceListener( this.resourceListener );
-			}
-		}
-		this.getResourceState().removeNewSchoolValueListener( this.rowListener );
-		super.handlePostDeactivation();
-	}
-
-	private void handleSelection( org.lgna.common.Resource nextValue ) {
-		boolean isSelected = nextValue != null;
-		String renameAndReplaceToolTipText;
-
-		String removeToolTipText;
-		boolean isReferenced;
-		if( isSelected ) {
-
-			javax.swing.table.TableModel resourceTableModel = this.getResourceState().getSwingModel().getTableModel();
-			javax.swing.ListSelectionModel listSelectionModel = this.getResourceState().getSwingModel().getListSelectionModel();
-
-			isReferenced = (Boolean)resourceTableModel.getValueAt( listSelectionModel.getLeadSelectionIndex(), ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX );
-			renameAndReplaceToolTipText = null;
-			if( isReferenced ) {
-				removeToolTipText = null;
-			} else {
-				removeToolTipText = "cannot remove resources that are referenced";
-			}
-		} else {
-			isReferenced = false;
-			renameAndReplaceToolTipText = "select resource";
-			removeToolTipText = renameAndReplaceToolTipText;
-		}
-		RenameResourceComposite.getInstance().getLaunchOperation().setEnabled( isSelected );
-		RenameResourceComposite.getInstance().getLaunchOperation().setToolTipText( renameAndReplaceToolTipText );
-		ReloadContentResourceOperation.getInstance().setEnabled( isSelected );
-		ReloadContentResourceOperation.getInstance().setToolTipText( renameAndReplaceToolTipText );
-
-		RemoveResourceOperation.getInstance().setEnabled( isSelected && ( isReferenced == false ) );
-		RemoveResourceOperation.getInstance().setToolTipText( removeToolTipText );
-	}
-
-	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		ResourceManagerComposite.getInstance().getLaunchOperation().fire();
-		System.exit( 0 );
-	}
+	private java.util.Collection<org.lgna.common.Resource> previousResources = java.util.Collections.emptyList();
+	private org.lgna.project.Project projectBeingListenedTo;
 }

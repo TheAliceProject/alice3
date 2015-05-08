@@ -70,14 +70,14 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 
 	private final org.lgna.croquet.Operation acceptAllDifferentImplementationsOperation = this.createActionOperation( "acceptAllDifferentImplementationsOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			acceptAllDifferentImplementations();
 			return null;
 		}
 	} );
 	private final org.lgna.croquet.Operation rejectAllDifferentImplementationsOperation = this.createActionOperation( "rejectAllDifferentImplementationsOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			rejectAllDifferentImplementations();
 			return null;
 		}
@@ -255,7 +255,7 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 		}
 	}
 
-	public org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		if( this.dstType != null ) {
 			java.util.List<org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData> renames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 

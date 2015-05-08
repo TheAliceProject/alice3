@@ -46,10 +46,10 @@ package org.alice.ide.perspectives.noproject;
  * @author Dennis Cosgrove
  */
 public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
+	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList(
-				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(),
+				projectDocumentFrame.getNewProjectOperation().getMenuItemPrepModel(),
+				projectDocumentFrame.getOpenProjectOperation().getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.recentprojects.RecentProjectsMenuModel.getInstance()
 				);
@@ -62,20 +62,12 @@ public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}
 
-	private static class SingletonHolder {
-		private static FileMenuModel instance = new FileMenuModel();
-	}
-
-	public static FileMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private FileMenuModel() {
-		super( java.util.UUID.fromString( "f35b5ea2-315e-487d-af62-52f99f1c6306" ), createMenuItemPrepModels() );
+	public FileMenuModel( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
+		super( java.util.UUID.fromString( "f35b5ea2-315e-487d-af62-52f99f1c6306" ), createMenuItemPrepModels( projectDocumentFrame ) );
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 		return org.alice.ide.croquet.models.menubar.FileMenuModel.class;
 	}
 }

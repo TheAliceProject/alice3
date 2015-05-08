@@ -46,28 +46,21 @@ package org.alice.stageide.about;
 /**
  * @author Dennis Cosgrove
  */
-public final class AboutComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.stageide.about.views.AboutView> {
-	private static class SingletonHolder {
-		private static AboutComposite instance = new AboutComposite();
+public final class AboutComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.stageide.about.views.AboutView> {
+	public AboutComposite() {
+		super( java.util.UUID.fromString( "c3c2bc1a-697e-4934-b605-1019605ce4ea" ) );
 	}
 
-	public static AboutComposite getInstance() {
-		return SingletonHolder.instance;
+	public org.lgna.croquet.Operation[] getEulaDialogLaunchOperations() {
+		return new org.lgna.croquet.Operation[] { org.alice.ide.IdeApp.INSTANCE.getSystemEulaDialogLaunchOperation(), org.alice.ide.IdeApp.INSTANCE.getSimsArtEulaDialogLaunchOperation() };
 	}
 
-	private AboutComposite() {
-		super( java.util.UUID.fromString( "c3c2bc1a-697e-4934-b605-1019605ce4ea" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+	public org.lgna.croquet.Operation getCreditsDialogLaunchOperation() {
+		return org.alice.ide.IdeApp.INSTANCE.getCreditsDialogLaunchOperation();
 	}
 
 	@Override
 	protected org.alice.stageide.about.views.AboutView createView() {
 		return new org.alice.stageide.about.views.AboutView( this );
-	}
-
-	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		AboutComposite.getInstance().getLaunchOperation().fire();
-		System.exit( 0 );
 	}
 }

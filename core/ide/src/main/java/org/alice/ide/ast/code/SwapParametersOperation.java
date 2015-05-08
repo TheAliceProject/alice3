@@ -63,8 +63,7 @@ public abstract class SwapParametersOperation extends AbstractCodeParameterOpera
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<SwapParametersOperation> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep step ) {
 		final int aIndex = this.getIndexA();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( this, aIndex );
 		step.commitAndInvokeDo( new org.alice.ide.ast.code.edits.SwapParametersEdit( step, this.getCode(), aIndex ) );

@@ -62,14 +62,13 @@ public abstract class DeleteDeclarationLikeSubstanceOperation<N extends org.lgna
 
 	protected abstract org.lgna.croquet.BooleanState getFindModel();
 
-	protected abstract org.lgna.croquet.edits.AbstractEdit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.croquet.Operation failedToClearOperation = this.getAlertModelIfNotAllowedToDelete();
 		if( failedToClearOperation != null ) {
-			completionStep.cancel();
+			step.cancel();
 			org.lgna.croquet.history.CompletionStep<?> subCompletionStep = failedToClearOperation.fire();
 			if( subCompletionStep.isSuccessfullyCompleted() ) {
 				org.lgna.croquet.BooleanState findFrameState = this.getFindModel();
@@ -78,9 +77,9 @@ public abstract class DeleteDeclarationLikeSubstanceOperation<N extends org.lgna
 				}
 			}
 		} else {
-			org.lgna.croquet.edits.AbstractEdit<?> edit = this.createEdit( completionStep );
+			org.lgna.croquet.edits.Edit edit = this.createEdit( step );
 			assert edit != null : this;
-			completionStep.commitAndInvokeDo( edit );
+			step.commitAndInvokeDo( edit );
 		}
 	}
 }

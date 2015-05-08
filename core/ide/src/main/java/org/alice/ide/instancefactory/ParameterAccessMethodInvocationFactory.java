@@ -81,14 +81,6 @@ public class ParameterAccessMethodInvocationFactory extends MethodInvocationFact
 		}
 	}
 
-	@Override
-	protected org.lgna.croquet.resolvers.Resolver<ParameterAccessMethodInvocationFactory> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ParameterAccessMethodInvocationFactory>(
-				this,
-				new Class[] { org.lgna.project.ast.UserParameter.class, org.lgna.project.ast.AbstractMethod.class },
-				new Object[] { this.parameter, this.getMethod() } );
-	}
-
 	public org.lgna.project.ast.UserParameter getParameter() {
 		return this.parameter;
 	}
@@ -105,7 +97,7 @@ public class ParameterAccessMethodInvocationFactory extends MethodInvocationFact
 	}
 
 	@Override
-	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
+	protected StringBuilder addAccessRepr( StringBuilder rv ) {
 		rv.append( this.parameter.getName() );
 		return rv;
 	}

@@ -57,7 +57,7 @@ public class TransactionHistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swi
 			sb.append( "transaction[" );
 			sb.append( i );
 			sb.append( "] " );
-			org.lgna.croquet.edits.AbstractEdit<?> edit = transaction.getEdit();
+			org.lgna.croquet.edits.Edit edit = transaction.getEdit();
 			if( edit != null ) {
 				sb.append( edit.getTerseDescription() );
 			}

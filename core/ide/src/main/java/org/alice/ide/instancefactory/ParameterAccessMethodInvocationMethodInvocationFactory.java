@@ -79,14 +79,6 @@ public class ParameterAccessMethodInvocationMethodInvocationFactory extends Meth
 		}
 	}
 
-	@Override
-	protected org.lgna.croquet.resolvers.Resolver<ParameterAccessMethodInvocationMethodInvocationFactory> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ParameterAccessMethodInvocationMethodInvocationFactory>(
-				this,
-				new Class[] { org.lgna.project.ast.UserParameter.class, org.lgna.project.ast.AbstractMethod.class, org.lgna.project.ast.AbstractMethod.class },
-				new Object[] { this.parameter, this.innerMethod, this.getMethod() } );
-	}
-
 	public org.lgna.project.ast.UserParameter getParameter() {
 		return this.parameter;
 	}
@@ -111,7 +103,7 @@ public class ParameterAccessMethodInvocationMethodInvocationFactory extends Meth
 	}
 
 	@Override
-	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
+	protected StringBuilder addAccessRepr( StringBuilder rv ) {
 		rv.append( this.parameter.getName() );
 		rv.append( "." );
 		rv.append( this.innerMethod.getName() );

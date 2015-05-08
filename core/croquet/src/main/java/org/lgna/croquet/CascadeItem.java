@@ -85,7 +85,7 @@ public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements Cas
 		this.isDirty = false;
 	}
 
-	protected void markDirty() {
+	public void markDirty() {
 		this.isDirty = true;
 	}
 

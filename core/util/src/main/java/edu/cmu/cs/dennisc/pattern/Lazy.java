@@ -56,6 +56,10 @@ public abstract class Lazy<T> {
 		return this.value;
 	}
 
+	public T peek() {
+		return this.value;
+	}
+
 	protected abstract T create();
 
 	private boolean isCreated;

@@ -65,13 +65,13 @@ public class ThisPane extends AccessiblePane {
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		this.updateBasedOnFocusedDeclaration( org.alice.ide.MetaDeclarationFauxState.getInstance().getValue() );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addAndInvokeNewSchoolValueListener( this.declarationListener );
+		this.updateBasedOnFocusedDeclaration( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getValue() );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener( this.declarationListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeNewSchoolValueListener( this.declarationListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationListener );
 		super.handleUndisplayable();
 	}
 

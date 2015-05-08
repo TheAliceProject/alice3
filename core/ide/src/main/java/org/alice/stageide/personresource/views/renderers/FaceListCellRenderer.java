@@ -64,12 +64,12 @@ public class FaceListCellRenderer extends IngredientListCellRenderer<org.lgna.st
 		if( gender != null ) {
 			String genderName = gender.name();
 			sb.append( genderName.charAt( 0 ) );
-			sb.append( genderName.substring( 1 ).toLowerCase() );
+			sb.append( genderName.substring( 1 ).toLowerCase( java.util.Locale.ENGLISH ) );
 		}
 		if( lifeStage != null ) {
 			String lifeStageName = lifeStage.name();
 			sb.append( lifeStageName.charAt( 0 ) );
-			sb.append( lifeStageName.substring( 1 ).toLowerCase() );
+			sb.append( lifeStageName.substring( 1 ).toLowerCase( java.util.Locale.ENGLISH ) );
 		}
 		sb.append( clsName );
 		return sb.toString();

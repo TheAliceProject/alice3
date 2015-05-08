@@ -42,7 +42,6 @@
  */
 package org.lgna.project.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -72,15 +71,4 @@ public class NodeProperty<E extends Node> extends edu.cmu.cs.dennisc.property.In
 			}
 		}
 	}
-	//	@Override
-	//	public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, E nextValue ) {
-	//		E prevValue = this.getValue();
-	//		if( prevValue != null ) {
-	//			prevValue.setProperty( null );
-	//		}
-	//		super.setValue( nextValue );
-	//		if( nextValue != null ) {
-	//			nextValue.setProperty( this );
-	//		}
-	//	}
 }

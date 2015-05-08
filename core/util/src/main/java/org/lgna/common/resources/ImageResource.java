@@ -61,7 +61,7 @@ public class ImageResource extends org.lgna.common.Resource {
 
 	public static String getContentType( String path ) {
 		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( path );
-		return ImageResource.extensionToContentTypeMap.get( extension.toLowerCase() );
+		return ImageResource.extensionToContentTypeMap.get( extension.toLowerCase( java.util.Locale.ENGLISH ) );
 	}
 
 	public static String getContentType( java.io.File file ) {

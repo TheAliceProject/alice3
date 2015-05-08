@@ -56,11 +56,11 @@ public abstract class ImportResourceOperation<R extends org.lgna.common.Resource
 
 	@Override
 	protected R getResource() {
-		return this.importer.createValue( this.getName() );
+		return this.importer.createValue( this.getImp().getName() );
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource ) {
 		return new org.alice.ide.resource.manager.edits.AddResourceEdit( step, resource );
 	}
 }

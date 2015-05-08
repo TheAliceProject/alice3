@@ -48,10 +48,25 @@ import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.ValueTemplate;
 import org.lgna.project.annotations.Visibility;
 
-import edu.cmu.cs.dennisc.nebulous.NebulousTexture;
-
 public class SRoom extends SThing implements MutableRider, Visual {
-	public static enum WallAppearance implements edu.cmu.cs.dennisc.nebulous.NebulousPaint {
+	private static class LazyTexture extends edu.cmu.cs.dennisc.pattern.Lazy<edu.cmu.cs.dennisc.texture.Texture> {
+		public LazyTexture( String textureKey ) {
+			this.textureKey = textureKey;
+		}
+
+		@Override
+		protected edu.cmu.cs.dennisc.texture.Texture create() {
+			return new edu.cmu.cs.dennisc.nebulous.NebulousTexture( this.textureKey );
+		}
+
+		private final String textureKey;
+	}
+
+	private static boolean isNebulousTextureValid() {
+		return true;
+	}
+
+	public static enum WallAppearance implements NonfreeTexturePaint {
 		BLUE_STRIPE_WITH_WOOD_TRIM,
 		BLUE_STRIPE_WITH_WHITE_TRIM,
 		BLUE_STRIPE_WITH_WOOD_COFFER,
@@ -84,18 +99,34 @@ public class SRoom extends SThing implements MutableRider, Visual {
 		SALMON,
 		SALMON_WITH_BEAD;
 
-		private NebulousTexture nebulousTexture;
+		private WallAppearance( Paint fallback ) {
+			this.fallback = fallback;
+		}
+
+		private WallAppearance() {
+			this( Color.WHITE );
+		}
 
 		@Override
-		public NebulousTexture getTexture() {
-			if( this.nebulousTexture == null ) {
-				this.nebulousTexture = new NebulousTexture( this.toString() );
-			}
-			return this.nebulousTexture;
+		public boolean isTextureValid() {
+			return isNebulousTextureValid();
 		}
+
+		@Override
+		public edu.cmu.cs.dennisc.texture.Texture getTexture() {
+			return this.lazyTexture.get();
+		}
+
+		@Override
+		public Paint getFallback() {
+			return this.fallback;
+		}
+
+		private final LazyTexture lazyTexture = new LazyTexture( this.toString() );
+		private final Paint fallback;
 	}
 
-	public static enum FloorAppearance implements edu.cmu.cs.dennisc.nebulous.NebulousPaint {
+	public static enum FloorAppearance implements NonfreeTexturePaint {
 		BLACK_CHECKER,
 		BLUE_CHECKER,
 		BLUE_SQUARES,
@@ -117,18 +148,34 @@ public class SRoom extends SThing implements MutableRider, Visual {
 		MOROCCAN_TILES,
 		WOOD_DIAMOND;
 
-		private NebulousTexture nebulousTexture;
+		private FloorAppearance( Paint fallback ) {
+			this.fallback = fallback;
+		}
+
+		private FloorAppearance() {
+			this( Color.WHITE );
+		}
 
 		@Override
-		public NebulousTexture getTexture() {
-			if( this.nebulousTexture == null ) {
-				this.nebulousTexture = new NebulousTexture( this.toString() );
-			}
-			return this.nebulousTexture;
+		public boolean isTextureValid() {
+			return isNebulousTextureValid();
 		}
+
+		@Override
+		public edu.cmu.cs.dennisc.texture.Texture getTexture() {
+			return this.lazyTexture.get();
+		}
+
+		@Override
+		public Paint getFallback() {
+			return this.fallback;
+		}
+
+		private final LazyTexture lazyTexture = new LazyTexture( this.toString() );
+		private final Paint fallback;
 	}
 
-	public static enum CeilingAppearance implements edu.cmu.cs.dennisc.nebulous.NebulousPaint {
+	public static enum CeilingAppearance implements NonfreeTexturePaint {
 		BLACK_CHECKER,
 		BLUE_CHECKER,
 		BLUE_SQUARES,
@@ -150,15 +197,31 @@ public class SRoom extends SThing implements MutableRider, Visual {
 		MOROCCAN_TILES,
 		WOOD_DIAMOND;
 
-		private NebulousTexture nebulousTexture;
+		private CeilingAppearance( Paint fallback ) {
+			this.fallback = fallback;
+		}
+
+		private CeilingAppearance() {
+			this( Color.WHITE );
+		}
 
 		@Override
-		public NebulousTexture getTexture() {
-			if( this.nebulousTexture == null ) {
-				this.nebulousTexture = new NebulousTexture( this.toString() );
-			}
-			return this.nebulousTexture;
+		public boolean isTextureValid() {
+			return isNebulousTextureValid();
 		}
+
+		@Override
+		public edu.cmu.cs.dennisc.texture.Texture getTexture() {
+			return this.lazyTexture.get();
+		}
+
+		@Override
+		public Paint getFallback() {
+			return this.fallback;
+		}
+
+		private final LazyTexture lazyTexture = new LazyTexture( this.toString() );
+		private final Paint fallback;
 	}
 
 	private final org.lgna.story.implementation.RoomImp implementation = new org.lgna.story.implementation.RoomImp( this );

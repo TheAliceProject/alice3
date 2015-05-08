@@ -60,7 +60,7 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 
 	@Override
 	protected java.awt.print.Printable getPrintable() {
-		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
+		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
 		java.awt.print.Printable printable = null;
 		if( declarationComposite != null ) {
 			org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();

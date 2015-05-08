@@ -51,7 +51,7 @@ public class IterableUtilities {
 		if( iterable instanceof java.util.Collection<?> ) {
 			collection = (java.util.Collection<Object>)iterable;
 		} else {
-			collection = new java.util.Vector<Object>();
+			collection = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( Object item : iterable ) {
 				collection.add( item );
 			}

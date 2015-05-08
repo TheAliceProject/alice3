@@ -60,7 +60,7 @@ public enum BoneCodec implements org.lgna.croquet.ItemCodec<org.lgna.ik.Bone> {
 	}
 
 	@Override
-	public java.lang.Class<org.lgna.ik.Bone> getValueClass() {
+	public Class<org.lgna.ik.Bone> getValueClass() {
 		return org.lgna.ik.Bone.class;
 	}
 

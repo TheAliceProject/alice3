@@ -47,15 +47,7 @@ package org.alice.ide.resource.manager;
  * @author Dennis Cosgrove
  */
 public final class ImportImageResourceOperation extends ImportResourceOperation<org.lgna.common.resources.ImageResource> {
-	private static class SingletonHolder {
-		private static ImportImageResourceOperation instance = new ImportImageResourceOperation();
-	}
-
-	public static ImportImageResourceOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ImportImageResourceOperation() {
+	public ImportImageResourceOperation() {
 		super( java.util.UUID.fromString( "4896b154-99e1-4664-9258-86501510a6e0" ), org.alice.ide.ast.importers.ImageResourceImporter.getInstance() );
 	}
 }

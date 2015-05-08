@@ -54,8 +54,8 @@ public class FileMenuModel extends org.lgna.croquet.StaticMenuModel {
 	@Override
 	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList(
-				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(),
+				this.projectDocumentFrame.getNewProjectOperation().getMenuItemPrepModel(),
+				this.projectDocumentFrame.getOpenProjectOperation().getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.recentprojects.RecentProjectsMenuModel.getInstance(),
 				org.lgna.croquet.MenuModel.SEPARATOR,

@@ -45,18 +45,33 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CopyableArrayProperty<E> extends ArrayProperty<E> implements CopyableProperty<E[]> {
-	public CopyableArrayProperty( InstancePropertyOwner owner, E... value ) {
+public abstract class CopyableArrayProperty<T> extends CopyableInstanceProperty<T[]> {
+	public CopyableArrayProperty( InstancePropertyOwner owner, T... value ) {
 		super( owner, value );
 	}
 
-	protected abstract E[] createArray( int length );
-
-	protected abstract E createCopy( E e );
+	public int getLength() {
+		T[] value = this.getValue();
+		if( value != null ) {
+			return value.length;
+		} else {
+			return 0;
+		}
+	}
 
 	@Override
-	public E[] getCopy( E[] rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
-		E[] value = getValue();
+	public void setValue( T[] value ) {
+		assert value != null : this;
+		super.setValue( value );
+	}
+
+	protected abstract T[] createArray( int length );
+
+	protected abstract T createCopy( T e );
+
+	@Override
+	public T[] getCopy( T[] rv ) {
+		T[] value = getValue();
 		for( int i = 0; i < value.length; i++ ) {
 			rv[ i ] = createCopy( value[ i ] );
 		}
@@ -64,28 +79,16 @@ public abstract class CopyableArrayProperty<E> extends ArrayProperty<E> implemen
 	}
 
 	@Override
-	public E[] getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
-		return getCopy( createArray( getLength() ), owner );
+	public final T[] getCopy() {
+		return this.getCopy( this.createArray( this.getLength() ) );
 	}
 
 	@Override
-	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, E[] value ) {
-		E[] dst = createArray( value.length );
+	public void setCopy( T[] value ) {
+		T[] dst = this.createArray( value.length );
 		for( int i = 0; i < value.length; i++ ) {
-			dst[ i ] = createCopy( value[ i ] );
+			dst[ i ] = this.createCopy( value[ i ] );
 		}
-		setValue( value );
-	}
-
-	public E[] getCopy( E[] rv ) {
-		return getCopy( rv, getOwner() );
-	}
-
-	public E[] getCopy() {
-		return getCopy( getOwner() );
-	}
-
-	public void setCopy( E[] value ) {
-		setCopy( getOwner(), value );
+		this.setValue( value );
 	}
 }

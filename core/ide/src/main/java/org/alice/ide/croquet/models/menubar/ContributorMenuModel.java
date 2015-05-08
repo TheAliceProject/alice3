@@ -46,15 +46,7 @@ package org.alice.ide.croquet.models.menubar;
  * @author Dennis Cosgrove
  */
 public class ContributorMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static ContributorMenuModel instance = new ContributorMenuModel();
-	}
-
-	public static ContributorMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ContributorMenuModel() {
-		super( java.util.UUID.fromString( "4215bc20-55ec-4b7e-9dc0-d573501ea985" ), org.alice.ide.localize.review.croquet.LocalizeReviewFrame.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
+	public ContributorMenuModel( org.lgna.croquet.BooleanState localizeReviewIsShowingState ) {
+		super( java.util.UUID.fromString( "4215bc20-55ec-4b7e-9dc0-d573501ea985" ), localizeReviewIsShowingState.getMenuItemPrepModel() );
 	}
 }

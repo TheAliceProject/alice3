@@ -61,7 +61,7 @@ public class TemplateAssignmentInsertCascade extends org.lgna.croquet.CascadeWit
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
 		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit(
 				completionStep,
 				this.blockStatementIndexPair,
@@ -70,7 +70,7 @@ public class TemplateAssignmentInsertCascade extends org.lgna.croquet.CascadeWit
 
 	@Override
 	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.imp.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().getValue();
+		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
 		if( selectedType != null ) {
 			java.util.List<org.lgna.project.ast.UserField> nonFinalUserFields = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( org.lgna.project.ast.AbstractField field : selectedType.getDeclaredFields() ) {

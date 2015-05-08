@@ -46,16 +46,8 @@ package org.alice.ide.croquet.models.projecturi;
  * @author Dennis Cosgrove
  */
 public class NewProjectOperation extends PotentialClearanceUriCreatorIteratingOperation {
-	private static class SingletonHolder {
-		private static NewProjectOperation instance = new NewProjectOperation();
-	}
-
-	public static NewProjectOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private NewProjectOperation() {
-		super( java.util.UUID.fromString( "281eb394-1da5-4527-98a1-92ce5c604715" ), true );
+	public NewProjectOperation( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
+		super( java.util.UUID.fromString( "281eb394-1da5-4527-98a1-92ce5c604715" ), projectDocumentFrame, true );
 	}
 
 	@Override

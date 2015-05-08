@@ -64,11 +64,6 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 	}
 
 	@Override
-	protected org.lgna.croquet.resolvers.Resolver<ThisInstanceFactory> createResolver() {
-		return new org.lgna.croquet.resolvers.SingletonResolver<ThisInstanceFactory>( this );
-	}
-
-	@Override
 	public org.lgna.project.ast.Expression createTransientExpression() {
 		return createTransientThisExpression();
 	}
@@ -80,7 +75,7 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 
 	@Override
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
-		return org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().getValue();
+		return org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
 	}
 
 	@Override

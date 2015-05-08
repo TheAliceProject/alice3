@@ -121,7 +121,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 			//todo: create new every time?
 			this.method = new org.lgna.project.ast.UserMethod( this.methodName, this.returnType, new org.lgna.project.ast.UserParameter[ 0 ], this.body );
 		}
-		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		this.prevDeclarationComposite = declarationTabState.getValue();
 		this.declaringType.methods.add( this.method );
 		declarationTabState.setValueTransactionlessly( org.alice.ide.declarationseditor.CodeComposite.getInstance( this.method ) );
@@ -132,7 +132,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 		int index = this.declaringType.methods.indexOf( this.method );
 		if( index != -1 ) {
 			this.declaringType.methods.remove( index );
-			org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+			org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 			if( this.prevDeclarationComposite != null ) {
 				if( declarationTabState.containsItem( this.prevDeclarationComposite ) ) {
 					declarationTabState.setValueTransactionlessly( this.prevDeclarationComposite );
@@ -148,57 +148,5 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.AbstractEdit
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "declare: " );
 		rv.append( this.methodName );
-	}
-
-	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.AbstractEdit<?> replacementCandidate ) {
-		if( replacementCandidate instanceof DeclareMethodEdit ) {
-			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)replacementCandidate;
-			org.lgna.project.ast.AbstractType<?, ?, ?> originalReturnType = this.getReturnType();
-			org.lgna.project.ast.AbstractType<?, ?, ?> replacementReturnType = declareMethodEdit.getReturnType();
-			if( originalReturnType == replacementReturnType ) {
-				String originalName = this.getMethodName();
-				String replacementName = declareMethodEdit.getMethodName();
-				if( edu.cmu.cs.dennisc.java.util.Objects.equals( originalName, replacementName ) ) {
-					return org.lgna.croquet.edits.ReplacementAcceptability.PERFECT_MATCH;
-				} else {
-					StringBuilder sb = new StringBuilder();
-					sb.append( "original name: " );
-					sb.append( originalName );
-					sb.append( "; changed to: " );
-					sb.append( replacementName );
-					//sb.append( "." );
-					return org.lgna.croquet.edits.ReplacementAcceptability.createDeviation( org.lgna.croquet.edits.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE, sb.toString() );
-				}
-			} else {
-				org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
-				return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "<html>return type <strong>MUST</strong> be <strong>" + formatter.getTextForType( originalReturnType ) + "</strong></html>" );
-			}
-		} else {
-			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of DeclareMethodEdit" );
-		}
-	}
-
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		this.declaringType = retargeter.retarget( this.declaringType );
-		this.returnType = retargeter.retarget( this.returnType );
-		if( this.method != null ) {
-			this.method = retargeter.retarget( this.method );
-		}
-	}
-
-	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		super.addKeyValuePairs( retargeter, edit );
-		assert edit instanceof DeclareMethodEdit;
-		DeclareMethodEdit replacementEdit = (DeclareMethodEdit)edit;
-		retargeter.addKeyValuePair( this.declaringType, replacementEdit.declaringType );
-		retargeter.addKeyValuePair( this.returnType, replacementEdit.returnType );
-		if( this.method != null ) {
-			retargeter.addKeyValuePair( this.method, replacementEdit.method );
-			retargeter.addKeyValuePair( this.method.body.getValue(), replacementEdit.method.body.getValue() );
-		}
 	}
 }

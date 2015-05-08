@@ -45,20 +45,9 @@ package org.alice.ide.help;
 /**
  * @author Dennis Cosgrove
  */
-public final class HelpComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.help.views.HelpView> {
-	private static class SingletonHolder {
-		private static HelpComposite instance = new HelpComposite();
-	}
-
-	public static HelpComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final HelpBrowserOperation browserOperation = new HelpBrowserOperation();
-	private final org.lgna.croquet.PlainStringValue whereToFindHelpText = this.createStringValue( "whereToFindHelpText" );
-
-	private HelpComposite() {
-		super( java.util.UUID.fromString( "5b7c1e0d-18ed-4c1a-8eb0-13d3eb0c3c62" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+public final class HelpComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.ide.help.views.HelpView> {
+	public HelpComposite() {
+		super( java.util.UUID.fromString( "5b7c1e0d-18ed-4c1a-8eb0-13d3eb0c3c62" ) );
 	}
 
 	public org.lgna.croquet.PlainStringValue getWhereToFindHelpText() {
@@ -73,4 +62,7 @@ public final class HelpComposite extends org.lgna.croquet.SimpleOperationUnadorn
 	protected org.alice.ide.help.views.HelpView createView() {
 		return new org.alice.ide.help.views.HelpView( this );
 	}
+
+	private final HelpBrowserOperation browserOperation = new HelpBrowserOperation();
+	private final org.lgna.croquet.PlainStringValue whereToFindHelpText = this.createStringValue( "whereToFindHelpText" );
 }

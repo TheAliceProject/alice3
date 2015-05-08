@@ -93,7 +93,7 @@ public abstract class ResourceKeyUriIteratingOperation extends org.lgna.croquet.
 	protected abstract int getStepCount();
 
 	@Override
-	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
 		return subSteps.size() < this.getStepCount();
 	}
 
@@ -104,19 +104,19 @@ public abstract class ResourceKeyUriIteratingOperation extends org.lgna.croquet.
 	}
 
 	protected org.lgna.croquet.Operation getMergeTypeOperation() {
-		edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> tuple;
+		org.lgna.project.io.TypeResourcesPair typeResourcesPair;
 		try {
-			tuple = org.lgna.project.io.IoUtilities.readType( new java.io.File( this.uri ) );
+			typeResourcesPair = org.lgna.project.io.IoUtilities.readType( new java.io.File( this.uri ) );
 		} catch( java.io.IOException ioe ) {
-			tuple = null;
+			typeResourcesPair = null;
 			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ioe, this.uri );
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
-			tuple = null;
+			typeResourcesPair = null;
 			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( vnse, this.uri );
 		}
-		if( tuple != null ) {
-			org.lgna.project.ast.NamedUserType importedRootType = tuple.getA();
-			java.util.Set<org.lgna.common.Resource> importedResources = tuple.getB();
+		if( typeResourcesPair != null ) {
+			org.lgna.project.ast.NamedUserType importedRootType = typeResourcesPair.getType();
+			java.util.Set<org.lgna.common.Resource> importedResources = typeResourcesPair.getResources();
 			org.lgna.project.ast.NamedUserType srcType = importedRootType;
 			org.lgna.project.ast.NamedUserType dstType = org.alice.ide.ast.type.merge.core.MergeUtilities.findMatchingTypeInExistingTypes( srcType );
 			org.alice.ide.ast.type.croquet.ImportTypeWizard wizard = new org.alice.ide.ast.type.croquet.ImportTypeWizard( this.uri, importedRootType, importedResources, srcType, dstType );
@@ -127,7 +127,7 @@ public abstract class ResourceKeyUriIteratingOperation extends org.lgna.croquet.
 	}
 
 	@Override
-	protected abstract org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData );
+	protected abstract org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData );
 
 	@Override
 	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {

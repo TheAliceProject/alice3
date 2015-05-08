@@ -60,7 +60,7 @@ public enum JointIdCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.re
 	}
 
 	@Override
-	public java.lang.Class<org.lgna.story.resources.JointId> getValueClass() {
+	public Class<org.lgna.story.resources.JointId> getValueClass() {
 		return org.lgna.story.resources.JointId.class;
 	}
 

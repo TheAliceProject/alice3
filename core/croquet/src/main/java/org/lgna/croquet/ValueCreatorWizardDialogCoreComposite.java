@@ -52,7 +52,7 @@ public abstract class ValueCreatorWizardDialogCoreComposite extends WizardDialog
 	}
 
 	@Override
-	protected String getName() {
+	protected String getDefaultTitleText() {
 		return null;
 	}
 }

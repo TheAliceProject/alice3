@@ -53,7 +53,7 @@ public class DragIntoSceneStencilModel extends IdeStencil {
 	@Override
 	protected void showStencil() {
 		org.alice.stageide.gallerybrowser.GalleryComposite galleryComposite = org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance().getGalleryComposite();
-		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewController( galleryComposite.getTabState(), this.getText() );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverCroquetViewController( galleryComposite.getTabState(), this.getText() );
 		new Thread() {
 			@Override
 			public void run() {

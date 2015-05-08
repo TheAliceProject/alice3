@@ -59,7 +59,7 @@ public class SearchForGraphicsDriversOperation extends org.alice.ide.browser.Bro
 	}
 
 	private static String getRendererSearchTerm( String renderer ) {
-		if( renderer.toLowerCase().contains( "geforce" ) ) {
+		if( renderer.toLowerCase( java.util.Locale.ENGLISH ).contains( "geforce" ) ) {
 			return "GeForce";
 		} else {
 			return renderer;

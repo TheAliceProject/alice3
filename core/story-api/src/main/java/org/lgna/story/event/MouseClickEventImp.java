@@ -88,7 +88,7 @@ public class MouseClickEventImp {
 			edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> rt = this.getOnscreenRenderTarget();
 			//todo: search through cameras for the one that contains mouse point, or default to [0] if outside
 			AbstractCamera sgCamera = rt.getSgCameraAt( 0 );
-			this.viewport = rt.getActualViewport( sgCamera );
+			this.viewport = rt.getActualViewportAsAwtRectangle( sgCamera );
 		}
 		return this.viewport;
 	}

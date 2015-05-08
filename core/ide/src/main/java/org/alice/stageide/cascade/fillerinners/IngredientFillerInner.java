@@ -57,7 +57,7 @@ public abstract class IngredientFillerInner extends org.alice.ide.cascade.filler
 		//		org.lookingglassandalice.storytelling.LifeStage[] lifeStages = { org.lookingglassandalice.storytelling.LifeStage.ADULT, org.lookingglassandalice.storytelling.LifeStage.CHILD }; 
 		//		for( final org.lookingglassandalice.storytelling.LifeStage lifeStage : lifeStages ) {
 		//			for( final org.lookingglassandalice.storytelling.Gender gender : org.lookingglassandalice.storytelling.Gender.values() ) {
-		//				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( gender.name().toLowerCase() + " " + lifeStage.name().toLowerCase() ) {
+		//				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( gender.name().toLowerCase( java.util.Locale.ENGLISH ) + " " + lifeStage.name().toLowerCase( java.util.Locale.ENGLISH ) ) {
 		//					@Override
 		//					protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		//						for( final Class<?> cls : getClses( lifeStage, gender ) ) {

@@ -46,10 +46,6 @@ package edu.cmu.cs.dennisc.scenegraph.util;
  * @author Dennis Cosgrove
  */
 public class BoundingBoxDecorator extends edu.cmu.cs.dennisc.scenegraph.Visual {
-	private final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgFrontAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
-	private final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgBackAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
-	private final edu.cmu.cs.dennisc.scenegraph.Box sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
-
 	public BoundingBoxDecorator( boolean isPickable ) {
 		this.sgFrontAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.YELLOW );
 		this.sgFrontAppearance.setShadingStyle( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.NONE );
@@ -91,4 +87,8 @@ public class BoundingBoxDecorator extends edu.cmu.cs.dennisc.scenegraph.Visual {
 		this.sgBackAppearance.setName( name + ".sgBackAppearance" );
 		this.sgBox.setName( name + ".sgBox" );
 	}
+
+	private final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgFrontAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
+	private final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgBackAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
+	private final edu.cmu.cs.dennisc.scenegraph.Box sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
 }

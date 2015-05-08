@@ -55,12 +55,12 @@ public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleT
 	}
 
 	@Override
-	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
 		return subSteps.size() < 2;
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
 		switch( subSteps.size() ) {
 		case 0:
 			return ImportTypeFileDialogValueCreator.getInstance();
@@ -69,9 +69,9 @@ public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleT
 			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {
 				java.io.File file = (java.io.File)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
 				try {
-					edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> tuple = org.lgna.project.io.IoUtilities.readType( file );
-					org.lgna.project.ast.NamedUserType importedType = tuple.getA();
-					java.util.Set<org.lgna.common.Resource> importedResources = tuple.getB();
+					org.lgna.project.io.TypeResourcesPair typeResourcesPair = org.lgna.project.io.IoUtilities.readType( file );
+					org.lgna.project.ast.NamedUserType importedType = typeResourcesPair.getType();
+					java.util.Set<org.lgna.common.Resource> importedResources = typeResourcesPair.getResources();
 					org.lgna.project.ast.NamedUserType srcType;
 					if( importedType.getName().contentEquals( this.dstType.getName() ) ) {
 						srcType = importedType;

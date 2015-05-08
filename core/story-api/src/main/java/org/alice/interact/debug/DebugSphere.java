@@ -53,9 +53,6 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 public class DebugSphere extends Transformable {
-	private Sphere sgPickPointSphere = new Sphere();
-	private Visual sgPickPointSphereVisual = new Visual();
-
 	public DebugSphere()
 	{
 		SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
@@ -76,4 +73,6 @@ public class DebugSphere extends Transformable {
 		this.localTransformation.setValue( transform );
 	}
 
+	private final Sphere sgPickPointSphere = new Sphere();
+	private final Visual sgPickPointSphereVisual = new Visual();
 }

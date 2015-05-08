@@ -65,7 +65,7 @@ public class ObjectPropertiesToolPalette extends SideToolPalette<org.alice.stage
 	protected String modifyTextIfNecessary( String text, boolean isExpanded ) {
 		text = super.modifyTextIfNecessary( text, isExpanded );
 		if( text != null ) {
-			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 			String repr;
 			if( instanceFactory != null ) {
 				repr = instanceFactory.getRepr();
@@ -85,12 +85,12 @@ public class ObjectPropertiesToolPalette extends SideToolPalette<org.alice.stage
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeNewSchoolValueListener( this.instanceFactoryListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().removeNewSchoolValueListener( this.instanceFactoryListener );
 		super.handlePostDeactivation();
 	}
 }

@@ -51,7 +51,6 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  * @author David Culyba
  */
 public class SnapLine extends Transformable {
-
 	public SnapLine( Vector3 line ) {
 		sgAxis = new InfiniteLineVisualization( line );
 		sgAxis.setParent( this );

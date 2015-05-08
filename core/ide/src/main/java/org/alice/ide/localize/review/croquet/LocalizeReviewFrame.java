@@ -46,18 +46,18 @@ package org.alice.ide.localize.review.croquet;
  * @author Dennis Cosgrove
  */
 public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.alice.ide.localize.review.croquet.views.LocalizeReviewFrameView> {
+	private static final String ZANATA_PROJECT_NAME = "alice";
+	private static final String ZANATA_DOC_NAME = "org.alice";
 	private static final String SUFFIX = ".properties";
-
-	private static class SingletonHolder {
-		private static LocalizeReviewFrame instance = new LocalizeReviewFrame();
+	private static final java.util.Map<java.util.Locale, java.util.Locale> mapLocaleToLocale;
+	static {
+		java.util.Map<java.util.Locale, java.util.Locale> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		map.put( new java.util.Locale( "pt" ), new java.util.Locale( "pt", "PT" ) );
+		mapLocaleToLocale = java.util.Collections.unmodifiableMap( map );
 	}
 
-	public static LocalizeReviewFrame getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private LocalizeReviewFrame() {
-		super( java.util.UUID.fromString( "2652798a-f27d-4658-8907-3f0b6bb0aac2" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+	public LocalizeReviewFrame() {
+		super( java.util.UUID.fromString( "2652798a-f27d-4658-8907-3f0b6bb0aac2" ) );
 		this.tableModel = new LocalizationTableModel();
 	}
 
@@ -97,6 +97,19 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 
 	public javax.swing.table.TableModel getTableModel() {
 		return this.tableModel;
+	}
+
+	public String getBundleName( int row ) {
+		return this.tableModel.getItems().get( row ).bundleName;
+	}
+
+	public java.net.URI createUri( int row ) {
+		java.util.Locale locale = this.getLocaleState().getValue();
+		if( mapLocaleToLocale.containsKey( locale ) ) {
+			locale = mapLocaleToLocale.get( locale );
+		}
+		String localeTag = edu.cmu.cs.dennisc.java.util.LocaleUtilities.toLanguageTag( locale );
+		return this.tableModel.getItems().get( row ).createUri( localeTag );
 	}
 
 	private final org.lgna.croquet.ImmutableDataSingleSelectListState<java.util.Locale> localeState = this.createImmutableListState( "localeState", java.util.Locale.class, org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON, 13,
@@ -143,49 +156,110 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 	private final LocalizationTableModel tableModel;
 
 	private static class LocalizationTableModel extends javax.swing.table.AbstractTableModel {
-		private static class Item {
-			public Item( String bundleName, String key, String defaultValue ) {
+		private static final class Item {
+			public Item( String projectName, String bundleName, String key, String defaultValue ) {
+				this.projectName = projectName;
 				this.bundleName = bundleName;
 				this.key = key;
 				this.defaultValue = defaultValue;
 			}
 
+			public java.net.URI createUri( String localeTag ) {
+				StringBuilder sb = new StringBuilder();
+
+				sb.append( "https://translate.zanata.org/zanata/webtrans/Application.seam?project=" );
+				sb.append( ZANATA_PROJECT_NAME );
+				sb.append( "&iteration=master" );
+
+				sb.append( "&localeId=" );
+				sb.append( localeTag );
+
+				sb.append( "#view:doc;doc:" );
+				sb.append( ZANATA_DOC_NAME );
+				sb.append( "/" );
+				sb.append( this.projectName );
+				sb.append( "/java/" );
+				sb.append( bundleName );
+
+				try {
+					return new java.net.URI( sb.toString() );
+				} catch( java.net.URISyntaxException urise ) {
+					throw new RuntimeException( sb.toString(), urise );
+				}
+			}
+
+			private final String projectName;
 			private final String bundleName;
 			private final String key;
 			private final String defaultValue;
 			private String localizedValue;
 		}
 
-		public LocalizationTableModel() {
-			Class<?> cls = org.alice.ide.IDE.class;
-			java.util.List<String> classPathEntries;
-			try {
-				classPathEntries = edu.cmu.cs.dennisc.classpath.ClassPathUtilities.getClassPathEntries( cls, new edu.cmu.cs.dennisc.pattern.Criterion<String>() {
-					@Override
-					public boolean accept( String path ) {
-						if( path.endsWith( SUFFIX ) ) {
-							return path.contains( "_" ) == false;
-						} else {
-							return false;
-						}
-					}
-				} );
-			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( ioe );
+		private static final class ClassProjectNamePair {
+			public ClassProjectNamePair( Class<?> cls, String projectName ) {
+				this.cls = cls;
+				this.projectName = projectName;
 			}
+
+			private final Class<?> cls;
+			private final String projectName;
+		}
+
+		public LocalizationTableModel() {
+
+			java.util.List<ClassProjectNamePair> clsProjectNamePairs = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+
+			clsProjectNamePairs.add( new ClassProjectNamePair( org.lgna.croquet.Element.class, "croquet" ) );
+			clsProjectNamePairs.add( new ClassProjectNamePair( org.lgna.project.ast.AbstractNode.class, "ast" ) );
+			clsProjectNamePairs.add( new ClassProjectNamePair( org.alice.interact.handle.HandleStyle.class, "story-api" ) );
+			clsProjectNamePairs.add( new ClassProjectNamePair( org.alice.imageeditor.croquet.ImageEditorFrame.class, "image-editor" ) );
+			clsProjectNamePairs.add( new ClassProjectNamePair( org.alice.ide.IDE.class, "ide" ) );
+
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+			clsProjectNamePairs.add( new ClassProjectNamePair( ide.getClass(), "alice-ide" ) );
 
 			java.util.List<Item> _allItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 			java.util.Locale prevLocale = java.util.Locale.getDefault();
 			java.util.Locale.setDefault( new java.util.Locale( "en", "US" ) );
-			for( String classPathEntry : classPathEntries ) {
-				String bundleName = classPathEntry.substring( 0, classPathEntry.length() - SUFFIX.length() );
-				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName );
-				for( String key : resourceBundle.keySet() ) {
-					_allItems.add( new Item( bundleName, key, resourceBundle.getString( key ) ) );
+
+			try {
+
+				for( ClassProjectNamePair clsProjectNamePair : clsProjectNamePairs ) {
+					java.util.List<String> classPathEntries;
+					try {
+						classPathEntries = edu.cmu.cs.dennisc.classpath.ClassPathUtilities.getClassPathEntries( clsProjectNamePair.cls, new edu.cmu.cs.dennisc.pattern.Criterion<String>() {
+							@Override
+							public boolean accept( String path ) {
+								if( path.startsWith( "META-INF/" ) ) {
+									return false;
+								} else {
+									if( path.endsWith( SUFFIX ) ) {
+										return path.contains( "_" ) == false;
+									} else {
+										return false;
+									}
+								}
+							}
+						} );
+					} catch( java.io.IOException ioe ) {
+						throw new RuntimeException( ioe );
+					}
+					for( String classPathEntry : classPathEntries ) {
+						String bundleName = classPathEntry.substring( 0, classPathEntry.length() - SUFFIX.length() );
+						try {
+							java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName );
+							for( String key : resourceBundle.keySet() ) {
+								_allItems.add( new Item( clsProjectNamePair.projectName, bundleName, key, resourceBundle.getString( key ) ) );
+							}
+						} catch( Throwable t ) {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to get resource bundle for:", bundleName );
+						}
+					}
 				}
+			} finally {
+				java.util.Locale.setDefault( prevLocale );
 			}
-			java.util.Locale.setDefault( prevLocale );
 
 			this.allItems = java.util.Collections.unmodifiableList( _allItems );
 		}
@@ -193,7 +267,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 		public void setLocale( java.util.Locale locale ) {
 			java.util.List<Item> _translatedItems = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 			for( Item item : this.allItems ) {
-				java.util.ResourceBundle resourceBundleB = java.util.ResourceBundle.getBundle( item.bundleName, locale );
+				java.util.ResourceBundle resourceBundleB = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( item.bundleName, locale );
 				try {
 					item.localizedValue = resourceBundleB.getString( item.key );
 				} catch( java.util.MissingResourceException mre ) {
@@ -256,7 +330,7 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 					return item.localizedValue;
 				}
 			case 4:
-				return item.key;
+				return item;
 			default:
 				throw new Error();
 			}
@@ -265,16 +339,5 @@ public class LocalizeReviewFrame extends org.lgna.croquet.FrameComposite<org.ali
 		private final java.util.List<Item> allItems;
 		private java.util.List<Item> translatedItems;
 		private boolean isIncludingUntranslated;
-	}
-
-	public static void main( String[] args ) throws Exception {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			@Override
-			public void run() {
-				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
-				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-				LocalizeReviewFrame.getInstance().getIsFrameShowingState().getImp().getSwingModel().getButtonModel().setSelected( true );
-			}
-		} );
 	}
 }

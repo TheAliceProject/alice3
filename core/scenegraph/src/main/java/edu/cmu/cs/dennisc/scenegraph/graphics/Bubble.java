@@ -60,11 +60,6 @@ public abstract class Bubble extends ShapeEnclosedText {
 				);
 	}
 
-	//todo: better name
-	public final edu.cmu.cs.dennisc.property.DoubleProperty portion = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 );
-
-	private final Originator originator;
-
 	public static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_TEXT_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
 	public static final java.awt.Font DEFAULT_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 12 );
 	public static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_FILL_COLOR = edu.cmu.cs.dennisc.color.Color4f.WHITE;
@@ -78,4 +73,9 @@ public abstract class Bubble extends ShapeEnclosedText {
 	public Originator getOriginator() {
 		return this.originator;
 	}
+
+	//todo: better name
+	public final edu.cmu.cs.dennisc.property.DoubleProperty portion = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 );
+
+	private final Originator originator;
 }

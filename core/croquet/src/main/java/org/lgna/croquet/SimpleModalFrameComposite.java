@@ -54,10 +54,10 @@ public abstract class SimpleModalFrameComposite<V extends org.lgna.croquet.views
 	@Override
 	protected String getName() {
 		Operation launchOperation = this.getLaunchOperation();
-		return launchOperation != null ? launchOperation.getName() : null;
+		return launchOperation != null ? launchOperation.getImp().getName() : null;
 	}
 
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
+	public org.lgna.croquet.Operation getLaunchOperation() {
 		return this.getImp().getLaunchOperation( null );
 	}
 }

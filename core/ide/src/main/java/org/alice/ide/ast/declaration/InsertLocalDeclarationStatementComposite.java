@@ -78,9 +78,4 @@ public class InsertLocalDeclarationStatementComposite extends InsertStatementCom
 	protected boolean isNullAllowedForInitializer() {
 		return org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForLocalInitializers.getInstance().getValue();
 	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, this.getBlockStatementIndexPair() );
-	}
 }

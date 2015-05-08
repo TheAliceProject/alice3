@@ -189,7 +189,7 @@
 								<artifactItem>
 									<groupId>org.videolan</groupId>
 									<artifactId>libvlc-macosx</artifactId>
-									<version>2.0.7</version>
+									<version>2.1.5</version>
 									<type>tar.gz</type>
 									<outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.libvlc.label}</outputDirectory>
 								</artifactItem>
@@ -227,7 +227,7 @@
 								<artifactItem>
 									<groupId>org.videolan</groupId>
 									<artifactId>libvlc-win32</artifactId>
-									<version>2.0.8</version>
+									<version>2.1.5</version>
 									<type>zip</type>
 									<outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.libvlc.label}</outputDirectory>
 								</artifactItem>
@@ -265,7 +265,7 @@
 								<artifactItem>
 									<groupId>org.videolan</groupId>
 									<artifactId>libvlc-win64</artifactId>
-									<version>2.0.8</version>
+									<version>2.1.5</version>
 									<type>zip</type>
 									<outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.libvlc.label}</outputDirectory>
 								</artifactItem>

@@ -70,10 +70,5 @@ public final class MethodNameSeparator extends org.lgna.croquet.CascadeLabelSepa
 		return this.method.getName();
 	}
 
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<MethodNameSeparator> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<MethodNameSeparator>( this, org.lgna.project.ast.AbstractMethod.class, this.method );
-	}
-
 	private final org.lgna.project.ast.AbstractMethod method;
 }

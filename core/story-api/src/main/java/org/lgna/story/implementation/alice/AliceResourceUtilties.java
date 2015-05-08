@@ -48,14 +48,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import org.lgna.project.ast.AbstractType;
 import org.lgna.story.resources.BasicResource;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
 import org.lgna.story.resourceutilities.StorytellingResources;
@@ -74,17 +71,15 @@ import edu.cmu.cs.dennisc.xml.XMLUtilities;
  * @author Dennis Cosgrove
  */
 public class AliceResourceUtilties {
+	public static final String MODEL_RESOURCE_EXTENSION = "a3r";
+	public static final String TEXTURE_RESOURCE_EXTENSION = "a3t";
 
-	public static String MODEL_RESOURCE_EXTENSION = "a3r";
-	public static String TEXTURE_RESOURCE_EXTENSION = "a3t";
+	private static final Map<URL, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual> urlToVisualMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static final Map<URL, TexturedAppearance[]> urlToTextureMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static final Map<String, org.lgna.story.resourceutilities.ModelResourceInfo> classToInfoMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static final Map<ResourceIdentifier, ResourceNames> resourceIdentifierToResourceNamesMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
-	private static Map<URL, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual> urlToVisualMap = new HashMap<URL, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual>();
-	private static Map<URL, TexturedAppearance[]> urlToTextureMap = new HashMap<URL, TexturedAppearance[]>();
-	private static Map<String, org.lgna.story.resourceutilities.ModelResourceInfo> classToInfoMap = new HashMap<String, org.lgna.story.resourceutilities.ModelResourceInfo>();
-
-	private static Map<ResourceIdentifier, ResourceNames> resourceIdentifierToResourceNamesMap = new HashMap<ResourceIdentifier, ResourceNames>();
-
-	private static class ResourceNames {
+	private static final class ResourceNames {
 		public final String visualName;
 		public final String textureName;
 
@@ -94,7 +89,7 @@ public class AliceResourceUtilties {
 		}
 	}
 
-	private static class ResourceIdentifier {
+	private static final class ResourceIdentifier {
 		public final Class<?> resourceClass;
 		public final String resourceName;
 
@@ -122,18 +117,17 @@ public class AliceResourceUtilties {
 	}
 
 	/*private*/protected AliceResourceUtilties() {
+		throw new AssertionError();
 	}
 
 	private static String findLocalizedText( String bundleName, String key, Locale locale ) {
 		if( ( bundleName != null ) && ( key != null ) ) {
 			try {
-				java.util.ResourceBundle resourceBundle = StorytellingResources.getInstance().getLocalizationBundle( bundleName, locale );
+				java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
 				String rv = resourceBundle.getString( key );
 				return rv;
 			} catch( java.util.MissingResourceException mre ) {
-				//				if( !locale.getLanguage().equals( "en" ) ) {
-				//					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to find localized text for " + bundleName + ": " + key + " in " + locale );
-				//				}
+				//Logger.errln( bundleName, key );
 				return null;
 			}
 		} else {
@@ -146,23 +140,19 @@ public class AliceResourceUtilties {
 	private static String THEME_TAGS_LOCALIZATION_BUNDLE = BasicResource.class.getPackage().getName() + ".GalleryTags";
 	private static String TAGS_LOCALIZATION_BUNDLE = BasicResource.class.getPackage().getName() + ".GalleryTags";
 
-	private static String getClassNameLocalizationBundleName()
-	{
+	private static String getClassNameLocalizationBundleName() {
 		return CLASS_NAME_LOCALIZATION_BUNDLE;
 	}
 
-	private static String getGroupTagsLocalizationBundleName()
-	{
+	private static String getGroupTagsLocalizationBundleName() {
 		return GROUP_TAGS_LOCALIZATION_BUNDLE;
 	}
 
-	private static String getThemeTagsLocalizationBundleName()
-	{
+	private static String getThemeTagsLocalizationBundleName() {
 		return THEME_TAGS_LOCALIZATION_BUNDLE;
 	}
 
-	private static String getTagsLocalizationBundleName()
-	{
+	private static String getTagsLocalizationBundleName() {
 		return TAGS_LOCALIZATION_BUNDLE;
 	}
 
@@ -180,8 +170,7 @@ public class AliceResourceUtilties {
 	}
 
 	public static TexturedAppearance[] decodeTexture( URL url ) {
-		try
-		{
+		try {
 			java.io.InputStream is = url.openStream();
 			edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
 			TexturedAppearance[] rv = decoder.decodeReferenceableBinaryEncodableAndDecodableArray( TexturedAppearance.class, new java.util.HashMap<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable>() );
@@ -189,18 +178,15 @@ public class AliceResourceUtilties {
 				( (edu.cmu.cs.dennisc.texture.BufferedImageTexture)ta.diffuseColorTexture.getValue() ).directSetMipMappingDesired( false );
 			}
 			return rv;
-		} catch( Exception e )
-		{
+		} catch( Exception e ) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
-	public static void encodeVisual( final SkeletonVisual toSave, File file ) throws IOException
-	{
+	public static void encodeVisual( final SkeletonVisual toSave, File file ) throws IOException {
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
-		if( !file.exists() )
-		{
+		if( !file.exists() ) {
 			file.createNewFile();
 		}
 		java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
@@ -210,11 +196,9 @@ public class AliceResourceUtilties {
 		fos.close();
 	}
 
-	public static void encodeTexture( final TexturedAppearance[] toSave, File file ) throws IOException
-	{
+	public static void encodeTexture( final TexturedAppearance[] toSave, File file ) throws IOException {
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
-		if( !file.exists() )
-		{
+		if( !file.exists() ) {
 			file.createNewFile();
 		}
 		java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
@@ -222,15 +206,14 @@ public class AliceResourceUtilties {
 		encoder.encode( toSave, new java.util.HashMap<ReferenceableBinaryEncodableAndDecodable, Integer>() );
 		encoder.flush();
 		fos.close();
-
 	}
 
 	public static InputStream getAliceResourceAsStream( Class<?> cls, String resourceString ) {
-		return StorytellingResources.getInstance().getAliceResourceAsStream( cls.getPackage().getName().replace( ".", "/" ) + "/" + resourceString );
+		return StorytellingResources.INSTANCE.getAliceResourceAsStream( cls.getPackage().getName().replace( ".", "/" ) + "/" + resourceString );
 	}
 
 	public static URL getAliceResource( Class<?> cls, String resourceString ) {
-		return StorytellingResources.getInstance().getAliceResource( cls.getPackage().getName().replace( ".", "/" ) + "/" + resourceString );
+		return StorytellingResources.INSTANCE.getAliceResource( cls.getPackage().getName().replace( ".", "/" ) + "/" + resourceString );
 	}
 
 	public static String enumToCamelCase( String enumName, boolean startWithLowerCase ) {
@@ -239,15 +222,12 @@ public class AliceResourceUtilties {
 			if( i == 0 ) {
 				if( startWithLowerCase ) {
 					sb.append( Character.toLowerCase( enumName.charAt( i ) ) );
-				}
-				else {
+				} else {
 					sb.append( Character.toUpperCase( enumName.charAt( i ) ) );
 				}
-			}
-			else if( enumName.charAt( i - 1 ) == '_' ) {
+			} else if( enumName.charAt( i - 1 ) == '_' ) {
 				sb.append( Character.toUpperCase( enumName.charAt( i ) ) );
-			}
-			else if( enumName.charAt( i ) != '_' ) {
+			} else if( enumName.charAt( i ) != '_' ) {
 				sb.append( Character.toLowerCase( enumName.charAt( i ) ) );
 			}
 		}
@@ -285,8 +265,7 @@ public class AliceResourceUtilties {
 		}
 		if( name.contains( "_" ) ) {
 			return name.toUpperCase();
-		}
-		else {
+		} else {
 			return camelCaseToEnum( name );
 		}
 	}
@@ -303,8 +282,7 @@ public class AliceResourceUtilties {
 				if( isFirst ) {
 					sb.append( nameArray[ i ].toLowerCase() );
 					isFirst = false;
-				}
-				else {
+				} else {
 					sb.append( nameArray[ i ].substring( 0, 1 ).toUpperCase() + nameArray[ i ].substring( 1 ).toLowerCase() );
 				}
 			}
@@ -319,8 +297,7 @@ public class AliceResourceUtilties {
 			if( nameArray[ i ].length() > 0 ) {
 				if( isFirst ) {
 					isFirst = false;
-				}
-				else {
+				} else {
 					sb.append( "_" );
 				}
 				sb.append( nameArray[ i ].toUpperCase() );
@@ -368,8 +345,7 @@ public class AliceResourceUtilties {
 			visualName = enumToCamelCase( resourceName );
 			textureName = "";
 			found = true;
-		}
-		else {
+		} else {
 			for( int i = 0; i < splitName.length; i++ ) {
 				if( splitName[ i ].length() > 0 ) {
 					if( i != 0 ) {
@@ -420,8 +396,7 @@ public class AliceResourceUtilties {
 		}
 		if( resourceIdentifierToResourceNamesMap.get( identifier ) != null ) {
 			return resourceIdentifierToResourceNamesMap.get( identifier ).visualName;
-		}
-		else {
+		} else {
 			Logger.severe( "Failed to find resource names for '" + resourceClass + "' and '" + resourceName + "'" );
 			return null;
 		}
@@ -436,7 +411,13 @@ public class AliceResourceUtilties {
 		if( !resourceIdentifierToResourceNamesMap.containsKey( identifier ) ) {
 			findAndStoreResourceNames( resourceClass, resourceName );
 		}
-		return resourceIdentifierToResourceNamesMap.get( identifier ).textureName;
+		ResourceNames resourceNames = resourceIdentifierToResourceNamesMap.get( identifier );
+		if( resourceNames != null ) {
+			return resourceNames.textureName;
+		} else {
+			Logger.severe( resourceClass, resourceName, identifier );
+			return null;
+		}
 	}
 
 	public static String getTextureResourceFileName( Class<?> resourceClass, String resourceName ) {
@@ -445,13 +426,11 @@ public class AliceResourceUtilties {
 		return getTextureResourceFileName( modelName, textureName );
 	}
 
-	public static String getTextureResourceFileName( Object resource )
-	{
+	public static String getTextureResourceFileName( Object resource ) {
 		return getTextureResourceFileName( resource.getClass(), resource.toString() );
 	}
 
-	public static String getVisualResourceFileName( Class<?> resourceClass, String resourceName )
-	{
+	public static String getVisualResourceFileName( Class<?> resourceClass, String resourceName ) {
 		String modelName = getModelNameFromClassAndResource( resourceClass, resourceName );
 		return getVisualResourceFileNameFromModelName( modelName );
 	}
@@ -472,11 +451,15 @@ public class AliceResourceUtilties {
 	public static String getThumbnailResourceFileName( Class<?> resourceClass, String resourceName ) {
 		String modelName = getModelNameFromClassAndResource( resourceClass, resourceName );
 		String textureName = getTextureNameFromClassAndResource( resourceClass, resourceName );
-		return getThumbnailResourceFileName( modelName, textureName );
+		if( modelName != null ) {
+			return getThumbnailResourceFileName( modelName, textureName );
+		} else {
+			Logger.severe( resourceClass, resourceName, modelName, textureName );
+			return null;
+		}
 	}
 
-	public static String getThumbnailResourceFileName( Object resource )
-	{
+	public static String getThumbnailResourceFileName( Object resource ) {
 		return getThumbnailResourceFileName( resource.getClass(), resource.toString() );
 	}
 
@@ -488,28 +471,24 @@ public class AliceResourceUtilties {
 	private static String createTextureBaseName( String modelName, String textureName ) {
 		if( textureName == null ) {
 			textureName = "_cls";
-		}
-		else if( textureName.equalsIgnoreCase( getDefaultTextureEnumName( modelName ) ) || modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) || textureName.equalsIgnoreCase( AliceResourceUtilties.makeEnumName( modelName ) ) ) {
+		} else if( textureName.equalsIgnoreCase( getDefaultTextureEnumName( modelName ) ) || modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) || textureName.equalsIgnoreCase( AliceResourceUtilties.makeEnumName( modelName ) ) ) {
 			textureName = "";
-		}
-		else if( textureName.length() > 0 ) {
+		} else if( textureName.length() > 0 ) {
 			textureName = "_" + makeEnumName( textureName );
 		}
-		return modelName.toLowerCase() + textureName;
+		return modelName.toLowerCase( java.util.Locale.ENGLISH ) + textureName;
 	}
 
 	public static String getThumbnailResourceFileName( String modelName, String textureName ) {
 		return createTextureBaseName( modelName, textureName ) + ".png";
 	}
 
-	public static String getTextureResourceFileName( String modelName, String textureName )
-	{
+	public static String getTextureResourceFileName( String modelName, String textureName ) {
 		return createTextureBaseName( modelName, textureName ) + "." + TEXTURE_RESOURCE_EXTENSION;
 	}
 
-	public static String getVisualResourceFileNameFromModelName( String modelName )
-	{
-		return modelName.toLowerCase() + "." + MODEL_RESOURCE_EXTENSION;
+	public static String getVisualResourceFileNameFromModelName( String modelName ) {
+		return modelName.toLowerCase( java.util.Locale.ENGLISH ) + "." + MODEL_RESOURCE_EXTENSION;
 	}
 
 	/*private*/protected static java.net.URL getThumbnailURLInternal( Class<?> modelResource, String resourceName ) {
@@ -521,35 +500,27 @@ public class AliceResourceUtilties {
 		return getAliceResource( modelResource, ModelResourceIoUtilities.getResourceSubDirWithSeparator( modelResource.getSimpleName() ) + thumbnailFilename );
 	}
 
-	public static URL getTextureURL( Object resource )
-	{
+	public static URL getTextureURL( Object resource ) {
 		return getTextureURL( resource.getClass(), getTextureResourceFileName( resource ) );
 	}
 
-	public static URL getTextureURL( Class<?> resourceClass, String visualResourceFileName )
-	{
+	public static URL getTextureURL( Class<?> resourceClass, String visualResourceFileName ) {
 		return getAliceResource( resourceClass, ModelResourceIoUtilities.getResourceSubDirWithSeparator( resourceClass.getSimpleName() ) + visualResourceFileName );
 	}
 
-	public static URL getVisualURL( Object resource )
-	{
+	public static URL getVisualURL( Object resource ) {
 		return getVisualURL( resource.getClass(), getVisualResourceFileName( resource ) );
 	}
 
-	public static URL getVisualURL( Class<?> resourceClass, String visualResourceFileName )
-	{
+	public static URL getVisualURL( Class<?> resourceClass, String visualResourceFileName ) {
 		return getAliceResource( resourceClass, ModelResourceIoUtilities.getResourceSubDirWithSeparator( resourceClass.getSimpleName() ) + visualResourceFileName );
 	}
 
-	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getVisual( Object resource )
-	{
+	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getVisual( Object resource ) {
 		URL resourceURL = getVisualURL( resource );
-		if( urlToVisualMap.containsKey( resourceURL ) )
-		{
+		if( urlToVisualMap.containsKey( resourceURL ) ) {
 			return urlToVisualMap.get( resourceURL );
-		}
-		else
-		{
+		} else {
 			edu.cmu.cs.dennisc.scenegraph.SkeletonVisual visual = decodeVisual( resourceURL );
 			java.util.List<edu.cmu.cs.dennisc.scenegraph.qa.Problem> problems = edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities.inspect( visual );
 			if( problems.size() > 0 ) {
@@ -563,21 +534,16 @@ public class AliceResourceUtilties {
 		}
 	}
 
-	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getVisualCopy( Object resource )
-	{
+	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getVisualCopy( Object resource ) {
 		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual original = getVisual( resource );
 		return createCopy( original );
 	}
 
-	public static TexturedAppearance[] getTexturedAppearances( Object resource )
-	{
+	public static TexturedAppearance[] getTexturedAppearances( Object resource ) {
 		URL resourceURL = getTextureURL( resource );
-		if( urlToTextureMap.containsKey( resourceURL ) )
-		{
+		if( urlToTextureMap.containsKey( resourceURL ) ) {
 			return urlToTextureMap.get( resourceURL );
-		}
-		else
-		{
+		} else {
 			TexturedAppearance[] texture = decodeTexture( resourceURL );
 			urlToTextureMap.put( resourceURL, texture );
 			return texture;
@@ -594,26 +560,21 @@ public class AliceResourceUtilties {
 		edu.cmu.cs.dennisc.scenegraph.Appearance sgFrontAppearanceCopy;
 		if( sgOriginal.frontFacingAppearance.getValue() != null ) {
 			sgFrontAppearanceCopy = (edu.cmu.cs.dennisc.scenegraph.Appearance)sgOriginal.frontFacingAppearance.getValue().newCopy();
-		}
-		else {
+		} else {
 			sgFrontAppearanceCopy = null;
 		}
 		edu.cmu.cs.dennisc.scenegraph.Appearance sgBackAppearanceCopy;
 		if( sgOriginal.backFacingAppearance.getValue() != null ) {
 			sgBackAppearanceCopy = (edu.cmu.cs.dennisc.scenegraph.Appearance)sgOriginal.backFacingAppearance.getValue().newCopy();
-		}
-		else {
+		} else {
 			sgBackAppearanceCopy = null;
 		}
 
 		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual rv = new edu.cmu.cs.dennisc.scenegraph.SkeletonVisual();
 		final edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRootCopy;
-		if( sgSkeletonRoot != null )
-		{
+		if( sgSkeletonRoot != null ) {
 			sgSkeletonRootCopy = (edu.cmu.cs.dennisc.scenegraph.Joint)sgSkeletonRoot.newCopy();
-		}
-		else
-		{
+		} else {
 			sgSkeletonRootCopy = null;
 		}
 
@@ -636,12 +597,9 @@ public class AliceResourceUtilties {
 		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = sgToReplaceWith.baseBoundingBox.getValue();
 		edu.cmu.cs.dennisc.scenegraph.Joint sgNewSkeletonRoot = sgToReplaceWith.skeleton.getValue();
 		final edu.cmu.cs.dennisc.scenegraph.Joint sgNewSkeleton;
-		if( sgNewSkeletonRoot != null )
-		{
+		if( sgNewSkeletonRoot != null ) {
 			sgNewSkeleton = (edu.cmu.cs.dennisc.scenegraph.Joint)sgNewSkeletonRoot.newCopy();
-		}
-		else
-		{
+		} else {
 			sgNewSkeleton = null;
 		}
 		if( sgNewSkeleton != null ) {
@@ -674,8 +632,7 @@ public class AliceResourceUtilties {
 		return sgJoint.getLocalTransformation().orientation.createUnitQuaternion();
 	}
 
-	public static String getName( Class<?> modelResource )
-	{
+	public static String getName( Class<?> modelResource ) {
 		return AliceResourceClassUtilities.getAliceClassName( modelResource );
 	}
 
@@ -693,8 +650,7 @@ public class AliceResourceUtilties {
 		return name;
 	}
 
-	/*private*/protected static BufferedImage getThumbnailInternal( Class<?> modelResource, String resourceName )
-	{
+	/*private*/protected static BufferedImage getThumbnailInternal( Class<?> modelResource, String resourceName ) {
 		URL resourceURL = getThumbnailURLInternal( modelResource, resourceName );
 		if( resourceURL == null ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "Cannot load thumbnail for", modelResource, resourceName );
@@ -712,24 +668,19 @@ public class AliceResourceUtilties {
 		}
 	}
 
-	public static BufferedImage getThumbnail( Class<?> modelResource, String instanceName )
-	{
+	public static BufferedImage getThumbnail( Class<?> modelResource, String instanceName ) {
 		return getThumbnailInternal( modelResource, instanceName );
 	}
 
-	public static BufferedImage getThumbnail( Class<?> modelResource )
-	{
+	public static BufferedImage getThumbnail( Class<?> modelResource ) {
 		return getThumbnailInternal( modelResource, null );
 	}
 
-	public static java.net.URL getThumbnailURL( Class<?> modelResource )
-	{
+	public static java.net.URL getThumbnailURL( Class<?> modelResource ) {
 		return getThumbnailURLInternal( modelResource, null );
 	}
 
-	public static java.net.URL getThumbnailURL( Class<?> modelResource, String instanceName )
-	{
-
+	public static java.net.URL getThumbnailURL( Class<?> modelResource, String instanceName ) {
 		return getThumbnailURLInternal( modelResource, instanceName );
 	}
 
@@ -741,16 +692,14 @@ public class AliceResourceUtilties {
 	}
 
 	public static org.lgna.story.resourceutilities.ModelResourceInfo getModelResourceInfo( Class<?> modelResource, String resourceName ) {
-		if( modelResource == null )
-		{
+		if( modelResource == null ) {
 			return null;
 		}
 		String key = getKey( modelResource, resourceName );
 		//Return the info if we have it cached
 		if( classToInfoMap.containsKey( key ) ) {
 			return classToInfoMap.get( key );
-		}
-		else {
+		} else {
 			String parentKey = getKey( modelResource, null );
 			//If we don't have the parent info cached, load it from disk
 			ModelResourceInfo parentInfo = null;
@@ -763,18 +712,15 @@ public class AliceResourceUtilties {
 						Document doc = XMLUtilities.read( is );
 						parentInfo = new ModelResourceInfo( doc );
 						classToInfoMap.put( parentKey, parentInfo );
-					}
-					else {
+					} else {
 						//This is an acceptable case because classes like Biped don't have class infos
 						classToInfoMap.put( parentKey, null );
 					}
-				} catch( Exception e )
-				{
+				} catch( Exception e ) {
 					Logger.severe( "Failed to parse class info for " + name + ": " + e );
 					classToInfoMap.put( parentKey, null );
 				}
-			}
-			else {
+			} else {
 				parentInfo = classToInfoMap.get( parentKey );
 			}
 			if( parentInfo != null ) {
@@ -799,8 +745,7 @@ public class AliceResourceUtilties {
 		return getModelResourceInfo( modelResource, null );
 	}
 
-	public static AxisAlignedBox getBoundingBox( Class<?> modelResource, String resourceName )
-	{
+	public static AxisAlignedBox getBoundingBox( Class<?> modelResource, String resourceName ) {
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
 			return info.getBoundingBox();
@@ -814,8 +759,7 @@ public class AliceResourceUtilties {
 		return new AxisAlignedBox( new Point3( -.5, 0, -.5 ), new Point3( .5, 1, .5 ) );
 	}
 
-	public static AxisAlignedBox getBoundingBox( Class<?> modelResource )
-	{
+	public static AxisAlignedBox getBoundingBox( Class<?> modelResource ) {
 		return getBoundingBox( modelResource, null );
 	}
 
@@ -831,8 +775,7 @@ public class AliceResourceUtilties {
 		return rv;
 	}
 
-	public static boolean getPlaceOnGround( Class<?> modelResource, String resourceName )
-	{
+	public static boolean getPlaceOnGround( Class<?> modelResource, String resourceName ) {
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
 			return info.getPlaceOnGround();
@@ -846,13 +789,11 @@ public class AliceResourceUtilties {
 		return false;
 	}
 
-	public static boolean getPlaceOnGround( Class<?> modelResource )
-	{
+	public static boolean getPlaceOnGround( Class<?> modelResource ) {
 		return getPlaceOnGround( modelResource, null );
 	}
 
-	/*private*/protected static String getModelName( Class<?> modelResource, String resourceName, Locale locale )
-	{
+	/*private*/protected static String getModelName( Class<?> modelResource, String resourceName, Locale locale ) {
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
 			if( locale == null ) {
@@ -866,22 +807,19 @@ public class AliceResourceUtilties {
 		return null;
 	}
 
-	/*private*/protected static String getModelClassName( Class<?> modelResource, String resourceName, Locale locale )
-	{
+	/*private*/protected static String getModelClassName( Class<?> modelResource, String resourceName, Locale locale ) {
 		ModelResourceInfo info = getModelResourceInfo( modelResource, null );
 		String className;
 		String packageName = modelResource.getPackage().getName();
 		if( info != null ) {
 			className = info.getModelName();
-		}
-		else {
+		} else {
 			className = modelResource.getSimpleName().replace( "Resource", "" );
 		}
 
 		if( locale == null ) {
 			return className;
-		}
-		else {
+		} else {
 			String localizedText = findLocalizedText( getClassNameLocalizationBundleName(), packageName + "." + className, locale );
 			if( localizedText != null ) {
 				//pass
@@ -900,12 +838,10 @@ public class AliceResourceUtilties {
 			if( is != null ) {
 				String javaCode = TextFileUtilities.read( is );
 				return javaCode;
-			}
-			else {
+			} else {
 				Logger.severe( "Failed to find java file for " + name );
 			}
-		} catch( Exception e )
-		{
+		} catch( Exception e ) {
 			Logger.severe( "Failed to find java file for " + name );
 		} finally {
 			if( is != null ) {
@@ -919,8 +855,7 @@ public class AliceResourceUtilties {
 		return null;
 	}
 
-	public static String getCreator( Class<?> modelResource, String resourceName )
-	{
+	public static String getCreator( Class<?> modelResource, String resourceName ) {
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
 			return info.getCreator();
@@ -928,13 +863,11 @@ public class AliceResourceUtilties {
 		return null;
 	}
 
-	public static String getCreator( Class<?> modelResource )
-	{
+	public static String getCreator( Class<?> modelResource ) {
 		return getCreator( modelResource, null );
 	}
 
-	public static int getCreationYear( Class<?> modelResource, String resourceName )
-	{
+	public static int getCreationYear( Class<?> modelResource, String resourceName ) {
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
 			return info.getCreationYear();
@@ -942,15 +875,13 @@ public class AliceResourceUtilties {
 		return -1;
 	}
 
-	public static int getCreationYear( Class<?> modelResource )
-	{
+	public static int getCreationYear( Class<?> modelResource ) {
 		return getCreationYear( modelResource, null );
 	}
 
-	private static String[] getLocalizedTags( String[] tags, String localizerBundleName, Locale locale, boolean acceptNull )
-	{
+	private static String[] getLocalizedTags( String[] tags, String localizerBundleName, Locale locale, boolean acceptNull ) {
 		if( Locale.ENGLISH.getLanguage().equals( locale.getLanguage() ) ) {
-			ArrayList<String> localizedTags = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
+			java.util.List<String> localizedTags = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 			for( String tag : tags ) {
 				String[] splitTags = tag.split( ":" );
 				StringBuilder finalTag = new StringBuilder();
@@ -989,19 +920,18 @@ public class AliceResourceUtilties {
 		}
 	}
 
-	public static String[] getTags( Class<?> modelResource, String resourceName, Locale locale )
-	{
+	public static String[] getTags( Class<?> modelResource, String resourceName, Locale locale ) {
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
 			if( locale == null ) {
 				return info.getTags();
-			}
-			else {
+			} else {
 				boolean acceptNull = locale.getLanguage().equals( "en" );
 				return getLocalizedTags( info.getTags(), getTagsLocalizationBundleName(), locale, acceptNull );
 			}
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 	public static String[] getGroupTags( Class<?> modelResource, String resourceName, Locale locale )
@@ -1010,12 +940,12 @@ public class AliceResourceUtilties {
 		if( info != null ) {
 			if( ( locale == null ) || true ) {
 				return info.getGroupTags();
-			}
-			else {
+			} else {
 				return getLocalizedTags( info.getGroupTags(), getGroupTagsLocalizationBundleName(), locale, true );
 			}
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 	public static String[] getThemeTags( Class<?> modelResource, String resourceName, Locale locale )
@@ -1024,17 +954,11 @@ public class AliceResourceUtilties {
 		if( info != null ) {
 			if( ( locale == null ) || true ) {
 				return info.getThemeTags();
-			}
-			else {
+			} else {
 				return getLocalizedTags( info.getThemeTags(), getThemeTagsLocalizationBundleName(), locale, true );
 			}
+		} else {
+			return null;
 		}
-		return null;
 	}
-
-	public static boolean shouldPlaceModelAboveGround( AbstractType<?, ?, ?> type )
-	{
-		return false;
-	}
-
 }

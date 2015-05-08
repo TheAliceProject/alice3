@@ -46,18 +46,18 @@ package org.alice.ide.croquet.models.menubar;
  * @author Dennis Cosgrove
  */
 public class WindowMenuModel extends org.lgna.croquet.StaticMenuModel {
-	private static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createModels( org.alice.stageide.perspectives.PerspectiveState perspectiveState ) {
+	private static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createModels( org.lgna.croquet.ItemState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState ) {
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		if( perspectiveState != null ) {
-			rv.add( perspectiveState.getMenuModel() );
+		if( perspectiveState instanceof org.lgna.croquet.SingleSelectListState ) {
+			rv.add( ( (org.lgna.croquet.SingleSelectListState)perspectiveState ).getMenuModel() );
 			rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
 		}
 		rv.add( org.alice.ide.croquet.models.history.ProjectHistoryComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
-		rv.add( org.alice.ide.croquet.models.ui.MemoryUsageComposite.getInstance().getIsFrameShowingState().getMenuItemPrepModel() );
+		rv.add( org.alice.ide.IdeApp.INSTANCE.getMemoryUsageFrameIsShowingState().getMenuItemPrepModel() );
 		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
 		rv.add( PreferencesMenuModel.getInstance() );
 		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( ContributorMenuModel.getInstance() );
+		rv.add( org.alice.ide.IdeApp.INSTANCE.getContributorMenuModel() );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
 			rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
 			rv.add( InternalTestingMenuModel.getInstance() );
@@ -72,7 +72,7 @@ public class WindowMenuModel extends org.lgna.croquet.StaticMenuModel {
 
 	@Override
 	protected org.lgna.croquet.StandardMenuItemPrepModel[] createModels() {
-		org.alice.stageide.perspectives.PerspectiveState perspectiveState = this.projectDocumentFrame != null ? this.projectDocumentFrame.getPerspectiveState() : null;
+		org.lgna.croquet.ItemState<org.alice.ide.perspectives.ProjectPerspective> perspectiveState = this.projectDocumentFrame != null ? this.projectDocumentFrame.getPerspectiveState() : null;
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( createModels( perspectiveState ), org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}
 

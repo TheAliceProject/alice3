@@ -45,7 +45,7 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class HighlightFieldOperation extends org.lgna.croquet.ActionOperation {
+public class HighlightFieldOperation extends org.lgna.croquet.Operation {
 	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, HighlightFieldOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
 	public static synchronized HighlightFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
@@ -74,9 +74,9 @@ public class HighlightFieldOperation extends org.lgna.croquet.ActionOperation {
 	@Override
 	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, null );
-		DeclarationTabState tabState = DeclarationsEditorComposite.getInstance().getTabState();
+		DeclarationTabState tabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		tabState.setValueTransactionlessly( TypeComposite.getInstance( this.field.getDeclaringType() ) );
-		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverField( this.field, null );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().showHighlightOverField( this.field, null );
 		completionStep.finish();
 	}
 }

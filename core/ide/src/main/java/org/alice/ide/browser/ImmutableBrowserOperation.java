@@ -62,7 +62,7 @@ public class ImmutableBrowserOperation extends BrowserOperation {
 		String spec = this.url.toString();
 		this.setName( spec );
 		super.localize();
-		String name = this.getName();
+		String name = this.getImp().getName();
 		if( edu.cmu.cs.dennisc.java.util.Objects.equals( spec, name ) ) {
 			//pass
 		} else {

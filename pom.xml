@@ -81,17 +81,18 @@
 
 	<modules>
 		<module>core</module>
-		<module>core/util</module>
 		<module>core/ast</module>
-
 		<module>core/croquet</module>
-		<module>core/scenegraph</module>
+		<module>core/i18n</module>
+		<module>core/ide</module>
 		<module>core/image-editor</module>
 		<module>core/issue-reporting</module>
-		<module>core/story-api</module>
-		<module>core/story-api-migration</module>
-		<module>core/ide</module>
 		<module>core/resources</module>
+		<module>core/scenegraph</module>
+		<module>core/glrender</module>
+		<module>core/story-api-migration</module>
+		<module>core/story-api</module>
+		<module>core/util</module>
 
 		<module>alice/alice-ide</module>
 	</modules>
@@ -126,6 +127,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.alice</groupId>
+				<artifactId>glrender</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.alice</groupId>
 				<artifactId>issue-reporting</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
@@ -147,6 +153,11 @@
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>ide</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.alice</groupId>
+				<artifactId>i18n</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
@@ -191,7 +202,7 @@
 			<dependency>
 				<groupId>uk.co.caprica</groupId>
 				<artifactId>vlcj</artifactId>
-				<version>2.4.1</version>
+				<version>3.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.miglayout</groupId>
@@ -258,6 +269,54 @@
 					<artifactId>versions-maven-plugin</artifactId>
 					<version>2.1</version>
 				</plugin>
+				<plugin>
+					<groupId>org.commonjava.maven.plugins</groupId>
+					<artifactId>directory-maven-plugin</artifactId>
+					<version>0.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.zanata</groupId>
+					<artifactId>zanata-maven-plugin</artifactId>
+					<version>3.4.0</version>
+					<configuration>
+						<projectConfig>${parent.basedir}/zanata.xml</projectConfig>
+						<sourceLang>en-US</sourceLang>
+						<copyTrans>false</copyTrans>
+						<deleteObsoleteModules>true</deleteObsoleteModules>
+						<interactiveMode>false</interactiveMode>
+						<srcDir>${project.basedir}/src/main</srcDir>
+						<transDir>${project.basedir}/src/l10n-alice</transDir>
+						<!-- <useCache>false</useCache> -->
+						<!-- <dryRun>true</dryRun> -->
+					</configuration>
+				</plugin>
+
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.commonjava.maven.plugins</groupId>
+										<artifactId>directory-maven-plugin</artifactId>
+										<versionRange>[0.1,)</versionRange>
+										<goals>
+											<goal>highest-basedir</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -266,9 +325,32 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.commonjava.maven.plugins</groupId>
+				<artifactId>directory-maven-plugin</artifactId>
+				<version>0.1</version>
+				<executions>
+					<execution>
+						<id>parent.path.property</id>
+						<goals>
+							<goal>highest-basedir</goal>
+						</goals>
+						<phase>initialize</phase>
+						<configuration>
+							<property>parent.basedir</property>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 
 		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
 				<excludes>
@@ -276,16 +358,94 @@
 				</excludes>
 			</resource>
 
-			<!-- We only allow properties files in the java source directories. All
-				other resource should go in the src/main/resources directory. -->
+			<!-- generated i18n translation files -->
 			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-					<include>**/*.properties</include>
-				</includes>
+				<directory>src/l10n-alice/java</directory>
+				<excludes>
+					<exclude>**/*.gitkeep</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/l10n-alice/resources</directory>
+				<excludes>
+					<exclude>**/*.gitkeep</exclude>
+				</excludes>
 			</resource>
 		</resources>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>zanata</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.zanata</groupId>
+						<artifactId>zanata-maven-plugin</artifactId>
+						<executions>
+							<!-- https://zanata.ci.cloudbees.com/job/zanata-client-site/site/zanata-maven-plugin/push-module-mojo.html -->
+							<execution>
+								<id>zanata.push</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>push-module</goal>
+								</goals>
+							</execution>
+							<!-- https://zanata.ci.cloudbees.com/job/zanata-client-site/site/zanata-maven-plugin/pull-module-mojo.html -->
+							<execution>
+								<id>zanata.pull</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>pull-module</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<!-- The profile is used for localizers to pull and test their localizations -->
+		<!-- $ mvn compile -Dzanata.locales=es,es-ES,es-CR -->
+		<!-- or use Eclipse launcher: Zanata - Test Locales -->
+		<profile>
+			<id>zanata-pull</id>
+			<activation>
+				<property>
+					<name>zanata.locales</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.zanata</groupId>
+						<artifactId>zanata-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>zanata.pull.locale</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>pull-module</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<!-- TODO: open source -->
+		<!-- Non-free libraries/models -->
+		<profile>
+			<id>non-free</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencies>
+				<!-- TODO: add the nebulous stuff here. -->
+			</dependencies>
+		</profile>
+	</profiles>
 
 	<repositories>
 		<repository>
@@ -312,18 +472,5 @@
 			<url>http://maven.alice.org/external</url>
 		</pluginRepository>
 	</pluginRepositories>
-
-	<profiles>
-		<!-- Non-free libraries/models -->
-		<profile>
-			<id>non-free</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<dependencies>
-				<!-- TODO: add the nebulous stuff here. -->
-			</dependencies>
-		</profile>
-	</profiles>
 
 </project>

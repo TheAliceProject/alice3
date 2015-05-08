@@ -92,7 +92,7 @@ public class MarkerColorIdEdit extends org.lgna.croquet.edits.AbstractEdit {
 	}
 
 	@Override
-	protected void appendDescription( StringBuilder rv, org.lgna.croquet.edits.AbstractEdit.DescriptionStyle descriptionStyle ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "change " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.field );
 		rv.append( " color id " );

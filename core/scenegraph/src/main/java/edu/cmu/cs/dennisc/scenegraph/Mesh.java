@@ -43,41 +43,14 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import edu.cmu.cs.dennisc.property.DoubleBufferProperty;
-import edu.cmu.cs.dennisc.property.FloatBufferProperty;
-import edu.cmu.cs.dennisc.property.IntBufferProperty;
-
-public class Mesh extends Geometry
-{
-	public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty( this, (java.nio.DoubleBuffer)null ) {
-		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, java.nio.DoubleBuffer value ) {
-			Mesh.this.boundsChanging();
-			super.setValue( owner, value );
-			Mesh.this.fireBoundChange();
-		}
-	};
-
-	public final FloatBufferProperty normalBuffer = new FloatBufferProperty( this, (java.nio.FloatBuffer)null );
-	public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty( this, (java.nio.FloatBuffer)null );
-	public final IntBufferProperty indexBuffer = new IntBufferProperty( this, (java.nio.IntBuffer)null );
-	public final edu.cmu.cs.dennisc.property.IntegerProperty textureId = new edu.cmu.cs.dennisc.property.IntegerProperty( this, -1 );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty cullBackfaces = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty useAlphaTest = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-
-	public Mesh()
-	{
-	}
-
+public class Mesh extends Geometry {
 	@Override
-	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox )
-	{
+	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
 		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, vertexBuffer.getValue() );
 	}
 
 	@Override
-	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere )
-	{
+	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
 		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingSphere( boundingSphere, vertexBuffer.getValue().array() );
 	}
 
@@ -105,4 +78,19 @@ public class Mesh extends Geometry
 		//todo
 	}
 
+	public final edu.cmu.cs.dennisc.property.DoubleBufferProperty vertexBuffer = new edu.cmu.cs.dennisc.property.DoubleBufferProperty( this, (java.nio.DoubleBuffer)null ) {
+		@Override
+		public void setValue( java.nio.DoubleBuffer value ) {
+			Mesh.this.markBoundsDirty();
+			super.setValue( value );
+			Mesh.this.fireBoundChanged();
+		}
+	};
+
+	public final edu.cmu.cs.dennisc.property.FloatBufferProperty normalBuffer = new edu.cmu.cs.dennisc.property.FloatBufferProperty( this, (java.nio.FloatBuffer)null );
+	public final edu.cmu.cs.dennisc.property.FloatBufferProperty textCoordBuffer = new edu.cmu.cs.dennisc.property.FloatBufferProperty( this, (java.nio.FloatBuffer)null );
+	public final edu.cmu.cs.dennisc.property.IntBufferProperty indexBuffer = new edu.cmu.cs.dennisc.property.IntBufferProperty( this, (java.nio.IntBuffer)null );
+	public final edu.cmu.cs.dennisc.property.IntegerProperty textureId = new edu.cmu.cs.dennisc.property.IntegerProperty( this, -1 );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty cullBackfaces = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty useAlphaTest = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 }

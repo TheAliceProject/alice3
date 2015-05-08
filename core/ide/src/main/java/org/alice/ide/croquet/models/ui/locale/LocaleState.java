@@ -89,13 +89,4 @@ public class LocaleState extends org.lgna.croquet.preferences.PreferenceMutableD
 			}
 		} );
 	}
-
-	@Override
-	protected String getMenuText( java.util.Locale item ) {
-		if( item != null ) {
-			return item.getDisplayName( item ) + " / " + item.getDisplayName();
-		} else {
-			return super.getMenuText( item );
-		}
-	}
 }

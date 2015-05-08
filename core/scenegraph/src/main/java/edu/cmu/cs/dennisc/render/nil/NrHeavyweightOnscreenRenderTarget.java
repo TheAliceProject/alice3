@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.render.nil;
  * @author Dennis Cosgrove
  */
 /*package-private*/class NrHeavyweightOnscreenRenderTarget extends NrOnscreenRenderTarget<java.awt.Component> implements edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget {
-	public NrHeavyweightOnscreenRenderTarget() {
-		super( new java.awt.Canvas() );
+	public NrHeavyweightOnscreenRenderTarget( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		super( requestedCapabilities, new java.awt.Canvas() );
 	}
 }

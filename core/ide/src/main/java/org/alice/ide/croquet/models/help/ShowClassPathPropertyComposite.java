@@ -46,15 +46,7 @@ package org.alice.ide.croquet.models.help;
  * @author Dennis Cosgrove
  */
 public class ShowClassPathPropertyComposite extends ShowPathPropertyComposite {
-	private static class SingletonHolder {
-		private static ShowClassPathPropertyComposite instance = new ShowClassPathPropertyComposite();
-	}
-
-	public static ShowClassPathPropertyComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ShowClassPathPropertyComposite() {
+	public ShowClassPathPropertyComposite() {
 		super( java.util.UUID.fromString( "2783c62b-cae1-4366-bf73-7ed359cdd10d" ), "java.class.path" );
 	}
 }

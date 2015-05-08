@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package edu.cmu.cs.dennisc.color;
@@ -46,22 +46,30 @@ package edu.cmu.cs.dennisc.color;
  * @author Dennis Cosgrove
  */
 public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public static final Color4f BLACK = new Color4f( java.awt.Color.BLACK );
-	public static final Color4f BLUE = new Color4f( java.awt.Color.BLUE );
-	public static final Color4f CYAN = new Color4f( java.awt.Color.CYAN );
-	public static final Color4f DARK_GRAY = new Color4f( java.awt.Color.DARK_GRAY );
-	public static final Color4f GRAY = new Color4f( java.awt.Color.GRAY );
-	public static final Color4f GREEN = new Color4f( java.awt.Color.GREEN );
-	public static final Color4f LIGHT_GRAY = new Color4f( java.awt.Color.LIGHT_GRAY );
-	public static final Color4f MAGENTA = new Color4f( java.awt.Color.MAGENTA );
-	public static final Color4f ORANGE = new Color4f( java.awt.Color.ORANGE );
-	public static final Color4f PINK = new Color4f( java.awt.Color.PINK );
-	public static final Color4f RED = new Color4f( java.awt.Color.RED );
-	public static final Color4f WHITE = new Color4f( java.awt.Color.WHITE );
-	public static final Color4f YELLOW = new Color4f( java.awt.Color.YELLOW );
+	public static final Color4f BLACK = Color4f.createFromRgbInts( 0, 0, 0 );
+	public static final Color4f BLUE = Color4f.createFromRgbInts( 0, 0, 255 );
+	public static final Color4f CYAN = Color4f.createFromRgbInts( 0, 255, 255 );
+	public static final Color4f DARK_GRAY = Color4f.createFromRgbInts( 64, 64, 64 );
+	public static final Color4f GRAY = Color4f.createFromRgbInts( 128, 128, 128 );
+	public static final Color4f GREEN = Color4f.createFromRgbInts( 0, 255, 0 );
+	public static final Color4f LIGHT_GRAY = Color4f.createFromRgbInts( 192, 192, 192 );
+	public static final Color4f MAGENTA = Color4f.createFromRgbInts( 255, 0, 255 );
+	public static final Color4f ORANGE = Color4f.createFromRgbInts( 255, 200, 0 );
+	public static final Color4f PINK = Color4f.createFromRgbInts( 255, 175, 175 );
+	public static final Color4f RED = Color4f.createFromRgbInts( 255, 0, 0 );
+	public static final Color4f WHITE = Color4f.createFromRgbInts( 255, 255, 255 );
+	public static final Color4f YELLOW = Color4f.createFromRgbInts( 255, 255, 0 );
 
 	public static final Color4f PURPLE = new Color4f( 128 / 255.0f, 0.0f, 128 / 255.0f, 1.0f );
 	public static final Color4f BROWN = new Color4f( 162 / 255.0f, 42 / 255.0f, 42 / 255.0f, 1.0f );
+
+	public static Color4f createFromRgbInts( int r, int g, int b ) {
+		return createFromRgbaInts( r, g, b, 255 );
+	}
+
+	public static Color4f createFromRgbaInts( int r, int g, int b, int a ) {
+		return new Color4f( r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f );
+	}
 
 	public Color4f( float red, float green, float blue, float alpha ) {
 		this.red = red;
@@ -72,10 +80,6 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 
 	public Color4f( Color4f other ) {
 		this( other.red, other.green, other.blue, other.alpha );
-	}
-
-	public Color4f( java.awt.Color awtColor ) {
-		this( awtColor.getRed() / 255.0f, awtColor.getGreen() / 255.0f, awtColor.getBlue() / 255.0f, awtColor.getAlpha() / 255.0f );
 	}
 
 	public Color4f( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -127,14 +131,6 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 
 	public boolean isNaN() {
 		return Float.isNaN( this.red ) || Float.isNaN( this.green ) || Float.isNaN( this.blue ) || Float.isNaN( this.alpha );
-	}
-
-	public java.awt.Color getAsAWTColor() {
-		if( this.isNaN() ) {
-			return null;
-		} else {
-			return new java.awt.Color( this.red, this.green, this.blue, this.alpha );
-		}
 	}
 
 	public float[] getAsArray( float[] rv ) {

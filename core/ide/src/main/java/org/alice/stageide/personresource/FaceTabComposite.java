@@ -74,12 +74,13 @@ public final class FaceTabComposite extends org.lgna.croquet.SimpleTabComposite<
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 
-		final org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
+		org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
 
 		FaceTabComposite faceTabComposite = new FaceTabComposite();
-		app.getFrame().getContentPane().addCenterComponent( faceTabComposite.getRootComponent() );
-
-		app.getFrame().setSize( 600, 400 );
-		app.getFrame().setVisible( true );
+		frame.getContentPane().addCenterComponent( faceTabComposite.getRootComponent() );
+		frame.setSize( 600, 400 );
+		frame.setVisible( true );
 	}
 };

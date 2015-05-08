@@ -85,11 +85,69 @@ public class ProjectHistoryManager {
 		return rv;
 	}
 
-	private void handleEditCommitted( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
+	private static int IS_POSSIBLY_OPENING_SCENE = 0x1;
+	private static int IS_ANIMATED = 0x2;
+	private static int IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED = IS_POSSIBLY_OPENING_SCENE | IS_ANIMATED;
+
+	private int isPossiblyOpeningSceneEdit( org.lgna.croquet.edits.Edit edit ) {
+		if( edit instanceof org.alice.ide.properties.adapter.croquet.edits.PropertyValueEdit ) {
+			return IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED;
+		}
+
+		if( edit instanceof org.lgna.croquet.edits.StateEdit<?> ) {
+			org.lgna.croquet.edits.StateEdit<?> stateEdit = (org.lgna.croquet.edits.StateEdit<?>)edit;
+			if( stateEdit.getGroup() == IDE.PROJECT_GROUP ) {
+				return IS_POSSIBLY_OPENING_SCENE_AND_ANIMATED;
+			}
+		}
+
+		org.lgna.croquet.CompletionModel completionModel = ( (org.lgna.croquet.edits.AbstractEdit<?>)edit ).getModel();
+		if( completionModel instanceof org.alice.stageide.sceneeditor.interact.croquet.AbstractFieldBasedManipulationActionOperation ) {
+			return IS_POSSIBLY_OPENING_SCENE;
+		}
+
+		return 0;
+	}
+
+	private void markDirty( ProjectDocumentFrame projectDocumentFrame, org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory ) {
+		org.lgna.project.ast.UserField userField = thisFieldAccessFactory.getField();
+		projectDocumentFrame.getIconFactoryManager().markIconFactoryForFieldDirty( userField );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( thisFieldAccessFactory ).markDirty();
+		for( org.lgna.croquet.views.SwingComponentView<?> component : org.lgna.croquet.views.ComponentManager.getComponents( projectDocumentFrame.getInstanceFactoryState().getCascadeRoot().getPopupPrepModel() ) ) {
+			//note: rendering artifact for faux combo boxes when only invoking repaint.
+			//component.repaint();
+			component.revalidateAndRepaint();
+		}
+	}
+
+	private void handleEditCommitted( org.lgna.croquet.edits.Edit edit ) {
 		assert edit != null;
 		org.lgna.croquet.undo.UndoHistory projectHistory = this.getGroupHistory( edit.getGroup() );
 		if( projectHistory != null ) {
 			projectHistory.push( edit );
+		}
+
+		int value = this.isPossiblyOpeningSceneEdit( edit );
+		if( ( value & IS_POSSIBLY_OPENING_SCENE ) != 0 ) {
+			final ProjectDocumentFrame projectDocumentFrame = IDE.getActiveInstance().getDocumentFrame();
+			if( projectDocumentFrame != null ) {
+				final org.alice.ide.instancefactory.croquet.InstanceFactoryState instanceFactoryState = projectDocumentFrame.getInstanceFactoryState();
+				org.alice.ide.instancefactory.InstanceFactory instanceFactory = instanceFactoryState.getValue();
+				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
+					final org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
+					if( ( value & IS_ANIMATED ) != 0 ) {
+						new Thread() {
+							@Override
+							public void run() {
+								edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1100 );
+								markDirty( projectDocumentFrame, thisFieldAccessFactory );
+							}
+						}.start();
+					} else {
+						this.markDirty( projectDocumentFrame, thisFieldAccessFactory );
+					}
+				}
+			}
 		}
 	}
 }

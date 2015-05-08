@@ -59,10 +59,11 @@ public class SideView extends org.lgna.croquet.views.BorderPanel {
 		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
 			//pass
 		} else {
+			org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
 			org.lgna.croquet.views.FlowPanel undoRedoPanel = new org.lgna.croquet.views.FlowPanel(
 					org.lgna.croquet.views.FlowPanel.Alignment.CENTER,
-					org.alice.ide.croquet.models.history.UndoOperation.getInstance().createButton(),
-					org.alice.ide.croquet.models.history.RedoOperation.getInstance().createButton()
+					projectDocumentFrame.getUndoOperation().createButton(),
+					projectDocumentFrame.getRedoOperation().createButton()
 					);
 
 			undoRedoPanel.setBorder( createSeparatorBorder( 0, 1, theme.getSecondaryBackgroundColor() ) );
@@ -97,7 +98,7 @@ public class SideView extends org.lgna.croquet.views.BorderPanel {
 		migPanel.addComponent( toolPaletteView, "wrap" );
 
 		//this.addComponent( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "align right" );
-		migPanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ), "wrap" );
+		migPanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() ), "wrap" );
 
 		//todo
 		//migPanel.addComponent( composite.getAreJointsShowingState().createCheckBox(), "wrap" );

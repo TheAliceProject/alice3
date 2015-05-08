@@ -49,7 +49,7 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 	//class CommentLine extends javax.swing.JTextArea {
 	private org.lgna.project.ast.Comment comment;
 
-	public CommentLine( org.lgna.project.ast.Comment comment ) {
+	public CommentLine( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Comment comment ) {
 		this.setText( comment.text.getValue() );
 		this.setTextForBlankCondition( "enter your comment here" );
 		//super( comment.text.getValue() );
@@ -74,52 +74,61 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 		this.setForeground( org.alice.ide.ThemeUtilities.getActiveTheme().getCommentForegroundColor() );
 		//this.setMargin( new java.awt.Insets( 2, 4, 2, 32 ) );
 		this.handleUpdate();
-		if( org.alice.ide.IDE.getActiveInstance().getCommentThatWantsFocus() == this.comment ) {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		if( factory.isCommentMutable( comment ) ) {
+			if( org.alice.ide.IDE.getActiveInstance().getCommentThatWantsFocus() == this.comment ) {
+				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					@Override
+					public void run() {
+						CommentLine.this.requestFocus();
+						org.alice.ide.IDE.getActiveInstance().setCommentThatWantsFocus( null );
+					}
+				} );
+			}
+			//todo: remove?
+			this.addKeyListener( new java.awt.event.KeyListener() {
 				@Override
-				public void run() {
-					CommentLine.this.requestFocus();
-					org.alice.ide.IDE.getActiveInstance().setCommentThatWantsFocus( null );
+				public void keyPressed( java.awt.event.KeyEvent e ) {
+					if( e.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE ) {
+						CommentLine.this.transferFocus();
+					}
+				}
+
+				@Override
+				public void keyReleased( java.awt.event.KeyEvent e ) {
+				}
+
+				@Override
+				public void keyTyped( java.awt.event.KeyEvent e ) {
 				}
 			} );
-		}
-		//todo: remove?
-		this.addKeyListener( new java.awt.event.KeyListener() {
-			@Override
-			public void keyPressed( java.awt.event.KeyEvent e ) {
-				if( e.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE ) {
-					CommentLine.this.transferFocus();
+
+			this.addFocusListener( new java.awt.event.FocusListener() {
+				@Override
+				public void focusGained( java.awt.event.FocusEvent e ) {
+					CommentLine.this.setToolTipText( "Press the escape key to remove focus" );
+					//CommentLine.this.repaint();
 				}
-			}
 
-			@Override
-			public void keyReleased( java.awt.event.KeyEvent e ) {
-			}
-
-			@Override
-			public void keyTyped( java.awt.event.KeyEvent e ) {
-			}
-		} );
-
-		this.addFocusListener( new java.awt.event.FocusListener() {
-			@Override
-			public void focusGained( java.awt.event.FocusEvent e ) {
-				CommentLine.this.setToolTipText( "Press the escape key to remove focus" );
-				//CommentLine.this.repaint();
-			}
-
-			@Override
-			public void focusLost( java.awt.event.FocusEvent e ) {
-				CommentLine.this.setToolTipText( null );
-				//CommentLine.this.repaint();
-			}
-		} );
+				@Override
+				public void focusLost( java.awt.event.FocusEvent e ) {
+					CommentLine.this.setToolTipText( null );
+					//CommentLine.this.repaint();
+				}
+			} );
+		} else {
+			this.setEditable( false );
+		}
 
 		//		java.awt.Font font = this.getFont();
 		//		font = font.deriveFont( java.awt.Font.BOLD );
 		//		font = font.deriveFont( font.getSize() * 1.2f );
 		//		this.setFont( font );
 		this.updateBorder();
+	}
+
+	@Override
+	public boolean contains( int x, int y ) {
+		return this.isEditable() && super.contains( x, y );
 	}
 
 	private void updateBorder() {
@@ -177,7 +186,7 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 public class CommentPane extends org.alice.ide.common.AbstractStatementPane {
 	public CommentPane( org.lgna.croquet.DragModel model, org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Comment comment, org.lgna.project.ast.StatementListProperty owner ) {
 		super( model, factory, comment, owner );
-		CommentLine commentLine = new CommentLine( comment );
+		CommentLine commentLine = new CommentLine( factory, comment );
 		this.addComponent( new org.lgna.croquet.views.SwingAdapter( commentLine ) );
 	}
 }

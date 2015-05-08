@@ -20,11 +20,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
-			<artifactId>ast</artifactId>
+			<artifactId>scenegraph</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
-			<artifactId>scenegraph</artifactId>
+			<artifactId>glrender</artifactId>
 		</dependency>
 
 		<!-- Gallery/Models -->

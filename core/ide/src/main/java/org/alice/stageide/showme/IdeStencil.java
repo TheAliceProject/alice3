@@ -52,6 +52,6 @@ public abstract class IdeStencil extends org.lgna.croquet.StencilModel {
 
 	@Override
 	protected void hideStencil() {
-		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().hideIfNecessary();
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().hideIfNecessary();
 	}
 }

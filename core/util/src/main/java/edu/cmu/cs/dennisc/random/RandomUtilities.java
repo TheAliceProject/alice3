@@ -84,13 +84,13 @@ public class RandomUtilities {
 		return min.doubleValue() + ( nextDouble() * ( max.doubleValue() - min.doubleValue() ) );
 	}
 
-	public static <E extends Object> E getRandomValueFrom( E[] array ) {
+	public static <E> E getRandomValueFrom( E[] array ) {
 		assert array != null;
 		assert array.length > 0;
 		return array[ getRandomIndex( array.length ) ];
 	}
 
-	public static <E extends Object> E getRandomValueFrom( java.util.List<E> list ) {
+	public static <E> E getRandomValueFrom( java.util.List<E> list ) {
 		assert list != null;
 		if( list.size() > 0 ) {
 			return list.get( getRandomIndex( list.size() ) );

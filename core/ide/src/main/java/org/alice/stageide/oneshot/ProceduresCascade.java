@@ -67,7 +67,7 @@ public class ProceduresCascade extends org.lgna.croquet.ImmutableCascade<MethodI
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step, MethodInvocationEditFactory[] values ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step, MethodInvocationEditFactory[] values ) {
 		assert values.length == 1;
 		return values[ 0 ].createEdit( step );
 	}

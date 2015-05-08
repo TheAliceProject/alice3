@@ -42,21 +42,19 @@
  */
 package org.alice.ide.croquet.models.project.stats.croquet;
 
-import org.alice.ide.ProjectApplication;
 import org.alice.ide.croquet.models.project.stats.croquet.views.StatisticsFrameView;
-import org.lgna.croquet.FrameComposite;
 import org.lgna.croquet.SimpleTabComposite;
 
 /**
  * @author Matt May
  */
-public class StatisticsFrameComposite extends FrameComposite<StatisticsFrameView> {
+public class StatisticsFrameComposite extends org.lgna.croquet.FrameComposite<StatisticsFrameView> {
 	//todo: move
 	public static final Integer TOP_SIZE = 250;
 	public static final Integer BOTTOM_SIZE = 100;
 
 	public StatisticsFrameComposite( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
-		super( java.util.UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ), ProjectApplication.INFORMATION_GROUP );
+		super( java.util.UUID.fromString( "d17d2d7c-ecae-4869-98e6-cc2d4c2fe517" ) );
 	}
 
 	@Override

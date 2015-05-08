@@ -55,10 +55,6 @@ public class FillInNode<F, B> extends BlankOwnerNode<F, B, org.lgna.croquet.Casc
 		super( model );
 	}
 
-	public FillInNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
 	public org.lgna.croquet.CascadeFillIn<F, B> getCascadeFillIn() {
 		return this.getElement();
 	}

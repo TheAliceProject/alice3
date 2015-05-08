@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class UnadornedDialogCoreComposite<V extends org.lgna.croquet.views.CompositeView<?, ?>> extends AbstractDialogComposite<V> {
-	public UnadornedDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, boolean isModal ) {
+	public UnadornedDialogCoreComposite( java.util.UUID migrationId, IsModal isModal ) {
 		super( migrationId, isModal );
 	}
 
@@ -76,16 +76,11 @@ public abstract class UnadornedDialogCoreComposite<V extends org.lgna.croquet.vi
 	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.handlePostDeactivation();
+		step.finish();
 	}
 
 	public void perform( OwnedByCompositeOperationSubKey subKey, org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
-			@Override
-			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-				super.handlePostHideDialog( completionStep );
-				completionStep.finish();
-			}
-		}, completionStep );
+		this.showDialog( completionStep );
 	}
 
 	public boolean isToolBarTextClobbered( OwnedByCompositeOperationSubKey subKey, boolean defaultValue ) {

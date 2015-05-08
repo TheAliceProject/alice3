@@ -62,9 +62,4 @@ public class ArgumentCascade extends AbstractArgumentCascade {
 	private ArgumentCascade( org.lgna.project.ast.SimpleArgument argument ) {
 		super( java.util.UUID.fromString( "c60b0eec-d8ac-4256-a8be-54b16605fc0e" ), argument );
 	}
-
-	@Override
-	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ArgumentCascade> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ArgumentCascade>( this, org.lgna.project.ast.SimpleArgument.class, this.getArgument() );
-	}
 }

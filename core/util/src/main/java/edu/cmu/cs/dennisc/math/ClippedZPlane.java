@@ -58,7 +58,7 @@ public class ClippedZPlane {
 		set( other );
 	}
 
-	public ClippedZPlane( ClippedZPlane other, java.awt.Rectangle viewport ) {
+	public ClippedZPlane( ClippedZPlane other, edu.cmu.cs.dennisc.math.immutable.MRectangleI viewport ) {
 		set( other, viewport );
 	}
 
@@ -76,7 +76,7 @@ public class ClippedZPlane {
 		this.halfHeight = other.halfHeight;
 	}
 
-	public void set( ClippedZPlane other, java.awt.Rectangle viewport ) {
+	public void set( ClippedZPlane other, edu.cmu.cs.dennisc.math.immutable.MRectangleI viewport ) {
 		this.set( other );
 		if( Double.isNaN( this.halfWidth ) ) {
 			if( Double.isNaN( this.halfHeight ) ) {

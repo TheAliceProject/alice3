@@ -4,12 +4,12 @@
 
 package edu.cmu.cs.dennisc.nebulous;
 
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.VisualAdapter;
+import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GenericModelAdapter<E extends Model> extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GeometryAdapter<E> {
+public class GenericModelAdapter<T extends Model> extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGeometry<T> {
 	@Override
 	protected boolean isDisplayListDesired() {
 		return false;
@@ -17,26 +17,26 @@ public class GenericModelAdapter<E extends Model> extends edu.cmu.cs.dennisc.ren
 
 	@Override
 	public boolean hasOpaque() {
-		return m_element.synchronizedHasOpaque();
+		return owner.synchronizedHasOpaque();
 	}
 
 	@Override
 	public boolean isAlphaBlended() {
-		return m_element.synchronizedIsAlphaBlended();
+		return owner.synchronizedIsAlphaBlended();
 	}
 
 	@Override
 	protected void pickGeometry( edu.cmu.cs.dennisc.render.gl.imp.PickContext pc, boolean isSubElementRequired ) {
-		m_element.synchronizedPick();
+		owner.synchronizedPick();
 	}
 
 	@Override
-	protected void renderGeometry( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, VisualAdapter.RenderType renderType ) {
+	protected void renderGeometry( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, GlrVisual.RenderType renderType ) {
 		float globalBrightness = rc.getGlobalBrightness();
-		boolean renderAlpha = ( renderType == VisualAdapter.RenderType.ALPHA_BLENDED ) || ( renderType == VisualAdapter.RenderType.ALL );
-		boolean renderOpaque = ( renderType == VisualAdapter.RenderType.OPAQUE ) || ( renderType == VisualAdapter.RenderType.ALL );
+		boolean renderAlpha = ( renderType == GlrVisual.RenderType.ALPHA_BLENDED ) || ( renderType == GlrVisual.RenderType.ALL );
+		boolean renderOpaque = ( renderType == GlrVisual.RenderType.OPAQUE ) || ( renderType == GlrVisual.RenderType.ALL );
 		rc.clearDiffuseColorTextureAdapter();
-		m_element.synchronizedRender( rc.gl, globalBrightness, renderAlpha, renderOpaque );
+		owner.synchronizedRender( rc.gl, globalBrightness, renderAlpha, renderOpaque );
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class GenericModelAdapter<E extends Model> extends edu.cmu.cs.dennisc.ren
 			rv.setNaN();
 		} else {
 			direction.normalize();
-			edu.cmu.cs.dennisc.render.gl.imp.adapters.GeometryAdapter.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, direction.x, 0, direction.z );
+			edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGeometry.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, direction.x, 0, direction.z );
 		}
 		return rv;
 	}

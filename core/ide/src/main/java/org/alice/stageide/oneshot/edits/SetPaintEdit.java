@@ -50,10 +50,6 @@ public class SetPaintEdit extends AbstractSetPaintEdit<org.lgna.story.implementa
 		super( completionStep, instanceFactory, method, argumentExpressions );
 	}
 
-	public SetPaintEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
-
 	@Override
 	protected org.lgna.story.implementation.PaintProperty getPaintProperty( org.lgna.story.implementation.ModelImp modelImp ) {
 		return modelImp.paint;

@@ -56,8 +56,7 @@ public abstract class PropertyValueOperation<P> extends org.lgna.croquet.ActionO
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		step.commitAndInvokeDo( new org.alice.ide.properties.adapter.croquet.edits.PropertyValueEdit<P>( step, this.propertyAdapter, this.nextValue ) );
 	}
 }

@@ -51,7 +51,7 @@ public abstract class OperationButton<J extends javax.swing.AbstractButton, M ex
 
 	public OperationButton( M model, String uiDefaultsName ) {
 		super( model, uiDefaultsName );
-		this.setAction( model.getSwingModel().getAction() );
+		this.setAction( model.getImp().getSwingModel().getAction() );
 	}
 
 	public OperationButton( M model ) {

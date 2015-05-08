@@ -42,16 +42,13 @@
  */
 package edu.cmu.cs.dennisc.color.property;
 
-//todo: Copyable
 /**
  * @author Dennis Cosgrove
  */
 public class Color4fProperty extends edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.color.Color4f> {
-	private boolean m_isNaNAcceptable;
-
 	public Color4fProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.color.Color4f value, boolean isNaNAcceptable ) {
 		super( owner, value );
-		m_isNaNAcceptable = isNaNAcceptable;
+		this.isNaNAcceptable = isNaNAcceptable;
 	}
 
 	public Color4fProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.color.Color4f value ) {
@@ -59,9 +56,11 @@ public class Color4fProperty extends edu.cmu.cs.dennisc.property.InstancePropert
 	}
 
 	@Override
-	public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.color.Color4f value ) {
+	public void setValue( edu.cmu.cs.dennisc.color.Color4f value ) {
 		assert value != null : this;
-		assert ( value.isNaN() == false ) || m_isNaNAcceptable : this;
-		super.setValue( owner, value );
+		assert ( value.isNaN() == false ) || this.isNaNAcceptable : this;
+		super.setValue( value );
 	}
+
+	private final boolean isNaNAcceptable;
 }

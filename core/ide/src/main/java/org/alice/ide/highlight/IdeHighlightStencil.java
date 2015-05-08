@@ -55,7 +55,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
 				@Override
 				public org.lgna.croquet.views.TrackableShape getResolved() {
-					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
+					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
 					if( declarationComposite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
 						if( view instanceof org.alice.ide.declarationseditor.type.components.TypeDeclarationView ) {
@@ -85,7 +85,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
 				@Override
 				public org.lgna.croquet.views.TrackableShape getResolved() {
-					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
+					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
 					if( declarationComposite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
 
@@ -127,7 +127,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
 				@Override
 				public org.lgna.croquet.views.TrackableShape getResolved() {
-					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
+					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
 					if( declarationComposite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
 						java.util.List<javax.swing.JPanel> jPanels = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.JPanel.class );
@@ -173,7 +173,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 	}
 
 	private org.lgna.croquet.views.TrackableShape getRenderWindow() {
-		org.alice.ide.perspectives.ProjectPerspective perspective = org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue();
+		org.alice.ide.perspectives.ProjectPerspective perspective = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().getValue();
 		if( perspective != null ) {
 			return perspective.getRenderWindow();
 		} else {
@@ -186,7 +186,7 @@ public class IdeHighlightStencil extends HighlightStencil {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.views.TrackableShape>() {
 				@Override
 				public org.lgna.croquet.views.TrackableShape getResolved() {
-					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
+					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
 					if( declarationComposite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
 						java.util.List<javax.swing.JPanel> jPanels = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.JPanel.class );

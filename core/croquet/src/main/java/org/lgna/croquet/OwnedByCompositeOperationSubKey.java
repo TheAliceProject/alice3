@@ -46,9 +46,6 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public final class OwnedByCompositeOperationSubKey {
-	private final OperationOwningComposite<?> composite;
-	private final String text;
-
 	public OwnedByCompositeOperationSubKey( OperationOwningComposite<?> composite, String text ) {
 		this.composite = composite;
 		this.text = text;
@@ -86,4 +83,7 @@ public final class OwnedByCompositeOperationSubKey {
 		}
 		return rv;
 	}
+
+	private final OperationOwningComposite<?> composite;
+	private final String text;
 }

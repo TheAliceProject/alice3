@@ -58,10 +58,6 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 public class InfiniteLineVisualization extends Visual {
 
 	private static final double LINE_DISTANCE = 1000.0d;
-	private static SimpleAppearance s_sgFrontFacingAppearance = new SimpleAppearance();
-	static {
-		s_sgFrontFacingAppearance.setShadingStyle( ShadingStyle.NONE );
-	}
 
 	public InfiniteLineVisualization( Vector3 line ) {
 		Vertex[] vertices = new Vertex[ 2 ];
@@ -74,7 +70,8 @@ public class InfiniteLineVisualization extends Visual {
 		LineArray sgLineArray = new LineArray();
 		sgLineArray.vertices.setValue( vertices );
 		geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { sgLineArray } );
-		frontFacingAppearance.setValue( s_sgFrontFacingAppearance );
+		this.sgFrontFacingAppearance.setShadingStyle( ShadingStyle.NONE );
+		frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
 	}
 
 	public void setLine( Vector3 line ) {
@@ -91,7 +88,8 @@ public class InfiniteLineVisualization extends Visual {
 	}
 
 	public void setColor( Color4f color ) {
-		s_sgFrontFacingAppearance.setDiffuseColor( color );
+		this.sgFrontFacingAppearance.setDiffuseColor( color );
 	}
 
+	private final SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
 }

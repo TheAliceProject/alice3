@@ -47,7 +47,7 @@ package org.alice.ide.issue.swing;
  */
 public class JGraphicsHeaderPane extends javax.swing.JPanel {
 	private static String getRendererSearchTerm( String renderer ) {
-		if( renderer.toLowerCase().contains( "geforce" ) ) {
+		if( renderer.toLowerCase( java.util.Locale.ENGLISH ).contains( "geforce" ) ) {
 			return "GeForce";
 		} else {
 			return renderer;

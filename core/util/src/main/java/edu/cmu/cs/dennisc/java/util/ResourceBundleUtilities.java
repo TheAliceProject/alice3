@@ -46,8 +46,46 @@ package edu.cmu.cs.dennisc.java.util;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceBundleUtilities {
+	private ResourceBundleUtilities() {
+		throw new AssertionError();
+	}
+
+	private static final class Utf8ResourceBundleControl extends java.util.ResourceBundle.Control {
+		@Override
+		public java.util.ResourceBundle newBundle( String baseName, java.util.Locale locale, String format, ClassLoader loader, boolean reload ) throws java.lang.IllegalAccessException, java.lang.InstantiationException, java.io.IOException {
+			String bundleName = this.toBundleName( baseName, locale );
+			String resourceName = this.toResourceName( bundleName, "properties" );
+			java.io.InputStream stream = null;
+			if( reload ) {
+				java.net.URL url = loader.getResource( resourceName );
+				if( url != null ) {
+					java.net.URLConnection connection = url.openConnection();
+					if( connection != null ) {
+						connection.setUseCaches( false );
+						stream = connection.getInputStream();
+					}
+				}
+			} else {
+				stream = loader.getResourceAsStream( resourceName );
+			}
+			java.util.ResourceBundle bundle = null;
+			if( stream != null ) {
+				try {
+					bundle = new java.util.PropertyResourceBundle( new java.io.InputStreamReader( stream, "UTF-8" ) );
+				} finally {
+					stream.close();
+				}
+			}
+			return bundle;
+		}
+	}
+
+	public static java.util.ResourceBundle getUtf8Bundle( String baseName, java.util.Locale locale ) {
+		return java.util.ResourceBundle.getBundle( baseName, locale, new Utf8ResourceBundleControl() );
+	}
+
 	public static String getStringFromSimpleNames( Class<?> cls, String baseName, java.util.Locale locale ) {
-		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( baseName, locale );
+		java.util.ResourceBundle resourceBundle = getUtf8Bundle( baseName, locale );
 		String key;
 		Class<?> c = cls;
 		do {

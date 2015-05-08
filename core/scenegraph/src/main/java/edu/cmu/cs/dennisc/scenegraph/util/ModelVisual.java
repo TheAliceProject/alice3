@@ -49,19 +49,19 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public class ModelVisual extends Visual {
-	private TexturedAppearance m_sgFrontFacingAppearance = new TexturedAppearance();
-
 	public ModelVisual() {
-		frontFacingAppearance.setValue( m_sgFrontFacingAppearance );
+		frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
 	}
 
 	public TexturedAppearance getSGFrontFacingAppearance() {
-		return m_sgFrontFacingAppearance;
+		return this.sgFrontFacingAppearance;
 	}
 
 	@Override
 	public void setName( String name ) {
 		super.setName( name );
-		m_sgFrontFacingAppearance.setName( name + ".m_sgFrontFacingAppearance" );
+		this.sgFrontFacingAppearance.setName( name + ".sgFrontFacingAppearance" );
 	}
+
+	private final TexturedAppearance sgFrontFacingAppearance = new TexturedAppearance();
 }

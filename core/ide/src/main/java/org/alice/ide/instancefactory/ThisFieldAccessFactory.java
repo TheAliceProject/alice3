@@ -78,11 +78,6 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 		}
 	}
 
-	@Override
-	protected org.lgna.croquet.resolvers.Resolver<ThisFieldAccessFactory> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ThisFieldAccessFactory>( this, org.lgna.project.ast.UserField.class, this.field );
-	}
-
 	public org.lgna.project.ast.UserField getField() {
 		return this.field;
 	}
@@ -115,7 +110,7 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 			fallbackIconFactory = super.getIconFactory();
 		}
 
-		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame();
+		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
 		if( projectDocumentFrame != null ) {
 			return projectDocumentFrame.getIconFactoryManager().getIconFactory( this.field, fallbackIconFactory );
 		} else {

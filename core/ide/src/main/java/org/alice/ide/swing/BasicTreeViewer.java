@@ -69,8 +69,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import edu.cmu.cs.dennisc.toolkit.scenegraph.SceneGraphTreeNode;
-
 public class BasicTreeViewer extends JPanel implements TreeSelectionListener
 {
 	protected JPanel mainPanel;

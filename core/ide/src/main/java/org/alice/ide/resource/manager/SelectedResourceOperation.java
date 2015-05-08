@@ -45,13 +45,16 @@ package org.alice.ide.resource.manager;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectedResourceOperation extends ResourceOperation {
-	public SelectedResourceOperation( java.util.UUID migrationId ) {
+/*package-private*/abstract class SelectedResourceOperation extends ResourceOperation {
+	public SelectedResourceOperation( java.util.UUID migrationId, org.lgna.croquet.ItemState<org.lgna.common.Resource> resourceState ) {
 		super( migrationId );
+		this.resourceState = resourceState;
 	}
 
 	@Override
 	protected final org.lgna.common.Resource getResource() {
-		return ResourceSingleSelectTableRowState.getInstance().getValue();
+		return this.resourceState.getValue();
 	}
+
+	private final org.lgna.croquet.ItemState<org.lgna.common.Resource> resourceState;
 }

@@ -90,7 +90,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 			org.alice.ide.perspectives.ProjectPerspective prevValue = e.getPreviousValue();
 			org.alice.ide.perspectives.ProjectPerspective nextValue = e.getNextValue();
 			if( prevValue != nextValue ) {
-				AbstractSceneEditor.this.handleExpandContractChange( nextValue == org.alice.ide.IDE.getActiveInstance().getSetupScenePerspective() );
+				AbstractSceneEditor.this.handleExpandContractChange( nextValue == org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getSetupScenePerspective() );
 			}
 		}
 	};
@@ -133,7 +133,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	}
 
 	protected void initializeObservers() {
-		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().addAndInvokeNewSchoolValueListener( this.perspectiveListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getPerspectiveState().addAndInvokeNewSchoolValueListener( this.perspectiveListener );
 	}
 
 	protected void setInitialCodeStateForField( org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement code ) {
@@ -426,7 +426,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.views.AwtComponentView<?> parent ) {
 		if( EPIC_HACK_isFirstAddedTo ) {
-			org.alice.ide.ProjectDocument projectDocument = org.alice.ide.ProjectApplication.getActiveInstance().getDocument();
+			org.alice.ide.ProjectDocument projectDocument = org.alice.ide.ProjectApplication.getActiveInstance().getDocumentFrame().getDocument();
 			if( projectDocument != null ) {
 				this.projectListener.changed( null, null, projectDocument, false );
 				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "remove firing changed", projectDocument );

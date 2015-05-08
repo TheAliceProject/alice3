@@ -87,7 +87,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFill
 		this.value = value;
 
 		if( this.value == org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ) {
-			org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().addValueListener( this.typeListener );
+			org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().addValueListener( this.typeListener );
 		}
 
 		edu.cmu.cs.dennisc.property.InstanceProperty<?>[] mutablePropertiesOfInterest = this.value.getMutablePropertiesOfInterest();
@@ -101,11 +101,6 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFill
 				property.addPropertyListener( this.propertyAdapter );
 			}
 		}
-	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.InstanceFactoryStaticGetInstanceKeyedResolver<InstanceFactoryFillIn> createResolver() {
-		return new org.alice.ide.croquet.resolvers.InstanceFactoryStaticGetInstanceKeyedResolver<InstanceFactoryFillIn>( this, this.value );
 	}
 
 	@Override
@@ -144,7 +139,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFill
 	}
 
 	@Override
-	public org.alice.ide.instancefactory.InstanceFactory createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, java.lang.Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.alice.ide.instancefactory.InstanceFactory createValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.alice.ide.instancefactory.InstanceFactory, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.value;
 	}
 

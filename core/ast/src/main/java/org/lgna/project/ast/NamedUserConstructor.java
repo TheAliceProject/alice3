@@ -56,7 +56,7 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	}
 
 	@Override
-	protected Object convertPropertyValueIfNecessary( edu.cmu.cs.dennisc.property.Property property, Object value ) {
+	protected Object convertPropertyValueIfNecessary( edu.cmu.cs.dennisc.property.InstanceProperty property, Object value ) {
 		value = super.convertPropertyValueIfNecessary( property, value );
 		if( property == this.body ) {
 			if( value instanceof BlockStatement ) {

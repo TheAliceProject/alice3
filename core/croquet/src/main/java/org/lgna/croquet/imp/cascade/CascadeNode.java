@@ -47,33 +47,19 @@ package org.lgna.croquet.imp.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeNode<P extends CascadeNode<?, ?>, E extends org.lgna.croquet.Element> extends org.lgna.croquet.history.TransactionNode<P> {
-	private final org.lgna.croquet.resolvers.Resolver<E> elementResolver;
-
 	public CascadeNode( P parent, E element ) {
 		super( parent );
-		if( element != null ) {
-			this.elementResolver = element.getResolver();
-		} else {
-			this.elementResolver = null;
-		}
-	}
-
-	public CascadeNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.elementResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-	}
-
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.elementResolver );
+		this.elememt = element;
 	}
 
 	public E getElement() {
-		return this.elementResolver != null ? this.elementResolver.getResolved() : null;
+		return this.elememt;
 	}
 
 	@Override
 	protected void appendContexts( java.util.List<org.lgna.croquet.Context> out ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "?" );
 	}
+
+	private final E elememt;
 }

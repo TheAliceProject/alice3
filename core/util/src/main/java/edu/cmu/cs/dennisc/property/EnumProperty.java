@@ -51,10 +51,10 @@ public class EnumProperty<E extends Enum<E>> extends InstanceProperty<E> {
 	}
 
 	@Override
-	public void setValue( PropertyOwner owner, E value ) {
+	public void setValue( E value ) {
 		assert value != null : this;
-		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue( owner ) ) ) {
-			super.setValue( owner, value );
+		if( edu.cmu.cs.dennisc.java.util.Objects.notEquals( value, this.getValue() ) ) {
+			super.setValue( value );
 		}
 	}
 }

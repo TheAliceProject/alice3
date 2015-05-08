@@ -65,7 +65,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 
 		@Override
-		protected org.lgna.croquet.edits.AbstractEdit<? extends org.lgna.croquet.Cascade<T>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> completionStep, T[] values ) {
+		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> completionStep, T[] values ) {
 			T[] items = this.data.toArray();
 			items[ this.index ] = values[ 0 ];
 			this.data.internalSetAllItems( items );
@@ -141,8 +141,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 
 		@Override
-		protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 			this.data.internalRemoveItem( this.data.getItemAt( this.index ) );
 			step.finish();
 		}
@@ -230,7 +229,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		@Override
 		protected JExpressionItemAtIndexButton createJItemAtIndexButton( int index ) {
 			DeleteItemAtIndexOperation<org.lgna.project.ast.Expression> deleteOperation = new DeleteItemAtIndexOperation<org.lgna.project.ast.Expression>( this.getData(), index );
-			return new JExpressionItemAtIndexButton( index, deleteOperation.getSwingModel().getAction() );
+			return new JExpressionItemAtIndexButton( index, deleteOperation.getImp().getSwingModel().getAction() );
 		}
 
 		@Override

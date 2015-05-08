@@ -46,8 +46,8 @@ package org.alice.ide.croquet.models.projecturi;
  * @author Dennis Cosgrove
  */
 public abstract class UriPotentialClearanceIteratingOperation extends PotentialClearanceIteratingOperation {
-	public UriPotentialClearanceIteratingOperation( java.util.UUID migrationId, org.lgna.croquet.Model postClearanceModel ) {
-		super( org.alice.ide.ProjectApplication.URI_GROUP, migrationId, postClearanceModel );
+	public UriPotentialClearanceIteratingOperation( java.util.UUID migrationId, org.alice.ide.ProjectDocumentFrame projectDocumentFrame, org.lgna.croquet.Model postClearanceModel ) {
+		super( org.alice.ide.ProjectApplication.URI_GROUP, migrationId, projectDocumentFrame, postClearanceModel );
 	}
 
 	protected abstract org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps );

@@ -52,10 +52,11 @@ public class BooleanExample {
 			public void run() {
 				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 				org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+				org.lgna.croquet.DocumentFrame documentFrame = app.getDocumentFrame();
+				org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
 
 				booleanexample.croquet.BooleanExampleComposite composite = new booleanexample.croquet.BooleanExampleComposite();
 
-				org.lgna.croquet.views.Frame frame = app.getFrame();
 				frame.setTitle( "Boolean Example" );
 				frame.setMainComposite( composite );
 				frame.setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );

@@ -59,7 +59,7 @@ import edu.cmu.cs.dennisc.pattern.Tuple2;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class MarkerUtilities {
 	private static final String[] COLOR_NAME_KEYS;
@@ -104,7 +104,7 @@ public class MarkerUtilities {
 	private static String findLocalizedText( String subKey ) {
 		String bundleName = MarkerUtilities.class.getPackage().getName() + ".croquet";
 		try {
-			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+			java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
 			String key = MarkerUtilities.class.getSimpleName();
 
 			if( subKey != null ) {
@@ -123,10 +123,10 @@ public class MarkerUtilities {
 
 	private static int getColorIndexForName( String name )
 	{
-		String lowerName = name.toLowerCase();
+		String lowerName = name.toLowerCase( java.util.Locale.ENGLISH );
 		for( int i = 0; i < getColorCount(); i++ )
 		{
-			String currentColor = getColorNameForIndex( i ).toLowerCase();
+			String currentColor = getColorNameForIndex( i ).toLowerCase( java.util.Locale.ENGLISH );
 			if( lowerName.endsWith( currentColor ) )
 			{
 				return i;

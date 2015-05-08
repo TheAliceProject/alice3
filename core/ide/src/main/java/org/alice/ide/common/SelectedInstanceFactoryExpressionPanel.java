@@ -63,7 +63,7 @@ public class SelectedInstanceFactoryExpressionPanel extends org.lgna.croquet.vie
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 		org.lgna.project.ast.Expression expression = instanceFactory != null ? instanceFactory.createTransientExpression() : null;
 		this.forgetAndRemoveAllComponents();
 		this.internalAddComponent( this.factory.createExpressionPane( expression ) );
@@ -72,12 +72,12 @@ public class SelectedInstanceFactoryExpressionPanel extends org.lgna.croquet.vie
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactoryListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeNewSchoolValueListener( this.instanceFactoryListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().removeNewSchoolValueListener( this.instanceFactoryListener );
 		super.handleUndisplayable();
 	}
 }

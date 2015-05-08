@@ -58,7 +58,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		}
 
 		@Override
-		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected Class<? extends Element> getClassUsedForLocalization() {
 			return this.completionModel.getClassUsedForLocalization();
 		}
 
@@ -135,9 +135,5 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		super.appendRepr( sb );
 		sb.append( "group=" );
 		sb.append( this.getGroup() );
-	}
-
-	protected boolean isSubTransactionHistoryRequired() {
-		return false;
 	}
 }

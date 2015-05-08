@@ -184,7 +184,7 @@ public class JavaFormatter extends Formatter {
 	}
 
 	@Override
-	public String getNameForField( java.lang.reflect.Field fld ) {
+	protected String getNameForField( java.lang.reflect.Field fld ) {
 		return fld.getName();
 	}
 

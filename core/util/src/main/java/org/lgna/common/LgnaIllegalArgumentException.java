@@ -110,7 +110,7 @@ public class LgnaIllegalArgumentException extends LgnaRuntimeException {
 	}
 
 	@Override
-	protected void appendFormattedString( java.lang.StringBuilder sb ) {
+	protected void appendFormattedString( StringBuilder sb ) {
 		sb.append( "<html>" );
 		sb.append( "<h1>" );
 		sb.append( this.getClass().getSimpleName() );

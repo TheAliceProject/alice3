@@ -67,9 +67,11 @@ public class TestIcon extends org.lgna.croquet.simple.SimpleApplication {
 		flowPanel.addComponent( new org.lgna.croquet.views.Label( iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
 		flowPanel.addComponent( new org.lgna.croquet.views.Label( iconFactory.getIcon( new java.awt.Dimension( 160, 120 ) ) ) );
 
-		testCroquet.getFrame().getContentPane().addCenterComponent( flowPanel );
-		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
-		testCroquet.getFrame().pack();
-		testCroquet.getFrame().setVisible( true );
+		org.lgna.croquet.DocumentFrame documentFrame = testCroquet.getDocumentFrame();
+		org.lgna.croquet.views.Frame frame = documentFrame.getFrame();
+
+		frame.getContentPane().addCenterComponent( flowPanel );
+		frame.pack();
+		frame.setVisible( true );
 	}
 }

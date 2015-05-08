@@ -61,7 +61,7 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	}
 
 	@Override
-	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+	protected Class<? extends Element> getClassUsedForLocalization() {
 		if( this.clsForI18N != null ) {
 			return this.clsForI18N;
 		} else {

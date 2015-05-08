@@ -73,7 +73,7 @@ public class ThisInstanceIconFactory extends org.lgna.croquet.icon.ResolutionInd
 
 			@Override
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().getValue();
+				org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
 				if( type != null ) {
 					org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( type );
 					if( iconFactory != null ) {

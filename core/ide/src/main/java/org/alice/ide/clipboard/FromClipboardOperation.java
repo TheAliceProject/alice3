@@ -51,10 +51,10 @@ public abstract class FromClipboardOperation extends org.alice.ide.croquet.model
 		super( id, blockStatementIndexPair );
 	}
 
-	protected abstract org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.Statement statement );
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.Statement statement );
 
 	@Override
-	protected final org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep step ) {
+	protected final org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step ) {
 		org.lgna.project.ast.Node node = Clipboard.SINGLETON.peek();
 		//todo: recast if necessary
 		if( node instanceof org.lgna.project.ast.Statement ) {
@@ -63,10 +63,5 @@ public abstract class FromClipboardOperation extends org.alice.ide.croquet.model
 		} else {
 			throw new org.lgna.croquet.CancelException();
 		}
-	}
-
-	@Override
-	protected org.lgna.croquet.resolvers.Resolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, this.getBlockStatementIndexPair() );
 	}
 }

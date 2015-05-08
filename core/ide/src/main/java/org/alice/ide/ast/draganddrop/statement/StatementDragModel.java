@@ -81,11 +81,6 @@ public class StatementDragModel extends AbstractStatementDragModel {
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<StatementDragModel> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<StatementDragModel>( this, org.lgna.project.ast.Statement.class, this.statement );
-	}
-
-	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		throw new RuntimeException( "todo" );
 	}

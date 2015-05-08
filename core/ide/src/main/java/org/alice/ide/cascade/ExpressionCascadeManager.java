@@ -50,7 +50,7 @@ public abstract class ExpressionCascadeManager {
 	private final org.alice.ide.cascade.fillerinners.StringFillerInner stringFillerInner = new org.alice.ide.cascade.fillerinners.StringFillerInner();
 	private final java.util.List<org.alice.ide.cascade.fillerinners.ExpressionFillerInner> expressionFillerInners = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
-	private final java.util.Stack<ExpressionCascadeContext> contextStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final edu.cmu.cs.dennisc.java.util.DStack<ExpressionCascadeContext> contextStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 
 	public ExpressionCascadeManager() {
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.DoubleFillerInner() );
@@ -273,7 +273,7 @@ public abstract class ExpressionCascadeManager {
 			arrayLengthFillIns = null;
 		}
 
-		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().getValue();
+		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
 		if( this.isApplicableForFillInAndPossiblyPartFillIns( type, selectedType ) ) {
 			this.appendFillInAndPossiblyPartFillIns( blankChildren, type, new org.lgna.project.ast.ThisExpression(), selectedType );
 		}
@@ -296,7 +296,7 @@ public abstract class ExpressionCascadeManager {
 			}
 		}
 
-		org.lgna.project.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
+		org.lgna.project.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getFocusedCode();
 		if( codeInFocus instanceof org.lgna.project.ast.UserCode ) {
 			org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)codeInFocus;
 			for( org.lgna.project.ast.UserParameter parameter : userCode.getRequiredParamtersProperty() ) {

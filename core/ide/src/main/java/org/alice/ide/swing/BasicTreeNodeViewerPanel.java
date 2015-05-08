@@ -56,7 +56,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.toolkit.scenegraph.SceneGraphTreeNode;
 
 public class BasicTreeNodeViewerPanel extends JPanel implements ActionListener {
 

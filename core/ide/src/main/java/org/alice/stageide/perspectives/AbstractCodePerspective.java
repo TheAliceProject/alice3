@@ -53,7 +53,7 @@ public abstract class AbstractCodePerspective extends org.alice.ide.perspectives
 
 	@Override
 	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getView().getCodeDropReceptorInFocus();
+		return this.getProjectDocumentFrame().getDeclarationsEditorComposite().getView().getCodeDropReceptorInFocus();
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public abstract class AbstractCodePerspective extends org.alice.ide.perspectives
 
 	@Override
 	protected void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
-		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
+		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = this.getProjectDocumentFrame().getDeclarationsEditorComposite().getTabState().getValue();
 		if( declarationComposite != null ) {
 			org.alice.ide.declarationseditor.components.DeclarationView declarationView = declarationComposite.getView();
 			declarationView.addPotentialDropReceptors( out, dragModel );
