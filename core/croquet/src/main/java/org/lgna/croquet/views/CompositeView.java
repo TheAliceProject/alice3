@@ -61,7 +61,7 @@ public abstract class CompositeView<J extends javax.swing.JComponent, C extends 
 	}
 
 	@Override
-	protected java.lang.StringBuilder appendRepr( java.lang.StringBuilder rv ) {
+	protected StringBuilder appendRepr( StringBuilder rv ) {
 		super.appendRepr( rv );
 		rv.append( "composite=" );
 		rv.append( composite );

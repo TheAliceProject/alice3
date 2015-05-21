@@ -50,7 +50,7 @@ public class CaughtGlExceptionPane extends org.alice.ide.issue.swing.views.Abstr
 	}
 
 	@Override
-	public void setThreadAndThrowable( java.lang.Thread thread, java.lang.Throwable throwable ) {
+	public void setThreadAndThrowable( Thread thread, Throwable throwable ) {
 		if( throwable instanceof javax.media.opengl.GLException ) {
 			javax.media.opengl.GLException glException = (javax.media.opengl.GLException)throwable;
 			this.add( new org.alice.ide.issue.croquet.GlExceptionComposite( glException ).getView().getAwtComponent(), java.awt.BorderLayout.NORTH );

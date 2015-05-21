@@ -50,19 +50,19 @@ public class ToolBarUtilities {
 		throw new AssertionError();
 	}
 
-	public static void appendDocumentSubElements( java.util.List<org.lgna.croquet.Element> subElements ) {
-		subElements.add( org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance() );
+	public static void appendDocumentSubElements( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, java.util.List<org.lgna.croquet.Element> subElements ) {
+		subElements.add( projectDocumentFrame.getOpenProjectOperation() );
 		subElements.add( org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance() );
 		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
 	}
 
-	public static void appendUndoRedoSubElements( java.util.List<org.lgna.croquet.Element> subElements ) {
-		subElements.add( org.alice.ide.croquet.models.history.UndoOperation.getInstance() );
-		subElements.add( org.alice.ide.croquet.models.history.RedoOperation.getInstance() );
+	public static void appendUndoRedoSubElements( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, java.util.List<org.lgna.croquet.Element> subElements ) {
+		subElements.add( projectDocumentFrame.getUndoOperation() );
+		subElements.add( projectDocumentFrame.getRedoOperation() );
 		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
 	}
 
-	public static void appendRunSubElements( java.util.List<org.lgna.croquet.Element> subElements ) {
+	public static void appendRunSubElements( org.alice.ide.ProjectDocumentFrame projectDocumentFrame, java.util.List<org.lgna.croquet.Element> subElements ) {
 		subElements.add( org.alice.stageide.run.RunComposite.getInstance().getLaunchOperation() );
 		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
 	}

@@ -50,10 +50,6 @@ public class SetCeilingPaintEdit extends AbstractSetPaintEdit<org.lgna.story.imp
 		super( completionStep, instanceFactory, method, argumentExpressions );
 	}
 
-	public SetCeilingPaintEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
-
 	@Override
 	protected org.lgna.story.implementation.PaintProperty getPaintProperty( org.lgna.story.implementation.RoomImp roomImp ) {
 		return roomImp.ceilingPaint;

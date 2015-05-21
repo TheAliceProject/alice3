@@ -75,15 +75,11 @@ public final class RenameResourceEdit extends org.lgna.croquet.edits.AbstractEdi
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		resource.setName( this.nextValue );
-		//todo
-		org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getView().repaint();
 	}
 
 	@Override
 	protected final void undoInternal() {
 		resource.setName( this.prevValue );
-		//todo
-		org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getView().repaint();
 	}
 
 	@Override

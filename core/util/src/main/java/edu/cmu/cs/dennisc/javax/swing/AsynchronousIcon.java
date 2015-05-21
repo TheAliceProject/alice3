@@ -46,48 +46,7 @@ package edu.cmu.cs.dennisc.javax.swing;
  * @author Dennis Cosgrove
  */
 public abstract class AsynchronousIcon implements javax.swing.Icon {
-	private class IconWorker extends edu.cmu.cs.dennisc.worker.Worker<javax.swing.Icon> {
-		@Override
-		protected javax.swing.Icon do_onBackgroundThread() throws java.lang.Exception {
-			return AsynchronousIcon.this.do_onBackgroundThread();
-		}
-
-		@Override
-		protected void handleDone_onEventDispatchThread( javax.swing.Icon value ) {
-			AsynchronousIcon.this.handleDone_onEventDispatchThread( value );
-		}
-	}
-
-	public AsynchronousIcon( int width, int height ) {
-		this.width = width;
-		this.height = height;
-	}
-
-	@Override
-	public int getIconWidth() {
-		if( this.icon != null ) {
-			if( this.icon.getIconWidth() == this.width ) {
-				//pass
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "width:", this.icon.getIconWidth(), this.width );
-			}
-		}
-		return this.width;
-	}
-
-	@Override
-	public int getIconHeight() {
-		if( this.icon != null ) {
-			if( this.icon.getIconHeight() == this.height ) {
-				//pass
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "height:", this.icon.getIconHeight(), this.height );
-			}
-		}
-		return this.height;
-	}
-
-	private static java.awt.Component getComponentToRepaint( java.awt.Component c ) {
+	protected static java.awt.Component getComponentToRepaint( java.awt.Component c ) {
 		java.awt.Container parent = c.getParent();
 		if( parent instanceof javax.swing.CellRendererPane ) {
 			java.awt.Container grandparent = parent.getParent();
@@ -97,17 +56,40 @@ public abstract class AsynchronousIcon implements javax.swing.Icon {
 		}
 	}
 
-	@Override
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		if( this.worker.isDone() ) {
-			if( this.icon != null ) {
-				this.icon.paintIcon( c, g, x, y );
-			} else {
-				//g.setColor( java.awt.Color.RED );
-				//g.fillRect( x, y, 100, 100 );
-			}
-		} else {
+	protected abstract int getIconWidthFallback();
 
+	protected abstract int getIconHeightFallback();
+
+	protected abstract void paintIconFallback( java.awt.Component c, java.awt.Graphics g, int x, int y );
+
+	protected abstract javax.swing.Icon getResult( boolean isPaint );
+
+	@Override
+	public final int getIconWidth() {
+		javax.swing.Icon icon = this.getResult( false );
+		if( icon != null ) {
+			return icon.getIconWidth();
+		} else {
+			return this.getIconWidthFallback();
+		}
+	}
+
+	@Override
+	public final int getIconHeight() {
+		javax.swing.Icon icon = this.getResult( false );
+		if( icon != null ) {
+			return icon.getIconHeight();
+		} else {
+			return this.getIconHeightFallback();
+		}
+	}
+
+	@Override
+	public final void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		javax.swing.Icon icon = this.getResult( true );
+		if( icon != null ) {
+			icon.paintIcon( c, g, x, y );
+		} else {
 			java.awt.Component componentToRepaint = getComponentToRepaint( c );
 			if( this.componentsToRepaint != null ) {
 				if( this.componentsToRepaint.contains( componentToRepaint ) ) {
@@ -117,15 +99,13 @@ public abstract class AsynchronousIcon implements javax.swing.Icon {
 				}
 			} else {
 				this.componentsToRepaint = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( componentToRepaint );
-				this.worker.execute();
+				//this.worker.execute();
 			}
+			this.paintIconFallback( c, g, x, y );
 		}
 	}
 
-	protected abstract javax.swing.Icon do_onBackgroundThread() throws java.lang.Exception;
-
-	private void handleDone_onEventDispatchThread( javax.swing.Icon value ) {
-		this.icon = value;
+	protected void repaintComponentsIfNecessary() {
 		if( this.componentsToRepaint != null ) {
 			for( java.awt.Component component : this.componentsToRepaint ) {
 				component.repaint();
@@ -134,9 +114,5 @@ public abstract class AsynchronousIcon implements javax.swing.Icon {
 		}
 	}
 
-	private final int width;
-	private final int height;
-	private final IconWorker worker = new IconWorker();
-	private javax.swing.Icon icon;
 	private java.util.List<java.awt.Component> componentsToRepaint;
 }

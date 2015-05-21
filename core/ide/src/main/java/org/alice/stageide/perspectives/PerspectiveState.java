@@ -46,7 +46,7 @@ package org.alice.stageide.perspectives;
 /**
  * @author Dennis Cosgrove
  */
-public class PerspectiveState extends org.lgna.croquet.MutableDataSingleSelectListState<org.alice.ide.perspectives.ProjectPerspective> {
+public class PerspectiveState extends org.lgna.croquet.ImmutableDataSingleSelectListState<org.alice.ide.perspectives.ProjectPerspective> {
 	public PerspectiveState( org.alice.ide.perspectives.ProjectPerspective... perspectives ) {
 		super(
 				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
@@ -55,20 +55,4 @@ public class PerspectiveState extends org.lgna.croquet.MutableDataSingleSelectLi
 				org.alice.ide.perspectives.codecs.IdePerspectiveCodec.SINGLETON,
 				perspectives );
 	}
-
-	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
-		this.stack.push( reasonToDisableSomeAmountOfRendering );
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().disableRendering( reasonToDisableSomeAmountOfRendering );
-	}
-
-	public void enableRendering() {
-		if( this.stack.isEmpty() ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-		} else {
-			org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
-			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
-		}
-	}
-
-	private final java.util.Stack<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
 }

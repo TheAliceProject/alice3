@@ -96,8 +96,7 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends org
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		step.commitAndInvokeDo( new org.lgna.croquet.edits.AbstractEdit( step ) {
 			@Override
 			protected void doOrRedoInternal( boolean isDo ) {

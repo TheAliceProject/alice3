@@ -52,7 +52,7 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.MessageDialogComposite;
 import org.lgna.croquet.StringValue;
-import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 
 import edu.cmu.cs.dennisc.java.lang.RuntimeUtilities;
@@ -77,7 +77,7 @@ public class ExecutionPermissionFailedDialogComposite extends MessageDialogCompo
 	private final ActionOperation troubleShootAction = createActionOperation( "troubleShoot", new Action() {
 
 		@Override
-		public AbstractEdit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException {
+		public Edit perform( CompletionStep<?> step, InternalActionOperation source ) throws CancelException {
 			if( SystemUtilities.isMac() ) {
 				RuntimeUtilities.exec( "chmod a+x " + ffmpegFile.getAbsolutePath() );
 				isFixed = ( ffmpegFile != null ) && ffmpegFile.canExecute();

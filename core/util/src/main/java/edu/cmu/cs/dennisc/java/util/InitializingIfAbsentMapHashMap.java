@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.java.util;
 /**
  * @author Dennis Cosgrove
  */
-public class InitializingIfAbsentMapHashMap<K, K2, E2> extends InitializingIfAbsentHashMap<K, java.util.Map<K2, E2>> {
+/*package-private*/class InitializingIfAbsentMapHashMap<K, K2, E2> extends InitializingIfAbsentHashMap<K, java.util.Map<K2, E2>> {
 	public java.util.Map<K2, E2> getInitializingIfAbsentToHashMap( K key ) {
 		return this.getInitializingIfAbsent( key, new Initializer<K, java.util.Map<K2, E2>>() {
 			@Override

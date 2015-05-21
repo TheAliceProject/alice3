@@ -51,10 +51,6 @@ public abstract class AbstractItemNode<F, B, M extends org.lgna.croquet.CascadeI
 		super( null, model );
 	}
 
-	public AbstractItemNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
 	@Override
 	public abstract int getBlankStepCount();
 

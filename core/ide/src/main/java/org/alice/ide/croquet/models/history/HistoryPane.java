@@ -61,7 +61,7 @@ class HistoryStackModel extends javax.swing.AbstractListModel {
 		if( index == 0 ) {
 			return null;
 		} else {
-			return projectHistory.getStack().elementAt( index - 1 );
+			return projectHistory.getStack().get( index - 1 );
 		}
 	}
 
@@ -74,13 +74,13 @@ class HistoryStackModel extends javax.swing.AbstractListModel {
 	}
 };
 
-class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.croquet.edits.AbstractEdit<?>> {
+class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.croquet.edits.Edit> {
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.croquet.edits.AbstractEdit<?> value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.croquet.edits.Edit value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( index == 0 ) {
 			rv.setText( "---open project---" );
 		} else {
-			String text = value.getPresentation();
+			String text = value.getTerseDescription();
 			rv.setText( text );
 
 			int selectedIndex = list.getSelectedIndex();
@@ -158,7 +158,7 @@ public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBord
 		this.list.addListSelectionListener( this.listSelectionListener );
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.list );
 		this.add( scrollPane );
-		this.initializeProjectHistory( org.alice.ide.IDE.getActiveInstance().getDocument() );
+		this.initializeProjectHistory( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDocument() );
 	}
 
 	public void initializeProjectHistory( org.alice.ide.ProjectDocument projectDocument ) {

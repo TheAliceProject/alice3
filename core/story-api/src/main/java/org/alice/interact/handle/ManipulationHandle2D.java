@@ -60,7 +60,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 /**
  * @author David Culyba
  */
-public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label implements ManipulationHandle, ManipulationListener {
+public abstract class ManipulationHandle2D extends javax.swing.JLabel implements ManipulationHandle, ManipulationListener {
 	public ManipulationHandle2D() {
 		super();
 	}
@@ -71,10 +71,10 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 		super.setVisible( flag );
 		if( ( wasVisible != flag ) && ( this.dragAdapter != null ) ) {
 			if( this.isVisible() ) {
-				this.dragAdapter.addListeners( this.getAwtComponent() );
+				this.dragAdapter.addListeners( this );
 				this.dragAdapter.addManipulationListener( this );
 			} else {
-				this.dragAdapter.removeListeners( this.getAwtComponent() );
+				this.dragAdapter.removeListeners( this );
 				this.dragAdapter.removeManipulationListener( this );
 			}
 		}
@@ -100,7 +100,7 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.views.Label 
 		this.setDragAdapter( dragAdapter );
 		if( this.dragAdapter != null ) {
 			this.dragAdapter.addHandle( this );
-			this.dragAdapter.addListeners( this.getAwtComponent() );
+			this.dragAdapter.addListeners( this );
 		}
 	}
 

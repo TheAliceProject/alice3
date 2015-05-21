@@ -55,7 +55,7 @@ public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.views.
 		}
 
 		@Override
-		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected Class<? extends Element> getClassUsedForLocalization() {
 			return this.coreComposite.getClassUsedForLocalization();
 		}
 

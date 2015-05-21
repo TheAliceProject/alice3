@@ -49,34 +49,9 @@ import org.alice.ide.instancefactory.InstanceFactory;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithInternalBlank<InstanceFactory> {
-	private static class SingletonHolder {
-		private static InstanceFactoryState instance = new InstanceFactoryState();
-	}
-
-	public static InstanceFactoryState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {
-		@Override
-		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
-			InstanceFactoryState.this.handleDeclarationChanged( prevValue, nextValue );
-		}
-	};
-	//todo: map AbstractCode to Stack< InstanceFactory >
-	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private InstanceFactory value;
-
-	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
-		@Override
-		public void projectChanged() {
-			handleAstChangeThatCouldBeOfInterest();
-		}
-	};
-
-	private InstanceFactoryState() {
+	public InstanceFactoryState( org.alice.ide.ProjectDocumentFrame projectDocumentFrame ) {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), null, org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
-		org.alice.ide.MetaDeclarationFauxState.getInstance().addValueListener( declarationListener );
+		projectDocumentFrame.getMetaDeclarationFauxState().addValueListener( declarationListener );
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
 	}
 
@@ -158,7 +133,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	}
 
 	@Override
-	protected void appendPrepModelsToCascadeRootPath( java.util.ArrayList<org.lgna.croquet.PrepModel> cascadeRootPath, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
+	protected void appendPrepModelsToCascadeRootPath( java.util.List<org.lgna.croquet.PrepModel> cascadeRootPath, org.lgna.croquet.edits.Edit edit ) {
 		super.appendPrepModelsToCascadeRootPath( cascadeRootPath, edit );
 		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
 			org.lgna.croquet.edits.StateEdit<InstanceFactory> stateEdit = (org.lgna.croquet.edits.StateEdit<InstanceFactory>)edit;
@@ -241,7 +216,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 				}
 			}
 
-			org.lgna.project.ast.AbstractCode code = ide.getFocusedCode();
+			org.lgna.project.ast.AbstractCode code = ide.getDocumentFrame().getFocusedCode();
 			if( code instanceof org.lgna.project.ast.UserCode ) {
 
 				java.util.List<org.lgna.croquet.CascadeBlankChild> parameters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
@@ -375,4 +350,21 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 			this.handleAstChangeThatCouldBeOfInterest();
 		}
 	}
+
+	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {
+		@Override
+		public void changed( org.lgna.project.ast.AbstractDeclaration prevValue, org.lgna.project.ast.AbstractDeclaration nextValue ) {
+			InstanceFactoryState.this.handleDeclarationChanged( prevValue, nextValue );
+		}
+	};
+	//todo: map AbstractCode to Stack< InstanceFactory >
+	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private InstanceFactory value;
+
+	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+		@Override
+		public void projectChanged() {
+			handleAstChangeThatCouldBeOfInterest();
+		}
+	};
 }

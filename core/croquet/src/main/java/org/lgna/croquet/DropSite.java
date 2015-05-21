@@ -47,6 +47,4 @@ package org.lgna.croquet;
  */
 public interface DropSite extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public DropReceptor getOwningDropReceptor();
-
-	public DropSite createReplacement( org.lgna.croquet.Retargeter retargeter );
 }

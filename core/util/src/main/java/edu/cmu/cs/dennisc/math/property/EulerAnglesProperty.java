@@ -45,31 +45,32 @@ package edu.cmu.cs.dennisc.math.property;
 /**
  * @author Dennis Cosgrove
  */
-public class EulerAnglesProperty extends edu.cmu.cs.dennisc.property.InstanceProperty<edu.cmu.cs.dennisc.math.EulerAngles> implements edu.cmu.cs.dennisc.property.CopyableProperty<edu.cmu.cs.dennisc.math.EulerAngles> {
+public class EulerAnglesProperty extends edu.cmu.cs.dennisc.property.CopyableInstanceProperty<edu.cmu.cs.dennisc.math.EulerAngles> {
 	public EulerAnglesProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.EulerAngles value ) {
 		super( owner, value );
 	}
 
-	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.EulerAngles value ) {
+	@Override
+	public void setValue( edu.cmu.cs.dennisc.math.EulerAngles value ) {
 		assert value != null : this;
 		assert value.isNaN() == false : this;
-		super.setValue( owner, value );
+		super.setValue( value );
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.EulerAngles getCopy( edu.cmu.cs.dennisc.math.EulerAngles rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
-		rv.setValue( getValue( owner ) );
+	public edu.cmu.cs.dennisc.math.EulerAngles getCopy( edu.cmu.cs.dennisc.math.EulerAngles rv ) {
+		rv.setValue( this.getValue() );
 		return rv;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.EulerAngles getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
-		return getCopy( edu.cmu.cs.dennisc.math.EulerAngles.createNaN(), owner );
+	public final edu.cmu.cs.dennisc.math.EulerAngles getCopy() {
+		return this.getCopy( edu.cmu.cs.dennisc.math.EulerAngles.createNaN() );
 	}
 
 	@Override
-	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.EulerAngles value ) {
+	public void setCopy( edu.cmu.cs.dennisc.math.EulerAngles value ) {
 		//todo?
-		setValue( owner, new edu.cmu.cs.dennisc.math.EulerAngles( value ) );
+		this.setValue( new edu.cmu.cs.dennisc.math.EulerAngles( value ) );
 	}
 }

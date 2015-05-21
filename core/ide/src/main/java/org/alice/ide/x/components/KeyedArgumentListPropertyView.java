@@ -52,7 +52,7 @@ public class KeyedArgumentListPropertyView extends ArgumentListPropertyView<org.
 	}
 
 	@Override
-	protected java.lang.String getInitialPrefix() {
+	protected String getInitialPrefix() {
 		//todo: check to see if requiredParameters.size() > 0
 		return SEPARATOR;
 	}

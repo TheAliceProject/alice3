@@ -110,7 +110,7 @@ public abstract class IdeUncaughtExceptionHandler extends org.lgna.issue.Abstrac
 		boolean isSystemExitDesired = true;
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		if( application != null ) {
-			org.lgna.croquet.views.Frame frame = application.getFrame();
+			org.lgna.croquet.views.Frame frame = application.getDocumentFrame().getFrame();
 			if( frame != null ) {
 				if( frame.isVisible() ) {
 					isSystemExitDesired = false;

@@ -65,42 +65,11 @@ public final class CompletionStep<M extends org.lgna.croquet.CompletionModel> ex
 		}
 	}
 
-	public CompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.isPending = binaryDecoder.decodeBoolean();
-		this.isSuccessfullyCompleted = binaryDecoder.decodeBoolean();
-		this.edit = binaryDecoder.decodeBinaryEncodableAndDecodable( this );
-		this.transactionHistory = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		if( this.transactionHistory != null ) {
-			this.transactionHistory.setOwner( this );
-		}
-	}
-
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		binaryEncoder.encode( this.isPending );
-		binaryEncoder.encode( this.isSuccessfullyCompleted );
-		binaryEncoder.encode( this.edit );
-		binaryEncoder.encode( this.transactionHistory );
-	}
-
 	/* package-private */void reifyIfNecessary() {
 	}
 
 	public boolean isValid() {
 		return ( this.getModel() != null ) && ( ( this.edit == null ) || this.edit.isValid() );
-	}
-
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		if( this.transactionHistory != null ) {
-			this.transactionHistory.retarget( retargeter );
-		}
-		if( this.edit != null ) {
-			this.edit.retarget( retargeter );
-		}
 	}
 
 	public TransactionHistory getTransactionHistory() {
@@ -131,20 +100,20 @@ public final class CompletionStep<M extends org.lgna.croquet.CompletionModel> ex
 		return this.edit;
 	}
 
-	private void setEdit( org.lgna.croquet.edits.AbstractEdit<M> edit ) {
+	private void setEdit( org.lgna.croquet.edits.Edit edit ) {
 		this.isSuccessfullyCompleted = true;
-		this.edit = edit;
+		this.edit = (org.lgna.croquet.edits.AbstractEdit<M>)edit;
 		this.isPending = false;
 	}
 
-	public void ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( org.lgna.croquet.edits.AbstractEdit<M> edit ) {
+	public void ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( org.lgna.croquet.edits.Edit edit ) {
 		org.lgna.croquet.history.event.TutorialCompletionEvent e = new org.lgna.croquet.history.event.TutorialCompletionEvent( this, edit );
 		this.fireChanging( e );
 		this.setEdit( edit );
 		this.fireChanged( e );
 	}
 
-	public void commitAndInvokeDo( org.lgna.croquet.edits.AbstractEdit edit ) {
+	public void commitAndInvokeDo( org.lgna.croquet.edits.Edit edit ) {
 		org.lgna.croquet.history.event.EditCommittedEvent e = new org.lgna.croquet.history.event.EditCommittedEvent( this, edit );
 		this.fireChanging( e );
 		this.setEdit( edit );

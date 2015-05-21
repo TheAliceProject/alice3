@@ -46,7 +46,7 @@ package org.alice.stageide.typecontext;
 enum SceneTypeCallable implements java.util.concurrent.Callable<org.alice.ide.declarationseditor.DeclarationComposite<?, ?>> {
 	SINGLEON() {
 		@Override
-		public org.alice.ide.declarationseditor.TypeComposite call() throws java.lang.Exception {
+		public org.alice.ide.declarationseditor.TypeComposite call() throws Exception {
 			return org.alice.ide.declarationseditor.TypeComposite.getInstance( org.alice.stageide.StageIDE.getActiveInstance().getSceneType() );
 		}
 	};
@@ -61,7 +61,7 @@ public final class NonSceneTypeComposite extends org.lgna.croquet.SimpleComposit
 	}
 
 	public org.lgna.croquet.Operation getSelectSceneTypeOperation() {
-		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
+		return org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
 	}
 
 	@Override

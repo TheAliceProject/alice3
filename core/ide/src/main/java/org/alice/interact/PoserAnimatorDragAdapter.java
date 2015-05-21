@@ -60,6 +60,7 @@ import org.lgna.ik.poser.scene.PoserPicturePlaneInteraction;
 import org.lgna.ik.poser.scene.PoserSceenMouseWheelManipulator;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.SModel;
+import org.lgna.story.implementation.AbstractTransformableImp;
 import org.lgna.story.implementation.ModelImp;
 
 import edu.cmu.cs.dennisc.color.Color4f;
@@ -135,6 +136,10 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
+	protected void updateHandleSelection( AbstractTransformableImp selected ) {
+	}
+
+	@Override
 	public boolean shouldSnapToRotation() {
 		return false;
 	}
@@ -169,12 +174,12 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget ) {
 		super.setOnscreenRenderTarget( onscreenRenderTarget );
 		initDragAdapter( onscreenRenderTarget );
 	}
 
-	private void initDragAdapter( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget ) {
+	private void initDragAdapter( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget ) {
 		dragAdapter = new PoserPicturePlaneInteraction( onscreenRenderTarget, poserScene );
 		dragAdapter.startUp();
 	}
@@ -186,12 +191,6 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 			Logger.severe( "Drag Adapter cannot be initialized until OnscreenLookingGlass is set" );
 			Thread.dumpStack();
 		}
-	}
-
-	@Override
-	protected org.lgna.croquet.SingleSelectListState<org.alice.interact.handle.HandleStyle, ?> getHandleStyleState() {
-		//todo
-		return null;
 	}
 
 	@Override

@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.croquet;
@@ -148,22 +148,14 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		return this.emptyConditionText;
 	}
 
-	public synchronized SingleSelectListStateComboBoxPrepModel<T, D> getPrepModel() {
-		if( this.prepModel != null ) {
-			//pass
-		} else {
-			this.prepModel = new SingleSelectListStateComboBoxPrepModel<T, D>( this );
-		}
-		return this.prepModel;
+	public SingleSelectListStateComboBoxPrepModel<T, D> getPrepModel() {
+		return this.comboBoxPrepModelLazy.get();
 	}
 
 	@Override
-	public java.util.List<? extends java.util.List<? extends PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		//todo: 
+	public java.util.List<java.util.List<PrepModel>> getPotentialPrepModelPaths( org.lgna.croquet.edits.Edit edit ) {
+		//todo:
 		return java.util.Collections.emptyList();
-	}
-
-	protected void handleMissingItem( T missingItem ) {
 	}
 
 	@Override
@@ -217,6 +209,18 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		}
 	}
 
+	public void setRandomSelectedValue() {
+		final int N = this.getItemCount();
+		int i;
+		if( N > 0 ) {
+			java.util.Random random = new java.util.Random();
+			i = random.nextInt( N );
+		} else {
+			i = -1;
+		}
+		this.setSelectedIndex( i );
+	}
+
 	public final void clearSelection() {
 		this.setSelectedIndex( -1 );
 	}
@@ -246,34 +250,23 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		return this.dataIndexPair.data.iterator();
 	}
 
-	protected void handleItemAdded( T item ) {
+	protected void fireContentsChanged( int index0, int index1 ) {
+		this.imp.getSwingModel().ACCESS_fireContentsChanged( this, index0, index1 );
 	}
 
-	protected void handleItemRemoved( T item ) {
+	protected void fireIntervalAdded( int index0, int index1 ) {
+		this.imp.getSwingModel().ACCESS_fireIntervalAdded( this, index0, index1 );
 	}
 
-	protected final void internalAddItem( int index, T item ) {
-		this.dataIndexPair.data.internalAddItem( index, item );
-	}
-
-	protected final void internalAddItem( T item ) {
-		this.dataIndexPair.data.internalAddItem( item );
-	}
-
-	protected final void internalRemoveItem( T item ) {
-		this.dataIndexPair.data.internalRemoveItem( item );
-	}
-
-	protected final void internalSetItems( java.util.Collection<T> items ) {
-		this.dataIndexPair.data.internalSetAllItems( items );
+	protected void fireIntervalRemoved( int index0, int index1 ) {
+		this.imp.getSwingModel().ACCESS_fireIntervalRemoved( this, index0, index1 );
 	}
 
 	public final void addItem( int index, T item ) {
 		this.pushIsInTheMidstOfAtomicChange();
 		try {
-			this.internalAddItem( index, item );
+			this.dataIndexPair.data.internalAddItem( index, item );
 			this.fireIntervalAdded( index, index );
-			this.handleItemAdded( item );
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
 		}
@@ -282,11 +275,10 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 	public final void addItem( T item ) {
 		this.pushIsInTheMidstOfAtomicChange();
 		try {
-			this.internalAddItem( item );
+			this.dataIndexPair.data.internalAddItem( item );
 
 			int index = this.getItemCount() - 1;
 			this.fireIntervalAdded( index, index );
-			this.handleItemAdded( item );
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
 		}
@@ -296,9 +288,8 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		this.pushIsInTheMidstOfAtomicChange();
 		try {
 			int index = this.indexOf( item );
-			this.internalRemoveItem( item );
+			this.dataIndexPair.data.internalRemoveItem( item );
 			this.fireIntervalRemoved( index, index );
-			this.handleItemRemoved( item );
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
 		}
@@ -340,7 +331,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 
 			T previousSelectedValue = this.getValue();
 
-			this.internalSetItems( items );
+			this.dataIndexPair.data.internalSetAllItems( items );
 
 			//			if( items.contains( previousSelectedValue ) ) {
 			this.dataIndexPair.index = this.indexOf( previousSelectedValue );
@@ -349,28 +340,9 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 			//			}
 
 			this.fireContentsChanged( 0, this.getItemCount() );
-			for( T item : removed ) {
-				this.handleItemRemoved( item );
-			}
-			for( T item : added ) {
-				this.handleItemAdded( item );
-			}
-
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
 		}
-	}
-
-	protected void fireContentsChanged( int index0, int index1 ) {
-		this.imp.getSwingModel().ACCESS_fireContentsChanged( this, index0, index1 );
-	}
-
-	protected void fireIntervalAdded( int index0, int index1 ) {
-		this.imp.getSwingModel().ACCESS_fireIntervalAdded( this, index0, index1 );
-	}
-
-	protected void fireIntervalRemoved( int index0, int index1 ) {
-		this.imp.getSwingModel().ACCESS_fireIntervalRemoved( this, index0, index1 );
 	}
 
 	public final void setItems( T... items ) {
@@ -404,30 +376,6 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		}
 	}
 
-	public void setRandomSelectedValue() {
-		final int N = this.getItemCount();
-		int i;
-		if( N > 0 ) {
-			java.util.Random random = new java.util.Random();
-			i = random.nextInt( N );
-		} else {
-			i = -1;
-		}
-		this.setSelectedIndex( i );
-	}
-
-	protected String getMenuText( T item ) {
-		if( item != null ) {
-			return item.toString();
-		} else {
-			return null;
-		}
-	}
-
-	protected javax.swing.Icon getMenuSmallIcon( T item ) {
-		return null;
-	}
-
 	public org.lgna.croquet.views.List<T> createList() {
 		return new org.lgna.croquet.views.List<T>( this );
 	}
@@ -455,7 +403,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		}
 	}
 
-	public synchronized MenuModel getMenuModel() {
+	public MenuModel getMenuModel() {
 		return this.imp.getMenuModel();
 	}
 
@@ -465,7 +413,7 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		}
 
 		@Override
-		protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 			return SingleSelectListState.this.getClassUsedForLocalization();
 		}
 
@@ -503,6 +451,11 @@ public abstract class SingleSelectListState<T, D extends org.lgna.croquet.data.L
 		}
 	};
 
-	private SingleSelectListStateComboBoxPrepModel<T, D> prepModel;
+	private final edu.cmu.cs.dennisc.pattern.Lazy<SingleSelectListStateComboBoxPrepModel<T, D>> comboBoxPrepModelLazy = new edu.cmu.cs.dennisc.pattern.Lazy<SingleSelectListStateComboBoxPrepModel<T, D>>() {
+		@Override
+		protected org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<T, D> create() {
+			return new SingleSelectListStateComboBoxPrepModel<T, D>( SingleSelectListState.this );
+		}
+	};
 	private boolean isInTheMidstOfSettingSwingValue;
 }

@@ -45,7 +45,7 @@ package org.alice.ide.javacode.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class JavaCodeFrameComposite extends org.lgna.croquet.FrameComposite<org.lgna.croquet.views.Panel> {
+public class JavaCodeFrameComposite extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState<org.lgna.croquet.views.Panel> {
 	private static class SingletonHolder {
 		private static JavaCodeFrameComposite instance = new JavaCodeFrameComposite();
 	}
@@ -78,14 +78,14 @@ public class JavaCodeFrameComposite extends org.lgna.croquet.FrameComposite<org.
 
 	@Override
 	public void handlePreActivation() {
-		org.alice.ide.MetaDeclarationFauxState.getInstance().addAndInvokeValueListener( this.declarationListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().addAndInvokeValueListener( this.declarationListener );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
 		super.handlePostDeactivation();
-		org.alice.ide.MetaDeclarationFauxState.getInstance().removeValueListener( this.declarationListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().removeValueListener( this.declarationListener );
 	}
 
 	private final org.alice.ide.MetaDeclarationFauxState.ValueListener declarationListener = new org.alice.ide.MetaDeclarationFauxState.ValueListener() {

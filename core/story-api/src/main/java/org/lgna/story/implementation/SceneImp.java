@@ -105,6 +105,14 @@ public class SceneImp extends EntityImp {
 		this.eventManager.sceneActivated();
 	}
 
+	public boolean isGlobalLightBrightnessAnimationDesired() {
+		return this.isGlobalLightBrightnessAnimationDesired;
+	}
+
+	public void setGlobalLightBrightnessAnimationDesired( boolean isGlobalLightBrightnessAnimationDesired ) {
+		this.isGlobalLightBrightnessAnimationDesired = isGlobalLightBrightnessAnimationDesired;
+	}
+
 	private void changeActiveStatus( ProgramImp programImp, boolean isActive, int activationCount ) {
 		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
 		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
@@ -130,27 +138,22 @@ public class SceneImp extends EntityImp {
 		assert deactiveCount == activeCount;
 		activeCount++;
 		this.setProgram( programImp );
-		this.setGlobalBrightness( 0.0f );
-		this.changeActiveStatus( program, true, activeCount );
-
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.stageide.sceneeditor.StorytellingSceneEditor.showJointedModelVisualizations" ) ) {
-			for( edu.cmu.cs.dennisc.scenegraph.Component c : this.getSgComposite().getComponents() )
-			{
-				EntityImp imp = org.lgna.story.implementation.EntityImp.getInstance( c );
-				if( imp instanceof JointedModelImp ) {
-					( (JointedModelImp)imp ).showVisualization();
-				}
-			}
+		if( this.isGlobalLightBrightnessAnimationDesired ) {
+			this.setGlobalBrightness( 0.0f );
 		}
-
-		this.animateGlobalBrightness( 1.0f, 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+		this.changeActiveStatus( program, true, activeCount );
+		if( this.isGlobalLightBrightnessAnimationDesired ) {
+			this.animateGlobalBrightness( 1.0f, 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+		}
 
 	}
 
 	public void deactivate( ProgramImp programImp ) {
 		deactiveCount++;
 		assert deactiveCount == activeCount;
-		this.animateGlobalBrightness( 0.0f, 0.25, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+		if( this.isGlobalLightBrightnessAnimationDesired ) {
+			this.animateGlobalBrightness( 0.0f, 0.25, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
+		}
 		this.changeActiveStatus( programImp, false, activeCount );
 		this.setProgram( null );
 	}
@@ -291,6 +294,8 @@ public class SceneImp extends EntityImp {
 
 	private int activeCount;
 	private int deactiveCount;
+
+	private boolean isGlobalLightBrightnessAnimationDesired = true;
 
 	private final edu.cmu.cs.dennisc.scenegraph.Scene sgScene = new edu.cmu.cs.dennisc.scenegraph.Scene();
 	private final edu.cmu.cs.dennisc.scenegraph.Background sgBackground = new edu.cmu.cs.dennisc.scenegraph.Background();

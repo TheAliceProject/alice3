@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.stageide.sceneeditor;
@@ -52,10 +52,10 @@ import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
-import org.alice.interact.SnapGrid;
 import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
+import org.alice.interact.manipulator.scenegraph.SnapGrid;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.side.SideComposite;
@@ -107,10 +107,10 @@ import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent;
-import edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent;
-import edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent;
-import edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
@@ -118,9 +118,9 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author dculyba
- * 
+ *
  */
-public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.cmu.cs.dennisc.renderer.event.RenderTargetListener {
+public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.cmu.cs.dennisc.render.event.RenderTargetListener {
 
 	private class SceneEditorDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
 		@Override
@@ -222,13 +222,17 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private static javax.swing.Icon EXPAND_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/expand.png" ) );
 	private static javax.swing.Icon CONTRACT_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/contract.png" ) );
 
-	private edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayListener() {
+	private edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.render.event.AutomaticDisplayListener() {
 		@Override
-		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.renderer.event.AutomaticDisplayEvent e ) {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
 			StorytellingSceneEditor.this.animator.update();
 		}
 	};
-	private edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createLightweightOnscreenRenderTarget();
+	private edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createLightweightOnscreenRenderTarget(
+			new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder()
+			.stencilBits( 0 )
+			.build()
+			);
 
 	private class LookingGlassPanel extends org.lgna.croquet.views.CompassPointSpringPanel {
 		@Override
@@ -453,13 +457,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 				if( !this.selectionIsFromInstanceSelector )
 				{
 					org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
+					InstanceFactoryState instanceFactoryState = ide.getDocumentFrame().getInstanceFactoryState();
 					if( field == this.getActiveSceneField() )
 					{
-						InstanceFactoryState.getInstance().setValueTransactionlessly( ide.getInstanceFactoryForScene() );
+						instanceFactoryState.setValueTransactionlessly( ide.getInstanceFactoryForScene() );
 					}
 					else if( field != null )
 					{
-						InstanceFactoryState.getInstance().setValueTransactionlessly( ide.getInstanceFactoryForSceneField( field ) );
+						instanceFactoryState.setValueTransactionlessly( ide.getInstanceFactoryForSceneField( field ) );
 					}
 				}
 			}
@@ -751,7 +756,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			SnapState.getInstance().getIsSnapEnabledState().addAndInvokeNewSchoolValueListener( this.snapEnabledListener );
 			SnapState.getInstance().getSnapGridSpacingState().addAndInvokeNewSchoolValueListener( this.snapGridSpacingListener );
 
-			InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionListener );
+			org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionListener );
 
 			this.globalDragAdapter = new org.alice.stageide.sceneeditor.interact.GlobalDragAdapter( this );
 			this.globalDragAdapter.setOnscreenRenderTarget( onscreenRenderTarget );
@@ -765,13 +770,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			this.mainCameraNavigatorWidget = new org.alice.stageide.sceneeditor.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN );
 
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			this.expandButton = ide.getSetToSetupScenePerspectiveOperation().createButton();
+			this.expandButton = ide.getDocumentFrame().getSetToSetupScenePerspectiveOperation().createButton();
 			this.expandButton.setClobberIcon( EXPAND_ICON );
 			//todo: tool tip text
 			//this.expandButton.getAwtComponent().setText( null );
 			this.expandButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 
-			this.contractButton = ide.getSetToCodePerspectiveOperation().createButton();
+			this.contractButton = ide.getDocumentFrame().getSetToCodePerspectiveOperation().createButton();
 			this.contractButton.setClobberIcon( CONTRACT_ICON );
 			this.contractButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 			this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
@@ -908,7 +913,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 				//Add the orthographic camera to this scene
 				sceneImp.getSgComposite().addComponent( this.orthographicCameraImp.getSgCamera().getParent() );
-				//Add the orthographic markers			
+				//Add the orthographic markers
 				Component[] existingComponents = sceneImp.getSgComposite().getComponentsAsArray();
 				for( View view : this.mainCameraMarkerList )
 				{
@@ -1157,24 +1162,26 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 
 	public void handleShowing() {
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().incrementAutomaticDisplayCount();
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.render.RenderFactory renderFactory = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory();
+		renderFactory.incrementAutomaticDisplayCount();
+		renderFactory.addAutomaticDisplayListener( this.automaticDisplayListener );
 		this.showLookingGlassPanel();
 	}
 
 	public void handleHiding() {
 		this.hideLookingGlassPanel();
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().decrementAutomaticDisplayCount();
+		edu.cmu.cs.dennisc.render.RenderFactory renderFactory = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory();
+		renderFactory.removeAutomaticDisplayListener( this.automaticDisplayListener );
+		renderFactory.decrementAutomaticDisplayCount();
 	}
 
-	private void paintHorizonLine( Graphics graphics, edu.cmu.cs.dennisc.renderer.LightweightOnscreenRenderTarget renderTarget, OrthographicCamera camera )
+	private void paintHorizonLine( Graphics graphics, edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget renderTarget, OrthographicCamera camera )
 	{
 		AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
 		double dotProd = Vector3.calculateDotProduct( cameraTransform.orientation.up, Vector3.accessPositiveYAxis() );
 		if( ( dotProd == 1 ) || ( dotProd == -1 ) )
 		{
-			Dimension lookingGlassSize = renderTarget.getSize();
+			Dimension lookingGlassSize = renderTarget.getSurfaceSize();
 
 			Point3 cameraPosition = camera.getAbsoluteTransformation().translation;
 
@@ -1182,7 +1189,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			double lookingGlassHeight = lookingGlassSize.getHeight();
 
-			double yRatio = this.onscreenRenderTarget.getHeight() / dummyPlane.getHeight();
+			double yRatio = this.onscreenRenderTarget.getSurfaceHeight() / dummyPlane.getHeight();
 			double horizonInCameraSpace = 0.0d - cameraPosition.y;
 			double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
 			int horizonLinePixelVal = (int)( yRatio * distanceFromMaxY );
@@ -1293,5 +1300,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		{
 			this.snapGrid.setSpacing( gridSpacing );
 		}
+	}
+
+	public edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget getOnscreenRenderTarget() {
+		return this.onscreenRenderTarget;
 	}
 }

@@ -47,32 +47,6 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class Visual extends Leaf {
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Appearance> frontFacingAppearance = new edu.cmu.cs.dennisc.property.InstanceProperty<Appearance>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Appearance> backFacingAppearance = new edu.cmu.cs.dennisc.property.InstanceProperty<Appearance>( this, null );
-	public final edu.cmu.cs.dennisc.math.property.Matrix3x3Property scale = new edu.cmu.cs.dennisc.math.property.Matrix3x3Property( this, edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity() );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isShowing = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isPickable = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<Geometry> geometries = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<Geometry>( this, new Geometry[ 0 ] ) {
-		@Override
-		protected Geometry[] createArray( int length ) {
-			return new Geometry[ length ];
-		}
-
-		@Override
-		protected Geometry createCopy( Geometry src ) {
-			//todo?
-			return src;
-		}
-
-		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.scenegraph.Geometry[] value ) {
-			for( Geometry geometry : value ) {
-				assert geometry != null : this;
-			}
-			super.setValue( owner, value );
-		}
-	};
-
 	@Override
 	protected void actuallyRelease() {
 		super.actuallyRelease();
@@ -148,4 +122,31 @@ public class Visual extends Leaf {
 	public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere() {
 		return getBoundingSphere( new edu.cmu.cs.dennisc.math.Sphere() );
 	}
+
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Appearance> frontFacingAppearance = new edu.cmu.cs.dennisc.property.InstanceProperty<Appearance>( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Appearance> backFacingAppearance = new edu.cmu.cs.dennisc.property.InstanceProperty<Appearance>( this, null );
+	public final edu.cmu.cs.dennisc.math.property.Matrix3x3Property scale = new edu.cmu.cs.dennisc.math.property.Matrix3x3Property( this, edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity() );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isShowing = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isPickable = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Silhouette> silouette = new edu.cmu.cs.dennisc.property.InstanceProperty<Silhouette>( this, null );
+	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<Geometry> geometries = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<Geometry>( this, new Geometry[ 0 ] ) {
+		@Override
+		protected Geometry[] createArray( int length ) {
+			return new Geometry[ length ];
+		}
+
+		@Override
+		protected Geometry createCopy( Geometry src ) {
+			//todo?
+			return src;
+		}
+
+		@Override
+		public void setValue( edu.cmu.cs.dennisc.scenegraph.Geometry[] value ) {
+			for( Geometry geometry : value ) {
+				assert geometry != null : this;
+			}
+			super.setValue( value );
+		}
+	};
 }

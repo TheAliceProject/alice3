@@ -64,7 +64,7 @@ public abstract class Importer<T> {
 	protected abstract T createFromFile( java.io.File file ) throws java.io.IOException;
 
 	public T createValue( String dialogTitle ) {
-		java.io.File file = org.lgna.croquet.Application.getActiveInstance().showOpenFileDialog( this.sharingId, dialogTitle, this.initialDirectory, this.initialFileText, this.filenameFilter );
+		java.io.File file = org.lgna.croquet.Application.getActiveInstance().getDocumentFrame().showOpenFileDialog( this.sharingId, dialogTitle, this.initialDirectory, this.initialFileText, this.filenameFilter );
 		if( file != null ) {
 			String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
 			if( ( extension != null ) && this.lowerCaseExtensions.contains( extension.toLowerCase() ) ) {

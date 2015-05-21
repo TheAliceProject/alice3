@@ -95,12 +95,12 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
@@ -361,7 +361,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 			Point3 new3DPoint = Point3.createAddition( this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin );
 
 			Point3 pointInCamera = this.camera.transformFrom_New( new3DPoint, this.camera.getRoot() );
-			Point awtPoint = edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
+			Point awtPoint = edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
 			edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenRenderTarget.getAwtComponent(), awtPoint );
 		} finally {
 			CursorUtilities.popAndSet( this.onscreenRenderTarget.getAwtComponent() );
@@ -387,5 +387,5 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 	protected boolean hidCursor = false;
 
 	protected AbstractCamera camera = null;
-	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
+	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
 }

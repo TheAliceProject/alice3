@@ -48,58 +48,6 @@ import edu.cmu.cs.dennisc.math.Point3;
 
 public class SkeletonVisual extends Visual {
 
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> baseBoundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
-
-	//This property is used to indicate if the visual has a separate set of weighted meshes which have been transformed into the default pose.
-	//This is use to handle models which have different bind poses and default poses
-	//By default most models have the same bind pose and default pose so they do not have defaultPoseWeightedMeshes
-	public final edu.cmu.cs.dennisc.property.BooleanProperty hasDefaultPoseWeightedMeshes = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
-
-	private SkeletonVisualBoundingBoxTracker tracker = null;
-
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh> weightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
-	{
-		@Override
-		protected WeightedMesh[] createArray( int length ) {
-			return new WeightedMesh[ length ];
-		}
-
-		@Override
-		protected WeightedMesh createCopy( WeightedMesh src ) {
-			//todo?
-			return src;
-		}
-	};
-
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh> defaultPoseWeightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
-	{
-		@Override
-		protected WeightedMesh[] createArray( int length ) {
-			return new WeightedMesh[ length ];
-		}
-
-		@Override
-		protected WeightedMesh createCopy( WeightedMesh src ) {
-			//todo?
-			return src;
-		}
-	};
-
-	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<TexturedAppearance> textures = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<TexturedAppearance>( this, new TexturedAppearance[ 0 ] )
-	{
-		@Override
-		protected TexturedAppearance[] createArray( int length ) {
-			return new TexturedAppearance[ length ];
-		}
-
-		@Override
-		protected TexturedAppearance createCopy( TexturedAppearance src ) {
-			//todo?
-			return src;
-		}
-	};
-
 	public SkeletonVisualBoundingBoxTracker getTracker() {
 		return this.tracker;
 	}
@@ -277,4 +225,56 @@ public class SkeletonVisual extends Visual {
 		}
 		return false;
 	}
+
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> baseBoundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
+
+	private SkeletonVisualBoundingBoxTracker tracker = null;
+
+	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh> weightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
+	{
+		@Override
+		protected WeightedMesh[] createArray( int length ) {
+			return new WeightedMesh[ length ];
+		}
+
+		@Override
+		protected WeightedMesh createCopy( WeightedMesh src ) {
+			//todo?
+			return src;
+		}
+	};
+
+	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<TexturedAppearance> textures = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<TexturedAppearance>( this, new TexturedAppearance[ 0 ] )
+	{
+		@Override
+		protected TexturedAppearance[] createArray( int length ) {
+			return new TexturedAppearance[ length ];
+		}
+
+		@Override
+		protected TexturedAppearance createCopy( TexturedAppearance src ) {
+			//todo?
+			return src;
+		}
+	};
+
+	//This property is used to indicate if the visual has a separate set of weighted meshes which have been transformed into the default pose.
+	//This is use to handle models which have different bind poses and default poses
+	//By default most models have the same bind pose and default pose so they do not have defaultPoseWeightedMeshes
+	public final edu.cmu.cs.dennisc.property.BooleanProperty hasDefaultPoseWeightedMeshes = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+
+	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh> defaultPoseWeightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
+	{
+		@Override
+		protected WeightedMesh[] createArray( int length ) {
+			return new WeightedMesh[ length ];
+		}
+
+		@Override
+		protected WeightedMesh createCopy( WeightedMesh src ) {
+			//todo?
+			return src;
+		}
+	};
 }

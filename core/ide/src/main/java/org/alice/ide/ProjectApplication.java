@@ -46,7 +46,7 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApplication {
+public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApplication<ProjectDocumentFrame> {
 	public static final org.lgna.croquet.Group HISTORY_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "303e94ca-64ef-4e3a-b95c-038468c68438" ), "HISTORY_GROUP" );
 	public static final org.lgna.croquet.Group URI_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" ), "URI_GROUP" );
 
@@ -56,7 +56,8 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	private org.lgna.croquet.undo.event.HistoryListener projectHistoryListener;
 
-	public ProjectApplication() {
+	public ProjectApplication( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager ) {
+		this.projectDocumentFrame = new ProjectDocumentFrame( ideConfiguration, apiConfigurationManager );
 		this.projectHistoryListener = new org.lgna.croquet.undo.event.HistoryListener() {
 			@Override
 			public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
@@ -86,6 +87,11 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		this.updateTitle();
 	}
 
+	@Override
+	public org.alice.ide.ProjectDocumentFrame getDocumentFrame() {
+		return this.projectDocumentFrame;
+	}
+
 	private void updateUndoRedoEnabled() {
 		org.lgna.croquet.undo.UndoHistory historyManager = this.getProjectHistory( org.lgna.croquet.Application.PROJECT_GROUP );
 		boolean isUndoEnabled;
@@ -99,8 +105,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			isUndoEnabled = false;
 			isRedoEnabled = false;
 		}
-		org.alice.ide.croquet.models.history.UndoOperation.getInstance().setEnabled( isUndoEnabled );
-		org.alice.ide.croquet.models.history.RedoOperation.getInstance().setEnabled( isRedoEnabled );
+
+		ProjectDocumentFrame documentFrame = this.getDocumentFrame();
+		documentFrame.getUndoOperation().setEnabled( isUndoEnabled );
+		documentFrame.getRedoOperation().setEnabled( isRedoEnabled );
 	}
 
 	protected void handleInsertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
@@ -138,9 +146,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		sb.append( ".\n\n" );
 		sb.append( message );
 		new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
-		.title( "Cannot read file" )
-		.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
-		.buildAndShow();
+				.title( "Cannot read file" )
+				.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
+				.buildAndShow();
 	}
 
 	public void handleVersionNotSupported( java.io.File file, org.lgna.project.VersionNotSupportedException vnse ) {
@@ -279,11 +287,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		} else {
 			this.frameTitleGenerator = this.createFrameTitleGenerator();
 		}
-		this.getFrame().setTitle( this.frameTitleGenerator.generateTitle( this.getUri(), this.isProjectUpToDateWithFile() ) );
+		this.getDocumentFrame().getFrame().setTitle( this.frameTitleGenerator.generateTitle( this.getUri(), this.isProjectUpToDateWithFile() ) );
 	}
 
-	@Override
-	public ProjectDocument getDocument() {
+	private ProjectDocument getDocument() {
 		return org.alice.ide.project.ProjectDocumentState.getInstance().getValue();
 	}
 
@@ -341,9 +348,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 		if( sb.length() > 0 ) {
 			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
-			.title( "A Problem With Your Project Has Been Fixed" )
-			.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.WARNING )
-			.buildAndShow();
+					.title( "A Problem With Your Project Has Been Fixed" )
+					.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.WARNING )
+					.buildAndShow();
 		}
 		org.lgna.project.ProgramTypeUtilities.sanityCheckAllTypes( project );
 		this.setDocument( new ProjectDocument( project ) );
@@ -421,4 +428,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	public abstract void ensureProjectCodeUpToDate();
+
+	private final ProjectDocumentFrame projectDocumentFrame;
 }

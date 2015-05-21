@@ -105,7 +105,7 @@ public abstract class AbstractCascadeMenuModel<F, B> extends CascadeBlankOwner<F
 	}
 
 	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
+	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super F, B> node ) {
 		if( this.isBackedByIconProxy() ) {
 			return super.getMenuItemText( node );
 		} else {

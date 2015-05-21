@@ -46,27 +46,25 @@ package edu.cmu.cs.dennisc.scenegraph.util;
  * @author Dennis Cosgrove
  */
 public class VisualBoundingBoxDecorator extends BoundingBoxDecorator implements edu.cmu.cs.dennisc.scenegraph.event.BoundListener {
-	private edu.cmu.cs.dennisc.scenegraph.Visual m_sgSubject = null;
-
 	public edu.cmu.cs.dennisc.scenegraph.Visual getSubject() {
-		return m_sgSubject;
+		return this.sgSubject;
 	}
 
 	public void setSubject( edu.cmu.cs.dennisc.scenegraph.Visual sgSubject ) {
-		if( m_sgSubject != null ) {
+		if( this.sgSubject != null ) {
 			setParent( null );
-			edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = m_sgSubject.getGeometry();
+			edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.sgSubject.getGeometry();
 			if( sgGeometry != null ) {
-				sgGeometry.removeBoundObserver( this );
+				sgGeometry.removeBoundListener( this );
 			}
 		}
-		m_sgSubject = sgSubject;
-		if( m_sgSubject != null ) {
-			edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = m_sgSubject.getGeometry();
+		this.sgSubject = sgSubject;
+		if( this.sgSubject != null ) {
+			edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.sgSubject.getGeometry();
 			if( sgGeometry != null ) {
 				setBox( sgGeometry.getAxisAlignedMinimumBoundingBox() );
-				setParent( m_sgSubject.getParent() );
-				sgGeometry.addBoundObserver( this );
+				setParent( this.sgSubject.getParent() );
+				sgGeometry.addBoundListener( this );
 			}
 		}
 	}
@@ -76,57 +74,6 @@ public class VisualBoundingBoxDecorator extends BoundingBoxDecorator implements 
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = e.getTypedSource();
 		setBox( sgGeometry.getAxisAlignedMinimumBoundingBox() );
 	}
-}
 
-//public class BoundingBoxDecorator implements edu.cmu.cs.dennisc.scenegraph.event.BoundListener {
-//	private edu.cmu.cs.dennisc.scenegraph.Visual m_sgVisual = new edu.cmu.cs.dennisc.scenegraph.Visual();
-//	private edu.cmu.cs.dennisc.scenegraph.SingleAppearance m_sgFrontAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
-//	private edu.cmu.cs.dennisc.scenegraph.SingleAppearance m_sgBackAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
-//	private edu.cmu.cs.dennisc.scenegraph.Box m_sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
-//
-//	private edu.cmu.cs.dennisc.scenegraph.Visual m_sgSubject = null;
-//
-//	public BoundingBoxDecorator() {
-//		m_sgFrontAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.ColorF4.YELLOW );
-//		m_sgFrontAppearance.setShadingStyle( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.NONE );
-//		m_sgFrontAppearance.setFillingStyle( edu.cmu.cs.dennisc.scenegraph.FillingStyle.WIREFRAME );
-//		m_sgBackAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.ColorF4.DARK_GRAY );
-//		m_sgBackAppearance.setShadingStyle( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.NONE );
-//		m_sgBackAppearance.setFillingStyle( edu.cmu.cs.dennisc.scenegraph.FillingStyle.WIREFRAME );
-//		m_sgVisual.frontFacingAppearance.setValue( m_sgFrontAppearance );
-//		m_sgVisual.backFacingAppearance.setValue( m_sgBackAppearance );
-//		m_sgVisual.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { m_sgBox } );
-//
-//		m_sgVisual.setName( "BoundingBoxDecorator m_sgVisual" );
-//		m_sgFrontAppearance.setName( "BoundingBoxDecorator m_sgFrontAppearance" );
-//		m_sgBackAppearance.setName( "BoundingBoxDecorator m_sgBackAppearance" );
-//		m_sgBox.setName( "BoundingBoxDecorator m_sgBox" );
-//	}
-//	
-//	public edu.cmu.cs.dennisc.scenegraph.Visual getSubject() {
-//		return m_sgSubject;
-//	}
-//	public void setSubject( edu.cmu.cs.dennisc.scenegraph.Visual sgSubject ) {
-//		if( m_sgSubject != null ) {
-//			m_sgVisual.setParent( null );
-//			edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = m_sgSubject.getGeometry();
-//			if( sgGeometry != null ) {
-//				sgGeometry.removeBoundObserver( this );
-//			}
-//		}
-//		m_sgSubject = sgSubject;
-//		if( m_sgSubject != null ) {
-//			edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = m_sgSubject.getGeometry();
-//			if( sgGeometry != null ) {
-//				m_sgBox.set( sgGeometry.getBoundingBox() );
-//				m_sgVisual.setParent( m_sgSubject.getParent() );
-//				sgGeometry.addBoundObserver( this );
-//			}
-//		}
-//	}
-//
-//	public void boundChanged( edu.cmu.cs.dennisc.scenegraph.event.BoundEvent e ) {
-//		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = e.getGeometrySource();
-//		m_sgBox.set( sgGeometry.getBoundingBox() );
-//	}
-//}
+	private edu.cmu.cs.dennisc.scenegraph.Visual sgSubject = null;
+}

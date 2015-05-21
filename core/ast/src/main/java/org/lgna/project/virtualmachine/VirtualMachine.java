@@ -845,7 +845,7 @@ public abstract class VirtualMachine {
 			Object[] arguments = {
 					new LambdaContext() {
 						@Override
-						public void invokeEntryPoint( org.lgna.project.ast.Lambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod, org.lgna.project.virtualmachine.UserInstance thisInstance, java.lang.Object... arguments ) {
+						public void invokeEntryPoint( org.lgna.project.ast.Lambda lambda, org.lgna.project.ast.AbstractMethod singleAbstractMethod, org.lgna.project.virtualmachine.UserInstance thisInstance, Object... arguments ) {
 							assert thisInstance != null;
 							if( lambda instanceof org.lgna.project.ast.UserLambda ) {
 								org.lgna.project.ast.UserLambda userLambda = (org.lgna.project.ast.UserLambda)lambda;
@@ -959,7 +959,7 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected final <E extends Object> E evaluate( org.lgna.project.ast.Expression expression, Class<E> cls ) {
+	protected final <E> E evaluate( org.lgna.project.ast.Expression expression, Class<E> cls ) {
 		//in order to support python...
 		//if( result instanceof Integer ) {
 		//	condition = ((Integer)result) != 0;

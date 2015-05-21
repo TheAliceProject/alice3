@@ -46,27 +46,30 @@ package edu.cmu.cs.dennisc.color;
  * @author Dennis Cosgrove
  */
 public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public static final Color4f BLACK = new Color4f( java.awt.Color.BLACK );
-	public static final Color4f BLUE = new Color4f( java.awt.Color.BLUE );
-	public static final Color4f CYAN = new Color4f( java.awt.Color.CYAN );
-	public static final Color4f DARK_GRAY = new Color4f( java.awt.Color.DARK_GRAY );
-	public static final Color4f GRAY = new Color4f( java.awt.Color.GRAY );
-	public static final Color4f GREEN = new Color4f( java.awt.Color.GREEN );
-	public static final Color4f LIGHT_GRAY = new Color4f( java.awt.Color.LIGHT_GRAY );
-	public static final Color4f MAGENTA = new Color4f( java.awt.Color.MAGENTA );
-	public static final Color4f ORANGE = new Color4f( java.awt.Color.ORANGE );
-	public static final Color4f PINK = new Color4f( java.awt.Color.PINK );
-	public static final Color4f RED = new Color4f( java.awt.Color.RED );
-	public static final Color4f WHITE = new Color4f( java.awt.Color.WHITE );
-	public static final Color4f YELLOW = new Color4f( java.awt.Color.YELLOW );
+	public static final Color4f BLACK = Color4f.createFromRgbInts( 0, 0, 0 );
+	public static final Color4f BLUE = Color4f.createFromRgbInts( 0, 0, 255 );
+	public static final Color4f CYAN = Color4f.createFromRgbInts( 0, 255, 255 );
+	public static final Color4f DARK_GRAY = Color4f.createFromRgbInts( 64, 64, 64 );
+	public static final Color4f GRAY = Color4f.createFromRgbInts( 128, 128, 128 );
+	public static final Color4f GREEN = Color4f.createFromRgbInts( 0, 255, 0 );
+	public static final Color4f LIGHT_GRAY = Color4f.createFromRgbInts( 192, 192, 192 );
+	public static final Color4f MAGENTA = Color4f.createFromRgbInts( 255, 0, 255 );
+	public static final Color4f ORANGE = Color4f.createFromRgbInts( 255, 200, 0 );
+	public static final Color4f PINK = Color4f.createFromRgbInts( 255, 175, 175 );
+	public static final Color4f RED = Color4f.createFromRgbInts( 255, 0, 0 );
+	public static final Color4f WHITE = Color4f.createFromRgbInts( 255, 255, 255 );
+	public static final Color4f YELLOW = Color4f.createFromRgbInts( 255, 255, 0 );
 
 	public static final Color4f PURPLE = new Color4f( 128 / 255.0f, 0.0f, 128 / 255.0f, 1.0f );
 	public static final Color4f BROWN = new Color4f( 162 / 255.0f, 42 / 255.0f, 42 / 255.0f, 1.0f );
 
-	public final float red;
-	public final float green;
-	public final float blue;
-	public final float alpha;
+	public static Color4f createFromRgbInts( int r, int g, int b ) {
+		return createFromRgbaInts( r, g, b, 255 );
+	}
+
+	public static Color4f createFromRgbaInts( int r, int g, int b, int a ) {
+		return new Color4f( r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f );
+	}
 
 	public Color4f( float red, float green, float blue, float alpha ) {
 		this.red = red;
@@ -77,10 +80,6 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 
 	public Color4f( Color4f other ) {
 		this( other.red, other.green, other.blue, other.alpha );
-	}
-
-	public Color4f( java.awt.Color awtColor ) {
-		this( awtColor.getRed() / 255.0f, awtColor.getGreen() / 255.0f, awtColor.getBlue() / 255.0f, awtColor.getAlpha() / 255.0f );
 	}
 
 	public Color4f( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -113,8 +112,8 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 	@Override
 	public boolean equals( Object obj ) {
 		if( obj instanceof Color4f ) {
-			Color4f color = (Color4f)obj;
-			return ( red == color.red ) && ( green == color.green ) && ( blue == color.blue ) && ( alpha == color.alpha );
+			Color4f other = (Color4f)obj;
+			return ( this.red == other.red ) && ( this.green == other.green ) && ( this.blue == other.blue ) && ( this.alpha == other.alpha );
 		} else {
 			return false;
 		}
@@ -131,27 +130,41 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 	}
 
 	public boolean isNaN() {
-		return Float.isNaN( red ) || Float.isNaN( green ) || Float.isNaN( blue ) || Float.isNaN( alpha );
+		return Float.isNaN( this.red ) || Float.isNaN( this.green ) || Float.isNaN( this.blue ) || Float.isNaN( this.alpha );
 	}
 
 	public java.awt.Color getAsAWTColor() {
 		if( this.isNaN() ) {
 			return null;
 		} else {
-			return new java.awt.Color( red, green, blue, alpha );
+			return new java.awt.Color( this.red, this.green, this.blue, this.alpha );
 		}
 	}
 
 	public float[] getAsArray( float[] rv ) {
-		rv[ 0 ] = red;
-		rv[ 1 ] = green;
-		rv[ 2 ] = blue;
-		rv[ 3 ] = alpha;
+		rv[ 0 ] = this.red;
+		rv[ 1 ] = this.green;
+		rv[ 2 ] = this.blue;
+		rv[ 3 ] = this.alpha;
 		return rv;
 	}
 
 	public float[] getAsArray() {
 		return getAsArray( new float[ 4 ] );
+	}
+
+	public java.nio.FloatBuffer getAsFloatBuffer( java.nio.FloatBuffer rv ) {
+		rv.rewind();
+		rv.put( this.red );
+		rv.put( this.green );
+		rv.put( this.blue );
+		rv.put( this.alpha );
+		rv.rewind();
+		return rv;
+	}
+
+	public java.nio.FloatBuffer getAsFloatBuffer() {
+		return this.getAsFloatBuffer( java.nio.FloatBuffer.allocate( 4 ) );
 	}
 
 	@Override
@@ -169,4 +182,9 @@ public final class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 		sb.append( "]" );
 		return sb.toString();
 	}
+
+	public final float red;
+	public final float green;
+	public final float blue;
+	public final float alpha;
 }

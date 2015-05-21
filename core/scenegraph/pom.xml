@@ -17,15 +17,6 @@
 			<groupId>org.alice</groupId>
 			<artifactId>util</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.jogamp.jogl</groupId>
-			<artifactId>jogl-all</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.jogamp.gluegen</groupId>
-			<artifactId>gluegen-rt</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>

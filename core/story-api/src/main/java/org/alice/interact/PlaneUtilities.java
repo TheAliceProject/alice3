@@ -60,7 +60,7 @@ public class PlaneUtilities {
 		}
 	}
 
-	public static edu.cmu.cs.dennisc.math.Ray getRayFromPixel( edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, AbstractCamera camera, int xPixel, int yPixel ) {
+	public static edu.cmu.cs.dennisc.math.Ray getRayFromPixel( edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera, int xPixel, int yPixel ) {
 		edu.cmu.cs.dennisc.math.Ray ray = renderTarget.getRayAtPixel( xPixel, yPixel, camera );
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = camera.getAbsoluteTransformation();
 		ray.transform( m );

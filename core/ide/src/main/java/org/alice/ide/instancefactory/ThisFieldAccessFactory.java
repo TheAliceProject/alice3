@@ -78,11 +78,6 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 		}
 	}
 
-	@Override
-	protected org.lgna.croquet.resolvers.Resolver<ThisFieldAccessFactory> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ThisFieldAccessFactory>( this, org.lgna.project.ast.UserField.class, this.field );
-	}
-
 	public org.lgna.project.ast.UserField getField() {
 		return this.field;
 	}
@@ -108,11 +103,18 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( this.field );
-		if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
-			return iconFactory;
+		org.lgna.croquet.icon.IconFactory fallbackIconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( this.field );
+		if( ( fallbackIconFactory != null ) && ( fallbackIconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
+			//pass;
 		} else {
-			return super.getIconFactory();
+			fallbackIconFactory = super.getIconFactory();
+		}
+
+		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
+		if( projectDocumentFrame != null ) {
+			return projectDocumentFrame.getIconFactoryManager().getIconFactory( this.field, fallbackIconFactory );
+		} else {
+			return fallbackIconFactory;
 		}
 	}
 

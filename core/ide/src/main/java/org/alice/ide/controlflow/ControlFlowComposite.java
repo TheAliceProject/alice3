@@ -91,7 +91,7 @@ public class ControlFlowComposite extends org.lgna.croquet.SimpleComposite<org.a
 	protected void initialize() {
 		super.initialize();
 
-		edu.cmu.cs.dennisc.java.util.CollectionUtilities.addAll( this.models,
+		java.util.Collections.addAll( this.models,
 				org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance(),
 				null,
 				org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance(),

@@ -47,14 +47,12 @@ package org.lgna.project.ast;
  */
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
-import edu.cmu.cs.dennisc.property.Property;
 
 //todo: clean up
 public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
 	private static final boolean IS_NATIVE_BYTE_ORDER_REQUIRED_FOR_BUFFERS = true;
 
-	private static java.util.HashMap<Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner>, java.util.List<Property<?>>> s_classToPropertiesMap = new java.util.HashMap<Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner>, java.util.List<Property<?>>>();
-	private java.util.List<Property<?>> m_properties = null;
+	private java.util.List<InstanceProperty<?>> m_properties = null;
 
 	private java.util.List<edu.cmu.cs.dennisc.property.event.PropertyListener> m_propertyListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.property.event.PropertyListener>();
 	private java.util.List<edu.cmu.cs.dennisc.property.event.ListPropertyListener<?>> m_listPropertyListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.property.event.ListPropertyListener<?>>();
@@ -154,27 +152,22 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 	}
 
 	@Override
-	public Property<?> getPropertyNamed( String name ) {
+	public InstanceProperty<?> getPropertyNamed( String name ) {
 		//todo: remove
 		name = Character.toLowerCase( name.charAt( 0 ) ) + name.substring( 1 );
 		try {
 			java.lang.reflect.Field field = getClass().getField( name );
-			return (Property<?>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
+			return (InstanceProperty<?>)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
 		} catch( NoSuchFieldException nsfe ) {
 			return null;
 		}
 	}
 
 	@Override
-	public InstanceProperty<?> getInstancePropertyNamed( String name ) {
-		return (InstanceProperty<?>)getPropertyNamed( name );
-	}
-
-	@Override
-	public java.util.List<Property<?>> getProperties() {
-		Class<? extends edu.cmu.cs.dennisc.property.PropertyOwner> cls = getClass();
+	public java.util.List<InstanceProperty<?>> getProperties() {
+		Class<? extends edu.cmu.cs.dennisc.property.InstancePropertyOwner> cls = getClass();
 		if( m_properties == null ) {
-			m_properties = new java.util.LinkedList<Property<?>>();
+			m_properties = new java.util.LinkedList<InstanceProperty<?>>();
 			for( java.lang.reflect.Field field : cls.getFields() ) {
 				int modifiers = field.getModifiers();
 				if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
@@ -196,7 +189,7 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 	@Override
 	public String lookupNameFor( InstanceProperty<?> instanceProperty ) {
 		for( java.lang.reflect.Field field : getClass().getFields() ) {
-			if( Property.class.isAssignableFrom( field.getType() ) ) {
+			if( InstanceProperty.class.isAssignableFrom( field.getType() ) ) {
 				int modifiers = field.getModifiers();
 				if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
 					if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
@@ -264,7 +257,7 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 		while( true ) {
 			String propertyName = binaryDecoder.decodeString();
 			if( propertyName.length() > 0 ) {
-				Property property = getPropertyNamed( propertyName );
+				InstanceProperty property = getPropertyNamed( propertyName );
 				assert property != null;
 				String valueClsName = binaryDecoder.decodeString();
 				assert valueClsName != null;
@@ -318,7 +311,7 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 						value = decodeObject( binaryDecoder, valueCls, map );
 					}
 				}
-				property.setValue( this, value );
+				property.setValue( value );
 			} else {
 				break;
 			}
@@ -377,13 +370,13 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Map<edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
-		for( Property<?> property : getProperties() ) {
+		for( InstanceProperty<?> property : getProperties() ) {
 			// todo?
 			// if( property.isTransient() ) {
 			// //pass
 			// } else {
 			binaryEncoder.encode( property.getName() );
-			Object value = property.getValue( this );
+			Object value = property.getValue();
 			if( value != null ) {
 				Class<?> valueCls = value.getClass();
 				binaryEncoder.encode( valueCls.getName() );
@@ -443,13 +436,13 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 			if( other instanceof Element ) {
 				Element otherDIPO = (Element)other;
 				int propertyCount = 0;
-				for( Property thisProperty : this.getProperties() ) {
+				for( InstanceProperty thisProperty : this.getProperties() ) {
 					String propertyName = thisProperty.getName();
 					try {
-						Property otherProperty = otherDIPO.getPropertyNamed( propertyName );
+						InstanceProperty otherProperty = otherDIPO.getPropertyNamed( propertyName );
 						if( otherProperty != null ) {
-							Object thisValue = thisProperty.getValue( this );
-							Object otherValue = otherProperty.getValue( otherDIPO );
+							Object thisValue = thisProperty.getValue();
+							Object otherValue = otherProperty.getValue();
 							if( thisValue instanceof Element ) {
 								if( ( (Element)thisValue ).isEquivalentTo( otherValue ) ) {
 									//pass
@@ -472,7 +465,7 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 						return false;
 					}
 				}
-				for( Property otherProperty : otherDIPO.getProperties() ) {
+				for( InstanceProperty otherProperty : otherDIPO.getProperties() ) {
 					propertyCount--;
 				}
 				return propertyCount == 0;

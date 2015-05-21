@@ -92,9 +92,9 @@ public class TestPoser extends SProgram {
 		} else {
 			composite = new BipedPoser( type );
 		}
-		app.getFrame().setMainComposite( composite );
+		app.getDocumentFrame().getFrame().setMainComposite( composite );
 
-		app.getFrame().setSize( 1200, 800 );
-		app.getFrame().setVisible( true );
+		app.getDocumentFrame().getFrame().setSize( 1200, 800 );
+		app.getDocumentFrame().getFrame().setVisible( true );
 	}
 }

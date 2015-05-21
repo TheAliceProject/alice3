@@ -161,9 +161,9 @@ public abstract class UserType<C extends UserConstructor> extends AbstractType<C
 		}
 
 		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType<?, ?, ?> value ) {
+		public void setValue( AbstractType<?, ?, ?> value ) {
 			assert ( value == null ) || ( value.isArray() == false );
-			super.setValue( owner, value );
+			super.setValue( value );
 		}
 	};
 	public final NodeListProperty<UserMethod> methods = new NodeListProperty<UserMethod>( this );

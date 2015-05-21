@@ -50,7 +50,7 @@ public class DefaultProgramImp extends ProgramImp {
 	private final edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 
 	public DefaultProgramImp( org.lgna.story.SProgram abstraction ) {
-		super( abstraction, edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenRenderTarget() );
+		super( abstraction, edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createHeavyweightOnscreenRenderTarget( new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().build() ) );
 	}
 
 	@Override

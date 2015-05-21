@@ -46,5 +46,5 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public interface CascadeRejector {
-	public boolean isRejected( org.lgna.croquet.edits.AbstractEdit edit );
+	public boolean isRejected( org.lgna.croquet.edits.Edit edit );
 }

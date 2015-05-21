@@ -53,8 +53,4 @@ public class ListSelectionStatePrepStep<T> extends PrepStep<org.lgna.croquet.Sin
 	private ListSelectionStatePrepStep( Transaction parent, org.lgna.croquet.SingleSelectListStateComboBoxPrepModel<T, ?> model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
-
-	public ListSelectionStatePrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
 }

@@ -106,19 +106,4 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.AbstractEdit {
 		rv.append( "add detail " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.keyedArgument, org.lgna.croquet.Application.getLocale() );
 	}
-
-	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit edit ) {
-		super.addKeyValuePairs( retargeter, edit );
-		org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit replacementEdit = (org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit)edit;
-		retargeter.addKeyValuePair( this.argumentOwner, replacementEdit.argumentOwner );
-		retargeter.addKeyValuePair( this.keyedArgument, replacementEdit.keyedArgument );
-	}
-
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		super.retarget( retargeter );
-		this.argumentOwner = retargeter.retarget( this.argumentOwner );
-		this.keyedArgument = retargeter.retarget( this.keyedArgument );
-	}
 }

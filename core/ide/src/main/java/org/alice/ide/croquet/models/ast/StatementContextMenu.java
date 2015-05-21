@@ -86,7 +86,7 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
 				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 				if( method instanceof org.lgna.project.ast.UserMethod ) {
-					rv.add( org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getItemSelectionOperationForMethod( method ).getMenuItemPrepModel() );
+					rv.add( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().getItemSelectionOperationForMethod( method ).getMenuItemPrepModel() );
 				}
 			}
 		}

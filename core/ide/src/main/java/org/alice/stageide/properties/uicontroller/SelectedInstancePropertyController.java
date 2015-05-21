@@ -93,7 +93,7 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 		this.label.setBackgroundColor( org.alice.ide.ThemeUtilities.getActiveTheme().getSelectedColor() );
 		this.label.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
-		AwtComponentView itemSelector = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+		AwtComponentView itemSelector = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() );
 		GridBagPanel componentPanel = new GridBagPanel();
 		int xIndex = 0;
 		componentPanel.addComponent( itemSelector, new GridBagConstraints(
@@ -110,7 +110,7 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 				0 ) // ipadY
 		);
 
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState().getValue();
 		org.lgna.croquet.views.SwingComponentView<?> oneShotComponent = org.alice.stageide.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
 		componentPanel.addComponent( oneShotComponent, new GridBagConstraints(
 				xIndex++, // gridX

@@ -214,9 +214,9 @@ public final class Dialog extends AbstractWindow<javax.swing.JDialog> {
 	public void setVisible( boolean isVisible ) {
 		if( isVisible != this.isVisible() ) {
 			if( isVisible ) {
-				Application.getActiveInstance().pushWindow( this );
+				Application.getActiveInstance().getDocumentFrame().pushWindow( this );
 			} else {
-				assert this == Application.getActiveInstance().popWindow();
+				assert this == Application.getActiveInstance().getDocumentFrame().popWindow();
 			}
 			super.setVisible( isVisible );
 		}

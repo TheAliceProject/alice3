@@ -45,35 +45,16 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PerspectiveApplication extends Application {
-	private Perspective perspective;
-
-	public static PerspectiveApplication getActiveInstance() {
+public abstract class PerspectiveApplication<D extends PerspectiveDocumentFrame> extends Application<D> {
+	public static PerspectiveApplication<?> getActiveInstance() {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.lgna.croquet.Application.getActiveInstance(), PerspectiveApplication.class );
 	}
 
 	public Perspective getPerspective() {
-		return this.perspective;
+		return this.getDocumentFrame().getPerspective();
 	}
 
 	public void setPerspective( Perspective perspective ) {
-		if( this.perspective != perspective ) {
-			this.perspective = perspective;
-			MenuBarComposite menuBarComposite;
-			ToolBarComposite toolBarComposite;
-			Composite<?> mainComposite;
-			if( this.perspective != null ) {
-				menuBarComposite = this.perspective.getMenuBarComposite();
-				toolBarComposite = this.perspective.getToolBarComposite();
-				mainComposite = this.perspective.getMainComposite();
-			} else {
-				menuBarComposite = null;
-				toolBarComposite = null;
-				mainComposite = null;
-			}
-			this.getFrame().setMenuBarComposite( menuBarComposite );
-			this.getFrame().setToolBarComposite( toolBarComposite );
-			this.getFrame().setMainComposite( mainComposite );
-		}
+		this.getDocumentFrame().setPerspective( perspective );
 	}
 }

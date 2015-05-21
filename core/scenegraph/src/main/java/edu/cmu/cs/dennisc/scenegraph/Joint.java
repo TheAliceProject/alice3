@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import java.util.Comparator;
-
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.EulerAngles;
@@ -55,25 +53,12 @@ import edu.cmu.cs.dennisc.math.property.Vector3fProperty;
 
 public class Joint extends Transformable implements ModelJoint
 {
-	public final edu.cmu.cs.dennisc.property.StringProperty jointID = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInX = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInY = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInZ = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
-
-	//    public final edu.cmu.cs.dennisc.property.DoubleProperty boundingRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, Double.NaN, true);
-
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> boundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
-
-	public final Vector3fProperty oStiffness = new Vector3fProperty( this, new Vector3f() );
-	public final EulerAnglesProperty oBoneOrientation = new EulerAnglesProperty( this, EulerAngles.createIdentity() );
-	public final EulerAnglesProperty oPreferedAngles = new EulerAnglesProperty( this, EulerAngles.createIdentity() );
-	public final EulerAnglesProperty oLocalRotationAxis = new EulerAnglesProperty( this, EulerAngles.createIdentity() );
-	public final Vector3fProperty oMinimumDampRange = new Vector3fProperty( this, new Vector3f() );
-	public final Vector3fProperty oMaximumDampRange = new Vector3fProperty( this, new Vector3f() );
-	public final Vector3fProperty oMinimumDampStrength = new Vector3fProperty( this, new Vector3f() );
-	public final Vector3fProperty oMaximumDampStrength = new Vector3fProperty( this, new Vector3f() );
-
-	private SkeletonVisual parentVisual = null;
+	//	private static final java.util.Comparator<Joint> JOINT_ARRAY_COMPARATOR = new java.util.Comparator<Joint>() {
+	//		@Override
+	//		public int compare( Joint o1, Joint o2 ) {
+	//			return o1.jointID.getValue().compareTo( o2.jointID.getValue() );
+	//		}
+	//	};
 
 	private Joint getJoint( Composite c, String jointID )
 	{
@@ -132,13 +117,6 @@ public class Joint extends Transformable implements ModelJoint
 			}
 		}
 	}
-
-	private static final Comparator<Joint> JOINT_ARRAY_COMPARATOR = new Comparator<Joint>() {
-		@Override
-		public int compare( Joint o1, Joint o2 ) {
-			return o1.jointID.getValue().compareTo( o2.jointID.getValue() );
-		}
-	};
 
 	public Joint[] getJoints( String nameKey )
 	{
@@ -223,4 +201,23 @@ public class Joint extends Transformable implements ModelJoint
 		sb.append( " jointId=" + this.jointID.getValue() );
 	}
 
+	public final edu.cmu.cs.dennisc.property.StringProperty jointID = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInX = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInY = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isFreeInZ = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+
+	//    public final edu.cmu.cs.dennisc.property.DoubleProperty boundingRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, Double.NaN, true);
+
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> boundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
+
+	public final Vector3fProperty oStiffness = new Vector3fProperty( this, new Vector3f() );
+	public final EulerAnglesProperty oBoneOrientation = new EulerAnglesProperty( this, EulerAngles.createIdentity() );
+	public final EulerAnglesProperty oPreferedAngles = new EulerAnglesProperty( this, EulerAngles.createIdentity() );
+	public final EulerAnglesProperty oLocalRotationAxis = new EulerAnglesProperty( this, EulerAngles.createIdentity() );
+	public final Vector3fProperty oMinimumDampRange = new Vector3fProperty( this, new Vector3f() );
+	public final Vector3fProperty oMaximumDampRange = new Vector3fProperty( this, new Vector3f() );
+	public final Vector3fProperty oMinimumDampStrength = new Vector3fProperty( this, new Vector3f() );
+	public final Vector3fProperty oMaximumDampStrength = new Vector3fProperty( this, new Vector3f() );
+
+	private SkeletonVisual parentVisual = null;
 }

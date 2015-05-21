@@ -52,11 +52,6 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  * @author Dennis Cosgrove
  */
 public class ModestAxes extends Visual {
-	private static SimpleAppearance s_sgFrontFacingAppearance = new SimpleAppearance();
-	static {
-		s_sgFrontFacingAppearance.setShadingStyle( ShadingStyle.NONE );
-	}
-
 	public ModestAxes( double unitLength, double forwardFactor ) {
 		Vertex[] vertices = new Vertex[ 8 ];
 		vertices[ 0 ] = Vertex.createXYZRGB( 0, 0, 0, 1, 0, 0 );
@@ -71,10 +66,13 @@ public class ModestAxes extends Visual {
 		LineArray sgLineArray = new LineArray();
 		sgLineArray.vertices.setValue( vertices );
 		geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { sgLineArray } );
-		frontFacingAppearance.setValue( s_sgFrontFacingAppearance );
+		this.sgFrontFacingAppearance.setShadingStyle( ShadingStyle.NONE );
+		frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
 	}
 
 	public ModestAxes( double unitLength ) {
 		this( unitLength, 2.0 );
 	}
+
+	private final SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
 }

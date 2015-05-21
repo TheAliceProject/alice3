@@ -45,19 +45,19 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SimpleOperationWizardDialogCoreComposite extends OperationWizardDialogCoreComposite {
+public abstract class SimpleOperationWizardDialogCoreComposite extends LaunchOperationWizardDialogCoreComposite {
 	public SimpleOperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup ) {
 		super( migrationId, operationGroup );
 		this.getImp().createAndRegisterNullKeyLaunchOperation();
 	}
 
 	@Override
-	protected String getName() {
+	protected String getDefaultTitleText() {
 		Operation launchOperation = this.getLaunchOperation();
-		return launchOperation != null ? launchOperation.getName() : null;
+		return launchOperation != null ? launchOperation.getImp().getName() : null;
 	}
 
-	public org.lgna.croquet.OwnedByCompositeOperation getLaunchOperation() {
+	public org.lgna.croquet.Operation getLaunchOperation() {
 		return this.getImp().getLaunchOperation( null );
 	}
 }

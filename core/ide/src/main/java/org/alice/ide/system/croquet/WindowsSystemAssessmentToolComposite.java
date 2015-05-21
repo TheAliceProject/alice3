@@ -58,7 +58,7 @@ public class WindowsSystemAssessmentToolComposite extends org.lgna.croquet.Simpl
 	private final org.lgna.croquet.StringState stardardOutAndStandardErrorState = this.createStringState( "stardardOutAndStandardErrorState" );
 	private final org.lgna.croquet.Operation executeWinsatOperation = this.createActionOperation( "executeWinsatOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			boolean isAbleToRunWinsatDirectly;
 			try {
 				StringBuilder sb = new StringBuilder();

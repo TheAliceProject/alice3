@@ -98,7 +98,7 @@ public class IngredientsView extends org.lgna.croquet.views.MigPanel {
 			}
 
 			@Override
-			public java.awt.Color call() throws java.lang.Exception {
+			public java.awt.Color call() throws Exception {
 				return this.value;
 			}
 		}

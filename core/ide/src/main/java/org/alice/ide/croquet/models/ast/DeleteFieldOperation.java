@@ -93,7 +93,7 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 			ReferencesToFieldPreventingDeletionDialog referencesToFieldPreventingDeletionDialog = new ReferencesToFieldPreventingDeletionDialog( field, references );
 			CompletionStep<?> step = referencesToFieldPreventingDeletionDialog.getLaunchOperation().fire();
 			if( step.isSuccessfullyCompleted() ) {
-				org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame();
+				org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
 				projectDocumentFrame.getFindComposite().getMemberReferencesOperationInstance( field ).fire();
 			}
 			return false;

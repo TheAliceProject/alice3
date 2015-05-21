@@ -53,5 +53,5 @@ public interface Releasable {
 
 	public void removeReleaseListener( edu.cmu.cs.dennisc.pattern.event.ReleaseListener releaseListener );
 
-	public Iterable<edu.cmu.cs.dennisc.pattern.event.ReleaseListener> accessReleaseListeners();
+	public java.util.Collection<edu.cmu.cs.dennisc.pattern.event.ReleaseListener> getReleaseListeners();
 }

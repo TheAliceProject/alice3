@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class VertexGeometry extends Geometry {
-	public class VerticesProperty extends edu.cmu.cs.dennisc.property.CopyableArrayProperty<Vertex> {
+	public static class VerticesProperty extends edu.cmu.cs.dennisc.property.CopyableArrayProperty<Vertex> {
 		public VerticesProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Vertex... vertices ) {
 			super( owner, vertices );
 		}
@@ -64,17 +64,9 @@ public abstract class VertexGeometry extends Geometry {
 
 		@Deprecated
 		public void touch() {
-			edu.cmu.cs.dennisc.property.PropertyOwner owner = getOwner();
-			setValue( owner, getValue( owner ) );
-			//todo
-			//			edu.cmu.cs.dennisc.property.event.PropertyEvent e = new edu.cmu.cs.dennisc.property.event.PropertyEvent( this, owner, getValue() );
-			//			//owner.firePropertyChanging( e );
-			//			//m_value = value;
-			//			owner.firePropertyChanged( e );
+			setValue( getValue() );
 		}
 	}
-
-	public final VerticesProperty vertices = new VerticesProperty( this );
 
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
@@ -116,4 +108,6 @@ public abstract class VertexGeometry extends Geometry {
 		}
 		vertices.touch();
 	}
+
+	public final VerticesProperty vertices = new VerticesProperty( this );
 }

@@ -51,8 +51,7 @@ public final class SystemExitOperation extends org.lgna.croquet.ActionOperation 
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		step.finish();
 		System.exit( 0 );
 	}

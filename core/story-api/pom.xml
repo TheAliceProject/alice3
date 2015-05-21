@@ -20,17 +20,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.alice</groupId>
-			<artifactId>ast</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.alice</groupId>
 			<artifactId>scenegraph</artifactId>
 		</dependency>
-
-		<!-- TODO: remove -->
 		<dependency>
 			<groupId>org.alice</groupId>
-			<artifactId>croquet</artifactId>
+			<artifactId>glrender</artifactId>
 		</dependency>
 
 		<!-- Gallery/Models -->

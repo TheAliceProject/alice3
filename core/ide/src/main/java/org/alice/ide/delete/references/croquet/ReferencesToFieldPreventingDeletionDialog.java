@@ -44,7 +44,7 @@ package org.alice.ide.delete.references.croquet;
 
 import org.lgna.croquet.SimpleOperationInputDialogCoreComposite;
 import org.lgna.croquet.StringValue;
-import org.lgna.croquet.edits.AbstractEdit;
+import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.UserField;
 
@@ -97,7 +97,7 @@ public class ReferencesToFieldPreventingDeletionDialog extends SimpleOperationIn
 	}
 
 	@Override
-	protected AbstractEdit createEdit( CompletionStep<?> completionStep ) {
+	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		return null;
 	}
 

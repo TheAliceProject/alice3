@@ -252,7 +252,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			ide.getPerspectiveState().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
+			ide.getDocumentFrame().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
 		}
 		super.handlePreShowDialog( completionStep );
 	}
@@ -262,7 +262,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		super.handleFinally( step, dialog );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			ide.getPerspectiveState().enableRendering();
+			ide.getDocumentFrame().enableRendering();
 		}
 	}
 
@@ -272,16 +272,21 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	}
 
 	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			@Override
+			public void run() {
+				edu.cmu.cs.dennisc.javax.swing.UIManagerUtilities.setLookAndFeel( "Nimbus" );
 
-		//new org.alice.stageide.StageIDE();
-		new org.lgna.croquet.simple.SimpleApplication();
+				//new org.alice.stageide.StageIDE();
+				new org.lgna.croquet.simple.SimpleApplication();
 
-		try {
-			org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage.ADULT ).fire();
-		} catch( org.lgna.croquet.CancelException ce ) {
-			//pass
-		}
-		System.exit( 0 );
+				try {
+					org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage.ADULT ).fire();
+				} catch( org.lgna.croquet.CancelException ce ) {
+					//pass
+				}
+				System.exit( 0 );
+			}
+		} );
 	}
 }

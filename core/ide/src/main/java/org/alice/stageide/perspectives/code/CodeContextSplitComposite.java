@@ -120,14 +120,16 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().addAndInvokeValueListener( this.typeListener );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addAndInvokeNewSchoolValueListener( this.declarationListener );
+		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
+		projectDocumentFrame.getTypeMetaState().addAndInvokeValueListener( this.typeListener );
+		projectDocumentFrame.getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener( this.declarationListener );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeNewSchoolValueListener( this.declarationListener );
-		org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().removeValueListener( this.typeListener );
+		org.alice.ide.ProjectDocumentFrame projectDocumentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame();
+		projectDocumentFrame.getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationListener );
+		projectDocumentFrame.getTypeMetaState().removeValueListener( this.typeListener );
 		super.handlePostDeactivation();
 	}
 

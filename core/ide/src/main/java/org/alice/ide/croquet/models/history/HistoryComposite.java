@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class HistoryComposite extends org.lgna.croquet.FrameComposite {
+public abstract class HistoryComposite extends org.lgna.croquet.FrameCompositeWithInternalIsShowingState {
 	private final org.lgna.croquet.Group historyGroup;
 
 	public HistoryComposite( java.util.UUID id, org.lgna.croquet.Group historyGroup ) {

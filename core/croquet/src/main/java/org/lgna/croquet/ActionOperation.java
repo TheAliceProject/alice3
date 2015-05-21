@@ -49,4 +49,12 @@ public abstract class ActionOperation extends Operation {
 	public ActionOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
+
+	protected abstract void perform( org.lgna.croquet.history.CompletionStep<?> step );
+
+	@Override
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		this.perform( step );
+	}
 }

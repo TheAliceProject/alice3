@@ -60,7 +60,7 @@ public class TemplateAstI18nFactory extends IdeAstI18nFactory {
 
 	@Override
 	protected org.lgna.project.ast.AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
-		return org.alice.ide.MetaDeclarationFauxState.getInstance().getType();
+		return org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getMetaDeclarationFauxState().getType();
 	}
 
 	@Override

@@ -45,7 +45,7 @@ package org.alice.ide.resource.manager;
 /**
  * @author Dennis Cosgrove
  */
-public final class ReloadContentResourceOperation extends SelectedResourceOperation {
+/*package-private*/final class ReloadContentResourceOperation extends SelectedResourceOperation {
 	private static abstract class Capsule<E extends org.lgna.common.Resource> {
 		private String originalFileName;
 		//private String name;
@@ -102,24 +102,16 @@ public final class ReloadContentResourceOperation extends SelectedResourceOperat
 		}
 	}
 
-	private static class SingletonHolder {
-		private static ReloadContentResourceOperation instance = new ReloadContentResourceOperation();
-	}
-
-	public static ReloadContentResourceOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ReloadContentResourceOperation() {
-		super( java.util.UUID.fromString( "05f5ede7-194a-45b2-bb97-c3d23aedf5b9" ) );
+	public ReloadContentResourceOperation( org.lgna.croquet.ItemState<org.lgna.common.Resource> resourceState ) {
+		super( java.util.UUID.fromString( "05f5ede7-194a-45b2-bb97-c3d23aedf5b9" ), resourceState );
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.AbstractEdit createEdit( org.lgna.croquet.history.CompletionStep<?> step, final org.lgna.common.Resource resource ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, final org.lgna.common.Resource resource ) {
 		if( resource != null ) {
 			final Capsule prevCapsule;
 			final Capsule nextCapsule;
-			org.lgna.croquet.views.Frame frame = org.lgna.croquet.Application.getActiveInstance().getFrame();
+			org.lgna.croquet.views.Frame frame = org.lgna.croquet.Application.getActiveInstance().getDocumentFrame().getFrame();
 			if( resource instanceof org.lgna.common.resources.ImageResource ) {
 				org.lgna.common.resources.ImageResource prevImageResource = (org.lgna.common.resources.ImageResource)resource;
 				org.lgna.common.resources.ImageResource nextImageResource = org.alice.ide.ast.importers.ImageResourceImporter.getInstance().createValue( "Replace Image" );

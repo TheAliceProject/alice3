@@ -77,11 +77,6 @@ public class ParameterAccessFactory extends AbstractInstanceFactory {
 		}
 	}
 
-	@Override
-	protected org.lgna.croquet.resolvers.Resolver<ParameterAccessFactory> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ParameterAccessFactory>( this, org.lgna.project.ast.UserParameter.class, this.parameter );
-	}
-
 	public org.lgna.project.ast.UserParameter getParameter() {
 		return this.parameter;
 	}

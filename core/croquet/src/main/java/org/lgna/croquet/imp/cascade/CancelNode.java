@@ -55,10 +55,6 @@ public class CancelNode<F> extends AbstractItemNode<F, Void, org.lgna.croquet.Ca
 		super( model );
 	}
 
-	public CancelNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
 	@Override
 	public int getBlankStepCount() {
 		return 0;

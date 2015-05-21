@@ -71,7 +71,8 @@ public class KeywordMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna
 
 	@Override
 	public String getMenuItemText( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.Expression, org.lgna.project.ast.Expression> step ) {
-		return this.method.getName();
+		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
+		return formatter.getNameForDeclaration( this.method );
 	}
 
 	@Override

@@ -216,7 +216,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 
 	@Override
 	public java.util.List<org.lgna.project.ast.JavaType> getTopLevelGalleryTypes() {
-		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getTopLevelGalleryTypes();
+		return org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes();
 	}
 
 	private static final org.lgna.project.ast.JavaType BIPED_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.BipedResource.class );
@@ -227,13 +227,13 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		if( type == PERSON_RESOURCE_TYPE ) {
 			return BIPED_RESOURCE_TYPE;
 		} else {
-			return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryResourceParentFor( type );
+			return org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils.INSTANCE.getGalleryResourceParentFor( type );
 		}
 	}
 
 	@Override
 	public java.util.List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		java.util.List<org.lgna.project.ast.AbstractDeclaration> rv = org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryResourceChildrenFor( type );
+		java.util.List<org.lgna.project.ast.AbstractDeclaration> rv = org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils.INSTANCE.getGalleryResourceChildrenFor( type );
 		if( type == BIPED_RESOURCE_TYPE ) {
 			rv.add( 0, PERSON_RESOURCE_TYPE );
 		}
@@ -560,5 +560,10 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 
 	public boolean isBuildMethod( org.lgna.project.ast.MethodInvocation methodInvocation ) {
 		return getBuildMethodPoseBuilderType( methodInvocation, false ) != null;
+	}
+
+	@Override
+	public org.alice.ide.iconfactory.IconFactoryManager createIconFactoryManager() {
+		return new org.alice.stageide.iconfactory.StoryIconFactoryManager();
 	}
 }

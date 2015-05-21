@@ -56,18 +56,18 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	private org.alice.ide.cascade.ExpressionCascadeManager cascadeManager = new org.alice.stageide.cascade.ExpressionCascadeManager();
 
 	public StageIDE( org.alice.ide.IdeConfiguration ideConfiguration, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
-		super( ideConfiguration, crashDetector );
-		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
+		super( ideConfiguration, StoryApiConfigurationManager.getInstance(), crashDetector );
+		this.getDocumentFrame().getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
 			@Override
 			public void windowStateChanged( java.awt.event.WindowEvent e ) {
 				int oldState = e.getOldState();
 				int newState = e.getNewState();
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "windowStateChanged", oldState, newState, java.awt.Frame.ICONIFIED );
 				if( ( oldState & java.awt.Frame.ICONIFIED ) == java.awt.Frame.ICONIFIED ) {
-					edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().incrementAutomaticDisplayCount();
+					edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().incrementAutomaticDisplayCount();
 				}
 				if( ( newState & java.awt.Frame.ICONIFIED ) == java.awt.Frame.ICONIFIED ) {
-					edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().decrementAutomaticDisplayCount();
+					edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().decrementAutomaticDisplayCount();
 				}
 			}
 		} );
@@ -103,11 +103,6 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration> getDeclarationFilter() {
 		return this.declarationFilter;
-	}
-
-	@Override
-	public org.alice.ide.ApiConfigurationManager getApiConfigurationManager() {
-		return StoryApiConfigurationManager.getInstance();
 	}
 
 	@Override
@@ -308,7 +303,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 
 	@Override
 	public org.lgna.croquet.Operation getAboutOperation() {
-		return org.alice.stageide.about.AboutComposite.getInstance().getLaunchOperation();
+		return org.alice.ide.IdeApp.INSTANCE.getAboutDialogLaunchOperation();
 	}
 
 	public java.util.List<org.lgna.project.ast.UserMethod> getUserMethodsInvokedFromSceneActivationListeners() {
@@ -334,7 +329,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 						org.lgna.project.ast.UserField field = type.fields.get( i );
 						if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
 							if( getApiConfigurationManager().isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-								org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+								getDocumentFrame().getInstanceFactoryState().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
 								break;
 							}
 						}
@@ -349,14 +344,14 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
 
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushIgnoreAstChanges();
+		this.getDocumentFrame().getInstanceFactoryState().pushIgnoreAstChanges();
 		try {
 			this.setRootField( this.getSceneField() );
 		} finally {
-			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popIgnoreAstChanges();
+			this.getDocumentFrame().getInstanceFactoryState().popIgnoreAstChanges();
 		}
 
-		org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+		org.alice.ide.declarationseditor.DeclarationTabState tabState = this.getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		tabState.clear();
 		if( project != null ) {
 			org.lgna.project.ast.NamedUserType programType = project.getProgramType();
@@ -412,7 +407,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 		if( programType != null ) {
 			org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
-				org.lgna.project.ast.NamedUserType scopeType = org.alice.ide.IDE.getActiveInstance().getProjectDocumentFrame().getTypeMetaState().getValue();
+				org.lgna.project.ast.NamedUserType scopeType = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getTypeMetaState().getValue();
 				if( scopeType == sceneType ) {
 					if( field != null ) {
 						return org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );

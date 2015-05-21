@@ -51,7 +51,7 @@ public final class ImportTab extends GalleryTab {
 	private final org.lgna.croquet.StringState directoryState = this.createStringState( "directoryState" );
 	private final org.lgna.croquet.Operation browseOperation = this.createActionOperation( "browseOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
 
 			java.io.File directory = new java.io.File( directoryState.getValue() );
@@ -73,7 +73,7 @@ public final class ImportTab extends GalleryTab {
 	} );
 	private final org.lgna.croquet.Operation restoreToDefaultOperation = this.createActionOperation( "restoreToDefaultOperation", new Action() {
 		@Override
-		public org.lgna.croquet.edits.AbstractEdit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			restoreToDefault();
 			return null;
 		}

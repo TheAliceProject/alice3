@@ -78,7 +78,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private final IdeConfiguration ideConfiguration;
 	private final edu.cmu.cs.dennisc.crash.CrashDetector crashDetector;
 
-	public IDE( IdeConfiguration ideConfiguration, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
+	public IDE( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
+		super( ideConfiguration, apiConfigurationManager );
 		this.ideConfiguration = ideConfiguration;
 		this.crashDetector = crashDetector;
 		StringBuffer sb = new StringBuffer();
@@ -86,7 +87,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		sb.append( getApplicationName() );
 		IDE.exceptionHandler.setTitle( sb.toString() );
 		IDE.exceptionHandler.setApplicationName( getApplicationName() );
-		this.projectDocumentFrame = new ProjectDocumentFrame( ideConfiguration );
 
 		//initialize locale
 
@@ -103,88 +103,16 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return this.ideConfiguration;
 	}
 
-	public ProjectDocumentFrame getProjectDocumentFrame() {
-		return this.projectDocumentFrame;
-	}
-
-	public org.alice.stageide.perspectives.CodePerspective getCodePerspective() {
-		return this.projectDocumentFrame.getCodePerspective();
-	}
-
-	public org.alice.stageide.perspectives.SetupScenePerspective getSetupScenePerspective() {
-		return this.projectDocumentFrame.getSetupScenePerspective();
-	}
-
-	public final org.alice.stageide.perspectives.PerspectiveState getPerspectiveState() {
-		return this.projectDocumentFrame.getPerspectiveState();
-	}
-
-	public org.lgna.croquet.Operation getSetToCodePerspectiveOperation() {
-		return this.getPerspectiveState().getItemSelectionOperation( this.getCodePerspective() );
-	}
-
-	public org.lgna.croquet.Operation getSetToSetupScenePerspectiveOperation() {
-		return this.getPerspectiveState().getItemSelectionOperation( this.getSetupScenePerspective() );
-	}
-
-	public void setToCodePerspectiveTransactionlessly() {
-		this.getPerspectiveState().setValueTransactionlessly( this.getCodePerspective() );
-	}
-
-	public void setToSetupScenePerspectiveTransactionlessly() {
-		this.getPerspectiveState().setValueTransactionlessly( this.getSetupScenePerspective() );
-	}
-
-	public boolean isInCodePerspective() {
-		return this.getPerspectiveState().getValue() == this.getCodePerspective();
-	}
-
-	public boolean isInSetupScenePerspective() {
-		return this.getPerspectiveState().getValue() == this.getSetupScenePerspective();
-	}
-
-	public abstract ApiConfigurationManager getApiConfigurationManager();
-
-	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_WINDOW_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.SHIFT_MASK );
-	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK );
-	private static final javax.swing.KeyStroke CAPTURE_RECTANGLE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F12, 0 );
-
-	private void registerScreenCaptureKeyStrokes( org.lgna.croquet.views.AbstractWindow<?> window ) {
-		org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite = org.alice.ide.capture.ImageCaptureComposite.getInstance();
-		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
-		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireWindowOperation().getSwingModel().getAction(), CAPTURE_ENTIRE_WINDOW_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
-		if( window == this.getFrame() ) {
-			//pass
-		} else {
-			window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureRectangleOperation().getSwingModel().getAction(), CAPTURE_RECTANGLE_KEY_STROKE, org.lgna.croquet.views.SwingComponentView.Condition.WHEN_IN_FOCUSED_WINDOW );
-		}
-	}
-
-	private void unregisterScreenCaptureKeyStrokes( org.lgna.croquet.views.AbstractWindow<?> window ) {
-		window.getContentPane().unregisterKeyboardAction( CAPTURE_ENTIRE_WINDOW_KEY_STROKE );
-		window.getContentPane().unregisterKeyboardAction( CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE );
-		window.getContentPane().unregisterKeyboardAction( CAPTURE_RECTANGLE_KEY_STROKE );
-	}
-
-	@Override
-	public void pushWindow( final org.lgna.croquet.views.AbstractWindow<?> window ) {
-		this.registerScreenCaptureKeyStrokes( window );
-		super.pushWindow( window );
-	}
-
-	@Override
-	public org.lgna.croquet.views.AbstractWindow<?> popWindow() {
-		org.lgna.croquet.views.AbstractWindow<?> window = super.popWindow();
-		this.unregisterScreenCaptureKeyStrokes( window );
-		return window;
+	public final ApiConfigurationManager getApiConfigurationManager() {
+		return this.getDocumentFrame().getApiConfigurationManager();
 	}
 
 	@Override
 	public void initialize( String[] args ) {
 		super.initialize( args );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeNewSchoolValueListener( this.instanceFactorySelectionObserver );
-		this.getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
-		this.registerScreenCaptureKeyStrokes( this.getFrame() );
+		ProjectDocumentFrame documentFrame = this.getDocumentFrame();
+		documentFrame.getPerspectiveState().addNewSchoolValueListener( this.perspectiveListener );
+		documentFrame.initialize();
 	}
 
 	public abstract org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor();
@@ -326,7 +254,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				String message = this.reorganizeTypeFieldsIfNecessary( namedUserType, 0, alreadyMovedFields );
 				if( message != null ) {
 					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( message )
-							.title( "Unable to Recover" )
+							.title( "Unable to Recover"
+							)
 							.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 							.buildAndShow();
 				}
@@ -376,25 +305,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return ( ( expression instanceof org.lgna.project.ast.TypeExpression ) || ( expression instanceof org.lgna.project.ast.ResourceExpression ) ) == false;
 	}
 
-	private final java.util.Map<org.lgna.project.ast.AbstractCode, org.alice.ide.instancefactory.InstanceFactory> mapCodeToInstanceFactory = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.event.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
-		@Override
-		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.instancefactory.InstanceFactory> e ) {
-			org.alice.ide.instancefactory.InstanceFactory nextValue = e.getNextValue();
-			if( nextValue != null ) {
-				org.lgna.project.ast.AbstractCode code = IDE.this.getFocusedCode();
-				if( code != null ) {
-					mapCodeToInstanceFactory.put( code, nextValue );
-				}
-			}
-		}
-	};
-
 	public abstract org.alice.ide.cascade.ExpressionCascadeManager getExpressionCascadeManager();
 
 	public org.alice.ide.stencil.PotentialDropReceptorsFeedbackView getPotentialDropReceptorsFeedbackView() {
 		if( this.potentialDropReceptorsStencil == null ) {
-			this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsFeedbackView( this.getFrame() );
+			this.potentialDropReceptorsStencil = new org.alice.ide.stencil.PotentialDropReceptorsFeedbackView( this.getDocumentFrame().getFrame() );
 		}
 		return this.potentialDropReceptorsStencil;
 	}
@@ -421,12 +336,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		boolean isScenePerspectiveDesiredByDefault = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "org.alice.ide.IDE.isScenePerspectiveDesiredByDefault", false );
-		org.alice.ide.perspectives.ProjectPerspective defaultPerspective = isScenePerspectiveDesiredByDefault ? this.getSetupScenePerspective() : this.getCodePerspective();
-		this.getPerspectiveState().setValueTransactionlessly( defaultPerspective );
+		ProjectDocumentFrame documentFrame = this.getDocumentFrame();
+		org.alice.ide.perspectives.ProjectPerspective defaultPerspective = isScenePerspectiveDesiredByDefault ? documentFrame.getSetupScenePerspective() : documentFrame.getCodePerspective();
+		documentFrame.getPerspectiveState().setValueTransactionlessly( defaultPerspective );
 		super.setProject( project );
 		org.lgna.croquet.Perspective perspective = this.getPerspective();
-		if( ( perspective == null ) || ( perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) ) {
-			this.setPerspective( this.getPerspectiveState().getValue() );
+		if( ( perspective == null ) || ( perspective == documentFrame.getNoProjectPerspective() ) ) {
+			this.setPerspective( documentFrame.getPerspectiveState().getValue() );
 		}
 	}
 
@@ -466,8 +382,8 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if( this.getUri() != null ) {
 			//pass
 		} else {
-			this.setPerspective( org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() );
-			org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().fire( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
+			this.setPerspective( this.getDocumentFrame().getNoProjectPerspective() );
+			this.getDocumentFrame().getNewProjectOperation().fire( org.lgna.croquet.triggers.WindowEventTrigger.createUserInstance( e ) );
 		}
 	}
 
@@ -483,7 +399,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	private final org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation clearanceCheckingExitOperation = new org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation();
+	private final org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation clearanceCheckingExitOperation = new org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation( this.getDocumentFrame() );
 
 	@Override
 	public final void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
@@ -504,57 +420,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.lgna.project.virtualmachine.VirtualMachine vm = this.createVirtualMachineForSceneEditor();
 		this.registerAdaptersForSceneEditorVm( vm );
 		return vm;
-	}
-
-	public org.lgna.project.ast.AbstractCode getFocusedCode() {
-		org.lgna.project.ast.AbstractDeclaration declaration = org.alice.ide.MetaDeclarationFauxState.getInstance().getValue();
-		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
-			return (org.lgna.project.ast.AbstractCode)declaration;
-		} else {
-			return null;
-		}
-	}
-
-	public void setFocusedCode( org.lgna.project.ast.AbstractCode nextFocusedCode ) {
-		this.selectDeclaration( nextFocusedCode );
-	}
-
-	public void selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
-		if( declarationComposite != null ) {
-			org.lgna.project.ast.AbstractDeclaration declaration = declarationComposite.getDeclaration();
-			//			org.lgna.project.ast.AbstractType<?, ?, ?> type;
-			//			if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-			//				type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
-			//			} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
-			//				org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;
-			//				type = code.getDeclaringType();
-			//			} else {
-			//				type = null;
-			//			}
-			//			if( type instanceof org.lgna.project.ast.NamedUserType ) {
-			//				org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)type );
-			//			}
-			org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
-			//			if( tabState.containsItem( declarationComposite ) ) {
-			//				//pass
-			//			} else {
-			//				tabState.addItem( declarationComposite );
-			//			}
-			tabState.setValueTransactionlessly( declarationComposite );
-		}
-	}
-
-	private void selectDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		this.selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( declaration ) );
-	}
-
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeEditorInFocus() {
-		org.alice.ide.perspectives.ProjectPerspective perspective = this.getPerspectiveState().getValue();
-		if( perspective != null ) {
-			return perspective.getCodeDropReceptorInFocus();
-		} else {
-			return null;
-		}
 	}
 
 	private static final String GENERATED_CODE_WARNING = "DO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT\n\nThis code is automatically generated.  Any work you perform in this method will be overwritten.\n\nDO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT";
@@ -582,7 +447,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			if( accessible instanceof org.lgna.project.ast.AbstractField ) {
 				org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)accessible;
 				text = field.getName();
-				org.lgna.project.ast.AbstractCode focusedCode = getFocusedCode();
+				org.lgna.project.ast.AbstractCode focusedCode = this.getDocumentFrame().getFocusedCode();
 				if( focusedCode != null ) {
 					org.lgna.project.ast.AbstractType<?, ?, ?> scopeType = focusedCode.getDeclaringType();
 					if( field.getValueType() == scopeType ) {
@@ -614,13 +479,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return (E)ancestor;
 	}
 
-	protected void ensureNodeVisible( org.lgna.project.ast.Node node ) {
-		org.lgna.project.ast.AbstractCode nextFocusedCode = getAncestor( node, org.lgna.project.ast.AbstractCode.class );
-		if( nextFocusedCode != null ) {
-			this.setFocusedCode( nextFocusedCode );
-		}
-	}
-
 	public org.lgna.croquet.views.AwtComponentView<?> getPrefixPaneForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		return null;
 	}
@@ -630,18 +488,4 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public abstract boolean isInstanceCreationAllowableFor( org.lgna.project.ast.NamedUserType userType );
-
-	private static final Integer HIGHLIGHT_STENCIL_LAYER = javax.swing.JLayeredPane.POPUP_LAYER - 2;
-	private org.alice.ide.highlight.IdeHighlightStencil highlightStencil;
-
-	public org.alice.ide.highlight.IdeHighlightStencil getHighlightStencil() {
-		if( this.highlightStencil != null ) {
-			//pass
-		} else {
-			this.highlightStencil = new org.alice.ide.highlight.IdeHighlightStencil( this.getFrame(), HIGHLIGHT_STENCIL_LAYER );
-		}
-		return this.highlightStencil;
-	}
-
-	private final ProjectDocumentFrame projectDocumentFrame;
 }

@@ -56,7 +56,7 @@ public class CycleFrameSizeOperation extends org.lgna.croquet.ActionOperation {
 
 	public CycleFrameSizeOperation() {
 		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "fce834d4-4665-405e-9fae-2461613e3412" ) );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK ) );
+		this.getImp().setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F9, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK ) );
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class CycleFrameSizeOperation extends org.lgna.croquet.ActionOperation {
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		java.awt.Dimension maximumWindowSize = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize();
 		int heightDelta = screenSize.height - maximumWindowSize.height;
@@ -75,9 +75,10 @@ public class CycleFrameSizeOperation extends org.lgna.croquet.ActionOperation {
 		int w = sizes[ i ].width;
 		int h = sizes[ i ].height - heightDelta;
 
-		org.lgna.croquet.Application.getActiveInstance().getFrame().setSize( w, h );
+		org.lgna.croquet.Application.getActiveInstance().getDocumentFrame().getFrame().setSize( w, h );
 		index++;
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( w + "x" + h, "(original:", sizes[ i ].width + "x" + sizes[ i ].height, "-" + heightDelta, "accounting for height of taskbar)" );
+		step.finish();
 	}
 }

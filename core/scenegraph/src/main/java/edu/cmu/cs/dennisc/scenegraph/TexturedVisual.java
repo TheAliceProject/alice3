@@ -47,8 +47,6 @@ package edu.cmu.cs.dennisc.scenegraph;
  * 
  */
 public abstract class TexturedVisual extends edu.cmu.cs.dennisc.scenegraph.Visual {
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
-
 	public TexturedVisual() {
 		this.sgAppearance.setDiffuseColorTextureClamped( true );
 		this.frontFacingAppearance.setValue( this.sgAppearance );
@@ -73,16 +71,5 @@ public abstract class TexturedVisual extends edu.cmu.cs.dennisc.scenegraph.Visua
 		this.sgAppearance.isDiffuseColorTextureAlphaBlended.setValue( isDiffuseColorTextureAlphaBlended );
 	}
 
-	//	private org.lgna.story.Paint paint;
-	//	public org.lgna.story.Paint getPaint() {
-	//		return this.paint;
-	//	}
-	//
-	//	public void setPaint( org.lgna.story.Paint paint ) {
-	//		if( this.paint != paint ) {
-	//			this.paint = paint;
-	//			this.sgAppearance.setDiffuseColor( org.lgna.story.ImplementationAccessor.getColor4f( paint, edu.cmu.cs.dennisc.color.Color4f.WHITE ) );
-	//			this.setTexture( org.lgna.story.ImplementationAccessor.getTexture( paint, null ) );
-	//		}
-	//	}
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
 }

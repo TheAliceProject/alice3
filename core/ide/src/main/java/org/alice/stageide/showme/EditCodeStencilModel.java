@@ -47,6 +47,6 @@ package org.alice.stageide.showme;
  */
 public class EditCodeStencilModel extends ChangePerspectiveStencilModel {
 	public EditCodeStencilModel() {
-		super( java.util.UUID.fromString( "4fe46e36-b8d3-4c3f-b2a9-691779b6d7b4" ), org.alice.ide.IDE.getActiveInstance().getCodePerspective() );
+		super( java.util.UUID.fromString( "4fe46e36-b8d3-4c3f-b2a9-691779b6d7b4" ), org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getCodePerspective() );
 	}
 }

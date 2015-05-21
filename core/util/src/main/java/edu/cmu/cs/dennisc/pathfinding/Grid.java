@@ -167,7 +167,7 @@ public class Grid {
 		return cellMin;
 	}
 
-	public java.util.Vector<Cell> findShortestPathBetween( Cell src, Cell dst, java.util.Set<Cell> open, java.util.Set<Cell> closed, java.awt.Component observer ) {
+	public java.util.List<Cell> findShortestPathBetween( Cell src, Cell dst, java.util.Set<Cell> open, java.util.Set<Cell> closed, java.awt.Component observer ) {
 		//todo: remove?
 		for( int row = 0; row < getRowCount(); row++ ) {
 			for( int column = 0; column < getColumnCount(); column++ ) {
@@ -191,10 +191,10 @@ public class Grid {
 			}
 			Cell bestNeighbor = getCellWithMinimumF( open, dst );
 			if( bestNeighbor.equals( dst ) ) {
-				java.util.Vector<Cell> path = new java.util.Vector<Cell>( closed.size() + 1 );
+				java.util.List<Cell> path = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( closed.size() + 1 );
 				Cell cell = dst;
 				while( cell != null ) {
-					path.addElement( cell );
+					path.add( cell );
 					cell = cell.getParent();
 				}
 				//todo: reverse list
@@ -226,9 +226,9 @@ public class Grid {
 		return null;
 	}
 
-	public java.util.Vector<Cell> findShortestPathBetween( Cell src, Cell dst ) {
+	public java.util.List<Cell> findShortestPathBetween( Cell src, Cell dst ) {
 		if( src.equals( dst ) ) {
-			java.util.Vector<Cell> path = new java.util.Vector<Cell>( 2 );
+			java.util.List<Cell> path = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( 2 );
 			path.add( src );
 			path.add( dst );
 			return path;

@@ -58,21 +58,21 @@ public class ArrayUtilities {
 		}
 	}
 
-	public static <E extends Object> E[] concat( Class<E> cls, E a, E... bs ) {
+	public static <E> E[] concat( Class<E> cls, E a, E... bs ) {
 		E[] rv = (E[])java.lang.reflect.Array.newInstance( cls, 1 + bs.length );
 		rv[ 0 ] = a;
 		System.arraycopy( bs, 0, rv, 1, bs.length );
 		return rv;
 	}
 
-	public static <E extends Object> E[] concat( Class<E> cls, E[] as, E b ) {
+	public static <E> E[] concat( Class<E> cls, E[] as, E b ) {
 		E[] rv = (E[])java.lang.reflect.Array.newInstance( cls, as.length + 1 );
 		System.arraycopy( as, 0, rv, 0, as.length );
 		rv[ as.length ] = b;
 		return rv;
 	}
 
-	public static <E extends Object> E[] concatArrays( Class<E> cls, E[]... arrays ) {
+	public static <E> E[] concatArrays( Class<E> cls, E[]... arrays ) {
 		int totalLength = 0;
 		for( E[] array : arrays ) {
 			totalLength += array.length;
@@ -92,7 +92,7 @@ public class ArrayUtilities {
 
 	}
 
-	public static <E extends Object> E[] createArray( java.util.Collection<E> collection, Class<E> cls, boolean isZeroLengthArrayDesiredForNull ) {
+	public static <E> E[] createArray( java.util.Collection<E> collection, Class<E> cls, boolean isZeroLengthArrayDesiredForNull ) {
 		int size;
 		if( collection != null ) {
 			size = collection.size();
@@ -115,11 +115,11 @@ public class ArrayUtilities {
 		return rv;
 	}
 
-	public static <E extends Object> E[] createArray( java.util.Collection<E> collection, Class<E> cls ) {
+	public static <E> E[] createArray( java.util.Collection<E> collection, Class<E> cls ) {
 		return createArray( collection, cls, false );
 	}
 
-	public static <E extends Object> void set( java.util.Collection<E> collection, E... array ) {
+	public static <E> void set( java.util.Collection<E> collection, E... array ) {
 		collection.clear();
 		if( array != null ) {
 			if( collection instanceof java.util.ArrayList<?> ) {

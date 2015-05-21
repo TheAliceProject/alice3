@@ -47,10 +47,6 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Component extends Element implements edu.cmu.cs.dennisc.pattern.Visitable, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame {
-	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener> absoluteTransformationListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener> hierarchyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
-	private Composite vehicle = null;
-
 	@Override
 	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
 		visitor.visit( this );
@@ -78,8 +74,6 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation() {
 		return getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
 	}
-
-	private static edu.cmu.cs.dennisc.math.AffineMatrix4x4 s_bufferMatrixForReuse = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
 
 	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
@@ -305,39 +299,43 @@ public abstract class Component extends Element implements edu.cmu.cs.dennisc.pa
 
 	private static final edu.cmu.cs.dennisc.math.Vector4 s_buffer = new edu.cmu.cs.dennisc.math.Vector4();
 
-	public java.awt.Point transformToAWT( java.awt.Point rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, AbstractCamera camera ) {
+	public java.awt.Point transformToAWT( java.awt.Point rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera ) {
 		synchronized( s_buffer ) {
 			if( this != camera ) {
 				transformTo( s_buffer, xyzw, camera );
 			} else {
 				s_buffer.set( xyzw );
 			}
-			edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromCameraToAWT( rv, s_buffer, renderTarget, camera );
+			edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromCameraToAWT( rv, s_buffer, renderTarget, camera );
 		}
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, AbstractCamera camera ) {
-		edu.cmu.cs.dennisc.pictureplane.TransformationUtilities.transformFromAWTToCamera( rv, p, z, renderTarget, camera );
+	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera ) {
+		edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromAWTToCamera( rv, p, z, renderTarget, camera );
 		if( this != camera ) {
 			transformFrom_AffectReturnValuePassedIn( rv, camera );
 		}
 		return rv;
 	}
 
-	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, AbstractCamera camera ) {
+	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera ) {
 		return transformToAWT( new java.awt.Point(), xyzw, renderTarget, camera );
 	}
 
-	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, AbstractCamera camera ) {
+	public java.awt.Point transformToAWT_New( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera ) {
 		return transformToAWT_New( new edu.cmu.cs.dennisc.math.Vector4( xyz.x, xyz.y, xyz.z, 1.0 ), renderTarget, camera );
 	}
 
-	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT_NewVectorD4( java.awt.Point p, double z, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, AbstractCamera camera ) {
+	public edu.cmu.cs.dennisc.math.Vector4 transformFromAWT_NewVectorD4( java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera ) {
 		return transformFromAWT( new edu.cmu.cs.dennisc.math.Vector4(), p, z, renderTarget, camera );
 	}
 
-	public edu.cmu.cs.dennisc.math.Point3 transformFromAWT_NewPointD3( java.awt.Point p, double z, edu.cmu.cs.dennisc.renderer.RenderTarget renderTarget, AbstractCamera camera ) {
+	public edu.cmu.cs.dennisc.math.Point3 transformFromAWT_NewPointD3( java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, AbstractCamera camera ) {
 		return edu.cmu.cs.dennisc.math.Point3.createFromXYZW( transformFromAWT_NewVectorD4( p, z, renderTarget, camera ) );
 	}
+
+	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener> absoluteTransformationListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.HierarchyListener> hierarchyListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
+	private Composite vehicle = null;
 }

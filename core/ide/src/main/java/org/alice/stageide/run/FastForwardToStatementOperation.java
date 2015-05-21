@@ -45,7 +45,7 @@ package org.alice.stageide.run;
 /**
  * @author Dennis Cosgrove
  */
-public class FastForwardToStatementOperation extends org.lgna.croquet.ActionOperation {
+public class FastForwardToStatementOperation extends org.lgna.croquet.Operation {
 	public FastForwardToStatementOperation( org.lgna.project.ast.Statement statement ) {
 		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "7b7bef33-917d-47a9-b8a8-9e43153dc4a4" ) );
 		this.statement = statement;

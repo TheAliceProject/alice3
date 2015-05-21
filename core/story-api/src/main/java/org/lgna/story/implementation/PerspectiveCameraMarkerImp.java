@@ -316,7 +316,7 @@ public class PerspectiveCameraMarkerImp extends CameraMarkerImp {
 	}
 
 	@Override
-	protected Visual[] getSgVisuals() {
+	public Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
 

@@ -79,7 +79,7 @@ public class MethodInfo extends MemberWithParametersInfo {
 	}
 
 	@Override
-	protected void appendRepr( java.lang.StringBuilder sb ) {
+	protected void appendRepr( StringBuilder sb ) {
 		sb.append( "name=" );
 		sb.append( this.name );
 	}

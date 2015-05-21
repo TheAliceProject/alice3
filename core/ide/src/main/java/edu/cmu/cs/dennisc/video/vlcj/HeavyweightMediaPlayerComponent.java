@@ -67,28 +67,15 @@ package edu.cmu.cs.dennisc.video.vlcj;
 
 	@Override
 	protected java.awt.Canvas onGetCanvas() {
-		java.awt.Canvas rv;
-		if( uk.co.caprica.vlcj.runtime.RuntimeUtil.isWindows() ) {
-			rv = new uk.co.caprica.vlcj.runtime.windows.WindowsCanvas() {
-				@Override
-				public void paint( java.awt.Graphics g ) {
-					super.paint( g );
-					if( painter != null ) {
-						painter.paint( (java.awt.Graphics2D)g, videoPlayer, this.getWidth(), this.getHeight() );
-					}
+		java.awt.Canvas rv = new java.awt.Canvas() {
+			@Override
+			public void paint( java.awt.Graphics g ) {
+				super.paint( g );
+				if( painter != null ) {
+					painter.paint( (java.awt.Graphics2D)g, videoPlayer, this.getWidth(), this.getHeight() );
 				}
-			};
-		} else {
-			rv = new java.awt.Canvas() {
-				@Override
-				public void paint( java.awt.Graphics g ) {
-					super.paint( g );
-					if( painter != null ) {
-						painter.paint( (java.awt.Graphics2D)g, videoPlayer, this.getWidth(), this.getHeight() );
-					}
-				}
-			};
-		}
+			}
+		};
 		rv.setBackground( java.awt.Color.BLACK );
 		return rv;
 	}

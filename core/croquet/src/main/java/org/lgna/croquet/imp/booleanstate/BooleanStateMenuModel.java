@@ -81,11 +81,6 @@ import org.lgna.croquet.Operation;
 	}
 
 	@Override
-	protected BooleanStateMenuModelResolver createResolver() {
-		return new BooleanStateMenuModelResolver( this.state );
-	}
-
-	@Override
 	protected void handleShowing( org.lgna.croquet.views.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( menuItemContainer, e );
 		super.handleShowing( menuItemContainer, e );
@@ -93,7 +88,7 @@ import org.lgna.croquet.Operation;
 		for( boolean isTrue : new boolean[] { true, false } ) {
 			Operation operation = isTrue ? this.state.getSetToTrueOperation() : this.state.getSetToFalseOperation();
 			operation.initializeIfNecessary();
-			javax.swing.Action action = operation.getSwingModel().getAction();
+			javax.swing.Action action = operation.getImp().getSwingModel().getAction();
 			javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem( action );
 			buttonGroup.add( jMenuItem );
 			jMenuItem.setSelected( this.state.getValue() == isTrue );

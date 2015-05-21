@@ -57,10 +57,6 @@ public final class PopupPrepStep extends PrepStep<org.lgna.croquet.PopupPrepMode
 		super( parent, model, trigger );
 	}
 
-	public PopupPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-	}
-
 	public void showPopupMenu( org.lgna.croquet.views.PopupMenu popupMenu ) {
 		org.lgna.croquet.triggers.Trigger trigger = this.getTrigger();
 		this.popupMenu = popupMenu;

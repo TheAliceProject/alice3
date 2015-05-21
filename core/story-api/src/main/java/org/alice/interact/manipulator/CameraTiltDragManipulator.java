@@ -108,12 +108,12 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 	private static final boolean SHOW_PICK_POINT = false;
 
 	@Override
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
@@ -187,12 +187,14 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 			StandIn standIn = new StandIn();
 			standIn.setName( "CameraOrbitStandIn" );
 			standIn.setVehicle( this.getCamera().getRoot() );
-			standIn.setTransformation( this.manipulatedTransformable.getAbsoluteTransformation(), AsSeenBy.SCENE );
-			standIn.setAxesOnlyToStandUp();
-			this.manipulatedTransformable.applyRotationAboutXAxis( yAngle, standIn );
-			this.manipulatedTransformable.applyRotationAboutYAxis( xAngle, standIn );
-
-			standIn.setVehicle( null );
+			try {
+				standIn.setTransformation( this.manipulatedTransformable.getAbsoluteTransformation(), AsSeenBy.SCENE );
+				standIn.setAxesOnlyToStandUp();
+				this.manipulatedTransformable.applyRotationAboutXAxis( yAngle, standIn );
+				this.manipulatedTransformable.applyRotationAboutYAxis( xAngle, standIn );
+			} finally {
+				standIn.setVehicle( null );
+			}
 
 			//Make sure the camera's x-axis is still horizontal
 			AffineMatrix4x4 cameraTransform = this.manipulatedTransformable.getAbsoluteTransformation();
@@ -251,5 +253,5 @@ public class CameraTiltDragManipulator extends CameraManipulator implements Onsc
 
 	private Plane cameraFacingPickPlane;
 	private Point3 pickPoint = null;
-	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
+	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
 }

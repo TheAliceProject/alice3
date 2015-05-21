@@ -62,11 +62,6 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 
 	public abstract Class<N> getNodeParameterType();
 
-	@Override
-	protected org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N> createResolver() {
-		return new org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N>( this );
-	}
-
 	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return this.declaringType;
 	}
@@ -84,7 +79,7 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
 		this.index = owner.indexOf( this.member );
 		owner.remove( index );
-		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 		declarationTabState.removeAllOrphans();
 	}
 
@@ -98,33 +93,13 @@ public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.Abstr
 	}
 
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.AbstractEdit<?> edit ) {
-		org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>>)edit;
-		DeleteMemberOperation<N> replacement = replacementEdit.getModel();
-		retargeter.addKeyValuePair( this.member, replacement.member );
-		retargeter.addKeyValuePair( this.declaringType, replacement.declaringType );
-	}
-
-	@Override
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		this.member = retargeter.retarget( this.member );
-		this.declaringType = retargeter.retarget( this.declaringType );
-	}
-
-	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.AbstractEdit<?> replacementCandidate ) {
-		return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
-	}
-
-	@Override
 	public void appendDescription( StringBuilder rv, boolean isDetailed ) {
 		rv.append( "delete: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, member, org.lgna.croquet.Application.getLocale() );
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( this.isClearToDelete( this.member ) ) {
 			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>>( step ) );
 		} else {

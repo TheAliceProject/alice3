@@ -157,12 +157,12 @@ public class ControlFlowTabView extends org.lgna.croquet.views.MigPanel {
 	@Override
 	public void handleCompositePreActivation() {
 		super.handleCompositePreActivation();
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addAndInvokeNewSchoolValueListener( this.declarationTabListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().addAndInvokeNewSchoolValueListener( this.declarationTabListener );
 	}
 
 	@Override
 	public void handleCompositePostDeactivation() {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeNewSchoolValueListener( this.declarationTabListener );
+		org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState().removeNewSchoolValueListener( this.declarationTabListener );
 		super.handleCompositePostDeactivation();
 	}
 }

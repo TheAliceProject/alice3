@@ -103,7 +103,7 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 
 	private final class RunAwtContainerInitializer implements org.lgna.story.implementation.ProgramImp.AwtContainerInitializer {
 		@Override
-		public void addComponents( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
+		public void addComponents( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget, javax.swing.JPanel controlPanel ) {
 			org.alice.stageide.run.views.RunView runView = RunComposite.this.getView();
 			runView.forgetAndRemoveAllComponents();
 
@@ -121,7 +121,7 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 	private final RunAwtContainerInitializer runAwtContainerInitializer = new RunAwtContainerInitializer();
 
 	private void startProgram() {
-		new org.lgna.common.ComponentThread( new ProgramRunnable( runAwtContainerInitializer ), RunComposite.this.getLaunchOperation().getName() ).start();
+		new org.lgna.common.ComponentThread( new ProgramRunnable( runAwtContainerInitializer ), RunComposite.this.getLaunchOperation().getImp().getName() ).start();
 		if( this.fastForwardToStatementOperation != null ) {
 			this.fastForwardToStatementOperation.pre( this.programContext );
 		}
@@ -168,7 +168,7 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 		if( this.location != null ) {
 			frame.setLocation( this.location );
 		} else {
-			org.lgna.croquet.views.Frame documentFrame = org.alice.ide.IDE.getActiveInstance().getFrame();
+			org.lgna.croquet.views.Frame documentFrame = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getFrame();
 			if( documentFrame != null ) {
 				frame.setLocationRelativeTo( documentFrame );
 			} else {

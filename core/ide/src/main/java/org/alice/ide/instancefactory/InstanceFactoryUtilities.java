@@ -121,23 +121,4 @@ public class InstanceFactoryUtilities {
 		}
 		return rv;
 	}
-
-	public static InstanceFactory retarget( org.lgna.croquet.Retargeter retargeter, InstanceFactory instanceFactory ) {
-		InstanceFactory rv;
-		if( instanceFactory instanceof ThisInstanceFactory ) {
-			rv = instanceFactory;
-		} else if( instanceFactory instanceof ThisFieldAccessFactory ) {
-			ThisFieldAccessFactory thisFieldAccessFactory = (ThisFieldAccessFactory)instanceFactory;
-			org.lgna.project.ast.UserField field = thisFieldAccessFactory.getField();
-			rv = ThisFieldAccessFactory.getInstance( retargeter.retarget( field ) );
-		} else if( instanceFactory instanceof LocalAccessFactory ) {
-			LocalAccessFactory localAccessFactory = (LocalAccessFactory)instanceFactory;
-			org.lgna.project.ast.UserLocal local = localAccessFactory.getLocal();
-			rv = LocalAccessFactory.getInstance( retargeter.retarget( local ) );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo", instanceFactory );
-			rv = instanceFactory;
-		}
-		return rv;
-	}
 }

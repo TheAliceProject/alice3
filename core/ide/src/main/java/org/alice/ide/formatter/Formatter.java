@@ -60,7 +60,7 @@ public abstract class Formatter {
 
 	public String getInfixExpressionText( org.lgna.project.ast.InfixExpression<?> infixExpression ) {
 		String clsName = infixExpression.getClass().getName();
-		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( clsName, javax.swing.JComponent.getDefaultLocale() );
+		java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( clsName, javax.swing.JComponent.getDefaultLocale() );
 		Enum<?> e = infixExpression.operator.getValue();
 		return resourceBundle.getString( e.name() );
 	}
@@ -79,12 +79,19 @@ public abstract class Formatter {
 		} else if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
 			return this.getTextForType( type );
+		} else if( declaration instanceof org.lgna.project.ast.JavaField ) {
+			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)declaration;
+			if( field.isStatic() ) {
+				return this.getNameForField( field.getFieldReflectionProxy().getReification() );
+			} else {
+				return declaration.getName();
+			}
 		} else {
 			return declaration.getName();
 		}
 	}
 
-	public abstract String getNameForField( java.lang.reflect.Field fld );
+	protected abstract String getNameForField( java.lang.reflect.Field fld );
 
 	public abstract boolean isTypeExpressionDesired();
 

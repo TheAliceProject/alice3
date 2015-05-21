@@ -46,16 +46,8 @@ package org.alice.stageide.about;
 /**
  * @author Dennis Cosgrove
  */
-public class SystemEulaComposite extends EulaComposite {
-	private static class SingletonHolder {
-		private static SystemEulaComposite instance = new SystemEulaComposite();
-	}
-
-	public static SystemEulaComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private SystemEulaComposite() {
+public final class SystemEulaComposite extends EulaComposite {
+	public SystemEulaComposite() {
 		super( java.util.UUID.fromString( "b5a92f6d-3d5f-445d-a283-d8b31121b78e" ), org.lgna.project.License.TEXT );
 	}
 }

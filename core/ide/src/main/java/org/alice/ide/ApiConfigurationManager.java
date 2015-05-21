@@ -231,4 +231,6 @@ public abstract class ApiConfigurationManager {
 	public abstract boolean isTabClosable( org.lgna.project.ast.AbstractCode code );
 
 	public abstract boolean isExportTypeDesiredFor( org.lgna.project.ast.NamedUserType type );
+
+	public abstract org.alice.ide.iconfactory.IconFactoryManager createIconFactoryManager();
 }

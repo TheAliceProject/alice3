@@ -115,7 +115,11 @@ public class EmployeesOnly {
 	}
 
 	public static Color createColor( java.awt.Color awtColor ) {
-		return createColor( awtColor != null ? new edu.cmu.cs.dennisc.color.Color4f( awtColor ) : null );
+		return createColor( awtColor != null ? createColor4f( awtColor ) : null );
+	}
+
+	public static edu.cmu.cs.dennisc.color.Color4f createColor4f( java.awt.Color awtColor ) {
+		return edu.cmu.cs.dennisc.color.Color4f.createFromRgbaInts( awtColor.getRed(), awtColor.getGreen(), awtColor.getBlue(), awtColor.getAlpha() );
 	}
 
 	public static edu.cmu.cs.dennisc.color.Color4f getColor4f( Color color ) {
@@ -165,11 +169,22 @@ public class EmployeesOnly {
 				mapImagePaintToTexture.put( imagePaint, rv );
 			}
 			return rv;
-		} else if( paint instanceof edu.cmu.cs.dennisc.nebulous.NebulousPaint ) {
-			edu.cmu.cs.dennisc.nebulous.NebulousPaint nPaint = (edu.cmu.cs.dennisc.nebulous.NebulousPaint)paint;
-			edu.cmu.cs.dennisc.nebulous.NebulousTexture nTexture = nPaint.getTexture();
-			nTexture.setMipMappingDesired( true );
-			return nTexture;
+		} else if( paint instanceof NonfreeTexturePaint ) {
+			NonfreeTexturePaint nonfreeTexturePaint = (NonfreeTexturePaint)paint;
+			if( nonfreeTexturePaint.isTextureValid() ) {
+				edu.cmu.cs.dennisc.texture.Texture texture = nonfreeTexturePaint.getTexture();
+
+				//todo
+				if( texture instanceof edu.cmu.cs.dennisc.nebulous.NebulousTexture ) {
+					edu.cmu.cs.dennisc.nebulous.NebulousTexture nebulousTexture = (edu.cmu.cs.dennisc.nebulous.NebulousTexture)texture;
+					nebulousTexture.setMipMappingDesired( true );
+				}
+				return texture;
+
+			} else {
+				//todo?
+				return defaultValue;
+			}
 		}
 		else {
 			return defaultValue;

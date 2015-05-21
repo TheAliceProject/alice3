@@ -96,12 +96,12 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget getOnscreenRenderTarget() {
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget getOnscreenRenderTarget() {
 		return this.onscreenRenderTarget;
 	}
 
 	@Override
-	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget ) {
+	public void setOnscreenRenderTarget( edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget ) {
 		this.onscreenRenderTarget = onscreenRenderTarget;
 	}
 
@@ -280,5 +280,5 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	private Boolean hasMoved = false;
 
 	private AbstractCamera camera = null;
-	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget onscreenRenderTarget;
+	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
 }

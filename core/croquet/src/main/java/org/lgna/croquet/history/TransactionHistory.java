@@ -53,19 +53,6 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 		this.transactions = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	}
 
-	public TransactionHistory( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		super( binaryDecoder );
-		this.transactions = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList( binaryDecoder.decodeBinaryEncodableAndDecodableArray( Transaction.class ) );
-		for( Transaction transaction : this.transactions ) {
-			transaction.setOwner( this );
-		}
-	}
-
-	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.transactions, Transaction.class ) );
-	}
-
 	public TransactionHistory getActiveTransactionHistory() {
 		Transaction transaction = getLastTransaction();
 		if( ( transaction != null ) && transaction.isPending() ) {
@@ -87,12 +74,6 @@ public class TransactionHistory extends TransactionNode<CompletionStep<?>> imple
 	protected void appendContexts( java.util.List<org.lgna.croquet.Context> out ) {
 		for( Transaction transaction : this.transactions ) {
 			transaction.appendContexts( out );
-		}
-	}
-
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		for( Transaction transaction : this.transactions ) {
-			transaction.retarget( retargeter );
 		}
 	}
 

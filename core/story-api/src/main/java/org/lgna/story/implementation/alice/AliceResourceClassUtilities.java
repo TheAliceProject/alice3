@@ -43,70 +43,46 @@
 package org.lgna.story.implementation.alice;
 
 import java.lang.reflect.Field;
-import java.util.LinkedList;
 import java.util.List;
 
-import org.lgna.project.ast.ConstructorBlockStatement;
-import org.lgna.project.ast.ConstructorInvocationStatement;
-import org.lgna.project.ast.FieldAccess;
-import org.lgna.project.ast.JavaConstructor;
-import org.lgna.project.ast.JavaConstructorParameter;
-import org.lgna.project.ast.JavaField;
-import org.lgna.project.ast.JavaType;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.ParameterAccess;
-import org.lgna.project.ast.SimpleArgument;
-import org.lgna.project.ast.SuperConstructorInvocationStatement;
-import org.lgna.project.ast.UserPackage;
-import org.lgna.project.ast.UserParameter;
 import org.lgna.story.resources.ModelResource;
-import org.lgna.story.resourceutilities.ConstructorParameterPair;
 
 /**
  * @author dculyba
  * 
  */
 public class AliceResourceClassUtilities {
+	public static final String DEFAULT_PACKAGE = "";
+	public static final String RESOURCE_SUFFIX = "Resource";
 
-	public static String DEFAULT_PACKAGE = "";
+	private AliceResourceClassUtilities() {
+		throw new AssertionError();
+	}
 
-	public static String RESOURCE_SUFFIX = "Resource";
-
-	public static boolean isTopLevelResource( Class<? extends org.lgna.story.resources.ModelResource> resourceClass )
-	{
+	public static boolean isTopLevelResource( Class<? extends org.lgna.story.resources.ModelResource> resourceClass ) {
 		if( resourceClass.isAnnotationPresent( org.lgna.project.annotations.ResourceTemplate.class ) ) {
 			org.lgna.project.annotations.ResourceTemplate resourceTemplate = resourceClass.getAnnotation( org.lgna.project.annotations.ResourceTemplate.class );
 			return resourceTemplate.isTopLevelResource();
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}
 
-	public static Class<? extends org.lgna.story.SModel> getModelClassForResourceClass( Class<? extends org.lgna.story.resources.ModelResource> resourceClass )
-	{
+	public static Class<? extends org.lgna.story.SModel> getModelClassForResourceClass( Class<? extends org.lgna.story.resources.ModelResource> resourceClass ) {
 		if( resourceClass.isAnnotationPresent( org.lgna.project.annotations.ResourceTemplate.class ) ) {
 			org.lgna.project.annotations.ResourceTemplate resourceTemplate = resourceClass.getAnnotation( org.lgna.project.annotations.ResourceTemplate.class );
 			Class<?> cls = resourceTemplate.modelClass();
-			if( org.lgna.story.SModel.class.isAssignableFrom( cls ) )
-			{
+			if( org.lgna.story.SModel.class.isAssignableFrom( cls ) ) {
 				return (Class<? extends org.lgna.story.SModel>)cls;
-			}
-			else
-			{
+			} else {
 				return null;
 			}
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
 
-	public static Class<? extends org.lgna.story.resources.ModelResource> getResourceClassForModelClass( Class<? extends org.lgna.story.SModel> modelClass )
-	{
+	public static Class<? extends org.lgna.story.resources.ModelResource> getResourceClassForModelClass( Class<? extends org.lgna.story.SModel> modelClass ) {
 		java.lang.reflect.Constructor<?>[] constructors = modelClass.getConstructors();
 		java.lang.reflect.Constructor<?> firstConstructor = ( constructors != null ) && ( constructors.length > 0 ) ? constructors[ 0 ] : null;
 		if( firstConstructor != null ) {
@@ -117,63 +93,52 @@ public class AliceResourceClassUtilities {
 						return (Class<? extends org.lgna.story.resources.ModelResource>)parameterType;
 					}
 				}
-
 			}
 		}
 		return null;
 	}
 
-	public static String getAliceMethodNameForEnum( String enumName )
-	{
+	public static String getAliceMethodNameForEnum( String enumName ) {
 		StringBuilder sb = new StringBuilder();
 		String[] nameParts = enumName.split( "_" );
-		for( String s : nameParts )
-		{
+		for( String s : nameParts ) {
 			sb.append( uppercaseFirstLetter( s ) );
 		}
 		return sb.toString();
 	}
 
-	public static String getAliceClassName( String name )
-	{
+	public static String getAliceClassName( String name ) {
 		int resourceIndex = name.indexOf( RESOURCE_SUFFIX );
-		if( resourceIndex != -1 )
-		{
+		if( resourceIndex != -1 ) {
 			name = name.substring( 0, resourceIndex );
 		}
 		name = getClassNameFromName( name );
 		return name;
 	}
 
-	public static String getAliceClassName( Class<?> resourceClass )
-	{
+	public static String getAliceClassName( Class<?> resourceClass ) {
 		return getAliceClassName( resourceClass.getSimpleName() );
 	}
 
-	public static List<String> splitOnCapitalsAndNumbers( String s )
-	{
+	public static List<String> splitOnCapitalsAndNumbers( String s ) {
 		StringBuilder sb = new StringBuilder();
-		List<String> split = new LinkedList<String>();
+		List<String> split = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		boolean isOnNumber = false;
-		for( int i = 0; i < s.length(); i++ )
-		{
+		for( int i = 0; i < s.length(); i++ ) {
 			boolean shouldRestart = false;
 			if( Character.isDigit( s.charAt( i ) ) ) {
 				if( !isOnNumber ) {
 					shouldRestart = true;
 				}
 				isOnNumber = true;
-			}
-			else {
+			} else {
 				if( isOnNumber ) {
 					shouldRestart = true;
 				}
 				isOnNumber = false;
 			}
-			if( Character.isUpperCase( s.charAt( i ) ) )
-			{
+			if( Character.isUpperCase( s.charAt( i ) ) ) {
 				shouldRestart = true;
-
 			}
 			if( shouldRestart ) {
 				split.add( sb.toString() );
@@ -181,37 +146,29 @@ public class AliceResourceClassUtilities {
 			}
 			sb.append( s.charAt( i ) );
 		}
-		if( sb.length() > 0 )
-		{
+		if( sb.length() > 0 ) {
 			split.add( sb.toString() );
 		}
 		return split;
 	}
 
-	public static String uppercaseFirstLetter( String s )
-	{
-		if( s == null )
-		{
+	public static String uppercaseFirstLetter( String s ) {
+		if( s == null ) {
 			return null;
 		}
-		if( s.length() <= 1 )
-		{
+		if( s.length() <= 1 ) {
 			return s.toUpperCase();
 		}
 		return s.substring( 0, 1 ).toUpperCase() + s.substring( 1 ).toLowerCase();
 	}
 
-	public static String[] fullStringSplit( String name )
-	{
-		List<String> strings = new LinkedList<String>();
+	public static String[] fullStringSplit( String name ) {
+		List<String> strings = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		String[] nameParts = name.split( "[_ -]" );
-		for( String s : nameParts )
-		{
+		for( String s : nameParts ) {
 			List<String> capitalSplit = splitOnCapitalsAndNumbers( s );
-			for( String subS : capitalSplit )
-			{
-				if( subS.length() > 0 )
-				{
+			for( String subS : capitalSplit ) {
+				if( subS.length() > 0 ) {
 					strings.add( subS );
 				}
 			}
@@ -219,109 +176,26 @@ public class AliceResourceClassUtilities {
 		return strings.toArray( new String[ strings.size() ] );
 	}
 
-	public static String getClassNameFromName( String name )
-	{
+	public static String getClassNameFromName( String name ) {
 		StringBuilder sb = new StringBuilder();
 		String[] nameParts = fullStringSplit( name );
-		for( String s : nameParts )
-		{
+		for( String s : nameParts ) {
 			sb.append( uppercaseFirstLetter( s ) );
 		}
 		return sb.toString();
 	}
 
-	public static Field[] getFieldsOfType( Class<?> ownerClass, Class<?> ofType )
-	{
+	public static Field[] getFieldsOfType( Class<?> ownerClass, Class<?> ofType ) {
 		Field[] fields = ownerClass.getFields();
-		List<Field> fieldsOfType = new LinkedList<Field>();
-		for( Field f : fields )
-		{
+		List<Field> fieldsOfType = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		for( Field f : fields ) {
 			boolean matchesType = ofType.isAssignableFrom( f.getType() );
 			boolean matchesOwner = f.getDeclaringClass() == ownerClass;
-			if( matchesType && matchesOwner )
-			{
+			if( matchesType && matchesOwner ) {
 				fieldsOfType.add( f );
 			}
 		}
 		return fieldsOfType.toArray( new Field[ fieldsOfType.size() ] );
-	}
-
-	public static UserPackage getAlicePackage( Class<?> resourceClass, Class<?> rootClass )
-	{
-		String resourcePackage = resourceClass.getPackage().getName();
-		String rootPackage = rootClass.getPackage().getName();
-		int rootIndex = resourcePackage.indexOf( rootPackage );
-		if( rootIndex != -1 )
-		{
-			resourcePackage = resourcePackage.substring( rootIndex + rootPackage.length() );
-			if( resourcePackage.startsWith( "." ) )
-			{
-				resourcePackage = resourcePackage.substring( 1 );
-			}
-		}
-		resourcePackage = DEFAULT_PACKAGE + resourcePackage;
-		return new UserPackage( resourcePackage );
-	}
-
-	public static NamedUserConstructor createConstructorForResourceClass( Class<?> resourceClass, ConstructorParameterPair constructorAndParameter )
-	{
-		UserParameter parameter = new UserParameter( "modelResource", resourceClass );
-		ParameterAccess parameterAccessor = new ParameterAccess( parameter );
-		SimpleArgument superArgument = new SimpleArgument( constructorAndParameter.getParameter(), parameterAccessor );
-		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement( constructorAndParameter.getConstructor(), superArgument );
-		ConstructorBlockStatement blockStatement = new ConstructorBlockStatement( superInvocation );
-		UserParameter[] parameters = { parameter };
-		NamedUserConstructor constructor = new NamedUserConstructor( parameters, blockStatement );
-		return constructor;
-	}
-
-	public static NamedUserConstructor createConstructorForResourceField( Field resourceField, ConstructorParameterPair constructorAndParameter )
-	{
-		JavaField javaField = JavaField.getInstance( resourceField );
-		FieldAccess fieldAccess = org.lgna.project.ast.AstUtilities.createStaticFieldAccess( javaField );
-		SimpleArgument superArgument = new SimpleArgument( constructorAndParameter.getParameter(), fieldAccess );
-		ConstructorInvocationStatement superInvocation = new SuperConstructorInvocationStatement( constructorAndParameter.getConstructor(), superArgument );
-		ConstructorBlockStatement blockStatement = new ConstructorBlockStatement( superInvocation );
-		UserParameter[] parameters = {};
-		NamedUserConstructor constructor = new NamedUserConstructor( parameters, blockStatement );
-		return constructor;
-	}
-
-	public static ConstructorParameterPair getConstructorAndParameterForAliceClass( NamedUserType aliceType )
-	{
-		for( int i = 0; i < aliceType.constructors.size(); i++ )
-		{
-			NamedUserConstructor constructor = aliceType.constructors.get( i );
-			if( constructor.requiredParameters.size() == 1 )
-			{
-				UserParameter parameter = constructor.requiredParameters.get( 0 );
-				if( parameter.getValueType().isAssignableTo( ModelResource.class ) )
-				{
-					return new ConstructorParameterPair( constructor, parameter );
-				}
-			}
-		}
-		return null;
-	}
-
-	public static ConstructorParameterPair getConstructorAndParameterForJavaClass( Class<?> javaClass )
-	{
-		JavaType javeType = JavaType.getInstance( javaClass );
-		List<JavaConstructor> constructors = javeType.getDeclaredConstructors();
-		for( JavaConstructor constructor : constructors )
-		{
-			List<JavaConstructorParameter> parameters = (List<JavaConstructorParameter>)constructor.getRequiredParameters();
-			if( parameters.size() == 1 )
-			{
-				JavaConstructorParameter parameter = parameters.get( 0 );
-				JavaType javaType = parameter.getValueType();
-				if( javaType.isAssignableTo( ModelResource.class ) )
-				{
-					return new ConstructorParameterPair( constructor, parameter );
-				}
-			}
-		}
-		return null;
 	}
 
 }

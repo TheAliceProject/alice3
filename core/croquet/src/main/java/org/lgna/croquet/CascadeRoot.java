@@ -47,21 +47,6 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeRoot<T, CM extends CompletionModel> extends CascadeBlankOwner<T[], T> {
-	public static final class InternalPopupPrepModelResolver<T> extends IndirectResolver<InternalPopupPrepModel<T>, CascadeRoot<T, ?>> {
-		private InternalPopupPrepModelResolver( CascadeRoot<T, ?> indirect ) {
-			super( indirect );
-		}
-
-		public InternalPopupPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-			super( binaryDecoder );
-		}
-
-		@Override
-		protected InternalPopupPrepModel<T> getDirect( CascadeRoot<T, ?> indirect ) {
-			return indirect.getPopupPrepModel();
-		}
-	}
-
 	public static final class InternalPopupPrepModel<T> extends PopupPrepModel {
 		private final CascadeRoot<T, ?> root;
 
@@ -75,22 +60,17 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		}
 
 		@Override
-		protected InternalPopupPrepModelResolver<T> createResolver() {
-			return new InternalPopupPrepModelResolver<T>( this.root );
-		}
-
-		@Override
 		public Iterable<? extends Model> getChildren() {
 			return edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( this.root );
 		}
 
 		@Override
-		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+		protected Class<? extends Element> getClassUsedForLocalization() {
 			return this.root.getClassUsedForLocalization();
 		}
 
 		@Override
-		protected java.lang.String getSubKeyForLocalization() {
+		protected String getSubKeyForLocalization() {
 			return this.root.getSubKeyForLocalization();
 		}
 
@@ -196,7 +176,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+	protected Class<? extends Element> getClassUsedForLocalization() {
 		return this.getCompletionModel().getClassUsedForLocalization();
 	}
 

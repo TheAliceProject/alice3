@@ -56,8 +56,7 @@ public abstract class InconsequentialActionOperation extends org.lgna.croquet.Ac
 	protected abstract void performInternal( org.lgna.croquet.history.CompletionStep<?> step );
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.performInternal( step );
 		step.finish();
 	}

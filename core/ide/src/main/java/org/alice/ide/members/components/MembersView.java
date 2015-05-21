@@ -202,11 +202,6 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 		public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 			return RecycleBin.SINGLETON.getDropReceptor();
 		}
-
-		@Override
-		public RecycleBinDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
-			return this;
-		}
 	}
 
 	private final RecycleBinDropSite dropSite = new RecycleBinDropSite();
@@ -215,7 +210,7 @@ public class MembersView extends org.lgna.croquet.views.BorderPanel {
 
 	public MembersView( org.alice.ide.members.MembersComposite composite ) {
 		super( composite );
-		org.alice.ide.croquet.components.InstanceFactoryPopupButton instanceFactoryPopupButton = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+		org.alice.ide.croquet.components.InstanceFactoryPopupButton instanceFactoryPopupButton = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getInstanceFactoryState() );
 		//		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
 		//		instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ) );
 		//		instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );

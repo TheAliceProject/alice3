@@ -179,9 +179,9 @@ public class AnchorsView extends org.lgna.croquet.views.SwingComponentView<javax
 
 	public static void main( String[] args ) {
 		org.lgna.croquet.Application app = new org.lgna.croquet.simple.SimpleApplication();
-		app.getFrame().getContentPane().addCenterComponent( new AnchorsView( null ) );
-		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
-		app.getFrame().pack();
-		app.getFrame().setVisible( true );
+		app.getDocumentFrame().getFrame().getContentPane().addCenterComponent( new AnchorsView( null ) );
+		app.getDocumentFrame().getFrame().setDefaultCloseOperation( org.lgna.croquet.views.Frame.DefaultCloseOperation.EXIT );
+		app.getDocumentFrame().getFrame().pack();
+		app.getDocumentFrame().getFrame().setVisible( true );
 	}
 }

@@ -48,9 +48,8 @@ package org.lgna.story.implementation.visualization;
  */
 public class JointedModelVisualization extends edu.cmu.cs.dennisc.scenegraph.Leaf {
 	static {
-		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( JointedModelVisualization.class, JointedModelVisualizationAdapter.class );
+		edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.register( JointedModelVisualization.class, GlrJointedModelVisualization.class );
 	}
-	private final org.lgna.story.implementation.JointedModelImp implementation;
 
 	public JointedModelVisualization( org.lgna.story.implementation.JointedModelImp implementation ) {
 		this.implementation = implementation;
@@ -59,4 +58,6 @@ public class JointedModelVisualization extends edu.cmu.cs.dennisc.scenegraph.Lea
 	public org.lgna.story.implementation.JointedModelImp getImplementation() {
 		return this.implementation;
 	}
+
+	private final org.lgna.story.implementation.JointedModelImp implementation;
 }

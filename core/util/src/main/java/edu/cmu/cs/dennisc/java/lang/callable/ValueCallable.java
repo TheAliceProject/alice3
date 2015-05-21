@@ -71,7 +71,7 @@ public class ValueCallable<T> implements java.util.concurrent.Callable<T> {
 	}
 
 	@Override
-	public T call() throws java.lang.Exception {
+	public T call() throws Exception {
 		return this.value;
 	}
 }

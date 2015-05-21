@@ -53,38 +53,43 @@ public class ClassPathUtilities {
 		assert codeSource != null : protectionDomain;
 		java.net.URL url = codeSource.getLocation();
 
-		java.io.File root = new java.io.File( url.getFile() );
-		if( root.isDirectory() ) {
-			java.io.File[] descendants = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants( root, new java.io.FileFilter() {
-				@Override
-				public boolean accept( java.io.File f ) {
-					if( f.isDirectory() ) {
-						return false;
+		try {
+			java.io.File root = new java.io.File( url.toURI() );
+			if( root.isDirectory() ) {
+				java.io.File[] descendants = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants( root, new java.io.FileFilter() {
+					@Override
+					public boolean accept( java.io.File f ) {
+						if( f.isDirectory() ) {
+							return false;
+						} else {
+							return filter.accept( f.getAbsolutePath() );
+						}
+					}
+				} );
+				java.util.List<String> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( descendants.length );
+				for( java.io.File descendant : descendants ) {
+					String path = descendant.getAbsolutePath().substring( root.getAbsolutePath().length() + 1 ).replaceAll( "\\\\", "/" );
+					rv.add( path );
+				}
+				return rv;
+			} else {
+				java.util.List<String> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+				java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream( new java.io.FileInputStream( root.getAbsoluteFile() ) );
+				for( java.util.zip.ZipEntry entry = zis.getNextEntry(); entry != null; entry = zis.getNextEntry() ) {
+					if( entry.isDirectory() ) {
+						//pass
 					} else {
-						return filter.accept( f.getAbsolutePath() );
+						String path = entry.getName();
+						if( filter.accept( path ) ) {
+							rv.add( path );
+						}
 					}
 				}
-			} );
-			java.util.List<String> rv = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( descendants.length );
-			for( java.io.File descendant : descendants ) {
-				String path = descendant.getAbsolutePath().substring( root.getAbsolutePath().length() + 1 ).replaceAll( "\\\\", "/" );
-				rv.add( path );
+				zis.close();
+				return rv;
 			}
-			return rv;
-		} else {
-			java.util.List<String> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream( new java.io.FileInputStream( root ) );
-			for( java.util.zip.ZipEntry entry = zis.getNextEntry(); entry != null; entry = zis.getNextEntry() ) {
-				if( entry.isDirectory() ) {
-					//pass
-				} else {
-					String path = entry.getName();
-					if( filter.accept( path ) ) {
-						rv.add( path );
-					}
-				}
-			}
-			return rv;
+		} catch( java.net.URISyntaxException urise ) {
+			throw new RuntimeException( urise );
 		}
 	}
 }

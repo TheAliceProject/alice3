@@ -45,11 +45,11 @@ package org.lgna.ik.poser.scene;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-import edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent;
-import edu.cmu.cs.dennisc.renderer.event.RenderTargetInitializeEvent;
-import edu.cmu.cs.dennisc.renderer.event.RenderTargetListener;
-import edu.cmu.cs.dennisc.renderer.event.RenderTargetRenderEvent;
-import edu.cmu.cs.dennisc.renderer.event.RenderTargetResizeEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetDisplayChangeEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetListener;
+import edu.cmu.cs.dennisc.render.event.RenderTargetRenderEvent;
+import edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent;
 
 /**
  * @author Matt May
@@ -102,11 +102,10 @@ public class DebugOverlay implements RenderTargetListener {
 	}
 
 	private BufferedImage getImage( RenderTargetRenderEvent e ) {
-		int width = e.getTypedSource().getWidth();
-		int height = e.getTypedSource().getHeight();
-		BufferedImage rv = new BufferedImage( width, height, BufferedImage.TYPE_INT_RGB );
-		for( int x = 0; x < width; x += 2 ) {
-			for( int y = 0; y < height; y += 2 ) {
+		java.awt.Dimension surfaceSize = e.getTypedSource().getSurfaceSize();
+		BufferedImage rv = new BufferedImage( surfaceSize.width, surfaceSize.height, BufferedImage.TYPE_INT_RGB );
+		for( int x = 0; x < surfaceSize.width; x += 2 ) {
+			for( int y = 0; y < surfaceSize.height; y += 2 ) {
 				Color c = function.getColorForXY( x, y );
 				if( !isPreservingAlpha ) {
 					c = new Color( c.getRed(), c.getGreen(), c.getBlue(), DEFAULT_ALPHA );
@@ -115,9 +114,9 @@ public class DebugOverlay implements RenderTargetListener {
 
 				//2x2 grid
 				rv.setRGB( x, y, rgb );
-				rv.setRGB( Math.min( width - 1, x + 1 ), y, rgb );
-				rv.setRGB( x, Math.min( height - 1, y + 1 ), rgb );
-				rv.setRGB( Math.min( width - 1, x + 1 ), Math.min( height - 1, y + 1 ), rgb );
+				rv.setRGB( Math.min( surfaceSize.width - 1, x + 1 ), y, rgb );
+				rv.setRGB( x, Math.min( surfaceSize.height - 1, y + 1 ), rgb );
+				rv.setRGB( Math.min( surfaceSize.width - 1, x + 1 ), Math.min( surfaceSize.height - 1, y + 1 ), rgb );
 			}
 		}
 		return rv;

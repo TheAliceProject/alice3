@@ -45,27 +45,13 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class GraphicsHelpComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.croquet.models.help.views.GraphicsHelpView> {
-	private static class SingletonHolder {
-		private static GraphicsHelpComposite instance = new GraphicsHelpComposite();
-	}
-
-	public static GraphicsHelpComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private GraphicsHelpComposite() {
-		super( java.util.UUID.fromString( "cb7742ba-7de4-4083-aadd-41d640510cab" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+public class GraphicsHelpComposite extends org.lgna.croquet.LazyOperationUnadornedDialogCoreComposite<org.alice.ide.croquet.models.help.views.GraphicsHelpView> {
+	public GraphicsHelpComposite() {
+		super( java.util.UUID.fromString( "cb7742ba-7de4-4083-aadd-41d640510cab" ) );
 	}
 
 	@Override
 	protected org.alice.ide.croquet.models.help.views.GraphicsHelpView createView() {
 		return new org.alice.ide.croquet.models.help.views.GraphicsHelpView();
-	}
-
-	public static void main( String[] args ) {
-		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
-		GraphicsHelpComposite.getInstance().getLaunchOperation().fire();
-		System.exit( 0 );
 	}
 }

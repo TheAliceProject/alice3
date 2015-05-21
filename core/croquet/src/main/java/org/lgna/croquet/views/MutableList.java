@@ -50,7 +50,7 @@ public abstract class MutableList<E> extends SwingComponentView<javax.swing.JPan
 
 	private class MutableListLayout implements java.awt.LayoutManager {
 		@Override
-		public void addLayoutComponent( java.lang.String name, java.awt.Component comp ) {
+		public void addLayoutComponent( String name, java.awt.Component comp ) {
 		}
 
 		@Override

@@ -46,30 +46,30 @@ package edu.cmu.cs.dennisc.ui.lookingglass;
  * @author Dennis Cosgrove
  */
 public abstract class PickMouseAdapter implements java.awt.event.MouseListener {
-	private edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> m_onscreenLookingGlass;
+	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> m_onscreenLookingGlass;
 
 	public PickMouseAdapter() {
 		this( null );
 	}
 
-	public PickMouseAdapter( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenLookingGlass ) {
+	public PickMouseAdapter( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenLookingGlass ) {
 		setOnscreenLookingGlass( onscreenLookingGlass );
 	}
 
-	protected abstract void handlePickResult( edu.cmu.cs.dennisc.renderer.PickResult pickResult );
+	protected abstract void handlePickResult( edu.cmu.cs.dennisc.render.PickResult pickResult );
 
-	public edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> getOnscreenLookingGlass() {
+	public edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> getOnscreenLookingGlass() {
 		return m_onscreenLookingGlass;
 	}
 
-	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> onscreenLookingGlass ) {
+	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenLookingGlass ) {
 		m_onscreenLookingGlass = onscreenLookingGlass;
 	}
 
 	@Override
 	public void mousePressed( java.awt.event.MouseEvent e ) {
 		assert m_onscreenLookingGlass != null;
-		handlePickResult( m_onscreenLookingGlass.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.renderer.PickSubElementPolicy.NOT_REQUIRED ) );
+		handlePickResult( m_onscreenLookingGlass.getSynchronousPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED ) );
 	}
 
 	@Override

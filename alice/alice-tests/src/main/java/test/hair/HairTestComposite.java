@@ -150,7 +150,7 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.views.Frame frame = app.getFrame();
+		org.lgna.croquet.views.Frame frame = app.getDocumentFrame().getFrame();
 		HairTestComposite hairTest = new HairTestComposite();
 		frame.getContentPane().addCenterComponent( hairTest.getRootComponent() );
 		frame.setLocation( -1920, 400 );

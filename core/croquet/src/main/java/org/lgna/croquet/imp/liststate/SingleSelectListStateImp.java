@@ -55,16 +55,16 @@ public class SingleSelectListStateImp<T, D extends org.lgna.croquet.data.ListDat
 		return this.swingModel;
 	}
 
-	public synchronized SingleSelectListStateMenuModel getMenuModel() {
-		if( this.menuModel != null ) {
-			//pass
-		} else {
-			this.menuModel = new SingleSelectListStateMenuModel<T, D>( this.state );
-		}
-		return this.menuModel;
+	public org.lgna.croquet.MenuModel getMenuModel() {
+		return this.menuModelLazy.get();
 	}
 
 	private final org.lgna.croquet.SingleSelectListState<T, D> state;
 	private final SingleSelectListStateSwingModel swingModel;
-	private SingleSelectListStateMenuModel<T, D> menuModel;
+	private final edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.MenuModel> menuModelLazy = new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.MenuModel>() {
+		@Override
+		protected org.lgna.croquet.MenuModel create() {
+			return new SingleSelectListStateMenuModel<T, D>( state );
+		}
+	};
 }

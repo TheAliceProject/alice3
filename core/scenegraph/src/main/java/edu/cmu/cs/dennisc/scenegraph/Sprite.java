@@ -47,14 +47,6 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class Sprite extends Geometry {
-	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 0.5 ) {
-		@Override
-		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
-			assert value >= 0.0;
-			super.setValue( owner, value );
-		}
-	};
-
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
 		double d = radius.getValue();
@@ -77,4 +69,12 @@ public class Sprite extends Geometry {
 	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
 		throw new RuntimeException( "TODO" );
 	}
+
+	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 0.5 ) {
+		@Override
+		public void setValue( Double value ) {
+			assert value >= 0.0;
+			super.setValue( value );
+		}
+	};
 }

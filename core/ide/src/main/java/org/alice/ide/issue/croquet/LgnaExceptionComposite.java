@@ -69,7 +69,7 @@ public class LgnaExceptionComposite extends org.lgna.croquet.SimpleOperationUnad
 	}
 
 	@Override
-	protected java.lang.String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return this.lgnaRuntimeException.getClass().getSimpleName();
 	}
 }

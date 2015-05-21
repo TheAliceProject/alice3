@@ -47,12 +47,12 @@ package org.alice.ide.issue;
  */
 public abstract class IdeIssueConfiguration implements org.lgna.issue.ApplicationIssueConfiguration {
 	@Override
-	public java.lang.String getSubmitActionName() {
+	public String getSubmitActionName() {
 		return "submit bug report";
 	}
 
 	@Override
-	public javax.swing.JPanel createHeaderPane( java.lang.Thread thread, java.lang.Throwable originalThrowable, java.lang.Throwable originalThrowableOrTarget ) {
+	public javax.swing.JPanel createHeaderPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget ) {
 		return originalThrowableOrTarget instanceof javax.media.opengl.GLException
 				? new org.alice.ide.issue.swing.JGraphicsHeaderPane( this )
 				: new org.alice.ide.issue.swing.JStandardHeaderPane( this );

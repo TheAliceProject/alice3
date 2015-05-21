@@ -8,7 +8,7 @@ package edu.cmu.cs.dennisc.nebulous;
  */
 public class Thing extends Model {
 	static {
-		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( Thing.class, ThingAdapter.class );
+		edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.register( Thing.class, ThingAdapter.class );
 	}
 
 	private final Object o;
@@ -47,7 +47,7 @@ public class Thing extends Model {
 	}
 
 	@Override
-	protected void appendRepr( java.lang.StringBuilder sb ) {
+	protected void appendRepr( StringBuilder sb ) {
 		super.appendRepr( sb );
 		sb.append( ";" );
 		sb.append( this.o != null ? this.o.getClass().getName() : null );

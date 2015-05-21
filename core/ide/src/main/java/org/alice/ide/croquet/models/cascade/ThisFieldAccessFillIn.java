@@ -81,9 +81,4 @@ public class ThisFieldAccessFillIn extends ExpressionFillInWithoutBlanks<org.lgn
 	public org.lgna.project.ast.FieldAccess getTransientValue( org.lgna.croquet.imp.cascade.ItemNode<? super org.lgna.project.ast.FieldAccess, Void> node ) {
 		return this.transientValue;
 	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ThisFieldAccessFillIn> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ThisFieldAccessFillIn>( this, org.lgna.project.ast.AbstractField.class, this.transientValue.field.getValue() );
-	}
 }

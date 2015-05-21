@@ -54,7 +54,6 @@ public abstract class MenuBarComposite extends org.lgna.croquet.MenuBarComposite
 		this.addItem( new org.alice.ide.croquet.models.menubar.ProjectMenuModel( projectDocumentFrame ) );
 		this.addItem( new org.alice.ide.croquet.models.menubar.RunMenuModel( projectDocumentFrame ) );
 		this.addItem( new org.alice.ide.croquet.models.menubar.WindowMenuModel( projectDocumentFrame ) );
-		this.addItem( org.alice.ide.croquet.models.menubar.HelpMenuModel.getInstance() );
-		//this.addItem( org.alice.ide.croquet.models.help.SuggestImprovementOperation.getInstance().getMenuItemPrepModel() );
+		this.addItem( org.alice.ide.IdeApp.INSTANCE.getHelpMenu() );
 	}
 }

@@ -65,7 +65,7 @@ public class MathTestProgram extends org.lgna.story.SProgram {
 		final org.lgna.story.implementation.SphereImp sphereImp = org.lgna.story.EmployeesOnly.getImplementation( mathTestProgram.scene.getSphere() );
 
 		org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.EmployeesOnly.getImplementation( mathTestProgram );
-		final edu.cmu.cs.dennisc.renderer.OnscreenRenderTarget<?> renderTarget = programImp.getOnscreenRenderTarget();
+		final edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> renderTarget = programImp.getOnscreenRenderTarget();
 		java.awt.Component awtComponent = renderTarget.getAwtComponent();
 		//				edu.cmu.cs.dennisc.math.Ray rayInCameraSpace = renderTarget.getRayAtPixel( e.getX(), e.getY() );
 		//				edu.cmu.cs.dennisc.math.Ray rayInSceneSpace = new edu.cmu.cs.dennisc.math.Ray( rayInCameraSpace );

@@ -59,7 +59,7 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPer
 	@Override
 	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
 		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
-			return org.alice.stageide.perspectives.scenesetup.SetupSceneToolBarComposite.getInstance();
+			return this.toolBarLazy.get();
 		} else {
 			return null;
 		}
@@ -78,4 +78,11 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPer
 	@Override
 	protected void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
 	}
+
+	private final edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.ToolBarComposite> toolBarLazy = new edu.cmu.cs.dennisc.pattern.Lazy<org.lgna.croquet.ToolBarComposite>() {
+		@Override
+		protected org.lgna.croquet.ToolBarComposite create() {
+			return new org.alice.stageide.perspectives.scenesetup.SetupSceneToolBarComposite( getProjectDocumentFrame() );
+		}
+	};
 }
