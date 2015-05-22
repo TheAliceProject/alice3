@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ast"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/story-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ide"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
