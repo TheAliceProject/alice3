@@ -73,13 +73,13 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
 public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual<SkeletonVisual> implements PropertyListener, edu.cmu.cs.dennisc.scenegraph.SkeletonVisualBoundingBoxTracker {
-	private static class WeightedMeshControl {
-		private WeightedMesh weightedMesh;
+	public static class WeightedMeshControl {
+		protected WeightedMesh weightedMesh;
 
-		private DoubleBuffer vertexBuffer;
-		private FloatBuffer normalBuffer;
-		private FloatBuffer textCoordBuffer;
-		private IntBuffer indexBuffer;
+		protected DoubleBuffer vertexBuffer;
+		protected FloatBuffer normalBuffer;
+		protected FloatBuffer textCoordBuffer;
+		protected IntBuffer indexBuffer;
 
 		private AffineMatrix4x4[] affineMatrices;
 		private float[] weights;
