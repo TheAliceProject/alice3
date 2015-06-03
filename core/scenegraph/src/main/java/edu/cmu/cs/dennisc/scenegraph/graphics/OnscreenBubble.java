@@ -45,20 +45,14 @@ package edu.cmu.cs.dennisc.scenegraph.graphics;
 
 public class OnscreenBubble
 {
-	public enum PositionPreference
-	{
-		LEFT,
-		CENTER,
-		RIGHT
-	}
 
 	private java.awt.geom.Point2D.Float originOfTail;
 	private java.awt.geom.Point2D.Float endOfTail;
 	private java.awt.geom.RoundRectangle2D.Double bubbleRect;
 	private java.awt.geom.Rectangle2D.Double textBounds;
-	private PositionPreference positionPreference;
+	private Bubble.PositionPreference positionPreference;
 
-	public OnscreenBubble( java.awt.geom.Point2D.Float originOfTail, java.awt.geom.Point2D.Float endOfTail, java.awt.geom.RoundRectangle2D.Double bubbleRect, java.awt.geom.Rectangle2D.Double textBounds, PositionPreference positionPreference )
+	public OnscreenBubble( java.awt.geom.Point2D.Float originOfTail, java.awt.geom.Point2D.Float endOfTail, java.awt.geom.RoundRectangle2D.Double bubbleRect, java.awt.geom.Rectangle2D.Double textBounds, Bubble.PositionPreference positionPreference )
 	{
 		this.originOfTail = originOfTail;
 		this.endOfTail = endOfTail;
@@ -84,7 +78,7 @@ public class OnscreenBubble
 		setPosition( position.x, position.y );
 	}
 
-	public PositionPreference getPositionPreference()
+	public Bubble.PositionPreference getPositionPreference()
 	{
 		return this.positionPreference;
 	}

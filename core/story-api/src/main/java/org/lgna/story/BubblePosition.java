@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.scenegraph.graphics;
+package org.lgna.story;
 
 /**
- * @author Dennis Cosgrove
+ * @author user
  */
-public class SpeechBubble extends Bubble {
-	public SpeechBubble( Originator originator ) {
-		super( originator );
+public enum BubblePosition implements
+		Say.Detail, Think.Detail
+{
+	AUTOMATIC( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference.AUTOMATIC ),
+	LEFT( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference.TOP_LEFT ),
+	CENTER( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference.TOP_CENTER ),
+	RIGHT( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference.TOP_RIGHT );
+
+	private static final BubblePosition DEFAULT_VALUE = BubblePosition.AUTOMATIC;
+
+	private edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference internal;
+
+	BubblePosition( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference internal ) {
+		this.internal = internal;
 	}
 
-	public SpeechBubble( Originator originator, Bubble.PositionPreference positionPreference ) {
-		super( originator, positionPreference );
+	/* package-private */edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference getInternal() {
+		return this.internal;
+	}
+
+	BubblePosition() {
+	}
+
+	private static BubblePosition getValue( Object[] details, BubblePosition defaultValue ) {
+		for( Object detail : details ) {
+			if( detail instanceof BubblePosition ) {
+				BubblePosition textPosition = (BubblePosition)detail;
+				return textPosition;
+			}
+		}
+		return defaultValue;
+	}
+
+	/* package-private */static BubblePosition getValue( Object[] details ) {
+		return getValue( details, DEFAULT_VALUE );
 	}
 }

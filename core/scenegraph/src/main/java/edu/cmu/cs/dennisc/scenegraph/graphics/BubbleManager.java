@@ -48,10 +48,11 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.cmu.cs.dennisc.scenegraph.graphics.OnscreenBubble.PositionPreference;
-
 public class BubbleManager
 {
+	private static int Y_GAP = 8; //Default distance to place bubble from top or bottom of screen (is scaled based on font scale)
+	private static int X_GAP = 16; //Default distance to place bubble from left or right of screen (is scaled based on font scale)
+
 	private static class SingletonHolder {
 		private static BubbleManager instance = new BubbleManager();
 	}
@@ -63,20 +64,22 @@ public class BubbleManager
 	private Hashtable<Bubble, OnscreenBubble> bubbleMap = new Hashtable<Bubble, OnscreenBubble>();
 	private List<OnscreenBubble> activeBubbles = new LinkedList<OnscreenBubble>();
 
-	public synchronized OnscreenBubble addBubble( Bubble bubbleOwner, java.awt.geom.Point2D.Float originOfTail, java.awt.geom.Dimension2D textSize, float padding, java.awt.Rectangle viewport )
+	public synchronized OnscreenBubble addBubble( Bubble bubbleOwner, java.awt.geom.Point2D.Float originOfTail, java.awt.geom.Dimension2D textSize, float padding, float textScale, java.awt.Rectangle viewport )
 	{
-		OnscreenBubble.PositionPreference positionPreference;
-		if( originOfTail.x < ( viewport.width * .33 ) )
-		{
-			positionPreference = PositionPreference.LEFT;
-		}
-		else if( originOfTail.x < ( viewport.width * .66 ) )
-		{
-			positionPreference = PositionPreference.CENTER;
-		}
-		else
-		{
-			positionPreference = PositionPreference.RIGHT;
+		Bubble.PositionPreference positionPreference = bubbleOwner.getPositionPreference();
+		if( positionPreference == Bubble.PositionPreference.AUTOMATIC ) {
+			if( originOfTail.x < ( viewport.width * .33 ) )
+			{
+				positionPreference = Bubble.PositionPreference.TOP_LEFT;
+			}
+			else if( originOfTail.x < ( viewport.width * .66 ) )
+			{
+				positionPreference = Bubble.PositionPreference.TOP_CENTER;
+			}
+			else
+			{
+				positionPreference = Bubble.PositionPreference.TOP_RIGHT;
+			}
 		}
 		double IPAD = padding;
 		Rectangle2D.Double bubbleBounds = getRectForBubble( ( textSize.getWidth() + ( IPAD * 2 ) ), ( textSize.getHeight() + ( IPAD * 2 ) ), positionPreference, viewport );
@@ -99,13 +102,13 @@ public class BubbleManager
 		java.awt.geom.Point2D.Float endOfTail = new java.awt.geom.Point2D.Float( (float)tailEndX, (float)roundRect.getMaxY() );
 
 		OnscreenBubble bubble = new OnscreenBubble( originOfTail, endOfTail, roundRect, textBounds, positionPreference );
-		placeBubble( bubble, viewport );
+		placeBubble( bubble, viewport, textScale );
 		this.bubbleMap.put( bubbleOwner, bubble );
 		this.activeBubbles.add( bubble );
 		return bubble;
 	}
 
-	private Rectangle2D.Double getRectForBubble( double width, double height, OnscreenBubble.PositionPreference positionPreference, java.awt.Rectangle viewport )
+	private Rectangle2D.Double getRectForBubble( double width, double height, Bubble.PositionPreference positionPreference, java.awt.Rectangle viewport )
 	{
 		Rectangle2D.Double bubbleRect = new Rectangle2D.Double();
 		bubbleRect.width = width;
@@ -116,27 +119,27 @@ public class BubbleManager
 		return bubbleRect;
 	}
 
-	private void placeBubble( OnscreenBubble bubble, java.awt.Rectangle viewport )
+	private void placeBubble( OnscreenBubble bubble, java.awt.Rectangle viewport, float textScale )
 	{
-		double yGap = 4;
-		double xGap = 4;
+		double scaledYGap = Y_GAP * textScale;
+		double scaledXGap = X_GAP * textScale;
 		double x, y;
 		switch( bubble.getPositionPreference() )
 		{
-		case LEFT: {
-			x = xGap;
+		case TOP_LEFT: {
+			x = scaledXGap;
 		}
 			break;
-		case CENTER: {
+		case TOP_CENTER: {
 			x = ( viewport.width - bubble.getBubbleRect().width ) * .5f;
 		}
 			break;
-		case RIGHT: {
-			x = viewport.width - bubble.getBubbleRect().width - xGap;
+		case TOP_RIGHT: {
+			x = viewport.width - bubble.getBubbleRect().width - scaledXGap;
 		}
 			break;
 		default:
-			x = xGap;
+			x = scaledXGap;
 		}
 		double rightEdge = x + bubble.getBubbleRect().width;
 		double maxY = 0;
@@ -152,7 +155,7 @@ public class BubbleManager
 				}
 			}
 		}
-		y = maxY + yGap;
+		y = maxY + scaledYGap;
 		bubble.setPosition( x, y );
 	}
 

@@ -43,11 +43,16 @@
 
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
+
 /**
  * @author Dennis Cosgrove
  */
 public class ThoughtBubble extends Bubble {
 	public ThoughtBubble( Originator originator ) {
 		super( originator );
+	}
+
+	public ThoughtBubble( Originator originator, Bubble.PositionPreference positionPreference ) {
+		super( originator, positionPreference );
 	}
 }

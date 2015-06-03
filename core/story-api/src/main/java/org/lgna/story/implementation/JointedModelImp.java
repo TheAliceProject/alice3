@@ -883,15 +883,15 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		this.animateStraightenOutJoints( DEFAULT_DURATION );
 	}
 
-	public void say( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
+	public void say( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference positionPreference ) {
 		duration = adjustDurationIfNecessary( duration );
-		org.lgna.story.implementation.overlay.BubbleImp bubbleImp = new org.lgna.story.implementation.overlay.SpeechBubbleImp( this, this.getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor );
+		org.lgna.story.implementation.overlay.BubbleImp bubbleImp = new org.lgna.story.implementation.overlay.SpeechBubbleImp( this, this.getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor, positionPreference );
 		this.displayBubble( bubbleImp, duration );
 	}
 
-	public void think( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
+	public void think( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference positionPreference ) {
 		duration = adjustDurationIfNecessary( duration );
-		org.lgna.story.implementation.overlay.BubbleImp bubbleImp = new org.lgna.story.implementation.overlay.ThoughtBubbleImp( this, this.getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor );
+		org.lgna.story.implementation.overlay.BubbleImp bubbleImp = new org.lgna.story.implementation.overlay.ThoughtBubbleImp( this, this.getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor, positionPreference );
 		this.displayBubble( bubbleImp, duration );
 	}
 

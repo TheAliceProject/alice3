@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.scenegraph.graphics;
+package org.lgna.story;
 
 /**
- * @author Dennis Cosgrove
+ * @author user
  */
-public class SpeechBubble extends Bubble {
-	public SpeechBubble( Originator originator ) {
-		super( originator );
+public enum TextStyle implements
+		Say.Detail, Think.Detail
+{
+	PLAIN( java.awt.Font.PLAIN ),
+	BOLD( java.awt.Font.BOLD ),
+	ITALIC( java.awt.Font.ITALIC );
+
+	private static final TextStyle DEFAULT_VALUE = TextStyle.PLAIN;
+	private int internal;
+
+	TextStyle( int internal ) {
+		this.internal = internal;
 	}
 
-	public SpeechBubble( Originator originator, Bubble.PositionPreference positionPreference ) {
-		super( originator, positionPreference );
+	/* package-private */int getInternal() {
+		return this.internal;
+	}
+
+	private static TextStyle getValue( Object[] details, TextStyle defaultValue ) {
+		for( Object detail : details ) {
+			if( detail instanceof TextStyle ) {
+				TextStyle TextStyle = (TextStyle)detail;
+				return TextStyle;
+			}
+		}
+		return defaultValue;
+	}
+
+	/* package-private */static TextStyle getValue( Object[] details ) {
+		return getValue( details, DEFAULT_VALUE );
 	}
 }

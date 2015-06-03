@@ -46,7 +46,7 @@ package org.lgna.story.implementation.overlay;
  * @author Dennis Cosgrove
  */
 public class ThoughtBubbleImp extends BubbleImp {
-	public ThoughtBubbleImp( org.lgna.story.implementation.EntityImp imp, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator originator, String text, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
-		super( imp, new edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble( originator ), text, font, textColor, fillColor, outlineColor );
+	public ThoughtBubbleImp( org.lgna.story.implementation.EntityImp imp, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator originator, String text, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference positionPreference ) {
+		super( imp, new edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble( originator, positionPreference ), text, font, textColor, fillColor, outlineColor );
 	}
 }

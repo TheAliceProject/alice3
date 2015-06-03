@@ -53,9 +53,6 @@ public class DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColo
 		super();
 	}
 
-	//	public static TextFont font( Font font ) {
-	//		return new TextFont(font);
-	//	}
 	public static TextColor fontColor( Color color ) {
 		return new TextColor( color );
 	}
@@ -66,5 +63,22 @@ public class DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColo
 
 	public static BubbleOutlineColor bubbleOutlineColor( Color color ) {
 		return new BubbleOutlineColor( color );
+	}
+
+	public static TextFont fontType( TextFont fontType ) {
+		return fontType;
+	}
+
+	public static TextStyle textStyle( TextStyle textStyle ) {
+		return textStyle;
+	}
+
+	public static BubblePosition bubblePosition( BubblePosition bubblePosition ) {
+		return bubblePosition;
+	}
+
+	public static TextScale textScale( Number textScale ) {
+		org.lgna.common.LgnaIllegalKeyArgumentException.checkArgumentIsPositive( textScale, "textScale" );
+		return new TextScale( textScale );
 	}
 }

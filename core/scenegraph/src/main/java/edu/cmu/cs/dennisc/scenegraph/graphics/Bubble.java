@@ -60,22 +60,41 @@ public abstract class Bubble extends ShapeEnclosedText {
 				);
 	}
 
+	public enum PositionPreference
+	{
+		AUTOMATIC,
+		TOP_LEFT,
+		TOP_CENTER,
+		TOP_RIGHT
+	}
+
 	public static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_TEXT_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
 	public static final java.awt.Font DEFAULT_FONT = new java.awt.Font( null, java.awt.Font.PLAIN, 12 );
 	public static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_FILL_COLOR = edu.cmu.cs.dennisc.color.Color4f.WHITE;
 	public static final edu.cmu.cs.dennisc.color.Color4f DEFAULT_OUTLINE_COLOR = edu.cmu.cs.dennisc.color.Color4f.BLACK;
+	public static final PositionPreference DEFAULT_POSITION_PREFERENCE = PositionPreference.AUTOMATIC;
 
-	public Bubble( Originator originator ) {
+	public Bubble( Originator originator, PositionPreference positionPreference ) {
 		super( DEFAULT_TEXT_COLOR, DEFAULT_FONT, DEFAULT_FILL_COLOR, DEFAULT_OUTLINE_COLOR );
 		this.originator = originator;
+		this.positionPreference = positionPreference;
+	}
+
+	public Bubble( Originator originator ) {
+		this( originator, DEFAULT_POSITION_PREFERENCE );
 	}
 
 	public Originator getOriginator() {
 		return this.originator;
 	}
 
+	public PositionPreference getPositionPreference() {
+		return this.positionPreference;
+	}
+
 	//todo: better name
 	public final edu.cmu.cs.dennisc.property.DoubleProperty portion = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 );
 
 	private final Originator originator;
+	private final PositionPreference positionPreference;
 }

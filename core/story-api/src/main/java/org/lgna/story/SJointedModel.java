@@ -75,21 +75,29 @@ public abstract class SJointedModel extends SModel {
 	@MethodTemplate( )
 	public void say( String text, Say.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( text, 0 );
+		double textScale = TextScale.getValue( details );
+		int textSize = (int)( 16 * textScale );
+		int textStyle = TextStyle.getValue( details ).getInternal();
 		this.getImplementation().say( text, Duration.getValue( details ),
-				TextFont.getValue( details, new Font( new java.awt.Font( null, java.awt.Font.PLAIN, 16 ) ) ).getAsAWTFont(),
+				TextFont.getValue( details, null, textStyle, textSize ).getAsAWTFont(),
 				TextColor.getValue( details, Color.BLACK ).getInternal(),
 				BubbleFillColor.getValue( details, Color.WHITE ).getInternal(),
-				BubbleOutlineColor.getValue( details, Color.BLACK ).getInternal() );
+				BubbleOutlineColor.getValue( details, Color.BLACK ).getInternal(),
+				BubblePosition.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void think( String text, Think.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsNotNull( text, 0 );
+		double textScale = TextScale.getValue( details );
+		int textSize = (int)( 16 * textScale );
+		int textStyle = TextStyle.getValue( details ).getInternal();
 		this.getImplementation().think( text, Duration.getValue( details ),
-				TextFont.getValue( details, new Font( new java.awt.Font( null, java.awt.Font.PLAIN, 16 ) ) ).getAsAWTFont(),
+				TextFont.getValue( details, null, textStyle, textSize ).getAsAWTFont(),
 				TextColor.getValue( details, Color.BLACK ).getInternal(),
 				BubbleFillColor.getValue( details, Color.WHITE ).getInternal(),
-				BubbleOutlineColor.getValue( details, Color.BLACK ).getInternal() );
+				BubbleOutlineColor.getValue( details, Color.BLACK ).getInternal(),
+				BubblePosition.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.TUCKED_AWAY )
