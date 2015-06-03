@@ -103,7 +103,9 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 	private void update() {
 		for( TimeListener listener : timerList ) {
 			if( timeToFire( listener ) ) {
-				trigger( listener, new TimeEvent( ( currentTime - mostRecentFire.get( listener ) ) ) );
+				double timeElapsed = currentTime - mostRecentFire.get( listener );
+				trigger( listener, new TimeEvent( timeElapsed ) );
+				mostRecentFire.put( listener, currentTime );
 			}
 		}
 	}
@@ -120,7 +122,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 
 	@Override
 	protected void fire( TimeListener listener, TimeEvent event ) {
-		listener.timeElapsed( new TimeEvent( event.getTimeSinceLastFire() + ( currentTime - mostRecentFire.get( listener ) ) ) );
+		listener.timeElapsed( new TimeEvent( event.getTimeSinceLastFire() ) );
 	}
 
 	@Override

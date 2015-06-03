@@ -121,6 +121,7 @@ public class GlrSpeechBubble extends GlrBubble<edu.cmu.cs.dennisc.scenegraph.gra
 		if( portion < 1.0 ) {
 			//pass
 		} else {
+			g2.setColor( textColor );
 			g2.setFont( font );
 
 			//g2.translate( xT, yT );
