@@ -408,6 +408,9 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 		{
 			this.processWeightedMesh();
 		}
+
+		boolean canRenderAlpha = ( renderType == edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType.ALL ) || ( renderType == edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType.ALPHA_BLENDED );
+		boolean canRenderOpaque = ( renderType == edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType.ALL ) || ( renderType == edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType.OPAQUE );
 		for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
 		{
 			if( renderType == RenderType.SILHOUETTE ) {
@@ -416,31 +419,37 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 				appearanceEntry.getValue().setTexturePipelineState( rc );
 			}
 
+			boolean textureIsAlphaBlend = appearanceEntry.getValue().isAlphaBlended();
+
 			WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get( appearanceEntry.getKey() );
 			if( weightedMeshControls != null ) {
 				for( WeightedMeshControl wmc : weightedMeshControls )
 				{
-					if( !wmc.weightedMesh.cullBackfaces.getValue() )
+					boolean meshIsAlpha = textureIsAlphaBlend && !wmc.weightedMesh.useAlphaTest.getValue();
+					if( ( meshIsAlpha && canRenderAlpha ) || ( !meshIsAlpha && canRenderOpaque ) )
 					{
-						rc.gl.glDisable( GL_CULL_FACE );
-					}
-					else
-					{
+						if( !wmc.weightedMesh.cullBackfaces.getValue() )
+						{
+							rc.gl.glDisable( GL_CULL_FACE );
+						}
+						else
+						{
+							rc.gl.glEnable( GL_CULL_FACE );
+							rc.gl.glCullFace( GL_BACK );
+						}
+						if( wmc.weightedMesh.useAlphaTest.getValue() )
+						{
+							rc.gl.glEnable( GL_ALPHA_TEST );
+							rc.gl.glAlphaFunc( GL_GREATER, ALPHA_TEST_THRESHOLD );
+						}
+						else
+						{
+							rc.gl.glDisable( GL_ALPHA_TEST );
+						}
+						wmc.renderGeometry( rc );
 						rc.gl.glEnable( GL_CULL_FACE );
-						rc.gl.glCullFace( GL_BACK );
-					}
-					if( wmc.weightedMesh.useAlphaTest.getValue() )
-					{
-						rc.gl.glEnable( GL_ALPHA_TEST );
-						rc.gl.glAlphaFunc( GL_GREATER, ALPHA_TEST_THRESHOLD );
-					}
-					else
-					{
 						rc.gl.glDisable( GL_ALPHA_TEST );
 					}
-					wmc.renderGeometry( rc );
-					rc.gl.glEnable( GL_CULL_FACE );
-					rc.gl.glDisable( GL_ALPHA_TEST );
 				}
 			}
 			GlrMesh<Mesh>[] meshAdapters = this.appearanceIdToGeometryAdapaters.get( appearanceEntry.getKey() );
@@ -448,27 +457,31 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 			{
 				for( GlrMesh<Mesh> ma : meshAdapters )
 				{
-					if( !( (Mesh)ma.owner ).cullBackfaces.getValue() )
+					boolean meshIsAlpha = textureIsAlphaBlend && !( (Mesh)ma.owner ).useAlphaTest.getValue();
+					if( ( meshIsAlpha && canRenderAlpha ) || ( !meshIsAlpha && canRenderOpaque ) )
 					{
-						rc.gl.glDisable( GL_CULL_FACE );
-					}
-					else
-					{
+						if( !( (Mesh)ma.owner ).cullBackfaces.getValue() )
+						{
+							rc.gl.glDisable( GL_CULL_FACE );
+						}
+						else
+						{
+							rc.gl.glEnable( GL_CULL_FACE );
+							rc.gl.glCullFace( GL_BACK );
+						}
+						if( ( (Mesh)ma.owner ).useAlphaTest.getValue() )
+						{
+							rc.gl.glEnable( GL_ALPHA_TEST );
+							rc.gl.glAlphaFunc( GL_GREATER, ALPHA_TEST_THRESHOLD );
+						}
+						else
+						{
+							rc.gl.glDisable( GL_ALPHA_TEST );
+						}
+						ma.render( rc, renderType );
 						rc.gl.glEnable( GL_CULL_FACE );
-						rc.gl.glCullFace( GL_BACK );
-					}
-					if( ( (Mesh)ma.owner ).useAlphaTest.getValue() )
-					{
-						rc.gl.glEnable( GL_ALPHA_TEST );
-						rc.gl.glAlphaFunc( GL_GREATER, ALPHA_TEST_THRESHOLD );
-					}
-					else
-					{
 						rc.gl.glDisable( GL_ALPHA_TEST );
 					}
-					ma.render( rc, renderType );
-					rc.gl.glEnable( GL_CULL_FACE );
-					rc.gl.glDisable( GL_ALPHA_TEST );
 				}
 			}
 
