@@ -62,4 +62,9 @@ public class BubbleFillColor implements Say.Detail, Think.Detail {
 		}
 		return defaultValue;
 	}
+
+	//Testing a different way to make keyword parameters on the java side
+	public static BubbleFillColor make( Color value ) {
+		return new BubbleFillColor( value );
+	}
 }

@@ -64,4 +64,9 @@ public class UpAsSeenBy implements
 		}
 		return defaultValue;
 	}
+
+	//Testing a different way to make keyword parameters on the java side
+	public static UpAsSeenBy make( SThing value ) {
+		return new UpAsSeenBy( value );
+	}
 }

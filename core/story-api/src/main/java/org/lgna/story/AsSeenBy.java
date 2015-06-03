@@ -74,4 +74,9 @@ public class AsSeenBy implements
 		return entity != null ? entity.getImplementation() : defaultValue;
 	}
 
+	//Testing a different way to make keyword parameters on the java side
+	public static AsSeenBy make( SThing value ) {
+		return new AsSeenBy( value );
+	}
+
 }

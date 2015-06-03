@@ -68,4 +68,5 @@ public enum TextFont implements Say.Detail, Think.Detail {
 		}
 		return new Font( new java.awt.Font( defaultName, style, size ) );
 	}
+
 }
