@@ -24,4 +24,9 @@ public class TimerFrequency implements
 	public Double getFrequency() {
 		return this.frequency;
 	}
+
+	//Testing a different way to make keyword parameters on the java side
+	public static TimerFrequency make( double value ) {
+		return new TimerFrequency( value );
+	}
 }

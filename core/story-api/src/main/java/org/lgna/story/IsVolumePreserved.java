@@ -67,4 +67,9 @@ public class IsVolumePreserved implements ResizeWidth.Detail, ResizeHeight.Detai
 	/* package-private */static boolean getValue( Object[] details ) {
 		return getValue( details, DEFAULT_VALUE );
 	}
+
+	//Testing a different way to make keyword parameters on the java side
+	public static IsVolumePreserved make( Boolean value ) {
+		return new IsVolumePreserved( value );
+	}
 }

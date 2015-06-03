@@ -82,7 +82,7 @@ public abstract class SJointedModel extends SModel {
 				TextFont.getValue( details, null, textStyle, textSize ).getAsAWTFont(),
 				TextColor.getValue( details, Color.BLACK ).getInternal(),
 				BubbleFillColor.getValue( details, Color.WHITE ).getInternal(),
-				BubbleOutlineColor.getValue( details, Color.BLACK ).getInternal(),
+				BubbleOutlineColor.getValue( details, Color.WHITE ).getInternal(),
 				BubblePosition.getValue( details ).getInternal() );
 	}
 
@@ -96,7 +96,7 @@ public abstract class SJointedModel extends SModel {
 				TextFont.getValue( details, null, textStyle, textSize ).getAsAWTFont(),
 				TextColor.getValue( details, Color.BLACK ).getInternal(),
 				BubbleFillColor.getValue( details, Color.WHITE ).getInternal(),
-				BubbleOutlineColor.getValue( details, Color.BLACK ).getInternal(),
+				BubbleOutlineColor.getValue( details, Color.WHITE ).getInternal(),
 				BubblePosition.getValue( details ).getInternal() );
 	}
 

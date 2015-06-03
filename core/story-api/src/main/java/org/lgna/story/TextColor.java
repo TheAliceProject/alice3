@@ -62,4 +62,9 @@ public class TextColor implements Say.Detail, Think.Detail {
 		}
 		return defaultValue;
 	}
+
+	//Testing a different way to make keyword parameters on the java side
+	public static TextColor make( Color value ) {
+		return new TextColor( value );
+	}
 }

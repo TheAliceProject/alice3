@@ -70,4 +70,9 @@ public class AlongAxisOffset implements
 	/* package-private */static double getValue( Object[] details ) {
 		return getValue( details, DEFAULT_VALUE );
 	}
+
+	//Testing a different way to make keyword parameters on the java side
+	public static AlongAxisOffset make( Number value ) {
+		return new AlongAxisOffset( value );
+	}
 }
