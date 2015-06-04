@@ -191,40 +191,11 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		return this.distanceFromOrigin;
 	}
 
-	protected void animateHandleToLength( double desiredLength ) {
-		if( ( this.animator == null ) || ( this.getParentTransformable() == null ) ) {
-			return;
-		}
-		//		PrintUtilities.println("\n"+this.hashCode()+":"+this+" "+(this.isHandleVisible()? "VISIBLE" : "INVISIBLE")+" Animating to "+desiredLength+" around "+this.manipulatedObject);
-		double currentLength = this.getSize();
-		//Check to see if the animation is going to get us to the desired value
-		if( ( this.lengthAnimation != null ) && this.lengthAnimation.isActive() && this.lengthAnimation.matchesTarget( desiredLength ) ) {
-			return;
-		}
-		//Stop any existing animation
-		if( ( this.lengthAnimation != null ) && this.lengthAnimation.isActive() ) {
-			this.lengthAnimation.cancel();
-		}
-		//The animation is not going to get us to the desired value, so see if we're already there
-		if( currentLength == desiredLength ) {
-			return;
-		}
-		//Make a new animation and launch it
-		this.lengthAnimation = new DoubleInterruptibleAnimation( ANIMATION_DURATION, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentLength, desiredLength ) {
-			@Override
-			protected void updateValue( Double v )
-			{
-				LinearDragHandle.this.setSize( v );
-			}
-		};
-		this.animator.invokeLater( this.lengthAnimation, null );
-	}
-
 	@Override
 	protected void updateVisibleState( HandleRenderState renderState ) {
 		super.updateVisibleState( renderState );
 		double desiredLength = this.isRenderable() ? this.getHandleLength() : 0.0d;
-		animateHandleToLength( desiredLength );
+		this.setSize( desiredLength );
 	}
 
 	public Vector3 getDragAxis() {

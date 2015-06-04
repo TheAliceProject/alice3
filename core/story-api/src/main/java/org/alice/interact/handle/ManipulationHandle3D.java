@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.interact.handle;
@@ -52,7 +52,6 @@ import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.lgna.story.implementation.BoundingBoxUtilities;
 
-import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.color.animation.Color4fAnimation;
@@ -202,7 +201,6 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.handleSet.clear();
 		this.handleSet.addSet( handle.handleSet );
 		this.localTransformation.setValue( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( handle.localTransformation.getValue() ) );
-		this.animator = handle.animator;
 		this.criteriaManager = handle.criteriaManager;
 		this.handleManager = handle.handleManager;
 		this.manipulation = handle.manipulation;
@@ -355,12 +353,6 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		return this.handleSet.get( group.ordinal() );
 	}
 
-	@Override
-	public void setAnimator( Animator animator ) {
-		assert animator != null;
-		this.animator = animator;
-	}
-
 	public Visual getSGVisual() {
 		return sgVisual;
 	}
@@ -404,66 +396,18 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.sgFrontFacingAppearance.diffuseColor.setValue( color );
 	}
 
-	protected void animateToOpacity( double targetOpacity ) {
-		double currentOpacity = this.getOpacity();
-		//Check to see if the animation is going to get us to the desired value
-		if( ( this.opacityAnimation != null ) && this.opacityAnimation.isActive() && this.opacityAnimation.matchesTarget( targetOpacity ) ) {
-			return;
-		}
-		//Stop any existing animation
-		if( ( this.opacityAnimation != null ) && this.opacityAnimation.isActive() ) {
-			this.opacityAnimation.cancel();
-		}
-		//The animation is not going to get us to the desired value, so see if we're already there
-		//		if (edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon(currentOpacity, targetOpacity))
-		if( currentOpacity == targetOpacity ) {
-			return;
-		}
-		//Make a new animation and launch it
-		this.opacityAnimation = new DoubleInterruptibleAnimation( ANIMATION_DURATION, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentOpacity, targetOpacity ) {
-			@Override
-			protected void updateValue( Double v ) {
-				ManipulationHandle3D.this.setOpacity( v.floatValue() );
-			}
-		};
-		this.animator.invokeLater( this.opacityAnimation, null );
-	}
-
-	protected void animateToColor( Color4f targetColor ) {
-		Color4f currentColor = this.sgFrontFacingAppearance.diffuseColor.getValue();
-		//Check to see if the animation is going to get us to the desired value
-		if( ( this.colorAnimation != null ) && this.colorAnimation.isActive() && this.colorAnimation.matchesTarget( targetColor ) ) {
-			return;
-		}
-		//Stop any existing animation
-		if( ( this.colorAnimation != null ) && this.colorAnimation.isActive() ) {
-			this.colorAnimation.cancel();
-		}
-		//The animation is not going to get us to the desired value, so see if we're already there
-		if( currentColor.equals( targetColor ) ) {
-			return;
-		}
-		//Make a new animation and launch it
-		this.colorAnimation = new Color4fInterruptibleAnimation( ANIMATION_DURATION, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_ABRUPTLY_AND_END_GENTLY, currentColor, targetColor ) {
-			@Override
-			protected void updateValue( Color4f v ) {
-				ManipulationHandle3D.this.setColor( v );
-			}
-		};
-		this.animator.invokeLater( this.colorAnimation, null );
-	}
-
 	protected void updateVisibleState( HandleRenderState renderState ) {
-		if( ( this.animator == null ) || ( this.getParentTransformable() == null ) ) {
+		if( this.getParentTransformable() == null ) {
 			//			PrintUtilities.println("Early exit: animator = "+this.animator+", manipulated object = "+this.manipulatedObject);
 			return;
 		}
 
 		double targetOpacity = this.isRenderable() ? this.getDesiredOpacity( renderState ) : 0.0;
 		//		PrintUtilities.println(this.getClass().getSimpleName()+":"+this.hashCode()+" target opacity: "+targetOpacity+", isRenderable? "+this.isRenderable()+", desiredOpacity = "+this.getDesiredOpacity(renderState)+" is showing? "+this.sgVisual.isShowing.getValue());
-		this.animateToOpacity( targetOpacity );
+		this.setOpacity( (float)targetOpacity );
+
 		Color4f targetColor = this.getDesiredColor( renderState );
-		this.animateToColor( targetColor );
+		this.setColor( targetColor );
 	}
 
 	@Override
@@ -732,7 +676,6 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	protected Visual sgVisual = new Visual();
 	protected SimpleAppearance sgFrontFacingAppearance = new SimpleAppearance();
 	protected AbstractTransformable manipulatedObject;
-	protected Animator animator;
 	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
 
 	private HandleState state = new HandleState();
@@ -747,4 +690,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	private boolean isPickable = false; //This is false until a manipulation is set on the handle
 
 	protected float cameraRelativeOpacity = 1.0f;
+
+	//Animation stuff
+	//	protected Animator animator;
 }
