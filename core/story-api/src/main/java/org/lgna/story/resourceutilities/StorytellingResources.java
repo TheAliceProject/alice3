@@ -647,12 +647,11 @@ public enum StorytellingResources {
 		assert this.resourceClassLoaders != null;
 		URL foundResource = null;
 		for( URLClassLoader cl : this.resourceClassLoaders ) {
-
 			foundResource = cl.findResource( resourceString );
 			if( foundResource != null ) {
 				break;
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( resourceString );
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot find resource for:", resourceString );
 			}
 		}
 		return foundResource;

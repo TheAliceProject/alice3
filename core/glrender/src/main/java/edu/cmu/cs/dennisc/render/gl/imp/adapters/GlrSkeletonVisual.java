@@ -800,8 +800,8 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 
 	private boolean skeletonIsDirty = true;
 	private Joint currentSkeleton = null;
-	protected java.util.Map<Integer, GlrTexturedAppearance> appearanceIdToAdapterMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private java.util.Map<Integer, GlrTexturedAppearance> appearanceIdToAdapterMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	protected java.util.Map<Integer, WeightedMeshControl[]> appearanceIdToMeshControllersMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	protected java.util.Map<Integer, GlrMesh<Mesh>[]> appearanceIdToGeometryAdapaters = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private java.util.Map<Integer, GlrMesh<Mesh>[]> appearanceIdToGeometryAdapaters = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private boolean isDataDirty = true;
 }

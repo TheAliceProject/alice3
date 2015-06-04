@@ -109,22 +109,26 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		} else {
 			try {
 				org.alice.ide.ast.export.type.TypeSummary typeSummary = this.getTypeSummary();
-				org.alice.ide.ast.export.type.ResourceInfo resourceInfo = typeSummary.getResourceInfo();
-				if( resourceInfo != null ) {
-					String resourceClassName = resourceInfo.getClassName();
-					String resourceFieldName = resourceInfo.getFieldName();
-					Class<? extends org.lgna.story.resources.ModelResource> resourceCls = (Class<? extends org.lgna.story.resources.ModelResource>)Class.forName( resourceClassName );
-					if( resourceFieldName != null ) {
-						java.lang.reflect.Field fld = resourceCls.getField( resourceFieldName );
-						Enum<? extends org.lgna.story.resources.ModelResource> enumConstant = (Enum<? extends org.lgna.story.resources.ModelResource>)fld.get( null );
-						this.resourceKey = new org.alice.stageide.modelresource.EnumConstantResourceKey( enumConstant );
-					} else {
-						if( org.lgna.story.resources.sims2.PersonResource.class.isAssignableFrom( resourceCls ) ) {
-							this.resourceKey = org.alice.stageide.modelresource.PersonResourceKey.getInstanceForResourceClass( resourceCls );
+				if( typeSummary != null ) {
+					org.alice.ide.ast.export.type.ResourceInfo resourceInfo = typeSummary.getResourceInfo();
+					if( resourceInfo != null ) {
+						String resourceClassName = resourceInfo.getClassName();
+						String resourceFieldName = resourceInfo.getFieldName();
+						Class<? extends org.lgna.story.resources.ModelResource> resourceCls = (Class<? extends org.lgna.story.resources.ModelResource>)Class.forName( resourceClassName );
+						if( resourceFieldName != null ) {
+							java.lang.reflect.Field fld = resourceCls.getField( resourceFieldName );
+							Enum<? extends org.lgna.story.resources.ModelResource> enumConstant = (Enum<? extends org.lgna.story.resources.ModelResource>)fld.get( null );
+							this.resourceKey = new org.alice.stageide.modelresource.EnumConstantResourceKey( enumConstant );
 						} else {
-							this.resourceKey = new org.alice.stageide.modelresource.ClassResourceKey( resourceCls );
+							if( org.lgna.story.resources.sims2.PersonResource.class.isAssignableFrom( resourceCls ) ) {
+								this.resourceKey = org.alice.stageide.modelresource.PersonResourceKey.getInstanceForResourceClass( resourceCls );
+							} else {
+								this.resourceKey = new org.alice.stageide.modelresource.ClassResourceKey( resourceCls );
+							}
 						}
 					}
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 				}
 			} catch( Throwable t ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, this );
@@ -139,10 +143,14 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		} else {
 			try {
 				org.alice.ide.ast.export.type.TypeSummary typeSummary = this.getTypeSummary();
-				java.util.List<String> hierarchyClsNames = typeSummary.getHierarchyClassNames();
-				if( hierarchyClsNames.size() > 0 ) {
-					String clsName = hierarchyClsNames.get( hierarchyClsNames.size() - 1 );
-					this.thingCls = Class.forName( clsName );
+				if( typeSummary != null ) {
+					java.util.List<String> hierarchyClsNames = typeSummary.getHierarchyClassNames();
+					if( hierarchyClsNames.size() > 0 ) {
+						String clsName = hierarchyClsNames.get( hierarchyClsNames.size() - 1 );
+						this.thingCls = Class.forName( clsName );
+					}
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 				}
 			} catch( Throwable t ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, this );
@@ -377,4 +385,10 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 	//	public java.awt.Dimension getIconSize() {
 	//		return URI_LARGE_ICON_SIZE;
 	//	}
+
+	@Override
+	protected void appendRepr( java.lang.StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( this.uri );
+	}
 }
