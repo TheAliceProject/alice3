@@ -142,9 +142,6 @@ public class HandleManager implements ManipulationListener {
 	}
 
 	private static boolean canHaveHandle( AbstractTransformable selectedObject, ManipulationHandle handle ) {
-		if( handle instanceof ManipulationHandleIndirection ) {
-			handle = ( (ManipulationHandleIndirection)handle ).getCurrentHandle();
-		}
 		PickHint objectPickHint = PickUtilities.getPickType( selectedObject );
 		if( handle instanceof SelectionIndicator ) {
 			return ( objectPickHint.intersects( PickHint.PickType.SELECTABLE.pickHint() ) );
