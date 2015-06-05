@@ -108,4 +108,8 @@ public interface ManipulationHandle extends Cloneable {
 	public void setCameraPosition( Point3 cameraPosition );
 
 	public void clear();
+
+	public void setName( String name );
+
+	public String getName();
 }

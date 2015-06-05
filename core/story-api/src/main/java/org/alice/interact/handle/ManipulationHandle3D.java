@@ -232,12 +232,10 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		if( this.manipulatedObject != manipulatedObjectIn ) {
 			this.manipulatedObject = manipulatedObjectIn;
 			this.criteriaManager.setTargetTransformable( this.manipulatedObject );
+			this.setParent( this.manipulatedObject );
 			if( this.manipulatedObject != null ) {
-				this.setParent( this.manipulatedObject );
-				//				this.setHandleShowing(true);
 				this.setScale( this.getObjectScale() );
 			} else {
-				//				this.setHandleShowing(false);
 			}
 
 		}
@@ -344,7 +342,9 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		if( set == null ) {
 			return false;
 		} else {
-			return set.intersects( this.handleSet ) || this.handleSet.intersects( set );
+			boolean setIntersects = set.intersects( this.handleSet );
+			boolean handleIntersects = this.handleSet.intersects( set );
+			return setIntersects || handleIntersects;
 		}
 	}
 

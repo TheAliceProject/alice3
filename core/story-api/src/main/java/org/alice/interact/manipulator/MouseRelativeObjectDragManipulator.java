@@ -111,7 +111,7 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 
 	@Override
 	protected HandleSet getHandleSetToEnable() {
-		return HandleSet.GROUND_TRANSLATION_VISUALIZATION;
+		return HandleSet.STOOD_UP_GROUND_TRANSLATION_VISUALIZATION;
 	}
 
 	private Vector3 getMouseMovementFromVector( InputState currentInput, InputState previousInput ) {
