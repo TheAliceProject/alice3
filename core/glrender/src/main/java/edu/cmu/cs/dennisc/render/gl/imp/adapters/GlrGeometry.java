@@ -43,7 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static javax.media.opengl.GL.GL_LINES;
 import static javax.media.opengl.GL2.GL_COMPILE_AND_EXECUTE;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
@@ -108,14 +107,14 @@ public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geomet
 			}
 			if( isDisplayListInNeedOfRefresh( rc ) || ( rc.gl.glIsList( id ) == false ) ) {
 				rc.gl.glNewList( id, GL_COMPILE_AND_EXECUTE );
-				try {
-					renderGeometry( rc, renderType );
-				} finally {
-					rc.gl.glEndList();
-					//    				int error = rc.gl.glGetError();
-					//    				if( error != GL_NO_ERROR ) {
-					//    					throw new javax.media.opengl.GLException( rc.gl.glGetString( error ) );
-					//    				}
+				renderGeometry( rc, renderType );
+				rc.gl.glEndList();
+				{
+					int error = rc.gl.glGetError();
+					if( error != javax.media.opengl.GL.GL_NO_ERROR ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rc.glu.gluErrorString( error ), error, this );
+						//throw new javax.media.opengl.GLException( rc.glu.gluErrorString( error ) + " " + error + " " + this.toString() );
+					}
 				}
 				setIsGeometryChanged( false );
 			} else {
@@ -132,8 +131,6 @@ public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geomet
 
 	public final void pick( PickContext pc, boolean isSubElementRequired ) {
 		//todo: display lists?
-		pc.gl.glBegin( GL_LINES );
-		pc.gl.glEnd();
 		pickGeometry( pc, isSubElementRequired );
 	}
 
