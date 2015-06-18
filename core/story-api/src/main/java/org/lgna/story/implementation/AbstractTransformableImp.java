@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -525,45 +525,29 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	}
 
 	protected static edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 calculateTurnToFaceAxes( AbstractTransformableImp subject, EntityImp target, edu.cmu.cs.dennisc.math.Point3 offset ) {
-		//todo: handle offset
-		SceneImp asSeenBy = subject.getScene();
-		StandInImp standInA = acquireStandIn( asSeenBy );
+		StandInImp standInA = acquireStandIn( subject );
 		try {
 			standInA.setPositionOnly( subject );
-			edu.cmu.cs.dennisc.math.Point3 targetPos = target.getTransformation( standInA ).translation;
+			edu.cmu.cs.dennisc.math.Point3 targetPos = target.getTransformation( subject ).translation;
 			if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( targetPos.x, 0.0 ) && edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( targetPos.z, 0.0 ) ) {
 				//todo
-				return subject.getAbsoluteTransformation().orientation;
+				return subject.getLocalOrientation();
 			} else {
-				double targetTheta = Math.atan2( targetPos.z, targetPos.x );
-
+				targetPos.y = 0;
+				targetPos.normalize();
 				StandInImp standInB = acquireStandIn( subject );
 				try {
-					standInB.applyTranslation( 0, 0, -1.0, standInB );
-
-					edu.cmu.cs.dennisc.math.Point3 forwardPos = standInB.getTransformation( standInA ).translation;
-
-					double y;
-					if( forwardPos.isWithinReasonableEpsilonOf( 0, 1, 0 ) ) {
-						y = -1.0;
-					} else if( forwardPos.isWithinReasonableEpsilonOf( 0, -1, 0 ) ) {
-						y = 1.0;
-					} else {
-						y = Double.NaN;
-					}
-					if( Double.isNaN( y ) ) {
-						//pass
-					} else {
-						standInB.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
-						standInB.applyTranslation( 0, y, 0.0, standInB );
-						forwardPos = standInB.getTransformation( standInA ).translation;
-					}
-					double forwardTheta = Math.atan2( forwardPos.z, forwardPos.x );
-
-					standInB.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity() );
-					standInB.applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3.accessNegativeYAxis(), targetTheta - forwardTheta, standInA );
-
-					return standInB.getTransformation( asSeenBy ).orientation;
+					//Move a standin to the position of the target
+					standInB.applyTranslation( targetPos.x, targetPos.y, targetPos.z, standInB );
+					edu.cmu.cs.dennisc.math.Point3 standinPosition = standInB.getTransformation( subject.getVehicle() ).translation;
+					//Calculate the vector pointing from the subject to the target all in the reference frame of the subject's vehicle
+					edu.cmu.cs.dennisc.math.Point3 forwardPos = (edu.cmu.cs.dennisc.math.Point3)edu.cmu.cs.dennisc.math.Point3.setReturnValueToSubtraction( new edu.cmu.cs.dennisc.math.Point3(), standinPosition, subject.getLocalPosition() );
+					//Take that vector and normalize it to create the new "forward" vector for the subject
+					edu.cmu.cs.dennisc.math.Vector3 newForward = new edu.cmu.cs.dennisc.math.Vector3( forwardPos );
+					newForward.normalize();
+					//Make a new orientation using this new "forward" and the existing "up" from the subject
+					edu.cmu.cs.dennisc.math.ForwardAndUpGuide fAndG = new edu.cmu.cs.dennisc.math.ForwardAndUpGuide( newForward, subject.getLocalOrientation().up );
+					return new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3( fAndG );
 				} finally {
 					releaseStandIn( standInB );
 				}
