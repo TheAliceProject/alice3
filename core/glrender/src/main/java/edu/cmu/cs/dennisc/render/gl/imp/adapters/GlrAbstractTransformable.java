@@ -67,6 +67,16 @@ public abstract class GlrAbstractTransformable<T extends edu.cmu.cs.dennisc.scen
 		return isUnscaling;
 	}
 
+	public void EPIC_HACK_FOR_ICON_CAPTURE_renderOpaque( RenderContext rc ) {
+		rc.gl.glPushMatrix();
+		try {
+			rc.gl.glMultMatrixd( accessAbsoluteTransformationAsBuffer() );
+			super.renderOpaque( rc );
+		} finally {
+			rc.gl.glPopMatrix();
+		}
+	}
+
 	@Override
 	public void renderOpaque( RenderContext rc ) {
 		rc.gl.glPushMatrix();

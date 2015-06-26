@@ -48,7 +48,6 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
 
-import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
@@ -210,12 +209,6 @@ public class HandleManager implements ManipulationListener {
 	public void setHandlesShowing( boolean showing ) {
 		for( ManipulationHandle handle : this.handles ) {
 			handle.setVisualsShowing( showing );
-		}
-	}
-
-	public void setAnimator( Animator animator ) {
-		for( ManipulationHandle handle : this.handles ) {
-			handle.setAnimator( animator );
 		}
 	}
 

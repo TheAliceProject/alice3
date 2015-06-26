@@ -118,7 +118,7 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.cmu.cs.dennisc.render.event.RenderTargetListener {
 
@@ -230,8 +230,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	};
 	private edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createLightweightOnscreenRenderTarget(
 			new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder()
-			.stencilBits( 0 )
-			.build()
+					.stencilBits( 0 )
+					.build()
 			);
 
 	private class LookingGlassPanel extends org.lgna.croquet.views.CompassPointSpringPanel {

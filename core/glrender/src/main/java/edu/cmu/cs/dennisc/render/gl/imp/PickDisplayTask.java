@@ -83,7 +83,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 		this.pickContext.gl.glRenderMode( javax.media.opengl.GL2.GL_SELECT );
 		this.pickContext.gl.glInitNames();
 
-		java.awt.Rectangle actualViewport = rt.getActualViewport( sgCamera );
+		java.awt.Rectangle actualViewport = rt.getActualViewportAsAwtRectangle( sgCamera );
 		this.pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
 		cameraAdapter.performPick( this.pickContext, pickParameters, actualViewport );
 		this.pickContext.gl.glFlush();

@@ -123,10 +123,10 @@ public class MarkerUtilities {
 
 	private static int getColorIndexForName( String name )
 	{
-		String lowerName = name.toLowerCase();
+		String lowerName = name.toLowerCase( java.util.Locale.ENGLISH );
 		for( int i = 0; i < getColorCount(); i++ )
 		{
-			String currentColor = getColorNameForIndex( i ).toLowerCase();
+			String currentColor = getColorNameForIndex( i ).toLowerCase( java.util.Locale.ENGLISH );
 			if( lowerName.endsWith( currentColor ) )
 			{
 				return i;

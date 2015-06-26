@@ -115,9 +115,9 @@ public class LocalizeReviewFrameView extends org.lgna.croquet.views.BorderPanel 
 			if( columnIndex == 4 ) {
 				int rowIndex = jTable.rowAtPoint( pt );
 				if( rowIndex >= 0 ) {
-					final String prefix = "http://alice.andrew.cmu.edu/localize/narro_project_text_list.php?l=ru&p=5&tf=1&st=3&s=";
+					org.alice.ide.localize.review.croquet.LocalizeReviewFrame composite = (org.alice.ide.localize.review.croquet.LocalizeReviewFrame)getComposite();
+					java.net.URI uri = composite.createUri( rowIndex );
 					try {
-						java.net.URI uri = new java.net.URI( prefix + jTable.getModel().getValueAt( rowIndex, columnIndex ) );
 						edu.cmu.cs.dennisc.java.awt.DesktopUtilities.browse( uri );
 					} catch( Exception exc ) {
 						throw new RuntimeException( exc );

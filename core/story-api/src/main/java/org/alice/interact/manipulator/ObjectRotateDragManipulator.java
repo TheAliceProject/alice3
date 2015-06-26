@@ -353,7 +353,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	private AffineMatrix4x4 originalLocalTransformation;
 	private AffineMatrix4x4 originalAbsoluteTransformation;
 	private Plane cameraFacingPlane;
-	private RotationRingHandle rotationHandle;
+	protected RotationRingHandle rotationHandle;
 	private AbstractCamera camera = null;
 	private edu.cmu.cs.dennisc.render.OnscreenRenderTarget onscreenRenderTarget;
 	private boolean hidCursor = false;

@@ -62,19 +62,20 @@ public abstract class AbstractFileProjectLoader extends UriProjectLoader {
 	@Override
 	protected org.lgna.project.Project load() {
 		if( file.exists() ) {
-			String lcFilename = file.getName().toLowerCase();
+			final java.util.Locale locale = java.util.Locale.ENGLISH;
+			String lcFilename = file.getName().toLowerCase( locale );
 			if( lcFilename.endsWith( ".a2w" ) ) {
 				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Alice3 does not load Alice2 worlds" )
 						.title( "Cannot read file" )
 						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 						.buildAndShow();
-			} else if( lcFilename.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
+			} else if( lcFilename.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase( locale ) ) ) {
 				new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.PROJECT_EXTENSION + " extension." )
 						.title( "Incorrect File Type" )
 						.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 						.buildAndShow();
 			} else {
-				boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase() );
+				boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase( locale ) );
 				java.util.zip.ZipFile zipFile;
 				try {
 					zipFile = new java.util.zip.ZipFile( file );

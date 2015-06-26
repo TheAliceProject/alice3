@@ -57,4 +57,9 @@ public class ProjectEditorAstI18nFactory extends AbstractProjectEditorAstI18nFac
 
 	private ProjectEditorAstI18nFactory() {
 	}
+
+	@Override
+	public boolean isCommentMutable( org.lgna.project.ast.Comment comment ) {
+		return true;
+	}
 }

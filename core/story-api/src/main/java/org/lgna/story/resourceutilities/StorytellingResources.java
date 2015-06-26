@@ -639,6 +639,10 @@ public enum StorytellingResources {
 	}
 
 	public URL getAliceResource( String resourceString ) {
+		if( resourceString.contains( "ı" ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( resourceString );
+			resourceString = resourceString.replaceAll( "ı", "i" );
+		}
 		this.findAndLoadAliceResourcesIfNecessary();
 		assert this.resourceClassLoaders != null;
 		URL foundResource = null;
@@ -646,6 +650,8 @@ public enum StorytellingResources {
 			foundResource = cl.findResource( resourceString );
 			if( foundResource != null ) {
 				break;
+			} else {
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot find resource for:", resourceString );
 			}
 		}
 		return foundResource;

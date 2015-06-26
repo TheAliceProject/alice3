@@ -127,7 +127,7 @@ public class LabeledFormRow implements FormRow {
 			//pass
 		} else {
 			sbLeading.append( "aligny " );
-			sbLeading.append( this.labelVerticalAlignment.toString().toLowerCase() );
+			sbLeading.append( this.labelVerticalAlignment.toString().toLowerCase( java.util.Locale.ENGLISH ) );
 		}
 
 		formPanel.addComponent( leadingComponent, sbLeading.toString() );

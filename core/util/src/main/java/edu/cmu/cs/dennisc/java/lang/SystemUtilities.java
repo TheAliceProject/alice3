@@ -127,7 +127,7 @@ public class SystemUtilities {
 
 	private static Platform platform;
 	static {
-		String lowercaseOSName = System.getProperty( "os.name" ).toLowerCase();
+		String lowercaseOSName = System.getProperty( "os.name" ).toLowerCase( java.util.Locale.ENGLISH );
 		if( lowercaseOSName.contains( "windows" ) ) {
 			platform = Platform.WINDOWS;
 		} else if( lowercaseOSName.startsWith( "mac os x" ) ) {

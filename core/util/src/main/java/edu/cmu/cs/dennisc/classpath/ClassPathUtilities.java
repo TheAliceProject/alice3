@@ -46,13 +46,7 @@ package edu.cmu.cs.dennisc.classpath;
  * @author Dennis Cosgrove
  */
 public class ClassPathUtilities {
-	public static java.util.List<String> getClassPathEntries( Class<?> cls, final edu.cmu.cs.dennisc.pattern.Criterion<String> filter ) throws java.io.IOException {
-		java.security.ProtectionDomain protectionDomain = cls.getProtectionDomain();
-		assert protectionDomain != null : cls;
-		java.security.CodeSource codeSource = protectionDomain.getCodeSource();
-		assert codeSource != null : protectionDomain;
-		java.net.URL url = codeSource.getLocation();
-
+	public static java.util.List<String> getClassPathEntries( java.net.URL url, final edu.cmu.cs.dennisc.pattern.Criterion<String> filter ) throws java.io.IOException {
 		try {
 			java.io.File root = new java.io.File( url.toURI() );
 			if( root.isDirectory() ) {
@@ -91,5 +85,23 @@ public class ClassPathUtilities {
 		} catch( java.net.URISyntaxException urise ) {
 			throw new RuntimeException( urise );
 		}
+	}
+
+	public static java.util.List<String> getClassPathEntries( java.security.CodeSource codeSource, final edu.cmu.cs.dennisc.pattern.Criterion<String> filter ) throws java.io.IOException {
+		java.net.URL url = codeSource.getLocation();
+		assert url != null : codeSource;
+		return getClassPathEntries( url, filter );
+	}
+
+	public static java.util.List<String> getClassPathEntries( java.security.ProtectionDomain protectionDomain, final edu.cmu.cs.dennisc.pattern.Criterion<String> filter ) throws java.io.IOException {
+		java.security.CodeSource codeSource = protectionDomain.getCodeSource();
+		assert codeSource != null : protectionDomain;
+		return getClassPathEntries( codeSource, filter );
+	}
+
+	public static java.util.List<String> getClassPathEntries( Class<?> cls, final edu.cmu.cs.dennisc.pattern.Criterion<String> filter ) throws java.io.IOException {
+		java.security.ProtectionDomain protectionDomain = cls.getProtectionDomain();
+		assert protectionDomain != null : cls;
+		return getClassPathEntries( protectionDomain, filter );
 	}
 }

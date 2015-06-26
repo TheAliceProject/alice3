@@ -69,9 +69,9 @@ public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleT
 			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {
 				java.io.File file = (java.io.File)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
 				try {
-					edu.cmu.cs.dennisc.pattern.Tuple2<org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> tuple = org.lgna.project.io.IoUtilities.readType( file );
-					org.lgna.project.ast.NamedUserType importedType = tuple.getA();
-					java.util.Set<org.lgna.common.Resource> importedResources = tuple.getB();
+					org.lgna.project.io.TypeResourcesPair typeResourcesPair = org.lgna.project.io.IoUtilities.readType( file );
+					org.lgna.project.ast.NamedUserType importedType = typeResourcesPair.getType();
+					java.util.Set<org.lgna.common.Resource> importedResources = typeResourcesPair.getResources();
 					org.lgna.project.ast.NamedUserType srcType;
 					if( importedType.getName().contentEquals( this.dstType.getName() ) ) {
 						srcType = importedType;

@@ -424,7 +424,7 @@ public class AliceResourceUtilties {
 		if( resourceNames != null ) {
 			return resourceNames.textureName;
 		} else {
-			Logger.severe( identifier );
+			Logger.severe( resourceClass, resourceName, identifier );
 			return null;
 		}
 	}
@@ -460,7 +460,12 @@ public class AliceResourceUtilties {
 	public static String getThumbnailResourceFileName( Class<?> resourceClass, String resourceName ) {
 		String modelName = getModelNameFromClassAndResource( resourceClass, resourceName );
 		String textureName = getTextureNameFromClassAndResource( resourceClass, resourceName );
-		return getThumbnailResourceFileName( modelName, textureName );
+		if( modelName != null ) {
+			return getThumbnailResourceFileName( modelName, textureName );
+		} else {
+			Logger.severe( resourceClass, resourceName, modelName, textureName );
+			return null;
+		}
 	}
 
 	public static String getThumbnailResourceFileName( Object resource ) {
@@ -483,7 +488,7 @@ public class AliceResourceUtilties {
 		} else if( textureName.length() > 0 ) {
 			textureName = "_" + makeEnumName( textureName );
 		}
-		return ( modelName != null ? modelName.toLowerCase() : null ) + textureName;
+		return ( modelName != null ? modelName.toLowerCase( java.util.Locale.ENGLISH ) : null ) + textureName;
 	}
 
 	public static String getThumbnailResourceFileName( String modelName, String textureName ) {
@@ -495,7 +500,7 @@ public class AliceResourceUtilties {
 	}
 
 	public static String getVisualResourceFileNameFromModelName( String modelName ) {
-		return modelName.toLowerCase() + "." + MODEL_RESOURCE_EXTENSION;
+		return modelName.toLowerCase( java.util.Locale.ENGLISH ) + "." + MODEL_RESOURCE_EXTENSION;
 	}
 
 	/*private*/protected static java.net.URL getThumbnailURLInternal( Class<?> modelResource, String resourceName ) {

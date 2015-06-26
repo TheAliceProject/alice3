@@ -54,7 +54,7 @@ public class EntryPoint {
 		if( crashDetector.isPreviouslyOpenedButNotSucessfullyClosed() ) {
 			String propertyName = "org.alice.stageide.isCrashDetectionDesired";
 			String isCrashDetectionDesiredText = System.getProperty( propertyName, "true" );
-			if( "true".equals( isCrashDetectionDesiredText.toLowerCase() ) ) {
+			if( "true".equals( isCrashDetectionDesiredText.toLowerCase( java.util.Locale.ENGLISH ) ) ) {
 				javax.swing.JOptionPane.showMessageDialog( null, "Alice did not successfully close last time." );
 			}
 		}

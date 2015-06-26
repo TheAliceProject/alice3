@@ -176,13 +176,28 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 	}
 
 	@Override
-	public java.awt.Rectangle getSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+	public edu.cmu.cs.dennisc.math.immutable.MRectangleI getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.toMRectangleI( this.getActualViewportAsAwtRectangle( sgCamera ) );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.immutable.MRectangleI getSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
+		return edu.cmu.cs.dennisc.java.awt.RectangleUtilities.toMRectangleI( this.getSpecifiedViewportAsAwtRectangle( sgCamera ) );
+	}
+
+	@Override
+	public void setSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, edu.cmu.cs.dennisc.math.immutable.MRectangleI viewport ) {
+		this.setSpecifiedViewportAsAwtRectangle( sgCamera, edu.cmu.cs.dennisc.java.awt.RectangleUtilities.toAwtRectangle( viewport ) );
+	}
+
+	@Override
+	public java.awt.Rectangle getSpecifiedViewportAsAwtRectangle( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
 		return cameraAdapter.getSpecifiedViewport();
 	}
 
 	@Override
-	public void setSpecifiedViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, java.awt.Rectangle viewport ) {
+	public void setSpecifiedViewportAsAwtRectangle( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, java.awt.Rectangle viewport ) {
 		edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter = AdapterFactory.getAdapterFor( camera );
 		cameraAdapter.setSpecifiedViewport( viewport );
 	}
@@ -193,14 +208,14 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 	}
 
 	@Override
-	public java.awt.Rectangle getActualViewport( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+	public java.awt.Rectangle getActualViewportAsAwtRectangle( java.awt.Rectangle rv, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera<?> glrCamera = AdapterFactory.getAdapterFor( camera );
 		return getActualViewport( rv, glrCamera );
 	}
 
 	@Override
-	public final java.awt.Rectangle getActualViewport( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
-		return getActualViewport( new java.awt.Rectangle(), camera );
+	public final java.awt.Rectangle getActualViewportAsAwtRectangle( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+		return getActualViewportAsAwtRectangle( new java.awt.Rectangle(), camera );
 	}
 
 	@Override

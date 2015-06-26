@@ -135,6 +135,8 @@ public class GlrThoughtBubble extends GlrBubble<edu.cmu.cs.dennisc.scenegraph.gr
 			for( int i = 0; i < m_tailEllipses.length; i++ ) {
 				double factor = i + 1;
 				m_tailEllipses[ i ] = new edu.cmu.cs.dennisc.java.awt.geom.Ellipse( 5 * factor, 3 * factor );
+				m_tailEllipses[ i ].setDrawPaint( outlineColor );
+				m_tailEllipses[ i ].setFillPaint( fillColor );
 				m_tailEllipses[ i ].applyTranslation( bubble.getOriginOfTail().getX() + ( i * xDelta * PORTION_PER_TAIL_ELLIPSE ), bubble.getOriginOfTail().getY() + ( i * yDelta * PORTION_PER_TAIL_ELLIPSE ) );
 			}
 		}
@@ -174,6 +176,7 @@ public class GlrThoughtBubble extends GlrBubble<edu.cmu.cs.dennisc.scenegraph.gr
 			g2.setPaint( outlineColor );
 			g2.draw( shape );
 
+			g2.setPaint( textColor );
 			multilineText.paint( g2, wrapWidth, edu.cmu.cs.dennisc.java.awt.TextAlignment.LEADING, textBounds );
 
 			for( edu.cmu.cs.dennisc.java.awt.geom.Ellipse tailEllipse : m_tailEllipses ) {

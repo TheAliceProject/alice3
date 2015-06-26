@@ -14,7 +14,7 @@ public class UUIDGenerator {
 		sb.append( "The text below has been copied to your clipboard:\n" );
 		sb.append( s );
 		System.out.println( sb.toString() );
-		if( System.getProperty( "os.name" ).toLowerCase().startsWith( "linux" ) ) {
+		if( System.getProperty( "os.name" ).toLowerCase( java.util.Locale.ENGLISH ).startsWith( "linux" ) ) {
 			javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
 		}
 	}

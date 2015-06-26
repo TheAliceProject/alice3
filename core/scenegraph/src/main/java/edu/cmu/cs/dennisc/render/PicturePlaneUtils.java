@@ -151,7 +151,7 @@ public class PicturePlaneUtils {
 
 	public static edu.cmu.cs.dennisc.math.Vector4 transformFromViewportToCamera_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		synchronized( s_actualViewportBuffer ) {
-			renderTarget.getActualViewport( s_actualViewportBuffer, sgCamera );
+			renderTarget.getActualViewportAsAwtRectangle( s_actualViewportBuffer, sgCamera );
 			transformFromViewportToCamera_AffectReturnValuePassedIn( rv, renderTarget, sgCamera, s_actualViewportBuffer );
 		}
 		return rv;
@@ -159,7 +159,7 @@ public class PicturePlaneUtils {
 
 	public static edu.cmu.cs.dennisc.math.Vector4 transformFromCameraToViewport_AffectReturnValuePassedIn( edu.cmu.cs.dennisc.math.Vector4 rv, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		synchronized( s_actualViewportBuffer ) {
-			renderTarget.getActualViewport( s_actualViewportBuffer, sgCamera );
+			renderTarget.getActualViewportAsAwtRectangle( s_actualViewportBuffer, sgCamera );
 			transformFromCameraToViewport_AffectReturnValuePassedIn( rv, renderTarget, sgCamera, s_actualViewportBuffer );
 		}
 		return rv;
@@ -185,7 +185,7 @@ public class PicturePlaneUtils {
 
 	public static edu.cmu.cs.dennisc.math.Vector4 transformFromAWTToCamera( edu.cmu.cs.dennisc.math.Vector4 rv, java.awt.Point p, double z, edu.cmu.cs.dennisc.render.RenderTarget renderTarget, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera ) {
 		synchronized( s_actualViewportBuffer ) {
-			renderTarget.getActualViewport( s_actualViewportBuffer, sgCamera );
+			renderTarget.getActualViewportAsAwtRectangle( s_actualViewportBuffer, sgCamera );
 			transformFromAWTToViewport( rv, p, z, s_actualViewportBuffer );
 			transformFromViewportToCamera_AffectReturnValuePassedIn( rv, renderTarget, sgCamera, s_actualViewportBuffer );
 		}
@@ -198,7 +198,7 @@ public class PicturePlaneUtils {
 		synchronized( s_vector4dBuffer ) {
 			s_vector4dBuffer.set( xyzw );
 			synchronized( s_actualViewportBuffer ) {
-				renderTarget.getActualViewport( s_actualViewportBuffer, sgCamera );
+				renderTarget.getActualViewportAsAwtRectangle( s_actualViewportBuffer, sgCamera );
 				transformFromCameraToViewport_AffectReturnValuePassedIn( s_vector4dBuffer, renderTarget, sgCamera, s_actualViewportBuffer );
 				transformFromViewportToAWT( rv, s_vector4dBuffer, s_actualViewportBuffer );
 			}
