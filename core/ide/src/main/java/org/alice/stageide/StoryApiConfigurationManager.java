@@ -401,6 +401,8 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.MoveDirection.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.TurnDirection.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.RollDirection.class ) );
+		rv.add( null );
+		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.AudioSource.class ) );
 		return rv;
 	}
 
