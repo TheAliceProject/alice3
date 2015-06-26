@@ -235,9 +235,10 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			this.setParent( this.manipulatedObject );
 			if( this.manipulatedObject != null ) {
 				this.setScale( this.getObjectScale() );
+				this.setVisualsShowing( true );
 			} else {
+				this.setVisualsShowing( false );
 			}
-
 		}
 		if( this.manipulatedObject != null ) {
 			Scalable s = getScalable( this.manipulatedObject );

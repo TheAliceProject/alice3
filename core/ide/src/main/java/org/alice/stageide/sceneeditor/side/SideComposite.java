@@ -79,7 +79,6 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 			try {
 				java.util.Locale locale = javax.swing.JComponent.getDefaultLocale();
 				java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( bundleName, key );
 				sb.append( resourceBundle.getString( key ) );
 			} catch( java.util.MissingResourceException mre ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( mre, bundleName, key );
