@@ -42,6 +42,7 @@
  */
 package org.lgna.story.implementation;
 
+
 /**
  * @author dculyba
  * 

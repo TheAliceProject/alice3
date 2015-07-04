@@ -47,6 +47,7 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 
 public class SkeletonVisual extends Visual {
+
 	public SkeletonVisualBoundingBoxTracker getTracker() {
 		return this.tracker;
 	}
@@ -71,6 +72,9 @@ public class SkeletonVisual extends Visual {
 			skeleton.getValue().release();
 		}
 		for( WeightedMesh mesh : weightedMeshes.getValue() ) {
+			mesh.release();
+		}
+		for( WeightedMesh mesh : defaultPoseWeightedMeshes.getValue() ) {
 			mesh.release();
 		}
 		for( TexturedAppearance texture : textures.getValue() ) {
@@ -102,11 +106,35 @@ public class SkeletonVisual extends Visual {
 			this.tracker.getAxisAlignedMinimumBoundingBox( rv );
 		}
 		else {
-			if( this.weightedMeshes.getValue() != null ) {
-				for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue() )
-				{
-					edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-					rv.union( b );
+			//There's a problem here.
+			//This code is used to return a bounding box for a Skeleton Visual in 2 cases:
+			//	1) When there's no bounding box tracker (the utility class which lets us access the skeleton visual adapter and get bounding box data from the actual transformed weighted mesh
+			//  2) When we want a bounding box that ignores the positions of the joints
+			//This all works with the assumption that the raw weighted mesh data is a valid representation of these things.
+			//Unfortunately, this assumption no longer holds true. We now have models which have a bind pose (the configuration of the raw mesh) and a default pose (the pose the model wants to come into alice in)
+			//The logic of this function wants to use the default pose data, but for this to work we need to process the weighted mesh with this skeleton pose.
+			//This means we can't rely on the data in the raw weighted mesh to give us what we want.
+			//Options:
+			//  1) Preprocess the weighted mesh based on the default pose such that the data in this.weightedMeshes gives us the desired values
+			//		This may have repercussions. Is this data used elsewhere? The skin weight algortithm needs this mesh data to be in the bind pose for the skinning to work.
+			//  2) Eliminate this second logic path and make everything use the tracker. This would mean adding ignoreJointOrientations to the tracker class
+			//		This is probably the way to go, but we'll need to look into how often we want to ignoreJointOrientations and how often we don't have a tracker
+			if( this.hasDefaultPoseWeightedMeshes.getValue() ) {
+				if( this.defaultPoseWeightedMeshes.getValue() != null ) {
+					for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue() )
+					{
+						edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+						rv.union( b );
+					}
+				}
+			}
+			else {
+				if( this.weightedMeshes.getValue() != null ) {
+					for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue() )
+					{
+						edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+						rv.union( b );
+					}
 				}
 			}
 			if( this.geometries.getValue() != null ) {
@@ -130,11 +158,23 @@ public class SkeletonVisual extends Visual {
 			this.tracker.getAxisAlignedMinimumBoundingBox( rv );
 		}
 		else {
-			if( this.weightedMeshes.getValue() != null ) {
-				for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue() )
-				{
-					edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-					rv.union( b );
+			//See comment above
+			if( this.hasDefaultPoseWeightedMeshes.getValue() ) {
+				if( this.defaultPoseWeightedMeshes.getValue() != null ) {
+					for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.defaultPoseWeightedMeshes.getValue() )
+					{
+						edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+						rv.union( b );
+					}
+				}
+			}
+			else {
+				if( this.weightedMeshes.getValue() != null ) {
+					for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue() )
+					{
+						edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+						rv.union( b );
+					}
 				}
 			}
 			if( this.geometries.getValue() != null ) {
@@ -214,6 +254,25 @@ public class SkeletonVisual extends Visual {
 
 		@Override
 		protected TexturedAppearance createCopy( TexturedAppearance src ) {
+			//todo?
+			return src;
+		}
+	};
+
+	//This property is used to indicate if the visual has a separate set of weighted meshes which have been transformed into the default pose.
+	//This is use to handle models which have different bind poses and default poses
+	//By default most models have the same bind pose and default pose so they do not have defaultPoseWeightedMeshes
+	public final edu.cmu.cs.dennisc.property.BooleanProperty hasDefaultPoseWeightedMeshes = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+
+	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh> defaultPoseWeightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
+	{
+		@Override
+		protected WeightedMesh[] createArray( int length ) {
+			return new WeightedMesh[ length ];
+		}
+
+		@Override
+		protected WeightedMesh createCopy( WeightedMesh src ) {
 			//todo?
 			return src;
 		}

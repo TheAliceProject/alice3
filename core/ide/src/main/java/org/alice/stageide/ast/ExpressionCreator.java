@@ -43,6 +43,14 @@
 
 package org.alice.stageide.ast;
 
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.Orientation;
+import org.lgna.story.PoseBuilder;
+import org.lgna.story.implementation.JointIdQuaternionPair;
+import org.lgna.story.implementation.PoseUtilities;
+
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -189,6 +197,56 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		}
 	}
 
+	private org.lgna.project.ast.Expression createJointIdExpression( org.lgna.story.resources.JointId jointId ) throws CannotCreateExpressionException {
+		java.lang.reflect.Field fld = jointId.getPublicStaticFinalFld();
+		if( fld != null ) {
+			return this.createPublicStaticFieldAccess( fld );
+		} else {
+			throw new CannotCreateExpressionException( jointId );
+		}
+	}
+
+	//private static final org.lgna.project.ast.JavaMethod ADD_CUSTOM = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "arbitraryJoint", JointId.class, Orientation.class );
+	private static final org.lgna.project.ast.JavaMethod BUILD = org.lgna.project.ast.JavaMethod.getInstance( PoseBuilder.class, "build" );
+
+	private org.lgna.project.ast.Expression createPoseExpression( org.lgna.story.Pose pose ) throws CannotCreateExpressionException {
+		if( ( pose != null ) && ( EmployeesOnly.getJointIdQuaternionPairs( pose ).length > 0 ) ) {
+			Class<? extends PoseBuilder> builderCls = PoseUtilities.getBuilderClassForPoseClass( pose.getClass() );
+			org.lgna.project.ast.InstanceCreation builderExpression0 = org.lgna.project.ast.AstUtilities.createInstanceCreation( builderCls );
+			org.lgna.project.ast.Expression prevExpression = null;
+			for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( pose ) ) {
+				UnitQuaternion q = jqPair.getQuaternion();
+				Orientation orientation = new org.lgna.story.Orientation( q.x, q.y, q.z, q.w );
+
+				org.lgna.project.ast.Expression callerExpression = prevExpression == null ? builderExpression0 : prevExpression;
+				java.lang.reflect.Method jSpecificMethod = PoseUtilities.getSpecificPoseBuilderMethod( builderCls, jqPair.getJointId() );
+				if( jSpecificMethod != null ) {
+					prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
+							callerExpression,
+							org.lgna.project.ast.JavaMethod.getInstance( jSpecificMethod ),
+							this.createOrientationExpression( orientation ) );
+				} else {
+					java.lang.reflect.Method jCatchAllMethod = PoseUtilities.getCatchAllPoseBuilderMethod( builderCls );
+					if( jCatchAllMethod != null ) {
+						prevExpression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
+								callerExpression,
+								org.lgna.project.ast.JavaMethod.getInstance( jCatchAllMethod ),
+								this.createJointIdExpression( jqPair.getJointId() ),
+								this.createOrientationExpression( orientation ) );
+					} else {
+						//should not happen
+						//throw new CannotCreateExpressionException( pose );
+						throw new Error( "cannot find catch all method for pose builder " + pose + " " + builderCls );
+					}
+				}
+			}
+			assert prevExpression != null;
+			return org.lgna.project.ast.AstUtilities.createMethodInvocation( prevExpression, BUILD );
+		} else {
+			return new org.lgna.project.ast.NullLiteral();
+		}
+	}
+
 	private org.lgna.project.ast.Expression createOutfitExpression( org.lgna.story.resources.sims2.Outfit outfit ) throws CannotCreateExpressionException {
 		if( outfit != null ) {
 			if( outfit instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
@@ -223,6 +281,7 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 
 	@Override
 	protected org.lgna.project.ast.Expression createCustomExpression( Object value ) throws CannotCreateExpressionException {
+
 		if( value instanceof org.lgna.story.Position ) {
 			return this.createPositionExpression( (org.lgna.story.Position)value );
 		} else if( value instanceof org.lgna.story.Orientation ) {
@@ -235,8 +294,14 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			return this.createPaintExpression( (org.lgna.story.Paint)value );
 		} else if( value instanceof org.lgna.story.Font ) {
 			return this.createFontExpression( (org.lgna.story.Font)value );
+			//		} else if( value instanceof org.lgna.ik.poser.Pose ) {
+			//			return this.createPoseExpression( (org.lgna.ik.poser.Pose)value );
+		} else if( value instanceof org.lgna.story.Pose<?> ) {
+			return this.createPoseExpression( (org.lgna.story.Pose<?>)value );
 		} else if( value instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
 			return this.createOutfitExpression( (org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?>)value );
+		} else if( value instanceof org.lgna.story.resources.JointId ) {
+			return this.createJointIdExpression( (org.lgna.story.resources.JointId)value );
 		} else {
 			throw new CannotCreateExpressionException( value );
 		}

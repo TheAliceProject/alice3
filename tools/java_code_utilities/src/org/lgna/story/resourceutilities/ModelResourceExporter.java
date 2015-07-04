@@ -79,14 +79,19 @@ import javax.xml.transform.stream.StreamResult;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.FlyerResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
+import org.lgna.story.resources.QuadrupedResource;
+import org.lgna.story.resources.SwimmerResource;
 import org.w3c.dom.Document;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
@@ -134,6 +139,7 @@ public class ModelResourceExporter {
 	private List<String> forcedOverridingEnumNames = new ArrayList<String>();
 	private Map<String, List<String>> forcedEnumNamesMap = new HashMap<String, List<String>>();
 	private Map<String, String> customArrayNameMap = new HashMap<String, String>();
+	private Map<String, Map<String, AffineMatrix4x4>> poses = new HashMap<String, Map<String, AffineMatrix4x4>>();
 	private String[] arrayNamesToSkip = null;
 	private boolean exportGalleryResources = true;
 	private boolean isDeprecated = false;
@@ -211,6 +217,10 @@ public class ModelResourceExporter {
 			this.moveCenterToBottom = false;
 			this.recenterXZ = false;
 		}
+	}
+
+	public void addPose( String poseName, Map<String, AffineMatrix4x4> pose ) {
+		this.poses.put( poseName, pose );
 	}
 
 	public void setEnableArrays( boolean enableArrays ) {
@@ -1101,20 +1111,20 @@ public class ModelResourceExporter {
 
 	private String getJointAccessMethodNameForArrayJoint( String jointName ) {
 		String arrayName = getArrayNameForJoint( jointName, null, null );
-		return getArrayAccessorMethodName( arrayName );
+		return getAccessorMethodName( arrayName );
 	}
 
-	private String getArrayAccessorMethodName( String arrayName ) {
+	private String getAccessorMethodName( String arrayName ) {
 		return "get" + AliceResourceUtilties.enumToCamelCase( arrayName );
 	}
 
-	//If a parent interface has declared an accessor for a given array, return true
+	//If a parent interface has declared an accessor for a given field, return true
 	// otherwisse return false
-	private boolean needsAccessorMethodForArray( ModelClassData classData, String arrayName ) {
-		String arrayAccessorMethodName = getArrayAccessorMethodName( arrayName );
+	private boolean needsAccessorMethodForFieldName( ModelClassData classData, String fieldName ) {
+		String fieldAccessorMethodName = getAccessorMethodName( fieldName );
 		Method m = null;
 		try {
-			m = classData.superClass.getMethod( arrayAccessorMethodName );
+			m = classData.superClass.getMethod( fieldAccessorMethodName );
 			if( ( m != null ) && m.getDeclaringClass().isInterface() ) {
 				return true;
 			}
@@ -1126,7 +1136,7 @@ public class ModelResourceExporter {
 	private List<Method> getMandatoryMethods( Class<?> superClass, Class<?> returnType ) {
 		List<Method> methods = new LinkedList<Method>();
 		for( Method method : superClass.getMethods() ) {
-			if( method.getReturnType().equals( returnType ) && method.getDeclaringClass().isInterface() )
+			if( returnType.isAssignableFrom( method.getReturnType() ) && method.getDeclaringClass().isInterface() )
 			{
 				methods.add( method );
 			}
@@ -1159,6 +1169,75 @@ public class ModelResourceExporter {
 
 		}
 		return arrayNames;
+	}
+
+	//  We don't support defining poses ahead of time in classes. 
+	//  All poses are either declared as functions in the interface to be implemented by the generated code
+	//  Or they're defined by the model resource and added as part of the generative process
+	//	private List<String> getAlreadyDeclaredPoseNames( Class<?> superClass ) {
+	//		List<String> fieldNames = new LinkedList<String>();
+	//		for( Field field : ReflectionUtilities.getPublicStaticFinalFields( superClass, org.lgna.story.Pose.class ) ) {
+	//			fieldNames.add( field.getName() );
+	//		}
+	//		return fieldNames;
+	//	}
+
+	private List<String> getMandatoryPoseNames( Class<?> superClass ) {
+		List<String> methodNames = new LinkedList<String>();
+		for( Method method : getMandatoryMethods( superClass, org.lgna.story.Pose.class ) ) {
+			methodNames.add( method.getName() );
+		}
+		List<String> poseNames = new LinkedList<String>();
+		for( String methodName : methodNames ) {
+			int index = methodName.indexOf( "get" );
+			if( ( index == 0 ) ) {
+				String newName = methodName.substring( 3 );
+				int arrayIndex = newName.indexOf( "Pose" );
+				if( arrayIndex != -1 ) {
+					newName = newName.substring( 0, arrayIndex );
+				}
+				newName = AliceResourceUtilties.makeEnumName( newName );
+				poseNames.add( newName );
+			}
+			else {
+				System.err.println( "FROM " + superClass + ": UNABLE TO CONVERT " + methodName + " INTO POSE NAME." );
+			}
+
+		}
+		return poseNames;
+	}
+
+	private Class getPoseBuilderTypeForSuperClass( Class<?> superClass ) {
+		if( FlyerResource.class.isAssignableFrom( superClass ) ) {
+			return org.lgna.story.FlyerPoseBuilder.class;
+		}
+		else if( BipedResource.class.isAssignableFrom( superClass ) ) {
+			return org.lgna.story.BipedPoseBuilder.class;
+		}
+		else if( QuadrupedResource.class.isAssignableFrom( superClass ) ) {
+			return org.lgna.story.QuadrupedPoseBuilder.class;
+		}
+		else if( SwimmerResource.class.isAssignableFrom( superClass ) ) {
+			return org.lgna.story.SwimmerPoseBuilder.class;
+		}
+		return org.lgna.story.JointedModelPoseBuilder.class;
+	}
+
+	private Class getPoseTypeForSuperClass( Class<?> superClass ) {
+		if( FlyerResource.class.isAssignableFrom( superClass ) ) {
+			return org.lgna.story.FlyerPose.class;
+		}
+		else if( BipedResource.class.isAssignableFrom( superClass ) ) {
+			return org.lgna.story.BipedPose.class;
+		}
+		else if( QuadrupedResource.class.isAssignableFrom( superClass ) ) {
+			return org.lgna.story.QuadrupedPose.class;
+		}
+		else if( SwimmerResource.class.isAssignableFrom( superClass ) ) {
+			return org.lgna.story.SwimmerPose.class;
+		}
+		return org.lgna.story.JointedModelPose.class;
+
 	}
 
 	private List<String> getAlreadyDeclaredJointArrayNames( Class<?> superClass ) {
@@ -1216,6 +1295,8 @@ public class ModelResourceExporter {
 			else {
 				arrayEntries = new HashMap<String, List<String>>();
 			}
+
+			Map<String, Map<String, AffineMatrix4x4>> poseEntries = new HashMap<String, Map<String, AffineMatrix4x4>>( this.poses );
 			List<String> rootJoints = new LinkedList<String>();
 			sb.append( JavaCodeUtilities.LINE_RETURN );
 			for( Tuple2<String, String> entry : trimmedSkeleton )
@@ -1262,6 +1343,53 @@ public class ModelResourceExporter {
 				}
 				sb.append( " };" + JavaCodeUtilities.LINE_RETURN );
 			}
+			//Handle pose code
+			List<String> mandatoryPoseNames = getMandatoryPoseNames( classData.superClass );
+			if( !poseEntries.isEmpty() || ( mandatoryPoseNames.size() != 0 ) ) {
+				for( String mandatoryPose : mandatoryPoseNames ) {
+					if( !poseEntries.containsKey( mandatoryPose ) ) {
+						throw new DataFormatException( "Missing pose definition for " + mandatoryPose + " on class " + classData.superClass );
+					}
+				}
+				for( Entry<String, Map<String, AffineMatrix4x4>> poseEntry : poseEntries.entrySet() ) {
+					Map<String, AffineMatrix4x4> poseData = poseEntry.getValue();
+					if( poseData.isEmpty() ) {
+						throw new DataFormatException( "No pose data for " + poseEntry.getKey() + " on class " + classData.superClass );
+					}
+					String fullPoseName = poseEntry.getKey() + "_POSE";
+
+					boolean needsAccessor = needsAccessorMethodForFieldName( classData, fullPoseName );
+
+					//If an accessor is needed, add a "COMPLETELY_HIDDEN" annotation.
+					// The accessor is used to retrieve the pose via a parent class and therefore the pose itself is essentially already handled
+					// If there is no accessor, then we want the code generation system to create an Alice level accessor at runtime (which this annotation prevents)
+					if( needsAccessor ) {
+						sb.append( "\n\t@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )" );
+					}
+
+					Class poseType = getPoseTypeForSuperClass( classData.superClass );
+					Class poseBuilderType = getPoseBuilderTypeForSuperClass( classData.superClass );
+					sb.append( "\n\tpublic static final " + poseType.getName() + " " + fullPoseName + " = new " + poseBuilderType.getName() + "()." );
+					sb.append( JavaCodeUtilities.LINE_RETURN );
+					int count = 0;
+					for( Entry<String, AffineMatrix4x4> poseDataEntry : poseData.entrySet() ) {
+						count++;
+						UnitQuaternion quat = poseDataEntry.getValue().orientation.createUnitQuaternion();
+						sb.append( "\t\tjoint( " + poseDataEntry.getKey() + ", new org.lgna.story.Orientation(" + quat.x + ", " + quat.y + ", " + quat.z + ", " + quat.w + ") )." );
+						if( count != poseData.size() ) {
+							sb.append( JavaCodeUtilities.LINE_RETURN );
+						}
+					}
+					sb.append( "build();" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
+					if( needsAccessor ) {
+						String poseAccessorName = getAccessorMethodName( fullPoseName );
+						sb.append( "\tpublic " + poseType.getName() + " " + poseAccessorName + "(){" + JavaCodeUtilities.LINE_RETURN );
+						sb.append( "\t\treturn " + this.getJavaClassName() + "." + fullPoseName + ";" + JavaCodeUtilities.LINE_RETURN );
+						sb.append( "\t}" + JavaCodeUtilities.LINE_RETURN );
+					}
+				}
+			}
+			//Handle array code
 			List<String> mandatoryArrayNames = getMandatoryJointArrayNames( classData.superClass );
 			List<String> declaredArrays = getAlreadyDeclaredJointArrayNames( classData.superClass );
 			if( !arrayEntries.isEmpty() || ( mandatoryArrayNames.size() != 0 ) ) {
@@ -1284,7 +1412,7 @@ public class ModelResourceExporter {
 						continue;
 					}
 
-					boolean needsAccessor = needsAccessorMethodForArray( classData, fullArrayName );
+					boolean needsAccessor = needsAccessorMethodForFieldName( classData, fullArrayName );
 
 					//If an accessor is needed, add a "COMPLETELY_HIDDEN" annotation.
 					// The accessor is used to retrieve the array via a parent class and therefore the array itself is essentially already handled
@@ -1318,7 +1446,7 @@ public class ModelResourceExporter {
 						sb.append( " };" + JavaCodeUtilities.LINE_RETURN );
 					}
 					if( needsAccessor ) {
-						String arrayAccessorName = getArrayAccessorMethodName( fullArrayName );
+						String arrayAccessorName = getAccessorMethodName( fullArrayName );
 						sb.append( "\tpublic org.lgna.story.resources.JointId[] " + arrayAccessorName + "(){" + JavaCodeUtilities.LINE_RETURN );
 						sb.append( "\t\treturn " + this.getJavaClassName() + "." + fullArrayName + ";" + JavaCodeUtilities.LINE_RETURN );
 						sb.append( "\t}" + JavaCodeUtilities.LINE_RETURN );
@@ -1659,11 +1787,14 @@ public class ModelResourceExporter {
 		//TODO: Handle this error in a better way
 		try {
 			BufferedImage classThumb = createClassThumb( ImageUtilities.read( firstThumbFile ) );
-
 			ImageUtilities.write( classThumbFile, classThumb );
 			thumbnailFiles.add( classThumbFile );
 		} catch( IOException ioe ) {
 			ioe.printStackTrace();
+			System.err.println( "Error reading thumbnail " + firstThumbFile + ", Deleting it..." );
+			firstThumbFile.delete();
+		} catch( Exception e ) {
+			e.printStackTrace();
 			System.err.println( "Error reading thumbnail " + firstThumbFile + ", Deleting it..." );
 			firstThumbFile.delete();
 		}

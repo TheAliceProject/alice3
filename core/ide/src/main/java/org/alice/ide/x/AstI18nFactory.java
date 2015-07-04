@@ -281,11 +281,36 @@ public abstract class AstI18nFactory extends I18nFactory {
 				//				} else if( expression instanceof org.lgna.project.ast.AbstractLiteral ) {
 				//					rv = this.createComponent( expression );
 			} else {
-				if( org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() ) {
-					rv = new org.alice.ide.x.components.ExpressionView( this, expression );
-				} else {
-					org.lgna.croquet.views.SwingComponentView<?> component = this.createComponent( expression );
+				org.lgna.croquet.views.SwingComponentView<?> component = null;
+				if( expression != null ) {
+					org.lgna.project.ast.Node parent = expression.getParent();
+					if( parent instanceof org.lgna.project.ast.MethodInvocation ) {
+						org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)parent;
+						if( expression == methodInvocation.expression.getValue() ) {
+							org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.stageide.StoryApiConfigurationManager.getInstance().getBuildMethodPoseBuilderType( methodInvocation );
+							if( type != null ) {
+								StringBuilder sb = new StringBuilder();
+								sb.append( "new " );
+								sb.append( type.getName() );
+								sb.append( "(...)." );
+								component = new org.lgna.croquet.views.Label( sb.toString() );
+							}
+						}
+					}
+				}
+				if( component != null ) {
 					rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( component );
+				} else {
+					if( org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() ) {
+						rv = new org.alice.ide.x.components.ExpressionView( this, expression );
+					} else {
+						if( org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() ) {
+							rv = new org.alice.ide.x.components.ExpressionView( this, expression );
+						} else {
+							component = this.createComponent( expression );
+							rv = this.EPIC_HACK_createWrapperIfNecessaryForExpressionPanelessComponent( component );
+						}
+					}
 				}
 			}
 			return rv;

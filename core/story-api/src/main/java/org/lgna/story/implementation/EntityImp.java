@@ -173,6 +173,11 @@ public abstract class EntityImp extends PropertyOwnerImp implements ReferenceFra
 			if( rv != null ) {
 				//pass
 			} else {
+				//this does happen when the vehicle is the ROOT bone of a biped
+				//ROOT apparently has no scenegraph counterpart. 
+				//ROOT won't be the child of any joint. however it could be the child of something else in the scene. 
+				//Therefore I realize that this is not a good fix in a generic EntityImp class. 
+				//However I don't know what is. Therefore this is what I do for now. 
 				rv = getEntityImpForSgObject( sgVehicle );
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "No instance found for sgVehicle " + sgVehicle + ". Searched parent and got " + rv );
 				if( rv != null ) {

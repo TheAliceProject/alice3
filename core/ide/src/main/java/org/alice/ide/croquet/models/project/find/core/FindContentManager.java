@@ -179,6 +179,7 @@ public class FindContentManager {
 		while( true ) {
 			try {
 				Pattern pattern = Pattern.compile( check.toLowerCase() );
+				System.out.println( objectList );
 				for( SearchResult o : objectList ) {
 					String name = o.getName();
 					Matcher matcher = pattern.matcher( name.toLowerCase() );

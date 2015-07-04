@@ -48,5 +48,12 @@ package org.alice.ide.declarationseditor.type.views;
 public class ProceduresToolPaletteCoreView extends MethodsToolPaletteCoreView {
 	public ProceduresToolPaletteCoreView( org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite composite ) {
 		super( composite );
+		final boolean IS_POSER_READY_FOR_PRIME_TIME = false;
+		if( IS_POSER_READY_FOR_PRIME_TIME ) {
+			org.lgna.ik.poser.croquet.DeclareAnimationProcedureDialog declareAnimationProcedureDialog = org.lgna.ik.poser.croquet.DeclareAnimationProcedureDialog.getInstance( composite.getType() );
+			if( declareAnimationProcedureDialog != null ) {
+				this.addComponent( declareAnimationProcedureDialog.getLaunchOperation().createButton() );
+			}
+		}
 	}
 }

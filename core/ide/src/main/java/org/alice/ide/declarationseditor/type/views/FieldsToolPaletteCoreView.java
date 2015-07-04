@@ -60,5 +60,13 @@ public class FieldsToolPaletteCoreView extends MembersToolPaletteCoreView {
 		}
 		this.addComponent( composite.getMembersComposite().getView() );
 		this.addComponent( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getLaunchOperation().createButton() );
+
+		final boolean IS_POSER_READY_FOR_PRIME_TIME = false;
+		if( IS_POSER_READY_FOR_PRIME_TIME ) {
+			org.lgna.ik.poser.croquet.DeclarePoseFieldOperation declarePoseFieldOperation = org.lgna.ik.poser.croquet.DeclarePoseFieldOperation.getInstance( type );
+			if( declarePoseFieldOperation != null ) {
+				this.addComponent( declarePoseFieldOperation.createButton() );
+			}
+		}
 	}
 }

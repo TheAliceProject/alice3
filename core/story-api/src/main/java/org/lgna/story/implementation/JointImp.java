@@ -127,6 +127,9 @@ public abstract class JointImp extends AbstractTransformableImp {
 		sb.append( this.getJointId().toString() );
 	}
 
+	public JointedModelImp<?, ?> getJointedModelImplementation() {
+		return jointedModelImplementation;
+}
 	public edu.cmu.cs.dennisc.math.Dimension3 getSize() {
 		return getAxisAlignedMinimumBoundingBox().getSize();
 	}

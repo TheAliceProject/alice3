@@ -256,4 +256,10 @@ public class SQuadruped extends SJointedModel implements Articulable {
 	public SJoint getBackRightToe() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.QuadrupedResource.BACK_RIGHT_TOE );
 	}
+
+	public void strikePose( org.lgna.story.QuadrupedPose pose, StrikePose.Detail... details ) {
+		double duration = Duration.getValue( details );
+		edu.cmu.cs.dennisc.animation.Style style = AnimationStyle.getValue( details ).getInternal();
+		this.getImplementation().strikePose( pose, duration, style );
+	}
 }

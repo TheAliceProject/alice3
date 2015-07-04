@@ -43,12 +43,17 @@
 
 package org.lgna.story.implementation;
 
+import org.lgna.ik.core.IKCore;
+import org.lgna.ik.core.IKCore.Limb;
+import org.lgna.story.EmployeesOnly;
+import org.lgna.story.SThing;
 import org.lgna.story.resources.JointId;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class BipedImp extends JointedModelImp<org.lgna.story.SBiped, org.lgna.story.resources.BipedResource> {
+
 	public BipedImp( org.lgna.story.SBiped abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.BipedResource> factory ) {
 		super( abstraction, factory );
 	}
@@ -66,5 +71,32 @@ public final class BipedImp extends JointedModelImp<org.lgna.story.SBiped, org.l
 	@Override
 	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
 		return this.getFrontOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.BipedResource.MOUTH ) );
+	}
+
+	public void reachFor( SThing entity, Limb reachingLimb ) {
+		JointImp anchor;
+		JointImp end;
+		switch( reachingLimb ) {
+		case RIGHT_ARM:
+			anchor = EmployeesOnly.getImplementation( this.getAbstraction().getRightClavicle() );
+			end = EmployeesOnly.getImplementation( this.getAbstraction().getRightWrist() );
+			break;
+		case LEFT_ARM:
+			anchor = EmployeesOnly.getImplementation( this.getAbstraction().getLeftClavicle() );
+			end = EmployeesOnly.getImplementation( this.getAbstraction().getLeftWrist() );
+			break;
+		case RIGHT_LEG:
+			anchor = EmployeesOnly.getImplementation( this.getAbstraction().getRightHip() );
+			end = EmployeesOnly.getImplementation( this.getAbstraction().getRightFoot() );
+			break;
+		case LEFT_LEG:
+			anchor = EmployeesOnly.getImplementation( this.getAbstraction().getLeftHip() );
+			end = EmployeesOnly.getImplementation( this.getAbstraction().getLeftFoot() );
+			break;
+		default:
+			System.out.println( "Unhandled LIMB: " + reachingLimb );
+			return;
+		}
+		IKCore.moveChainToPointInSceneSpace( anchor, end, EmployeesOnly.getImplementation( entity ).getTransformation( AsSeenBy.SCENE ).translation );
 	}
 }

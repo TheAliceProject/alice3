@@ -1,54 +1,51 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package test;
 
 import java.awt.Component;
 
-import org.lgna.story.AddKeyPressListener;
 import org.lgna.story.Color;
-import org.lgna.story.Duration;
 import org.lgna.story.EmployeesOnly;
-import org.lgna.story.HeldKeyPolicy;
 import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.RollDirection;
@@ -66,8 +63,7 @@ import org.lgna.story.TurnDirection;
 import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.MouseClickOnObjectEvent;
-import org.lgna.story.event.MouseClickOnObjectListener;
+import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.StartCollisionEvent;
@@ -89,9 +85,11 @@ class MyBiped extends SBiped {
 }
 
 class MyOgre extends MyBiped {
+
 	public MyOgre( org.lgna.story.resources.biped.OgreResource resource ) {
 		super( resource );
 	}
+
 }
 
 class MyArmoire extends SProp {
@@ -136,7 +134,7 @@ class DesertScene extends SScene {
 		this.billboard.setPaint( Color.RED );
 		this.billboard.setBackPaint( Color.BLUE );
 
-		this.ogre.move( MoveDirection.LEFT, 1.0 );
+		this.ogre.move( MoveDirection.RIGHT, 1.0 );
 		this.fellowLaborer.move( MoveDirection.RIGHT, 1.0 );
 
 		this.desert.setPaint( SGround.SurfaceAppearance.SAND );
@@ -188,15 +186,19 @@ class SnowScene extends SScene {
 	private void performGeneratedSetup() {
 		// this code is automatically generated
 		// edit performCustomSetup instead
-		//		this.snow.setVehicle( this );
+		this.snow.setVehicle( this );
 		this.sun.setVehicle( this );
-		//		this.redCone.setVehicle( this );
-		//		this.greenCone.setVehicle( this );
-		//		this.blueCone.setVehicle( this );
-		this.armoire.setVehicle( this );
+		this.redCone.setVehicle( this );
+		this.greenCone.setVehicle( this );
+		this.blueCone.setVehicle( this );
+		//		this.armoire.setVehicle( this );
 		this.camera.setVehicle( this );
-		//		this.susan.setVehicle( this );
+		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
+		//		this.susan.turn( TurnDirection.LEFT, .25 );
+		this.ogre.getRightElbow().turn( TurnDirection.LEFT, .25 );
+		this.ogre.move( MoveDirection.BACKWARD, 1 );
+		this.ogre.move( MoveDirection.RIGHT, 1 );
 
 		this.redCone.setPaint( Color.RED );
 		this.greenCone.setPaint( Color.GREEN );
@@ -246,12 +248,20 @@ class SnowScene extends SScene {
 		} );
 		SThing[] groupOne = { ogre };
 		SThing[] groupTwo = { susan };
-		this.addMouseClickOnObjectListener( new MouseClickOnObjectListener() {
+		this.addDefaultModelManipulation();
+		this.addMouseClickOnScreenListener( new MouseClickOnScreenListener() {
 
 			@Override
-			public void mouseClicked( MouseClickOnObjectEvent e ) {
-				e.getModelAtMouseLocation().move( MoveDirection.UP, 1 );
-				e.getModelAtMouseLocation().move( MoveDirection.DOWN, 1 );
+			public void mouseClicked( org.lgna.story.event.MouseClickOnScreenEvent event ) {
+				susan.walkTo( ogre );
+				ogre.touch( redCone );
+			}
+		} );
+		this.addKeyPressListener( new KeyPressListener() {
+
+			@Override
+			public void keyPressed( KeyEvent e ) {
+				susan.straightenOutJoints();
 			}
 		} );
 		this.addCollisionStartListener( new CollisionStartListener() {
@@ -262,18 +272,27 @@ class SnowScene extends SScene {
 				System.out.println( e.getModels()[ 1 ] );
 			}
 		}, groupOne, groupTwo );
-		this.addKeyPressListener( new KeyPressListener() {
 
-			@Override
-			public void keyPressed( KeyEvent e ) {
-				susan.turn( TurnDirection.RIGHT, .1, new Duration( .1 ) );
-			}
-		}, AddKeyPressListener.heldKeyPolicy( HeldKeyPolicy.FIRE_MULTIPLE ) );
+		//		this.addCollisionStartListener( new CollisionStartListener() {
+		//
+		//			public void collisionStarted( StartCollisionEvent e ) {
+		//				System.out.println( e.getModels()[ 0 ] );
+		//				System.out.println( e.getModels()[ 1 ] );
+		//			}
+		//		}, groupOne, groupTwo );
+		//		this.addKeyPressListener( new KeyPressListener() {
+		//
+		//			public void keyPressed( KeyEvent e ) {
+		//				susan.turn( TurnDirection.RIGHT, .1, new Duration( .1 ) );
+		//			}
+		//		}, AddKeyPressListener.heldKeyPolicy( HeldKeyPolicy.FIRE_MULTIPLE ) );
 		addObjectMoverFor( ogre );
 	}
 
+	int zero = 0;
+
 	public void chillInSkiChalet() {
-		while( true ) {
+		while( 1 < zero ) {
 			//			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 			//			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
 			this.ogre.delay( 1 );
@@ -322,12 +341,12 @@ class RagsToRichesStory extends SProgram {
 	public void playOutStory() {
 		//		this.setActiveScene( this.desertScene );
 		//		this.desertScene.turnBigRocksIntoLittleRocks();
-		org.lgna.story.implementation.JointedModelImp<?, ?> susanImp = EmployeesOnly.getImplementation( susan );
-		susanImp.opacity.setValue( 0.25f );
-		susanImp.showVisualization();
-		org.lgna.story.implementation.JointedModelImp<?, ?> ogreImp = EmployeesOnly.getImplementation( ogre );
-		ogreImp.opacity.setValue( 0.25f );
-		ogreImp.showVisualization();
+		//		org.lgna.story.implementation.JointedModelImp<?, ?> susanImp = EmployeesOnly.getImplementation( susan );
+		//		susanImp.opacity.setValue( 0.25f );
+		//		susanImp.showVisualization();
+		//		org.lgna.story.implementation.JointedModelImp<?, ?> ogreImp = EmployeesOnly.getImplementation( ogre );
+		//		ogreImp.opacity.setValue( 0.25f );
+		//		ogreImp.showVisualization();
 		this.setActiveScene( this.snowScene );
 		this.snowScene.chillInSkiChalet();
 	}

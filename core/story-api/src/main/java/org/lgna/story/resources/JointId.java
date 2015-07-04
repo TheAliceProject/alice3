@@ -47,11 +47,6 @@ package org.lgna.story.resources;
  * @author Dennis Cosgrove
  */
 public class JointId {
-
-	private final JointId parent;
-	private final Class<? extends JointedModelResource> containingClass;
-	private final java.util.List<JointId> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-
 	private static final java.util.Map<Class<? extends JointedModelResource>, java.util.Map<JointId, java.util.List<JointId>>> externalChildrenMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	private static void addExternalChild( JointId parent, JointId child )
@@ -95,33 +90,6 @@ public class JointId {
 			}
 		}
 		return null;
-	}
-
-	public JointId( JointId parent, Class<? extends JointedModelResource> containingClass ) {
-		this.parent = parent;
-		this.containingClass = containingClass;
-		if( this.parent != null ) {
-			if( this.parent.getContainingClass() == this.getContainingClass() ) {
-				this.parent.children.add( this );
-			} else {
-				JointId.addExternalChild( parent, this );
-			}
-		}
-	}
-
-	public JointId getParent()
-	{
-		return this.parent;
-	}
-
-	protected Class<? extends JointedModelResource> getContainingClass()
-	{
-		return this.containingClass;
-	}
-
-	public Iterable<JointId> getDeclaredChildren()
-	{
-		return this.children;
 	}
 
 	private static class ExternalChildrenIterator implements java.util.Iterator<JointId>
@@ -218,6 +186,62 @@ public class JointId {
 
 	}
 
+	private final JointId parent;
+	private final Class<? extends JointedModelResource> containingClass;
+	private final java.util.List<JointId> children = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+	private java.lang.reflect.Field fld;
+
+	public JointId( JointId parent, Class<? extends JointedModelResource> containingClass ) {
+		this.parent = parent;
+		this.containingClass = containingClass;
+
+		if( this.parent != null ) {
+			if( this.parent.getContainingClass() == this.getContainingClass() ) {
+				this.parent.children.add( this );
+			} else {
+				JointId.addExternalChild( parent, this );
+			}
+		}
+	}
+
+	public JointId getParent() {
+		return this.parent;
+	}
+
+	protected Class<? extends JointedModelResource> getContainingClass() {
+		return this.containingClass;
+	}
+
+	public java.lang.reflect.Field getPublicStaticFinalFld() {
+		if( this.fld != null ) {
+			//pass
+		} else {
+			for( java.lang.reflect.Field fld : this.containingClass.getFields() ) {
+				int modidiers = fld.getModifiers();
+				if( java.lang.reflect.Modifier.isPublic( modidiers ) ) {
+					if( java.lang.reflect.Modifier.isStatic( modidiers ) ) {
+						if( java.lang.reflect.Modifier.isFinal( modidiers ) ) {
+							try {
+								Object o = fld.get( null );
+								if( o == this ) {
+									this.fld = fld;
+									break;
+								}
+							} catch( IllegalAccessException iae ) {
+								edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( iae, fld );
+							}
+						}
+					}
+				}
+			}
+		}
+		return this.fld;
+	}
+
+	public Iterable<JointId> getDeclaredChildren() {
+		return this.children;
+	}
+
 	public Iterable<JointId> getChildren( JointedModelResource resource ) {
 		return new ExternalChildrenIterable( resource.getClass(), this );
 	}
@@ -228,23 +252,11 @@ public class JointId {
 
 	@Override
 	public String toString() {
-		for( java.lang.reflect.Field fld : this.containingClass.getFields() ) {
-			int modidiers = fld.getModifiers();
-			if( java.lang.reflect.Modifier.isPublic( modidiers ) ) {
-				if( java.lang.reflect.Modifier.isStatic( modidiers ) ) {
-					if( java.lang.reflect.Modifier.isFinal( modidiers ) ) {
-						try {
-							Object o = fld.get( null );
-							if( o == this ) {
-								return fld.getName();
-							}
-						} catch( IllegalAccessException iae ) {
-							//pass
-						}
-					}
-				}
-			}
+		java.lang.reflect.Field fld = this.getPublicStaticFinalFld();
+		if( fld != null ) {
+			return fld.getName();
+		} else {
+			return super.toString();
 		}
-		return super.toString();
 	}
 }

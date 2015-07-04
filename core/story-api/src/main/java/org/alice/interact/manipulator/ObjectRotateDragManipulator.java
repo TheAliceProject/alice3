@@ -319,6 +319,8 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 				edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.onscreenRenderTarget.getAwtComponent(), awtPoint );
 			} finally {
 				CursorUtilities.popAndSet( this.onscreenRenderTarget.getAwtComponent() );
+				//mmay ask dave?
+				hidCursor = false;
 			}
 		}
 	}

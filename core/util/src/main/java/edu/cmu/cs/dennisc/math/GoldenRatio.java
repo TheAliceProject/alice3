@@ -46,7 +46,11 @@ package edu.cmu.cs.dennisc.math;
  * @author Dennis Cosgrove
  */
 public class GoldenRatio {
-	public static double PHI = 1.6180339887;
+	public static final double PHI = 1.6180339887;
+
+	private GoldenRatio() {
+		throw new AssertionError();
+	}
 
 	public static int getShorterSideLength( int longerSideLength ) {
 		return (int)( longerSideLength / PHI );
@@ -54,5 +58,21 @@ public class GoldenRatio {
 
 	public static int getLongerSideLength( int shorterSideLength ) {
 		return (int)( shorterSideLength * PHI );
+	}
+
+	public static java.awt.Dimension createWiderSizeFromWidth( int width ) {
+		return new java.awt.Dimension( width, getShorterSideLength( width ) );
+	}
+
+	public static java.awt.Dimension createWiderSizeFromHeight( int height ) {
+		return new java.awt.Dimension( getLongerSideLength( height ), height );
+	}
+
+	public static java.awt.Dimension createTallerSizeFromWidth( int width ) {
+		return new java.awt.Dimension( width, getLongerSideLength( width ) );
+	}
+
+	public static java.awt.Dimension createTallerSizeFromHeight( int height ) {
+		return new java.awt.Dimension( getShorterSideLength( height ), height );
 	}
 }

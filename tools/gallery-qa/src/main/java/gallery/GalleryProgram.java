@@ -388,7 +388,7 @@ public class GalleryProgram extends SProgram {
 		app.getFrame().setMainComposite( new gallery.croquet.GallerySplitComposite() );
 		GalleryProgram program = new GalleryProgram();
 
-		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( program );
+		new test.ik.croquet.SceneComposite().getView().initializeInAwtContainer( program );
 		program.initializeTest();
 
 		app.getFrame().setSize( 1200, 800 );

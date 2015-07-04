@@ -114,6 +114,15 @@ public class AliceResourceUtilties {
 			return this.key.hashCode();
 		}
 
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append( "ResourceIdentifier[" );
+			sb.append( this.key );
+			sb.append( "]" );
+			return sb.toString();
+		}
+
 	}
 
 	/*private*/protected AliceResourceUtilties() {
@@ -469,6 +478,9 @@ public class AliceResourceUtilties {
 	}
 
 	private static String createTextureBaseName( String modelName, String textureName ) {
+		if( modelName == null ) {
+			return null;
+		}
 		if( textureName == null ) {
 			textureName = "_cls";
 		} else if( textureName.equalsIgnoreCase( getDefaultTextureEnumName( modelName ) ) || modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) || textureName.equalsIgnoreCase( AliceResourceUtilties.makeEnumName( modelName ) ) ) {
@@ -476,7 +488,7 @@ public class AliceResourceUtilties {
 		} else if( textureName.length() > 0 ) {
 			textureName = "_" + makeEnumName( textureName );
 		}
-		return modelName.toLowerCase( java.util.Locale.ENGLISH ) + textureName;
+		return ( modelName != null ? modelName.toLowerCase( java.util.Locale.ENGLISH ) : null ) + textureName;
 	}
 
 	public static String getThumbnailResourceFileName( String modelName, String textureName ) {
@@ -554,6 +566,8 @@ public class AliceResourceUtilties {
 		edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = sgOriginal.geometries.getValue();
 		edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgTextureAppearances = sgOriginal.textures.getValue();
 		edu.cmu.cs.dennisc.scenegraph.WeightedMesh[] sgWeightedMeshes = sgOriginal.weightedMeshes.getValue();
+		edu.cmu.cs.dennisc.scenegraph.WeightedMesh[] sgDefaultPoseWeightedMeshes = sgOriginal.defaultPoseWeightedMeshes.getValue();
+		boolean hasDefaultPoseWeightedMeshes = sgOriginal.hasDefaultPoseWeightedMeshes.getValue();
 		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
 		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = sgOriginal.baseBoundingBox.getValue();
 		edu.cmu.cs.dennisc.math.Matrix3x3 scaleCopy = new edu.cmu.cs.dennisc.math.Matrix3x3( sgOriginal.scale.getValue() );
@@ -581,6 +595,8 @@ public class AliceResourceUtilties {
 		rv.skeleton.setValue( sgSkeletonRootCopy );
 		rv.geometries.setValue( sgGeometries );
 		rv.weightedMeshes.setValue( sgWeightedMeshes );
+		rv.defaultPoseWeightedMeshes.setValue( sgDefaultPoseWeightedMeshes );
+		rv.hasDefaultPoseWeightedMeshes.setValue( hasDefaultPoseWeightedMeshes );
 		rv.textures.setValue( sgTextureAppearances );
 		rv.frontFacingAppearance.setValue( sgFrontAppearanceCopy );
 		rv.backFacingAppearance.setValue( sgBackAppearanceCopy );

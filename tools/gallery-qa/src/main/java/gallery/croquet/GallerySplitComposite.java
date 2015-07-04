@@ -48,7 +48,7 @@ package gallery.croquet;
  */
 public class GallerySplitComposite extends org.lgna.croquet.SplitComposite {
 	public GallerySplitComposite() {
-		super( java.util.UUID.fromString( "fe1830bd-21da-44a3-80f1-cb288459080e" ), new ControlsComposite(), test.ik.croquet.SceneComposite.getInstance() );
+		super( java.util.UUID.fromString( "fe1830bd-21da-44a3-80f1-cb288459080e" ), new ControlsComposite(), new test.ik.croquet.SceneComposite() );
 	}
 
 	@Override

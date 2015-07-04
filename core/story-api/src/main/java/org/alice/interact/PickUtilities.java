@@ -144,6 +144,9 @@ public class PickUtilities {
 			if( entity instanceof org.lgna.story.SJoint ) {
 				pickTypes.add( PickHint.PickType.JOINT );
 			}
+			if( entity instanceof org.lgna.ik.poser.jselection.JointSelectionSphere ) {
+				pickTypes.add( PickHint.PickType.JOINT );
+			}
 		}
 		if( pickTypes.size() == 0 ) {
 			return new PickHint();

@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -144,6 +145,7 @@ public class SceneImp extends EntityImp {
 		if( this.isGlobalLightBrightnessAnimationDesired ) {
 			this.animateGlobalBrightness( 1.0f, 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
 		}
+
 	}
 
 	public void deactivate( ProgramImp programImp ) {

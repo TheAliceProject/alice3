@@ -42,13 +42,14 @@
  */
 package org.alice.ide.declarationseditor.type;
 
+
 /**
  * @author Dennis Cosgrove
  */
 public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.UserMethod> {
 	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserMethod, MethodMenuModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
 
-	public static MethodMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
+	public static MethodMenuModel getInstance( final org.lgna.project.ast.UserMethod method ) {
 		return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserMethod, MethodMenuModel>() {
 			@Override
 			public MethodMenuModel initialize( org.lgna.project.ast.UserMethod key ) {
@@ -57,6 +58,10 @@ public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.
 				prepModels.add( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( key ).getMenuItemPrepModel() );
 				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.IDE.getActiveInstance().getDocumentFrame().getDeclarationsEditorComposite().getTabState();
 				prepModels.add( tabState.getAlternateLocalizationItemSelectionOperation( org.alice.ide.declarationseditor.CodeComposite.getInstance( key ) ).getMenuItemPrepModel() );
+				org.lgna.ik.poser.croquet.ChangeAnimationProcedureDialog changeAnimationProcedureDialog = org.lgna.ik.poser.croquet.ChangeAnimationProcedureDialog.getInstance( method );
+				if( changeAnimationProcedureDialog != null ) {
+					prepModels.add( changeAnimationProcedureDialog.getLaunchOperation().getMenuItemPrepModel() );
+				}
 				return new MethodMenuModel( key, prepModels );
 			}
 		} );

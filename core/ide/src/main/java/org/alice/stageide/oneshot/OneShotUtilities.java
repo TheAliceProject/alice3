@@ -42,6 +42,7 @@
  */
 package org.alice.stageide.oneshot;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -63,6 +64,10 @@ public class OneShotUtilities {
 			} else {
 				models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 			}
+			//			if( field.getValueType().isAssignableTo( SBiped.class ) && ( field.getValueType() instanceof NamedUserType ) ) {
+			//				models.add( new AnimatorInputDialogComposite( (NamedUserType)field.getValueType() ).getOperation().getMenuItemPrepModel() );
+			//				models.add( new PoserInputDialogComposite( (NamedUserType)field.getValueType() ).getOperation().getMenuItemPrepModel() );
+			//			}
 			models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 		}
 		return models;

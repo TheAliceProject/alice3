@@ -9,7 +9,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="test.ik.IkProgram"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="alice-tests"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ide"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -Xmx1024m -Dswing.aatext=true -Djava.library.path=&quot;${project_loc:ide}/lib/jogl2/lib&quot;${system_property:path.separator}&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.IDE.install.dir=&quot;${project_loc:ide}/share&quot; -Dorg.alice.ide.simsResourcePath=&quot;${project_loc:ide}/share/gallery/assets/sims&quot;  -Dorg.alice.ide.modelResourcePath=&quot;${project_loc:ide}/share/gallery/assets/alice&quot; -Dorg.alice.ide.internalTesting=true -Dorg.lgna.croquet.Element.isIdCheckDesired=true -Dcom.apple.mrj.application.apple.menu.about.name=Alice3 -Dedu.cmu.cs.dennisc.java.util.logging.Logger.Level=WARNING"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -splash:&quot;${project_loc:resources}/target/distribution/application/SplashScreen.png&quot; -Xmx1024m -Dswing.aatext=true -Dorg.alice.ide.rootDirectory=&quot;${project_loc:resources}/target/distribution&quot; -Dcom.apple.mrj.application.apple.menu.about.name=Alice3 -Dedu.cmu.cs.dennisc.java.util.logging.Logger.Level=WARNING -Dorg.alice.ide.internalTesting=true -Dorg.lgna.croquet.Element.isIdCheckDesired=true -Djogamp.gluegen.UseTempJarCache=false"/>
 </launchConfiguration>

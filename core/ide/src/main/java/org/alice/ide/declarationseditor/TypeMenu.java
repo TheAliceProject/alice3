@@ -186,6 +186,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			models.addAll( unmanagedFieldModels );
 		}
 		models.add( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getLaunchOperation().getMenuItemPrepModel() );
+		//		models.add( new PoserInputDialogComposite( type ).getOperation().getMenuItemPrepModel() );
 
 		org.lgna.croquet.views.MenuItemContainerUtilities.MenuElementObserver observer = new org.lgna.croquet.views.MenuItemContainerUtilities.MenuElementObserver() {
 			@Override

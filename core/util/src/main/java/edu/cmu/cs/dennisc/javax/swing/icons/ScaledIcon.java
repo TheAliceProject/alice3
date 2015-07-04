@@ -50,6 +50,9 @@ public class ScaledIcon extends AbstractScaledIcon {
 
 	public ScaledIcon( javax.swing.Icon sourceIcon, int width, int height ) {
 		super( width, height );
+		if( sourceIcon == null ) {
+			System.out.println( "" );
+		}
 		assert sourceIcon != null;
 		this.sourceIcon = sourceIcon;
 	}

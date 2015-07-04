@@ -256,6 +256,11 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 								return ( COLOR_TYPE.isAssignableFrom( type ) || PERSON_RESOURCE_TYPE.isAssignableFrom( type ) ) == false;
 							}
 						}
+					} else if( parent instanceof org.lgna.project.ast.MethodInvocation ) {
+						org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)parent;
+						if( StoryApiConfigurationManager.getInstance().isBuildMethod( methodInvocation ) ) {
+							return false;
+						}
 					}
 				}
 			}
