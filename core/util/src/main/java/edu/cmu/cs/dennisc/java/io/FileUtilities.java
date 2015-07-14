@@ -444,15 +444,25 @@ public class FileUtilities {
 		copyFile( new java.io.File( inPath ), new java.io.File( outPath ) );
 	}
 
-	public static void copyDirectory( java.io.File in, java.io.File out ) throws java.io.IOException {
-		createParentDirectoriesIfNecessary( out );
-		if( in.isDirectory() ) {
-			for( String filename : in.list() ) {
-				copyDirectory( new java.io.File( in, filename ), new java.io.File( out, filename ) );
+	private static void _copyDirectory( java.io.File in, java.io.File out, edu.cmu.cs.dennisc.pattern.Criterion<java.io.File> criterion ) throws java.io.IOException {
+		if( ( criterion == null ) || criterion.accept( in ) ) {
+			if( in.isDirectory() ) {
+				for( String filename : in.list() ) {
+					_copyDirectory( new java.io.File( in, filename ), new java.io.File( out, filename ), criterion );
+				}
+			} else {
+				copyFile( in, out );
 			}
-		} else {
-			copyFile( in, out );
 		}
+	}
+
+	public static void copyDirectory( java.io.File in, java.io.File out, edu.cmu.cs.dennisc.pattern.Criterion<java.io.File> criterion ) throws java.io.IOException {
+		createParentDirectoriesIfNecessary( out );
+		_copyDirectory( in, out, criterion );
+	}
+
+	public static void copyDirectory( java.io.File in, java.io.File out ) throws java.io.IOException {
+		copyDirectory( in, out, null );
 	}
 
 	public static void copyDirectory( String inPath, String outPath ) throws java.io.IOException {
