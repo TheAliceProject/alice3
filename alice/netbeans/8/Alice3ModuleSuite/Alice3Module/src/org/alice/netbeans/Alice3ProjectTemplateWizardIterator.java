@@ -178,6 +178,12 @@ public class Alice3ProjectTemplateWizardIterator implements WizardDescriptor.Pro
 			File aliceProjectFile = (File) wizardDescriptor.getProperty("aliceProjectFile");
 			File javaSrcDirectory = new File(projectDirectory, "src");
 
+			if( javaSrcDirectory.exists() ) {
+				//pass
+			} else {
+				javaSrcDirectory.mkdirs();
+			}
+
 			//open source folder: does not seem to work when there are no existing open projects
 			FileObject javaSrcDirectoryFileObject = (FileUtil.toFileObject(javaSrcDirectory));
 			assert javaSrcDirectoryFileObject != null : javaSrcDirectory;
