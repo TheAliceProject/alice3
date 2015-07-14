@@ -196,18 +196,19 @@ public class ZipUtilities {
 		addDirToZipStream( dirToAdd, zos, pathPrefix, false );
 	}
 
-	//todo: support recursion
-	public static void zip( java.io.File srcDirectory, java.io.File dstZip ) throws java.io.IOException {
-
-		assert srcDirectory.isDirectory();
+	private static void _zip( java.io.File srcDirectory, java.io.File dstZip, boolean isRecursive, java.io.FileFilter filter ) throws java.io.IOException {
+		assert srcDirectory.isDirectory() : srcDirectory;
 
 		java.io.FileOutputStream fos = new java.io.FileOutputStream( dstZip );
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
 
 		String rootPath = srcDirectory.getAbsolutePath();
 		byte[] buffer = new byte[ 1024 ];
-		java.io.FileFilter filter = null;
-		java.io.File[] files = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants( srcDirectory, filter );
+		java.io.File[] files =
+				isRecursive
+						? edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants( srcDirectory, filter )
+						: edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( srcDirectory, filter );
+
 		for( java.io.File file : files ) {
 			if( file.isDirectory() ) {
 				//pass
@@ -233,6 +234,22 @@ public class ZipUtilities {
 		}
 		zos.flush();
 		zos.close();
+	}
+
+	public static void zipFilesInDirectory( java.io.File srcDirectory, java.io.File dstZip, java.io.FileFilter filter ) throws java.io.IOException {
+		_zip( srcDirectory, dstZip, false, filter );
+	}
+
+	public static void zipFilesInDirectory( java.io.File srcDirectory, java.io.File dstZip ) throws java.io.IOException {
+		zipFilesInDirectory( srcDirectory, dstZip, null );
+	}
+
+	public static void zip( java.io.File srcDirectory, java.io.File dstZip, java.io.FileFilter filter ) throws java.io.IOException {
+		_zip( srcDirectory, dstZip, true, filter );
+	}
+
+	public static void zip( java.io.File srcDirectory, java.io.File dstZip ) throws java.io.IOException {
+		zip( srcDirectory, dstZip, null );
 	}
 
 	public static void zip( java.io.File srcDirectory, String dstZipPath ) throws java.io.IOException {
