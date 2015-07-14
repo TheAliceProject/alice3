@@ -61,6 +61,7 @@ package edu.cmu.cs.dennisc.java.lang;
 		public void appendLine( String line ) {
 			if( this.pw != null ) {
 				this.pw.append( line );
+				this.pw.append( '\n' );
 				this.pw.flush();
 			}
 		}
