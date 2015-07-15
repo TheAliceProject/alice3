@@ -77,10 +77,10 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
 
 	private AddCopiedManagedFieldComposite() {
 		super( java.util.UUID.fromString( "a14a3088-185c-4dfd-983c-af05e1d8dc14" ), new FieldDetailsBuilder()
-		.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
-		.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-		.initializer( ApplicabilityStatus.DISPLAYED, null )
-		.build() );
+				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
+				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
+				.initializer( ApplicabilityStatus.DISPLAYED, null )
+				.build() );
 		this.getInitializerState().addAndInvokeNewSchoolValueListener( initializerListener );
 	}
 
@@ -121,8 +121,9 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
 
 	public void setFieldToBeCopied( org.lgna.project.ast.UserField fieldToCopy, org.lgna.project.ast.Statement... setupStatements ) {
 		this.fieldToCopy = fieldToCopy;
+		org.lgna.project.ast.Expression newInitializer = org.lgna.project.ast.AstUtilities.createCopy( fieldToCopy.initializer.getValue(), (org.lgna.project.ast.NamedUserType)fieldToCopy.getDeclaringType() );
 		assert fieldToCopy.initializer.getValue() instanceof org.lgna.project.ast.InstanceCreation;
-		setInitializerInitialValue( (org.lgna.project.ast.InstanceCreation)fieldToCopy.initializer.getValue() );
+		setInitializerInitialValue( (org.lgna.project.ast.InstanceCreation)newInitializer );
 	}
 
 	@Override
