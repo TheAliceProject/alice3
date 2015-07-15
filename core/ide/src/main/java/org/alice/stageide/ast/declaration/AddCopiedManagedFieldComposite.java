@@ -77,10 +77,10 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
 
 	private AddCopiedManagedFieldComposite() {
 		super( java.util.UUID.fromString( "a14a3088-185c-4dfd-983c-af05e1d8dc14" ), new FieldDetailsBuilder()
-				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
-				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-				.initializer( ApplicabilityStatus.EDITABLE, null )
-				.build() );
+		.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
+		.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
+		.initializer( ApplicabilityStatus.DISPLAYED, null )
+		.build() );
 		this.getInitializerState().addAndInvokeNewSchoolValueListener( initializerListener );
 	}
 
@@ -104,17 +104,13 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
 		}
 		initialTransform = this.updateInitialTransformIfNecessary( initialTransform );
 		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
-		org.lgna.project.ast.Statement[] doStatements = sceneEditor.getDoStatementsForAddField( field, initialTransform );
+		org.lgna.project.ast.Statement[] doStatements = sceneEditor.getDoStatementsForCopyField( this.fieldToCopy, field, initialTransform );
 		for( org.lgna.project.ast.Statement s : doStatements ) {
 			rv.addDoStatement( s );
 		}
 		org.lgna.project.ast.Statement[] undoStatements = sceneEditor.getUndoStatementsForAddField( field );
 		for( org.lgna.project.ast.Statement s : undoStatements ) {
 			rv.addUndoStatement( s );
-		}
-		for( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initialPropertyValueExpressionState : this.initialPropertyValuesToolPaletteCoreComposite.getInitialPropertyValueExpressionStates() ) {
-			InitialPropertyValueExpressionCustomizer customizer = (InitialPropertyValueExpressionCustomizer)( (InternalCustomItemState<org.lgna.project.ast.Expression>)initialPropertyValueExpressionState ).getCustomizer();
-			customizer.appendDoStatements( rv, field, initialPropertyValueExpressionState.getValue() );
 		}
 		return rv;
 	}
@@ -123,9 +119,10 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
 		this.initialInstanceCreation = initialInstanceCreation;
 	}
 
-	public void setFieldToBeCopied( org.lgna.project.ast.UserField fieldToCopy ) {
+	public void setFieldToBeCopied( org.lgna.project.ast.UserField fieldToCopy, org.lgna.project.ast.Statement... setupStatements ) {
 		this.fieldToCopy = fieldToCopy;
-		//		this.setInitializerInitialValue( resourceKey != null ? resourceKey.createInstanceCreation() : null );
+		assert fieldToCopy.initializer.getValue() instanceof org.lgna.project.ast.InstanceCreation;
+		setInitializerInitialValue( (org.lgna.project.ast.InstanceCreation)fieldToCopy.initializer.getValue() );
 	}
 
 	@Override

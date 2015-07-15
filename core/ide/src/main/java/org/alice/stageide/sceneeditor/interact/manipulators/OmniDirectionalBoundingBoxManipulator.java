@@ -250,9 +250,10 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		//		this.sgBoundingBoxTransformable.setParent(null);
 		//		System.out.println("End drag position = "+this.sgBoundingBoxTransformable.localTransformation.getValue().translation);
 		org.lgna.croquet.history.DragStep dragStep = (org.lgna.croquet.history.DragStep)endInput.getDragAndDropContext();
-
-		DragComponent dragSource = dragStep.getDragSource();
-		dragSource.showDragProxy();
+		if( dragStep != null ) {
+			DragComponent dragSource = dragStep.getDragSource();
+			dragSource.showDragProxy();
+		}
 	}
 
 	@Override

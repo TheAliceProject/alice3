@@ -110,7 +110,6 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
 					cameraBackward.normalize();
 				}
 				OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3( new ForwardAndUpGuide( cameraBackward, Vector3.accessPositiveYAxis() ) );
-				this.sgBoundingBoxTransformable.setAxesOnly( facingCameraOrientation, AsSeenBy.SCENE );
 				this.sgBoundingBoxTransformable.setTranslationOnly( this.getPerspectivePositionBasedOnInput( startInput ), AsSeenBy.SCENE );
 			}
 			addPlaneTransitionPointSphereToScene();
@@ -143,20 +142,45 @@ public class CopyObjectDragManipulator extends OmniDirectionalBoundingBoxManipul
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		super.doEndManipulator( endInput, previousInput );
+
+		//We need to do this because we launch a dialog box from this method that will grab focus and prevent things like letting go of the alt key from registering
+		//This ensures that we don't leave an incomplete state behind
+		this.dragAdapter.clearMouseAndKeyboardState();
 		this.sgBoundingBoxDecorator.isShowing.setValue( false );
 		if( this.sgAxes != null ) {
 			this.sgAxes.isShowing.setValue( false );
+
+			if( endInput.getInputEventType() == InputState.InputEventType.MOUSE_UP ) {
+				org.lgna.croquet.Model model = null;
+				org.alice.stageide.modelresource.ResourceKey resourceKey = null;
+				EntityImp entityImplementation = EntityImp.getInstance( this.objectToCopy );
+				if( entityImplementation != null ) {
+
+					org.lgna.project.ast.UserField field = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM( entityImplementation.getAbstraction() );
+					if( field != null ) {
+
+						org.alice.stageide.ast.declaration.AddCopiedManagedFieldComposite addCopiedManagedFieldComposite = org.alice.stageide.ast.declaration.AddCopiedManagedFieldComposite.getInstance();
+						addCopiedManagedFieldComposite.setFieldToBeCopied( field );
+						model = addCopiedManagedFieldComposite.getLaunchOperation();
+						org.lgna.croquet.DropReceptor dropReceptor = ( (org.alice.stageide.sceneeditor.StorytellingSceneEditor)org.alice.ide.IDE.getActiveInstance().getSceneEditor() ).getDropReceptor();
+						org.lgna.croquet.views.SwingComponentView<?> component = dropReceptor.getViewController();
+						org.lgna.croquet.views.ViewController<?, ?> viewController;
+						if( component instanceof org.lgna.croquet.views.ViewController<?, ?> ) {
+							viewController = (org.lgna.croquet.views.ViewController<?, ?>)component;
+						} else {
+							viewController = null;
+						}
+						org.lgna.croquet.DropSite dropSite = new org.alice.stageide.sceneeditor.draganddrop.SceneDropSite( this.getManipulatedTransformable().getAbsoluteTransformation() );
+						try {
+							java.awt.event.MouseEvent mouseEvent = endInput.getInputEvent() instanceof java.awt.event.MouseEvent ? (java.awt.event.MouseEvent)endInput.getInputEvent() : null;
+							org.lgna.croquet.history.Step<?> step = model.fire( org.lgna.croquet.triggers.DropTrigger.createUserInstance( viewController, mouseEvent, dropSite ) );
+						} catch( org.lgna.croquet.CancelException ce ) {
+							//Do nothing on cancel
+						}
+					}
+				}
+				this.objectToCopy = null;
+			}
 		}
-
-		//		EntityImp entityImplementation = EntityImp.getInstance( this.objectToCopy );
-		//		if( entityImplementation != null ) {
-		//			entit
-		//		}
-
-		//		org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
-		//		addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( enumConstantResourceKey, false );
-		//		return addResourceKeyManagedFieldComposite.getLaunchOperation();
-
-		this.objectToCopy = null;
 	}
 }
