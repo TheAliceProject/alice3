@@ -58,11 +58,11 @@ public class BuildRepo extends GitRepo {
 	public void compileJars() throws java.io.IOException, InterruptedException {
 		ProcessBuilder processBuilder = new ProcessBuilder(
 				System.getenv( "MAVEN_HOME" ) + "\\bin\\mvn.bat",
-				//"clean"
-				//, 
+				"clean"
+				,
 				"compile"
-				//, 
-				//"install" 
+				,
+				"install"
 				);
 		processBuilder.directory( this.getRoot() );
 		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
