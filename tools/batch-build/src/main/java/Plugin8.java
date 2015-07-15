@@ -40,83 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.lang;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class DrainInputStreamThread extends Thread {
-	static interface LineAppender {
-		void appendLine( String line );
+public class Plugin8 extends Plugin {
+	public Plugin8( java.io.File repoRoot ) {
+		super( repoRoot, 8 );
+		this.suite = new java.io.File( repoRoot, "alice/netbeans/8/Alice3ModuleSuite" );
+		assert this.suite.exists() : this.suite;
+		assert this.suite.isDirectory() : this.suite;
+
+		this.jars = new java.io.File( this.suite, "Alice3Module/release/modules/ext" );
+		assert this.jars.exists() : this.jars;
+		assert this.jars.isDirectory() : this.jars;
+
+		this.distribution = new java.io.File( this.suite, "Alice3Module/release/src/aliceSource.jar_root" );
+
+		this.projectTemplate = new java.io.File( repoRoot, "alice/netbeans/8/ProjectTemplate" );
+		assert this.projectTemplate.exists() : this.projectTemplate;
+		assert this.projectTemplate.isDirectory() : this.projectTemplate;
 	}
 
-	static class PrintStreamLineAppender implements LineAppender {
-		private final java.io.PrintWriter pw;
-
-		public PrintStreamLineAppender( java.io.PrintStream ps ) {
-			this.pw = ps != null ? new java.io.PrintWriter( ps ) : null;
-		}
-
-		@Override
-		public void appendLine( String line ) {
-			if( this.pw != null ) {
-				this.pw.append( line );
-				this.pw.append( '\n' );
-				this.pw.flush();
-			}
-		}
+	public java.io.File getSuite() {
+		return this.suite;
 	}
 
-	static class StringListLineAppender implements LineAppender {
-		private final java.util.List<String> list;
-
-		public StringListLineAppender( java.util.List<String> list ) {
-			this.list = list;
-		}
-
-		@Override
-		public void appendLine( String line ) {
-			this.list.add( line );
-		}
+	public java.io.File getJars() {
+		return this.jars;
 	}
 
-	private final java.io.InputStream is;
-	private final LineAppender lineAppender;
-	private final java.util.concurrent.CyclicBarrier barrier;
-
-	public DrainInputStreamThread( java.io.InputStream is, LineAppender lineAppender, java.util.concurrent.CyclicBarrier barrier ) {
-		this.is = is;
-		this.lineAppender = lineAppender;
-		this.barrier = barrier;
+	public java.io.File getDistribution() {
+		return this.distribution;
 	}
 
-	@Override
-	public void run() {
-		java.io.InputStreamReader isr = new java.io.InputStreamReader( this.is );
-		java.io.BufferedReader br = new java.io.BufferedReader( isr );
-		//java.io.PrintWriter pw = this.ps != null ? new java.io.PrintWriter( this.ps ) : null;
-		while( true ) {
-			try {
-				String line = br.readLine();
-				if( line != null ) {
-					if( this.lineAppender != null ) {
-						this.lineAppender.appendLine( line );
-					}
-				} else {
-					break;
-				}
-			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( ioe );
-			}
-		}
-		if( barrier != null ) {
-			try {
-				barrier.await();
-			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-				throw new RuntimeException( bbe );
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			}
-		}
+	public java.io.File getProjectTemplate() {
+		return this.projectTemplate;
 	}
+
+	private final java.io.File suite;
+	private final java.io.File jars;
+	private final java.io.File distribution;
+	private final java.io.File projectTemplate;
+
 }
