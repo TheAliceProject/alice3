@@ -300,6 +300,14 @@ public abstract class BareBonesDragAdapter {
 		}
 	}
 
+	public void clearMouseAndKeyboardState() {
+		this.currentInputState.clearKeyState();
+		this.currentInputState.clearMouseState();
+		this.currentInputState.clearMouseWheelState();
+
+		this.fireStateChange();
+	}
+
 	protected void handleMouseEntered( java.awt.event.MouseEvent e ) {
 		this.currentRolloverComponent = e.getComponent();
 		if( !this.currentInputState.isAnyMouseButtonDown() ) {
