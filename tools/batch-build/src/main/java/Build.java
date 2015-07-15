@@ -50,18 +50,18 @@ public class Build {
 	private static final String ALICE_MODEL_SOURCE_VERSION = "2014.08.20";
 	private static final String NEBULOUS_MODEL_SOURCE_VERSION = "2014.09.11";
 
-	private static final java.io.File DEV_ROOT;
-	private static final java.io.File BUILD_ROOT;
-
-	private static final java.io.File DEV_PLUGIN_8;
-	private static final java.io.File DEV_PLUGIN_8_JARS;
-	private static final java.io.File DEV_PLUGIN_8_DISTRIBUTION;
-
-	private static final java.io.File DEV_PROJECT_TEMPLATE_8;
+	//	private static final java.io.File DEV_ROOT;
+	//	private static final java.io.File BUILD_ROOT;
+	//
+	//	private static final java.io.File DEV_PLUGIN_8;
+	//	private static final java.io.File DEV_PLUGIN_8_JARS;
+	//	private static final java.io.File DEV_PLUGIN_8_DISTRIBUTION;
+	//
+	//	private static final java.io.File DEV_PROJECT_TEMPLATE_8;
 
 	private static final java.io.File MAVEN_REPOSITORY_DIRECTORY = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository" );
 
-	private static final java.io.File BUILD_DISTRIBUTION_DIR;
+	//private static final java.io.File BUILD_DISTRIBUTION_DIR;
 
 	private static final String[] MAVEN_REPO_JARS = {
 			"org/jogamp/gluegen/gluegen-rt/" + JOGL_VERSION + "/gluegen-rt-" + JOGL_VERSION + ".jar",
@@ -72,33 +72,33 @@ public class Build {
 			"org/alice/nonfree/nebulous-model-source/" + NEBULOUS_MODEL_SOURCE_VERSION + "/nebulous-model-source-" + NEBULOUS_MODEL_SOURCE_VERSION + ".jar",
 	};
 
-	static {
-		DEV_ROOT = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "gits/alice" );
-		assert DEV_ROOT.exists() : DEV_ROOT;
-		assert DEV_ROOT.isDirectory() : DEV_ROOT;
+	//	static {
+	//		DEV_ROOT = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "gits/alice" );
+	//		assert DEV_ROOT.exists() : DEV_ROOT;
+	//		assert DEV_ROOT.isDirectory() : DEV_ROOT;
+	//
+	//		DEV_PLUGIN_8 = new java.io.File( DEV_ROOT, "alice/netbeans/8/Alice3ModuleSuite" );
+	//		assert DEV_PLUGIN_8.exists() : DEV_PLUGIN_8;
+	//		assert DEV_PLUGIN_8.isDirectory() : DEV_PLUGIN_8;
+	//
+	//		DEV_PLUGIN_8_JARS = new java.io.File( DEV_PLUGIN_8, "Alice3Module/release/modules/ext" );
+	//		assert DEV_PLUGIN_8_JARS.exists() : DEV_PLUGIN_8_JARS;
+	//		assert DEV_PLUGIN_8_JARS.isDirectory() : DEV_PLUGIN_8_JARS;
+	//
+	//		DEV_PLUGIN_8_DISTRIBUTION = new java.io.File( DEV_PLUGIN_8, "Alice3Module/release/src/aliceSource.jar_root" );
+	//
+	//		DEV_PROJECT_TEMPLATE_8 = new java.io.File( DEV_ROOT, "alice/netbeans/8/ProjectTemplate" );
+	//		assert DEV_PROJECT_TEMPLATE_8.exists() : DEV_PROJECT_TEMPLATE_8;
+	//		assert DEV_PROJECT_TEMPLATE_8.isDirectory() : DEV_PROJECT_TEMPLATE_8;
+	//
+	//		BUILD_ROOT = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "gits/alice_for_build" );
+	//		assert BUILD_ROOT.exists() : BUILD_ROOT;
+	//		assert BUILD_ROOT.isDirectory() : BUILD_ROOT;
+	//
+	//		BUILD_DISTRIBUTION_DIR = new java.io.File( BUILD_ROOT, "/core/resources/target/distribution" );
+	//	}
 
-		DEV_PLUGIN_8 = new java.io.File( DEV_ROOT, "alice/netbeans/8/Alice3ModuleSuite" );
-		assert DEV_PLUGIN_8.exists() : DEV_PLUGIN_8;
-		assert DEV_PLUGIN_8.isDirectory() : DEV_PLUGIN_8;
-
-		DEV_PLUGIN_8_JARS = new java.io.File( DEV_PLUGIN_8, "Alice3Module/release/modules/ext" );
-		assert DEV_PLUGIN_8_JARS.exists() : DEV_PLUGIN_8_JARS;
-		assert DEV_PLUGIN_8_JARS.isDirectory() : DEV_PLUGIN_8_JARS;
-
-		DEV_PLUGIN_8_DISTRIBUTION = new java.io.File( DEV_PLUGIN_8, "Alice3Module/release/src/aliceSource.jar_root" );
-
-		DEV_PROJECT_TEMPLATE_8 = new java.io.File( DEV_ROOT, "alice/netbeans/8/ProjectTemplate" );
-		assert DEV_PROJECT_TEMPLATE_8.exists() : DEV_PROJECT_TEMPLATE_8;
-		assert DEV_PROJECT_TEMPLATE_8.isDirectory() : DEV_PROJECT_TEMPLATE_8;
-
-		BUILD_ROOT = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "gits/alice_for_build" );
-		assert BUILD_ROOT.exists() : BUILD_ROOT;
-		assert BUILD_ROOT.isDirectory() : BUILD_ROOT;
-
-		BUILD_DISTRIBUTION_DIR = new java.io.File( BUILD_ROOT, "/core/resources/target/distribution" );
-	}
-
-	private static class JarInfo {
+	private class JarInfo {
 		public JarInfo( String dirName, String... projectNames ) {
 			this.dirName = dirName;
 			this.projectNames = projectNames;
@@ -107,16 +107,8 @@ public class Build {
 		public void copyJarsToNetBeans8() throws java.io.IOException {
 			for( String projectName : this.projectNames ) {
 				String filename = projectName + "-0.0.1-SNAPSHOT.jar";
-				java.io.File src = new java.io.File( BUILD_ROOT, this.dirName + "/" + projectName + "/target/" + filename );
-				java.io.File dst = new java.io.File( DEV_PLUGIN_8_JARS, filename );
-				assert src.exists() : src;
-				edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
-				assert dst.exists() : dst;
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
-			}
-			for( String mavenRepoJarPath : MAVEN_REPO_JARS ) {
-				java.io.File src = new java.io.File( MAVEN_REPOSITORY_DIRECTORY, mavenRepoJarPath );
-				java.io.File dst = new java.io.File( DEV_PLUGIN_8_JARS, src.getName() );
+				java.io.File src = new java.io.File( buildRepo.getRoot(), this.dirName + "/" + projectName + "/target/" + filename );
+				java.io.File dst = new java.io.File( repo.getPlugin8().getJars(), filename );
 				assert src.exists() : src;
 				edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
 				assert dst.exists() : dst;
@@ -137,7 +129,7 @@ public class Build {
 		return s;
 	}
 
-	private static void copyJars() throws java.io.IOException {
+	private void copyJars() throws java.io.IOException {
 		JarInfo jarInfo = new JarInfo( "core",
 				"util",
 				"scenegraph",
@@ -147,62 +139,59 @@ public class Build {
 				"story-api-migration" );
 
 		jarInfo.copyJarsToNetBeans8();
+		for( String mavenRepoJarPath : MAVEN_REPO_JARS ) {
+			java.io.File src = new java.io.File( MAVEN_REPOSITORY_DIRECTORY, mavenRepoJarPath );
+			java.io.File dst = new java.io.File( this.repo.getPlugin8().getJars(), src.getName() );
+			assert src.exists() : src;
+			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
+			assert dst.exists() : dst;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
+		}
 	}
 
-	private static void compileJars() throws java.io.IOException, InterruptedException {
-		ProcessBuilder processBuilder = new ProcessBuilder(
-				System.getenv( "MAVEN_HOME" ) + "\\bin\\mvn.bat",
-				//"clean"
-				//, 
-				"compile"
-				//, 
-				//"install" 
-				);
-		processBuilder.directory( BUILD_ROOT );
-		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
+	private java.io.File _createCoreSrcDirectory( String subName ) {
+		return new java.io.File( this.buildRepo.getRoot(), "core/" + subName + "/src/main/java" );
 	}
 
-	private static java.io.File _createCoreSrcDirectory( String subName ) {
-		return new java.io.File( BUILD_ROOT, "core/" + subName + "/src/main/java" );
-	}
-
-	private static void _ant( String arg ) throws java.io.IOException, InterruptedException {
+	private void _ant( String arg, java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
 		java.util.List<String> command = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		command.add( System.getenv( "ANT_HOME" ) + "\\bin\\ant.bat" );
 		if( arg != null ) {
 			command.add( arg );
 		}
 		ProcessBuilder processBuilder = new ProcessBuilder( command );
-		java.util.Map<String, String> env = processBuilder.environment();
-		env.put( "JAVA_HOME", "C:\\Program Files\\Java\\jdk1.8.0_25" );
-		processBuilder.directory( DEV_PLUGIN_8 );
+		if( javaHomeDir != null ) {
+			java.util.Map<String, String> env = processBuilder.environment();
+			env.put( "JAVA_HOME", javaHomeDir.getAbsolutePath() );
+		}
+		processBuilder.directory( this.repo.getPlugin8().getSuite() );
+
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( processBuilder.directory() );
 		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
 	}
 
-	private static void antClean() throws java.io.IOException, InterruptedException {
-		_ant( "clean" );
+	private void antClean( java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
+		_ant( "clean", javaHomeDir );
 	}
 
-	private static void antCompile() throws java.io.IOException, InterruptedException {
-		_ant( null );
+	private void antCompile( java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
+		_ant( null, javaHomeDir );
 	}
 
-	private static void antNBM() throws java.io.IOException, InterruptedException {
-		_ant( "nbms" );
+	private void antNBM( java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
+		_ant( "nbms", javaHomeDir );
 	}
 
-	private static void prepareToDevelopPlugin8() throws java.io.IOException, InterruptedException {
-		compileJars();
-		copyJars();
+	private void prepareToDevelopPlugin8() throws java.io.IOException, InterruptedException {
+		this.buildRepo.compileJars();
+		this.copyJars();
 
-		if( DEV_PLUGIN_8_DISTRIBUTION.exists() ) {
-			edu.cmu.cs.dennisc.java.io.FileUtilities.delete( DEV_PLUGIN_8_DISTRIBUTION );
-			assert DEV_PLUGIN_8_DISTRIBUTION.exists() == false : DEV_PLUGIN_8_DISTRIBUTION;
-		}
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.repo.getPlugin8().getDistribution() );
 
-		assert BUILD_DISTRIBUTION_DIR.exists() : BUILD_DISTRIBUTION_DIR;
-		assert BUILD_DISTRIBUTION_DIR.isDirectory() : BUILD_DISTRIBUTION_DIR;
-		edu.cmu.cs.dennisc.java.io.FileUtilities.copyDirectory( BUILD_DISTRIBUTION_DIR, DEV_PLUGIN_8_DISTRIBUTION, new edu.cmu.cs.dennisc.pattern.Criterion<java.io.File>() {
+		java.io.File distribSrc = this.buildRepo.getDistributionSource();
+		assert distribSrc.exists() : distribSrc;
+		assert distribSrc.isDirectory() : distribSrc;
+		edu.cmu.cs.dennisc.java.io.FileUtilities.copyDirectory( distribSrc, this.repo.getPlugin8().getDistribution(), new edu.cmu.cs.dennisc.pattern.Criterion<java.io.File>() {
 			@Override
 			public boolean accept( java.io.File file ) {
 				if( file.isDirectory() ) {
@@ -218,7 +207,7 @@ public class Build {
 
 		java.io.File srcDirectory = new java.io.File( _createCoreSrcDirectory( "story-api" ), "org/lgna/story" );
 
-		java.io.File dstZip = new java.io.File( DEV_PLUGIN_8, "Alice3Module/release/src/aliceSource.jar" );
+		java.io.File dstZip = new java.io.File( this.repo.getPlugin8().getSuite(), "Alice3Module/release/src/aliceSource.jar" );
 		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zipFilesInDirectory( srcDirectory, dstZip, new java.io.FileFilter() {
 			@Override
 			public boolean accept( java.io.File file ) {
@@ -227,30 +216,27 @@ public class Build {
 		} );
 
 		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write(
-				new java.io.File( DEV_PLUGIN_8, "Alice3Module/manifest.mf" ),
+				new java.io.File( this.repo.getPlugin8().getSuite(), "Alice3Module/manifest.mf" ),
 				substituteVersionTexts(
 				edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( Build.class.getResourceAsStream( "NetBeans8Plugin/manifest.mf" ) )
 				) );
 		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write(
-				new java.io.File( DEV_PLUGIN_8, "Alice3Module/src/org/alice/netbeans/Alice3Library.xml" ),
+				new java.io.File( this.repo.getPlugin8().getSuite(), "Alice3Module/src/org/alice/netbeans/Alice3Library.xml" ),
 				substituteVersionTexts(
 				edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( Build.class.getResourceAsStream( "NetBeans8Plugin/Alice3Library.xml" ) )
 				) );
 		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write(
-				new java.io.File( DEV_PLUGIN_8, "Alice3Module/nbproject/project.xml" ),
+				new java.io.File( this.repo.getPlugin8().getSuite(), "Alice3Module/nbproject/project.xml" ),
 				substituteVersionTexts(
 				edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( Build.class.getResourceAsStream( "NetBeans8Plugin/project.xml" ) )
 				) );
 
-		java.io.File projectZip = new java.io.File( DEV_PLUGIN_8, "Alice3Module/src/org/alice/netbeans/ProjectTemplate.zip" );
-		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( DEV_PROJECT_TEMPLATE_8, projectZip );
+		java.io.File projectZip = new java.io.File( this.repo.getPlugin8().getSuite(), "Alice3Module/src/org/alice/netbeans/ProjectTemplate.zip" );
+		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( this.repo.getPlugin8().getProjectTemplate(), projectZip );
 		assert projectZip.exists() : projectZip;
 
 		java.io.File tempDirectoryForJavaDoc = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "tempDirectoryForJavaDoc" );
-		if( tempDirectoryForJavaDoc.exists() ) {
-			tempDirectoryForJavaDoc.delete();
-		}
-		assert tempDirectoryForJavaDoc.exists() == false : tempDirectoryForJavaDoc;
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( tempDirectoryForJavaDoc );
 		tempDirectoryForJavaDoc.mkdirs();
 
 		StringBuilder sb = new StringBuilder();
@@ -263,39 +249,53 @@ public class Build {
 
 		com.sun.tools.javadoc.Main.execute( new String[] { "-d", tempDirectoryForJavaDoc.getAbsolutePath(), "-sourcepath", srcPath, "-encoding", "UTF-8", "-docencoding", "UTF-8", "-subpackages", "org.lgna.story", "-exclude", "org.lgna.story.implementation:org.lgna.story.resourceutilities" } );
 
-		java.io.File docZip = new java.io.File( DEV_PLUGIN_8, "Alice3Module/release/doc/aliceDocs.zip" );
+		java.io.File docZip = new java.io.File( this.repo.getPlugin8().getSuite(), "Alice3Module/release/doc/aliceDocs.zip" );
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( docZip );
 		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( tempDirectoryForJavaDoc, docZip );
 		assert docZip.exists() : docZip;
 
-		java.io.File nbm = new java.io.File( DEV_PLUGIN_8, "build/updates/org-alice-netbeans.nbm" );
+		java.io.File nbm = new java.io.File( this.repo.getPlugin8().getSuite(), "build/updates/org-alice-netbeans.nbm" );
 
-		if( nbm.exists() ) {
-			nbm.delete();
-			assert nbm.exists() == false : nbm;
-		}
-		antClean();
-		antCompile();
-		antNBM();
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( nbm );
+
+		String jdk8Home = System.getenv( "JDK8_HOME" );
+		assert jdk8Home != null;
+		java.io.File javaHomeDir = new java.io.File( jdk8Home );
+		assert javaHomeDir.exists() : javaHomeDir;
+		assert javaHomeDir.isDirectory() : javaHomeDir;
+
+		antClean( javaHomeDir );
+		antCompile( javaHomeDir );
+		antNBM( javaHomeDir );
 
 		assert nbm.exists() : nbm;
 
 		java.io.File nbmVersion = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Alice3NetBeans8Plugin_" + ALICE_VERSION + ".nbm" );
-		if( nbmVersion.exists() ) {
-			nbmVersion.delete();
-			assert nbmVersion.exists() == false : nbmVersion;
-		}
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( nbmVersion );
+
 		edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( nbm, nbmVersion );
 		assert nbmVersion.exists() : nbmVersion;
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nbmVersion );
 	}
 
+	public Build() {
+	}
+
+	private final BuildRepo buildRepo = new BuildRepo();
+	private final GitRepo repo = new DevRepo();
+
 	public static void main( String[] args ) throws Exception {
-		prepareToDevelopPlugin8();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( System.getenv( "JAVA_HOME" ) );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( System.getenv( "MAVEN_HOME" ) );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( System.getenv( "ANT_HOME" ) );
+		assert System.getenv( "JAVA_HOME" ) != null;
+		assert System.getenv( "JDK8_HOME" ) != null;
+		assert System.getenv( "MAVEN_HOME" ) != null;
+		assert System.getenv( "ANT_HOME" ) != null;
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "JAVA_HOME", System.getenv( "JAVA_HOME" ) );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "JDK8_HOME", System.getenv( "JDK8_HOME" ) );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "MAVEN_HOME", System.getenv( "MAVEN_HOME" ) );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "ANT_HOME", System.getenv( "ANT_HOME" ) );
+		Build build = new Build();
+		build.prepareToDevelopPlugin8();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "done" );
 	}
 }
