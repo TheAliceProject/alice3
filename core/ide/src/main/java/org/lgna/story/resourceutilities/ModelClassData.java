@@ -20,6 +20,7 @@ public class ModelClassData extends BaseModelClassData
 	public static final BaseModelClassData FLYER_BASE_CLASS_DATA = new BaseModelClassData( org.lgna.story.SFlyer.class, org.lgna.story.implementation.FlyerImp.class );
 	public static final BaseModelClassData QUADRUPED_BASE_CLASS_DATA = new BaseModelClassData( org.lgna.story.SQuadruped.class, org.lgna.story.implementation.QuadrupedImp.class );
 	public static final BaseModelClassData VEHICLE_BASE_CLASS_DATA = new BaseModelClassData( org.lgna.story.STransport.class, org.lgna.story.implementation.TransportImp.class );
+	public static final BaseModelClassData SLITHERER_BASE_CLASS_DATA = new BaseModelClassData( org.lgna.story.SSlitherer.class, org.lgna.story.implementation.SlithererImp.class );
 
 	public static final ModelClassData BIPED_CLASS_DATA = new ModelClassData( org.lgna.story.resources.BipedResource.class, "org.lgna.story.resources.biped", BIPED_BASE_CLASS_DATA );
 	public static final ModelClassData FLYER_CLASS_DATA = new ModelClassData( org.lgna.story.resources.FlyerResource.class, "org.lgna.story.resources.flyer", FLYER_BASE_CLASS_DATA );
@@ -33,5 +34,6 @@ public class ModelClassData extends BaseModelClassData
 	public static final ModelClassData AIRCRAFT_CLASS_DATA = new ModelClassData( org.lgna.story.resources.AircraftResource.class, "org.lgna.story.resources.aircraft", VEHICLE_BASE_CLASS_DATA );
 	public static final ModelClassData WATERCRAFT_CLASS_DATA = new ModelClassData( org.lgna.story.resources.WatercraftResource.class, "org.lgna.story.resources.watercraft", VEHICLE_BASE_CLASS_DATA );
 	public static final ModelClassData TRAIN_CLASS_DATA = new ModelClassData( org.lgna.story.resources.TrainResource.class, "org.lgna.story.resources.train", VEHICLE_BASE_CLASS_DATA );
+	public static final ModelClassData SLITHERER_CLASS_DATA = new ModelClassData( org.lgna.story.resources.SlithererResource.class, "org.lgna.story.resources.slitherer", SLITHERER_BASE_CLASS_DATA );
 
 }
