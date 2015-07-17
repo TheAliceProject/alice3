@@ -94,6 +94,14 @@ public class Config {
 		return this.joglVersion;
 	}
 
+	public String getAliceModelSourceVersion() {
+		return this.aliceModelSourceVersion;
+	}
+
+	public String getNebulousModelSourceVersion() {
+		return this.nebulousModelSourceVersion;
+	}
+
 	public String getNetBeans8Version() {
 		return this.netBeans8Version;
 	}

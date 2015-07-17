@@ -45,7 +45,7 @@
  * @author Dennis Cosgrove
  */
 public class DevRepo extends GitRepo {
-	public DevRepo() {
-		super( "alice" );
+	public DevRepo( Config config ) {
+		super( config, "alice" );
 	}
 }
