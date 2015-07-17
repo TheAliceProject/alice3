@@ -45,8 +45,8 @@
  * @author Dennis Cosgrove
  */
 public class BuildRepo extends GitRepo {
-	public BuildRepo() {
-		super( "alice_for_build" );
+	public BuildRepo( Config config ) {
+		super( config, "alice_for_build" );
 
 		this.distributionSource = new java.io.File( this.getRoot(), "/core/resources/target/distribution" );
 	}

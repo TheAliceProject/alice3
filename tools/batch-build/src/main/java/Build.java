@@ -45,21 +45,14 @@
  * @author Dennis Cosgrove
  */
 public class Build {
-	private static final String ALICE_VERSION = org.lgna.project.ProjectVersion.getCurrentVersionText();
-	private static final String JOGL_VERSION = "2.2.4";
-	private static final String ALICE_MODEL_SOURCE_VERSION = "2014.08.20";
-	private static final String NEBULOUS_MODEL_SOURCE_VERSION = "2014.09.11";
-
-	private static final java.io.File MAVEN_REPOSITORY_DIRECTORY = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository" );
-
-	private static final String[] MAVEN_REPO_JARS = {
-			"org/jogamp/gluegen/gluegen-rt/" + JOGL_VERSION + "/gluegen-rt-" + JOGL_VERSION + ".jar",
-			"org/jogamp/jogl/jogl-all/" + JOGL_VERSION + "/jogl-all-" + JOGL_VERSION + ".jar",
-			"javax/media/jmf/2.1.1e/jmf-2.1.1e.jar",
-			"com/sun/javamp3/1.0/javamp3-1.0.jar",
-			"org/alice/alice-model-source/" + ALICE_MODEL_SOURCE_VERSION + "/alice-model-source-" + ALICE_MODEL_SOURCE_VERSION + ".jar",
-			"org/alice/nonfree/nebulous-model-source/" + NEBULOUS_MODEL_SOURCE_VERSION + "/nebulous-model-source-" + NEBULOUS_MODEL_SOURCE_VERSION + ".jar",
-	};
+	/*package-private*/static String substituteVersionTexts( Config config, String s ) {
+		s = s.trim();
+		s = s.replace( "___ALICE_VERSION___", org.lgna.project.ProjectVersion.getCurrentVersionText() );
+		s = s.replace( "___JOGL_VERSION___", config.getJoglVersion() );
+		s = s.replace( "___ALICE_MODEL_SOURCE_VERSION___", config.getAliceModelSourceVersion() );
+		s = s.replace( "___NEBULOUS_MODEL_SOURCE_VERSION___", config.getNebulousModelSourceVersion() );
+		return s;
+	}
 
 	private class JarInfo {
 		public JarInfo( String dirName, String... projectNames ) {
@@ -83,15 +76,6 @@ public class Build {
 		private final String[] projectNames;
 	}
 
-	/*package-private*/static String substituteVersionTexts( String s ) {
-		s = s.trim();
-		s = s.replace( "___ALICE_VERSION___", ALICE_VERSION );
-		s = s.replace( "___JOGL_VERSION___", JOGL_VERSION );
-		s = s.replace( "___ALICE_MODEL_SOURCE_VERSION___", ALICE_MODEL_SOURCE_VERSION );
-		s = s.replace( "___NEBULOUS_MODEL_SOURCE_VERSION___", NEBULOUS_MODEL_SOURCE_VERSION );
-		return s;
-	}
-
 	private void copyJars() throws java.io.IOException {
 		JarInfo jarInfo = new JarInfo( "core",
 				"util",
@@ -102,7 +86,8 @@ public class Build {
 				"story-api-migration" );
 
 		jarInfo.copyJarsToNetBeans8();
-		for( String mavenRepoJarPath : MAVEN_REPO_JARS ) {
+		final java.io.File MAVEN_REPOSITORY_DIRECTORY = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository" );
+		for( String mavenRepoJarPath : this.mavenRepoJars ) {
 			java.io.File src = new java.io.File( MAVEN_REPOSITORY_DIRECTORY, mavenRepoJarPath );
 			java.io.File dst = new java.io.File( this.repo.getPlugin8().getJars(), src.getName() );
 			assert src.exists() : src;
@@ -224,7 +209,7 @@ public class Build {
 
 		assert nbm.exists() : nbm;
 
-		java.io.File nbmVersion = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Alice3NetBeans8Plugin_" + ALICE_VERSION + ".nbm" );
+		java.io.File nbmVersion = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Alice3NetBeans8Plugin_" + org.lgna.project.ProjectVersion.getCurrentVersionText() + ".nbm" );
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( nbmVersion );
 
 		edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( nbm, nbmVersion );
@@ -233,19 +218,44 @@ public class Build {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nbmVersion );
 	}
 
-	public Build() {
+	public Build( Config config ) {
+		this.buildRepo = new BuildRepo( config );
+		if( config.isDevMode() ) {
+			this.repo = new DevRepo( config );
+		} else {
+			this.repo = this.buildRepo;
+		}
+		this.mavenRepoJars = new String[] {
+				substituteVersionTexts( config, "org/jogamp/gluegen/gluegen-rt/___JOGL_VERSION___/gluegen-rt-___JOGL_VERSION___.jar" ),
+				substituteVersionTexts( config, "org/jogamp/jogl/jogl-all/___JOGL_VERSION___/jogl-all-___JOGL_VERSION___.jar" ),
+				"javax/media/jmf/2.1.1e/jmf-2.1.1e.jar",
+				"com/sun/javamp3/1.0/javamp3-1.0.jar",
+				substituteVersionTexts( config, "org/alice/alice-model-source/___ALICE_MODEL_SOURCE_VERSION___/alice-model-source-___ALICE_MODEL_SOURCE_VERSION___.jar" ),
+				substituteVersionTexts( config, "org/alice/nonfree/nebulous-model-source/___NEBULOUS_MODEL_SOURCE_VERSION___/nebulous-model-source-___NEBULOUS_MODEL_SOURCE_VERSION___.jar" ),
+		};
 	}
 
-	private final BuildRepo buildRepo = new BuildRepo();
-	private final GitRepo repo = new DevRepo();
+	private final BuildRepo buildRepo;
+	private final GitRepo repo;
+	private final String[] mavenRepoJars;
 
 	public static void main( String[] args ) throws Exception {
-		NetBeans8Utils.initialize( "8.0.2" );
+		Config config = new Config.Builder()
+				.isDevMode( true )
+				.joglVersion( "2.2.4" )
+				.aliceModelSourceVersion( "2014.08.20" )
+				.nebulousModelSourceVersion( "2014.09.11" )
+				.netBeans8Version( "8.0.2" )
+				.build();
+
+		NetBeans8Utils.initialize( config.getNetBeans8Version() );
 		AntUtils.initialize();
+
 		assert System.getenv( "JAVA_HOME" ) != null;
 		assert System.getenv( "JDK8_HOME" ) != null;
 		assert System.getenv( "MAVEN_HOME" ) != null;
-		Build build = new Build();
+
+		Build build = new Build( config );
 		build.prepareToDevelopPlugin8();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "done" );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "JAVA_HOME", System.getenv( "JAVA_HOME" ) );
