@@ -159,6 +159,7 @@ public class Build {
 		if( arg != null ) {
 			command.add( arg );
 		}
+
 		ProcessBuilder processBuilder = new ProcessBuilder( command );
 		if( javaHomeDir != null ) {
 			java.util.Map<String, String> env = processBuilder.environment();
@@ -235,6 +236,10 @@ public class Build {
 		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( this.repo.getPlugin8().getProjectTemplate(), projectZip );
 		assert projectZip.exists() : projectZip;
 
+		java.io.File userPropertiesFile = NetBeans8Utils.getUserPropertiesFile();
+		java.io.File platformPrivatePropertiesFile = new java.io.File( this.repo.getPlugin8().getSuite(), "nbproject/private/platform-private.properties" );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( platformPrivatePropertiesFile, "user.properties.file=" + userPropertiesFile.getAbsolutePath().replaceAll( "\\\\", "\\\\\\\\" ) );
+
 		java.io.File tempDirectoryForJavaDoc = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "tempDirectoryForJavaDoc" );
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( tempDirectoryForJavaDoc );
 		tempDirectoryForJavaDoc.mkdirs();
@@ -286,6 +291,8 @@ public class Build {
 	private final GitRepo repo = new DevRepo();
 
 	public static void main( String[] args ) throws Exception {
+		NetBeans8Utils.initialize( "8.0.2" );
+
 		assert System.getenv( "JAVA_HOME" ) != null;
 		assert System.getenv( "JDK8_HOME" ) != null;
 		assert System.getenv( "MAVEN_HOME" ) != null;
