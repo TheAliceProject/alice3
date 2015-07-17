@@ -60,6 +60,28 @@ public class Plugin8 extends Plugin {
 		this.projectTemplate = new java.io.File( repoRoot, "alice/netbeans/8/ProjectTemplate" );
 		assert this.projectTemplate.exists() : this.projectTemplate;
 		assert this.projectTemplate.isDirectory() : this.projectTemplate;
+
+		this.dstManifestFile = new java.io.File( this.getSuite(), "Alice3Module/manifest.mf" );
+		this.dstLibraryXmlFile = new java.io.File( this.getSuite(), "Alice3Module/src/org/alice/netbeans/Alice3Library.xml" );
+		this.dstProjectXmlFile = new java.io.File( this.getSuite(), "Alice3Module/nbproject/project.xml" );
+
+		java.io.InputStream manifestInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/manifest.mf" );
+		assert manifestInputStream != null;
+		this.manifestText = Build.substituteVersionTexts( edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( manifestInputStream ) );
+		assert this.manifestText != null;
+		assert this.manifestText.length() > 0;
+
+		java.io.InputStream libraryXmlInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/Alice3Library.xml" );
+		assert libraryXmlInputStream != null;
+		this.libraryXmlText = Build.substituteVersionTexts( edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( libraryXmlInputStream ) );
+		assert this.libraryXmlText != null;
+		assert this.libraryXmlText.length() > 0;
+
+		java.io.InputStream projectXmlInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/project.xml" );
+		assert projectXmlInputStream != null;
+		this.projectXmlText = Build.substituteVersionTexts( edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( projectXmlInputStream ) );
+		assert this.projectXmlText != null;
+		assert this.projectXmlText.length() > 0;
 	}
 
 	public java.io.File getSuite() {
@@ -78,9 +100,30 @@ public class Plugin8 extends Plugin {
 		return this.projectTemplate;
 	}
 
+	public void prepare() {
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstManifestFile );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstManifestFile, this.manifestText );
+		assert this.dstManifestFile.exists() : this.dstManifestFile;
+
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstLibraryXmlFile );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstLibraryXmlFile, this.libraryXmlText );
+		assert this.dstLibraryXmlFile.exists() : this.dstLibraryXmlFile;
+
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstProjectXmlFile );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstProjectXmlFile, this.projectXmlText );
+		assert this.dstProjectXmlFile.exists() : this.dstProjectXmlFile;
+	}
+
 	private final java.io.File suite;
 	private final java.io.File jars;
 	private final java.io.File distribution;
 	private final java.io.File projectTemplate;
+
+	private final String manifestText;
+	private final String libraryXmlText;
+	private final String projectXmlText;
+	private final java.io.File dstManifestFile;
+	private final java.io.File dstLibraryXmlFile;
+	private final java.io.File dstProjectXmlFile;
 
 }

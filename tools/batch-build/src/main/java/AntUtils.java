@@ -44,21 +44,30 @@
 /**
  * @author Dennis Cosgrove
  */
-public class NetBeans8Utils {
-	private static java.io.File userPropertiesFile;
+public class AntUtils {
+	public static void initialize() {
+		String antHome = System.getenv( "ANT_HOME" );
+		assert antHome != null : "ANT_HOME";
 
-	public static void initialize( String versionText ) {
-		assert userPropertiesFile == null : userPropertiesFile;
-		userPropertiesFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), "AppData/Roaming/NetBeans/" + versionText + "/build.properties" );
-		assert userPropertiesFile.exists() : userPropertiesFile;
+		java.io.File antHomeDir = new java.io.File( antHome );
+		assert antHomeDir.exists() : antHomeDir;
+		assert antHomeDir.isDirectory() : antHomeDir;
+
+		antCommandFile = new java.io.File( antHomeDir, "bin/ant.bat" );
 	}
 
-	public static java.io.File getUserPropertiesFile() {
-		assert userPropertiesFile != null : "not initialized";
-		return userPropertiesFile;
+	public static java.io.File getAntCommandFile() {
+		if( antCommandFile != null ) {
+			//pass
+		} else {
+			initialize();
+		}
+		return antCommandFile;
 	}
 
-	private NetBeans8Utils() {
+	private static java.io.File antCommandFile;
+
+	private AntUtils() {
 		throw new AssertionError();
 	}
 }
