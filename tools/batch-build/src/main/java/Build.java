@@ -45,6 +45,15 @@
  * @author Dennis Cosgrove
  */
 public class Build {
+	/*package-private*/static String substituteVersionTexts( Config config, String s ) {
+		s = s.trim();
+		s = s.replace( "___ALICE_VERSION___", org.lgna.project.ProjectVersion.getCurrentVersionText() );
+		s = s.replace( "___JOGL_VERSION___", config.getJoglVersion() );
+		s = s.replace( "___ALICE_MODEL_SOURCE_VERSION___", config.getAliceModelSourceVersion() );
+		s = s.replace( "___NEBULOUS_MODEL_SOURCE_VERSION___", config.getNebulousModelSourceVersion() );
+		return s;
+	}
+
 	private class JarInfo {
 		public JarInfo( String dirName, String... projectNames ) {
 			this.dirName = dirName;
@@ -65,15 +74,6 @@ public class Build {
 
 		private final String dirName;
 		private final String[] projectNames;
-	}
-
-	/*package-private*/static String substituteVersionTexts( Config config, String s ) {
-		s = s.trim();
-		s = s.replace( "___ALICE_VERSION___", org.lgna.project.ProjectVersion.getCurrentVersionText() );
-		s = s.replace( "___JOGL_VERSION___", config.getJoglVersion() );
-		s = s.replace( "___ALICE_MODEL_SOURCE_VERSION___", config.getAliceModelSourceVersion() );
-		s = s.replace( "___NEBULOUS_MODEL_SOURCE_VERSION___", config.getNebulousModelSourceVersion() );
-		return s;
 	}
 
 	private void copyJars() throws java.io.IOException {
@@ -220,7 +220,11 @@ public class Build {
 
 	public Build( Config config ) {
 		this.buildRepo = new BuildRepo( config );
-		this.repo = new DevRepo( config );
+		if( config.isDevMode() ) {
+			this.repo = new DevRepo( config );
+		} else {
+			this.repo = this.buildRepo;
+		}
 		this.mavenRepoJars = new String[] {
 				substituteVersionTexts( config, "org/jogamp/gluegen/gluegen-rt/___JOGL_VERSION___/gluegen-rt-___JOGL_VERSION___.jar" ),
 				substituteVersionTexts( config, "org/jogamp/jogl/jogl-all/___JOGL_VERSION___/jogl-all-___JOGL_VERSION___.jar" ),
@@ -237,6 +241,7 @@ public class Build {
 
 	public static void main( String[] args ) throws Exception {
 		Config config = new Config.Builder()
+				.isDevMode( true )
 				.joglVersion( "2.2.4" )
 				.aliceModelSourceVersion( "2014.08.20" )
 				.nebulousModelSourceVersion( "2014.09.11" )

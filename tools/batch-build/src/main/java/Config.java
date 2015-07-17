@@ -46,6 +46,11 @@
  */
 public class Config {
 	public static class Builder {
+		public Builder isDevMode( boolean isDevMode ) {
+			this.isDevMode = isDevMode;
+			return this;
+		}
+
 		public Builder joglVersion( String joglVersion ) {
 			this.joglVersion = joglVersion;
 			return this;
@@ -70,6 +75,7 @@ public class Config {
 			return new Config( this );
 		}
 
+		private boolean isDevMode;
 		private String joglVersion;
 		private String aliceModelSourceVersion;
 		private String nebulousModelSourceVersion;
@@ -77,6 +83,8 @@ public class Config {
 	}
 
 	private Config( Builder builder ) {
+		this.isDevMode = builder.isDevMode;
+
 		assert builder.joglVersion != null : builder;
 		this.joglVersion = builder.joglVersion;
 
@@ -88,6 +96,10 @@ public class Config {
 
 		assert builder.netBeans8Version != null : builder;
 		this.netBeans8Version = builder.netBeans8Version;
+	}
+
+	public boolean isDevMode() {
+		return this.isDevMode;
 	}
 
 	public String getJoglVersion() {
@@ -106,6 +118,7 @@ public class Config {
 		return this.netBeans8Version;
 	}
 
+	private final boolean isDevMode;
 	private final String joglVersion;
 	private final String aliceModelSourceVersion;
 	private final String nebulousModelSourceVersion;
