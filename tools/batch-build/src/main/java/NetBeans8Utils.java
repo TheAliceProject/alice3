@@ -40,83 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.lang;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class DrainInputStreamThread extends Thread {
-	static interface LineAppender {
-		void appendLine( String line );
+public class NetBeans8Utils {
+	private static java.io.File userPropertiesFile;
+
+	public static void initialize( String versionText ) {
+		assert userPropertiesFile == null : userPropertiesFile;
+		userPropertiesFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), "AppData/Roaming/NetBeans/" + versionText + "/build.properties" );
+		assert userPropertiesFile.exists() : userPropertiesFile;
 	}
 
-	static class PrintStreamLineAppender implements LineAppender {
-		private final java.io.PrintWriter pw;
-
-		public PrintStreamLineAppender( java.io.PrintStream ps ) {
-			this.pw = ps != null ? new java.io.PrintWriter( ps ) : null;
-		}
-
-		@Override
-		public void appendLine( String line ) {
-			if( this.pw != null ) {
-				this.pw.append( line );
-				this.pw.append( '\n' );
-				this.pw.flush();
-			}
-		}
+	public static java.io.File getUserPropertiesFile() {
+		assert userPropertiesFile != null : "not initialized";
+		return userPropertiesFile;
 	}
 
-	static class StringListLineAppender implements LineAppender {
-		private final java.util.List<String> list;
-
-		public StringListLineAppender( java.util.List<String> list ) {
-			this.list = list;
-		}
-
-		@Override
-		public void appendLine( String line ) {
-			this.list.add( line );
-		}
-	}
-
-	private final java.io.InputStream is;
-	private final LineAppender lineAppender;
-	private final java.util.concurrent.CyclicBarrier barrier;
-
-	public DrainInputStreamThread( java.io.InputStream is, LineAppender lineAppender, java.util.concurrent.CyclicBarrier barrier ) {
-		this.is = is;
-		this.lineAppender = lineAppender;
-		this.barrier = barrier;
-	}
-
-	@Override
-	public void run() {
-		java.io.InputStreamReader isr = new java.io.InputStreamReader( this.is );
-		java.io.BufferedReader br = new java.io.BufferedReader( isr );
-		//java.io.PrintWriter pw = this.ps != null ? new java.io.PrintWriter( this.ps ) : null;
-		while( true ) {
-			try {
-				String line = br.readLine();
-				if( line != null ) {
-					if( this.lineAppender != null ) {
-						this.lineAppender.appendLine( line );
-					}
-				} else {
-					break;
-				}
-			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( ioe );
-			}
-		}
-		if( barrier != null ) {
-			try {
-				barrier.await();
-			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-				throw new RuntimeException( bbe );
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			}
-		}
+	private NetBeans8Utils() {
+		throw new AssertionError();
 	}
 }
