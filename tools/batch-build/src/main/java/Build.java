@@ -233,19 +233,30 @@ public class Build {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nbmVersion );
 	}
 
-	public Build() {
+	public Build( Config config ) {
+		this.config = config;
 	}
 
+	private final Config config;
 	private final BuildRepo buildRepo = new BuildRepo();
 	private final GitRepo repo = new DevRepo();
 
 	public static void main( String[] args ) throws Exception {
-		NetBeans8Utils.initialize( "8.0.2" );
+		Config config = new Config.Builder()
+				.joglVersion( "2.2.4" )
+				.aliceModelSourceVersion( "2014.08.20" )
+				.nebulousModelSourceVersion( "2014.09.11" )
+				.netBeans8Version( "8.0.2" )
+				.build();
+
+		NetBeans8Utils.initialize( config.getNetBeans8Version() );
 		AntUtils.initialize();
+
 		assert System.getenv( "JAVA_HOME" ) != null;
 		assert System.getenv( "JDK8_HOME" ) != null;
 		assert System.getenv( "MAVEN_HOME" ) != null;
-		Build build = new Build();
+
+		Build build = new Build( config );
 		build.prepareToDevelopPlugin8();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "done" );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "JAVA_HOME", System.getenv( "JAVA_HOME" ) );
