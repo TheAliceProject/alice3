@@ -116,22 +116,31 @@ public class Plugin8 extends Plugin {
 		assert this.dstProjectXmlFile.exists() : this.dstProjectXmlFile;
 	}
 
-	public void copyJars( BuildRepo buildRepo, GitRepo repo ) throws java.io.IOException {
-		ProjectCollection coreProjectCollection = new ProjectCollection.Builder( "core" )
-				.addProjectNames(
-						"util",
-						"scenegraph",
-						"glrender",
-						"story-api",
-						"ast",
-						"story-api-migration"
-				).build();
+	public void copyJars( BuildRepo buildRepo ) throws java.io.IOException {
+		ProjectCollection coreProjectCollection = new ProjectCollection
+				.Builder( "core" )
+						.addProjectNames(
+								"util",
+								"scenegraph",
+								"glrender",
+								"story-api",
+								"ast",
+								"story-api-migration"
+						).build();
 
-		coreProjectCollection.copyJarsToNetBeans8( buildRepo, repo );
+		for( String projectName : coreProjectCollection.getProjectNames() ) {
+			String filename = projectName + "-0.0.1-SNAPSHOT.jar";
+			java.io.File src = new java.io.File( buildRepo.getRoot(), coreProjectCollection.getDirName() + "/" + projectName + "/target/" + filename );
+			java.io.File dst = new java.io.File( this.getJars(), filename );
+			assert src.exists() : src;
+			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
+			assert dst.exists() : dst;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
+		}
 
 		for( String mavenRepoJarPath : this.jarPathsToCopyFromMaven ) {
 			java.io.File src = new java.io.File( MavenUtils.getMavenRepositoryDir(), mavenRepoJarPath );
-			java.io.File dst = new java.io.File( repo.getPlugin8().getJars(), src.getName() );
+			java.io.File dst = new java.io.File( this.getJars(), src.getName() );
 			assert src.exists() : src;
 			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
 			assert dst.exists() : dst;

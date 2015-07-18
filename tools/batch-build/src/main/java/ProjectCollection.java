@@ -71,16 +71,12 @@ public class ProjectCollection {
 		this.projectNames = java.util.Collections.unmodifiableList( builder.projectNames );
 	}
 
-	public void copyJarsToNetBeans8( BuildRepo buildRepo, GitRepo repo ) throws java.io.IOException {
-		for( String projectName : this.projectNames ) {
-			String filename = projectName + "-0.0.1-SNAPSHOT.jar";
-			java.io.File src = new java.io.File( buildRepo.getRoot(), this.dirName + "/" + projectName + "/target/" + filename );
-			java.io.File dst = new java.io.File( repo.getPlugin8().getJars(), filename );
-			assert src.exists() : src;
-			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
-			assert dst.exists() : dst;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
-		}
+	public String getDirName() {
+		return this.dirName;
+	}
+
+	public java.util.List<String> getProjectNames() {
+		return this.projectNames;
 	}
 
 	private final String dirName;

@@ -81,7 +81,7 @@ public class Build {
 
 	private void prepareToDevelopPlugin8() throws java.io.IOException, InterruptedException {
 		this.buildRepo.compileJars();
-		this.repo.getPlugin8().copyJars( this.buildRepo, this.repo );
+		this.repo.getPlugin8().copyJars( this.buildRepo );
 
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.repo.getPlugin8().getDistribution() );
 
