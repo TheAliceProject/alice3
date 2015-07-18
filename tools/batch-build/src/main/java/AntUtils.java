@@ -46,13 +46,7 @@
  */
 public class AntUtils {
 	public static void initialize() {
-		String antHome = System.getenv( "ANT_HOME" );
-		assert antHome != null : "ANT_HOME";
-
-		java.io.File antHomeDir = new java.io.File( antHome );
-		assert antHomeDir.exists() : antHomeDir;
-		assert antHomeDir.isDirectory() : antHomeDir;
-
+		java.io.File antHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "ANT_HOME" );
 		antCommandFile = new java.io.File( antHomeDir, "bin/ant.bat" );
 		assert antCommandFile.exists() : antCommandFile;
 	}

@@ -147,12 +147,7 @@ public class Build {
 
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( nbm );
 
-		String jdk8Home = System.getenv( "JDK8_HOME" );
-		assert jdk8Home != null;
-		java.io.File javaHomeDir = new java.io.File( jdk8Home );
-		assert javaHomeDir.exists() : javaHomeDir;
-		assert javaHomeDir.isDirectory() : javaHomeDir;
-
+		java.io.File javaHomeDir = JdkUtils.getJdk8HomeDir();
 		antClean( javaHomeDir );
 		antCompile( javaHomeDir );
 		antNBM( javaHomeDir );
@@ -190,9 +185,9 @@ public class Build {
 				.build();
 
 		JdkUtils.initialize();
-		NetBeans8Utils.initialize( config.getNetBeans8Version() );
 		MavenUtils.initialize();
 		AntUtils.initialize();
+		NetBeans8Utils.initialize( config.getNetBeans8Version() );
 
 		Build build = new Build( config );
 
@@ -201,6 +196,9 @@ public class Build {
 		timer.mark( build );
 		build.prepareToDevelopPlugin8();
 
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+
 		if( config.getMode().isDev() ) {
 			//pass
 		} else {
@@ -208,11 +206,15 @@ public class Build {
 		}
 		timer.stopAndPrintResults();
 
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "done" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "JAVA_HOME", System.getenv( "JAVA_HOME" ) );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "JDK8_HOME", System.getenv( "JDK8_HOME" ) );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "MAVEN_HOME", System.getenv( "MAVEN_HOME" ) );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "ANT_HOME", System.getenv( "ANT_HOME" ) );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( config );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "done" );
 	}
 }

@@ -46,13 +46,7 @@
  */
 public class MavenUtils {
 	public static void initialize() {
-		String mavenHome = System.getenv( "MAVEN_HOME" );
-		assert mavenHome != null : "MAVEN_HOME";
-
-		java.io.File mavenHomeDir = new java.io.File( mavenHome );
-		assert mavenHomeDir.exists() : mavenHomeDir;
-		assert mavenHomeDir.isDirectory() : mavenHomeDir;
-
+		java.io.File mavenHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "MAVEN_HOME" );
 		mavenCommandFile = new java.io.File( mavenHomeDir, "bin/mvn.bat" );
 		assert mavenCommandFile.exists() : mavenCommandFile;
 	}
