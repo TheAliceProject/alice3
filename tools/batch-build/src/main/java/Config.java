@@ -46,8 +46,8 @@
  */
 public class Config {
 	public static class Builder {
-		public Builder isDevMode( boolean isDevMode ) {
-			this.isDevMode = isDevMode;
+		public Builder mode( Mode mode ) {
+			this.mode = mode;
 			return this;
 		}
 
@@ -75,7 +75,7 @@ public class Config {
 			return new Config( this );
 		}
 
-		private boolean isDevMode;
+		private Mode mode;
 		private String joglVersion;
 		private String aliceModelSourceVersion;
 		private String nebulousModelSourceVersion;
@@ -83,7 +83,8 @@ public class Config {
 	}
 
 	private Config( Builder builder ) {
-		this.isDevMode = builder.isDevMode;
+		assert builder.mode != null : builder;
+		this.mode = builder.mode;
 
 		assert builder.joglVersion != null : builder;
 		this.joglVersion = builder.joglVersion;
@@ -98,8 +99,8 @@ public class Config {
 		this.netBeans8Version = builder.netBeans8Version;
 	}
 
-	public boolean isDevMode() {
-		return this.isDevMode;
+	public Mode getMode() {
+		return this.mode;
 	}
 
 	public String getJoglVersion() {
@@ -122,6 +123,8 @@ public class Config {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.getClass().getSimpleName() );
+		sb.append( "\n\tmode: " );
+		sb.append( this.mode );
 		sb.append( "\n\tjoglVersion: " );
 		sb.append( this.joglVersion );
 		sb.append( "\n\taliceModelSourceVersionn: " );
@@ -133,7 +136,7 @@ public class Config {
 		return sb.toString();
 	}
 
-	private final boolean isDevMode;
+	private final Mode mode;
 	private final String joglVersion;
 	private final String aliceModelSourceVersion;
 	private final String nebulousModelSourceVersion;

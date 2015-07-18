@@ -170,7 +170,7 @@ public class Build {
 
 	public Build( Config config ) {
 		this.buildRepo = new BuildRepo( config );
-		if( config.isDevMode() ) {
+		if( config.getMode().isDev() ) {
 			this.repo = new DevRepo( config );
 		} else {
 			this.repo = this.buildRepo;
@@ -182,7 +182,7 @@ public class Build {
 
 	public static void main( String[] args ) throws Exception {
 		Config config = new Config.Builder()
-				.isDevMode( true )
+				.mode( Mode.DEV_BARE_MINIMUM )
 				.joglVersion( "2.2.4" )
 				.aliceModelSourceVersion( "2014.08.20" )
 				.nebulousModelSourceVersion( "2014.09.11" )
@@ -203,7 +203,7 @@ public class Build {
 		timer.mark( build );
 		build.prepareToDevelopPlugin8();
 
-		if( config.isDevMode() ) {
+		if( config.getMode().isDev() ) {
 			//pass
 		} else {
 			build.createNbm();

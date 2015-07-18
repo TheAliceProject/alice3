@@ -44,30 +44,24 @@
 /**
  * @author Dennis Cosgrove
  */
-public class BuildRepo extends GitRepo {
-	public BuildRepo( Config config ) {
-		super( config, "alice_for_build" );
-		this.distributionSource = new java.io.File( this.getRoot(), "/core/resources/target/distribution" );
+public enum Mode {
+	BUILD( false, false ),
+	DEV( true, false ),
+	DEV_BARE_MINIMUM( true, true );
+
+	private Mode( boolean isDev, boolean isBareMinimum ) {
+		this.isDev = isDev;
+		this.isBareMinimum = isBareMinimum;
 	}
 
-	public java.io.File getDistributionSource() {
-		return this.distributionSource;
+	public boolean isDev() {
+		return this.isDev;
 	}
 
-	public void compileJars() throws java.io.IOException, InterruptedException {
-		java.util.List<String> command = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		command.add( MavenUtils.getMavenCommandFile().getAbsolutePath() );
-		if( this.getConfig().getMode().isDev() ) {
-			//pass
-		} else {
-			command.add( "clean" );
-		}
-		command.add( "compile" );
-		command.add( "install" );
-		ProcessBuilder processBuilder = new ProcessBuilder( command );
-		processBuilder.directory( this.getRoot() );
-		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
+	public boolean isBareMinimum() {
+		return this.isBareMinimum;
 	}
 
-	private final java.io.File distributionSource;
+	private final boolean isDev;
+	private final boolean isBareMinimum;
 }
