@@ -82,30 +82,21 @@ public class Build {
 		java.io.File tempDirectoryForJavaDoc = buildRepo.generateJavaDocs();
 		timer.mark( "generateJavaDocs" );
 
-		java.io.File docZip = new java.io.File( repo.getPlugin8().getSuiteDir(), "Alice3Module/release/doc/aliceDocs.zip" );
-		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( docZip );
-		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( tempDirectoryForJavaDoc, docZip );
-		assert docZip.exists() : docZip;
-		timer.mark( "zipJavaDocs" );
-
-		java.io.File srcDirectory = new java.io.File( buildRepo.getCoreSrcDirectory( "story-api" ), "org/lgna/story" );
-		java.io.File dstZip = new java.io.File( repo.getPlugin8().getSuiteDir(), "Alice3Module/release/src/aliceSource.jar" );
-		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zipFilesInDirectory( srcDirectory, dstZip, new java.io.FileFilter() {
-			@Override
-			public boolean accept( java.io.File file ) {
-				return "java".equals( edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file ) );
-			}
-		} );
-		timer.mark( "zipSrc" );
-
-		repo.getPlugin8().prepareFiles();
-		timer.mark( "prepareFiles" );
-
 		for( Plugin plugin : repo.getPlugins() ) {
 			plugin.copyJars( buildRepo );
 			timer.mark( "copyJars" );
+
 			plugin.copyDistribution( buildRepo );
 			timer.mark( "copyDistribution" );
+
+			plugin.prepareFiles();
+			timer.mark( "prepareFiles" );
+
+			plugin.zipSrc( buildRepo );
+			timer.mark( "zipSrc" );
+
+			plugin.zipJavaDocs( tempDirectoryForJavaDoc );
+			timer.mark( "zipJavaDocs" );
 
 			if( config.getMode().isDev() ) {
 				//pass

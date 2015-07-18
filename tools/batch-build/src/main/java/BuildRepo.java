@@ -64,7 +64,7 @@ public class BuildRepo extends GitRepo {
 		if( this.getConfig().getMode().isDev() ) {
 			//pass
 		} else {
-			command.add( "clean" );
+			//command.add( "clean" );
 		}
 		command.add( "compile" );
 		command.add( "install" );

@@ -61,7 +61,17 @@ public class Plugin6 extends Plugin {
 
 	@Override
 	protected java.io.File getDistributionDir() {
-		return null;
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	protected java.io.File getJavaDocZipFile() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	protected java.io.File getSrcZipFile() {
+		throw new RuntimeException( "todo" );
 	}
 
 	@Override
@@ -71,6 +81,11 @@ public class Plugin6 extends Plugin {
 
 	@Override
 	protected java.io.File getNbmFile() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	public void prepareFiles() throws java.io.IOException {
 		throw new RuntimeException( "todo" );
 	}
 }

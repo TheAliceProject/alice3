@@ -59,6 +59,10 @@ public abstract class Plugin {
 
 	protected abstract java.io.File getDistributionDir();
 
+	protected abstract java.io.File getSrcZipFile();
+
+	protected abstract java.io.File getJavaDocZipFile();
+
 	protected abstract java.io.File getJdkToUseForNbmAntCommand();
 
 	protected abstract java.io.File getNbmFile();
@@ -124,6 +128,28 @@ public abstract class Plugin {
 					}
 				}
 				return true;
+			}
+		} );
+	}
+
+	public abstract void prepareFiles() throws java.io.IOException;
+
+	public void zipJavaDocs( java.io.File tempDirectoryForJavaDoc ) throws java.io.IOException {
+		java.io.File docZip = this.getJavaDocZipFile();
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( docZip );
+		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( tempDirectoryForJavaDoc, docZip );
+		assert docZip.exists() : docZip;
+	}
+
+	public void zipSrc( BuildRepo buildRepo ) throws java.io.IOException {
+		java.io.File srcDirectory = new java.io.File( buildRepo.getCoreSrcDirectory( "story-api" ), "org/lgna/story" );
+		assert srcDirectory.exists() : srcDirectory;
+		assert srcDirectory.isDirectory() : srcDirectory;
+		java.io.File dstZip = this.getSrcZipFile();
+		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zipFilesInDirectory( srcDirectory, dstZip, new java.io.FileFilter() {
+			@Override
+			public boolean accept( java.io.File file ) {
+				return "java".equals( edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file ) );
 			}
 		} );
 	}

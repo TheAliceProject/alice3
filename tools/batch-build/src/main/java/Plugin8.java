@@ -99,6 +99,16 @@ public class Plugin8 extends Plugin {
 		return this.distributionDir;
 	}
 
+	@Override
+	protected java.io.File getJavaDocZipFile() {
+		return new java.io.File( this.getSuiteDir(), "Alice3Module/release/doc/aliceDocs.zip" );
+	}
+
+	@Override
+	protected java.io.File getSrcZipFile() {
+		return new java.io.File( this.getSuiteDir(), "Alice3Module/release/src/aliceSource.jar" );
+	}
+
 	private java.io.File getProjectTemplateDir() {
 		return this.projectTemplateDir;
 	}
@@ -113,6 +123,7 @@ public class Plugin8 extends Plugin {
 		return new java.io.File( this.getSuiteDir(), "build/updates/org-alice-netbeans.nbm" );
 	}
 
+	@Override
 	public void prepareFiles() throws java.io.IOException {
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstManifestFile );
 		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstManifestFile, this.manifestText );
