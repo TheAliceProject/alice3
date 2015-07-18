@@ -189,12 +189,10 @@ public class Build {
 				.netBeans8Version( "8.0.2" )
 				.build();
 
+		JdkUtils.initialize();
 		NetBeans8Utils.initialize( config.getNetBeans8Version() );
 		MavenUtils.initialize();
 		AntUtils.initialize();
-
-		assert System.getenv( "JAVA_HOME" ) != null;
-		assert System.getenv( "JDK8_HOME" ) != null;
 
 		Build build = new Build( config );
 
