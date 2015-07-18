@@ -45,58 +45,6 @@
  * @author Dennis Cosgrove
  */
 public class Build {
-	/*package-private*/static String substituteVersionTexts( Config config, String s ) {
-		s = s.trim();
-		s = s.replace( "___ALICE_VERSION___", org.lgna.project.ProjectVersion.getCurrentVersionText() );
-		s = s.replace( "___JOGL_VERSION___", config.getJoglVersion() );
-		s = s.replace( "___ALICE_MODEL_SOURCE_VERSION___", config.getAliceModelSourceVersion() );
-		s = s.replace( "___NEBULOUS_MODEL_SOURCE_VERSION___", config.getNebulousModelSourceVersion() );
-		return s;
-	}
-
-	private class JarInfo {
-		public JarInfo( String dirName, String... projectNames ) {
-			this.dirName = dirName;
-			this.projectNames = projectNames;
-		}
-
-		public void copyJarsToNetBeans8() throws java.io.IOException {
-			for( String projectName : this.projectNames ) {
-				String filename = projectName + "-0.0.1-SNAPSHOT.jar";
-				java.io.File src = new java.io.File( buildRepo.getRoot(), this.dirName + "/" + projectName + "/target/" + filename );
-				java.io.File dst = new java.io.File( repo.getPlugin8().getJars(), filename );
-				assert src.exists() : src;
-				edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
-				assert dst.exists() : dst;
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
-			}
-		}
-
-		private final String dirName;
-		private final String[] projectNames;
-	}
-
-	private void copyJars() throws java.io.IOException {
-		JarInfo jarInfo = new JarInfo( "core",
-				"util",
-				"scenegraph",
-				"glrender",
-				"story-api",
-				"ast",
-				"story-api-migration" );
-
-		jarInfo.copyJarsToNetBeans8();
-		final java.io.File MAVEN_REPOSITORY_DIRECTORY = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository" );
-		for( String mavenRepoJarPath : this.mavenRepoJars ) {
-			java.io.File src = new java.io.File( MAVEN_REPOSITORY_DIRECTORY, mavenRepoJarPath );
-			java.io.File dst = new java.io.File( this.repo.getPlugin8().getJars(), src.getName() );
-			assert src.exists() : src;
-			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
-			assert dst.exists() : dst;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
-		}
-	}
-
 	private java.io.File _createCoreSrcDirectory( String subName ) {
 		return new java.io.File( this.buildRepo.getRoot(), "core/" + subName + "/src/main/java" );
 	}
@@ -133,7 +81,7 @@ public class Build {
 
 	private void prepareToDevelopPlugin8() throws java.io.IOException, InterruptedException {
 		this.buildRepo.compileJars();
-		this.copyJars();
+		this.repo.getPlugin8().copyJars( this.buildRepo, this.repo );
 
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.repo.getPlugin8().getDistribution() );
 
@@ -225,19 +173,10 @@ public class Build {
 		} else {
 			this.repo = this.buildRepo;
 		}
-		this.mavenRepoJars = new String[] {
-				substituteVersionTexts( config, "org/jogamp/gluegen/gluegen-rt/___JOGL_VERSION___/gluegen-rt-___JOGL_VERSION___.jar" ),
-				substituteVersionTexts( config, "org/jogamp/jogl/jogl-all/___JOGL_VERSION___/jogl-all-___JOGL_VERSION___.jar" ),
-				"javax/media/jmf/2.1.1e/jmf-2.1.1e.jar",
-				"com/sun/javamp3/1.0/javamp3-1.0.jar",
-				substituteVersionTexts( config, "org/alice/alice-model-source/___ALICE_MODEL_SOURCE_VERSION___/alice-model-source-___ALICE_MODEL_SOURCE_VERSION___.jar" ),
-				substituteVersionTexts( config, "org/alice/nonfree/nebulous-model-source/___NEBULOUS_MODEL_SOURCE_VERSION___/nebulous-model-source-___NEBULOUS_MODEL_SOURCE_VERSION___.jar" ),
-		};
 	}
 
 	private final BuildRepo buildRepo;
 	private final GitRepo repo;
-	private final String[] mavenRepoJars;
 
 	public static void main( String[] args ) throws Exception {
 		Config config = new Config.Builder()

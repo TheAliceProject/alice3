@@ -67,21 +67,23 @@ public class Plugin8 extends Plugin {
 
 		java.io.InputStream manifestInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/manifest.mf" );
 		assert manifestInputStream != null;
-		this.manifestText = Build.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( manifestInputStream ) );
+		this.manifestText = PluginCommon.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( manifestInputStream ) );
 		assert this.manifestText != null;
 		assert this.manifestText.length() > 0;
 
 		java.io.InputStream libraryXmlInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/Alice3Library.xml" );
 		assert libraryXmlInputStream != null;
-		this.libraryXmlText = Build.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( libraryXmlInputStream ) );
+		this.libraryXmlText = PluginCommon.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( libraryXmlInputStream ) );
 		assert this.libraryXmlText != null;
 		assert this.libraryXmlText.length() > 0;
 
 		java.io.InputStream projectXmlInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/project.xml" );
 		assert projectXmlInputStream != null;
-		this.projectXmlText = Build.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( projectXmlInputStream ) );
+		this.projectXmlText = PluginCommon.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( projectXmlInputStream ) );
 		assert this.projectXmlText != null;
 		assert this.projectXmlText.length() > 0;
+
+		this.jarPathsToCopyFromMaven = PluginCommon.getJarPathsToCopyFromMaven( config );
 	}
 
 	public java.io.File getSuite() {
@@ -114,6 +116,30 @@ public class Plugin8 extends Plugin {
 		assert this.dstProjectXmlFile.exists() : this.dstProjectXmlFile;
 	}
 
+	public void copyJars( BuildRepo buildRepo, GitRepo repo ) throws java.io.IOException {
+		ProjectCollection coreProjectCollection = new ProjectCollection.Builder( "core" )
+				.addProjectNames(
+						"util",
+						"scenegraph",
+						"glrender",
+						"story-api",
+						"ast",
+						"story-api-migration"
+				).build();
+
+		coreProjectCollection.copyJarsToNetBeans8( buildRepo, repo );
+
+		final java.io.File MAVEN_REPOSITORY_DIRECTORY = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository" );
+		for( String mavenRepoJarPath : this.jarPathsToCopyFromMaven ) {
+			java.io.File src = new java.io.File( MAVEN_REPOSITORY_DIRECTORY, mavenRepoJarPath );
+			java.io.File dst = new java.io.File( repo.getPlugin8().getJars(), src.getName() );
+			assert src.exists() : src;
+			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
+			assert dst.exists() : dst;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
+		}
+	}
+
 	private final java.io.File suite;
 	private final java.io.File jars;
 	private final java.io.File distribution;
@@ -126,4 +152,5 @@ public class Plugin8 extends Plugin {
 	private final java.io.File dstLibraryXmlFile;
 	private final java.io.File dstProjectXmlFile;
 
+	private final java.util.List<String> jarPathsToCopyFromMaven;
 }
