@@ -45,52 +45,9 @@
  * @author Dennis Cosgrove
  */
 public class Build {
-	private void prepareToDevelopPlugin8() throws java.io.IOException, InterruptedException {
-		java.io.File srcDirectory = new java.io.File( this.buildRepo.getCoreSrcDirectory( "story-api" ), "org/lgna/story" );
-
-		java.io.File dstZip = new java.io.File( this.repo.getPlugin8().getSuite(), "Alice3Module/release/src/aliceSource.jar" );
-		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zipFilesInDirectory( srcDirectory, dstZip, new java.io.FileFilter() {
-			@Override
-			public boolean accept( java.io.File file ) {
-				return "java".equals( edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file ) );
-			}
-		} );
-
-		java.io.File tempDirectoryForJavaDoc = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "tempDirectoryForJavaDoc" );
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( tempDirectoryForJavaDoc );
-		tempDirectoryForJavaDoc.mkdirs();
-
-		StringBuilder sb = new StringBuilder();
-		String[] subNames = { "util", "scenegraph", "ast", "story-api" };
-		for( String subName : subNames ) {
-			sb.append( this.buildRepo.getCoreSrcDirectory( subName ).getAbsolutePath() );
-			sb.append( edu.cmu.cs.dennisc.java.lang.SystemUtilities.PATH_SEPARATOR );
-		}
-		String srcPath = sb.toString();
-
-		com.sun.tools.javadoc.Main.execute( new String[] { "-d", tempDirectoryForJavaDoc.getAbsolutePath(), "-sourcepath", srcPath, "-encoding", "UTF-8", "-docencoding", "UTF-8", "-subpackages", "org.lgna.story", "-exclude", "org.lgna.story.implementation:org.lgna.story.resourceutilities" } );
-
-		java.io.File docZip = new java.io.File( this.repo.getPlugin8().getSuite(), "Alice3Module/release/doc/aliceDocs.zip" );
-		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( docZip );
-		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( tempDirectoryForJavaDoc, docZip );
-		assert docZip.exists() : docZip;
-	}
-
-	public Build( Config config ) {
-		this.buildRepo = new BuildRepo( config );
-		if( config.getMode().isDev() ) {
-			this.repo = new DevRepo( config );
-		} else {
-			this.repo = this.buildRepo;
-		}
-	}
-
-	private final BuildRepo buildRepo;
-	private final GitRepo repo;
-
 	public static void main( String[] args ) throws Exception {
 		Config config = new Config.Builder()
-				.mode( Mode.DEV_BARE_MINIMUM )
+				.mode( Mode.BUILD )
 				.joglVersion( "2.2.4" )
 				.aliceModelSourceVersion( "2014.08.20" )
 				.nebulousModelSourceVersion( "2014.09.11" )
@@ -102,26 +59,49 @@ public class Build {
 		AntUtils.initialize();
 		NetBeans8Utils.initialize( config.getNetBeans8Version() );
 
-		Build build = new Build( config );
+		BuildRepo buildRepo = new BuildRepo( config );
+		GitRepo repo;
+		if( config.getMode().isDev() ) {
+			repo = new DevRepo( config );
+		} else {
+			repo = buildRepo;
+		}
 
 		edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "build" );
 		timer.start();
-		build.buildRepo.compileJars();
-		timer.mark( "compile" );
-		build.repo.getPlugin8().copyJars( build.buildRepo );
-		timer.mark( "copyJars" );
-		build.repo.getPlugin8().copyDistribution( build.buildRepo );
-		timer.mark( "copyDistribution" );
-		build.repo.getPlugin8().prepareFiles();
-		timer.mark( "prepareFiles" );
+		buildRepo.compileJars();
+		timer.mark( "compileJars" );
 
-		build.prepareToDevelopPlugin8();
-		timer.mark( build );
+		java.io.File tempDirectoryForJavaDoc = buildRepo.generateJavaDocs();
+		timer.mark( "generateJavaDocs" );
+
+		java.io.File docZip = new java.io.File( repo.getPlugin8().getSuite(), "Alice3Module/release/doc/aliceDocs.zip" );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( docZip );
+		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( tempDirectoryForJavaDoc, docZip );
+		assert docZip.exists() : docZip;
+		timer.mark( "zipJavaDocs" );
+
+		java.io.File srcDirectory = new java.io.File( buildRepo.getCoreSrcDirectory( "story-api" ), "org/lgna/story" );
+		java.io.File dstZip = new java.io.File( repo.getPlugin8().getSuite(), "Alice3Module/release/src/aliceSource.jar" );
+		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zipFilesInDirectory( srcDirectory, dstZip, new java.io.FileFilter() {
+			@Override
+			public boolean accept( java.io.File file ) {
+				return "java".equals( edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file ) );
+			}
+		} );
+		timer.mark( "zipSrc" );
+
+		repo.getPlugin8().copyJars( buildRepo );
+		timer.mark( "copyJars" );
+		repo.getPlugin8().copyDistribution( buildRepo );
+		timer.mark( "copyDistribution" );
+		repo.getPlugin8().prepareFiles();
+		timer.mark( "prepareFiles" );
 
 		if( config.getMode().isDev() ) {
 			//pass
 		} else {
-			build.repo.getPlugin8().createNbm();
+			repo.getPlugin8().createNbm();
 			timer.mark( "nbm" );
 		}
 
