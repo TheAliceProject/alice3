@@ -44,30 +44,35 @@
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GitRepo {
-	public GitRepo( Config config, String name ) {
-		this.config = config;
+public class MavenUtils {
+	public static void initialize() {
+		String mavenHome = System.getenv( "MAVEN_HOME" );
+		assert mavenHome != null : "MAVEN_HOME";
 
-		this.root = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Code/" + name );
-		assert this.root.exists() : this.root;
-		assert this.root.isDirectory() : this.root;
+		java.io.File mavenHomeDir = new java.io.File( mavenHome );
+		assert mavenHomeDir.exists() : mavenHomeDir;
+		assert mavenHomeDir.isDirectory() : mavenHomeDir;
 
-		this.plugin8 = new Plugin8( config, this.root );
+		mavenCommandFile = new java.io.File( mavenHomeDir, "bin/mvn.bat" );
+		assert mavenCommandFile.exists() : mavenCommandFile;
 	}
 
-	public Config getConfig() {
-		return this.config;
+	public static java.io.File getMavenCommandFile() {
+		if( mavenCommandFile != null ) {
+			//pass
+		} else {
+			initialize();
+		}
+		return mavenCommandFile;
 	}
 
-	public java.io.File getRoot() {
-		return this.root;
+	public static java.io.File getMavenRepositoryDir() {
+		return new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository" );
 	}
 
-	public Plugin8 getPlugin8() {
-		return this.plugin8;
-	}
+	private static java.io.File mavenCommandFile;
 
-	private final Config config;
-	private final java.io.File root;
-	private final Plugin8 plugin8;
+	private MavenUtils() {
+		throw new AssertionError();
+	}
 }

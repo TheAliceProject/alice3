@@ -140,7 +140,9 @@ public class Build {
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( docZip );
 		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( tempDirectoryForJavaDoc, docZip );
 		assert docZip.exists() : docZip;
+	}
 
+	private void createNbm() throws java.io.IOException, InterruptedException {
 		java.io.File nbm = new java.io.File( this.repo.getPlugin8().getSuite(), "build/updates/org-alice-netbeans.nbm" );
 
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( nbm );
@@ -180,7 +182,7 @@ public class Build {
 
 	public static void main( String[] args ) throws Exception {
 		Config config = new Config.Builder()
-				.isDevMode( true )
+				.isDevMode( false )
 				.joglVersion( "2.2.4" )
 				.aliceModelSourceVersion( "2014.08.20" )
 				.nebulousModelSourceVersion( "2014.09.11" )
@@ -188,18 +190,31 @@ public class Build {
 				.build();
 
 		NetBeans8Utils.initialize( config.getNetBeans8Version() );
+		MavenUtils.initialize();
 		AntUtils.initialize();
 
 		assert System.getenv( "JAVA_HOME" ) != null;
 		assert System.getenv( "JDK8_HOME" ) != null;
-		assert System.getenv( "MAVEN_HOME" ) != null;
 
 		Build build = new Build( config );
+
+		edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "build" );
+		timer.start();
+		timer.mark( build );
 		build.prepareToDevelopPlugin8();
+
+		if( config.isDevMode() ) {
+			//pass
+		} else {
+			build.createNbm();
+		}
+		timer.stopAndPrintResults();
+
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "done" );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "JAVA_HOME", System.getenv( "JAVA_HOME" ) );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "JDK8_HOME", System.getenv( "JDK8_HOME" ) );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "MAVEN_HOME", System.getenv( "MAVEN_HOME" ) );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "ANT_HOME", System.getenv( "ANT_HOME" ) );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( config );
 	}
 }

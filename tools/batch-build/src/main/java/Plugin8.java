@@ -129,9 +129,8 @@ public class Plugin8 extends Plugin {
 
 		coreProjectCollection.copyJarsToNetBeans8( buildRepo, repo );
 
-		final java.io.File MAVEN_REPOSITORY_DIRECTORY = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository" );
 		for( String mavenRepoJarPath : this.jarPathsToCopyFromMaven ) {
-			java.io.File src = new java.io.File( MAVEN_REPOSITORY_DIRECTORY, mavenRepoJarPath );
+			java.io.File src = new java.io.File( MavenUtils.getMavenRepositoryDir(), mavenRepoJarPath );
 			java.io.File dst = new java.io.File( repo.getPlugin8().getJars(), src.getName() );
 			assert src.exists() : src;
 			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );

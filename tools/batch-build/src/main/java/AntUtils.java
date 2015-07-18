@@ -54,6 +54,7 @@ public class AntUtils {
 		assert antHomeDir.isDirectory() : antHomeDir;
 
 		antCommandFile = new java.io.File( antHomeDir, "bin/ant.bat" );
+		assert antCommandFile.exists() : antCommandFile;
 	}
 
 	public static java.io.File getAntCommandFile() {

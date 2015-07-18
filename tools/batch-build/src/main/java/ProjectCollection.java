@@ -44,30 +44,46 @@
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GitRepo {
-	public GitRepo( Config config, String name ) {
-		this.config = config;
+public class ProjectCollection {
+	public static class Builder {
+		public Builder( String dirName ) {
+			this.dirName = dirName;
+			this.projectNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		}
 
-		this.root = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Code/" + name );
-		assert this.root.exists() : this.root;
-		assert this.root.isDirectory() : this.root;
+		public Builder addProjectNames( String... projectNames ) {
+			for( String projectName : projectNames ) {
+				this.projectNames.add( projectName );
+			}
+			return this;
+		}
 
-		this.plugin8 = new Plugin8( config, this.root );
+		public ProjectCollection build() {
+			return new ProjectCollection( this );
+		}
+
+		private final String dirName;
+		private final java.util.List<String> projectNames;
 	}
 
-	public Config getConfig() {
-		return this.config;
+	private ProjectCollection( Builder builder ) {
+		this.dirName = builder.dirName;
+		this.projectNames = java.util.Collections.unmodifiableList( builder.projectNames );
 	}
 
-	public java.io.File getRoot() {
-		return this.root;
+	public void copyJarsToNetBeans8( BuildRepo buildRepo, GitRepo repo ) throws java.io.IOException {
+		for( String projectName : this.projectNames ) {
+			String filename = projectName + "-0.0.1-SNAPSHOT.jar";
+			java.io.File src = new java.io.File( buildRepo.getRoot(), this.dirName + "/" + projectName + "/target/" + filename );
+			java.io.File dst = new java.io.File( repo.getPlugin8().getJars(), filename );
+			assert src.exists() : src;
+			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
+			assert dst.exists() : dst;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
+		}
 	}
 
-	public Plugin8 getPlugin8() {
-		return this.plugin8;
-	}
+	private final String dirName;
+	private final java.util.List<String> projectNames;
 
-	private final Config config;
-	private final java.io.File root;
-	private final Plugin8 plugin8;
 }
