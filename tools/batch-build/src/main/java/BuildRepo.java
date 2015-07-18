@@ -54,6 +54,10 @@ public class BuildRepo extends GitRepo {
 		return this.distributionSource;
 	}
 
+	public java.io.File getCoreSrcDirectory( String projectName ) {
+		return new java.io.File( this.getRoot(), "core/" + projectName + "/src/main/java" );
+	}
+
 	public void compileJars() throws java.io.IOException, InterruptedException {
 		java.util.List<String> command = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		command.add( MavenUtils.getMavenCommandFile().getAbsolutePath() );
