@@ -46,8 +46,15 @@
  */
 public class Build {
 	public static void main( String[] args ) throws Exception {
+		Mode mode;
+		if( args.length > 0 ) {
+			mode = Mode.valueOf( args[ 0 ] );
+		} else {
+			mode = Mode.DEV;
+		}
+
 		Config config = new Config.Builder()
-				.mode( Mode.DEV_BARE_MINIMUM )
+				.mode( mode )
 				.joglVersion( "2.2.4" )
 				.aliceModelSourceVersion( "2014.08.20" )
 				.nebulousModelSourceVersion( "2014.09.11" )
@@ -117,6 +124,7 @@ public class Build {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "MAVEN_HOME", System.getenv( "MAVEN_HOME" ) );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "ANT_HOME", System.getenv( "ANT_HOME" ) );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( config );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "assertions:", Build.class.desiredAssertionStatus() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "done" );

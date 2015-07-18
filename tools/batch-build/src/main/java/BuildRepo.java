@@ -73,11 +73,14 @@ public class BuildRepo extends GitRepo {
 		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
 	}
 
-	public java.io.File generateJavaDocs() {
+	public java.io.File generateJavaDocs() throws java.io.IOException {
 		java.io.File tempDirectoryForJavaDoc = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "tempDirectoryForJavaDoc" );
 		boolean isRequired = ( this.getConfig().getMode().isBareMinimum() == false ) || ( tempDirectoryForJavaDoc.exists() == false );
 		if( isRequired ) {
-			edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( tempDirectoryForJavaDoc );
+			if( tempDirectoryForJavaDoc.exists() ) {
+				org.apache.commons.io.FileUtils.deleteDirectory( tempDirectoryForJavaDoc );
+			}
+			assert tempDirectoryForJavaDoc.exists() == false : tempDirectoryForJavaDoc;
 			tempDirectoryForJavaDoc.mkdirs();
 
 			StringBuilder sb = new StringBuilder();

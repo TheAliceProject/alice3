@@ -157,7 +157,10 @@ public class Plugin8 extends Plugin {
 	}
 
 	public void copyDistribution( BuildRepo buildRepo ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.getDistribution() );
+		if( this.getDistribution().exists() ) {
+			org.apache.commons.io.FileUtils.deleteDirectory( this.getDistribution() );
+			assert this.getDistribution().exists() == false : this.getDistribution();
+		}
 
 		java.io.File distribSrc = buildRepo.getDistributionSource();
 		assert distribSrc.exists() : distribSrc;
