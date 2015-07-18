@@ -47,7 +47,7 @@
 public class Build {
 	public static void main( String[] args ) throws Exception {
 		Config config = new Config.Builder()
-				.mode( Mode.BUILD )
+				.mode( Mode.DEV_BARE_MINIMUM )
 				.joglVersion( "2.2.4" )
 				.aliceModelSourceVersion( "2014.08.20" )
 				.nebulousModelSourceVersion( "2014.09.11" )

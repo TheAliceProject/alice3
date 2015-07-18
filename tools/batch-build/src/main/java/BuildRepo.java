@@ -75,18 +75,21 @@ public class BuildRepo extends GitRepo {
 
 	public java.io.File generateJavaDocs() {
 		java.io.File tempDirectoryForJavaDoc = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "tempDirectoryForJavaDoc" );
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( tempDirectoryForJavaDoc );
-		tempDirectoryForJavaDoc.mkdirs();
+		boolean isRequired = ( this.getConfig().getMode().isBareMinimum() == false ) || ( tempDirectoryForJavaDoc.exists() == false );
+		if( isRequired ) {
+			edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( tempDirectoryForJavaDoc );
+			tempDirectoryForJavaDoc.mkdirs();
 
-		StringBuilder sb = new StringBuilder();
-		String[] subNames = { "util", "scenegraph", "ast", "story-api" };
-		for( String subName : subNames ) {
-			sb.append( this.getCoreSrcDirectory( subName ).getAbsolutePath() );
-			sb.append( edu.cmu.cs.dennisc.java.lang.SystemUtilities.PATH_SEPARATOR );
+			StringBuilder sb = new StringBuilder();
+			String[] subNames = { "util", "scenegraph", "ast", "story-api" };
+			for( String subName : subNames ) {
+				sb.append( this.getCoreSrcDirectory( subName ).getAbsolutePath() );
+				sb.append( edu.cmu.cs.dennisc.java.lang.SystemUtilities.PATH_SEPARATOR );
+			}
+			String srcPath = sb.toString();
+
+			com.sun.tools.javadoc.Main.execute( new String[] { "-d", tempDirectoryForJavaDoc.getAbsolutePath(), "-sourcepath", srcPath, "-encoding", "UTF-8", "-docencoding", "UTF-8", "-subpackages", "org.lgna.story", "-exclude", "org.lgna.story.implementation:org.lgna.story.resourceutilities" } );
 		}
-		String srcPath = sb.toString();
-
-		com.sun.tools.javadoc.Main.execute( new String[] { "-d", tempDirectoryForJavaDoc.getAbsolutePath(), "-sourcepath", srcPath, "-encoding", "UTF-8", "-docencoding", "UTF-8", "-subpackages", "org.lgna.story", "-exclude", "org.lgna.story.implementation:org.lgna.story.resourceutilities" } );
 		return tempDirectoryForJavaDoc;
 	}
 
