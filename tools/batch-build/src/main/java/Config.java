@@ -118,6 +118,21 @@ public class Config {
 		return this.netBeans8Version;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "\n\tjoglVersion: " );
+		sb.append( this.joglVersion );
+		sb.append( "\n\taliceModelSourceVersionn: " );
+		sb.append( this.aliceModelSourceVersion );
+		sb.append( "\n\tnebulousModelSourceVersion: " );
+		sb.append( this.nebulousModelSourceVersion );
+		sb.append( "\n\tnetBeans8Version: " );
+		sb.append( this.netBeans8Version );
+		return sb.toString();
+	}
+
 	private final boolean isDevMode;
 	private final String joglVersion;
 	private final String aliceModelSourceVersion;
