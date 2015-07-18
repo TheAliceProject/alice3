@@ -53,7 +53,11 @@ public abstract class Plugin {
 		assert this.root.isDirectory() : this.root;
 	}
 
-	protected abstract java.io.File getSuite();
+	protected abstract java.io.File getSuiteDir();
+
+	protected abstract java.io.File getJarsDir();
+
+	protected abstract java.io.File getDistributionDir();
 
 	protected abstract java.io.File getJdkToUseForNbmAntCommand();
 
@@ -65,6 +69,63 @@ public abstract class Plugin {
 
 	protected java.io.File getRoot() {
 		return this.root;
+	}
+
+	public void copyJars( BuildRepo buildRepo ) throws java.io.IOException {
+		ProjectCollection coreProjectCollection = new ProjectCollection
+				.Builder( "core" )
+						.addProjectNames(
+								"util",
+								"scenegraph",
+								"glrender",
+								"story-api",
+								"ast",
+								"story-api-migration"
+						).build();
+
+		for( String projectName : coreProjectCollection.getProjectNames() ) {
+			String filename = projectName + "-0.0.1-SNAPSHOT.jar";
+			java.io.File src = new java.io.File( buildRepo.getRootDir(), coreProjectCollection.getDirName() + "/" + projectName + "/target/" + filename );
+			java.io.File dst = new java.io.File( this.getJarsDir(), filename );
+			assert src.exists() : src;
+			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
+			assert dst.exists() : dst;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
+		}
+
+		java.util.List<String> jarPathsToCopyFromMaven = PluginCommon.getJarPathsToCopyFromMaven( this.config );
+
+		for( String mavenRepoJarPath : jarPathsToCopyFromMaven ) {
+			java.io.File src = new java.io.File( MavenUtils.getMavenRepositoryDir(), mavenRepoJarPath );
+			java.io.File dst = new java.io.File( this.getJarsDir(), src.getName() );
+			assert src.exists() : src;
+			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
+			assert dst.exists() : dst;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
+		}
+	}
+
+	public void copyDistribution( BuildRepo buildRepo ) throws java.io.IOException {
+		if( this.getDistributionDir().exists() ) {
+			org.apache.commons.io.FileUtils.deleteDirectory( this.getDistributionDir() );
+			assert this.getDistributionDir().exists() == false : this.getDistributionDir();
+		}
+
+		java.io.File distribSrc = buildRepo.getDistributionSourceDir();
+		assert distribSrc.exists() : distribSrc;
+		assert distribSrc.isDirectory() : distribSrc;
+		edu.cmu.cs.dennisc.java.io.FileUtilities.copyDirectory( distribSrc, this.getDistributionDir(), new edu.cmu.cs.dennisc.pattern.Criterion<java.io.File>() {
+			@Override
+			public boolean accept( java.io.File file ) {
+				if( file.isDirectory() ) {
+					String directoryName = file.getName();
+					if( directoryName.equals( "application" ) || directoryName.equals( "ffmpeg" ) || directoryName.equals( "libvlc" ) ) {
+						return false;
+					}
+				}
+				return true;
+			}
+		} );
 	}
 
 	private void _ant( String arg, java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
@@ -79,7 +140,7 @@ public abstract class Plugin {
 			java.util.Map<String, String> env = processBuilder.environment();
 			env.put( "JAVA_HOME", javaHomeDir.getAbsolutePath() );
 		}
-		processBuilder.directory( this.getSuite() );
+		processBuilder.directory( this.getSuiteDir() );
 		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
 	}
 

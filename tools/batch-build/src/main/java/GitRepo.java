@@ -60,7 +60,7 @@ public abstract class GitRepo {
 		return this.config;
 	}
 
-	public java.io.File getRoot() {
+	public java.io.File getRootDir() {
 		return this.root;
 	}
 

@@ -50,8 +50,18 @@ public class Plugin6 extends Plugin {
 	}
 
 	@Override
-	protected java.io.File getSuite() {
+	protected java.io.File getSuiteDir() {
 		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	protected java.io.File getJarsDir() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	protected java.io.File getDistributionDir() {
+		return null;
 	}
 
 	@Override

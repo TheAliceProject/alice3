@@ -47,15 +47,15 @@
 public class BuildRepo extends GitRepo {
 	public BuildRepo( Config config ) {
 		super( config, "alice_for_build" );
-		this.distributionSource = new java.io.File( this.getRoot(), "/core/resources/target/distribution" );
+		this.distributionSource = new java.io.File( this.getRootDir(), "/core/resources/target/distribution" );
 	}
 
-	public java.io.File getDistributionSource() {
+	public java.io.File getDistributionSourceDir() {
 		return this.distributionSource;
 	}
 
 	public java.io.File getCoreSrcDirectory( String projectName ) {
-		return new java.io.File( this.getRoot(), "core/" + projectName + "/src/main/java" );
+		return new java.io.File( this.getRootDir(), "core/" + projectName + "/src/main/java" );
 	}
 
 	public void compileJars() throws java.io.IOException, InterruptedException {
@@ -69,7 +69,7 @@ public class BuildRepo extends GitRepo {
 		command.add( "compile" );
 		command.add( "install" );
 		ProcessBuilder processBuilder = new ProcessBuilder( command );
-		processBuilder.directory( this.getRoot() );
+		processBuilder.directory( this.getRootDir() );
 		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
 	}
 

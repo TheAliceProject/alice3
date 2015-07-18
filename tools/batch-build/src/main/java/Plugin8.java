@@ -47,23 +47,23 @@
 public class Plugin8 extends Plugin {
 	public Plugin8( Config config, java.io.File repoRoot ) {
 		super( config, repoRoot, 8 );
-		this.suite = new java.io.File( repoRoot, "alice/netbeans/8/Alice3ModuleSuite" );
-		assert this.suite.exists() : this.suite;
-		assert this.suite.isDirectory() : this.suite;
+		this.suiteDir = new java.io.File( repoRoot, "alice/netbeans/8/Alice3ModuleSuite" );
+		assert this.suiteDir.exists() : this.suiteDir;
+		assert this.suiteDir.isDirectory() : this.suiteDir;
 
-		this.jars = new java.io.File( this.suite, "Alice3Module/release/modules/ext" );
-		assert this.jars.exists() : this.jars;
-		assert this.jars.isDirectory() : this.jars;
+		this.jarsDir = new java.io.File( this.suiteDir, "Alice3Module/release/modules/ext" );
+		assert this.jarsDir.exists() : this.jarsDir;
+		assert this.jarsDir.isDirectory() : this.jarsDir;
 
-		this.distribution = new java.io.File( this.suite, "Alice3Module/release/src/aliceSource.jar_root" );
+		this.distributionDir = new java.io.File( this.suiteDir, "Alice3Module/release/src/aliceSource.jar_root" );
 
-		this.projectTemplate = new java.io.File( repoRoot, "alice/netbeans/8/ProjectTemplate" );
-		assert this.projectTemplate.exists() : this.projectTemplate;
-		assert this.projectTemplate.isDirectory() : this.projectTemplate;
+		this.projectTemplateDir = new java.io.File( repoRoot, "alice/netbeans/8/ProjectTemplate" );
+		assert this.projectTemplateDir.exists() : this.projectTemplateDir;
+		assert this.projectTemplateDir.isDirectory() : this.projectTemplateDir;
 
-		this.dstManifestFile = new java.io.File( this.getSuite(), "Alice3Module/manifest.mf" );
-		this.dstLibraryXmlFile = new java.io.File( this.getSuite(), "Alice3Module/src/org/alice/netbeans/Alice3Library.xml" );
-		this.dstProjectXmlFile = new java.io.File( this.getSuite(), "Alice3Module/nbproject/project.xml" );
+		this.dstManifestFile = new java.io.File( this.getSuiteDir(), "Alice3Module/manifest.mf" );
+		this.dstLibraryXmlFile = new java.io.File( this.getSuiteDir(), "Alice3Module/src/org/alice/netbeans/Alice3Library.xml" );
+		this.dstProjectXmlFile = new java.io.File( this.getSuiteDir(), "Alice3Module/nbproject/project.xml" );
 
 		java.io.InputStream manifestInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/manifest.mf" );
 		assert manifestInputStream != null;
@@ -82,25 +82,25 @@ public class Plugin8 extends Plugin {
 		this.projectXmlText = PluginCommon.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( projectXmlInputStream ) );
 		assert this.projectXmlText != null;
 		assert this.projectXmlText.length() > 0;
-
-		this.jarPathsToCopyFromMaven = PluginCommon.getJarPathsToCopyFromMaven( config );
 	}
 
 	@Override
-	protected java.io.File getSuite() {
-		return this.suite;
+	protected java.io.File getSuiteDir() {
+		return this.suiteDir;
 	}
 
-	private java.io.File getJars() {
-		return this.jars;
+	@Override
+	protected java.io.File getJarsDir() {
+		return this.jarsDir;
 	}
 
-	private java.io.File getDistribution() {
-		return this.distribution;
+	@Override
+	protected java.io.File getDistributionDir() {
+		return this.distributionDir;
 	}
 
-	private java.io.File getProjectTemplate() {
-		return this.projectTemplate;
+	private java.io.File getProjectTemplateDir() {
+		return this.projectTemplateDir;
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class Plugin8 extends Plugin {
 
 	@Override
 	protected java.io.File getNbmFile() {
-		return new java.io.File( this.getSuite(), "build/updates/org-alice-netbeans.nbm" );
+		return new java.io.File( this.getSuiteDir(), "build/updates/org-alice-netbeans.nbm" );
 	}
 
 	public void prepareFiles() throws java.io.IOException {
@@ -126,75 +126,19 @@ public class Plugin8 extends Plugin {
 		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstProjectXmlFile, this.projectXmlText );
 		assert this.dstProjectXmlFile.exists() : this.dstProjectXmlFile;
 
-		java.io.File projectZip = new java.io.File( this.getSuite(), "Alice3Module/src/org/alice/netbeans/ProjectTemplate.zip" );
-		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( this.getProjectTemplate(), projectZip );
+		java.io.File projectZip = new java.io.File( this.getSuiteDir(), "Alice3Module/src/org/alice/netbeans/ProjectTemplate.zip" );
+		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( this.getProjectTemplateDir(), projectZip );
 		assert projectZip.exists() : projectZip;
 
 		java.io.File userPropertiesFile = NetBeans8Utils.getUserPropertiesFile();
-		java.io.File platformPrivatePropertiesFile = new java.io.File( this.getSuite(), "nbproject/private/platform-private.properties" );
+		java.io.File platformPrivatePropertiesFile = new java.io.File( this.getSuiteDir(), "nbproject/private/platform-private.properties" );
 		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( platformPrivatePropertiesFile, "user.properties.file=" + userPropertiesFile.getAbsolutePath().replaceAll( "\\\\", "\\\\\\\\" ) );
 	}
 
-	public void copyJars( BuildRepo buildRepo ) throws java.io.IOException {
-		ProjectCollection coreProjectCollection = new ProjectCollection
-				.Builder( "core" )
-						.addProjectNames(
-								"util",
-								"scenegraph",
-								"glrender",
-								"story-api",
-								"ast",
-								"story-api-migration"
-						).build();
-
-		for( String projectName : coreProjectCollection.getProjectNames() ) {
-			String filename = projectName + "-0.0.1-SNAPSHOT.jar";
-			java.io.File src = new java.io.File( buildRepo.getRoot(), coreProjectCollection.getDirName() + "/" + projectName + "/target/" + filename );
-			java.io.File dst = new java.io.File( this.getJars(), filename );
-			assert src.exists() : src;
-			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
-			assert dst.exists() : dst;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
-		}
-
-		for( String mavenRepoJarPath : this.jarPathsToCopyFromMaven ) {
-			java.io.File src = new java.io.File( MavenUtils.getMavenRepositoryDir(), mavenRepoJarPath );
-			java.io.File dst = new java.io.File( this.getJars(), src.getName() );
-			assert src.exists() : src;
-			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
-			assert dst.exists() : dst;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
-		}
-	}
-
-	public void copyDistribution( BuildRepo buildRepo ) throws java.io.IOException {
-		if( this.getDistribution().exists() ) {
-			org.apache.commons.io.FileUtils.deleteDirectory( this.getDistribution() );
-			assert this.getDistribution().exists() == false : this.getDistribution();
-		}
-
-		java.io.File distribSrc = buildRepo.getDistributionSource();
-		assert distribSrc.exists() : distribSrc;
-		assert distribSrc.isDirectory() : distribSrc;
-		edu.cmu.cs.dennisc.java.io.FileUtilities.copyDirectory( distribSrc, this.getDistribution(), new edu.cmu.cs.dennisc.pattern.Criterion<java.io.File>() {
-			@Override
-			public boolean accept( java.io.File file ) {
-				if( file.isDirectory() ) {
-					String directoryName = file.getName();
-					if( directoryName.equals( "application" ) || directoryName.equals( "ffmpeg" ) || directoryName.equals( "libvlc" ) ) {
-						return false;
-					}
-				}
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( file );
-				return true;
-			}
-		} );
-	}
-
-	private final java.io.File suite;
-	private final java.io.File jars;
-	private final java.io.File distribution;
-	private final java.io.File projectTemplate;
+	private final java.io.File suiteDir;
+	private final java.io.File jarsDir;
+	private final java.io.File distributionDir;
+	private final java.io.File projectTemplateDir;
 
 	private final String manifestText;
 	private final String libraryXmlText;
@@ -202,6 +146,4 @@ public class Plugin8 extends Plugin {
 	private final java.io.File dstManifestFile;
 	private final java.io.File dstLibraryXmlFile;
 	private final java.io.File dstProjectXmlFile;
-
-	private final java.util.List<String> jarPathsToCopyFromMaven;
 }
