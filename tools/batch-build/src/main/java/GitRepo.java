@@ -52,7 +52,8 @@ public abstract class GitRepo {
 		assert this.root.exists() : this.root;
 		assert this.root.isDirectory() : this.root;
 
-		this.plugin8 = new Plugin8( config, this.root );
+		this.plugin8 = new Plugin8( this.config, this.root );
+		this.plugin6 = new Plugin6( this.config, this.root );
 	}
 
 	public Config getConfig() {
@@ -63,6 +64,17 @@ public abstract class GitRepo {
 		return this.root;
 	}
 
+	public java.util.List<Plugin> getPlugins() {
+		java.util.List<Plugin> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		list.add( this.plugin8 );
+		//		if( this.config.getMode().isBareMinimum() ) {
+		//			//pass
+		//		} else {
+		//			list.add( this.plugin6 );
+		//		}
+		return java.util.Collections.unmodifiableList( list );
+	}
+
 	public Plugin8 getPlugin8() {
 		return this.plugin8;
 	}
@@ -70,4 +82,5 @@ public abstract class GitRepo {
 	private final Config config;
 	private final java.io.File root;
 	private final Plugin8 plugin8;
+	private final Plugin6 plugin6;
 }

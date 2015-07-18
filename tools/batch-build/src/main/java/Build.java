@@ -105,11 +105,13 @@ public class Build {
 		repo.getPlugin8().prepareFiles();
 		timer.mark( "prepareFiles" );
 
-		if( config.getMode().isDev() ) {
-			//pass
-		} else {
-			repo.getPlugin8().createNbm();
-			timer.mark( "nbm" );
+		for( Plugin plugin : repo.getPlugins() ) {
+			if( config.getMode().isDev() ) {
+				//pass
+			} else {
+				plugin.createNbm();
+				timer.mark( "nbm" );
+			}
 		}
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
@@ -119,12 +121,12 @@ public class Build {
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "JAVA_HOME", System.getenv( "JAVA_HOME" ) );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "JDK8_HOME", System.getenv( "JDK8_HOME" ) );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "MAVEN_HOME", System.getenv( "MAVEN_HOME" ) );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "ANT_HOME", System.getenv( "ANT_HOME" ) );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( config );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "assertions:", Build.class.desiredAssertionStatus() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "javaHomeDir:", JdkUtils.getJavaHomeDir() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "jdk8HomeDir:", JdkUtils.getJdk8HomeDir() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "mavenCommandFile:", MavenUtils.getMavenCommandFile() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "antCommand:", AntUtils.getAntCommandFile() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "done" );

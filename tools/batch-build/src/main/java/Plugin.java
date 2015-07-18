@@ -45,17 +45,78 @@
  * @author Dennis Cosgrove
  */
 public abstract class Plugin {
-	public Plugin( java.io.File repoRoot, int version ) {
-		//this.version = version;
+	public Plugin( Config config, java.io.File repoRoot, int version ) {
+		this.config = config;
+		this.version = version;
 		this.root = new java.io.File( repoRoot, "alice/netbeans/" + version );
 		assert this.root.exists() : this.root;
 		assert this.root.isDirectory() : this.root;
+	}
+
+	protected abstract java.io.File getSuite();
+
+	protected abstract java.io.File getJdkToUseForNbmAntCommand();
+
+	protected abstract java.io.File getNbmFile();
+
+	protected Config getConfig() {
+		return this.config;
 	}
 
 	protected java.io.File getRoot() {
 		return this.root;
 	}
 
-	//private final int version;
+	private void _ant( String arg, java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
+		java.util.List<String> command = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		command.add( AntUtils.getAntCommandFile().getAbsolutePath() );
+		if( arg != null ) {
+			command.add( arg );
+		}
+
+		ProcessBuilder processBuilder = new ProcessBuilder( command );
+		if( javaHomeDir != null ) {
+			java.util.Map<String, String> env = processBuilder.environment();
+			env.put( "JAVA_HOME", javaHomeDir.getAbsolutePath() );
+		}
+		processBuilder.directory( this.getSuite() );
+		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
+	}
+
+	private void antClean( java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
+		_ant( "clean", javaHomeDir );
+	}
+
+	private void antCompile( java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
+		_ant( null, javaHomeDir );
+	}
+
+	private void antNBM( java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
+		_ant( "nbms", javaHomeDir );
+	}
+
+	public void createNbm() throws java.io.IOException, InterruptedException {
+		java.io.File nbm = this.getNbmFile();
+
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( nbm );
+
+		java.io.File javaHomeDir = JdkUtils.getJdk8HomeDir();
+		antClean( javaHomeDir );
+		antCompile( javaHomeDir );
+		antNBM( javaHomeDir );
+
+		assert nbm.exists() : nbm;
+
+		java.io.File nbmVersion = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Alice3NetBeans" + this.version + "Plugin_" + org.lgna.project.ProjectVersion.getCurrentVersionText() + ".nbm" );
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( nbmVersion );
+
+		edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( nbm, nbmVersion );
+		assert nbmVersion.exists() : nbmVersion;
+
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nbmVersion );
+	}
+
+	private final Config config;
+	private final int version;
 	private final java.io.File root;
 }

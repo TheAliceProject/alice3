@@ -46,7 +46,7 @@
  */
 public class Plugin8 extends Plugin {
 	public Plugin8( Config config, java.io.File repoRoot ) {
-		super( repoRoot, 8 );
+		super( config, repoRoot, 8 );
 		this.suite = new java.io.File( repoRoot, "alice/netbeans/8/Alice3ModuleSuite" );
 		assert this.suite.exists() : this.suite;
 		assert this.suite.isDirectory() : this.suite;
@@ -86,20 +86,31 @@ public class Plugin8 extends Plugin {
 		this.jarPathsToCopyFromMaven = PluginCommon.getJarPathsToCopyFromMaven( config );
 	}
 
-	public java.io.File getSuite() {
+	@Override
+	protected java.io.File getSuite() {
 		return this.suite;
 	}
 
-	public java.io.File getJars() {
+	private java.io.File getJars() {
 		return this.jars;
 	}
 
-	public java.io.File getDistribution() {
+	private java.io.File getDistribution() {
 		return this.distribution;
 	}
 
-	public java.io.File getProjectTemplate() {
+	private java.io.File getProjectTemplate() {
 		return this.projectTemplate;
+	}
+
+	@Override
+	protected java.io.File getJdkToUseForNbmAntCommand() {
+		return JdkUtils.getJdk8HomeDir();
+	}
+
+	@Override
+	protected java.io.File getNbmFile() {
+		return new java.io.File( this.getSuite(), "build/updates/org-alice-netbeans.nbm" );
 	}
 
 	public void prepareFiles() throws java.io.IOException {
@@ -178,57 +189,6 @@ public class Plugin8 extends Plugin {
 				return true;
 			}
 		} );
-	}
-
-	private void _ant( String arg, java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
-		java.util.List<String> command = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		command.add( AntUtils.getAntCommandFile().getAbsolutePath() );
-		if( arg != null ) {
-			command.add( arg );
-		}
-
-		ProcessBuilder processBuilder = new ProcessBuilder( command );
-		if( javaHomeDir != null ) {
-			java.util.Map<String, String> env = processBuilder.environment();
-			env.put( "JAVA_HOME", javaHomeDir.getAbsolutePath() );
-		}
-		processBuilder.directory( this.getSuite() );
-
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( processBuilder.directory() );
-		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
-	}
-
-	private void antClean( java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
-		_ant( "clean", javaHomeDir );
-	}
-
-	private void antCompile( java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
-		_ant( null, javaHomeDir );
-	}
-
-	private void antNBM( java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
-		_ant( "nbms", javaHomeDir );
-	}
-
-	public void createNbm() throws java.io.IOException, InterruptedException {
-		java.io.File nbm = new java.io.File( this.getSuite(), "build/updates/org-alice-netbeans.nbm" );
-
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( nbm );
-
-		java.io.File javaHomeDir = JdkUtils.getJdk8HomeDir();
-		antClean( javaHomeDir );
-		antCompile( javaHomeDir );
-		antNBM( javaHomeDir );
-
-		assert nbm.exists() : nbm;
-
-		java.io.File nbmVersion = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Alice3NetBeans8Plugin_" + org.lgna.project.ProjectVersion.getCurrentVersionText() + ".nbm" );
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( nbmVersion );
-
-		edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( nbm, nbmVersion );
-		assert nbmVersion.exists() : nbmVersion;
-
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nbmVersion );
 	}
 
 	private final java.io.File suite;

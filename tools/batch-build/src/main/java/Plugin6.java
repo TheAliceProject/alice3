@@ -45,7 +45,22 @@
  * @author Dennis Cosgrove
  */
 public class Plugin6 extends Plugin {
-	public Plugin6( java.io.File repoRoot ) {
-		super( repoRoot, 6 );
+	public Plugin6( Config config, java.io.File repoRoot ) {
+		super( config, repoRoot, 6 );
+	}
+
+	@Override
+	protected java.io.File getSuite() {
+		throw new RuntimeException( "todo" );
+	}
+
+	@Override
+	protected java.io.File getJdkToUseForNbmAntCommand() {
+		return null;
+	}
+
+	@Override
+	protected java.io.File getNbmFile() {
+		throw new RuntimeException( "todo" );
 	}
 }
