@@ -51,12 +51,6 @@ public class Plugin8 extends Plugin {
 		assert this.suiteDir.exists() : this.suiteDir;
 		assert this.suiteDir.isDirectory() : this.suiteDir;
 
-		this.jarsDir = new java.io.File( this.suiteDir, "Alice3Module/release/modules/ext" );
-		assert this.jarsDir.exists() : this.jarsDir;
-		assert this.jarsDir.isDirectory() : this.jarsDir;
-
-		this.distributionDir = new java.io.File( this.suiteDir, "Alice3Module/release/src/aliceSource.jar_root" );
-
 		this.projectTemplateDir = new java.io.File( repoRoot, "alice/netbeans/8/ProjectTemplate" );
 		assert this.projectTemplateDir.exists() : this.projectTemplateDir;
 		assert this.projectTemplateDir.isDirectory() : this.projectTemplateDir;
@@ -91,12 +85,12 @@ public class Plugin8 extends Plugin {
 
 	@Override
 	protected java.io.File getJarsDir() {
-		return this.jarsDir;
+		return new java.io.File( this.suiteDir, "Alice3Module/release/modules/ext" );
 	}
 
 	@Override
 	protected java.io.File getDistributionDir() {
-		return this.distributionDir;
+		return new java.io.File( this.suiteDir, "Alice3Module/release/src/aliceSource.jar_root" );
 	}
 
 	@Override
@@ -147,8 +141,6 @@ public class Plugin8 extends Plugin {
 	}
 
 	private final java.io.File suiteDir;
-	private final java.io.File jarsDir;
-	private final java.io.File distributionDir;
 	private final java.io.File projectTemplateDir;
 
 	private final String manifestText;

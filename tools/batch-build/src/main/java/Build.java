@@ -50,7 +50,7 @@ public class Build {
 		if( args.length > 0 ) {
 			mode = Mode.valueOf( args[ 0 ] );
 		} else {
-			mode = Mode.BUILD;
+			mode = Mode.DEV;
 		}
 
 		Config config = new Config.Builder()
