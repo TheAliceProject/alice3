@@ -47,35 +47,21 @@
 public class Plugin8 extends Plugin {
 	public Plugin8( Config config, java.io.File repoRoot ) {
 		super( config, repoRoot, 8 );
-		this.suiteDir = new java.io.File( repoRoot, "alice/netbeans/8/Alice3ModuleSuite" );
+		this.suiteDir = new java.io.File( this.getRoot(), "Alice3ModuleSuite" );
 		assert this.suiteDir.exists() : this.suiteDir;
 		assert this.suiteDir.isDirectory() : this.suiteDir;
 
-		this.projectTemplateDir = new java.io.File( repoRoot, "alice/netbeans/8/ProjectTemplate" );
+		this.wizardDir = new java.io.File( this.suiteDir, "Alice3Module" );
+		assert this.wizardDir.exists() : this.wizardDir;
+		assert this.wizardDir.isDirectory() : this.wizardDir;
+
+		this.projectTemplateDir = new java.io.File( this.getRoot(), "ProjectTemplate" );
 		assert this.projectTemplateDir.exists() : this.projectTemplateDir;
 		assert this.projectTemplateDir.isDirectory() : this.projectTemplateDir;
 
-		this.dstManifestFile = new java.io.File( this.getSuiteDir(), "Alice3Module/manifest.mf" );
-		this.dstLibraryXmlFile = new java.io.File( this.getSuiteDir(), "Alice3Module/src/org/alice/netbeans/Alice3Library.xml" );
-		this.dstProjectXmlFile = new java.io.File( this.getSuiteDir(), "Alice3Module/nbproject/project.xml" );
-
-		java.io.InputStream manifestInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/manifest.mf" );
-		assert manifestInputStream != null;
-		this.manifestText = PluginCommon.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( manifestInputStream ) );
-		assert this.manifestText != null;
-		assert this.manifestText.length() > 0;
-
-		java.io.InputStream libraryXmlInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/Alice3Library.xml" );
-		assert libraryXmlInputStream != null;
-		this.libraryXmlText = PluginCommon.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( libraryXmlInputStream ) );
-		assert this.libraryXmlText != null;
-		assert this.libraryXmlText.length() > 0;
-
-		java.io.InputStream projectXmlInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/project.xml" );
-		assert projectXmlInputStream != null;
-		this.projectXmlText = PluginCommon.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( projectXmlInputStream ) );
-		assert this.projectXmlText != null;
-		assert this.projectXmlText.length() > 0;
+		this.dstManifestFile = new java.io.File( this.wizardDir, "manifest.mf" );
+		this.dstLibraryXmlFile = new java.io.File( this.wizardDir, "src/org/alice/netbeans/Alice3Library.xml" );
+		this.dstProjectXmlFile = new java.io.File( this.wizardDir, "nbproject/project.xml" );
 	}
 
 	@Override
@@ -84,27 +70,8 @@ public class Plugin8 extends Plugin {
 	}
 
 	@Override
-	protected java.io.File getJarsDir() {
-		return new java.io.File( this.suiteDir, "Alice3Module/release/modules/ext" );
-	}
-
-	@Override
-	protected java.io.File getDistributionDir() {
-		return new java.io.File( this.suiteDir, "Alice3Module/release/src/aliceSource.jar_root" );
-	}
-
-	@Override
-	protected java.io.File getJavaDocZipFile() {
-		return new java.io.File( this.getSuiteDir(), "Alice3Module/release/doc/aliceDocs.zip" );
-	}
-
-	@Override
-	protected java.io.File getSrcZipFile() {
-		return new java.io.File( this.getSuiteDir(), "Alice3Module/release/src/aliceSource.jar" );
-	}
-
-	private java.io.File getProjectTemplateDir() {
-		return this.projectTemplateDir;
+	protected java.io.File getWizardDir() {
+		return this.wizardDir;
 	}
 
 	@Override
@@ -114,25 +81,25 @@ public class Plugin8 extends Plugin {
 
 	@Override
 	protected java.io.File getNbmFile() {
-		return new java.io.File( this.getSuiteDir(), "build/updates/org-alice-netbeans.nbm" );
+		return new java.io.File( this.suiteDir, "build/updates/org-alice-netbeans.nbm" );
 	}
 
 	@Override
 	public void prepareFiles() throws java.io.IOException {
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstManifestFile );
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstManifestFile, this.manifestText );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstManifestFile, this.getManifestText() );
 		assert this.dstManifestFile.exists() : this.dstManifestFile;
 
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstLibraryXmlFile );
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstLibraryXmlFile, this.libraryXmlText );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstLibraryXmlFile, this.getLibraryXmlText() );
 		assert this.dstLibraryXmlFile.exists() : this.dstLibraryXmlFile;
 
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstProjectXmlFile );
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstProjectXmlFile, this.projectXmlText );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstProjectXmlFile, this.getProjectXmlText() );
 		assert this.dstProjectXmlFile.exists() : this.dstProjectXmlFile;
 
-		java.io.File projectZip = new java.io.File( this.getSuiteDir(), "Alice3Module/src/org/alice/netbeans/ProjectTemplate.zip" );
-		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( this.getProjectTemplateDir(), projectZip );
+		java.io.File projectZip = new java.io.File( this.wizardDir, "src/org/alice/netbeans/ProjectTemplate.zip" );
+		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( this.projectTemplateDir, projectZip );
 		assert projectZip.exists() : projectZip;
 
 		java.io.File userPropertiesFile = NetBeans8Utils.getUserPropertiesFile();
@@ -141,11 +108,9 @@ public class Plugin8 extends Plugin {
 	}
 
 	private final java.io.File suiteDir;
+	private final java.io.File wizardDir;
 	private final java.io.File projectTemplateDir;
 
-	private final String manifestText;
-	private final String libraryXmlText;
-	private final String projectXmlText;
 	private final java.io.File dstManifestFile;
 	private final java.io.File dstLibraryXmlFile;
 	private final java.io.File dstProjectXmlFile;

@@ -47,45 +47,70 @@
 public class Plugin6 extends Plugin {
 	public Plugin6( Config config, java.io.File repoRoot ) {
 		super( config, repoRoot, 6 );
+		this.suiteDir = new java.io.File( this.getRoot(), "Alice3PluginSuite" );
+		assert this.suiteDir.exists() : this.suiteDir;
+		assert this.suiteDir.isDirectory() : this.suiteDir;
+
+		this.wizardDir = new java.io.File( this.getRoot(), "AliceProjectWizard" );
+		assert this.wizardDir.exists() : this.wizardDir;
+		assert this.wizardDir.isDirectory() : this.wizardDir;
+
+		this.projectTemplateDir = new java.io.File( this.getRoot(), "ProjectTemplate" );
+		assert this.projectTemplateDir.exists() : this.projectTemplateDir;
+		assert this.projectTemplateDir.isDirectory() : this.projectTemplateDir;
+
+		this.dstManifestFile = new java.io.File( this.wizardDir, "manifest.mf" );
+		this.dstLibraryXmlFile = new java.io.File( this.wizardDir, "src/org/alice/netbeans/aliceprojectwizard/Alice3Library.xml" );
+		this.dstProjectXmlFile = new java.io.File( this.wizardDir, "nbproject/project.xml" );
 	}
 
 	@Override
 	protected java.io.File getSuiteDir() {
-		throw new RuntimeException( "todo" );
+		return this.suiteDir;
 	}
 
 	@Override
-	protected java.io.File getJarsDir() {
-		throw new RuntimeException( "todo" );
-	}
-
-	@Override
-	protected java.io.File getDistributionDir() {
-		throw new RuntimeException( "todo" );
-	}
-
-	@Override
-	protected java.io.File getJavaDocZipFile() {
-		throw new RuntimeException( "todo" );
-	}
-
-	@Override
-	protected java.io.File getSrcZipFile() {
-		throw new RuntimeException( "todo" );
+	protected java.io.File getWizardDir() {
+		return this.wizardDir;
 	}
 
 	@Override
 	protected java.io.File getJdkToUseForNbmAntCommand() {
-		return null;
+		return this.projectTemplateDir;
 	}
 
 	@Override
 	protected java.io.File getNbmFile() {
-		throw new RuntimeException( "todo" );
+		return new java.io.File( this.suiteDir, "build/updates/org-alice-netbeans-aliceprojectwizard.nbm" );
 	}
 
 	@Override
 	public void prepareFiles() throws java.io.IOException {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstManifestFile );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstManifestFile, this.getManifestText() );
+		assert this.dstManifestFile.exists() : this.dstManifestFile;
+
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstLibraryXmlFile );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstLibraryXmlFile, this.getLibraryXmlText() );
+		assert this.dstLibraryXmlFile.exists() : this.dstLibraryXmlFile;
+
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstProjectXmlFile );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstProjectXmlFile, this.getProjectXmlText() );
+		assert this.dstProjectXmlFile.exists() : this.dstProjectXmlFile;
+
+		java.io.File projectZip = new java.io.File( this.getWizardDir(), "src/org/alice/netbeans/aliceprojectwizard/AliceProjectTemplateProject.zip" );
+		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( this.projectTemplateDir, projectZip );
+		assert projectZip.exists() : projectZip;
+		//
+		//		java.io.File userPropertiesFile = NetBeans8Utils.getUserPropertiesFile();
+		//		java.io.File platformPrivatePropertiesFile = new java.io.File( this.getSuiteDir(), "nbproject/private/platform-private.properties" );
+		//		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( platformPrivatePropertiesFile, "user.properties.file=" + userPropertiesFile.getAbsolutePath().replaceAll( "\\\\", "\\\\\\\\" ) );
 	}
+
+	private final java.io.File suiteDir;
+	private final java.io.File wizardDir;
+	private final java.io.File projectTemplateDir;
+	private final java.io.File dstManifestFile;
+	private final java.io.File dstLibraryXmlFile;
+	private final java.io.File dstProjectXmlFile;
 }

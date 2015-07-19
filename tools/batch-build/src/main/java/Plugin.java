@@ -51,17 +51,49 @@ public abstract class Plugin {
 		this.root = new java.io.File( repoRoot, "alice/netbeans/" + version );
 		assert this.root.exists() : this.root;
 		assert this.root.isDirectory() : this.root;
+
+		java.io.InputStream manifestInputStream = Build.class.getResourceAsStream( "NetBeans" + this.version + "Plugin/manifest.mf" );
+		assert manifestInputStream != null;
+		this.manifestText = PluginCommon.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( manifestInputStream ) );
+		assert this.manifestText != null;
+		assert this.manifestText.length() > 0;
+
+		java.io.InputStream libraryXmlInputStream = Build.class.getResourceAsStream( "NetBeans" + this.version + "Plugin/Alice3Library.xml" );
+		assert libraryXmlInputStream != null;
+		this.libraryXmlText = PluginCommon.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( libraryXmlInputStream ) );
+		assert this.libraryXmlText != null;
+		assert this.libraryXmlText.length() > 0;
+
+		java.io.InputStream projectXmlInputStream = Build.class.getResourceAsStream( "NetBeans" + this.version + "Plugin/project.xml" );
+		assert projectXmlInputStream != null;
+		this.projectXmlText = PluginCommon.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( projectXmlInputStream ) );
+		assert this.projectXmlText != null;
+		assert this.projectXmlText.length() > 0;
 	}
 
 	protected abstract java.io.File getSuiteDir();
 
-	protected abstract java.io.File getJarsDir();
+	protected abstract java.io.File getWizardDir();
 
-	protected abstract java.io.File getDistributionDir();
+	private java.io.File getWizardReleaseDir() {
+		return new java.io.File( this.getWizardDir(), "release" );
+	}
 
-	protected abstract java.io.File getSrcZipFile();
+	protected final java.io.File getJarsDir() {
+		return new java.io.File( this.getWizardReleaseDir(), "modules/ext" );
+	}
 
-	protected abstract java.io.File getJavaDocZipFile();
+	protected final java.io.File getDistributionDir() {
+		return new java.io.File( this.getWizardReleaseDir(), "src/aliceSource.jar_root" );
+	}
+
+	protected final java.io.File getJavaDocZipFile() {
+		return new java.io.File( this.getWizardReleaseDir(), "doc/aliceDocs.zip" );
+	}
+
+	protected final java.io.File getSrcZipFile() {
+		return new java.io.File( this.getWizardReleaseDir(), "src/aliceSource.jar" );
+	}
 
 	protected abstract java.io.File getJdkToUseForNbmAntCommand();
 
@@ -73,6 +105,18 @@ public abstract class Plugin {
 
 	protected java.io.File getRoot() {
 		return this.root;
+	}
+
+	protected String getManifestText() {
+		return this.manifestText;
+	}
+
+	protected String getLibraryXmlText() {
+		return this.libraryXmlText;
+	}
+
+	protected String getProjectXmlText() {
+		return this.projectXmlText;
 	}
 
 	public void copyJars( BuildRepo buildRepo ) throws java.io.IOException {
@@ -206,4 +250,7 @@ public abstract class Plugin {
 	private final Config config;
 	private final int version;
 	private final java.io.File root;
+	private final String manifestText;
+	private final String libraryXmlText;
+	private final String projectXmlText;
 }
