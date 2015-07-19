@@ -40,83 +40,87 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.lang;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class DrainInputStreamThread extends Thread {
-	static interface LineAppender {
-		void appendLine( String line );
+public class Config {
+	public static class Builder {
+		public Builder isDevMode( boolean isDevMode ) {
+			this.isDevMode = isDevMode;
+			return this;
+		}
+
+		public Builder joglVersion( String joglVersion ) {
+			this.joglVersion = joglVersion;
+			return this;
+		}
+
+		public Builder aliceModelSourceVersion( String aliceModelSourceVersion ) {
+			this.aliceModelSourceVersion = aliceModelSourceVersion;
+			return this;
+		}
+
+		public Builder nebulousModelSourceVersion( String nebulousModelSourceVersion ) {
+			this.nebulousModelSourceVersion = nebulousModelSourceVersion;
+			return this;
+		}
+
+		public Builder netBeans8Version( String netBeans8Version ) {
+			this.netBeans8Version = netBeans8Version;
+			return this;
+		}
+
+		public Config build() {
+			return new Config( this );
+		}
+
+		private boolean isDevMode;
+		private String joglVersion;
+		private String aliceModelSourceVersion;
+		private String nebulousModelSourceVersion;
+		private String netBeans8Version;
 	}
 
-	static class PrintStreamLineAppender implements LineAppender {
-		private final java.io.PrintWriter pw;
+	private Config( Builder builder ) {
+		this.isDevMode = builder.isDevMode;
 
-		public PrintStreamLineAppender( java.io.PrintStream ps ) {
-			this.pw = ps != null ? new java.io.PrintWriter( ps ) : null;
-		}
+		assert builder.joglVersion != null : builder;
+		this.joglVersion = builder.joglVersion;
 
-		@Override
-		public void appendLine( String line ) {
-			if( this.pw != null ) {
-				this.pw.append( line );
-				this.pw.append( '\n' );
-				this.pw.flush();
-			}
-		}
+		assert builder.aliceModelSourceVersion != null : builder;
+		this.aliceModelSourceVersion = builder.aliceModelSourceVersion;
+
+		assert builder.nebulousModelSourceVersion != null : builder;
+		this.nebulousModelSourceVersion = builder.nebulousModelSourceVersion;
+
+		assert builder.netBeans8Version != null : builder;
+		this.netBeans8Version = builder.netBeans8Version;
 	}
 
-	static class StringListLineAppender implements LineAppender {
-		private final java.util.List<String> list;
-
-		public StringListLineAppender( java.util.List<String> list ) {
-			this.list = list;
-		}
-
-		@Override
-		public void appendLine( String line ) {
-			this.list.add( line );
-		}
+	public boolean isDevMode() {
+		return this.isDevMode;
 	}
 
-	private final java.io.InputStream is;
-	private final LineAppender lineAppender;
-	private final java.util.concurrent.CyclicBarrier barrier;
-
-	public DrainInputStreamThread( java.io.InputStream is, LineAppender lineAppender, java.util.concurrent.CyclicBarrier barrier ) {
-		this.is = is;
-		this.lineAppender = lineAppender;
-		this.barrier = barrier;
+	public String getJoglVersion() {
+		return this.joglVersion;
 	}
 
-	@Override
-	public void run() {
-		java.io.InputStreamReader isr = new java.io.InputStreamReader( this.is );
-		java.io.BufferedReader br = new java.io.BufferedReader( isr );
-		//java.io.PrintWriter pw = this.ps != null ? new java.io.PrintWriter( this.ps ) : null;
-		while( true ) {
-			try {
-				String line = br.readLine();
-				if( line != null ) {
-					if( this.lineAppender != null ) {
-						this.lineAppender.appendLine( line );
-					}
-				} else {
-					break;
-				}
-			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( ioe );
-			}
-		}
-		if( barrier != null ) {
-			try {
-				barrier.await();
-			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-				throw new RuntimeException( bbe );
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			}
-		}
+	public String getAliceModelSourceVersion() {
+		return this.aliceModelSourceVersion;
 	}
+
+	public String getNebulousModelSourceVersion() {
+		return this.nebulousModelSourceVersion;
+	}
+
+	public String getNetBeans8Version() {
+		return this.netBeans8Version;
+	}
+
+	private final boolean isDevMode;
+	private final String joglVersion;
+	private final String aliceModelSourceVersion;
+	private final String nebulousModelSourceVersion;
+	private final String netBeans8Version;
 }

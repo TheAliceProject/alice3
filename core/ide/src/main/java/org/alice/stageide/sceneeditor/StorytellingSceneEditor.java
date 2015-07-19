@@ -118,7 +118,7 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author dculyba
- * 
+ *
  */
 public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.cmu.cs.dennisc.render.event.RenderTargetListener {
 
@@ -1081,6 +1081,90 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 		//Set the camera back to its original position
 		this.sceneCameraImp.setLocalTransformation( currentCameraTransformable );
+	}
+
+	private org.lgna.project.ast.Statement replaceReferencesInExpression( org.lgna.project.ast.UserField fieldToReplace, org.lgna.project.ast.UserField replacement, org.lgna.project.ast.Statement statement ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.FieldAccess> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.FieldAccess.class );
+		statement.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, null );
+
+		java.util.Map<org.lgna.project.ast.AbstractField, org.lgna.project.ast.AbstractField> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+		for( org.lgna.project.ast.FieldAccess fieldAccess : crawler.getList() ) {
+			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+			if( field == fieldToReplace ) {
+				fieldAccess.field.setValue( replacement );
+			}
+		}
+		return statement;
+	}
+
+	@Override
+	public org.lgna.project.ast.Statement[] getDoStatementsForCopyField( org.lgna.project.ast.UserField fieldToCopy, org.lgna.project.ast.UserField newField, AffineMatrix4x4 initialTransform ) {
+		org.lgna.project.ast.Statement stateCodeStatement = this.getCurrentStateCodeForField( fieldToCopy );
+		stateCodeStatement = replaceReferencesInExpression( fieldToCopy, newField, stateCodeStatement );
+
+		//Remove the setVehicle and setTransform statements from the setup code so we can replace them with custom ones based on the fieldToCopy's vehicle and the initial transform
+		List<org.lgna.project.ast.BlockStatement> blockStatements = new LinkedList<org.lgna.project.ast.BlockStatement>();
+		if( stateCodeStatement instanceof org.lgna.project.ast.BlockStatement ) {
+			blockStatements.add( (org.lgna.project.ast.BlockStatement)stateCodeStatement );
+		}
+		else if( stateCodeStatement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+			blockStatements.add( ( (org.lgna.project.ast.AbstractStatementWithBody)stateCodeStatement ).body.getValue() );
+		}
+		while( !blockStatements.isEmpty() ) {
+			org.lgna.project.ast.BlockStatement bs = blockStatements.remove( 0 );
+			Statement setVehicleStatement = null;
+			Statement setPositionStatement = null;
+			Statement setOrientationStatement = null;
+			for( Statement s : bs.statements.getValue() ) {
+				if( s instanceof org.lgna.project.ast.BlockStatement ) {
+					blockStatements.add( (org.lgna.project.ast.BlockStatement)s );
+				}
+				else if( s instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
+					blockStatements.add( ( (org.lgna.project.ast.AbstractStatementWithBody)s ).body.getValue() );
+				}
+				else if( s instanceof org.lgna.project.ast.ExpressionStatement ) {
+					org.lgna.project.ast.Expression expression = ( (org.lgna.project.ast.ExpressionStatement)s ).expression.getValue();
+					if( expression instanceof MethodInvocation ) {
+						MethodInvocation mi = (MethodInvocation)expression;
+						org.lgna.project.ast.Method method = mi.method.getValue();
+						//Look for the setVehicle, setOrientation, and setPositions for the field. Note that we need to make sure these calls are being called on the field and not the joints, hence the check for FieldAccess (joints are called off of getJoint and resolve as a MethodInvocation)
+						if( method.getName().equalsIgnoreCase( "setVehicle" ) && ( mi.expression.getValue() instanceof org.lgna.project.ast.FieldAccess ) ) {
+							setVehicleStatement = s;
+						}
+						else if( method.getName().equalsIgnoreCase( "setOrientationRelativeToVehicle" ) && ( mi.expression.getValue() instanceof org.lgna.project.ast.FieldAccess ) ) {
+							setOrientationStatement = s;
+						}
+						else if( method.getName().equalsIgnoreCase( "setPositionRelativeToVehicle" ) && ( mi.expression.getValue() instanceof org.lgna.project.ast.FieldAccess ) ) {
+							setPositionStatement = s;
+						}
+					}
+				}
+			}
+			if( setVehicleStatement != null ) {
+				bs.statements.getValue().remove( setVehicleStatement );
+			}
+			if( setPositionStatement != null ) {
+				bs.statements.getValue().remove( setPositionStatement );
+			}
+			if( setOrientationStatement != null ) {
+				bs.statements.getValue().remove( setOrientationStatement );
+			}
+		}
+
+		Object toCopyInstance = this.getInstanceInJavaVMForField( fieldToCopy );
+		org.lgna.project.ast.AbstractField toCopyVehicleField = null;
+		if( toCopyInstance instanceof org.lgna.story.Rider )
+		{
+			SThing vehicleInstance = ( (org.lgna.story.Rider)toCopyInstance ).getVehicle();
+			toCopyVehicleField = this.getFieldForInstanceInJavaVM( vehicleInstance );
+		}
+		org.lgna.project.ast.Statement[] initializeStatements = SetUpMethodGenerator.getSetupStatementsForField( false, newField, this.getActiveSceneInstance(), toCopyVehicleField, initialTransform );
+		org.lgna.project.ast.Statement[] statementsToReturn = new org.lgna.project.ast.Statement[ initializeStatements.length + 1 ];
+		for( int i = 0; i < initializeStatements.length; i++ ) {
+			statementsToReturn[ i ] = initializeStatements[ i ];
+		}
+		statementsToReturn[ initializeStatements.length ] = stateCodeStatement;
+		return statementsToReturn;
 	}
 
 	@Override

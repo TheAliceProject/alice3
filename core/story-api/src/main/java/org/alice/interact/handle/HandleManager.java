@@ -85,7 +85,7 @@ public class HandleManager implements ManipulationListener {
 
 	}
 
-	private void updateHandlesBasedOnHandleSet() {
+	private void updateHandleVisibilityBasedOnHandleSet() {
 		for( ManipulationHandle handle : this.handles ) {
 			if( !handle.isAlwaysVisible() ) {
 				if( handle.isMemberOf( this.getCurrentHandleSet() ) ) {
@@ -104,14 +104,14 @@ public class HandleManager implements ManipulationListener {
 			}
 			this.handleSetStack.push( handleSet );
 		}
-		this.updateHandlesBasedOnHandleSet();
+		this.updateHandleVisibilityBasedOnHandleSet();
 	}
 
 	public void pushNewHandleSet( HandleSet handleSet ) {
 		synchronized( this.handleSetStack ) {
 			this.handleSetStack.push( handleSet );
 		}
-		this.updateHandlesBasedOnHandleSet();
+		this.updateHandleVisibilityBasedOnHandleSet();
 	}
 
 	public HandleSet popHandleSet() {
@@ -122,7 +122,7 @@ public class HandleManager implements ManipulationListener {
 				return null;
 			} else {
 				HandleSet popped = this.handleSetStack.pop();
-				this.updateHandlesBasedOnHandleSet();
+				this.updateHandleVisibilityBasedOnHandleSet();
 				return popped;
 			}
 		}
@@ -186,6 +186,9 @@ public class HandleManager implements ManipulationListener {
 				handle.setSelectedObject( null );
 			}
 		}
+
+		//Force a visibility update on the handles so that handles that might be invisible due to no selected object can be made visible
+		updateHandleVisibilityBasedOnHandleSet();
 	}
 
 	public static boolean isSelectable( AbstractTransformable object ) {

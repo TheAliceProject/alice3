@@ -354,7 +354,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 			Point3 initialClickPoint = this.getInitialClickPoint( startInput );
 
 			this.offsetFromOrigin = Point3.createSubtraction( initialClickPoint, this.originalPosition );
-			this.mousePlaneOffset = calculateMousePlaneOffset( startInput.getMouseLocation() );
+			this.mousePlaneOffset = calculateMousePlaneOffset( startInput.getMouseLocation(), this.manipulatedTransformable );
 
 			//We don't need special planes for the orthographic camera
 			if( !( this.getCamera() instanceof OrthographicCamera ) ) {
@@ -451,8 +451,8 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		this.backPlane = backPlane;
 	}
 
-	private Point calculateMousePlaneOffset( Point mousePosition ) {
-		Point3 pointInCamera = this.manipulatedTransformable.getTranslation( this.getCamera() );
+	protected Point calculateMousePlaneOffset( Point mousePosition, edu.cmu.cs.dennisc.scenegraph.AbstractTransformable transformable ) {
+		Point3 pointInCamera = transformable.getTranslation( this.getCamera() );
 		Point awtPoint = edu.cmu.cs.dennisc.render.PicturePlaneUtils.transformFromCameraToAWT_New( pointInCamera, this.onscreenRenderTarget, this.getCamera() );
 		return new Point( awtPoint.x - mousePosition.x, awtPoint.y - mousePosition.y );
 	}

@@ -398,15 +398,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	}
 
 	protected void updateVisibleState( HandleRenderState renderState ) {
-		if( this.getParentTransformable() == null ) {
-			//			PrintUtilities.println("Early exit: animator = "+this.animator+", manipulated object = "+this.manipulatedObject);
-			return;
-		}
-
 		double targetOpacity = this.isRenderable() ? this.getDesiredOpacity( renderState ) : 0.0;
-		//		PrintUtilities.println(this.getClass().getSimpleName()+":"+this.hashCode()+" target opacity: "+targetOpacity+", isRenderable? "+this.isRenderable()+", desiredOpacity = "+this.getDesiredOpacity(renderState)+" is showing? "+this.sgVisual.isShowing.getValue());
 		this.setOpacity( (float)targetOpacity );
-
 		Color4f targetColor = this.getDesiredColor( renderState );
 		this.setColor( targetColor );
 	}
