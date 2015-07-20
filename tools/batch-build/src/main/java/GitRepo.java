@@ -70,7 +70,7 @@ public abstract class GitRepo {
 		if( this.config.getMode().isBareMinimum() ) {
 			//pass
 		} else {
-			//list.add( this.plugin6 );
+			list.add( this.plugin6 );
 		}
 		return java.util.Collections.unmodifiableList( list );
 	}
