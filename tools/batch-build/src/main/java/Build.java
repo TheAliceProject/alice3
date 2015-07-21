@@ -55,16 +55,21 @@ public class Build {
 
 		Config config = new Config.Builder()
 				.mode( mode )
+
 				.joglVersion( "2.2.4" )
 				.aliceModelSourceVersion( "2014.08.20" )
 				.nebulousModelSourceVersion( "2014.09.11" )
+
+				//getUserProperties6File is expected to be in 6.9 even for 6.9.1
+				.netBeans6Version( "6.9" )
 				.netBeans8Version( "8.0.2" )
+
 				.build();
 
 		JdkUtils.initialize();
 		MavenUtils.initialize();
 		AntUtils.initialize();
-		NetBeans8Utils.initialize( config.getNetBeans8Version() );
+		NetBeansUtils.initialize( config );
 
 		BuildRepo buildRepo = new BuildRepo( config );
 		GitRepo repo;
@@ -117,6 +122,10 @@ public class Build {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "assertions:", Build.class.desiredAssertionStatus() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "javaHomeDir:", JdkUtils.getJavaHomeDir() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "jdk8HomeDir:", JdkUtils.getJdk8HomeDir() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "jdk8HomeDir:", JdkUtils.getJdk8HomeDir() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "netbeansUserProperties6:", NetBeansUtils.getUserProperties6File() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "netbeansUserProperties8:", NetBeansUtils.getUserProperties8File() );
+
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "mavenCommandFile:", MavenUtils.getMavenCommandFile() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "antCommand:", AntUtils.getAntCommandFile() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();

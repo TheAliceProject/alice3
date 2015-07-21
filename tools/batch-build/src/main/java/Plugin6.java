@@ -101,10 +101,10 @@ public class Plugin6 extends Plugin {
 		java.io.File projectZip = new java.io.File( this.getWizardDir(), "src/org/alice/netbeans/aliceprojectwizard/AliceProjectTemplateProject.zip" );
 		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( this.projectTemplateDir, projectZip );
 		assert projectZip.exists() : projectZip;
-		//
-		//		java.io.File userPropertiesFile = NetBeans8Utils.getUserPropertiesFile();
-		//		java.io.File platformPrivatePropertiesFile = new java.io.File( this.getSuiteDir(), "nbproject/private/platform-private.properties" );
-		//		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( platformPrivatePropertiesFile, "user.properties.file=" + userPropertiesFile.getAbsolutePath().replaceAll( "\\\\", "\\\\\\\\" ) );
+
+		java.io.File userPropertiesFile = NetBeansUtils.getUserPropertiesFile( 6 );
+		java.io.File platformPrivatePropertiesFile = new java.io.File( this.getSuiteDir(), "nbproject/private/platform-private.properties" );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( platformPrivatePropertiesFile, "user.properties.file=" + userPropertiesFile.getAbsolutePath().replaceAll( "\\\\", "\\\\\\\\" ) );
 	}
 
 	private final java.io.File suiteDir;

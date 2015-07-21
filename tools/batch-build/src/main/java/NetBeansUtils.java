@@ -44,21 +44,42 @@
 /**
  * @author Dennis Cosgrove
  */
-public class NetBeans8Utils {
-	private static java.io.File userPropertiesFile;
+public class NetBeansUtils {
+	private static java.io.File userProperties6File;
+	private static java.io.File userProperties8File;
 
-	public static void initialize( String versionText ) {
-		assert userPropertiesFile == null : userPropertiesFile;
-		userPropertiesFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), "AppData/Roaming/NetBeans/" + versionText + "/build.properties" );
-		assert userPropertiesFile.exists() : userPropertiesFile;
+	public static void initialize( Config config ) {
+		assert userProperties6File == null : userProperties6File;
+		userProperties6File = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".netbeans/" + config.getNetBeans6Version() + "/build.properties" );
+		assert userProperties6File.exists() : userProperties6File;
+
+		assert userProperties8File == null : userProperties8File;
+		userProperties8File = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), "AppData/Roaming/NetBeans/" + config.getNetBeans8Version() + "/build.properties" );
+		assert userProperties8File.exists() : userProperties8File;
 	}
 
-	public static java.io.File getUserPropertiesFile() {
-		assert userPropertiesFile != null : "not initialized";
-		return userPropertiesFile;
+	public static java.io.File getUserProperties6File() {
+		assert userProperties6File != null : "not initialized";
+		return userProperties6File;
 	}
 
-	private NetBeans8Utils() {
+	public static java.io.File getUserProperties8File() {
+		assert userProperties8File != null : "not initialized";
+		return userProperties8File;
+	}
+
+	public static java.io.File getUserPropertiesFile( int version ) {
+		switch( version ) {
+		case 6:
+			return getUserProperties6File();
+		case 8:
+			return getUserProperties8File();
+		default:
+			throw new IllegalArgumentException( Integer.toString( version ) );
+		}
+	}
+
+	private NetBeansUtils() {
 		throw new AssertionError();
 	}
 }

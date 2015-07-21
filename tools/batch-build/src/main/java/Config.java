@@ -66,6 +66,11 @@ public class Config {
 			return this;
 		}
 
+		public Builder netBeans6Version( String netBeans6Version ) {
+			this.netBeans6Version = netBeans6Version;
+			return this;
+		}
+
 		public Builder netBeans8Version( String netBeans8Version ) {
 			this.netBeans8Version = netBeans8Version;
 			return this;
@@ -79,6 +84,7 @@ public class Config {
 		private String joglVersion;
 		private String aliceModelSourceVersion;
 		private String nebulousModelSourceVersion;
+		private String netBeans6Version;
 		private String netBeans8Version;
 	}
 
@@ -94,6 +100,9 @@ public class Config {
 
 		assert builder.nebulousModelSourceVersion != null : builder;
 		this.nebulousModelSourceVersion = builder.nebulousModelSourceVersion;
+
+		assert builder.netBeans6Version != null : builder;
+		this.netBeans6Version = builder.netBeans6Version;
 
 		assert builder.netBeans8Version != null : builder;
 		this.netBeans8Version = builder.netBeans8Version;
@@ -115,6 +124,10 @@ public class Config {
 		return this.nebulousModelSourceVersion;
 	}
 
+	public String getNetBeans6Version() {
+		return this.netBeans6Version;
+	}
+
 	public String getNetBeans8Version() {
 		return this.netBeans8Version;
 	}
@@ -131,6 +144,8 @@ public class Config {
 		sb.append( this.aliceModelSourceVersion );
 		sb.append( "\n\tnebulousModelSourceVersion: " );
 		sb.append( this.nebulousModelSourceVersion );
+		sb.append( "\n\tnetBeans6Version: " );
+		sb.append( this.netBeans6Version );
 		sb.append( "\n\tnetBeans8Version: " );
 		sb.append( this.netBeans8Version );
 		return sb.toString();
@@ -140,5 +155,6 @@ public class Config {
 	private final String joglVersion;
 	private final String aliceModelSourceVersion;
 	private final String nebulousModelSourceVersion;
+	private final String netBeans6Version;
 	private final String netBeans8Version;
 }
