@@ -55,6 +55,7 @@ public class Build {
 
 		Config config = new Config.Builder()
 				.mode( mode )
+				.rootDir( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Code" ) )
 
 				.joglVersion( "2.2.4" )
 				.aliceModelSourceVersion( "2014.08.20" )
@@ -121,7 +122,6 @@ public class Build {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( config );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "assertions:", Build.class.desiredAssertionStatus() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "javaHomeDir:", JdkUtils.getJavaHomeDir() );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "jdk8HomeDir:", JdkUtils.getJdk8HomeDir() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "jdk8HomeDir:", JdkUtils.getJdk8HomeDir() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "netbeansUserProperties6:", NetBeansUtils.getUserProperties6File() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "netbeansUserProperties8:", NetBeansUtils.getUserProperties8File() );

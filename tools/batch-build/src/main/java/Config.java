@@ -51,6 +51,14 @@ public class Config {
 			return this;
 		}
 
+		public Builder rootDir( java.io.File rootDir ) {
+			assert rootDir != null;
+			assert rootDir.exists() : rootDir;
+			assert rootDir.isDirectory() : rootDir;
+			this.rootDir = rootDir;
+			return this;
+		}
+
 		public Builder joglVersion( String joglVersion ) {
 			this.joglVersion = joglVersion;
 			return this;
@@ -81,6 +89,7 @@ public class Config {
 		}
 
 		private Mode mode;
+		private java.io.File rootDir;
 		private String joglVersion;
 		private String aliceModelSourceVersion;
 		private String nebulousModelSourceVersion;
@@ -91,6 +100,9 @@ public class Config {
 	private Config( Builder builder ) {
 		assert builder.mode != null : builder;
 		this.mode = builder.mode;
+
+		assert builder.rootDir != null : builder;
+		this.rootDir = builder.rootDir;
 
 		assert builder.joglVersion != null : builder;
 		this.joglVersion = builder.joglVersion;
@@ -110,6 +122,10 @@ public class Config {
 
 	public Mode getMode() {
 		return this.mode;
+	}
+
+	public java.io.File getRootDir() {
+		return this.rootDir;
 	}
 
 	public String getJoglVersion() {
@@ -138,6 +154,8 @@ public class Config {
 		sb.append( this.getClass().getSimpleName() );
 		sb.append( "\n\tmode: " );
 		sb.append( this.mode );
+		sb.append( "\n\trootDir: " );
+		sb.append( this.rootDir );
 		sb.append( "\n\tjoglVersion: " );
 		sb.append( this.joglVersion );
 		sb.append( "\n\taliceModelSourceVersionn: " );
@@ -152,6 +170,7 @@ public class Config {
 	}
 
 	private final Mode mode;
+	private final java.io.File rootDir;
 	private final String joglVersion;
 	private final String aliceModelSourceVersion;
 	private final String nebulousModelSourceVersion;

@@ -48,12 +48,12 @@ public abstract class GitRepo {
 	public GitRepo( Config config, String name ) {
 		this.config = config;
 
-		this.root = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Code/" + name );
-		assert this.root.exists() : this.root;
-		assert this.root.isDirectory() : this.root;
+		this.rootDir = new java.io.File( config.getRootDir(), "Code/" + name );
+		assert this.rootDir.exists() : this.rootDir;
+		assert this.rootDir.isDirectory() : this.rootDir;
 
-		this.plugin8 = new Plugin8( this.config, this.root );
-		this.plugin6 = new Plugin6( this.config, this.root );
+		this.plugin8 = new Plugin8( this.config, this.rootDir );
+		this.plugin6 = new Plugin6( this.config, this.rootDir );
 	}
 
 	public Config getConfig() {
@@ -61,7 +61,7 @@ public abstract class GitRepo {
 	}
 
 	public java.io.File getRootDir() {
-		return this.root;
+		return this.rootDir;
 	}
 
 	public java.util.List<Plugin> getPlugins() {
@@ -80,7 +80,7 @@ public abstract class GitRepo {
 	}
 
 	private final Config config;
-	private final java.io.File root;
+	private final java.io.File rootDir;
 	private final Plugin8 plugin8;
 	private final Plugin6 plugin6;
 }
