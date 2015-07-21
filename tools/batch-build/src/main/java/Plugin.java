@@ -69,6 +69,10 @@ public abstract class Plugin {
 		this.projectXmlText = PluginCommon.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( projectXmlInputStream ) );
 		assert this.projectXmlText != null;
 		assert this.projectXmlText.length() > 0;
+
+		this.projectTemplateDir = new java.io.File( this.getRoot(), "ProjectTemplate" );
+		assert this.projectTemplateDir.exists() : this.projectTemplateDir;
+		assert this.projectTemplateDir.isDirectory() : this.projectTemplateDir;
 	}
 
 	protected abstract java.io.File getSuiteDir();
@@ -95,9 +99,13 @@ public abstract class Plugin {
 		return new java.io.File( this.getWizardReleaseDir(), "src/aliceSource.jar" );
 	}
 
-	protected abstract java.io.File getJdkToUseForNbmAntCommand();
+	protected abstract java.io.File getLibraryXmlFile();
+
+	protected abstract java.io.File getProjectTemplateZipFile();
 
 	protected abstract java.io.File getNbmFile();
+
+	protected abstract java.io.File getJdkToUseForNbmAntCommand();
 
 	protected Config getConfig() {
 		return this.config;
@@ -176,7 +184,30 @@ public abstract class Plugin {
 		} );
 	}
 
-	public abstract void prepareFiles() throws java.io.IOException;
+	public final void prepareFiles() throws java.io.IOException {
+		java.io.File dstManifestFile = new java.io.File( this.getWizardDir(), "manifest.mf" );
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( dstManifestFile );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( dstManifestFile, this.getManifestText() );
+		assert dstManifestFile.exists() : dstManifestFile;
+
+		java.io.File dstLibraryXmlFile = new java.io.File( this.getWizardDir(), "src/org/alice/netbeans/aliceprojectwizard/Alice3Library.xml" );
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( dstLibraryXmlFile );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( dstLibraryXmlFile, this.getLibraryXmlText() );
+		assert dstLibraryXmlFile.exists() : dstLibraryXmlFile;
+
+		java.io.File dstProjectXmlFile = new java.io.File( this.getWizardDir(), "nbproject/project.xml" );
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( dstProjectXmlFile );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( dstProjectXmlFile, this.getProjectXmlText() );
+		assert dstProjectXmlFile.exists() : dstProjectXmlFile;
+
+		java.io.File projectZip = this.getProjectTemplateZipFile();
+		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( this.projectTemplateDir, projectZip );
+		assert projectZip.exists() : projectZip;
+
+		java.io.File userPropertiesFile = NetBeansUtils.getUserPropertiesFile( this.version );
+		java.io.File platformPrivatePropertiesFile = new java.io.File( this.getSuiteDir(), "nbproject/private/platform-private.properties" );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( platformPrivatePropertiesFile, "user.properties.file=" + userPropertiesFile.getAbsolutePath().replaceAll( "\\\\", "\\\\\\\\" ) );
+	}
 
 	public void zipJavaDocs( java.io.File tempDirectoryForJavaDoc ) throws java.io.IOException {
 		java.io.File docZip = this.getJavaDocZipFile();
@@ -253,4 +284,5 @@ public abstract class Plugin {
 	private final String manifestText;
 	private final String libraryXmlText;
 	private final String projectXmlText;
+	private final java.io.File projectTemplateDir;
 }
