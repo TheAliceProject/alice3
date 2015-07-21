@@ -48,7 +48,7 @@ public abstract class GitRepo {
 	public GitRepo( Config config, String name ) {
 		this.config = config;
 
-		this.rootDir = new java.io.File( config.getRootDir(), "Code/" + name );
+		this.rootDir = new java.io.File( config.getRootDir(), name );
 		assert this.rootDir.exists() : this.rootDir;
 		assert this.rootDir.isDirectory() : this.rootDir;
 
@@ -67,11 +67,7 @@ public abstract class GitRepo {
 	public java.util.List<Plugin> getPlugins() {
 		java.util.List<Plugin> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		list.add( this.plugin8 );
-		if( this.config.getMode().isBareMinimum() ) {
-			//pass
-		} else {
-			list.add( this.plugin6 );
-		}
+		list.add( this.plugin6 );
 		return java.util.Collections.unmodifiableList( list );
 	}
 

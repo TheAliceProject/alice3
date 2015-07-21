@@ -57,6 +57,11 @@ public class Build {
 				.mode( mode )
 				.rootDir( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Code" ) )
 
+				.isPlugin6Desired( true )
+				.isPlugin8Desired( true )
+				.isJavaDocGenerationDesired( false )
+				.isCleanDesired( false )
+
 				.joglVersion( "2.2.4" )
 				.aliceModelSourceVersion( "2014.08.20" )
 				.nebulousModelSourceVersion( "2014.09.11" )

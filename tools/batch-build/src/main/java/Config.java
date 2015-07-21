@@ -59,6 +59,26 @@ public class Config {
 			return this;
 		}
 
+		public Builder isPlugin6Desired( boolean isPlugin6Desired ) {
+			this.isPlugin6Desired = isPlugin6Desired;
+			return this;
+		}
+
+		public Builder isPlugin8Desired( boolean isPlugin8Desired ) {
+			this.isPlugin8Desired = isPlugin8Desired;
+			return this;
+		}
+
+		public Builder isJavaDocGenerationDesired( boolean isJavaDocGenerationDesired ) {
+			this.isJavaDocGenerationDesired = isJavaDocGenerationDesired;
+			return this;
+		}
+
+		public Builder isCleanDesired( boolean isCleanDesired ) {
+			this.isCleanDesired = isCleanDesired;
+			return this;
+		}
+
 		public Builder joglVersion( String joglVersion ) {
 			this.joglVersion = joglVersion;
 			return this;
@@ -90,6 +110,10 @@ public class Config {
 
 		private Mode mode;
 		private java.io.File rootDir;
+		private boolean isPlugin6Desired = true;
+		private boolean isPlugin8Desired = true;
+		private boolean isJavaDocGenerationDesired = true;
+		private boolean isCleanDesired = true;
 		private String joglVersion;
 		private String aliceModelSourceVersion;
 		private String nebulousModelSourceVersion;
@@ -103,6 +127,11 @@ public class Config {
 
 		assert builder.rootDir != null : builder;
 		this.rootDir = builder.rootDir;
+
+		this.isPlugin6Desired = builder.isPlugin6Desired;
+		this.isPlugin8Desired = builder.isPlugin8Desired;
+		this.isJavaDocGenerationDesired = builder.isJavaDocGenerationDesired;
+		this.isCleanDesired = builder.isCleanDesired;
 
 		assert builder.joglVersion != null : builder;
 		this.joglVersion = builder.joglVersion;
@@ -126,6 +155,22 @@ public class Config {
 
 	public java.io.File getRootDir() {
 		return this.rootDir;
+	}
+
+	public boolean isPlugin6Desired() {
+		return this.isPlugin6Desired;
+	}
+
+	public boolean isPlugin8Desired() {
+		return this.isPlugin8Desired;
+	}
+
+	public boolean isJavaDocGenerationDesired() {
+		return this.isJavaDocGenerationDesired;
+	}
+
+	public boolean isCleanDesired() {
+		return this.isCleanDesired;
 	}
 
 	public String getJoglVersion() {
@@ -171,6 +216,10 @@ public class Config {
 
 	private final Mode mode;
 	private final java.io.File rootDir;
+	private final boolean isPlugin8Desired;
+	private final boolean isPlugin6Desired;
+	private final boolean isJavaDocGenerationDesired;
+	private final boolean isCleanDesired;
 	private final String joglVersion;
 	private final String aliceModelSourceVersion;
 	private final String nebulousModelSourceVersion;

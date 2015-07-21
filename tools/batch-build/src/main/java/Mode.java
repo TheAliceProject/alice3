@@ -45,23 +45,16 @@
  * @author Dennis Cosgrove
  */
 public enum Mode {
-	BUILD( false, false ),
-	DEV( true, false ),
-	DEV_BARE_MINIMUM( true, true );
+	BUILD( false ),
+	DEV( true );
 
-	private Mode( boolean isDev, boolean isBareMinimum ) {
+	private Mode( boolean isDev ) {
 		this.isDev = isDev;
-		this.isBareMinimum = isBareMinimum;
 	}
 
 	public boolean isDev() {
 		return this.isDev;
 	}
 
-	public boolean isBareMinimum() {
-		return this.isBareMinimum;
-	}
-
 	private final boolean isDev;
-	private final boolean isBareMinimum;
 }

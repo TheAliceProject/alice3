@@ -263,7 +263,9 @@ public abstract class Plugin {
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( nbm );
 
 		java.io.File javaHomeDir = JdkUtils.getJdk8HomeDir();
-		antClean( javaHomeDir );
+		if( this.config.isCleanDesired() ) {
+			antClean( javaHomeDir );
+		}
 		antCompile( javaHomeDir );
 		antNBM( javaHomeDir );
 

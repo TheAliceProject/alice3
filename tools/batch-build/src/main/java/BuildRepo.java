@@ -61,7 +61,7 @@ public class BuildRepo extends GitRepo {
 	public void compileJars() throws java.io.IOException, InterruptedException {
 		java.util.List<String> command = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		command.add( MavenUtils.getMavenCommandFile().getAbsolutePath() );
-		if( this.getConfig().getMode().isDev() ) {
+		if( this.getConfig().isCleanDesired() ) {
 			//pass
 		} else {
 			command.add( "clean" );
@@ -75,7 +75,7 @@ public class BuildRepo extends GitRepo {
 
 	public java.io.File generateJavaDocs() throws java.io.IOException {
 		java.io.File tempDirectoryForJavaDoc = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "tempDirectoryForJavaDoc" );
-		boolean isRequired = ( this.getConfig().getMode().isBareMinimum() == false ) || ( tempDirectoryForJavaDoc.exists() == false );
+		boolean isRequired = ( this.getConfig().isJavaDocGenerationDesired() ) || ( tempDirectoryForJavaDoc.exists() == false );
 		if( isRequired ) {
 			if( tempDirectoryForJavaDoc.exists() ) {
 				org.apache.commons.io.FileUtils.deleteDirectory( tempDirectoryForJavaDoc );
