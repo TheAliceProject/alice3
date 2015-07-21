@@ -66,8 +66,12 @@ public abstract class GitRepo {
 
 	public java.util.List<Plugin> getPlugins() {
 		java.util.List<Plugin> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		list.add( this.plugin8 );
-		list.add( this.plugin6 );
+		if( this.config.isPlugin8Desired() ) {
+			list.add( this.plugin8 );
+		}
+		if( this.config.isPlugin6Desired() ) {
+			list.add( this.plugin6 );
+		}
 		return java.util.Collections.unmodifiableList( list );
 	}
 

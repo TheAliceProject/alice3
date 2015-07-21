@@ -12,7 +12,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.alice</groupId>
-			<artifactId>ide</artifactId>
+			<artifactId>alice-ide</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>

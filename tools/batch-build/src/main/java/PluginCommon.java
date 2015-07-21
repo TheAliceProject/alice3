@@ -47,10 +47,10 @@
 public class PluginCommon {
 	/*package-private*/static String substituteVersionTexts( Config config, String s ) {
 		s = s.trim();
-		s = s.replace( "___ALICE_VERSION___", org.lgna.project.ProjectVersion.getCurrentVersionText() );
-		s = s.replace( "___JOGL_VERSION___", config.getJoglVersion() );
-		s = s.replace( "___ALICE_MODEL_SOURCE_VERSION___", config.getAliceModelSourceVersion() );
-		s = s.replace( "___NEBULOUS_MODEL_SOURCE_VERSION___", config.getNebulousModelSourceVersion() );
+		s = s.replaceAll( "___ALICE_VERSION___", org.lgna.project.ProjectVersion.getCurrentVersionText() );
+		s = s.replaceAll( "___JOGL_VERSION___", config.getJoglVersion() );
+		s = s.replaceAll( "___ALICE_MODEL_SOURCE_VERSION___", config.getAliceModelSourceVersion() );
+		s = s.replaceAll( "___NEBULOUS_MODEL_SOURCE_VERSION___", config.getNebulousModelSourceVersion() );
 		return s;
 	}
 

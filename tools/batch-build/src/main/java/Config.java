@@ -69,6 +69,11 @@ public class Config {
 			return this;
 		}
 
+		public Builder isInstallerDesired( boolean isInstallerDesired ) {
+			this.isInstallerDesired = isInstallerDesired;
+			return this;
+		}
+
 		public Builder isJavaDocGenerationDesired( boolean isJavaDocGenerationDesired ) {
 			this.isJavaDocGenerationDesired = isJavaDocGenerationDesired;
 			return this;
@@ -112,6 +117,7 @@ public class Config {
 		private java.io.File rootDir;
 		private boolean isPlugin6Desired = true;
 		private boolean isPlugin8Desired = true;
+		private boolean isInstallerDesired = true;
 		private boolean isJavaDocGenerationDesired = true;
 		private boolean isCleanDesired = true;
 		private String joglVersion;
@@ -130,6 +136,7 @@ public class Config {
 
 		this.isPlugin6Desired = builder.isPlugin6Desired;
 		this.isPlugin8Desired = builder.isPlugin8Desired;
+		this.isInstallerDesired = builder.isInstallerDesired;
 		this.isJavaDocGenerationDesired = builder.isJavaDocGenerationDesired;
 		this.isCleanDesired = builder.isCleanDesired;
 
@@ -163,6 +170,10 @@ public class Config {
 
 	public boolean isPlugin8Desired() {
 		return this.isPlugin8Desired;
+	}
+
+	public boolean isInstallerDesired() {
+		return this.isInstallerDesired;
 	}
 
 	public boolean isJavaDocGenerationDesired() {
@@ -218,6 +229,7 @@ public class Config {
 	private final java.io.File rootDir;
 	private final boolean isPlugin8Desired;
 	private final boolean isPlugin6Desired;
+	private final boolean isInstallerDesired;
 	private final boolean isJavaDocGenerationDesired;
 	private final boolean isCleanDesired;
 	private final String joglVersion;

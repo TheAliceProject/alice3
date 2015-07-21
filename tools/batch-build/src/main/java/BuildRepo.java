@@ -47,11 +47,11 @@
 public class BuildRepo extends GitRepo {
 	public BuildRepo( Config config ) {
 		super( config, "alice_for_build" );
-		this.distributionSource = new java.io.File( this.getRootDir(), "/core/resources/target/distribution" );
+		this.distributionSourceDir = new java.io.File( this.getRootDir(), "/core/resources/target/distribution" );
 	}
 
 	public java.io.File getDistributionSourceDir() {
-		return this.distributionSource;
+		return this.distributionSourceDir;
 	}
 
 	public java.io.File getCoreSrcDirectory( String projectName ) {
@@ -62,8 +62,6 @@ public class BuildRepo extends GitRepo {
 		java.util.List<String> command = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		command.add( MavenUtils.getMavenCommandFile().getAbsolutePath() );
 		if( this.getConfig().isCleanDesired() ) {
-			//pass
-		} else {
 			command.add( "clean" );
 		}
 		command.add( "compile" );
@@ -96,5 +94,5 @@ public class BuildRepo extends GitRepo {
 		return tempDirectoryForJavaDoc;
 	}
 
-	private final java.io.File distributionSource;
+	private final java.io.File distributionSourceDir;
 }

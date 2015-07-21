@@ -59,6 +59,7 @@ public class Build {
 
 				.isPlugin6Desired( true )
 				.isPlugin8Desired( true )
+				.isInstallerDesired( false )
 				.isJavaDocGenerationDesired( false )
 				.isCleanDesired( false )
 
@@ -87,34 +88,44 @@ public class Build {
 
 		edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "build" );
 		timer.start();
-		buildRepo.compileJars();
-		timer.mark( "compileJars" );
+		//buildRepo.compileJars();
+		//timer.mark( "compileJars" );
 
-		java.io.File tempDirectoryForJavaDoc = buildRepo.generateJavaDocs();
-		timer.mark( "generateJavaDocs" );
+		java.util.List<Plugin> plugins = repo.getPlugins();
+		if( plugins.size() > 0 ) {
+			java.io.File tempDirectoryForJavaDoc = buildRepo.generateJavaDocs();
+			timer.mark( "generateJavaDocs" );
 
-		for( Plugin plugin : repo.getPlugins() ) {
-			plugin.copyJars( buildRepo );
-			timer.mark( "copyJars" );
+			for( Plugin plugin : repo.getPlugins() ) {
+				plugin.copyJars( buildRepo );
+				timer.mark( "copyJars" );
 
-			plugin.copyDistribution( buildRepo );
-			timer.mark( "copyDistribution" );
+				plugin.copyDistribution( buildRepo );
+				timer.mark( "copyDistribution" );
 
-			plugin.prepareFiles();
-			timer.mark( "prepareFiles" );
+				plugin.prepareFiles();
+				timer.mark( "prepareFiles" );
 
-			plugin.zipSrc( buildRepo );
-			timer.mark( "zipSrc" );
+				plugin.zipSrc( buildRepo );
+				timer.mark( "zipSrc" );
 
-			plugin.zipJavaDocs( tempDirectoryForJavaDoc );
-			timer.mark( "zipJavaDocs" );
+				plugin.zipJavaDocs( tempDirectoryForJavaDoc );
+				timer.mark( "zipJavaDocs" );
 
-			if( config.getMode().isDev() ) {
-				//pass
-			} else {
-				plugin.createNbm();
-				timer.mark( "nbm" );
+				if( config.getMode().isDev() ) {
+					//pass
+				} else {
+					plugin.createNbm();
+					timer.mark( "nbm" );
+				}
 			}
+		}
+
+		if( config.isInstallerDesired() ) {
+			Installer installer = new Installer( config, repo.getRootDir() );
+			timer.mark( "installer" );
+			installer.copyDistribution( buildRepo );
+			timer.mark( "copyDistribution" );
 		}
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();

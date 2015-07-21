@@ -184,7 +184,7 @@ public abstract class Plugin {
 		} );
 	}
 
-	public final void prepareFiles() throws java.io.IOException {
+	public void prepareFiles() throws java.io.IOException {
 		java.io.File dstManifestFile = new java.io.File( this.getWizardDir(), "manifest.mf" );
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( dstManifestFile );
 		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( dstManifestFile, this.getManifestText() );
