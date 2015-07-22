@@ -44,25 +44,24 @@
 /**
  * @author Dennis Cosgrove
  */
-public class AntUtils {
-	public static void initialize() {
-		java.io.File antHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "ANT_HOME" );
-		antCommandFile = new java.io.File( antHomeDir, "bin/ant.bat" );
-		assert antCommandFile.exists() : antCommandFile;
+public class PluginCommon {
+	/*package-private*/static String substituteVersionTexts( Config config, String s ) {
+		s = s.trim();
+		s = s.replaceAll( "___ALICE_VERSION___", org.lgna.project.ProjectVersion.getCurrentVersionText() );
+		s = s.replaceAll( "___JOGL_VERSION___", config.getJoglVersion() );
+		s = s.replaceAll( "___ALICE_MODEL_SOURCE_VERSION___", config.getAliceModelSourceVersion() );
+		s = s.replaceAll( "___NEBULOUS_MODEL_SOURCE_VERSION___", config.getNebulousModelSourceVersion() );
+		return s;
 	}
 
-	public static java.io.File getAntCommandFile() {
-		if( antCommandFile != null ) {
-			//pass
-		} else {
-			initialize();
-		}
-		return antCommandFile;
-	}
-
-	private static java.io.File antCommandFile;
-
-	private AntUtils() {
-		throw new AssertionError();
+	public static java.util.List<String> getJarPathsToCopyFromMaven( Config config ) {
+		java.util.List<String> list = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		list.add( substituteVersionTexts( config, "org/jogamp/gluegen/gluegen-rt/___JOGL_VERSION___/gluegen-rt-___JOGL_VERSION___.jar" ) );
+		list.add( substituteVersionTexts( config, "org/jogamp/jogl/jogl-all/___JOGL_VERSION___/jogl-all-___JOGL_VERSION___.jar" ) );
+		list.add( "javax/media/jmf/2.1.1e/jmf-2.1.1e.jar" );
+		list.add( "com/sun/javamp3/1.0/javamp3-1.0.jar" );
+		list.add( substituteVersionTexts( config, "org/alice/alice-model-source/___ALICE_MODEL_SOURCE_VERSION___/alice-model-source-___ALICE_MODEL_SOURCE_VERSION___.jar" ) );
+		list.add( substituteVersionTexts( config, "org/alice/nonfree/nebulous-model-source/___NEBULOUS_MODEL_SOURCE_VERSION___/nebulous-model-source-___NEBULOUS_MODEL_SOURCE_VERSION___.jar" ) );
+		return java.util.Collections.unmodifiableList( list );
 	}
 }

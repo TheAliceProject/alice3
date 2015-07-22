@@ -44,25 +44,35 @@
 /**
  * @author Dennis Cosgrove
  */
-public class AntUtils {
+public class JdkUtils {
 	public static void initialize() {
-		java.io.File antHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "ANT_HOME" );
-		antCommandFile = new java.io.File( antHomeDir, "bin/ant.bat" );
-		assert antCommandFile.exists() : antCommandFile;
+		javaHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "JAVA_HOME" );
+		jdk8HomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "JDK8_HOME" );
 	}
 
-	public static java.io.File getAntCommandFile() {
-		if( antCommandFile != null ) {
+	public static java.io.File getJavaHomeDir() {
+		if( javaHomeDir != null ) {
 			//pass
 		} else {
 			initialize();
 		}
-		return antCommandFile;
+		return javaHomeDir;
 	}
 
-	private static java.io.File antCommandFile;
+	public static java.io.File getJdk8HomeDir() {
+		if( jdk8HomeDir != null ) {
+			//pass
+		} else {
+			initialize();
+		}
+		return jdk8HomeDir;
+	}
 
-	private AntUtils() {
+	private static java.io.File javaHomeDir;
+	private static java.io.File jdk8HomeDir;
+
+	private JdkUtils() {
 		throw new AssertionError();
 	}
+
 }

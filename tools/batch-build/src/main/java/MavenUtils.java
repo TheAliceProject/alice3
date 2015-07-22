@@ -44,25 +44,29 @@
 /**
  * @author Dennis Cosgrove
  */
-public class AntUtils {
+public class MavenUtils {
 	public static void initialize() {
-		java.io.File antHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "ANT_HOME" );
-		antCommandFile = new java.io.File( antHomeDir, "bin/ant.bat" );
-		assert antCommandFile.exists() : antCommandFile;
+		java.io.File mavenHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "MAVEN_HOME" );
+		mavenCommandFile = new java.io.File( mavenHomeDir, "bin/mvn.bat" );
+		assert mavenCommandFile.exists() : mavenCommandFile;
 	}
 
-	public static java.io.File getAntCommandFile() {
-		if( antCommandFile != null ) {
+	public static java.io.File getMavenCommandFile() {
+		if( mavenCommandFile != null ) {
 			//pass
 		} else {
 			initialize();
 		}
-		return antCommandFile;
+		return mavenCommandFile;
 	}
 
-	private static java.io.File antCommandFile;
+	public static java.io.File getMavenRepositoryDir() {
+		return new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository" );
+	}
 
-	private AntUtils() {
+	private static java.io.File mavenCommandFile;
+
+	private MavenUtils() {
 		throw new AssertionError();
 	}
 }

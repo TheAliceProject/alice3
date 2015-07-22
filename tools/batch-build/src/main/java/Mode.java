@@ -44,25 +44,17 @@
 /**
  * @author Dennis Cosgrove
  */
-public class AntUtils {
-	public static void initialize() {
-		java.io.File antHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "ANT_HOME" );
-		antCommandFile = new java.io.File( antHomeDir, "bin/ant.bat" );
-		assert antCommandFile.exists() : antCommandFile;
+public enum Mode {
+	BUILD( false ),
+	DEV( true );
+
+	private Mode( boolean isDev ) {
+		this.isDev = isDev;
 	}
 
-	public static java.io.File getAntCommandFile() {
-		if( antCommandFile != null ) {
-			//pass
-		} else {
-			initialize();
-		}
-		return antCommandFile;
+	public boolean isDev() {
+		return this.isDev;
 	}
 
-	private static java.io.File antCommandFile;
-
-	private AntUtils() {
-		throw new AssertionError();
-	}
+	private final boolean isDev;
 }

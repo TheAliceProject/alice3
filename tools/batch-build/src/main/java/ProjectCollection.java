@@ -44,25 +44,42 @@
 /**
  * @author Dennis Cosgrove
  */
-public class AntUtils {
-	public static void initialize() {
-		java.io.File antHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "ANT_HOME" );
-		antCommandFile = new java.io.File( antHomeDir, "bin/ant.bat" );
-		assert antCommandFile.exists() : antCommandFile;
-	}
-
-	public static java.io.File getAntCommandFile() {
-		if( antCommandFile != null ) {
-			//pass
-		} else {
-			initialize();
+public class ProjectCollection {
+	public static class Builder {
+		public Builder( String dirName ) {
+			this.dirName = dirName;
+			this.projectNames = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		}
-		return antCommandFile;
+
+		public Builder addProjectNames( String... projectNames ) {
+			for( String projectName : projectNames ) {
+				this.projectNames.add( projectName );
+			}
+			return this;
+		}
+
+		public ProjectCollection build() {
+			return new ProjectCollection( this );
+		}
+
+		private final String dirName;
+		private final java.util.List<String> projectNames;
 	}
 
-	private static java.io.File antCommandFile;
-
-	private AntUtils() {
-		throw new AssertionError();
+	private ProjectCollection( Builder builder ) {
+		this.dirName = builder.dirName;
+		this.projectNames = java.util.Collections.unmodifiableList( builder.projectNames );
 	}
+
+	public String getDirName() {
+		return this.dirName;
+	}
+
+	public java.util.List<String> getProjectNames() {
+		return this.projectNames;
+	}
+
+	private final String dirName;
+	private final java.util.List<String> projectNames;
+
 }

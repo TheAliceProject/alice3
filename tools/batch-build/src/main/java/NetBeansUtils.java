@@ -44,25 +44,42 @@
 /**
  * @author Dennis Cosgrove
  */
-public class AntUtils {
-	public static void initialize() {
-		java.io.File antHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "ANT_HOME" );
-		antCommandFile = new java.io.File( antHomeDir, "bin/ant.bat" );
-		assert antCommandFile.exists() : antCommandFile;
+public class NetBeansUtils {
+	private static java.io.File userProperties6File;
+	private static java.io.File userProperties8File;
+
+	public static void initialize( Config config ) {
+		assert userProperties6File == null : userProperties6File;
+		userProperties6File = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".netbeans/" + config.getNetBeans6Version() + "/build.properties" );
+		assert userProperties6File.exists() : userProperties6File;
+
+		assert userProperties8File == null : userProperties8File;
+		userProperties8File = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), "AppData/Roaming/NetBeans/" + config.getNetBeans8Version() + "/build.properties" );
+		assert userProperties8File.exists() : userProperties8File;
 	}
 
-	public static java.io.File getAntCommandFile() {
-		if( antCommandFile != null ) {
-			//pass
-		} else {
-			initialize();
+	public static java.io.File getUserProperties6File() {
+		assert userProperties6File != null : "not initialized";
+		return userProperties6File;
+	}
+
+	public static java.io.File getUserProperties8File() {
+		assert userProperties8File != null : "not initialized";
+		return userProperties8File;
+	}
+
+	public static java.io.File getUserPropertiesFile( int version ) {
+		switch( version ) {
+		case 6:
+			return getUserProperties6File();
+		case 8:
+			return getUserProperties8File();
+		default:
+			throw new IllegalArgumentException( Integer.toString( version ) );
 		}
-		return antCommandFile;
 	}
 
-	private static java.io.File antCommandFile;
-
-	private AntUtils() {
+	private NetBeansUtils() {
 		throw new AssertionError();
 	}
 }

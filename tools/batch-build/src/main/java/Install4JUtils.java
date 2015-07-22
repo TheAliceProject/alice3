@@ -44,21 +44,26 @@
 /**
  * @author Dennis Cosgrove
  */
-public class NetBeans8Utils {
-	private static java.io.File userPropertiesFile;
-
-	public static void initialize( String versionText ) {
-		assert userPropertiesFile == null : userPropertiesFile;
-		userPropertiesFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), "AppData/Roaming/NetBeans/" + versionText + "/build.properties" );
-		assert userPropertiesFile.exists() : userPropertiesFile;
+public class Install4JUtils {
+	public static void initialize() {
+		java.io.File install4jHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "INSTALL4J_HOME" );
+		install4JCommandFile = new java.io.File( install4jHomeDir, "bin/install4jc.exe" );
+		assert install4JCommandFile.exists() : install4JCommandFile;
 	}
 
-	public static java.io.File getUserPropertiesFile() {
-		assert userPropertiesFile != null : "not initialized";
-		return userPropertiesFile;
+	public static java.io.File getInstall4JCommandFile() {
+		if( install4JCommandFile != null ) {
+			//pass
+		} else {
+			initialize();
+		}
+		return install4JCommandFile;
 	}
 
-	private NetBeans8Utils() {
+	private static java.io.File install4JCommandFile;
+
+	private Install4JUtils() {
 		throw new AssertionError();
 	}
+
 }
