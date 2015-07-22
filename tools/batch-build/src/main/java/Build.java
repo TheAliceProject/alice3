@@ -77,6 +77,7 @@ public class Build {
 		MavenUtils.initialize();
 		AntUtils.initialize();
 		NetBeansUtils.initialize( config );
+		Install4JUtils.initialize();
 
 		BuildRepo buildRepo = new BuildRepo( config );
 		GitRepo repo;
@@ -123,8 +124,10 @@ public class Build {
 
 		if( config.isInstallerDesired() ) {
 			Installer installer = new Installer( config, repo.getRootDir() );
+
 			installer.copyJarsFromMaven();
 			timer.mark( "copyJarsFromMaven" );
+
 			installer.copyJarsFromBuild( buildRepo );
 			timer.mark( "copyJarsFromBuild" );
 
@@ -133,6 +136,13 @@ public class Build {
 
 			installer.prepareInstall4jFile();
 			timer.mark( "prepareInstall4jFile" );
+
+			if( config.getMode().isDev() ) {
+				//pass
+			} else {
+				installer.createInstallers();
+				timer.mark( "createInstallers" );
+			}
 		}
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();

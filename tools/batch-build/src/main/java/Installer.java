@@ -137,8 +137,11 @@ public class Installer {
 		assert distibDst.isDirectory() : distibDst;
 	}
 
-	public void prepareInstall4jFile() throws java.io.IOException {
+	private java.io.File getInstall4JFile() {
+		return new java.io.File( this.root, "aliceinstallerproject.install4j" );
+	}
 
+	public void prepareInstall4jFile() throws java.io.IOException {
 		String[] dirNames = { "ext", "lib" };
 
 		java.util.List<java.io.File> jarFiles = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
@@ -161,10 +164,38 @@ public class Installer {
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sb );
 
-		java.io.File dstManifestFile = new java.io.File( this.root, "aliceinstallerproject.install4j" );
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( dstManifestFile );
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( dstManifestFile, finalInstall4jText );
-		assert dstManifestFile.exists() : dstManifestFile;
+		java.io.File dstInstall4JFile = this.getInstall4JFile();
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( dstInstall4JFile );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( dstInstall4JFile, finalInstall4jText );
+		assert dstInstall4JFile.exists() : dstInstall4JFile;
+	}
+
+	public void createInstallers() throws InterruptedException, java.io.IOException {
+		java.io.File installerOutputDir = new java.io.File( this.root, "installerOutput" );
+		String underscoreVersionText = org.lgna.project.ProjectVersion.getCurrentVersionText().replaceAll( "\\.", "_" );
+		java.io.File win64File = new java.io.File( installerOutputDir, "Alice3_windows-x64_Offline_" + underscoreVersionText + ".exe" );
+		java.io.File win32File = new java.io.File( installerOutputDir, "Alice3_windows_Offline_" + underscoreVersionText + ".exe" );
+		java.io.File linuxFile = new java.io.File( installerOutputDir, "Alice3_unix_Offline_" + underscoreVersionText + ".sh" );
+		java.io.File macFile = new java.io.File( installerOutputDir, "Alice3_macos_Offline_" + underscoreVersionText + ".dmg" );
+
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( win64File );
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( win32File );
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( linuxFile );
+		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( macFile );
+
+		java.util.List<String> command = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		command.add( Install4JUtils.getInstall4JCommandFile().getAbsolutePath() );
+		command.add( "--build-selected" );
+		command.add( this.getInstall4JFile().getAbsolutePath() );
+		ProcessBuilder processBuilder = new ProcessBuilder( command );
+		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
+
+		assert win64File.exists() : win64File;
+		assert win32File.exists() : win32File;
+		assert linuxFile.exists() : linuxFile;
+		assert macFile.exists() : macFile;
+
+		//todo: copy files
 	}
 
 	private final Config config;
