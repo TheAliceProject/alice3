@@ -45,12 +45,12 @@
  * @author Dennis Cosgrove
  */
 public abstract class GitRepo {
-	public GitRepo( String name ) {
+	public GitRepo( Config config, String name ) {
 		this.root = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Code/" + name );
 		assert this.root.exists() : this.root;
 		assert this.root.isDirectory() : this.root;
 
-		this.plugin8 = new Plugin8( this.root );
+		this.plugin8 = new Plugin8( config, this.root );
 	}
 
 	public java.io.File getRoot() {

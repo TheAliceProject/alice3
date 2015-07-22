@@ -45,7 +45,7 @@
  * @author Dennis Cosgrove
  */
 public class Plugin8 extends Plugin {
-	public Plugin8( java.io.File repoRoot ) {
+	public Plugin8( Config config, java.io.File repoRoot ) {
 		super( repoRoot, 8 );
 		this.suite = new java.io.File( repoRoot, "alice/netbeans/8/Alice3ModuleSuite" );
 		assert this.suite.exists() : this.suite;
@@ -67,19 +67,19 @@ public class Plugin8 extends Plugin {
 
 		java.io.InputStream manifestInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/manifest.mf" );
 		assert manifestInputStream != null;
-		this.manifestText = Build.substituteVersionTexts( edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( manifestInputStream ) );
+		this.manifestText = Build.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( manifestInputStream ) );
 		assert this.manifestText != null;
 		assert this.manifestText.length() > 0;
 
 		java.io.InputStream libraryXmlInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/Alice3Library.xml" );
 		assert libraryXmlInputStream != null;
-		this.libraryXmlText = Build.substituteVersionTexts( edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( libraryXmlInputStream ) );
+		this.libraryXmlText = Build.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( libraryXmlInputStream ) );
 		assert this.libraryXmlText != null;
 		assert this.libraryXmlText.length() > 0;
 
 		java.io.InputStream projectXmlInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/project.xml" );
 		assert projectXmlInputStream != null;
-		this.projectXmlText = Build.substituteVersionTexts( edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( projectXmlInputStream ) );
+		this.projectXmlText = Build.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( projectXmlInputStream ) );
 		assert this.projectXmlText != null;
 		assert this.projectXmlText.length() > 0;
 	}
