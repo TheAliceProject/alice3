@@ -60,7 +60,7 @@ public class Build {
 				.isPlugin6Desired( true )
 				.isPlugin8Desired( true )
 				.isInstallerDesired( true )
-				.isJavaDocGenerationDesired( false )
+				.isJavaDocGenerationDesired( true )
 				.isCleanDesired( false )
 
 				.joglVersion( "2.2.4" )
