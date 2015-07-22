@@ -95,6 +95,7 @@ import org.alice.interact.manipulator.TargetManipulator;
 import org.alice.stageide.sceneeditor.interact.croquet.AbstractPredeterminedSetLocalTransformationActionOperation;
 import org.alice.stageide.sceneeditor.interact.croquet.PredeterminedSetLocalTransformationActionOperation;
 import org.alice.stageide.sceneeditor.interact.manipulators.CameraZoomMouseWheelManipulator;
+import org.alice.stageide.sceneeditor.interact.manipulators.CopyObjectDragManipulator;
 import org.alice.stageide.sceneeditor.interact.manipulators.GetAGoodLookAtManipulator;
 import org.alice.stageide.sceneeditor.interact.manipulators.OmniDirectionalBoundingBoxManipulator;
 import org.alice.stageide.sceneeditor.interact.manipulators.ResizeDragManipulator;
@@ -297,6 +298,11 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TURNABLE.pickHint() ), new ModifierMask( ModifierKey.CONTROL ) );
 			mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
 			this.addManipulatorConditionSet( mouseRotateObjectLeftRight );
+
+			ManipulatorConditionSet mouseCopyAndMoveObject = new ManipulatorConditionSet( new CopyObjectDragManipulator() );
+			MouseDragCondition copyObjectWithAlt = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierKey.ALT ) );
+			mouseCopyAndMoveObject.addCondition( copyObjectWithAlt );
+			this.addManipulatorConditionSet( mouseCopyAndMoveObject );
 
 			ManipulatorConditionSet mouseHandleDrag = new ManipulatorConditionSet( new ObjectGlobalHandleDragManipulator() );
 			MouseDragCondition handleObjectCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.THREE_D_HANDLE.pickHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );

@@ -40,83 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.lang;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class DrainInputStreamThread extends Thread {
-	static interface LineAppender {
-		void appendLine( String line );
+public class Install4JUtils {
+	public static void initialize() {
+		java.io.File install4jHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "INSTALL4J_HOME" );
+		install4JCommandFile = new java.io.File( install4jHomeDir, "bin/install4jc.exe" );
+		assert install4JCommandFile.exists() : install4JCommandFile;
 	}
 
-	static class PrintStreamLineAppender implements LineAppender {
-		private final java.io.PrintWriter pw;
-
-		public PrintStreamLineAppender( java.io.PrintStream ps ) {
-			this.pw = ps != null ? new java.io.PrintWriter( ps ) : null;
+	public static java.io.File getInstall4JCommandFile() {
+		if( install4JCommandFile != null ) {
+			//pass
+		} else {
+			initialize();
 		}
-
-		@Override
-		public void appendLine( String line ) {
-			if( this.pw != null ) {
-				this.pw.append( line );
-				this.pw.append( '\n' );
-				this.pw.flush();
-			}
-		}
+		return install4JCommandFile;
 	}
 
-	static class StringListLineAppender implements LineAppender {
-		private final java.util.List<String> list;
+	private static java.io.File install4JCommandFile;
 
-		public StringListLineAppender( java.util.List<String> list ) {
-			this.list = list;
-		}
-
-		@Override
-		public void appendLine( String line ) {
-			this.list.add( line );
-		}
+	private Install4JUtils() {
+		throw new AssertionError();
 	}
 
-	private final java.io.InputStream is;
-	private final LineAppender lineAppender;
-	private final java.util.concurrent.CyclicBarrier barrier;
-
-	public DrainInputStreamThread( java.io.InputStream is, LineAppender lineAppender, java.util.concurrent.CyclicBarrier barrier ) {
-		this.is = is;
-		this.lineAppender = lineAppender;
-		this.barrier = barrier;
-	}
-
-	@Override
-	public void run() {
-		java.io.InputStreamReader isr = new java.io.InputStreamReader( this.is );
-		java.io.BufferedReader br = new java.io.BufferedReader( isr );
-		//java.io.PrintWriter pw = this.ps != null ? new java.io.PrintWriter( this.ps ) : null;
-		while( true ) {
-			try {
-				String line = br.readLine();
-				if( line != null ) {
-					if( this.lineAppender != null ) {
-						this.lineAppender.appendLine( line );
-					}
-				} else {
-					break;
-				}
-			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( ioe );
-			}
-		}
-		if( barrier != null ) {
-			try {
-				barrier.await();
-			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-				throw new RuntimeException( bbe );
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			}
-		}
-	}
 }

@@ -40,83 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.lang;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/class DrainInputStreamThread extends Thread {
-	static interface LineAppender {
-		void appendLine( String line );
+public class MavenUtils {
+	public static void initialize() {
+		java.io.File mavenHomeDir = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getEnvironmentVariableDirectory( "MAVEN_HOME" );
+		mavenCommandFile = new java.io.File( mavenHomeDir, "bin/mvn.bat" );
+		assert mavenCommandFile.exists() : mavenCommandFile;
 	}
 
-	static class PrintStreamLineAppender implements LineAppender {
-		private final java.io.PrintWriter pw;
-
-		public PrintStreamLineAppender( java.io.PrintStream ps ) {
-			this.pw = ps != null ? new java.io.PrintWriter( ps ) : null;
+	public static java.io.File getMavenCommandFile() {
+		if( mavenCommandFile != null ) {
+			//pass
+		} else {
+			initialize();
 		}
-
-		@Override
-		public void appendLine( String line ) {
-			if( this.pw != null ) {
-				this.pw.append( line );
-				this.pw.append( '\n' );
-				this.pw.flush();
-			}
-		}
+		return mavenCommandFile;
 	}
 
-	static class StringListLineAppender implements LineAppender {
-		private final java.util.List<String> list;
-
-		public StringListLineAppender( java.util.List<String> list ) {
-			this.list = list;
-		}
-
-		@Override
-		public void appendLine( String line ) {
-			this.list.add( line );
-		}
+	public static java.io.File getMavenRepositoryDir() {
+		return new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository" );
 	}
 
-	private final java.io.InputStream is;
-	private final LineAppender lineAppender;
-	private final java.util.concurrent.CyclicBarrier barrier;
+	private static java.io.File mavenCommandFile;
 
-	public DrainInputStreamThread( java.io.InputStream is, LineAppender lineAppender, java.util.concurrent.CyclicBarrier barrier ) {
-		this.is = is;
-		this.lineAppender = lineAppender;
-		this.barrier = barrier;
-	}
-
-	@Override
-	public void run() {
-		java.io.InputStreamReader isr = new java.io.InputStreamReader( this.is );
-		java.io.BufferedReader br = new java.io.BufferedReader( isr );
-		//java.io.PrintWriter pw = this.ps != null ? new java.io.PrintWriter( this.ps ) : null;
-		while( true ) {
-			try {
-				String line = br.readLine();
-				if( line != null ) {
-					if( this.lineAppender != null ) {
-						this.lineAppender.appendLine( line );
-					}
-				} else {
-					break;
-				}
-			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( ioe );
-			}
-		}
-		if( barrier != null ) {
-			try {
-				barrier.await();
-			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-				throw new RuntimeException( bbe );
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( ie );
-			}
-		}
+	private MavenUtils() {
+		throw new AssertionError();
 	}
 }

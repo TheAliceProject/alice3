@@ -301,6 +301,15 @@ public class AliceProjectTemplateWizardIterator implements WizardDescriptor./*Pr
 		FileObject dir = FileUtil.toFileObject(projectFolder);
 		unZipFile(template.getInputStream(), dir);
 
+
+		//zip process may not include empty zip folder
+		File src = new File( projectFolder, "src" );
+		if( src.isDirectory() ) {
+			//pass
+		} else {
+			src.mkdirs();
+		}
+
 		// Always open top dir as a project:
 		resultSet.add(dir);
 		FileObject srcFolder = null;
@@ -310,8 +319,6 @@ public class AliceProjectTemplateWizardIterator implements WizardDescriptor./*Pr
 			FileObject subfolder = e.nextElement();
 			if (subfolder.isFolder() && subfolder.getPath().contains("src")) {
 				srcFolder = subfolder;
-				//                File myAddedFile = new File(subfolder.getPath(), "DaveRocks.java");
-				//                myAddedFile.createNewFile();
 			}
 			if (ProjectManager.getDefault().isProject(subfolder)) {
 				resultSet.add(subfolder);

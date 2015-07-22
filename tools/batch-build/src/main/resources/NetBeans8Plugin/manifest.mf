@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+OpenIDE-Module: org.alice.netbeans
+OpenIDE-Module-Install: org/alice/netbeans/installer/Installer.class
+OpenIDE-Module-Layer: org/alice/netbeans/layer.xml
+OpenIDE-Module-Localizing-Bundle: org/alice/netbeans/Bundle.properties
+OpenIDE-Module-Specification-Version: ___ALICE_VERSION___
