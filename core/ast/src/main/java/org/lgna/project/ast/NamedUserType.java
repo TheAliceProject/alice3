@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class NamedUserType extends UserType<NamedUserConstructor> {
+public class NamedUserType extends UserType<NamedUserConstructor> implements CodeGenerator {
 	public NamedUserType() {
 	}
 
@@ -107,6 +107,17 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 		return this.isStrictFloatingPoint.getValue();
 	}
 
+	private static CodeOrganizer s_codeSections = new CodeOrganizer();
+	static {
+		s_codeSections.addSection( "Constructors", CodeOrganizer.CONSTRUCTORS_KEY );
+		s_codeSections.addSection( "EventListeners", "initializeEventListeners" );
+		s_codeSections.addSection( "MethodsAndFunctions", CodeOrganizer.NON_STATIC_METHODS_KEY );
+		s_codeSections.addSection( "SceneSetup", CodeOrganizer.FIELDS_KEY, "performCustomSetup", "performGeneratedSetUp" );
+		s_codeSections.addSection( "MultipleScene", "handleActiveChanged", CodeOrganizer.GETTERS_AND_SETTERS_KEY );
+		s_codeSections.addSection( "StaticMethods", CodeOrganizer.STATIC_METHODS_KEY );
+	}
+
+	@Override
 	public String generateJavaCode( JavaCodeGenerator generator ) {
 
 		generator.appendString( "class " );
@@ -116,15 +127,14 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 		generator.appendString( "{" );
 
 		for( NamedUserConstructor constructor : this.constructors ) {
-			constructor.appendJava( generator );
+			s_codeSections.addConstructor( constructor );
 		}
 
-		java.util.List<UserMethod> staticMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( UserMethod method : generator.getMethods( this ) ) {
 			if( method.isStatic() ) {
-				staticMethods.add( method );
+				s_codeSections.addStaticMethod( method );
 			} else {
-				method.appendJava( generator );
+				s_codeSections.addNonStaticMethod( method );
 			}
 		}
 
@@ -136,21 +146,23 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 					continue;
 				}
 			}
-			field.getGetter().appendJava( generator );
+			s_codeSections.addGetter( field );
 			if( field.isFinal() ) {
 				//pass
 			} else {
-				field.getSetter().appendJava( generator );
+				s_codeSections.addSetter( field );
 			}
 		}
 
 		for( UserField field : this.fields ) {
-			field.appendJava( generator );
+			s_codeSections.addField( field );
 		}
 
-		for( UserMethod method : staticMethods ) {
-			if( method.isStatic() ) {
-				method.appendJava( generator );
+		java.util.LinkedHashMap<String, java.util.List<CodeAppender>> orderedCode = s_codeSections.getOrderedSections();
+		for( java.util.Map.Entry<String, java.util.List<CodeAppender>> entry : orderedCode.entrySet() ) {
+			generator.appendString( "/* " + entry.getKey() + " */\n" );
+			for( CodeAppender item : entry.getValue() ) {
+				item.appendJava( generator );
 			}
 		}
 
