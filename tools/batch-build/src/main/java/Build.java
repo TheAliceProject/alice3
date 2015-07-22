@@ -59,7 +59,7 @@ public class Build {
 
 				.isPlugin6Desired( true )
 				.isPlugin8Desired( true )
-				.isInstallerDesired( false )
+				.isInstallerDesired( true )
 				.isJavaDocGenerationDesired( false )
 				.isCleanDesired( false )
 
@@ -88,8 +88,8 @@ public class Build {
 
 		edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "build" );
 		timer.start();
-		//buildRepo.compileJars();
-		//timer.mark( "compileJars" );
+		buildRepo.compileJars();
+		timer.mark( "compileJars" );
 
 		java.util.List<Plugin> plugins = repo.getPlugins();
 		if( plugins.size() > 0 ) {
@@ -98,34 +98,41 @@ public class Build {
 
 			for( Plugin plugin : repo.getPlugins() ) {
 				plugin.copyJars( buildRepo );
-				timer.mark( "copyJars" );
+				timer.mark( "copyJars" + plugin.getVersion() );
 
 				plugin.copyDistribution( buildRepo );
-				timer.mark( "copyDistribution" );
+				timer.mark( "copyDistribution" + plugin.getVersion() );
 
 				plugin.prepareFiles();
-				timer.mark( "prepareFiles" );
+				timer.mark( "prepareFiles" + plugin.getVersion() );
 
 				plugin.zipSrc( buildRepo );
-				timer.mark( "zipSrc" );
+				timer.mark( "zipSrc" + plugin.getVersion() );
 
 				plugin.zipJavaDocs( tempDirectoryForJavaDoc );
-				timer.mark( "zipJavaDocs" );
+				timer.mark( "zipJavaDocs" + plugin.getVersion() );
 
 				if( config.getMode().isDev() ) {
 					//pass
 				} else {
 					plugin.createNbm();
-					timer.mark( "nbm" );
+					timer.mark( "nbm" + plugin.getVersion() );
 				}
 			}
 		}
 
 		if( config.isInstallerDesired() ) {
 			Installer installer = new Installer( config, repo.getRootDir() );
-			timer.mark( "installer" );
+			installer.copyJarsFromMaven();
+			timer.mark( "copyJarsFromMaven" );
+			installer.copyJarsFromBuild( buildRepo );
+			timer.mark( "copyJarsFromBuild" );
+
 			installer.copyDistribution( buildRepo );
 			timer.mark( "copyDistribution" );
+
+			installer.prepareInstall4jFile();
+			timer.mark( "prepareInstall4jFile" );
 		}
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();

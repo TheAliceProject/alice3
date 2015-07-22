@@ -127,6 +127,10 @@ public abstract class Plugin {
 		return this.projectXmlText;
 	}
 
+	public int getVersion() {
+		return this.version;
+	}
+
 	public void copyJars( BuildRepo buildRepo ) throws java.io.IOException {
 		ProjectCollection coreProjectCollection = new ProjectCollection
 				.Builder( "core" )
@@ -139,15 +143,7 @@ public abstract class Plugin {
 								"story-api-migration"
 						).build();
 
-		for( String projectName : coreProjectCollection.getProjectNames() ) {
-			String filename = projectName + "-0.0.1-SNAPSHOT.jar";
-			java.io.File src = new java.io.File( buildRepo.getRootDir(), coreProjectCollection.getDirName() + "/" + projectName + "/target/" + filename );
-			java.io.File dst = new java.io.File( this.getJarsDir(), filename );
-			assert src.exists() : src;
-			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
-			assert dst.exists() : dst;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
-		}
+		buildRepo.copyJars( coreProjectCollection, this.getJarsDir() );
 
 		java.util.List<String> jarPathsToCopyFromMaven = PluginCommon.getJarPathsToCopyFromMaven( this.config );
 

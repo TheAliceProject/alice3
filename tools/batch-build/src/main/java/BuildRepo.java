@@ -71,6 +71,18 @@ public class BuildRepo extends GitRepo {
 		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
 	}
 
+	public void copyJars( ProjectCollection projectCollection, java.io.File dstDir ) throws java.io.IOException {
+		for( String projectName : projectCollection.getProjectNames() ) {
+			String filename = projectName + "-0.0.1-SNAPSHOT.jar";
+			java.io.File src = new java.io.File( this.getRootDir(), projectCollection.getDirName() + "/" + projectName + "/target/" + filename );
+			java.io.File dst = new java.io.File( dstDir, filename );
+			assert src.exists() : src;
+			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
+			assert dst.exists() : dst;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
+		}
+	}
+
 	public java.io.File generateJavaDocs() throws java.io.IOException {
 		java.io.File tempDirectoryForJavaDoc = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "tempDirectoryForJavaDoc" );
 		boolean isRequired = ( this.getConfig().isJavaDocGenerationDesired() ) || ( tempDirectoryForJavaDoc.exists() == false );
