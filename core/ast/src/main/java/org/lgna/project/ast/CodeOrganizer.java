@@ -58,7 +58,8 @@ public class CodeOrganizer {
 	public static final String GETTERS_KEY = "GETTERS";
 	public static final String SETTERS_KEY = "SETTERS";
 	public static final String CONSTRUCTORS_KEY = "CONSTRUCTORS";
-	public static final String DEFAULT = "DEFAULT";
+
+	private static final String DEFAULT = "DEFAULT";
 
 	public CodeOrganizer() {
 
@@ -127,9 +128,17 @@ public class CodeOrganizer {
 		for( java.util.Map.Entry<String, String[]> entry : codeSections.entrySet() ) {
 			java.util.List<CodeAppender> orderedAppenders = new java.util.LinkedList<CodeAppender>();
 			for( String itemKey : entry.getValue() ) {
-				orderedAppenders.addAll( itemLists.get( itemKey ) );
+				if( itemLists.containsKey( itemKey ) ) {
+					orderedAppenders.addAll( itemLists.get( itemKey ) );
+				}
+				else {
+					System.err.println( "No entries found for item key '" + itemKey + "'" );
+				}
 			}
 			orderedMap.put( entry.getKey(), orderedAppenders );
+		}
+		if( itemLists.containsKey( DEFAULT ) && !itemLists.get( DEFAULT ).isEmpty() ) {
+			orderedMap.put( DEFAULT, itemLists.get( DEFAULT ) );
 		}
 		return orderedMap;
 	}
