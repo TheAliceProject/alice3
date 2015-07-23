@@ -47,7 +47,18 @@ package org.lgna.project.ast;
  */
 public class CodeOrganizer {
 
-	private final java.util.LinkedHashMap<String, String[]> codeSections = new java.util.LinkedHashMap<String, String[]>();
+	public static class CodeOrganizerDefinition {
+		private final java.util.LinkedHashMap<String, String[]> codeSections = new java.util.LinkedHashMap<String, String[]>();
+
+		public CodeOrganizerDefinition() {
+		}
+
+		public void addSection( String sectionKey, String... itemKeys ) {
+			codeSections.put( sectionKey, itemKeys );
+		}
+	}
+
+	private final java.util.LinkedHashMap<String, String[]> codeSections;
 	private final java.util.Map<String, java.util.List<CodeAppender>> itemLists = new java.util.HashMap<String, java.util.List<CodeAppender>>();
 
 	public static final String ALL_METHODS_KEY = "ALL_METHODS";
@@ -61,12 +72,8 @@ public class CodeOrganizer {
 
 	private static final String DEFAULT = "DEFAULT";
 
-	public CodeOrganizer() {
-
-	}
-
-	public void addSection( String sectionKey, String... itemKeys ) {
-		codeSections.put( sectionKey, itemKeys );
+	public CodeOrganizer( CodeOrganizerDefinition codeOrganizerDefinition ) {
+		codeSections = codeOrganizerDefinition.codeSections;
 	}
 
 	private boolean hasItemKey( String itemKey ) {
