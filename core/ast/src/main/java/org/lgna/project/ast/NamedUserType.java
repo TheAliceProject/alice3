@@ -107,7 +107,7 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 		return this.isStrictFloatingPoint.getValue();
 	}
 
-	private static CodeOrganizer s_codeSections = new CodeOrganizer();
+	private static CodeOrganizer.CodeOrganizerDefinition s_codeSections = new CodeOrganizer.CodeOrganizerDefinition();
 	static {
 		s_codeSections.addSection( "Constructors", CodeOrganizer.CONSTRUCTORS_KEY );
 		s_codeSections.addSection( "EventListeners", "initializeEventListeners" );
@@ -126,15 +126,16 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 		generator.appendTypeName( this.superType.getValue() );
 		generator.appendString( "{" );
 
+		CodeOrganizer codeOrganizer = new CodeOrganizer( s_codeSections );
 		for( NamedUserConstructor constructor : this.constructors ) {
-			s_codeSections.addConstructor( constructor );
+			codeOrganizer.addConstructor( constructor );
 		}
 
 		for( UserMethod method : generator.getMethods( this ) ) {
 			if( method.isStatic() ) {
-				s_codeSections.addStaticMethod( method );
+				codeOrganizer.addStaticMethod( method );
 			} else {
-				s_codeSections.addNonStaticMethod( method );
+				codeOrganizer.addNonStaticMethod( method );
 			}
 		}
 
@@ -146,19 +147,19 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 					continue;
 				}
 			}
-			s_codeSections.addGetter( field );
+			codeOrganizer.addGetter( field );
 			if( field.isFinal() ) {
 				//pass
 			} else {
-				s_codeSections.addSetter( field );
+				codeOrganizer.addSetter( field );
 			}
 		}
 
 		for( UserField field : this.fields ) {
-			s_codeSections.addField( field );
+			codeOrganizer.addField( field );
 		}
 
-		java.util.LinkedHashMap<String, java.util.List<CodeAppender>> orderedCode = s_codeSections.getOrderedSections();
+		java.util.LinkedHashMap<String, java.util.List<CodeAppender>> orderedCode = codeOrganizer.getOrderedSections();
 		for( java.util.Map.Entry<String, java.util.List<CodeAppender>> entry : orderedCode.entrySet() ) {
 			generator.appendString( "/* " + entry.getKey() + " */\n" );
 			for( CodeAppender item : entry.getValue() ) {
