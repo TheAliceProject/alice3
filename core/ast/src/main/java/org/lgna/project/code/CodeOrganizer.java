@@ -40,7 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+package org.lgna.project.code;
+
+import org.lgna.project.ast.Getter;
+import org.lgna.project.ast.NamedUserConstructor;
+import org.lgna.project.ast.Setter;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
 
 /**
  * @author dculyba
@@ -130,16 +136,13 @@ public class CodeOrganizer {
 		addItem( field, field.getName(), FIELDS_KEY );
 	}
 
-	java.util.LinkedHashMap<String, java.util.List<CodeAppender>> getOrderedSections() {
+	public java.util.LinkedHashMap<String, java.util.List<CodeAppender>> getOrderedSections() {
 		java.util.LinkedHashMap<String, java.util.List<CodeAppender>> orderedMap = new java.util.LinkedHashMap<String, java.util.List<CodeAppender>>();
 		for( java.util.Map.Entry<String, String[]> entry : codeSections.entrySet() ) {
 			java.util.List<CodeAppender> orderedAppenders = new java.util.LinkedList<CodeAppender>();
 			for( String itemKey : entry.getValue() ) {
 				if( itemLists.containsKey( itemKey ) ) {
 					orderedAppenders.addAll( itemLists.get( itemKey ) );
-				}
-				else {
-					System.err.println( "No entries found for item key '" + itemKey + "'" );
 				}
 			}
 			orderedMap.put( entry.getKey(), orderedAppenders );

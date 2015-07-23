@@ -42,6 +42,8 @@
  */
 package org.lgna.project.ast;
 
+import org.lgna.project.code.CodeAppender;
+
 /**
  * @author Dennis Cosgrove
  */
