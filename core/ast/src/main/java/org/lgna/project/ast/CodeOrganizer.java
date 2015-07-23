@@ -118,12 +118,12 @@ public class CodeOrganizer {
 		addItem( method, method.getName(), NON_STATIC_METHODS_KEY, ALL_METHODS_KEY );
 	}
 
-	public void addGetter( UserField field ) {
-		addItem( field, field.getName(), GETTERS_KEY, GETTERS_AND_SETTERS_KEY );
+	public void addGetter( Getter getter ) {
+		addItem( getter, getter.getName(), GETTERS_KEY, GETTERS_AND_SETTERS_KEY );
 	}
 
-	public void addSetter( UserField field ) {
-		addItem( field, field.getName(), SETTERS_KEY, GETTERS_AND_SETTERS_KEY );
+	public void addSetter( Setter setter ) {
+		addItem( setter, setter.getName(), SETTERS_KEY, GETTERS_AND_SETTERS_KEY );
 	}
 
 	public void addField( UserField field ) {
