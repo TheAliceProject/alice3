@@ -43,6 +43,10 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.CodeGenerator;
+import org.lgna.project.code.CodeOrganizer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -107,16 +111,6 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 		return this.isStrictFloatingPoint.getValue();
 	}
 
-	private static CodeOrganizer.CodeOrganizerDefinition s_codeSections = new CodeOrganizer.CodeOrganizerDefinition();
-	static {
-		s_codeSections.addSection( "Constructors", CodeOrganizer.CONSTRUCTORS_KEY );
-		s_codeSections.addSection( "EventListeners", "initializeEventListeners" );
-		s_codeSections.addSection( "MethodsAndFunctions", CodeOrganizer.NON_STATIC_METHODS_KEY );
-		s_codeSections.addSection( "SceneSetup", CodeOrganizer.FIELDS_KEY, "performCustomSetup", "performGeneratedSetUp" );
-		s_codeSections.addSection( "MultipleScene", "handleActiveChanged", CodeOrganizer.GETTERS_AND_SETTERS_KEY );
-		s_codeSections.addSection( "StaticMethods", CodeOrganizer.STATIC_METHODS_KEY );
-	}
-
 	@Override
 	public String generateJavaCode( JavaCodeGenerator generator ) {
 
@@ -126,7 +120,7 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 		generator.appendTypeName( this.superType.getValue() );
 		generator.appendString( "{" );
 
-		CodeOrganizer codeOrganizer = new CodeOrganizer( s_codeSections );
+		CodeOrganizer codeOrganizer = generator.getNewCodeOrganizerForTypeName( this.getName() );
 		for( NamedUserConstructor constructor : this.constructors ) {
 			codeOrganizer.addConstructor( constructor );
 		}
@@ -161,9 +155,21 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 
 		java.util.LinkedHashMap<String, java.util.List<CodeAppender>> orderedCode = codeOrganizer.getOrderedSections();
 		for( java.util.Map.Entry<String, java.util.List<CodeAppender>> entry : orderedCode.entrySet() ) {
-			generator.appendString( "\n\n/* " + entry.getKey() + " */" );
-			for( CodeAppender item : entry.getValue() ) {
-				item.appendJava( generator );
+			if( !entry.getValue().isEmpty() ) {
+				String sectionComment = generator.getLocalizedCommentForSection( this, entry.getKey(), java.util.Locale.getDefault() );
+				if( sectionComment != null ) {
+					generator.appendString( "\n\n" + sectionComment + "\n" );
+				}
+				for( CodeAppender item : entry.getValue() ) {
+					if( item instanceof edu.cmu.cs.dennisc.pattern.Nameable ) {
+						String name = ( (edu.cmu.cs.dennisc.pattern.Nameable)item ).getName();
+						String itemComment = generator.getLocalizedCommentForSection( this, name, java.util.Locale.getDefault() );
+						if( itemComment != null ) {
+							generator.appendString( "\n" + itemComment + "\n" );
+						}
+					}
+					item.appendJava( generator );
+				}
 			}
 		}
 

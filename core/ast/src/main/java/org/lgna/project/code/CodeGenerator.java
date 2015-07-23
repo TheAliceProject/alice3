@@ -40,7 +40,9 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+package org.lgna.project.code;
+
+import org.lgna.project.ast.JavaCodeGenerator;
 
 /**
  * @author dculyba
