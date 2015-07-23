@@ -147,11 +147,11 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 					continue;
 				}
 			}
-			codeOrganizer.addGetter( field );
+			codeOrganizer.addGetter( field.getGetter() );
 			if( field.isFinal() ) {
 				//pass
 			} else {
-				codeOrganizer.addSetter( field );
+				codeOrganizer.addSetter( field.getSetter() );
 			}
 		}
 
@@ -161,7 +161,7 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 
 		java.util.LinkedHashMap<String, java.util.List<CodeAppender>> orderedCode = codeOrganizer.getOrderedSections();
 		for( java.util.Map.Entry<String, java.util.List<CodeAppender>> entry : orderedCode.entrySet() ) {
-			generator.appendString( "/* " + entry.getKey() + " */\n" );
+			generator.appendString( "\n\n/* " + entry.getKey() + " */" );
 			for( CodeAppender item : entry.getValue() ) {
 				item.appendJava( generator );
 			}
