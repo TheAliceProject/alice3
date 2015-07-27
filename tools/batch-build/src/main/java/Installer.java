@@ -74,7 +74,8 @@ public class Installer {
 
 	public void copyJarsFromMaven() throws java.io.IOException {
 		final java.util.List<String> batchDependencyPrefixes = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
-				"commons-io"
+				"commons-io",
+				"commons-cli"
 				) );
 		java.io.File extDir = new java.io.File( this.getTargetDir(), "ext" );
 		if( extDir.exists() ) {
