@@ -46,22 +46,27 @@
  */
 public class Build {
 	public static void main( String[] args ) throws Exception {
-		Mode mode;
-		if( args.length > 0 ) {
-			mode = Mode.valueOf( args[ 0 ] );
-		} else {
-			mode = Mode.BUILD;
-		}
+		org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
+		options.addOption( new org.apache.commons.cli.Option( "isDev", "mode=Mode.DEV" ) );
+		options.addOption( new org.apache.commons.cli.Option( "skipPlugin6", "isPlugin6Desired=false" ) );
+		options.addOption( new org.apache.commons.cli.Option( "skipPlugin8", "isPlugin8Desired=false" ) );
+		options.addOption( new org.apache.commons.cli.Option( "skipInstaller", "isInstallerDesired=false" ) );
+		options.addOption( new org.apache.commons.cli.Option( "skipClean", "isJavaDocGenerationDesired=false" ) );
+		options.addOption( new org.apache.commons.cli.Option( "skipJavaDocs", "isCleanDesired=false" ) );
+
+		org.apache.commons.cli.CommandLineParser parser = new org.apache.commons.cli.DefaultParser();
+		org.apache.commons.cli.CommandLine commandLine = parser.parse( options, args );
 
 		Config config = new Config.Builder()
-				.mode( mode )
 				.rootDir( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Code" ) )
+				.mode( commandLine.hasOption( "isDev" ) ? Mode.DEV : Mode.BUILD )
 
-				.isPlugin6Desired( true )
-				.isPlugin8Desired( true )
-				.isInstallerDesired( true )
-				.isJavaDocGenerationDesired( true )
-				.isCleanDesired( false )
+				.isPlugin6Desired( commandLine.hasOption( "skipPlugin6" ) == false )
+				.isPlugin8Desired( commandLine.hasOption( "skipPlugin8" ) == false )
+				.isInstallerDesired( commandLine.hasOption( "skipInstaller" ) == false )
+
+				.isCleanDesired( commandLine.hasOption( "skipClean" ) == false )
+				.isJavaDocGenerationDesired( commandLine.hasOption( "skipJavaDocs" ) == false )
 
 				.joglVersion( "2.2.4" )
 				.aliceModelSourceVersion( "2014.08.20" )
