@@ -156,16 +156,12 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 		java.util.LinkedHashMap<String, java.util.List<CodeAppender>> orderedCode = codeOrganizer.getOrderedSections();
 		for( java.util.Map.Entry<String, java.util.List<CodeAppender>> entry : orderedCode.entrySet() ) {
 			if( !entry.getValue().isEmpty() ) {
-				String sectionComment = generator.getLocalizedCommentForSection( this, entry.getKey(), java.util.Locale.getDefault() );
-				if( sectionComment != null ) {
-					generator.appendString( "\n\n" + sectionComment + "\n" );
-				}
 				boolean shouldCollapseSection = codeOrganizer.shouldCollapseSection( entry.getKey() );
 				generator.appendSectionPrefix( this, entry.getKey(), shouldCollapseSection );
 				for( CodeAppender item : entry.getValue() ) {
 					if( item instanceof edu.cmu.cs.dennisc.pattern.Nameable ) {
 						String name = ( (edu.cmu.cs.dennisc.pattern.Nameable)item ).getName();
-						String itemComment = generator.getLocalizedCommentForSection( this, name, java.util.Locale.getDefault() );
+						String itemComment = generator.getLocalizedCommentForItemName( this, name, java.util.Locale.getDefault() );
 						if( itemComment != null ) {
 							generator.appendString( "\n" + itemComment + "\n" );
 						}
