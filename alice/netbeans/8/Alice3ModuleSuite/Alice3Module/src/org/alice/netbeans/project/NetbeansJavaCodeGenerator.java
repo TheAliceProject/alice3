@@ -17,16 +17,8 @@ import org.lgna.story.SScene;
  */
 /*package-private*/ class NetbeansJavaCodeGenerator extends JavaCodeGenerator {
 
-//	private static final Map<String, String> methodNamesToCollapse;
 	private static final String INDENT = "    "; //todo: query indent from netbeans format
-	//private static final String BOILER_PLATE_CODE_TEXT = "boiler plate code";
 	private static final String IMPORT_TEXT = "imports";
-
-//	static {
-//		methodNamesToCollapse = Maps.newHashMap();
-//		methodNamesToCollapse.put("performGeneratedSetUp", BOILER_PLATE_CODE_TEXT);
-//		methodNamesToCollapse.put("handleActiveChanged", BOILER_PLATE_CODE_TEXT);
-//	}
 
 	public NetbeansJavaCodeGenerator(JavaCodeGenerator.Builder javaCodeGeneratorBuilder) {
 		super(javaCodeGeneratorBuilder);
@@ -49,59 +41,34 @@ import org.lgna.story.SScene;
 			return super.getImportsPostfix();
 		}
 	}
-
-//	private String getMethodCollapseText(UserMethod method) {
-//		if( Alice3OptionsPanelController.isBoilerPlateMethodCollapsingDesired() ) {
-//			if (method.getDeclaringType().isAssignableTo(SScene.class)) {
-//				return methodNamesToCollapse.get(method.name.getValue());
-//			}
-//		}
-//		return null;
-//	}
-//
-//	@Override
-//	protected String getMethodPrefix(UserMethod method) {
-//		String collapseText = this.getMethodCollapseText(method);
-//		if (collapseText != null) {
-//			return "\n" + INDENT + "// <editor-fold defaultstate=\"collapsed\" desc=\"" + collapseText + ": " + method.name.getValue() + "\">\n";
-//		} else {
-//			return super.getMethodPrefix(method);
-//		}
-//	}
-//
-//	@Override
-//	protected String getMethodPostfix(UserMethod method) {
-//		String collapseText = this.getMethodCollapseText(method);
-//		if (collapseText != null) {
-//			return "\n" + INDENT + "// </editor-fold>\n";
-//		} else {
-//			return super.getMethodPostfix(method);
-//		}
-//	}
         
         @Override
         protected String getSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
             String sectionComment = this.getLocalizedCommentForSection( declaringType, sectionName, java.util.Locale.getDefault() );
+            String rv = null;
             if (shouldCollapse && Alice3OptionsPanelController.isBoilerPlateMethodCollapsingDesired()) {
                 String desc = sectionComment != null ? "desc=\""+ sectionComment + "\"" : "";
-                  return "\n" + INDENT + "// <editor-fold defaultstate=\"collapsed\" "+desc+">\n";  
+                rv = "\n" + INDENT + "// <editor-fold defaultstate=\"collapsed\" "+desc+">\n";  
             }
             else if( sectionComment != null ) {
-                return "\n\n" + INDENT + sectionComment + "\n";
+                rv = "\n\n" + INDENT + sectionComment + "\n";
             }
             else {
-                return super.getSectionPrefix(declaringType, sectionName, shouldCollapse);
+                rv = super.getSectionPrefix(declaringType, sectionName, shouldCollapse);
             }
+            return rv;
 	}
 
         @Override
 	protected String getSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
-		if (shouldCollapse && Alice3OptionsPanelController.isBoilerPlateMethodCollapsingDesired()) {
-                    return "\n" + INDENT + "// </editor-fold>\n";
-                }
-                else {
-                    return super.getSectionPrefix(declaringType, sectionName, shouldCollapse);
-                }
+            String rv = null;
+            if (shouldCollapse && Alice3OptionsPanelController.isBoilerPlateMethodCollapsingDesired()) {
+                rv = "\n" + INDENT + "// </editor-fold>\n";
+            }
+            else {
+                rv = super.getSectionPostfix(declaringType, sectionName, shouldCollapse);
+            }
+            return rv;
 	}
 
 	private void appendMethodsWithManagementLevel(List<UserMethod> list, UserType<?> type, ManagementLevel managementLevel) {

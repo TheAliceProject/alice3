@@ -426,7 +426,7 @@ public class JavaCodeGenerator {
 	protected String getSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
 		String sectionComment = this.getLocalizedCommentForSection( declaringType, sectionName + ".end", java.util.Locale.getDefault() );
 		if( sectionComment != null ) {
-			return "\n\n" + sectionComment + "\n";
+			return "\n" + sectionComment + "\n";
 		}
 		else {
 			return "";
