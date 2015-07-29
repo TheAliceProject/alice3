@@ -413,6 +413,22 @@ public class JavaCodeGenerator {
 		return "";
 	}
 
+	protected String getSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
+		return "";
+	}
+
+	protected String getSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
+		return "";
+	}
+
+	/* package-private */final void appendSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
+		this.codeStringBuilder.append( this.getSectionPrefix( declaringType, sectionName, shouldCollapse ) );
+	}
+
+	/* package-private */final void appendSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
+		this.codeStringBuilder.append( this.getSectionPostfix( declaringType, sectionName, shouldCollapse ) );
+	}
+
 	/* package-private */final void appendMethodPrefix( UserMethod method ) {
 		this.codeStringBuilder.append( this.getMethodPrefix( method ) );
 	}
@@ -462,9 +478,9 @@ public class JavaCodeGenerator {
 		return formatCommentStringForSection( commentText );
 	}
 
-	private String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, java.util.Locale locale ) {
-		if( commentsLocalizationBundleName != null ) {
-			java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( commentsLocalizationBundleName, locale );
+	public static String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, String bundleName, java.util.Locale locale ) {
+		if( bundleName != null ) {
+			java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
 			String key;
 			AbstractType<?, ?, ?> t = type;
 			boolean done = false;
@@ -489,8 +505,13 @@ public class JavaCodeGenerator {
 		return null;
 	}
 
+	public String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, java.util.Locale locale ) {
+		String comment = getLocalizedComment( type, itemName, this.commentsLocalizationBundleName, locale );
+		return comment;
+	}
+
 	public String getLocalizedCommentForSection( AbstractType<?, ?, ?> type, String sectionName, java.util.Locale locale ) {
-		String comment = getLocalizedComment( type, sectionName, locale );
+		String comment = getLocalizedComment( type, sectionName, this.commentsLocalizationBundleName, locale );
 		if( comment != null ) {
 			comment = formatCommentStringForSection( comment );
 		}
@@ -498,7 +519,7 @@ public class JavaCodeGenerator {
 	}
 
 	public String getLocalizedCommentForItemName( AbstractType<?, ?, ?> type, String itemName, java.util.Locale locale ) {
-		String comment = getLocalizedComment( type, itemName, locale );
+		String comment = getLocalizedComment( type, itemName, this.commentsLocalizationBundleName, locale );
 		if( comment != null ) {
 			comment = formatCommentStringForItem( comment );
 		}

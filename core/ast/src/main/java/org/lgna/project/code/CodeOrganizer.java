@@ -55,16 +55,23 @@ public class CodeOrganizer {
 
 	public static class CodeOrganizerDefinition {
 		private final java.util.LinkedHashMap<String, String[]> codeSections = new java.util.LinkedHashMap<String, String[]>();
+		private final java.util.HashMap<String, Boolean> shouldCollapseSection = new java.util.HashMap<String, Boolean>();
 
 		public CodeOrganizerDefinition() {
 		}
 
 		public void addSection( String sectionKey, String... itemKeys ) {
+			addSection( sectionKey, false, itemKeys );
+		}
+
+		public void addSection( String sectionKey, Boolean shouldCollapse, String... itemKeys ) {
 			codeSections.put( sectionKey, itemKeys );
+			shouldCollapseSection.put( sectionKey, shouldCollapse );
 		}
 	}
 
 	private final java.util.LinkedHashMap<String, String[]> codeSections;
+	private final java.util.HashMap<String, Boolean> shouldCollapseSection;
 	private final java.util.Map<String, java.util.List<CodeAppender>> itemLists = new java.util.HashMap<String, java.util.List<CodeAppender>>();
 
 	public static final String ALL_METHODS_KEY = "ALL_METHODS";
@@ -80,6 +87,7 @@ public class CodeOrganizer {
 
 	public CodeOrganizer( CodeOrganizerDefinition codeOrganizerDefinition ) {
 		codeSections = codeOrganizerDefinition.codeSections;
+		shouldCollapseSection = codeOrganizerDefinition.shouldCollapseSection;
 	}
 
 	private boolean hasItemKey( String itemKey ) {
@@ -134,6 +142,13 @@ public class CodeOrganizer {
 
 	public void addField( UserField field ) {
 		addItem( field, field.getName(), FIELDS_KEY );
+	}
+
+	public boolean shouldCollapseSection( String sectionKey ) {
+		if( this.shouldCollapseSection.containsKey( sectionKey ) ) {
+			return this.shouldCollapseSection.get( sectionKey );
+		}
+		return false;
 	}
 
 	public java.util.LinkedHashMap<String, java.util.List<CodeAppender>> getOrderedSections() {

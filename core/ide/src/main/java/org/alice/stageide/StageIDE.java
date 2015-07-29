@@ -74,6 +74,11 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
+	protected String getInnerCommentForMethodName( String methodName ) {
+		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getInnerCommentForMethodName( this.getSceneType(), methodName );
+	}
+
+	@Override
 	protected org.alice.ide.frametitle.IdeFrameTitleGenerator createFrameTitleGenerator() {
 		return new org.alice.ide.frametitle.AliceIdeFrameTitleGenerator();
 	}
@@ -136,7 +141,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 					"The Sims (TM) 2 Art Assets" );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "You must accept the license agreements in order to use Alice 3 and The Sims (TM) 2 Art Assets.  Exiting." )
-					.buildAndShow();
+			.buildAndShow();
 			System.exit( -1 );
 		}
 	}
