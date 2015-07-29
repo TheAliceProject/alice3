@@ -77,6 +77,28 @@ import org.lgna.story.SScene;
 			return super.getMethodPostfix(method);
 		}
 	}
+        
+        @Override
+        protected String getSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
+		String sectionComment = this.getLocalizedCommentForSection( declaringType, sectionName, java.util.Locale.getDefault() );
+		if( sectionComment != null ) {
+			return "\n\n" + sectionComment + "\n";
+		}
+		else {
+			return "";
+		}
+	}
+
+        @Override
+	protected String getSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
+		String sectionComment = this.getLocalizedCommentForSection( declaringType, sectionName + ".end", java.util.Locale.getDefault() );
+		if( sectionComment != null ) {
+			return "\n\n" + sectionComment + "\n";
+		}
+		else {
+			return "";
+		}
+	}
 
 	private void appendMethodsWithManagementLevel(List<UserMethod> list, UserType<?> type, ManagementLevel managementLevel) {
 		for (UserMethod method : type.methods) {
