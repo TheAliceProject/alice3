@@ -62,8 +62,8 @@ public class JavaCodeUtilities {
 		s_sceneClassCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS_KEY );
 		s_sceneClassCodeOrganizer.addSection( "EventListenersSection", "initializeEventListeners" );
 		s_sceneClassCodeOrganizer.addSection( "MethodsAndFunctionsSection", CodeOrganizer.NON_STATIC_METHODS_KEY );
-		s_sceneClassCodeOrganizer.addSection( "SceneSetupSection", CodeOrganizer.FIELDS_KEY, "performCustomSetup", "performGeneratedSetUp" );
-		s_sceneClassCodeOrganizer.addSection( "MultipleSceneSection", "handleActiveChanged", CodeOrganizer.GETTERS_AND_SETTERS_KEY );
+		s_sceneClassCodeOrganizer.addSection( "SceneSetupSection", true, CodeOrganizer.FIELDS_KEY, "performCustomSetup", "performGeneratedSetUp" );
+		s_sceneClassCodeOrganizer.addSection( "MultipleSceneSection", true, "handleActiveChanged", CodeOrganizer.GETTERS_AND_SETTERS_KEY );
 		s_sceneClassCodeOrganizer.addSection( "StaticMethodsSection", CodeOrganizer.STATIC_METHODS_KEY );
 
 		s_programClassCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS_KEY );
@@ -78,24 +78,24 @@ public class JavaCodeUtilities {
 
 	public static org.lgna.project.ast.JavaCodeGenerator.Builder createJavaCodeGeneratorBuilder() {
 		return new org.lgna.project.ast.JavaCodeGenerator.Builder()
-				.isLambdaSupported( true )
-				.isPublicStaticFinalFieldGetterDesired( false )
-				.addCommentsLocalizationBundleName( "org.lgna.story.CodeComments" )
-				.addImportOnDemandPackage( Package.getPackage( "org.lgna.story" ) )
-				.addDefaultCodeOrganizerDefinition( s_defaultCodeOrganizer )
-				.addCodeOrganizerDefinition( "Scene", s_sceneClassCodeOrganizer )
-				.addCodeOrganizerDefinition( "Program", s_programClassCodeOrganizer )
-				.addImportStaticMethod(
-						edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod(
-								org.lgna.common.ThreadUtilities.class,
-								"doTogether",
-								Runnable[].class ) )
-				.addImportStaticMethod(
-						edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod(
-								org.lgna.common.ThreadUtilities.class,
-								"eachInTogether",
-								org.lgna.common.EachInTogetherRunnable.class,
-								Object[].class ) );
+		.isLambdaSupported( true )
+		.isPublicStaticFinalFieldGetterDesired( false )
+		.addCommentsLocalizationBundleName( "org.lgna.story.CodeComments" )
+		.addImportOnDemandPackage( Package.getPackage( "org.lgna.story" ) )
+		.addDefaultCodeOrganizerDefinition( s_defaultCodeOrganizer )
+		.addCodeOrganizerDefinition( "Scene", s_sceneClassCodeOrganizer )
+		.addCodeOrganizerDefinition( "Program", s_programClassCodeOrganizer )
+		.addImportStaticMethod(
+				edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod(
+						org.lgna.common.ThreadUtilities.class,
+						"doTogether",
+						Runnable[].class ) )
+						.addImportStaticMethod(
+								edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod(
+										org.lgna.common.ThreadUtilities.class,
+										"eachInTogether",
+										org.lgna.common.EachInTogetherRunnable.class,
+										Object[].class ) );
 	}
 
 	public static org.lgna.project.ast.JavaCodeGenerator createJavaCodeGenerator() {
