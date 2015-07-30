@@ -186,7 +186,7 @@ public abstract class Plugin {
 		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( dstManifestFile, this.getManifestText() );
 		assert dstManifestFile.exists() : dstManifestFile;
 
-		java.io.File dstLibraryXmlFile = new java.io.File( this.getWizardDir(), "src/org/alice/netbeans/aliceprojectwizard/Alice3Library.xml" );
+		java.io.File dstLibraryXmlFile = this.getLibraryXmlFile();
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( dstLibraryXmlFile );
 		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( dstLibraryXmlFile, this.getLibraryXmlText() );
 		assert dstLibraryXmlFile.exists() : dstLibraryXmlFile;
