@@ -146,6 +146,7 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 
 	@Override
 	public void appendJava( JavaCodeGenerator generator ) {
+		generator.appendFieldPrefix( this );
 		generator.appendAccessLevel( this.getAccessLevel() );
 		if( this.isStatic() ) {
 			generator.appendString( "static " );
@@ -159,6 +160,7 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 		generator.appendChar( '=' );
 		generator.appendExpression( this.initializer.getValue() );
 		generator.appendSemicolon();
+		generator.appendFieldPostfix( this );
 	}
 
 	@Override

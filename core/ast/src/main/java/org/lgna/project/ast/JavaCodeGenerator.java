@@ -405,12 +405,32 @@ public class JavaCodeGenerator {
 		}
 	}
 
-	protected String getMethodPrefix( UserMethod method ) {
-		return "";
+	protected String getMemberPrefix( AbstractMember member ) {
+		String memberComment = this.getLocalizedCommentForItemName( member.getDeclaringType(), member.getName(), java.util.Locale.getDefault() );
+		if( memberComment != null ) {
+			return "\n" + memberComment + "\n";
+		}
+		else {
+			return "";
+		}
 	}
 
-	protected String getMethodPostfix( UserMethod method ) {
-		return "";
+	protected String getMemberPostfix( AbstractMember member ) {
+		String memberComment = this.getLocalizedCommentForItemName( member.getDeclaringType(), member.getName() + ".end", java.util.Locale.getDefault() );
+		if( memberComment != null ) {
+			return "\n" + memberComment + "\n";
+		}
+		else {
+			return "";
+		}
+	}
+
+	/* package-private */final void appendMemberPrefix( AbstractMember member ) {
+		this.codeStringBuilder.append( this.getMemberPrefix( member ) );
+	}
+
+	/* package-private */final void appendMemberPostfix( AbstractMember member ) {
+		this.codeStringBuilder.append( this.getMemberPostfix( member ) );
 	}
 
 	protected String getSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
@@ -441,12 +461,36 @@ public class JavaCodeGenerator {
 		this.codeStringBuilder.append( this.getSectionPostfix( declaringType, sectionName, shouldCollapse ) );
 	}
 
+	protected String getMethodPrefix( UserMethod method ) {
+		return getMemberPrefix( method );
+	}
+
+	protected String getMethodPostfix( UserMethod method ) {
+		return getMemberPostfix( method );
+	}
+
 	/* package-private */final void appendMethodPrefix( UserMethod method ) {
 		this.codeStringBuilder.append( this.getMethodPrefix( method ) );
 	}
 
 	/* package-private */final void appendMethodPostfix( UserMethod method ) {
 		this.codeStringBuilder.append( this.getMethodPostfix( method ) );
+	}
+
+	protected String getFieldPrefix( UserField field ) {
+		return getMemberPrefix( field );
+	}
+
+	protected String getFieldPostfix( UserField field ) {
+		return getMemberPostfix( field );
+	}
+
+	/* package-private */final void appendFieldPrefix( UserField field ) {
+		this.codeStringBuilder.append( this.getFieldPrefix( field ) );
+	}
+
+	/* package-private */final void appendFieldPostfix( UserField field ) {
+		this.codeStringBuilder.append( this.getFieldPostfix( field ) );
 	}
 
 	public Iterable<UserMethod> getMethods( UserType<?> type ) {
