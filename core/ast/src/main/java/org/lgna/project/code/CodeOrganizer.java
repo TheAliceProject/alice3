@@ -74,14 +74,14 @@ public class CodeOrganizer {
 	private final java.util.HashMap<String, Boolean> shouldCollapseSection;
 	private final java.util.Map<String, java.util.List<CodeAppender>> itemLists = new java.util.HashMap<String, java.util.List<CodeAppender>>();
 
-	public static final String ALL_METHODS_KEY = "ALL_METHODS";
-	public static final String NON_STATIC_METHODS_KEY = "NON_STATIC_METHODS";
-	public static final String STATIC_METHODS_KEY = "STATIC_METHODS";
-	public static final String FIELDS_KEY = "FIELDS";
-	public static final String GETTERS_AND_SETTERS_KEY = "GETTERS_AND_SETTERS";
-	public static final String GETTERS_KEY = "GETTERS";
-	public static final String SETTERS_KEY = "SETTERS";
-	public static final String CONSTRUCTORS_KEY = "CONSTRUCTORS";
+	public static final String ALL_METHODS = "ALL_METHODS";
+	public static final String NON_STATIC_METHODS = "NON_STATIC_METHODS";
+	public static final String STATIC_METHODS = "STATIC_METHODS";
+	public static final String FIELDS = "FIELDS";
+	public static final String GETTERS_AND_SETTERS = "GETTERS_AND_SETTERS";
+	public static final String GETTERS = "GETTERS";
+	public static final String SETTERS = "SETTERS";
+	public static final String CONSTRUCTORS = "CONSTRUCTORS";
 
 	private static final String DEFAULT = "DEFAULT";
 
@@ -121,27 +121,27 @@ public class CodeOrganizer {
 	}
 
 	public void addConstructor( NamedUserConstructor constructor ) {
-		addItem( constructor, constructor.getName(), CONSTRUCTORS_KEY );
+		addItem( constructor, constructor.getName(), CONSTRUCTORS );
 	}
 
 	public void addStaticMethod( UserMethod method ) {
-		addItem( method, method.getName(), STATIC_METHODS_KEY, ALL_METHODS_KEY );
+		addItem( method, method.getName(), STATIC_METHODS, ALL_METHODS );
 	}
 
 	public void addNonStaticMethod( UserMethod method ) {
-		addItem( method, method.getName(), NON_STATIC_METHODS_KEY, ALL_METHODS_KEY );
+		addItem( method, method.getName(), NON_STATIC_METHODS, ALL_METHODS );
 	}
 
 	public void addGetter( Getter getter ) {
-		addItem( getter, getter.getName(), GETTERS_KEY, GETTERS_AND_SETTERS_KEY );
+		addItem( getter, getter.getName(), GETTERS, GETTERS_AND_SETTERS );
 	}
 
 	public void addSetter( Setter setter ) {
-		addItem( setter, setter.getName(), SETTERS_KEY, GETTERS_AND_SETTERS_KEY );
+		addItem( setter, setter.getName(), SETTERS, GETTERS_AND_SETTERS );
 	}
 
 	public void addField( UserField field ) {
-		addItem( field, field.getName(), FIELDS_KEY );
+		addItem( field, field.getName(), FIELDS );
 	}
 
 	public boolean shouldCollapseSection( String sectionKey ) {
