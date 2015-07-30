@@ -158,7 +158,7 @@ public class BootstrapUtilties {
 							createThisFieldAccess( field ),
 							method,
 							new org.lgna.project.ast.ThisExpression()
-					)
+							)
 					);
 		}
 
@@ -235,7 +235,7 @@ public class BootstrapUtilties {
 						new org.lgna.project.ast.IntegerLiteral( 1 ),
 						Integer.class,
 						Integer.class
-				)
+						)
 				);
 		org.lgna.project.ast.BlockStatement ifOuterTrueBody = ifOuter.booleanExpressionBodyPairs.get( 0 ).body.getValue();
 		org.lgna.project.ast.BlockStatement ifInnerTrueBody = ifInner.booleanExpressionBodyPairs.get( 0 ).body.getValue();
@@ -275,7 +275,7 @@ public class BootstrapUtilties {
 				createMethodInvocationStatement(
 						new org.lgna.project.ast.ThisExpression(),
 						myFirstMethod
-				)
+						)
 				);
 
 		org.lgna.project.ast.NamedUserType rv = createType( "Program", org.lgna.story.SProgram.class );
@@ -297,7 +297,7 @@ public class BootstrapUtilties {
 						new org.lgna.project.ast.LocalAccess( storyLocal ),
 						rv.findMethod( "initializeInFrame", String[].class ),
 						new org.lgna.project.ast.ParameterAccess( argsParameter )
-				)
+						)
 				);
 		mainBody.statements.add(
 				createMethodInvocationStatement(
@@ -306,11 +306,12 @@ public class BootstrapUtilties {
 						new org.lgna.project.ast.MethodInvocation(
 								new org.lgna.project.ast.LocalAccess( storyLocal ),
 								sceneField.getGetter()
+								)
 						)
-				)
 				);
 
 		rv.methods.add( mainMethod );
+		addCommentIfNecessaryToMethod( mainMethod );
 
 		return rv;
 	}
