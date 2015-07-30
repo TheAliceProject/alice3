@@ -159,13 +159,6 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 				boolean shouldCollapseSection = codeOrganizer.shouldCollapseSection( entry.getKey() );
 				generator.appendSectionPrefix( this, entry.getKey(), shouldCollapseSection );
 				for( CodeAppender item : entry.getValue() ) {
-					if( item instanceof edu.cmu.cs.dennisc.pattern.Nameable ) {
-						String name = ( (edu.cmu.cs.dennisc.pattern.Nameable)item ).getName();
-						String itemComment = generator.getLocalizedCommentForItemName( this, name, java.util.Locale.getDefault() );
-						if( itemComment != null ) {
-							generator.appendString( "\n" + itemComment + "\n" );
-						}
-					}
 					item.appendJava( generator );
 				}
 				generator.appendSectionPostfix( this, entry.getKey(), shouldCollapseSection );
