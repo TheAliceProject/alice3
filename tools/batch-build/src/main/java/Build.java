@@ -45,222 +45,129 @@
  * @author Dennis Cosgrove
  */
 public class Build {
-	/*package-private*/static String substituteVersionTexts( Config config, String s ) {
-		s = s.trim();
-		s = s.replace( "___ALICE_VERSION___", org.lgna.project.ProjectVersion.getCurrentVersionText() );
-		s = s.replace( "___JOGL_VERSION___", config.getJoglVersion() );
-		s = s.replace( "___ALICE_MODEL_SOURCE_VERSION___", config.getAliceModelSourceVersion() );
-		s = s.replace( "___NEBULOUS_MODEL_SOURCE_VERSION___", config.getNebulousModelSourceVersion() );
-		return s;
-	}
-
-	private class JarInfo {
-		public JarInfo( String dirName, String... projectNames ) {
-			this.dirName = dirName;
-			this.projectNames = projectNames;
-		}
-
-		public void copyJarsToNetBeans8() throws java.io.IOException {
-			for( String projectName : this.projectNames ) {
-				String filename = projectName + "-0.0.1-SNAPSHOT.jar";
-				java.io.File src = new java.io.File( buildRepo.getRoot(), this.dirName + "/" + projectName + "/target/" + filename );
-				java.io.File dst = new java.io.File( repo.getPlugin8().getJars(), filename );
-				assert src.exists() : src;
-				edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
-				assert dst.exists() : dst;
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
-			}
-		}
-
-		private final String dirName;
-		private final String[] projectNames;
-	}
-
-	private void copyJars() throws java.io.IOException {
-		JarInfo jarInfo = new JarInfo( "core",
-				"util",
-				"scenegraph",
-				"glrender",
-				"story-api",
-				"ast",
-				"story-api-migration" );
-
-		jarInfo.copyJarsToNetBeans8();
-		final java.io.File MAVEN_REPOSITORY_DIRECTORY = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository" );
-		for( String mavenRepoJarPath : this.mavenRepoJars ) {
-			java.io.File src = new java.io.File( MAVEN_REPOSITORY_DIRECTORY, mavenRepoJarPath );
-			java.io.File dst = new java.io.File( this.repo.getPlugin8().getJars(), src.getName() );
-			assert src.exists() : src;
-			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( src, dst );
-			assert dst.exists() : dst;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( dst );
-		}
-	}
-
-	private java.io.File _createCoreSrcDirectory( String subName ) {
-		return new java.io.File( this.buildRepo.getRoot(), "core/" + subName + "/src/main/java" );
-	}
-
-	private void _ant( String arg, java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
-		java.util.List<String> command = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		command.add( AntUtils.getAntCommandFile().getAbsolutePath() );
-		if( arg != null ) {
-			command.add( arg );
-		}
-
-		ProcessBuilder processBuilder = new ProcessBuilder( command );
-		if( javaHomeDir != null ) {
-			java.util.Map<String, String> env = processBuilder.environment();
-			env.put( "JAVA_HOME", javaHomeDir.getAbsolutePath() );
-		}
-		processBuilder.directory( this.repo.getPlugin8().getSuite() );
-
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( processBuilder.directory() );
-		edu.cmu.cs.dennisc.java.lang.ProcessUtilities.startAndWaitFor( processBuilder, System.out, System.err );
-	}
-
-	private void antClean( java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
-		_ant( "clean", javaHomeDir );
-	}
-
-	private void antCompile( java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
-		_ant( null, javaHomeDir );
-	}
-
-	private void antNBM( java.io.File javaHomeDir ) throws java.io.IOException, InterruptedException {
-		_ant( "nbms", javaHomeDir );
-	}
-
-	private void prepareToDevelopPlugin8() throws java.io.IOException, InterruptedException {
-		this.buildRepo.compileJars();
-		this.copyJars();
-
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.repo.getPlugin8().getDistribution() );
-
-		java.io.File distribSrc = this.buildRepo.getDistributionSource();
-		assert distribSrc.exists() : distribSrc;
-		assert distribSrc.isDirectory() : distribSrc;
-		edu.cmu.cs.dennisc.java.io.FileUtilities.copyDirectory( distribSrc, this.repo.getPlugin8().getDistribution(), new edu.cmu.cs.dennisc.pattern.Criterion<java.io.File>() {
-			@Override
-			public boolean accept( java.io.File file ) {
-				if( file.isDirectory() ) {
-					String directoryName = file.getName();
-					if( directoryName.equals( "application" ) || directoryName.equals( "ffmpeg" ) || directoryName.equals( "libvlc" ) ) {
-						return false;
-					}
-				}
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( file );
-				return true;
-			}
-		} );
-
-		java.io.File srcDirectory = new java.io.File( _createCoreSrcDirectory( "story-api" ), "org/lgna/story" );
-
-		java.io.File dstZip = new java.io.File( this.repo.getPlugin8().getSuite(), "Alice3Module/release/src/aliceSource.jar" );
-		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zipFilesInDirectory( srcDirectory, dstZip, new java.io.FileFilter() {
-			@Override
-			public boolean accept( java.io.File file ) {
-				return "java".equals( edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file ) );
-			}
-		} );
-
-		this.repo.getPlugin8().prepare();
-
-		java.io.File projectZip = new java.io.File( this.repo.getPlugin8().getSuite(), "Alice3Module/src/org/alice/netbeans/ProjectTemplate.zip" );
-		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( this.repo.getPlugin8().getProjectTemplate(), projectZip );
-		assert projectZip.exists() : projectZip;
-
-		java.io.File userPropertiesFile = NetBeans8Utils.getUserPropertiesFile();
-		java.io.File platformPrivatePropertiesFile = new java.io.File( this.repo.getPlugin8().getSuite(), "nbproject/private/platform-private.properties" );
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( platformPrivatePropertiesFile, "user.properties.file=" + userPropertiesFile.getAbsolutePath().replaceAll( "\\\\", "\\\\\\\\" ) );
-
-		java.io.File tempDirectoryForJavaDoc = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "tempDirectoryForJavaDoc" );
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( tempDirectoryForJavaDoc );
-		tempDirectoryForJavaDoc.mkdirs();
-
-		StringBuilder sb = new StringBuilder();
-		String[] subNames = { "util", "scenegraph", "ast", "story-api" };
-		for( String subName : subNames ) {
-			sb.append( _createCoreSrcDirectory( subName ).getAbsolutePath() );
-			sb.append( edu.cmu.cs.dennisc.java.lang.SystemUtilities.PATH_SEPARATOR );
-		}
-		String srcPath = sb.toString();
-
-		com.sun.tools.javadoc.Main.execute( new String[] { "-d", tempDirectoryForJavaDoc.getAbsolutePath(), "-sourcepath", srcPath, "-encoding", "UTF-8", "-docencoding", "UTF-8", "-subpackages", "org.lgna.story", "-exclude", "org.lgna.story.implementation:org.lgna.story.resourceutilities" } );
-
-		java.io.File docZip = new java.io.File( this.repo.getPlugin8().getSuite(), "Alice3Module/release/doc/aliceDocs.zip" );
-		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( docZip );
-		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( tempDirectoryForJavaDoc, docZip );
-		assert docZip.exists() : docZip;
-
-		java.io.File nbm = new java.io.File( this.repo.getPlugin8().getSuite(), "build/updates/org-alice-netbeans.nbm" );
-
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( nbm );
-
-		String jdk8Home = System.getenv( "JDK8_HOME" );
-		assert jdk8Home != null;
-		java.io.File javaHomeDir = new java.io.File( jdk8Home );
-		assert javaHomeDir.exists() : javaHomeDir;
-		assert javaHomeDir.isDirectory() : javaHomeDir;
-
-		antClean( javaHomeDir );
-		antCompile( javaHomeDir );
-		antNBM( javaHomeDir );
-
-		assert nbm.exists() : nbm;
-
-		java.io.File nbmVersion = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Alice3NetBeans8Plugin_" + org.lgna.project.ProjectVersion.getCurrentVersionText() + ".nbm" );
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( nbmVersion );
-
-		edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( nbm, nbmVersion );
-		assert nbmVersion.exists() : nbmVersion;
-
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nbmVersion );
-	}
-
-	public Build( Config config ) {
-		this.buildRepo = new BuildRepo( config );
-		if( config.isDevMode() ) {
-			this.repo = new DevRepo( config );
-		} else {
-			this.repo = this.buildRepo;
-		}
-		this.mavenRepoJars = new String[] {
-				substituteVersionTexts( config, "org/jogamp/gluegen/gluegen-rt/___JOGL_VERSION___/gluegen-rt-___JOGL_VERSION___.jar" ),
-				substituteVersionTexts( config, "org/jogamp/jogl/jogl-all/___JOGL_VERSION___/jogl-all-___JOGL_VERSION___.jar" ),
-				"javax/media/jmf/2.1.1e/jmf-2.1.1e.jar",
-				"com/sun/javamp3/1.0/javamp3-1.0.jar",
-				substituteVersionTexts( config, "org/alice/alice-model-source/___ALICE_MODEL_SOURCE_VERSION___/alice-model-source-___ALICE_MODEL_SOURCE_VERSION___.jar" ),
-				substituteVersionTexts( config, "org/alice/nonfree/nebulous-model-source/___NEBULOUS_MODEL_SOURCE_VERSION___/nebulous-model-source-___NEBULOUS_MODEL_SOURCE_VERSION___.jar" ),
-		};
-	}
-
-	private final BuildRepo buildRepo;
-	private final GitRepo repo;
-	private final String[] mavenRepoJars;
-
 	public static void main( String[] args ) throws Exception {
+		org.apache.commons.cli.Options options = new org.apache.commons.cli.Options();
+		options.addOption( new org.apache.commons.cli.Option( "isDev", "mode=Mode.DEV" ) );
+		options.addOption( new org.apache.commons.cli.Option( "skipPlugin6", "isPlugin6Desired=false" ) );
+		options.addOption( new org.apache.commons.cli.Option( "skipPlugin8", "isPlugin8Desired=false" ) );
+		options.addOption( new org.apache.commons.cli.Option( "skipInstaller", "isInstallerDesired=false" ) );
+		options.addOption( new org.apache.commons.cli.Option( "skipClean", "isJavaDocGenerationDesired=false" ) );
+		options.addOption( new org.apache.commons.cli.Option( "skipJavaDocs", "isCleanDesired=false" ) );
+
+		org.apache.commons.cli.CommandLineParser parser = new org.apache.commons.cli.DefaultParser();
+		org.apache.commons.cli.CommandLine commandLine = parser.parse( options, args );
+
 		Config config = new Config.Builder()
-				.isDevMode( true )
+				.rootDir( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Code" ) )
+				.mode( commandLine.hasOption( "isDev" ) ? Mode.DEV : Mode.BUILD )
+
+				.isPlugin6Desired( commandLine.hasOption( "skipPlugin6" ) == false )
+				.isPlugin8Desired( commandLine.hasOption( "skipPlugin8" ) == false )
+				.isInstallerDesired( commandLine.hasOption( "skipInstaller" ) == false )
+
+				.isCleanDesired( commandLine.hasOption( "skipClean" ) == false )
+				.isJavaDocGenerationDesired( commandLine.hasOption( "skipJavaDocs" ) == false )
+
 				.joglVersion( "2.2.4" )
 				.aliceModelSourceVersion( "2014.08.20" )
 				.nebulousModelSourceVersion( "2014.09.11" )
+
+				//getUserProperties6File is expected to be in 6.9 even for 6.9.1
+				.netBeans6Version( "6.9" )
 				.netBeans8Version( "8.0.2" )
+
 				.build();
 
-		NetBeans8Utils.initialize( config.getNetBeans8Version() );
+		JdkUtils.initialize();
+		MavenUtils.initialize();
 		AntUtils.initialize();
+		NetBeansUtils.initialize( config );
+		Install4JUtils.initialize();
 
-		assert System.getenv( "JAVA_HOME" ) != null;
-		assert System.getenv( "JDK8_HOME" ) != null;
-		assert System.getenv( "MAVEN_HOME" ) != null;
+		BuildRepo buildRepo = new BuildRepo( config );
+		GitRepo repo;
+		if( config.getMode().isDev() ) {
+			repo = new DevRepo( config );
+		} else {
+			repo = buildRepo;
+		}
 
-		Build build = new Build( config );
-		build.prepareToDevelopPlugin8();
+		edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer( "build" );
+		timer.start();
+		buildRepo.compileJars();
+		timer.mark( "compileJars" );
+
+		java.util.List<Plugin> plugins = repo.getPlugins();
+		if( plugins.size() > 0 ) {
+			java.io.File tempDirectoryForJavaDoc = buildRepo.generateJavaDocs();
+			timer.mark( "generateJavaDocs" );
+
+			for( Plugin plugin : repo.getPlugins() ) {
+				plugin.copyJars( buildRepo );
+				timer.mark( "copyJars" + plugin.getVersion() );
+
+				plugin.copyDistribution( buildRepo );
+				timer.mark( "copyDistribution" + plugin.getVersion() );
+
+				plugin.prepareFiles();
+				timer.mark( "prepareFiles" + plugin.getVersion() );
+
+				plugin.zipSrc( buildRepo );
+				timer.mark( "zipSrc" + plugin.getVersion() );
+
+				plugin.zipJavaDocs( tempDirectoryForJavaDoc );
+				timer.mark( "zipJavaDocs" + plugin.getVersion() );
+
+				if( config.getMode().isDev() ) {
+					//pass
+				} else {
+					plugin.createNbm();
+					timer.mark( "nbm" + plugin.getVersion() );
+				}
+			}
+		}
+
+		if( config.isInstallerDesired() ) {
+			Installer installer = new Installer( config, repo.getRootDir() );
+
+			installer.copyJarsFromMaven();
+			timer.mark( "copyJarsFromMaven" );
+
+			installer.copyJarsFromBuild( buildRepo );
+			timer.mark( "copyJarsFromBuild" );
+
+			installer.copyDistribution( buildRepo );
+			timer.mark( "copyDistribution" );
+
+			installer.prepareInstall4jFile();
+			timer.mark( "prepareInstall4jFile" );
+
+			if( config.getMode().isDev() ) {
+				//pass
+			} else {
+				installer.createInstallers();
+				timer.mark( "createInstallers" );
+			}
+		}
+
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+
+		timer.stopAndPrintResults();
+
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( config );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "assertions:", Build.class.desiredAssertionStatus() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "javaHomeDir:", JdkUtils.getJavaHomeDir() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "jdk8HomeDir:", JdkUtils.getJdk8HomeDir() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "netbeansUserProperties6:", NetBeansUtils.getUserProperties6File() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "netbeansUserProperties8:", NetBeansUtils.getUserProperties8File() );
+
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "mavenCommandFile:", MavenUtils.getMavenCommandFile() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "antCommand:", AntUtils.getAntCommandFile() );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "done" );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "JAVA_HOME", System.getenv( "JAVA_HOME" ) );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "JDK8_HOME", System.getenv( "JDK8_HOME" ) );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "MAVEN_HOME", System.getenv( "MAVEN_HOME" ) );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "ANT_HOME", System.getenv( "ANT_HOME" ) );
 	}
 }

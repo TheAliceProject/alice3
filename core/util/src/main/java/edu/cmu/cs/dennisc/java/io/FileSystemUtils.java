@@ -52,7 +52,8 @@ public class FileSystemUtils {
 
 	public static void deleteIfExists( java.io.File file ) {
 		if( file.exists() ) {
-			file.delete();
+			boolean isSuccessful = file.delete();
+			assert isSuccessful : file;
 			assert file.exists() == false : file;
 		}
 	}

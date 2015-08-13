@@ -58,11 +58,15 @@ public final class ImportTab extends GalleryTab {
 			if( directory.isDirectory() ) {
 				fileChooser.setCurrentDirectory( directory );
 			}
-			fileChooser.setFileSelectionMode( javax.swing.JFileChooser.DIRECTORIES_ONLY );
+			fileChooser.setFileSelectionMode( javax.swing.JFileChooser.FILES_AND_DIRECTORIES );
+			fileChooser.setFileFilter( new javax.swing.filechooser.FileNameExtensionFilter( "*." + org.lgna.project.io.IoUtilities.TYPE_EXTENSION, org.lgna.project.io.IoUtilities.TYPE_EXTENSION ) );
 			int option = fileChooser.showOpenDialog( null );
 			switch( option ) {
 			case javax.swing.JFileChooser.APPROVE_OPTION:
 				java.io.File file = fileChooser.getSelectedFile();
+				if( file.isFile() ) {
+					file = file.getParentFile();
+				}
 				directoryState.setValueTransactionlessly( file.getAbsolutePath() );
 				break;
 			default:

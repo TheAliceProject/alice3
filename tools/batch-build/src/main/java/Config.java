@@ -46,8 +46,41 @@
  */
 public class Config {
 	public static class Builder {
-		public Builder isDevMode( boolean isDevMode ) {
-			this.isDevMode = isDevMode;
+		public Builder mode( Mode mode ) {
+			this.mode = mode;
+			return this;
+		}
+
+		public Builder rootDir( java.io.File rootDir ) {
+			assert rootDir != null;
+			assert rootDir.exists() : rootDir;
+			assert rootDir.isDirectory() : rootDir;
+			this.rootDir = rootDir;
+			return this;
+		}
+
+		public Builder isPlugin6Desired( boolean isPlugin6Desired ) {
+			this.isPlugin6Desired = isPlugin6Desired;
+			return this;
+		}
+
+		public Builder isPlugin8Desired( boolean isPlugin8Desired ) {
+			this.isPlugin8Desired = isPlugin8Desired;
+			return this;
+		}
+
+		public Builder isInstallerDesired( boolean isInstallerDesired ) {
+			this.isInstallerDesired = isInstallerDesired;
+			return this;
+		}
+
+		public Builder isJavaDocGenerationDesired( boolean isJavaDocGenerationDesired ) {
+			this.isJavaDocGenerationDesired = isJavaDocGenerationDesired;
+			return this;
+		}
+
+		public Builder isCleanDesired( boolean isCleanDesired ) {
+			this.isCleanDesired = isCleanDesired;
 			return this;
 		}
 
@@ -66,6 +99,11 @@ public class Config {
 			return this;
 		}
 
+		public Builder netBeans6Version( String netBeans6Version ) {
+			this.netBeans6Version = netBeans6Version;
+			return this;
+		}
+
 		public Builder netBeans8Version( String netBeans8Version ) {
 			this.netBeans8Version = netBeans8Version;
 			return this;
@@ -75,15 +113,32 @@ public class Config {
 			return new Config( this );
 		}
 
-		private boolean isDevMode;
+		private Mode mode;
+		private java.io.File rootDir;
+		private boolean isPlugin6Desired = true;
+		private boolean isPlugin8Desired = true;
+		private boolean isInstallerDesired = true;
+		private boolean isJavaDocGenerationDesired = true;
+		private boolean isCleanDesired = true;
 		private String joglVersion;
 		private String aliceModelSourceVersion;
 		private String nebulousModelSourceVersion;
+		private String netBeans6Version;
 		private String netBeans8Version;
 	}
 
 	private Config( Builder builder ) {
-		this.isDevMode = builder.isDevMode;
+		assert builder.mode != null : builder;
+		this.mode = builder.mode;
+
+		assert builder.rootDir != null : builder;
+		this.rootDir = builder.rootDir;
+
+		this.isPlugin6Desired = builder.isPlugin6Desired;
+		this.isPlugin8Desired = builder.isPlugin8Desired;
+		this.isInstallerDesired = builder.isInstallerDesired;
+		this.isJavaDocGenerationDesired = builder.isJavaDocGenerationDesired;
+		this.isCleanDesired = builder.isCleanDesired;
 
 		assert builder.joglVersion != null : builder;
 		this.joglVersion = builder.joglVersion;
@@ -94,12 +149,39 @@ public class Config {
 		assert builder.nebulousModelSourceVersion != null : builder;
 		this.nebulousModelSourceVersion = builder.nebulousModelSourceVersion;
 
+		assert builder.netBeans6Version != null : builder;
+		this.netBeans6Version = builder.netBeans6Version;
+
 		assert builder.netBeans8Version != null : builder;
 		this.netBeans8Version = builder.netBeans8Version;
 	}
 
-	public boolean isDevMode() {
-		return this.isDevMode;
+	public Mode getMode() {
+		return this.mode;
+	}
+
+	public java.io.File getRootDir() {
+		return this.rootDir;
+	}
+
+	public boolean isPlugin6Desired() {
+		return this.isPlugin6Desired;
+	}
+
+	public boolean isPlugin8Desired() {
+		return this.isPlugin8Desired;
+	}
+
+	public boolean isInstallerDesired() {
+		return this.isInstallerDesired;
+	}
+
+	public boolean isJavaDocGenerationDesired() {
+		return this.isJavaDocGenerationDesired;
+	}
+
+	public boolean isCleanDesired() {
+		return this.isCleanDesired;
 	}
 
 	public String getJoglVersion() {
@@ -114,13 +196,45 @@ public class Config {
 		return this.nebulousModelSourceVersion;
 	}
 
+	public String getNetBeans6Version() {
+		return this.netBeans6Version;
+	}
+
 	public String getNetBeans8Version() {
 		return this.netBeans8Version;
 	}
 
-	private final boolean isDevMode;
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "\n\tmode: " );
+		sb.append( this.mode );
+		sb.append( "\n\trootDir: " );
+		sb.append( this.rootDir );
+		sb.append( "\n\tjoglVersion: " );
+		sb.append( this.joglVersion );
+		sb.append( "\n\taliceModelSourceVersionn: " );
+		sb.append( this.aliceModelSourceVersion );
+		sb.append( "\n\tnebulousModelSourceVersion: " );
+		sb.append( this.nebulousModelSourceVersion );
+		sb.append( "\n\tnetBeans6Version: " );
+		sb.append( this.netBeans6Version );
+		sb.append( "\n\tnetBeans8Version: " );
+		sb.append( this.netBeans8Version );
+		return sb.toString();
+	}
+
+	private final Mode mode;
+	private final java.io.File rootDir;
+	private final boolean isPlugin8Desired;
+	private final boolean isPlugin6Desired;
+	private final boolean isInstallerDesired;
+	private final boolean isJavaDocGenerationDesired;
+	private final boolean isCleanDesired;
 	private final String joglVersion;
 	private final String aliceModelSourceVersion;
 	private final String nebulousModelSourceVersion;
+	private final String netBeans6Version;
 	private final String netBeans8Version;
 }

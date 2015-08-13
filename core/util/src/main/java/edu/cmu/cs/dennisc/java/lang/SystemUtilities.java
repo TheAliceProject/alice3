@@ -308,4 +308,14 @@ public class SystemUtilities {
 	public static String[] getLibraryPath() {
 		return parsePath( "java.library.path" );
 	}
+
+	public static java.io.File getEnvironmentVariableDirectory( String name ) {
+		String env = System.getenv( name );
+		assert env != null : name;
+
+		java.io.File dir = new java.io.File( env );
+		assert dir.exists() : dir;
+		assert dir.isDirectory() : dir;
+		return dir;
+	}
 }

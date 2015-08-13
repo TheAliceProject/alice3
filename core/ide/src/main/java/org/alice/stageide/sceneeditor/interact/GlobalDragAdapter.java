@@ -372,42 +372,42 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			rotateAboutYAxisStoodUp.setDragAdapterAndAddHandle( this );
 			rotateAboutYAxisStoodUp.setName( "rotateAboutYAxisStoodUp" );
 
-			RotationRingHandle rotateAboutYAxis = new RotationRingHandle( MovementDirection.UP, Color4f.GREEN );
+			RotationRingHandle rotateAboutYAxis = new RotationRingHandle( MovementDirection.UP, Color4f.RED );
 			rotateAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateAboutYAxis.addToSet( HandleSet.ROTATION_INTERACTION );
 			rotateAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION );
 			rotateAboutYAxis.setDragAdapterAndAddHandle( this );
 			rotateAboutYAxis.setName( "rotateAboutYAxis" );
 
-			RotationRingHandle rotateAboutXAxis = new RotationRingHandle( MovementDirection.LEFT, Color4f.RED );
+			RotationRingHandle rotateAboutXAxis = new RotationRingHandle( MovementDirection.LEFT, Color4f.BLUE );
 			rotateAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateAboutXAxis.addToSet( HandleSet.ROTATION_INTERACTION );
 			rotateAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION );
 			rotateAboutXAxis.setDragAdapterAndAddHandle( this );
 			rotateAboutXAxis.setName( "rotateAboutXAxis" );
 
-			RotationRingHandle rotateAboutZAxis = new RotationRingHandle( MovementDirection.BACKWARD, Color4f.BLUE );
+			RotationRingHandle rotateAboutZAxis = new RotationRingHandle( MovementDirection.BACKWARD, Color4f.WHITE );
 			rotateAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateAboutZAxis.addToSet( HandleSet.ROTATION_INTERACTION );
 			rotateAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
 			rotateAboutZAxis.setDragAdapterAndAddHandle( this );
 			rotateAboutZAxis.setName( "rotateAboutZAxis" );
 
-			JointRotationRingHandle rotateJointAboutZAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.BLUE );
+			JointRotationRingHandle rotateJointAboutZAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.WHITE );
 			rotateJointAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateJointAboutZAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
 			rotateJointAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
 			rotateJointAboutZAxis.setDragAdapterAndAddHandle( this );
 			rotateJointAboutZAxis.setName( "rotateJointAboutZAxis" );
 
-			JointRotationRingHandle rotateJointAboutYAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.UP, Color4f.GREEN );
+			JointRotationRingHandle rotateJointAboutYAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.UP, Color4f.RED );
 			rotateJointAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateJointAboutYAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
 			rotateJointAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
 			rotateJointAboutYAxis.setDragAdapterAndAddHandle( this );
 			rotateJointAboutYAxis.setName( "rotateJointAboutYAxis" );
 
-			JointRotationRingHandle rotateJointAboutXAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.LEFT, Color4f.RED );
+			JointRotationRingHandle rotateJointAboutXAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.LEFT, Color4f.BLUE );
 			rotateJointAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateJointAboutXAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
 			rotateJointAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );

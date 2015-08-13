@@ -46,84 +46,77 @@
  */
 public class Plugin8 extends Plugin {
 	public Plugin8( Config config, java.io.File repoRoot ) {
-		super( repoRoot, 8 );
-		this.suite = new java.io.File( repoRoot, "alice/netbeans/8/Alice3ModuleSuite" );
-		assert this.suite.exists() : this.suite;
-		assert this.suite.isDirectory() : this.suite;
+		super( config, repoRoot, 8 );
+		this.suiteDir = new java.io.File( this.getRoot(), "Alice3ModuleSuite" );
+		assert this.suiteDir.exists() : this.suiteDir;
+		assert this.suiteDir.isDirectory() : this.suiteDir;
 
-		this.jars = new java.io.File( this.suite, "Alice3Module/release/modules/ext" );
-		assert this.jars.exists() : this.jars;
-		assert this.jars.isDirectory() : this.jars;
+		this.wizardDir = new java.io.File( this.suiteDir, "Alice3Module" );
+		assert this.wizardDir.exists() : this.wizardDir;
+		assert this.wizardDir.isDirectory() : this.wizardDir;
 
-		this.distribution = new java.io.File( this.suite, "Alice3Module/release/src/aliceSource.jar_root" );
-
-		this.projectTemplate = new java.io.File( repoRoot, "alice/netbeans/8/ProjectTemplate" );
-		assert this.projectTemplate.exists() : this.projectTemplate;
-		assert this.projectTemplate.isDirectory() : this.projectTemplate;
-
-		this.dstManifestFile = new java.io.File( this.getSuite(), "Alice3Module/manifest.mf" );
-		this.dstLibraryXmlFile = new java.io.File( this.getSuite(), "Alice3Module/src/org/alice/netbeans/Alice3Library.xml" );
-		this.dstProjectXmlFile = new java.io.File( this.getSuite(), "Alice3Module/nbproject/project.xml" );
-
-		java.io.InputStream manifestInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/manifest.mf" );
-		assert manifestInputStream != null;
-		this.manifestText = Build.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( manifestInputStream ) );
-		assert this.manifestText != null;
-		assert this.manifestText.length() > 0;
-
-		java.io.InputStream libraryXmlInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/Alice3Library.xml" );
-		assert libraryXmlInputStream != null;
-		this.libraryXmlText = Build.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( libraryXmlInputStream ) );
-		assert this.libraryXmlText != null;
-		assert this.libraryXmlText.length() > 0;
-
-		java.io.InputStream projectXmlInputStream = Build.class.getResourceAsStream( "NetBeans8Plugin/project.xml" );
-		assert projectXmlInputStream != null;
-		this.projectXmlText = Build.substituteVersionTexts( config, edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( projectXmlInputStream ) );
-		assert this.projectXmlText != null;
-		assert this.projectXmlText.length() > 0;
+		//		this.dstManifestFile = new java.io.File( this.wizardDir, "manifest.mf" );
+		//		this.dstLibraryXmlFile = new java.io.File( this.wizardDir, "src/org/alice/netbeans/Alice3Library.xml" );
+		//		this.dstProjectXmlFile = new java.io.File( this.wizardDir, "nbproject/project.xml" );
 	}
 
-	public java.io.File getSuite() {
-		return this.suite;
+	@Override
+	protected java.io.File getSuiteDir() {
+		return this.suiteDir;
 	}
 
-	public java.io.File getJars() {
-		return this.jars;
+	@Override
+	protected java.io.File getWizardDir() {
+		return this.wizardDir;
 	}
 
-	public java.io.File getDistribution() {
-		return this.distribution;
+	@Override
+	protected java.io.File getLibraryXmlFile() {
+		return new java.io.File( this.wizardDir, "src/org/alice/netbeans/Alice3Library.xml" );
 	}
 
-	public java.io.File getProjectTemplate() {
-		return this.projectTemplate;
+	@Override
+	protected java.io.File getProjectTemplateZipFile() {
+		return new java.io.File( this.wizardDir, "src/org/alice/netbeans/ProjectTemplate.zip" );
 	}
 
-	public void prepare() {
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstManifestFile );
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstManifestFile, this.manifestText );
-		assert this.dstManifestFile.exists() : this.dstManifestFile;
-
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstLibraryXmlFile );
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstLibraryXmlFile, this.libraryXmlText );
-		assert this.dstLibraryXmlFile.exists() : this.dstLibraryXmlFile;
-
-		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstProjectXmlFile );
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstProjectXmlFile, this.projectXmlText );
-		assert this.dstProjectXmlFile.exists() : this.dstProjectXmlFile;
+	@Override
+	protected java.io.File getJdkToUseForNbmAntCommand() {
+		return JdkUtils.getJdk8HomeDir();
 	}
 
-	private final java.io.File suite;
-	private final java.io.File jars;
-	private final java.io.File distribution;
-	private final java.io.File projectTemplate;
+	@Override
+	protected java.io.File getNbmFile() {
+		return new java.io.File( this.suiteDir, "build/updates/org-alice-netbeans.nbm" );
+	}
 
-	private final String manifestText;
-	private final String libraryXmlText;
-	private final String projectXmlText;
-	private final java.io.File dstManifestFile;
-	private final java.io.File dstLibraryXmlFile;
-	private final java.io.File dstProjectXmlFile;
+	//	@Override
+	//	public void prepareFiles() throws java.io.IOException {
+	//		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstManifestFile );
+	//		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstManifestFile, this.getManifestText() );
+	//		assert this.dstManifestFile.exists() : this.dstManifestFile;
+	//
+	//		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstLibraryXmlFile );
+	//		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstLibraryXmlFile, this.getLibraryXmlText() );
+	//		assert this.dstLibraryXmlFile.exists() : this.dstLibraryXmlFile;
+	//
+	//		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( this.dstProjectXmlFile );
+	//		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( this.dstProjectXmlFile, this.getProjectXmlText() );
+	//		assert this.dstProjectXmlFile.exists() : this.dstProjectXmlFile;
+	//
+	//		java.io.File projectZip = new java.io.File( this.wizardDir, "src/org/alice/netbeans/ProjectTemplate.zip" );
+	//		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.zip( this.projectTemplateDir, projectZip );
+	//		assert projectZip.exists() : projectZip;
+	//
+	//		java.io.File userPropertiesFile = NetBeansUtils.getUserPropertiesFile( 8 );
+	//		java.io.File platformPrivatePropertiesFile = new java.io.File( this.getSuiteDir(), "nbproject/private/platform-private.properties" );
+	//		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( platformPrivatePropertiesFile, "user.properties.file=" + userPropertiesFile.getAbsolutePath().replaceAll( "\\\\", "\\\\\\\\" ) );
+	//	}
 
+	private final java.io.File suiteDir;
+	private final java.io.File wizardDir;
+
+	//	private final java.io.File dstManifestFile;
+	//	private final java.io.File dstLibraryXmlFile;
+	//	private final java.io.File dstProjectXmlFile;
 }
