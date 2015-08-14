@@ -62,7 +62,21 @@ public class Installer {
 		return new java.io.File( this.root, "aliceInstallData/Alice3" );
 	}
 
+	private static boolean isFileNameStartsWith( java.io.File file, java.util.List<String> candidates ) {
+		String name = file.getName();
+		for( String candidate : candidates ) {
+			if( name.startsWith( candidate ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void copyJarsFromMaven() throws java.io.IOException {
+		final java.util.List<String> batchDependencyPrefixes = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
+				"commons-io",
+				"commons-cli"
+				) );
 		java.io.File extDir = new java.io.File( this.getTargetDir(), "ext" );
 		if( extDir.exists() ) {
 			org.apache.commons.io.FileUtils.deleteDirectory( extDir );
@@ -73,8 +87,8 @@ public class Installer {
 			if( file.isDirectory() ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping directory:", file );
 			} else {
-				if( file.getName().startsWith( "commons-io" ) ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping commons-io:", file );
+				if( isFileNameStartsWith( file, batchDependencyPrefixes ) ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping batch dependency:", file );
 				} else {
 					if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( file, "jar" ) ) {
 						if( edu.cmu.cs.dennisc.java.io.FileUtilities.isDescendantOf( file, mavenRepositoryRootDirectory ) ) {

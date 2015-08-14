@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,64 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.project.code;
 
-package org.lgna.project.ast;
-
-import org.lgna.project.ast.localizer.AstLocalizer;
+import org.lgna.project.ast.JavaCodeGenerator;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
  */
-public final class LocalAccess extends Expression {
-	public LocalAccess() {
-	}
-
-	public LocalAccess( UserLocal local ) {
-		this.local.setValue( local );
-	}
-
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return this.local.getValue().valueType.getValue();
-	}
-
-	@Override
-	public boolean isValid() {
-		UserLocal local = this.local.getValue();
-		if( local != null ) {
-			Code localCode = local.getFirstAncestorAssignableTo( Code.class );
-			if( localCode != null ) {
-				Code code = this.getFirstAncestorAssignableTo( Code.class );
-
-				//todo: check location
-
-				return code == localCode;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			LocalAccess other = (LocalAccess)o;
-			return this.local.valueContentEquals( other.local, strictness, filter );
-		}
-		return false;
-	}
-
-	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendString( this.local.getValue().getValidName() );
-	}
-
-	@Override
-	protected void appendRepr( AstLocalizer localizer ) {
-		safeAppendRepr( localizer, this.local.getValue() );
-	}
-
-	public final DeclarationProperty<UserLocal> local = DeclarationProperty.createReferenceInstance( this );
+public interface CodeAppender {
+	public void appendJava( JavaCodeGenerator generator );
 }
