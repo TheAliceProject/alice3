@@ -42,7 +42,7 @@
  */
 package org.lgna.story;
 
-import org.lgna.story.implementation.JointIdQuaternionPair;
+import org.lgna.story.implementation.JointIdTransformationPair;
 
 /**
  * @author Dennis Cosgrove
@@ -81,9 +81,7 @@ public class EmployeesOnly {
 	}
 
 	public static Color createInterpolation( Color a, Color b, float portion ) {
-		return Color.createInstance(
-				edu.cmu.cs.dennisc.color.Color4f.createInterpolation( a.getInternal(), b.getInternal(), portion )
-				);
+		return Color.createInstance( edu.cmu.cs.dennisc.color.Color4f.createInterpolation( a.getInternal(), b.getInternal(), portion ) );
 	}
 
 	public static Position createPosition( edu.cmu.cs.dennisc.math.Point3 xyz ) {
@@ -185,8 +183,7 @@ public class EmployeesOnly {
 				//todo?
 				return defaultValue;
 			}
-		}
-		else {
+		} else {
 			return defaultValue;
 		}
 	}
@@ -207,12 +204,12 @@ public class EmployeesOnly {
 		}
 	}
 
-	public static void addJointIdQuaternionPair( PoseBuilder<?, ?> poseBuilder, org.lgna.story.implementation.JointIdQuaternionPair jointIdQuaternionPair ) {
+	public static void addJointIdTransformationPair( PoseBuilder<?, ?> poseBuilder, org.lgna.story.implementation.JointIdTransformationPair jointIdQuaternionPair ) {
 		poseBuilder.addJointIdQuaternionPair( jointIdQuaternionPair );
 	}
 
-	public static JointIdQuaternionPair[] getJointIdQuaternionPairs( Pose<?> pose ) {
-		return pose.getJointIdQuaternionPairs();
+	public static JointIdTransformationPair[] getJointIdTransformationPairs( Pose<?> pose ) {
+		return pose.getJointIdTransformationPairs();
 	}
 
 }

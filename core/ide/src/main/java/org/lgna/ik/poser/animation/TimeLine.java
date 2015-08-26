@@ -51,7 +51,7 @@ import org.lgna.story.AnimationStyle;
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Pose;
 import org.lgna.story.PoseBuilder;
-import org.lgna.story.implementation.JointIdQuaternionPair;
+import org.lgna.story.implementation.JointIdTransformationPair;
 import org.lgna.story.implementation.PoseUtilities;
 import org.lgna.story.resources.JointId;
 
@@ -324,14 +324,14 @@ public class TimeLine {
 		}
 		double prevTime = key1 != null ? key1.getEventTime() : 0;
 		double k = ( targetTime - prevTime ) / ( key2.getEventTime() - prevTime );
-		List<JointIdQuaternionPair> builderList = Lists.newArrayList();
+		List<JointIdTransformationPair> builderList = Lists.newArrayList();
 		for( JointId joint : map.keySet() ) {
 			UnitQuaternion interpolatedQuaternion = UnitQuaternion.createInterpolation( map.get( joint ).getStartQuaternion(), map.get( joint ).getEndQuaternion(), k );
-			builderList.add( new JointIdQuaternionPair( joint, interpolatedQuaternion ) );
+			builderList.add( new JointIdTransformationPair( joint, interpolatedQuaternion ) );
 		}
 		PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass( init.getClass() );
-		for( JointIdQuaternionPair key : builderList ) {
-			EmployeesOnly.addJointIdQuaternionPair( builder, key );
+		for( JointIdTransformationPair key : builderList ) {
+			EmployeesOnly.addJointIdTransformationPair( builder, key );
 		}
 		return builder.build();
 	}
@@ -342,34 +342,34 @@ public class TimeLine {
 		} else {
 			return initialPose;
 		}
-		List<JointIdQuaternionPair> jqPairs = Lists.newArrayList();
+		List<JointIdTransformationPair> jtPairs = Lists.newArrayList();
 		List<JointId> unhandledIds = Lists.newArrayList();
 		PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass( key1.getPose().getClass() );
-		for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( key2.getPoseActual() ) ) {
-			jqPairs.add( jqPair );
-			unhandledIds.add( jqPair.getJointId() );
+		for( JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs( key2.getPoseActual() ) ) {
+			jtPairs.add( jtPair );
+			unhandledIds.add( jtPair.getJointId() );
 		}
-		for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( key1.getPoseActual() ) ) {
-			unhandledIds.remove( jqPair.getJointId() );
+		for( JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs( key1.getPoseActual() ) ) {
+			unhandledIds.remove( jtPair.getJointId() );
 		}
 		if( unhandledIds.isEmpty() ) {
 			return key1.getPoseActual();
 		} else {
-			return getInitPose( getPriorKeyFrame( key1 ), builder, unhandledIds, jqPairs );
+			return getInitPose( getPriorKeyFrame( key1 ), builder, unhandledIds, jtPairs );
 		}
 	}
 
-	private Pose<?> getInitPose( KeyFrameData priorKeyFrame, PoseBuilder<?, ?> builder, List<JointId> unhandledIds, List<JointIdQuaternionPair> jqPairs ) {
+	private Pose<?> getInitPose( KeyFrameData priorKeyFrame, PoseBuilder<?, ?> builder, List<JointId> unhandledIds, List<JointIdTransformationPair> jtPairs ) {
 		Pose<?> prevPose = initialPose;
 		if( priorKeyFrame != null ) {
 			prevPose = priorKeyFrame.getPose();
 		}
 		List<JointId> handledIds = Lists.newArrayList();
 		for( JointId id : unhandledIds ) {
-			for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( prevPose ) ) {
-				if( jqPair.getJointId().equals( id ) ) {
+			for( JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs( prevPose ) ) {
+				if( jtPair.getJointId().equals( id ) ) {
 					handledIds.add( id );
-					jqPairs.add( jqPair );
+					jtPairs.add( jtPair );
 				}
 			}
 		}
@@ -377,13 +377,13 @@ public class TimeLine {
 			unhandledIds.remove( id );
 		}
 		if( unhandledIds.isEmpty() ) {
-			for( JointIdQuaternionPair jqPair : jqPairs ) {
-				EmployeesOnly.addJointIdQuaternionPair( builder, jqPair );
+			for( JointIdTransformationPair jtPair : jtPairs ) {
+				EmployeesOnly.addJointIdTransformationPair( builder, jtPair );
 			}
 			Pose<?> rv = builder.build();
 			return rv;
 		} else {
-			return getInitPose( getPriorKeyFrame( priorKeyFrame ), builder, unhandledIds, jqPairs );
+			return getInitPose( getPriorKeyFrame( priorKeyFrame ), builder, unhandledIds, jtPairs );
 		}
 	}
 
@@ -412,8 +412,8 @@ public class TimeLine {
 		for( JointId id : usedIds ) {
 			boolean removed = false;
 			for( KeyFrameData data : datas ) {
-				for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( data.getPose() ) ) {
-					if( jqPair.getJointId().equals( id ) ) {
+				for( JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs( data.getPose() ) ) {
+					if( jtPair.getJointId().equals( id ) ) {
 						removed = true;
 						unused.remove( id );
 					}
@@ -428,10 +428,10 @@ public class TimeLine {
 
 	private void checkAddingJoints( KeyFrameData keyFrameData ) {
 		//		List<JointId> idsForUpdate = Collections.newArrayList();
-		for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( keyFrameData.getPose() ) ) {
-			if( !usedIds.contains( jqPair.getJointId() ) ) {
+		for( JointIdTransformationPair jtPair : EmployeesOnly.getJointIdTransformationPairs( keyFrameData.getPose() ) ) {
+			if( !usedIds.contains( jtPair.getJointId() ) ) {
 				//				idsForUpdate.add( key.getJointId() );
-				usedIds.add( jqPair.getJointId() );
+				usedIds.add( jtPair.getJointId() );
 			}
 		}
 		correctPoseActuals();
@@ -442,10 +442,10 @@ public class TimeLine {
 		for( KeyFrameData data : datas ) {
 			PoseBuilder<?, ?> builder = PoseUtilities.createBuilderForPoseClass( data.getPoseActual().getClass() );
 			for( JointId id : usedIds ) {
-				if( contains( EmployeesOnly.getJointIdQuaternionPairs( data.getPose() ), id ) ) {
-					EmployeesOnly.addJointIdQuaternionPair( builder, new JointIdQuaternionPair( id, findQuaternionForJointId( id, data.getPose() ) ) );
+				if( contains( EmployeesOnly.getJointIdTransformationPairs( data.getPose() ), id ) ) {
+					EmployeesOnly.addJointIdTransformationPair( builder, new JointIdTransformationPair( id, findQuaternionForJointId( id, data.getPose() ) ) );
 				} else {
-					EmployeesOnly.addJointIdQuaternionPair( builder, new JointIdQuaternionPair( id, findQuaternionForJointId( id, initialPose ) ) );
+					EmployeesOnly.addJointIdTransformationPair( builder, new JointIdTransformationPair( id, findQuaternionForJointId( id, initialPose ) ) );
 					//					builder.addCustom( orientationForId( id, prev ), id );
 					// thought this would be correct changed to other open to either
 				}
@@ -456,16 +456,16 @@ public class TimeLine {
 	}
 
 	private static UnitQuaternion findQuaternionForJointId( JointId id, Pose<?> pose ) {
-		for( JointIdQuaternionPair jqPair : EmployeesOnly.getJointIdQuaternionPairs( pose ) ) {
+		for( JointIdTransformationPair jqPair : EmployeesOnly.getJointIdTransformationPairs( pose ) ) {
 			if( jqPair.getJointId().equals( id ) ) {
-				return jqPair.getQuaternion();
+				return jqPair.getTransformation().orientation.createUnitQuaternion();
 			}
 		}
 		return null;
 	}
 
-	private static boolean contains( JointIdQuaternionPair[] jqPairs, JointId id ) {
-		for( JointIdQuaternionPair key : jqPairs ) {
+	private static boolean contains( JointIdTransformationPair[] jtPairs, JointId id ) {
+		for( JointIdTransformationPair key : jtPairs ) {
 			if( key.getJointId().equals( id ) ) {
 				return true;
 			}

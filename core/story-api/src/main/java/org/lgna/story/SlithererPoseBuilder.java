@@ -59,7 +59,7 @@ public class SlithererPoseBuilder extends PoseBuilder<org.lgna.story.SSlitherer,
 	}
 
 	@Override
-	protected org.lgna.story.SlithererPose build( org.lgna.story.implementation.JointIdQuaternionPair[] buffer ) {
+	protected org.lgna.story.SlithererPose build( org.lgna.story.implementation.JointIdTransformationPair[] buffer ) {
 		return new SlithererPose( buffer );
 	}
 }

@@ -42,13 +42,13 @@
  */
 package org.lgna.story;
 
-import org.lgna.story.implementation.JointIdQuaternionPair;
+import org.lgna.story.implementation.JointIdTransformationPair;
 
 /**
  * @author Dculyba
  */
 public class SlithererPose extends Pose<SSlitherer> {
-	/*package-private*/SlithererPose( JointIdQuaternionPair... pairs ) {
+	/*package-private*/ SlithererPose( JointIdTransformationPair... pairs ) {
 		super( SSlitherer.class, pairs );
 	}
 }
