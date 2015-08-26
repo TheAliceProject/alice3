@@ -62,22 +62,22 @@ public class Build {
 				.rootDir( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Projects/Alice/Code" ) )
 				.mode( commandLine.hasOption( "isDev" ) ? Mode.DEV : Mode.BUILD )
 
-				.isPlugin6Desired( commandLine.hasOption( "skipPlugin6" ) == false )
-				.isPlugin8Desired( commandLine.hasOption( "skipPlugin8" ) == false )
-				.isInstallerDesired( commandLine.hasOption( "skipInstaller" ) == false )
+		.isPlugin6Desired( commandLine.hasOption( "skipPlugin6" ) == false )
+		.isPlugin8Desired( commandLine.hasOption( "skipPlugin8" ) == false )
+		.isInstallerDesired( commandLine.hasOption( "skipInstaller" ) == false )
 
-				.isCleanDesired( commandLine.hasOption( "skipClean" ) == false )
-				.isJavaDocGenerationDesired( commandLine.hasOption( "skipJavaDocs" ) == false )
+		.isCleanDesired( commandLine.hasOption( "skipClean" ) == false )
+		.isJavaDocGenerationDesired( commandLine.hasOption( "skipJavaDocs" ) == false )
 
 				.joglVersion( "2.2.4" )
 				.aliceModelSourceVersion( "2015.08.13" )
 				.nebulousModelSourceVersion( "2014.09.11" )
 
-				//getUserProperties6File is expected to be in 6.9 even for 6.9.1
-				.netBeans6Version( "6.9" )
-				.netBeans8Version( "8.0.2" )
+		//getUserProperties6File is expected to be in 6.9 even for 6.9.1
+		.netBeans6Version( "6.9" )
+		.netBeans8Version( "8.0.2" )
 
-				.build();
+		.build();
 		// @formatter:on
 
 		JdkUtils.initialize();
