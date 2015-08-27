@@ -55,6 +55,7 @@ public class HandleSet extends java.util.BitSet {
 	public static final HandleSet RESIZE_INTERACTION = new HandleSet( HandleGroup.RESIZE, HandleGroup.INTERACTION );
 	public static final HandleSet ROTATION_INTERACTION = new HandleSet( HandleGroup.ROTATION, HandleGroup.INTERACTION );
 	public static final HandleSet JOINT_ROTATION_INTERACTION = new HandleSet( HandleGroup.ROTATION, HandleGroup.INTERACTION );
+	public static final HandleSet JOINT_TRANSLATION_INTERACTION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.INTERACTION );
 	public static final HandleSet TRANSLATION_INTERACTION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.INTERACTION );
 	public static final HandleSet STOOD_UP_TRANSLATION_INTERACTION = new HandleSet( HandleGroup.STOOD_UP_TRANSLATION, HandleGroup.INTERACTION );
 	public static final HandleSet ABSOLUTE_TRANSLATION_INTERACTION = new HandleSet( HandleGroup.ABSOLUTE_TRANSLATION, HandleGroup.INTERACTION );

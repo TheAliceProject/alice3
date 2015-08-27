@@ -115,7 +115,7 @@ public abstract class ManipulationHandle2D extends javax.swing.JLabel implements
 
 	@Override
 	public boolean isAlwaysVisible() {
-		return false;
+		return true;
 	}
 
 	@Override

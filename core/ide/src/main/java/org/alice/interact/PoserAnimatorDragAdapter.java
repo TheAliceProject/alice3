@@ -124,7 +124,7 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		selectObject.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.SELECTABLE.pickHint() ) ) );
 		selectObject.addCondition( new DragAndDropCondition() );
 
-		InteractionGroup group = new InteractionGroup( HandleSet.ROTATION_INTERACTION, selectObject, PickType.JOINT );
+		InteractionGroup group = new InteractionGroup( new InteractionGroup.InteractionInfo( new InteractionGroup.PossibleObjects( ObjectType.JOINT ), HandleSet.JOINT_ROTATION_INTERACTION, selectObject, PickType.JOINT ) );
 		this.mapHandleStyleToInteractionGroup.put( HandleStyle.ROTATION, group );
 		setInteractionState( HandleStyle.ROTATION );
 
@@ -198,4 +198,5 @@ public class PoserAnimatorDragAdapter extends AbstractDragAdapter {
 		super.setHandleVisibility( isVisible );
 		selectObject.setEnabled( isVisible );
 	}
+
 }

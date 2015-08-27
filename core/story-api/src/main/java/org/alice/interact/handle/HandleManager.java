@@ -130,11 +130,7 @@ public class HandleManager implements ManipulationListener {
 
 	public static boolean canHaveHandles( AbstractTransformable object ) {
 		PickHint objectPickHint = PickUtilities.getPickType( object );
-		if( ( objectPickHint.intersects( PickHint.PickType.RESIZABLE.pickHint() ) ||
-				objectPickHint.intersects( PickHint.PickType.MOVEABLE.pickHint() ) ||
-				objectPickHint.intersects( PickHint.PickType.TURNABLE.pickHint() ) ||
-				objectPickHint.intersects( PickHint.PickType.SELECTABLE.pickHint() ) ) &&
-				!( objectPickHint.intersects( PickHint.PickType.SUN.pickHint() ) ) ) {
+		if( ( objectPickHint.intersects( PickHint.PickType.RESIZABLE.pickHint() ) || objectPickHint.intersects( PickHint.PickType.MOVEABLE.pickHint() ) || objectPickHint.intersects( PickHint.PickType.TURNABLE.pickHint() ) || objectPickHint.intersects( PickHint.PickType.SELECTABLE.pickHint() ) ) && !( objectPickHint.intersects( PickHint.PickType.SUN.pickHint() ) ) ) {
 			return true;
 		} else {
 			return false;
@@ -146,7 +142,8 @@ public class HandleManager implements ManipulationListener {
 		if( handle instanceof SelectionIndicator ) {
 			return ( objectPickHint.intersects( PickHint.PickType.SELECTABLE.pickHint() ) );
 		} else if( handle instanceof LinearTranslateHandle ) {
-			return ( objectPickHint.intersects( PickHint.PickType.MOVEABLE.pickHint() ) );
+			boolean doJointsMatch = objectPickHint.intersects( PickHint.PickType.JOINT.pickHint() ) == handle.isMemberOf( HandleSet.HandleGroup.JOINT );
+			return doJointsMatch && objectPickHint.intersects( PickHint.PickType.MOVEABLE.pickHint() );
 		} else if( handle instanceof RotationRingHandle ) {
 			boolean doJointsMatch = objectPickHint.intersects( PickHint.PickType.JOINT.pickHint() ) == handle.isMemberOf( HandleSet.HandleGroup.JOINT );
 			return doJointsMatch && objectPickHint.intersects( PickHint.PickType.TURNABLE.pickHint() );
@@ -164,8 +161,7 @@ public class HandleManager implements ManipulationListener {
 					}
 				}
 				return false;
-			}
-			else {
+			} else {
 				return false;
 			}
 		}

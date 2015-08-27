@@ -47,7 +47,11 @@ import org.alice.interact.event.SelectionListener;
 import org.alice.interact.handle.HandleManager;
 import org.alice.interact.handle.HandleSet;
 import org.lgna.story.implementation.AbstractTransformableImp;
+import org.lgna.story.implementation.CameraMarkerImp;
 import org.lgna.story.implementation.EntityImp;
+import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.ModelImp;
+import org.lgna.story.implementation.ObjectMarkerImp;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
@@ -55,6 +59,29 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  * @author Dennis Cosgrove
  */
 public abstract class HandleSupportingDragAdapter extends BareBonesDragAdapter {
+
+	public enum ObjectType {
+		JOINT,
+		MODEL,
+		CAMERA_MARKER,
+		OBJECT_MARKER,
+		UNKNOWN,
+		ANY;
+
+		public static ObjectType getObjectType( AbstractTransformableImp selected ) {
+			if( selected instanceof JointImp ) {
+				return ObjectType.JOINT;
+			} else if( selected instanceof ObjectMarkerImp ) {
+				return ObjectType.OBJECT_MARKER;
+			} else if( selected instanceof CameraMarkerImp ) {
+				return ObjectType.CAMERA_MARKER;
+			} else if( selected instanceof ModelImp ) {
+				return ObjectType.MODEL;
+			} else {
+				return ObjectType.UNKNOWN;
+			}
+		}
+	}
 
 	public void addSelectionListener( SelectionListener selectionListener ) {
 		this.selectionListeners.add( selectionListener );
@@ -201,6 +228,6 @@ public abstract class HandleSupportingDragAdapter extends BareBonesDragAdapter {
 	protected final HandleManager handleManager = new HandleManager();
 	private AbstractTransformableImp toBeSelected = null;
 	private boolean hasObjectToBeSelected = false;
-	private AbstractTransformableImp selectedObject = null;
+	protected AbstractTransformableImp selectedObject = null;
 	private edu.cmu.cs.dennisc.scenegraph.Silhouette sgSilhouette;
 }

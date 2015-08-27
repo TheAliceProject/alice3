@@ -43,8 +43,10 @@
 
 package org.alice.interact;
 
+import org.alice.interact.InteractionGroup.InteractionInfo;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.SelectionEvent;
+import org.alice.interact.handle.HandleStyle;
 import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
@@ -56,7 +58,7 @@ import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
@@ -175,6 +177,12 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 		}
 	}
 
+	protected void setHandleSelectionState( org.alice.interact.handle.HandleStyle handleStyle ) {
+		//Default behavior is to set the interaction state directly
+		//CroquetSupportingDragAdapter sets the croquet selection state object to make this happen
+		this.setInteractionState( handleStyle );
+	}
+
 	@Override
 	public void setSelectedImplementation( AbstractTransformableImp selected ) {
 		if( this.isInStateChange() ) {
@@ -182,13 +190,26 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 			return;
 		}
 		if( selected != null ) {
-			Composite c = selected.getSgComposite();
+			if( selected.getSgComposite() instanceof Joint ) {
+				//If we're selecting a joint for the first time or from a selection that wasn't a joint, set the handle state to rotation
+				if( ( this.selectedObject == null ) || !( this.selectedObject.getSgComposite() instanceof Joint ) ) {
+					if( this.getDefaultJointHandleStyle() != null ) {
+						this.setHandleSelectionState( this.getDefaultJointHandleStyle() );
+					}
+				}
+			}
 			if( selected instanceof ObjectMarkerImp ) {
 				setSelectedObjectMarker( (ObjectMarkerImp)selected );
 			} else if( selected instanceof CameraMarkerImp ) {
 				setSelectedCameraMarker( (CameraMarkerImp)selected );
 			} else {
 				setSelectedSceneObjectImplementation( selected );
+			}
+
+			//If the current handle state is null, force it to update by setting the interaction state again
+			//The handle state can be null if the previous selected object didn't match the selected state
+			if( this.handleManager.getCurrentHandleSet() == null ) {
+				this.setCurrentInterationState( this.currentInteractionState );
 			}
 			updateHandleSelection( selected );
 		} else {
@@ -217,16 +238,22 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	//		}
 	//	}
 
+	protected void setCurrentInterationState( InteractionGroup interactionState ) {
+		this.currentInteractionState = interactionState;
+		if( this.currentInteractionState != null ) {
+			InteractionInfo interactionInfo = this.currentInteractionState.getMatchingInfo( ObjectType.getObjectType( this.selectedObject ) );
+			if( interactionInfo != null ) {
+				this.handleManager.setHandleSet( interactionInfo.getHandleSet() );
+			}
+			this.currentInteractionState.enabledManipulators( true );
+		}
+	}
+
 	public void setInteractionState( org.alice.interact.handle.HandleStyle handleStyle ) {
 		if( this.currentInteractionState != null ) {
 			this.currentInteractionState.enabledManipulators( false );
 		}
-		InteractionGroup interactionState = this.mapHandleStyleToInteractionGroup.get( handleStyle );
-		this.currentInteractionState = interactionState;
-		if( this.currentInteractionState != null ) {
-			this.handleManager.setHandleSet( this.currentInteractionState.getHandleSet() );
-			this.currentInteractionState.enabledManipulators( true );
-		}
+		setCurrentInterationState( this.mapHandleStyleToInteractionGroup.get( handleStyle ) );
 	}
 
 	public void makeCameraActive( AbstractCamera camera ) {
@@ -329,8 +356,7 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 	protected void handleAutomaticDisplayCompleted( edu.cmu.cs.dennisc.render.event.AutomaticDisplayEvent e ) {
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getSGCamera();
 		if( sgCamera != null ) {
-			if( !hasSetCameraTransformables )
-			{
+			if( !hasSetCameraTransformables ) {
 				setSGCamera( sgCamera );
 				hasSetCameraTransformables = true;
 			}
@@ -368,6 +394,10 @@ public abstract class AbstractDragAdapter extends HandleSupportingDragAdapter {
 
 	public void addHandle( ManipulationHandle handle ) {
 		this.handleManager.addHandle( handle );
+	}
+
+	protected HandleStyle getDefaultJointHandleStyle() {
+		return org.alice.interact.handle.HandleStyle.ROTATION;
 	}
 
 	public abstract boolean shouldSnapToGround();

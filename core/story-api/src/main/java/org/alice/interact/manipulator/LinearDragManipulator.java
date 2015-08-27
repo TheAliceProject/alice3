@@ -260,8 +260,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 			translationType = HandleSet.HandleGroup.STOOD_UP_TRANSLATION;
 		} else if( this.linearHandle.getMovementDescription().type == MovementType.ABSOLUTE ) {
 			translationType = HandleSet.HandleGroup.ABSOLUTE_TRANSLATION;
-		}
-		else {
+		} else {
 			translationType = HandleSet.HandleGroup.TRANSLATION;
 		}
 		return new HandleSet( this.linearHandle.getMovementDescription().direction.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, translationType );
