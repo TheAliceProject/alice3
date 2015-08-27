@@ -85,34 +85,13 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SJoint.class, org.alice.stageide.icons.JointIconFactory.getInstance() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCamera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
 
-		this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList(
-				org.alice.stageide.member.TextProceduresComposite.getInstance(),
-				org.alice.stageide.member.AtmosphereProceduresComposite.getInstance(),
-				org.alice.stageide.member.SayThinkProceduresComposite.getInstance(),
-				org.alice.stageide.member.PositionProceduresComposite.getInstance(),
-				org.alice.stageide.member.OrientationProceduresComposite.getInstance(),
-				org.alice.stageide.member.PositionAndOrientationProceduresComposite.getInstance(),
-				org.alice.stageide.member.SizeProceduresComposite.getInstance(),
-				org.alice.stageide.member.AppearanceProceduresComposite.getInstance(),
-				org.alice.stageide.member.VehicleProceduresComposite.getInstance(),
-				org.alice.stageide.member.AudioProceduresComposite.getInstance(),
-				org.alice.stageide.member.TimingProceduresComposite.getInstance()
-				);
+		this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList( org.alice.stageide.member.TextProceduresComposite.getInstance(), org.alice.stageide.member.AtmosphereProceduresComposite.getInstance(), org.alice.stageide.member.SayThinkProceduresComposite.getInstance(), org.alice.stageide.member.PositionProceduresComposite.getInstance(), org.alice.stageide.member.OrientationProceduresComposite.getInstance(), org.alice.stageide.member.PositionAndOrientationProceduresComposite.getInstance(), org.alice.stageide.member.SizeProceduresComposite.getInstance(), org.alice.stageide.member.AppearanceProceduresComposite.getInstance(), org.alice.stageide.member.VehicleProceduresComposite.getInstance(), org.alice.stageide.member.AudioProceduresComposite.getInstance(), org.alice.stageide.member.TimingProceduresComposite.getInstance() );
 
-		this.categoryFunctionSubComposites = createUnmodifiableSubCompositeList(
-				org.alice.stageide.member.AtmosphereFunctionsComposite.getInstance(),
-				org.alice.stageide.member.AppearanceFunctionsComposite.getInstance(),
-				org.alice.stageide.member.SizeFunctionsComposite.getInstance(),
-				org.alice.stageide.member.PromptUserFunctionsComposite.getInstance()
-				);
+		this.categoryFunctionSubComposites = createUnmodifiableSubCompositeList( org.alice.stageide.member.AtmosphereFunctionsComposite.getInstance(), org.alice.stageide.member.AppearanceFunctionsComposite.getInstance(), org.alice.stageide.member.SizeFunctionsComposite.getInstance(), org.alice.stageide.member.PromptUserFunctionsComposite.getInstance() );
 
-		this.categoryOrAlphabeticalProcedureSubComposites = createUnmodifiableSubCompositeList(
-				org.alice.stageide.member.AddListenerProceduresComposite.getInstance()
-				);
+		this.categoryOrAlphabeticalProcedureSubComposites = createUnmodifiableSubCompositeList( org.alice.stageide.member.AddListenerProceduresComposite.getInstance() );
 
-		this.categoryOrAlphabeticalFunctionSubComposites = createUnmodifiableSubCompositeList(
-				org.alice.stageide.member.JointFunctionsComposite.getInstance()
-				);
+		this.categoryOrAlphabeticalFunctionSubComposites = createUnmodifiableSubCompositeList( org.alice.stageide.member.JointFunctionsComposite.getInstance() );
 	}
 
 	private static enum TypeComparator implements java.util.Comparator<org.lgna.project.ast.AbstractType<?, ?, ?>> {
@@ -446,6 +425,8 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 					org.lgna.project.ast.JavaMethod getJointArrayIdMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJointArray", org.lgna.story.resources.JointArrayId.class );
 					org.lgna.project.ast.JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJoint", org.lgna.story.resources.JointId.class );
 					org.lgna.project.ast.JavaMethod getPoseMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getPose", org.lgna.story.JointedModelPose.class );
+
+					org.lgna.project.ast.JavaMethod strikePoseMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "strikePose", org.lgna.story.Pose.class, org.lgna.story.StrikePose.Detail[].class );
 					for( org.lgna.project.ast.AbstractField field : resourceType.getDeclaredFields() ) {
 						if( field.isStatic() ) {
 							if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointId.class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
@@ -456,15 +437,10 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( methodName, org.lgna.story.SJoint.class );
 								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 								org.lgna.project.ast.BlockStatement body = method.body.getValue();
-								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
-										new org.lgna.project.ast.ThisExpression(),
-										getJointMethod,
-										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field )
-										);
+								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), getJointMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field ) );
 								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.SJoint.class, expression ) );
 								rv.methods.add( method );
-							}
-							else if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointId[].class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
+							} else if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointId[].class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
 								String methodName = getFieldMethodNameHint( field );
 								if( methodName == null ) {
 									methodName = org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
@@ -472,15 +448,10 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( methodName, org.lgna.story.SJoint[].class );
 								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 								org.lgna.project.ast.BlockStatement body = method.body.getValue();
-								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
-										new org.lgna.project.ast.ThisExpression(),
-										getJointArrayMethod,
-										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field )
-										);
+								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), getJointArrayMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field ) );
 								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.SJoint[].class, expression ) );
 								rv.methods.add( method );
-							}
-							else if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointArrayId.class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
+							} else if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointArrayId.class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
 								String methodName = getFieldMethodNameHint( field );
 								if( methodName == null ) {
 									methodName = org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
@@ -488,28 +459,23 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( methodName, org.lgna.story.SJoint[].class );
 								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 								org.lgna.project.ast.BlockStatement body = method.body.getValue();
-								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
-										new org.lgna.project.ast.ThisExpression(),
-										getJointArrayIdMethod,
-										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field )
-										);
+								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), getJointArrayIdMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field ) );
 								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.SJoint[].class, expression ) );
 								rv.methods.add( method );
-							}
-							else if( field.getValueType().isAssignableTo( org.lgna.story.Pose.class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
+							} else if( field.getValueType().isAssignableTo( org.lgna.story.Pose.class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
 								String methodName = getFieldMethodNameHint( field );
 								if( methodName == null ) {
-									methodName = org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" );
+									methodName = org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName() );
 								}
-								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( methodName, field.getValueType() );
+								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createProcedure( methodName );
 								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
+								//								UserParameter detailsParameter = new UserParameter( "details", StrikePose.Detail.class );
+								//								method.getVariableLengthParameter().
+								//								method.requiredParameters.add( detailsParameter );
 								org.lgna.project.ast.BlockStatement body = method.body.getValue();
-								//								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
-								//										new org.lgna.project.ast.ThisExpression(),
-								//										getJointMethod,
-								//										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field )
-								//										);
-								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( field.getValueType(), org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field ) ) );
+								org.lgna.project.ast.MethodInvocation mi = org.lgna.project.ast.AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), strikePoseMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field ) );
+								//mi.variableArguments.add( new SimpleArgument( strikePoseMethod.getVariableLengthParameter(), new ParameterAccess( detailsParameter ) ) );
+								body.statements.add( new org.lgna.project.ast.ExpressionStatement( mi ) );
 								rv.methods.add( method );
 							}
 						}
