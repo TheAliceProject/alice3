@@ -225,9 +225,8 @@ public class SFlyer extends SJointedModel implements Articulable {
 	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_TOE);
 	//	}
 
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public void strikePose( org.lgna.story.FlyerPose pose, StrikePose.Detail... details ) {
-		double duration = Duration.getValue( details );
-		edu.cmu.cs.dennisc.animation.Style style = AnimationStyle.getValue( details ).getInternal();
-		this.getImplementation().strikePose( pose, duration, style );
+		super.strikePose( pose, details );
 	}
 }
