@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,42 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.story;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
  */
-public class AsSeenBy implements
-//Turnable
-Turn.Detail, Roll.Detail, IsAbove.Detail, IsBelow.Detail, IsBehind.Detail, IsInFrontOf.Detail, IsToTheRightOf.Detail, IsToTheLeftOf.Detail, GetDistanceAbove.Detail, GetDistanceBehind.Detail, GetDistanceBelow.Detail, GetDistanceInFrontOf.Detail, GetDistanceToTheLeftOf.Detail, GetDistanceToTheRightOf.Detail,
-//MoveableTurnable
-Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail, Place.Detail {
-
-	private final SThing value;
-
-	public AsSeenBy( SThing value ) {
-		this.value = value;
+public class GetDistanceBelow extends AsSeenByArgumentFactory {
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = GetDistanceBelow.class )
+	public static interface Detail {
 	}
 
-	/* package-private */static SThing getValue( Object[] details, SThing defaultValue ) {
-		for( Object detail : details ) {
-			if( detail instanceof AsSeenBy ) {
-				AsSeenBy asSeenBy = (AsSeenBy)detail;
-				return asSeenBy.value;
-			}
-		}
-		return defaultValue;
+	private GetDistanceBelow() {
+		super();
 	}
-
-	/* package-private */static org.lgna.story.implementation.ReferenceFrame getImplementation( Object[] details, org.lgna.story.implementation.ReferenceFrame defaultValue ) {
-		SThing entity = getValue( details, null );
-		return entity != null ? entity.getImplementation() : defaultValue;
-	}
-
-	//Testing a different way to make keyword parameters on the java side
-	public static AsSeenBy make( SThing value ) {
-		return new AsSeenBy( value );
-	}
-
 }

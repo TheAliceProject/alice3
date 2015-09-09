@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/alice-ide/src/main/java/org/alice/stageide/EntryPoint.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.alice.stageide.EntryPoint"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="alice-ide"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -splash:&quot;${project_loc:resources}/target/distribution/application/SplashScreen.png&quot; -Xmx1024m -Dswing.aatext=true -Dorg.alice.ide.rootDirectory=&quot;${project_loc:resources}/target/distribution&quot; -Dcom.apple.mrj.application.apple.menu.about.name=Alice3 -Dedu.cmu.cs.dennisc.java.util.logging.Logger.Level=WARNING  -Dorg.alice.ide.internalTesting=true -Dorg.lgna.croquet.Element.isIdCheckDesired=true -Djogamp.gluegen.UseTempJarCache=false -Dorg.alice.ide.internalDebugMode=true -Dorg.alice.stageide.sceneeditor.StorytellingSceneEditor.showJointedModelVisualizations=true"/>
+</launchConfiguration>
