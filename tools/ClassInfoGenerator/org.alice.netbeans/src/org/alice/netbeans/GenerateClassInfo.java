@@ -214,7 +214,7 @@ public final class GenerateClassInfo implements ActionListener {
 
 	private static final boolean IS_ALICE = true;
 
-	private static final File GIT_CORE_ROOT = new File( FileUtilities.getDefaultDirectory(), IS_ALICE ? "/Code/alice/core" : "/Code/lookingglass/core" );
+	private static final File GIT_CORE_ROOT = new File( FileUtilities.getDefaultDirectory(), IS_ALICE ? "/Projects/Alice/Code/alice/core" : "/Code/lookingglass/core" );
 	private static final File STORY_API_SRC_ROOT = new File( GIT_CORE_ROOT, "/story-api/src/main/java" );
 	private static final File IDE_RESOURCES_ROOT = new File( GIT_CORE_ROOT, "/ide/src/main/resources" );
 	private static final File OUT_TEMP = new File( FileUtilities.getDefaultDirectory(), "ClassInfoGenerationTemp" );
