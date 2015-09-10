@@ -73,11 +73,6 @@ public class GlrScene extends GlrComposite<edu.cmu.cs.dennisc.scenegraph.Scene> 
 			GlrComponent<?> glrComponent = AdapterFactory.getAdapterFor( sgComponent );
 			this.addDescendant( glrComponent );
 		}
-		this.isInitialized = true;
-	}
-
-	public boolean isInitialized() {
-		return this.isInitialized;
 	}
 
 	public GlrBackground getBackgroundAdapter() {

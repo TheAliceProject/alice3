@@ -122,6 +122,10 @@ public class SceneImp extends EntityImp {
 		}
 		program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
 		if( isActive ) {
+			//This forces the scene to initialize itself to make sure we can properly query bounding boxes and other render dependent things
+			//All this info is critical to a scene running
+			edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( this.sgScene );
+
 			this.addCamerasTo( programImp );
 			if( ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount > 0 ) {
 				//pass
@@ -142,25 +146,6 @@ public class SceneImp extends EntityImp {
 		if( this.isGlobalLightBrightnessAnimationDesired ) {
 			this.setGlobalBrightness( 0.0f );
 		}
-
-		//IMPORTANT: This waits until the all the models and whatnot are loaded and transformed in the scene
-		//Since all of this happens when the frame is displayed, it happens on a separate thread
-		//If we move ahead and call "changeActiveStatus", then that triggers the sceneActivationListeners and causes the world to run
-		//If that happens before things are ready, then some calls (particularly to things that require bounding boxes) may not be valid
-		edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene sceneAdapter = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( this.sgScene );
-		long startTime = System.currentTimeMillis();
-		while( !sceneAdapter.isInitialized() ) {
-			if( ( System.currentTimeMillis() - startTime ) > TIMEOUT_DURATION ) {
-				System.err.println( "Timeout waiting for scene to load (wait time exceeded " + ( TIMEOUT_DURATION * .001 ) + " seconds). Starting scene." );
-				break;
-			}
-			try {
-				Thread.sleep( 10 );
-			} catch( InterruptedException e ) {
-				e.printStackTrace();
-			}
-		}
-
 		this.changeActiveStatus( program, true, activeCount );
 		if( this.isGlobalLightBrightnessAnimationDesired ) {
 			this.animateGlobalBrightness( 1.0f, 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
