@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -122,6 +122,10 @@ public class SceneImp extends EntityImp {
 		}
 		program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
 		if( isActive ) {
+			//This forces the scene to initialize itself to make sure we can properly query bounding boxes and other render dependent things
+			//All this info is critical to a scene running
+			edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( this.sgScene );
+
 			this.addCamerasTo( programImp );
 			if( ACCEPTABLE_HACK_FOR_SCENE_EDITOR_performMinimalInitializationCount > 0 ) {
 				//pass
@@ -261,7 +265,7 @@ public class SceneImp extends EntityImp {
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
 			this.setGlobalBrightness( globalBrightness );
 		} else {
-			this.perform( new edu.cmu.cs.dennisc.animation.interpolation.FloatAnimation( duration, style, this.sgScene.globalBrightness.getValue(), globalBrightness ) {
+			this.perform( new edu.cmu.cs.dennisc.animation.interpolation.FloatAnimation( duration, style, this.sgScene.globalBrightness.getValue(), globalBrightness) {
 				@Override
 				protected void updateValue( Float globalBrightness ) {
 					SceneImp.this.setGlobalBrightness( globalBrightness );
@@ -304,7 +308,7 @@ public class SceneImp extends EntityImp {
 	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgFromBelowDirectionalLight = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
 	private final edu.cmu.cs.dennisc.scenegraph.ExponentialFog sgFog = new edu.cmu.cs.dennisc.scenegraph.ExponentialFog();
 
-	public final ColorProperty atmosphereColor = new ColorProperty( SceneImp.this ) {
+	public final ColorProperty atmosphereColor = new ColorProperty( SceneImp.this) {
 		@Override
 		public org.lgna.story.Color getValue() {
 			return org.lgna.story.EmployeesOnly.createColor( SceneImp.this.sgBackground.color.getValue() );
@@ -317,7 +321,7 @@ public class SceneImp extends EntityImp {
 			SceneImp.this.sgFog.color.setValue( color );
 		}
 	};
-	public final ColorProperty fromAboveLightColor = new ColorProperty( SceneImp.this ) {
+	public final ColorProperty fromAboveLightColor = new ColorProperty( SceneImp.this) {
 		@Override
 		public org.lgna.story.Color getValue() {
 			return org.lgna.story.EmployeesOnly.createColor( SceneImp.this.sgAmbientLight.color.getValue() );
@@ -332,7 +336,7 @@ public class SceneImp extends EntityImp {
 			SceneImp.this.sgFromAboveDirectionalLightC.color.setValue( color );
 		}
 	};
-	public final ColorProperty fromBelowLightColor = new ColorProperty( SceneImp.this ) {
+	public final ColorProperty fromBelowLightColor = new ColorProperty( SceneImp.this) {
 		@Override
 		public org.lgna.story.Color getValue() {
 			return org.lgna.story.EmployeesOnly.createColor( SceneImp.this.sgFromBelowDirectionalLight.color.getValue() );
@@ -344,7 +348,7 @@ public class SceneImp extends EntityImp {
 			SceneImp.this.sgFromBelowDirectionalLight.color.setValue( color );
 		}
 	};
-	public final FloatProperty globalLightBrightness = new FloatProperty( SceneImp.this ) {
+	public final FloatProperty globalLightBrightness = new FloatProperty( SceneImp.this) {
 		@Override
 		public Float getValue() {
 			return SceneImp.this.sgScene.globalBrightness.getValue();
@@ -382,8 +386,7 @@ public class SceneImp extends EntityImp {
 			SceneImp sceneImp = this.getOwner();
 			if( ( densityValue == 0 ) && ( sceneImp.sgFog.getParent() == sceneImp.sgScene ) ) {
 				sceneImp.sgScene.removeComponent( sceneImp.sgFog );
-			}
-			else if( ( densityValue > 0 ) && ( sceneImp.sgFog.getParent() != sceneImp.sgScene ) ) {
+			} else if( ( densityValue > 0 ) && ( sceneImp.sgFog.getParent() != sceneImp.sgScene ) ) {
 				sceneImp.sgScene.addComponent( sceneImp.sgFog );
 			}
 			sceneImp.sgFog.density.setValue( (double)( densityValue * densityValue * densityValue ) );
