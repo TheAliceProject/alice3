@@ -62,11 +62,6 @@ public class SSlitherer extends SJointedModel {
 	}
 
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
-	public void swimTo( SThing entity ) {
-		javax.swing.JOptionPane.showMessageDialog( null, "todo: swimTo" );
-	}
-
-	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public SJoint getRoot() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SlithererResource.ROOT );
 	}

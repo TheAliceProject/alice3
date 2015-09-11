@@ -54,7 +54,7 @@ public final class SlithererImp extends JointedModelImp<org.lgna.story.SSlithere
 
 	@Override
 	public JointId[] getRootJointIds() {
-		return org.lgna.story.resources.SwimmerResource.JOINT_ID_ROOTS;
+		return org.lgna.story.resources.SlithererResource.JOINT_ID_ROOTS;
 	}
 
 	@Override
