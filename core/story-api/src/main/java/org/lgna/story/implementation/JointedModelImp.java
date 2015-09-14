@@ -667,7 +667,8 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 
 	private org.lgna.story.implementation.visualization.JointedModelVisualization visualization;
 
-	private org.lgna.story.implementation.visualization.JointedModelVisualization getVisualization() {
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.Leaf getVisualization() {
 		if( this.visualization != null ) {
 			//pass
 		} else {
@@ -676,10 +677,12 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		return this.visualization;
 	}
 
+	@Override
 	public void showVisualization() {
 		this.getVisualization().setParent( this.getSgComposite() );
 	}
 
+	@Override
 	public void hideVisualization() {
 		if( this.visualization != null ) {
 			this.visualization.setParent( null );

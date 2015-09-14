@@ -141,6 +141,9 @@ public class HandleManager implements ManipulationListener {
 		PickHint objectPickHint = PickUtilities.getPickType( selectedObject );
 		if( handle instanceof SelectionIndicator ) {
 			return ( objectPickHint.intersects( PickHint.PickType.SELECTABLE.pickHint() ) );
+		} else if( handle instanceof ManipulationAxes ) {
+			org.lgna.story.implementation.EntityImp entityImp = PickUtilities.getEntityImpFromPickedObject( selectedObject );
+			return !( entityImp instanceof org.lgna.story.implementation.AxesImp );
 		} else if( handle instanceof LinearTranslateHandle ) {
 			boolean doJointsMatch = objectPickHint.intersects( PickHint.PickType.JOINT.pickHint() ) == handle.isMemberOf( HandleSet.HandleGroup.JOINT );
 			return doJointsMatch && objectPickHint.intersects( PickHint.PickType.MOVEABLE.pickHint() );
