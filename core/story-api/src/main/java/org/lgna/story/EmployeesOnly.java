@@ -42,6 +42,8 @@
  */
 package org.lgna.story;
 
+import org.alice.nonfree.NebulousStoryApi;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -79,9 +81,7 @@ public class EmployeesOnly {
 	}
 
 	public static Color createInterpolation( Color a, Color b, float portion ) {
-		return Color.createInstance(
-				edu.cmu.cs.dennisc.color.Color4f.createInterpolation( a.getInternal(), b.getInternal(), portion )
-				);
+		return Color.createInstance( edu.cmu.cs.dennisc.color.Color4f.createInterpolation( a.getInternal(), b.getInternal(), portion ) );
 	}
 
 	public static Position createPosition( edu.cmu.cs.dennisc.math.Point3 xyz ) {
@@ -168,19 +168,13 @@ public class EmployeesOnly {
 			if( nonfreeTexturePaint.isTextureValid() ) {
 				edu.cmu.cs.dennisc.texture.Texture texture = nonfreeTexturePaint.getTexture();
 
-				//todo
-				if( texture instanceof edu.cmu.cs.dennisc.nebulous.NebulousTexture ) {
-					edu.cmu.cs.dennisc.nebulous.NebulousTexture nebulousTexture = (edu.cmu.cs.dennisc.nebulous.NebulousTexture)texture;
-					nebulousTexture.setMipMappingDesired( true );
-				}
+				NebulousStoryApi.nonfree.setMipMappingDesiredOnNebulousTexture( texture );
 				return texture;
-
 			} else {
 				//todo?
 				return defaultValue;
 			}
-		}
-		else {
+		} else {
 			return defaultValue;
 		}
 	}

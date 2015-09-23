@@ -21,17 +21,6 @@
 		<project.resources.sound-gallery.directory>${project.resources.application.directory}/sound-gallery</project.resources.sound-gallery.directory>
 		<project.resources.starter-projects.directory>${project.resources.application.directory}/starter-projects</project.resources.starter-projects.directory>
 		<project.resources.platform.directory>${project.resources.directory}/platform</project.resources.platform.directory>
-
-		<platform.win32.label>win32</platform.win32.label>
-		<platform.win64.label>win64</platform.win64.label>
-		<platform.macosx.label>macosx</platform.macosx.label>
-		<platform.linux-i586.label>linux-i586</platform.linux-i586.label>
-		<platform.linux-amd64.label>linux-amd64</platform.linux-amd64.label>
-
-		<platform.ffmpeg.label>ffmpeg</platform.ffmpeg.label>
-		<platform.libvlc.label>libvlc</platform.libvlc.label>
-		<platform.nebulous.label>nebulous</platform.nebulous.label>
-		<platform.jogl.label>jogl</platform.jogl.label>
 	</properties>
 
 	<build>
@@ -57,6 +46,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -73,20 +63,6 @@
 									<groupId>org.alice</groupId>
 									<artifactId>alice-model-resources</artifactId>
 									<version>${alice.model.version}</version>
-									<type>zip</type>
-									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-model-resources</artifactId>
-									<version>${nebulous.model.version}</version>
-									<type>zip</type>
-									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-person-resources</artifactId>
-									<version>${nebulous.person.version}</version>
 									<type>zip</type>
 									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
 								</artifactItem>
@@ -130,14 +106,6 @@
 									<classifier>natives-linux-amd64</classifier>
 									<outputDirectory>${project.resources.platform.directory}/${platform.linux-amd64.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>linux-amd64</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.linux-amd64.label}/${platform.nebulous.label}</outputDirectory>
-								</artifactItem>
 
 								<!-- linux-i586 -->
 								<artifactItem>
@@ -154,14 +122,6 @@
 									<classifier>natives-linux-i586</classifier>
 									<outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>linux-i586</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.nebulous.label}</outputDirectory>
-								</artifactItem>
 
 								<!-- macosx -->
 								<artifactItem>
@@ -177,14 +137,6 @@
 									<version>${jogl.version}</version>
 									<classifier>natives-macosx-universal</classifier>
 									<outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.jogl.label}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>macosx</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.videolan</groupId>
@@ -217,14 +169,6 @@
 									<outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>win32</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.nebulous.label}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
 									<groupId>org.videolan</groupId>
 									<artifactId>libvlc-win32</artifactId>
 									<version>2.1.5</version>
@@ -253,14 +197,6 @@
 									<version>${jogl.version}</version>
 									<classifier>natives-windows-amd64</classifier>
 									<outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.jogl.label}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>win64</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.videolan</groupId>
