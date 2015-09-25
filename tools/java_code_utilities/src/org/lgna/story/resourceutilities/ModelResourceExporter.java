@@ -91,6 +91,7 @@ import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.UnitQuaternion;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
@@ -1262,6 +1263,9 @@ public class ModelResourceExporter {
 		sb.append( JavaCodeUtilities.LINE_RETURN );
 		sb.append( "package " + this.classData.packageString + ";" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
 		sb.append( "import org.lgna.project.annotations.*;" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "import org.lgna.story.implementation.JointIdTransformationPair;" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "import org.lgna.story.Orientation;" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "import org.lgna.story.Position;" + JavaCodeUtilities.LINE_RETURN );
 		sb.append( "import org.lgna.story.resources.ImplementationAndVisualType;" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
 		if( this.isDeprecated ) {
 			sb.append( "@Deprecated" + JavaCodeUtilities.LINE_RETURN );
@@ -1373,20 +1377,24 @@ public class ModelResourceExporter {
 						sb.append( "\n\t@FieldTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )" );
 					}
 
-					Class poseType = getPoseTypeForSuperClass( classData.superClass );
+					//					Class poseType = getPoseTypeForSuperClass( classData.superClass );
+					Class poseType = org.lgna.story.JointedModelPose.class;
 					Class poseBuilderType = getPoseBuilderTypeForSuperClass( classData.superClass );
-					sb.append( "\n\tpublic static final " + poseType.getName() + " " + fullPoseName + " = new " + poseBuilderType.getName() + "()." );
+					String poseTypeString = poseType.getName();
+					sb.append( "\n\tpublic static final " + poseTypeString + " " + fullPoseName + " = new " + poseTypeString + "( " );
 					sb.append( JavaCodeUtilities.LINE_RETURN );
 					int count = 0;
 					for( Entry<String, AffineMatrix4x4> poseDataEntry : poseData.entrySet() ) {
 						count++;
 						UnitQuaternion quat = poseDataEntry.getValue().orientation.createUnitQuaternion();
-						sb.append( "\t\tjoint( " + poseDataEntry.getKey() + ", new org.lgna.story.Orientation(" + quat.x + ", " + quat.y + ", " + quat.z + ", " + quat.w + ") )." );
+						Point3 pos = poseDataEntry.getValue().translation;
+						sb.append( "\t\tnew JointIdTransformationPair( " + poseDataEntry.getKey() + ", new Orientation(" + quat.x + ", " + quat.y + ", " + quat.z + ", " + quat.w + "), new Position(" + pos.x + ", " + pos.y + ", " + pos.z + ") )" );
 						if( count != poseData.size() ) {
-							sb.append( JavaCodeUtilities.LINE_RETURN );
+							sb.append( "," );
 						}
+						sb.append( JavaCodeUtilities.LINE_RETURN );
 					}
-					sb.append( "build();" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
+					sb.append( "\t);" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
 					if( needsAccessor ) {
 						String poseAccessorName = getAccessorMethodName( fullPoseName );
 						sb.append( "\tpublic " + poseType.getName() + " " + poseAccessorName + "(){" + JavaCodeUtilities.LINE_RETURN );

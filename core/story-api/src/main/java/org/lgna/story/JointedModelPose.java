@@ -48,7 +48,7 @@ import org.lgna.story.implementation.JointIdTransformationPair;
  * @author Dave Culyba
  */
 public class JointedModelPose extends Pose<SJointedModel> {
-	/*package-private*/ JointedModelPose( JointIdTransformationPair... pairs ) {
+	public JointedModelPose( JointIdTransformationPair... pairs ) {
 		super( SJointedModel.class, pairs );
 	}
 }

@@ -44,6 +44,7 @@ package org.lgna.story.implementation;
 
 import org.lgna.story.EmployeesOnly;
 import org.lgna.story.Orientation;
+import org.lgna.story.Position;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -86,6 +87,10 @@ public class JointIdTransformationPair {
 
 	public JointIdTransformationPair( JointId id, Orientation orientation, Point3 point3 ) {
 		this( id, EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion(), point3 );
+	}
+
+	public JointIdTransformationPair( JointId id, Orientation orientation, Position position ) {
+		this( id, EmployeesOnly.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion(), new Point3( position.getRight(), position.getUp(), position.getBackward() ) );
 	}
 
 	public boolean affectsTranslation() {
