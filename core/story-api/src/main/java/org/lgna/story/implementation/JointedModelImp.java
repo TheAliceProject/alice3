@@ -603,7 +603,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, boolean ignoreJointOrientations ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans = this.getTransformation( asSeenBy );
 		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = new edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound();
-		this.updateCumulativeBound( cumulativeBound, trans );
+		this.updateCumulativeBound( cumulativeBound, trans, ignoreJointOrientations );
 		return cumulativeBound.getBoundingBox();
 	}
 
@@ -619,6 +619,16 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
 		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF, true );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getDynamicAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
+		return getAxisAlignedMinimumBoundingBox( asSeenBy, false );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getDynamicAxisAlignedMinimumBoundingBox() {
+		return getDynamicAxisAlignedMinimumBoundingBox( AsSeenBy.SELF );
 	}
 
 	@Override
@@ -657,7 +667,8 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 
 	private org.lgna.story.implementation.visualization.JointedModelVisualization visualization;
 
-	private org.lgna.story.implementation.visualization.JointedModelVisualization getVisualization() {
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.Leaf getVisualization() {
 		if( this.visualization != null ) {
 			//pass
 		} else {
@@ -666,10 +677,12 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		return this.visualization;
 	}
 
+	@Override
 	public void showVisualization() {
 		this.getVisualization().setParent( this.getSgComposite() );
 	}
 
+	@Override
 	public void hideVisualization() {
 		if( this.visualization != null ) {
 			this.visualization.setParent( null );
