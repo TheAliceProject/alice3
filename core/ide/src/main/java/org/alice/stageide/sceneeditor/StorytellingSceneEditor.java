@@ -362,9 +362,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		}
 	}
 
-	private void setSelectedMethodOnManipulator( MethodInvocation method ) {
+	private void setSelectedExpressionOnManipulator( org.lgna.project.ast.Expression expression ) {
 		if( this.globalDragAdapter != null ) {
-			SThing selectedEntity = this.getInstanceInJavaVMForExpression( method, SThing.class );
+			SThing selectedEntity = this.getInstanceInJavaVMForExpression( expression, SThing.class );
 			AbstractTransformableImp transImp = null;
 			if( selectedEntity != null ) {
 				EntityImp imp = EmployeesOnly.getImplementation( selectedEntity );
@@ -386,8 +386,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 				StorytellingSceneEditor.this.setSelectedField( uf.getDeclaringType(), uf );
 			}
 		} else if( expression instanceof MethodInvocation ) {
-			StorytellingSceneEditor.this.setSelectedMethod( (MethodInvocation)expression );
+			StorytellingSceneEditor.this.setSelectedExpression( expression );
 
+		} else if( expression instanceof org.lgna.project.ast.ArrayAccess ) {
+			StorytellingSceneEditor.this.setSelectedExpression( expression );
 		} else if( expression instanceof ThisExpression ) {
 			UserField uf = StorytellingSceneEditor.this.getActiveSceneField();
 			if( uf != null ) {
@@ -399,11 +401,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		getPropertyPanel().setSelectedInstance( instanceFactory );
 	}
 
-	public void setSelectedMethod( MethodInvocation method ) {
+	public void setSelectedExpression( org.lgna.project.ast.Expression expression ) {
 		if( !this.selectionIsFromMain ) {
 			this.selectionIsFromMain = true;
 			if( this.globalDragAdapter != null ) {
-				setSelectedMethodOnManipulator( method );
+				setSelectedExpressionOnManipulator( expression );
 			}
 			this.selectionIsFromMain = false;
 		}
