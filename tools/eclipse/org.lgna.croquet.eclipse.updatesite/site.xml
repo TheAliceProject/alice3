@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <feature url="features/org.lgna.croquet.eclipse.feature_0.1.0.201208201458.jar" id="org.lgna.croquet.eclipse.feature" version="0.1.0.201208201458">
-      <category name="org.lgna.croquet"/>
-   </feature>
-   <category-def name="org.lgna.croquet" label="Croquet"/>
-</site>
