@@ -46,6 +46,10 @@ package org.alice.ide.story;
  * @author Dennis Cosgrove
  */
 public class AliceIde extends org.alice.stageide.StageIDE {
+	static {
+		org.alice.stageide.apis.org.lgna.story.ClassInfoUtilities.loadClassInfos();
+	}
+
 	public AliceIde( edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
 		super( new AliceIdeConfiguration(), crashDetector );
 	}

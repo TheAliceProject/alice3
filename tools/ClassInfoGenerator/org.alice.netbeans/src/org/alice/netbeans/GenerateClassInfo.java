@@ -212,14 +212,13 @@ public final class GenerateClassInfo implements ActionListener {
 		}
 	}
 
-	private static final boolean IS_ALICE = true;
-
-	private static final File GIT_CORE_ROOT = new File( FileUtilities.getDefaultDirectory(), IS_ALICE ? "/Code/alice/core" : "/Code/lookingglass/core" );
+	private static final File GIT_CORE_ROOT = new File( FileUtilities.getDefaultDirectory(), "/Code/alice/core" );
+	private static final File GIT_ALICE_ROOT = new File( FileUtilities.getDefaultDirectory(), "/Code/alice/alice" );
 	private static final File STORY_API_SRC_ROOT = new File( GIT_CORE_ROOT, "/story-api/src/main/java" );
-	private static final File IDE_RESOURCES_ROOT = new File( GIT_CORE_ROOT, "/ide/src/main/resources" );
+	private static final File ALICE_IDE_RESOURCES_ROOT = new File( GIT_ALICE_ROOT, "/alice-ide/src/main/resources" );
 	private static final File OUT_TEMP = new File( FileUtilities.getDefaultDirectory(), "ClassInfoGenerationTemp" );
 	private static final File API_ROOT = new File( STORY_API_SRC_ROOT, "/org/lgna/story" );
-	private static final File OUT = new File( IDE_RESOURCES_ROOT, "/org/alice/stageide/apis/org/lgna/story/classinfos.zip" );
+	private static final File OUT = new File( ALICE_IDE_RESOURCES_ROOT, "/org/alice/stageide/apis/org/lgna/story/classinfos.zip" );
 	private static boolean isNecessary = true;
 
 	private static void fillMapIfNecessary() {
@@ -247,6 +246,9 @@ public final class GenerateClassInfo implements ActionListener {
 			fillMapIfNecessary();
 			generate(API_ROOT.getAbsolutePath(), false);
 			generate(API_ROOT.getAbsolutePath()+"/event", false);
+
+
+			FileUtilities.createParentDirectoriesIfNecessary(OUT);
 			ZipUtilities.zip(OUT_TEMP, OUT );
 			IOLoggingHandler.outln(OUT);
 		} catch (Throwable t) {
