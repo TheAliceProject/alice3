@@ -40,15 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
-
-import org.lgna.story.implementation.JointIdTransformationPair;
+package org.lgna.project.annotations;
 
 /**
- * @author Dave Culyba
+ * @author dculyba
  */
-public class JointedModelPose extends Pose<SJointedModel> {
-	public JointedModelPose( JointIdTransformationPair... pairs ) {
-		super( SJointedModel.class, pairs );
-	}
+@java.lang.annotation.Documented
+@java.lang.annotation.Retention( java.lang.annotation.RetentionPolicy.RUNTIME )
+public @interface ArrayTemplate {
+	int length() default -1;
 }

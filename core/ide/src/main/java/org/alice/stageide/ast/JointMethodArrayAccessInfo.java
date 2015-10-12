@@ -40,15 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story;
-
-import org.lgna.story.implementation.JointIdTransformationPair;
+package org.alice.stageide.ast;
 
 /**
- * @author Dave Culyba
+ * @author dculyba
  */
-public class JointedModelPose extends Pose<SJointedModel> {
-	public JointedModelPose( JointIdTransformationPair... pairs ) {
-		super( SJointedModel.class, pairs );
+public class JointMethodArrayAccessInfo {
+	private final int index;
+	private final org.lgna.project.ast.AbstractMethod method;
+
+	public JointMethodArrayAccessInfo( org.lgna.project.ast.AbstractMethod method, int index ) {
+		this.method = method;
+		this.index = index;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public org.lgna.project.ast.AbstractMethod getMethod() {
+		return this.method;
 	}
 }
