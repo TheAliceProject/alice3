@@ -1110,6 +1110,13 @@ public class ModelResourceExporter {
 		return false;
 	}
 
+	public boolean shouldHideJointsOfArray( String arrayName ) {
+		if( this.arraysToHideElementsOf.contains( arrayName ) ) {
+			return true;
+		}
+		return false;
+	}
+
 	private String getJointAccessMethodNameForArrayJoint( String jointName ) {
 		String arrayName = getArrayNameForJoint( jointName, null, null );
 		return getAccessorMethodName( arrayName );
