@@ -11,7 +11,7 @@
 
 	<artifactId>alice-model-resources</artifactId>
 	<!-- alice.model.version -->
-	<version>2015.10.23</version>
+	<version>2015.10.24</version>
 	<packaging>pom</packaging>
 
 	<licenses>
