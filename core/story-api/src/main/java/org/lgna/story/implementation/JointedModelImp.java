@@ -226,17 +226,10 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		this.factory = factory;
 		this.visualData = this.factory.createVisualData();
 
-		List<JointId> missingJoints = this.getMissingJoints();
-		if( !missingJoints.isEmpty() ) {
-			StringBuilder sb = new StringBuilder();
-			String resourceName = this.getResource().getClass().getSimpleName();
-			sb.append( resourceName + " missing joints: " );
-			boolean first = true;
-			for( JointId id : missingJoints ) {
-				sb.append( ( !first ? ", " : "" ) + id.toString() );
-				first = false;
-			}
-			throw new RuntimeException( sb.toString() );
+		//Handle joint arrays
+		//This makes sure we have JointImps or JointWrappers for the given jointIds and adds them to mapIdToJoint for future retrieval
+		for( org.lgna.story.resources.JointArrayId arrayId : this.getJointArrayIds() ) {
+			this.createJointImpsAsNeededForJointArrayIds( arrayId, this.mapIdToJoint, true );
 		}
 
 		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
@@ -260,10 +253,17 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			}
 		}
 
-		//Handle joint arrays
-		//This makes sure we have JointImps or JointWrappers for the given jointIds and adds them to mapIdToJoint for future retrieval
-		for( org.lgna.story.resources.JointArrayId arrayId : this.getJointArrayIds() ) {
-			this.createJointImpsAsNeededForJointArrayIds( arrayId, this.mapIdToJoint, true );
+		List<JointId> missingJoints = this.getMissingJoints();
+		if( !missingJoints.isEmpty() ) {
+			StringBuilder sb = new StringBuilder();
+			String resourceName = this.getResource().getClass().getSimpleName();
+			sb.append( resourceName + " missing joints: " );
+			boolean first = true;
+			for( JointId id : missingJoints ) {
+				sb.append( ( !first ? ", " : "" ) + id.toString() );
+				first = false;
+			}
+			throw new RuntimeException( sb.toString() );
 		}
 
 		this.visualData.setSGParent( sgComposite );
