@@ -228,6 +228,12 @@ public class JointId {
 		if( this.childrenMap.containsKey( resource ) ) {
 			childList = this.childrenMap.get( resource );
 		}
+		else if( this.childrenMap.containsKey( null ) ) {
+			//Joints that are in the "null" resource child map are the base joints for this resource and are part of all resources in this group
+			java.util.List<JointId> baseChildList = this.childrenMap.get( null );
+			childList = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( baseChildList );
+			this.childrenMap.put( resource, childList );
+		}
 		else {
 			childList = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 			this.childrenMap.put( resource, childList );
