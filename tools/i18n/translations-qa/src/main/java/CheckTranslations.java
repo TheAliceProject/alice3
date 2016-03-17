@@ -1,7 +1,6 @@
-import org.alice.ide.localize.review.core.Item;
 
-/**
- * Copyright (c) 2006-2015, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,21 +40,38 @@ import org.alice.ide.localize.review.core.Item;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
+import org.alice.ide.localize.review.core.Item;
 
 /**
  * @author Dennis Cosgrove
  */
 public class CheckTranslations {
+
+	private static class Mistranslation {
+		public Mistranslation( Item item, java.util.List<String> englishTags, String localizedValue, java.util.List<String> localizedTags ) {
+			this.item = item;
+			this.englishTags = englishTags;
+			this.localizedValue = localizedValue;
+			this.localizedTags = localizedTags;
+		}
+
+		private final Item item;
+		private final java.util.List<String> englishTags;
+		private final String localizedValue;
+		private final java.util.List<String> localizedTags;
+	}
+
 	public static void main( String[] args ) throws Exception {
 
-		java.util.Locale[] locales = { new java.util.Locale( "pt" ), new java.util.Locale( "pt", "BR" ), new java.util.Locale( "es" ), new java.util.Locale( "fr" ), new java.util.Locale( "fr", "BE" ), new java.util.Locale( "it" ), new java.util.Locale( "nl" ), new java.util.Locale( "de" ), new java.util.Locale( "el" ), new java.util.Locale( "ro" ), new java.util.Locale( "cs" ), new java.util.Locale( "sl" ), new java.util.Locale( "lt" ), new java.util.Locale( "ru" ), new java.util.Locale( "uk" ), new java.util.Locale( "tr" ), new java.util.Locale( "ar" ), new java.util.Locale( "iw" ), new java.util.Locale( "in" ), new java.util.Locale( "zh", "CN" ), new java.util.Locale( "zh", "TW" ), new java.util.Locale( "ko" )
-		};
+		//java.util.Locale[] locales = { new java.util.Locale( "pt" ), new java.util.Locale( "pt", "BR" ), new java.util.Locale( "es" ), new java.util.Locale( "fr" ), new java.util.Locale( "fr", "BE" ), new java.util.Locale( "it" ), new java.util.Locale( "nl" ), new java.util.Locale( "de" ), new java.util.Locale( "el" ), new java.util.Locale( "ro" ), new java.util.Locale( "cs" ), new java.util.Locale( "sl" ), new java.util.Locale( "lt" ), new java.util.Locale( "ru" ), new java.util.Locale( "uk" ), new java.util.Locale( "tr" ), new java.util.Locale( "ar" ), new java.util.Locale( "iw" ), new java.util.Locale( "in" ), new java.util.Locale( "zh", "CN" ), new java.util.Locale( "zh", "TW" ), new java.util.Locale( "ko" ) };
+		java.util.Locale[] locales = { new java.util.Locale( "el" ) };
 		java.util.List<Item> items = org.alice.ide.localize.review.core.LocalizeUtils.getItems( org.alice.ide.story.AliceIde.class, "alice-ide" );
+		java.util.List<Mistranslation> mistranslations = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( Item item : items ) {
 			String defaultValue = item.getDefaultValue();
-			java.util.List<String> tags = org.alice.ide.localize.review.core.LocalizeUtils.getTags( defaultValue );
-			if( tags.size() > 0 ) {
+			java.util.List<String> englishTags = org.alice.ide.localize.review.core.LocalizeUtils.getTags( defaultValue );
+			if( englishTags.size() > 0 ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( item.getKey(), item.getDefaultValue() );
 
 				for( java.util.Locale locale : locales ) {
@@ -67,17 +83,48 @@ public class CheckTranslations {
 					} else {
 						java.util.List<String> localizedTags = org.alice.ide.localize.review.core.LocalizeUtils.getTags( localizedValue );
 
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( localizedValue );
-						for( String tag : tags ) {
-							if( localizedTags.contains( tag ) ) {
-								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "***", locale, tag );
+						//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( localizedValue );
+						for( String englishTag : englishTags ) {
+							if( localizedTags.contains( englishTag ) ) {
+								//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "***", locale, englishTag );
 							} else {
-								throw new RuntimeException( locale + " " + item.getKey() + " " + defaultValue + " " + localizedValue );
+								mistranslations.add( new Mistranslation( item, englishTags, localizedValue, localizedTags ) );
+								break;
 							}
 						}
 					}
 				}
 			}
 		}
+
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( "<title>" );
+		sb.append( "Alice Translations Validity Report" );
+		sb.append( "</title>" );
+		sb.append( "<h1>Alice Translations Validity Report</h1>" );
+		sb.append( "<h2>Greek</h2>" );
+		for( Mistranslation mistranslation : mistranslations ) {
+			sb.append( "incorrect tag(s): " );
+			sb.append( "<a href=\"" );
+			sb.append( mistranslation.item.createUri( "el" ) );
+			sb.append( "\">" );
+			sb.append( mistranslation.item.getKey() );
+			sb.append( "</a><br>" );
+		}
+
+		sb.append( "<p>" );
+
+		//java.util.Date date = new java.util.Date();
+		java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat();
+
+		sb.append( "<hr>" );
+		sb.append( "<em>generated: " );
+		sb.append( simpleDateFormat.format( new java.util.Date() ) );
+		sb.append( "</em>" );
+
+		sb.append( "</html>" );
+
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "latestTranslationsValidityReport.html" ), sb.toString() );
 	}
 }
