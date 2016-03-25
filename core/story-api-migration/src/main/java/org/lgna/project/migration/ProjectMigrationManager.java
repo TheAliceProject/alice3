@@ -5545,7 +5545,20 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					createJointIdPattern( "TAIL_5", "quadruped.DalmatianResource" ),
 					createJointIdReplacement( "TAIL_4" )
-			)
+			),
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.2.108.0.0" ),
+					new org.lgna.project.Version( "3.2.110.0.0" ),
+					
+					createMoreSpecificFieldPattern( "OVAL", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "OVAL_DESERT", "org.lgna.story.resources.prop.SandDunesResource" ),
+					
+					createMoreSpecificFieldPattern( "CRESCENT", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "CRESCENT_DESERT", "org.lgna.story.resources.prop.SandDunesResource" ),
+					
+					createMoreSpecificFieldPattern( "BLOB", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "BLOB_DESERT", "org.lgna.story.resources.prop.SandDunesResource" )
+					)
 
 			//			, EventAstMigration.getTextMigration() 
 	};
