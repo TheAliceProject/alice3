@@ -64,23 +64,54 @@ public class CheckTranslations {
 
 	public static void main( String[] args ) throws Exception {
 
-		//java.util.Locale[] locales = { new java.util.Locale( "pt" ), new java.util.Locale( "pt", "BR" ), new java.util.Locale( "es" ), new java.util.Locale( "fr" ), new java.util.Locale( "fr", "BE" ), new java.util.Locale( "it" ), new java.util.Locale( "nl" ), new java.util.Locale( "de" ), new java.util.Locale( "el" ), new java.util.Locale( "ro" ), new java.util.Locale( "cs" ), new java.util.Locale( "sl" ), new java.util.Locale( "lt" ), new java.util.Locale( "ru" ), new java.util.Locale( "uk" ), new java.util.Locale( "tr" ), new java.util.Locale( "ar" ), new java.util.Locale( "iw" ), new java.util.Locale( "in" ), new java.util.Locale( "zh", "CN" ), new java.util.Locale( "zh", "TW" ), new java.util.Locale( "ko" ) };
-		java.util.Locale[] locales = { new java.util.Locale( "el" ) };
+		java.util.List<java.util.Locale> ALL_LOCALES = edu.cmu.cs.dennisc.java.util.Lists.newArrayList( new java.util.Locale( "pt" ), new java.util.Locale( "pt", "BR" ), new java.util.Locale( "es" ), new java.util.Locale( "fr" ), new java.util.Locale( "fr", "BE" ), new java.util.Locale( "it" ), new java.util.Locale( "nl" ), new java.util.Locale( "de" ), new java.util.Locale( "el" ), new java.util.Locale( "ro" ), new java.util.Locale( "cs" ), new java.util.Locale( "sl" ), new java.util.Locale( "lt" ), new java.util.Locale( "ru" ), new java.util.Locale( "uk" ), new java.util.Locale( "tr" ), new java.util.Locale( "ar" ), new java.util.Locale( "iw" ), new java.util.Locale( "in" ), new java.util.Locale( "zh", "CN" ), new java.util.Locale( "zh", "TW" ), new java.util.Locale( "ko" ) );
+
+		final java.util.List<java.util.Locale> locales;
+		if( args.length == 0 ) {
+			locales = ALL_LOCALES;
+		} else {
+			locales = edu.cmu.cs.dennisc.java.util.Lists.newArrayListWithInitialCapacity( args.length );
+			for( String arg : args ) {
+				String[] languageCountryVariant = arg.split( "," );
+				java.util.Locale locale;
+				switch( languageCountryVariant.length ) {
+				case 1:
+					locale = new java.util.Locale( languageCountryVariant[ 0 ] );
+					break;
+				case 2:
+					locale = new java.util.Locale( languageCountryVariant[ 0 ], languageCountryVariant[ 1 ] );
+					break;
+				case 3:
+					locale = new java.util.Locale( languageCountryVariant[ 0 ], languageCountryVariant[ 1 ], languageCountryVariant[ 2 ] );
+					break;
+				default:
+					throw new Exception( arg );
+				}
+				if( ALL_LOCALES.contains( locale ) ) {
+					locales.add( locale );
+				} else {
+					throw new Exception( locale.getDisplayName() );
+				}
+			}
+		}
+		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<java.util.Locale, Mistranslation> mapLocaleToMistranslations = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentListHashMap();
+
 		java.util.List<Item> items = org.alice.ide.localize.review.core.LocalizeUtils.getItems( org.alice.ide.story.AliceIde.class, "alice-ide" );
-		java.util.List<Mistranslation> mistranslations = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		for( Item item : items ) {
 			String defaultValue = item.getDefaultValue();
 			java.util.List<String> englishTags = org.alice.ide.localize.review.core.LocalizeUtils.getTags( defaultValue );
 			if( englishTags.size() > 0 ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( item.getKey(), item.getDefaultValue() );
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( item.getKey(), item.getDefaultValue() );
 
 				for( java.util.Locale locale : locales ) {
+
 					java.util.ResourceBundle resourceBundleB = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( item.getBundleName(), locale );
 					String localizedValue = resourceBundleB.getString( item.getKey() );
 
 					if( localizedValue.equals( defaultValue ) ) {
 						//pass
 					} else {
+						java.util.List<Mistranslation> mistranslations = mapLocaleToMistranslations.getInitializingIfAbsentToLinkedList( locale );
 						java.util.List<String> localizedTags = org.alice.ide.localize.review.core.LocalizeUtils.getTags( localizedValue );
 
 						//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( localizedValue );
@@ -103,17 +134,21 @@ public class CheckTranslations {
 		sb.append( "Alice Translations Validity Report" );
 		sb.append( "</title>" );
 		sb.append( "<h1>Alice Translations Validity Report</h1>" );
-		sb.append( "<h2>Greek</h2>" );
-		for( Mistranslation mistranslation : mistranslations ) {
-			sb.append( "incorrect tag(s): " );
-			sb.append( "<a href=\"" );
-			sb.append( mistranslation.item.createUri( "el" ) );
-			sb.append( "\">" );
-			sb.append( mistranslation.item.getKey() );
-			sb.append( "</a><br>" );
+		for( java.util.Locale locale : locales ) {
+			sb.append( "<h2>" );
+			sb.append( locale.getDisplayName() );
+			sb.append( "</h2>" );
+			java.util.List<Mistranslation> mistranslations = mapLocaleToMistranslations.getInitializingIfAbsentToLinkedList( locale );
+			for( Mistranslation mistranslation : mistranslations ) {
+				sb.append( "incorrect tag(s): " );
+				sb.append( "<a href=\"" );
+				sb.append( mistranslation.item.createUri( "el" ) );
+				sb.append( "\">" );
+				sb.append( mistranslation.item.getKey() );
+				sb.append( "</a><br>" );
+			}
+			sb.append( "<p>" );
 		}
-
-		sb.append( "<p>" );
 
 		//java.util.Date date = new java.util.Date();
 		java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat();
