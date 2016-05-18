@@ -70,7 +70,7 @@ public class Build {
 		.isJavaDocGenerationDesired( commandLine.hasOption( "skipJavaDocs" ) == false )
 
 				.joglVersion( "2.2.4" )
-				.aliceModelSourceVersion( "2015.08.13" )
+				.aliceModelSourceVersion( "2016.02.29" )
 				.nebulousModelSourceVersion( "2014.09.11" )
 
 		//getUserProperties6File is expected to be in 6.9 even for 6.9.1

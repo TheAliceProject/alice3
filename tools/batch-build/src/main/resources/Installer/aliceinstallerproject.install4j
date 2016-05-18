@@ -724,7 +724,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
     </applications>
   </installerGui>
   <mediaSets>
-    <windows name="Windows 64 Offline" id="101" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="64" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="windows-amd64-1.8.0_31" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-amd64-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerDataTest" verifyIntegrity="true">
+    <windows name="Windows 64 Offline" id="101" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="64" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="installerFiles/windows-amd64-1.8.0_77.tar.gz" manualJREEntry="true" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-amd64-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerDataTest" verifyIntegrity="true">
       <excludedLaunchers />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
@@ -742,7 +742,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
       <excludedComponents />
       <includedDownloadableComponents />
     </windows>
-    <macos name="Mac OS X Single Bundle Offline" id="105" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="macosx-amd64-1.8.0_31_unpacked" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/macosx-amd64-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" appleJre="false" requiredVmIdPrefix="" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" launcherId="24">
+    <macos name="Mac OS X Single Bundle Offline" id="105" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="installerFiles/macosx-amd64-1.8.0_77.tar.gz" manualJREEntry="true" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/macosx-amd64-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" appleJre="false" requiredVmIdPrefix="" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" launcherId="24">
       <excludedBeans>
         <bean refId="142" />
       </excludedBeans>
@@ -781,7 +781,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
         <content />
       </installerScript>
     </unixInstaller>
-    <windows name="Windows 32 Offline" id="117" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="windows-x86-1.8.0_31" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-x86-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" verifyIntegrity="true">
+    <windows name="Windows 32 Offline" id="117" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="windows-x86-1.8.0_77" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-x86-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" verifyIntegrity="true">
       <excludedLaunchers />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
@@ -799,7 +799,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
       <excludedComponents />
       <includedDownloadableComponents />
     </windows>
-    <macosArchive name="Mac OS X Single Bundle Archive" id="195" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Archive_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="macosx-amd64-1.7.0_67" manualJREEntry="false" appleJre="false" launcherId="24">
+    <macosArchive name="Mac OS X Single Bundle Archive" id="195" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Archive_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="installerFiles/macosx-amd64-1.8.0_77_unpacked.tar.gz" manualJREEntry="true" appleJre="false" launcherId="24">
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
       <exclude>
