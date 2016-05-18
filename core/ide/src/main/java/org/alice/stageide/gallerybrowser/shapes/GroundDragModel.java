@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.alice.stageide.gallerybrowser.shapes;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
  */
-public class GroundIcon extends ShapeIcon {
-	public GroundIcon( java.awt.Dimension size ) {
-		super( size );
+public class GroundDragModel extends ShapeDragModel {
+
+	private static final org.lgna.story.SGround sModel = new org.lgna.story.SGround();
+
+	private static class SingletonHolder {
+		private static GroundDragModel instance = new GroundDragModel();
+	}
+
+	public static GroundDragModel getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private GroundDragModel() {
+		super( java.util.UUID.fromString( "3aa18490-f758-46e6-84eb-c9eff76c0185" ) );
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		java.awt.Shape shape = new java.awt.Polygon( new int[] { 0, width, (int)( width * .75 ), (int)( .25 * width ) }, new int[] { (int)( .8 * height ), (int)( .8 * height ), (int)( .2 * height ), (int)( .2 * height ) }, 4 );
-		g2.setPaint( fillPaint );
-		g2.fill( shape );
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
+		return org.lgna.story.EmployeesOnly.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
 	}
+
+	@Override
+	public boolean placeOnGround() {
+		return true;
+	}
+
+	@Override
+	public org.lgna.croquet.Model getLeftButtonClickModel() {
+		return org.alice.stageide.ast.declaration.AddGroundManagedFieldComposite.getInstance().getLaunchOperation();
+	}
+
+	@Override
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		return org.alice.stageide.icons.GroundIconFactory.getInstance();
+	}
+
 }

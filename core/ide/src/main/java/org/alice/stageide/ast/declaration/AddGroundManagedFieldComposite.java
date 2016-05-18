@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.alice.stageide.ast.declaration;
+
+import org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
  */
-public class GroundIcon extends ShapeIcon {
-	public GroundIcon( java.awt.Dimension size ) {
-		super( size );
+public class AddGroundManagedFieldComposite extends AddPredeterminedValueTypeManagedFieldComposite {
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> paintState = this.createInitialPropertyValueExpressionState( "paintState", org.lgna.story.SGround.SurfaceAppearance.GRASS, org.lgna.story.SGround.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getPaintState() {
+		return this.paintState;
 	}
 
-	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
-		java.awt.Shape shape = new java.awt.Polygon( new int[] { 0, width, (int)( width * .75 ), (int)( .25 * width ) }, new int[] { (int)( .8 * height ), (int)( .8 * height ), (int)( .2 * height ), (int)( .2 * height ) }, 4 );
-		g2.setPaint( fillPaint );
-		g2.fill( shape );
+	private static class SingletonHolder {
+		private static AddGroundManagedFieldComposite instance = new AddGroundManagedFieldComposite();
+	}
+
+	public static AddGroundManagedFieldComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private AddGroundManagedFieldComposite() {
+		super( java.util.UUID.fromString( "50e6e2a7-9857-4ea3-9d98-f1fa16d628f1" ), org.lgna.story.SGround.class );
 	}
 }
