@@ -14,13 +14,10 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 
 	static {
-		if( SystemUtilities.getBooleanProperty( "org.alice.ide.disableDefaultNebulousLoading", false ) )
-		{
+		if( SystemUtilities.getBooleanProperty( "org.alice.ide.disableDefaultNebulousLoading", false ) ) {
 			//Don't load nebulous resources if the default loading is disabled
 			//Disabling should only happen under controlled circumstances like running the model batch process
-		}
-		else
-		{
+		} else {
 			StorytellingResources.INSTANCE.loadSimsBundles();
 		}
 		//		Manager.setDebugDraw( true );
@@ -32,10 +29,8 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 
 	private native void render( javax.media.opengl.GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque );
 
-	public void synchronizedRender( javax.media.opengl.GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque )
-	{
-		synchronized( renderLock )
-		{
+	public void synchronizedRender( javax.media.opengl.GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque ) {
+		synchronized( renderLock ) {
 			try {
 				this.render( gl, globalBrightness, renderAlpha, renderOpaque );
 			} catch( RuntimeException re ) {
@@ -47,30 +42,24 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 
 	private native void pick();
 
-	public void synchronizedPick()
-	{
-		synchronized( renderLock )
-		{
+	public void synchronizedPick() {
+		synchronized( renderLock ) {
 			pick();
 		}
 	}
 
 	private native boolean isAlphaBlended();
 
-	public boolean synchronizedIsAlphaBlended()
-	{
-		synchronized( renderLock )
-		{
+	public boolean synchronizedIsAlphaBlended() {
+		synchronized( renderLock ) {
 			return isAlphaBlended();
 		}
 	}
 
 	private native boolean hasOpaque();
 
-	public boolean synchronizedHasOpaque()
-	{
-		synchronized( renderLock )
-		{
+	public boolean synchronizedHasOpaque() {
+		synchronized( renderLock ) {
 			return hasOpaque();
 		}
 	}
@@ -127,6 +116,18 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 		synchronized( renderLock ) {
 			setLocalTransformationForPartNamed( joint, joint.getParent(), localTrans.getAsColumnMajorArray12() );
 		}
+	}
+
+	public boolean hasJoint( org.lgna.story.resources.JointId joint ) {
+		//There's no specific "hasJoint" native call, so this uses the getLocalTransformationForPartNamed and catches the error if the joint isn't found
+		//TODO: implement a simpler "hasJoint" in the native code
+		double[] buffer = new double[ 12 ];
+		try {
+			getLocalTransformationForPartNamed( buffer, joint, joint.getParent() );
+		} catch( RuntimeException re ) {
+			return false;
+		}
+		return true;
 	}
 
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformationForJoint( org.lgna.story.resources.JointId joint ) {

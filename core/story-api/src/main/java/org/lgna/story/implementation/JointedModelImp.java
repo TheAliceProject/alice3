@@ -78,6 +78,8 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 
 		public JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImplementation, org.lgna.story.resources.JointId jointId );
 
+		public boolean hasJointImplementation( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImplementation, org.lgna.story.resources.JointId jointId );
+
 		public JointImp[] createJointArrayImplementation( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImplementation, org.lgna.story.resources.JointArrayId jointArrayId );
 
 		public VisualData createVisualData();
@@ -93,6 +95,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		public JointImpWrapper( JointedModelImp<?, ?> jointedModelImp, JointImp joint ) {
 			super( jointedModelImp );
 			this.internalJointImp = joint;
+
 		}
 
 		@Override
@@ -338,7 +341,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		}
 		while( !jointsToCheck.isEmpty() ) {
 			JointId joint = jointsToCheck.remove( 0 );
-			if( this.createJointImplementation( joint ) == null ) {
+			if( !this.hasJointImplementation( joint ) ) {
 				missingJoints.add( joint );
 			}
 			for( JointId child : joint.getChildren( this.getResource() ) ) {
@@ -663,6 +666,10 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 
 	protected final org.lgna.story.implementation.JointImp createJointImplementation( org.lgna.story.resources.JointId jointId ) {
 		return this.factory.createJointImplementation( this, jointId );
+	}
+
+	protected final boolean hasJointImplementation( org.lgna.story.resources.JointId jointId ) {
+		return this.factory.hasJointImplementation( this, jointId );
 	}
 
 	private org.lgna.story.implementation.visualization.JointedModelVisualization visualization;

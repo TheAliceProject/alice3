@@ -152,6 +152,25 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 	}
 
 	@Override
+	public boolean hasJointImplementation( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {
+		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = ( (VisualData)jointedModelImplementation.getVisualData() ).sgSkeletonVisual;
+		if( sgSkeletonVisual != null ) {
+			String key = jointId.toString();
+			edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgSkeletonVisual.skeleton.getValue();
+			edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( key );
+			if( sgJoint != null ) {
+				return true;
+			} else {
+				org.lgna.story.resources.JointedModelResource resource = jointedModelImplementation.getResource();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( jointId, "not found for", resource.getClass(), resource );
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	@Override
 	public org.lgna.story.implementation.JointImp[] createJointArrayImplementation( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointArrayId jointArrayId ) {
 		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgSkeletonVisual = ( (VisualData)jointedModelImplementation.getVisualData() ).sgSkeletonVisual;
 		if( sgSkeletonVisual != null ) {
@@ -166,12 +185,10 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 					org.lgna.story.resources.JointId parentJointId;
 					if( i == 0 ) {
 						parentJointId = jointArrayId.getRoot();
-					}
-					else {
+					} else {
 						parentJointId = jointImps[ i - 1 ].getJointId();
 					}
-					if( sgSkeletonRoot.getJoint( parentJointId.toString() ) != sgJoints[ i ].getParent() )
-					{
+					if( sgSkeletonRoot.getJoint( parentJointId.toString() ) != sgJoints[ i ].getParent() ) {
 						org.lgna.story.resources.JointedModelResource resource = jointedModelImplementation.getResource();
 						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Invalid implicit array structure:", jointName, "'s parent is not set to", parentJointId.toString(), "on", resource.getClass(), resource );
 						return null;
@@ -181,9 +198,9 @@ public class JointImplementationAndVisualDataFactory implements org.lgna.story.i
 					//(meaning this is an array that is declared on the class but is ultimately implemented by an individual resource)
 					//Given this fact, these joint ids need to be tied to the resource rather than the class
 					//Maybe pass parent in as null if the parent joint is the root joint? this seems like a bad idea though...
-					org.lgna.story.resources.JointId jointId = new org.lgna.story.resources.JointId( parentJointId, jointArrayId.getContainingClass(), resource ) {
+					org.lgna.story.resources.JointId jointId = new org.lgna.story.resources.JointId( parentJointId, jointArrayId.getContainingClass(), resource) {
 						@Override
-						public String toString() {
+						public String toString( ) {
 							return jointName;
 						}
 					};
