@@ -5548,6 +5548,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createJointIdReplacement( "TAIL_4" )
 			),
 			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.93.0.0" ),
+					new org.lgna.project.Version( "3.2.108.0.0" )
+					),
+			new org.lgna.project.migration.TextMigration(
 					new org.lgna.project.Version( "3.2.108.0.0" ),
 					new org.lgna.project.Version( "3.2.110.0.0" ),
 
@@ -5571,7 +5575,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.BonePileResource" ),
 
 					"org.lgna.story.resources.prop.BonesResource",
-					"org.lgna.story.resources.prop.BonePileResource"
+					"org.lgna.story.resources.prop.BonePileResource",
+
+					createMoreSpecificFieldPattern( "SHORT", "org.lgna.story.resources.prop.WychElmResource" ),
+					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.WychElmResource" )
 					)
 
 			//			, EventAstMigration.getTextMigration()
