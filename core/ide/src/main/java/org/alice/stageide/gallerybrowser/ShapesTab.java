@@ -58,7 +58,7 @@ public class ShapesTab extends GalleryTab {
 						, org.alice.stageide.gallerybrowser.shapes.TextModelDragModel.getInstance()
 						, org.alice.stageide.gallerybrowser.shapes.BillboardDragModel.getInstance()
 						, org.alice.stageide.gallerybrowser.shapes.AxesDragModel.getInstance()
-//						, org.alice.stageide.gallerybrowser.shapes.GroundDragModel.getInstance()
+						, org.alice.stageide.gallerybrowser.shapes.GroundDragModel.getInstance()
 					) );
 	// @formatter:on
 	public ShapesTab() {
