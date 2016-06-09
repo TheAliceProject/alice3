@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,36 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.alice.stageide.oneshot;
+
+import org.alice.stageide.oneshot.edits.StrikePoseEdit;
 
 /**
  * @author Dennis Cosgrove
  */
-public class OneShotUtilities {
-	private OneShotUtilities() {
-		throw new AssertionError();
+public class StrikePoseMethodInvocationEditFactory implements MethodInvocationEditFactory {
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+	private final org.lgna.project.ast.AbstractMethod method;
+	private final org.lgna.project.ast.Expression[] argumentExpressions;
+
+	public StrikePoseMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		this.instanceFactory = instanceFactory;
+		this.method = method;
+		this.argumentExpressions = argumentExpressions;
 	}
 
-	public static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createMenuItemPrepModels( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		models.add( InstanceFactoryLabelSeparatorModel.getInstance( instanceFactory ) );
-		models.add( ProceduresCascade.getInstance( instanceFactory ).getMenuModel() );
-		if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
-			org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
-			org.lgna.project.ast.UserField field = thisFieldAccessFactory.getField();
-			models.add( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( field ).getLaunchOperation().getMenuItemPrepModel() );
-			//Prevent users from deleting the camera or the scene
-			if( field.getValueType().isAssignableTo( org.lgna.story.SCamera.class ) || field.getValueType().isAssignableTo( org.lgna.story.SScene.class ) ) {
-				//pass
-			} else {
-				models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-			}
-			//			if( field.getValueType().isAssignableTo( SBiped.class ) && ( field.getValueType() instanceof NamedUserType ) ) {
-			//				models.add( new AnimatorInputDialogComposite( (NamedUserType)field.getValueType() ).getOperation().getMenuItemPrepModel() );
-			//				models.add( new PoserInputDialogComposite( (NamedUserType)field.getValueType() ).getOperation().getMenuItemPrepModel() );
-			//			}
-			models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-		}
-		return models;
+	@Override
+	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
+		return new StrikePoseEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }
