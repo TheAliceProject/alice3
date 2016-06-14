@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.render.gl;
 /*package-private*/class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.swing.JPanel> implements edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget {
 	private static final boolean IS_IMAGE_TRACKING_READY_FOR_PRIME_TIME = false;
 
-	private class RenderPane extends javax.media.opengl.awt.GLJPanel {
+	private class RenderPane extends com.jogamp.opengl.awt.GLJPanel {
 		private java.awt.Image mostRecentDrawnImage;
 		private java.awt.Image disabledImage;
 
@@ -170,9 +170,9 @@ package edu.cmu.cs.dennisc.render.gl;
 	}
 
 	@Override
-	public javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable() {
 		return this.glPanel;
 	}
 
-	private final javax.media.opengl.awt.GLJPanel glPanel;
+	private final com.jogamp.opengl.awt.GLJPanel glPanel;
 }

@@ -65,7 +65,7 @@ public class AliceUncaughtExceptionHandler extends IdeUncaughtExceptionHandler {
 					super.run();
 					final boolean IS_TESTING_GL = true;
 					if( IS_TESTING_GL ) {
-						throw new javax.media.opengl.GLException( "DELETE ME" );
+						throw new com.jogamp.opengl.GLException( "DELETE ME" );
 					} else {
 						throw new RuntimeException( "DELETE ME" );
 					}

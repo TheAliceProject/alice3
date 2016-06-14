@@ -120,26 +120,26 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 					@Override
 					public void render( Object context ) {
 						edu.cmu.cs.dennisc.render.gl.imp.GlrRenderContext glrRenderContext = (edu.cmu.cs.dennisc.render.gl.imp.GlrRenderContext)context;
-						javax.media.opengl.GL2 gl = glrRenderContext.getDrawable().getGL().getGL2();
+						com.jogamp.opengl.GL2 gl = glrRenderContext.getDrawable().getGL().getGL2();
 						java.awt.Rectangle viewport = glrRenderContext.getViewport();
 						edu.cmu.cs.dennisc.color.Color4f backgroundColor = rImageBuffer.getBackgroundColor();
 						final boolean IS_ALPHA = backgroundColor == null;
 						int clearMask;
 						if( IS_ALPHA ) {
-							clearMask = javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
+							clearMask = com.jogamp.opengl.GL.GL_DEPTH_BUFFER_BIT;
 						} else {
 							gl.glClearColor( backgroundColor.red, backgroundColor.green, backgroundColor.blue, backgroundColor.alpha );
-							clearMask = javax.media.opengl.GL.GL_COLOR_BUFFER_BIT | javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
+							clearMask = com.jogamp.opengl.GL.GL_COLOR_BUFFER_BIT | com.jogamp.opengl.GL.GL_DEPTH_BUFFER_BIT;
 						}
-						gl.glEnable( javax.media.opengl.GL.GL_SCISSOR_TEST );
+						gl.glEnable( com.jogamp.opengl.GL.GL_SCISSOR_TEST );
 						gl.glScissor( viewport.x, viewport.y, viewport.width, viewport.height );
 						gl.glClear( clearMask );
-						gl.glDisable( javax.media.opengl.GL.GL_SCISSOR_TEST );
+						gl.glDisable( com.jogamp.opengl.GL.GL_SCISSOR_TEST );
 
 						gl.glViewport( viewport.x, viewport.y, viewport.width, viewport.height );
 
-						javax.media.opengl.glu.GLU glu = new javax.media.opengl.glu.GLU();
-						gl.glMatrixMode( javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION );
+						com.jogamp.opengl.glu.GLU glu = new com.jogamp.opengl.glu.GLU();
+						gl.glMatrixMode( com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION );
 						gl.glLoadIdentity();
 
 						edu.cmu.cs.dennisc.math.Angle verticalViewingAngle = new edu.cmu.cs.dennisc.math.AngleInRadians( 0.5 );
@@ -151,7 +151,7 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 						rc.setGL( gl );
 						rc.initialize();
 
-						gl.glMatrixMode( javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW );
+						gl.glMatrixMode( com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW );
 
 						double distance;
 						if( sgVisual != null ) {
@@ -182,16 +182,16 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 
 						edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene sceneAdapter = edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory.getAdapterFor( sgScene );
 						sceneAdapter.setupAffectors( rc );
-						gl.glEnable( javax.media.opengl.GL.GL_DEPTH_TEST );
+						gl.glEnable( com.jogamp.opengl.GL.GL_DEPTH_TEST );
 
 						//todo: support alpha
-						//							gl.glDisable( javax.media.opengl.GL.GL_BLEND );
+						//							gl.glDisable( com.jogamp.opengl.GL.GL_BLEND );
 						transformableAdapter.EPIC_HACK_FOR_ICON_CAPTURE_renderOpaque( rc );
-						//							gl.glEnable( javax.media.opengl.GL.GL_BLEND );
-						//							gl.glBlendFunc( javax.media.opengl.GL.GL_SRC_ALPHA, javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA );
+						//							gl.glEnable( com.jogamp.opengl.GL.GL_BLEND );
+						//							gl.glBlendFunc( com.jogamp.opengl.GL.GL_SRC_ALPHA, com.jogamp.opengl.GL.GL_ONE_MINUS_SRC_ALPHA );
 						//							transformableAdapter.renderAlphaBlended( rc );
-						//							gl.glDisable( javax.media.opengl.GL.GL_BLEND );
-						gl.glDisable( javax.media.opengl.GL.GL_DEPTH_TEST );
+						//							gl.glDisable( com.jogamp.opengl.GL.GL_BLEND );
+						gl.glDisable( com.jogamp.opengl.GL.GL_DEPTH_TEST );
 					}
 				}, viewport, rImageBuffer, edu.cmu.cs.dennisc.render.ImageOrientationRequirement.RIGHT_SIDE_UP_REQUIRED, new edu.cmu.cs.dennisc.render.ImageCaptureObserver() {
 					@Override

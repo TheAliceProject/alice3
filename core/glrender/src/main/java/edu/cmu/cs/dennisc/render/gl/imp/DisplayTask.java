@@ -45,15 +45,15 @@ package edu.cmu.cs.dennisc.render.gl.imp;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class DisplayTask implements javax.media.opengl.GLRunnable {
+/*package-private*/abstract class DisplayTask implements com.jogamp.opengl.GLRunnable {
 	public void setRtImp( RenderTargetImp rtImp ) {
 		this.rtImp = rtImp;
 	}
 
-	abstract IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl );
+	abstract IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, com.jogamp.opengl.GLAutoDrawable drawable, com.jogamp.opengl.GL2 gl );
 
 	@Override
-	public boolean run( javax.media.opengl.GLAutoDrawable drawable ) {
+	public boolean run( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		IsFrameBufferIntact isFrameBufferIntact = this.handleDisplay( this.rtImp, drawable, drawable.getGL().getGL2() );
 		return isFrameBufferIntact == IsFrameBufferIntact.TRUE;
 	}

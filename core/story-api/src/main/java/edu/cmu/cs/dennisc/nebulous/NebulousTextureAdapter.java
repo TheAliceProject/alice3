@@ -55,7 +55,7 @@ public class NebulousTextureAdapter extends GlrTexture<edu.cmu.cs.dennisc.nebulo
 	private final NebulousTextureBinding nebulousBinding = new NebulousTextureBinding();
 
 	@Override
-	protected com.jogamp.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
+	protected com.jogamp.opengl.util.texture.TextureData newTextureData( com.jogamp.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}
 

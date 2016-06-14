@@ -43,10 +43,10 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static javax.media.opengl.GL.GL_BACK;
-import static javax.media.opengl.GL.GL_CULL_FACE;
-import static javax.media.opengl.GL.GL_GREATER;
-import static javax.media.opengl.GL2ES1.GL_ALPHA_TEST;
+import static com.jogamp.opengl.GL.GL_BACK;
+import static com.jogamp.opengl.GL.GL_CULL_FACE;
+import static com.jogamp.opengl.GL.GL_GREATER;
+import static com.jogamp.opengl.GL2ES1.GL_ALPHA_TEST;
 
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;

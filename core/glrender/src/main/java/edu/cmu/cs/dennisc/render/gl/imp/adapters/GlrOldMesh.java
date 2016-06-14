@@ -43,14 +43,14 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static javax.media.opengl.GL.GL_FLOAT;
-import static javax.media.opengl.GL.GL_SHORT;
-import static javax.media.opengl.GL.GL_TRIANGLES;
-import static javax.media.opengl.GL2GL3.GL_DOUBLE;
-import static javax.media.opengl.GL2GL3.GL_QUADS;
-import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_NORMAL_ARRAY;
-import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_TEXTURE_COORD_ARRAY;
-import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
+import static com.jogamp.opengl.GL.GL_FLOAT;
+import static com.jogamp.opengl.GL.GL_SHORT;
+import static com.jogamp.opengl.GL.GL_TRIANGLES;
+import static com.jogamp.opengl.GL2GL3.GL_DOUBLE;
+import static com.jogamp.opengl.GL2GL3.GL_QUADS;
+import static com.jogamp.opengl.fixedfunc.GLPointerFunc.GL_NORMAL_ARRAY;
+import static com.jogamp.opengl.fixedfunc.GLPointerFunc.GL_TEXTURE_COORD_ARRAY;
+import static com.jogamp.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
@@ -63,7 +63,7 @@ public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMes
 		return false;
 	}
 
-	private void glDraw( javax.media.opengl.GL2 gl, int mode, short[] xyzIndices, short[] ijkIndices, short[] uvIndices ) {
+	private void glDraw( com.jogamp.opengl.GL2 gl, int mode, short[] xyzIndices, short[] ijkIndices, short[] uvIndices ) {
 		final int N = xyzIndices != null ? xyzIndices.length : 0;
 		if( N > 0 ) {
 			gl.glBegin( mode );
@@ -82,7 +82,7 @@ public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMes
 		}
 	}
 
-	private void glDrawElements( javax.media.opengl.GL2 gl, int mode, boolean b ) {
+	private void glDrawElements( com.jogamp.opengl.GL2 gl, int mode, boolean b ) {
 		if( b ) {
 			short[] xyzIndices;
 			if( mode == GL_TRIANGLES ) {
@@ -127,7 +127,7 @@ public class GlrOldMesh extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.OldMes
 		}
 	}
 
-	private void glGeometry( javax.media.opengl.GL2 gl, boolean isArrayRenderingDesired ) {
+	private void glGeometry( com.jogamp.opengl.GL2 gl, boolean isArrayRenderingDesired ) {
 		if( ( isArrayRenderingDesired == false ) || ( this.ijkTriangleIndices != null ) || ( this.uvTriangleIndices != null ) || ( this.ijkQuadrangleIndices != null ) || ( this.uvQuadrangleIndices != null ) ) {
 			glDraw( gl, GL_TRIANGLES, this.xyzTriangleIndices, this.ijkTriangleIndices, this.uvTriangleIndices );
 			glDraw( gl, GL_QUADS, this.xyzQuadrangleIndices, this.ijkQuadrangleIndices, this.uvQuadrangleIndices );

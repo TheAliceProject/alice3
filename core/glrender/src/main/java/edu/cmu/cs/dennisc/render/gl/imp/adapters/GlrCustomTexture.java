@@ -77,7 +77,7 @@ public class GlrCustomTexture extends GlrTexture<edu.cmu.cs.dennisc.texture.Cust
 	}
 
 	@Override
-	protected com.jogamp.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
+	protected com.jogamp.opengl.util.texture.TextureData newTextureData( com.jogamp.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
 		boolean isNewTextureRendererRequired;
 		if( currentTextureData != null ) {
 			if( this.textureRenderer != null ) {

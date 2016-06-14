@@ -43,9 +43,9 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static javax.media.opengl.GL2ES1.GL_EXP;
-import static javax.media.opengl.GL2ES1.GL_FOG_DENSITY;
-import static javax.media.opengl.GL2ES1.GL_FOG_MODE;
+import static com.jogamp.opengl.GL2ES1.GL_EXP;
+import static com.jogamp.opengl.GL2ES1.GL_FOG_DENSITY;
+import static com.jogamp.opengl.GL2ES1.GL_FOG_MODE;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 /**

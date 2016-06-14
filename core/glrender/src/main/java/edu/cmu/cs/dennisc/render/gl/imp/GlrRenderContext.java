@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.render.gl.imp;
  * @author Dennis Cosgrove
  */
 public class GlrRenderContext {
-	public GlrRenderContext( java.awt.Rectangle viewport, javax.media.opengl.GLAutoDrawable drawable ) {
+	public GlrRenderContext( java.awt.Rectangle viewport, com.jogamp.opengl.GLAutoDrawable drawable ) {
 		this.viewport = viewport;
 		this.drawable = drawable;
 	}
@@ -55,10 +55,10 @@ public class GlrRenderContext {
 		return this.viewport;
 	}
 
-	public javax.media.opengl.GLAutoDrawable getDrawable() {
+	public com.jogamp.opengl.GLAutoDrawable getDrawable() {
 		return this.drawable;
 	}
 
 	private final java.awt.Rectangle viewport;
-	private final javax.media.opengl.GLAutoDrawable drawable;
+	private final com.jogamp.opengl.GLAutoDrawable drawable;
 }

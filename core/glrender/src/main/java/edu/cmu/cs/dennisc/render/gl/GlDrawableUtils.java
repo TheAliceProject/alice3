@@ -46,9 +46,9 @@ package edu.cmu.cs.dennisc.render.gl;
  * @author Dennis Cosgrove
  */
 public class GlDrawableUtils {
-	private static final java.util.Map<javax.media.opengl.GLOffscreenAutoDrawable, java.awt.Dimension> mapPixelBufferToDimension;
+	private static final java.util.Map<com.jogamp.opengl.GLOffscreenAutoDrawable, java.awt.Dimension> mapPixelBufferToDimension;
 
-	private static boolean areEquivalentIgnoringMultisample( javax.media.opengl.GLCapabilitiesImmutable a, javax.media.opengl.GLCapabilitiesImmutable b ) {
+	private static boolean areEquivalentIgnoringMultisample( com.jogamp.opengl.GLCapabilitiesImmutable a, com.jogamp.opengl.GLCapabilitiesImmutable b ) {
 		if( a.getAccumAlphaBits() != b.getAccumAlphaBits() ) {
 			return false;
 		}
@@ -94,7 +94,7 @@ public class GlDrawableUtils {
 		return true;
 	}
 
-	private static class GlMultisampledCapabilitiesChooser extends javax.media.opengl.DefaultGLCapabilitiesChooser {
+	private static class GlMultisampledCapabilitiesChooser extends com.jogamp.opengl.DefaultGLCapabilitiesChooser {
 		private final int maximumMultisampleCount;
 
 		public GlMultisampledCapabilitiesChooser( int maximumMultisampleCount ) {
@@ -102,19 +102,19 @@ public class GlDrawableUtils {
 		}
 
 		@Override
-		public int chooseCapabilities( javax.media.nativewindow.CapabilitiesImmutable desired, java.util.List<? extends javax.media.nativewindow.CapabilitiesImmutable> available, int windowSystemRecommendedChoice ) {
+		public int chooseCapabilities( com.jogamp.nativewindow.CapabilitiesImmutable desired, java.util.List<? extends com.jogamp.nativewindow.CapabilitiesImmutable> available, int windowSystemRecommendedChoice ) {
 			int original = super.chooseCapabilities( desired, available, windowSystemRecommendedChoice );
 			int rv = original;
 			if( ( 0 <= rv ) && ( rv < available.size() ) ) {
-				javax.media.nativewindow.CapabilitiesImmutable selected = available.get( rv );
-				if( selected instanceof javax.media.opengl.GLCapabilitiesImmutable ) {
-					javax.media.opengl.GLCapabilitiesImmutable glSelected = (javax.media.opengl.GLCapabilitiesImmutable)selected;
+				com.jogamp.nativewindow.CapabilitiesImmutable selected = available.get( rv );
+				if( selected instanceof com.jogamp.opengl.GLCapabilitiesImmutable ) {
+					com.jogamp.opengl.GLCapabilitiesImmutable glSelected = (com.jogamp.opengl.GLCapabilitiesImmutable)selected;
 					int i = 0;
 					int indexOfMax = -1;
 					int max = -1;
-					for( javax.media.nativewindow.CapabilitiesImmutable c : available ) {
-						if( c instanceof javax.media.opengl.GLCapabilitiesImmutable ) {
-							javax.media.opengl.GLCapabilitiesImmutable glCandidate = (javax.media.opengl.GLCapabilitiesImmutable)c;
+					for( com.jogamp.nativewindow.CapabilitiesImmutable c : available ) {
+						if( c instanceof com.jogamp.opengl.GLCapabilitiesImmutable ) {
+							com.jogamp.opengl.GLCapabilitiesImmutable glCandidate = (com.jogamp.opengl.GLCapabilitiesImmutable)c;
 							//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "consider", i, glCandidate );
 							if( glCandidate.getSampleBuffers() ) {
 								if( areEquivalentIgnoringMultisample( glSelected, glCandidate ) ) {
@@ -148,8 +148,8 @@ public class GlDrawableUtils {
 		}
 	}
 
-	private static final javax.media.opengl.GLCapabilitiesChooser glDefaultCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
-	private static final javax.media.opengl.GLCapabilitiesChooser glMultisampleCapabilitiesChooser;
+	private static final com.jogamp.opengl.GLCapabilitiesChooser glDefaultCapabilitiesChooser = new com.jogamp.opengl.DefaultGLCapabilitiesChooser();
+	private static final com.jogamp.opengl.GLCapabilitiesChooser glMultisampleCapabilitiesChooser;
 
 	static {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
@@ -171,17 +171,17 @@ public class GlDrawableUtils {
 	}
 
 	//private GLCapabilities glCapabilities;
-	public static javax.media.opengl.GLCapabilities createGlCapabilities( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
-		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
+	public static com.jogamp.opengl.GLCapabilities createGlCapabilities( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		com.jogamp.opengl.GLProfile profile = com.jogamp.opengl.GLProfile.getDefault();
 
-		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities( profile );
+		com.jogamp.opengl.GLCapabilities rv = new com.jogamp.opengl.GLCapabilities( profile );
 
 		rv.setStencilBits( requestedCapabilities.getStencilBits() );
 		//rv.setSampleBuffers( true );
 		//rv.setNumSamples( 8 );
 
-		//		javax.media.opengl.GLCapabilitiesChooser chooser = getGLCapabilitiesChooser();
-		//		if( chooser instanceof edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser ) {
+		//		com.jogamp.opengl.GLCapabilitiesChooser chooser = getGLCapabilitiesChooser();
+		//		if( chooser instanceof edu.cmu.cs.dennisc.com.jogamp.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser ) {
 		//			rv.setHardwareAccelerated( false );
 		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: force hardware acceleration off" );
 		//			rv.setDepthBits( 32 );
@@ -189,8 +189,8 @@ public class GlDrawableUtils {
 		return rv;
 	}
 
-	public static javax.media.opengl.GLCapabilities createGlCapabilitiesForLightweightComponent( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
-		javax.media.opengl.GLCapabilities rv = createGlCapabilities( requestedCapabilities );
+	public static com.jogamp.opengl.GLCapabilities createGlCapabilitiesForLightweightComponent( edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+		com.jogamp.opengl.GLCapabilities rv = createGlCapabilities( requestedCapabilities );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
 			//pass
 		} else {
@@ -199,7 +199,7 @@ public class GlDrawableUtils {
 		return rv;
 	}
 
-	public static javax.media.opengl.GLCapabilitiesChooser getPerhapsMultisampledGlCapabilitiesChooser() {
+	public static com.jogamp.opengl.GLCapabilitiesChooser getPerhapsMultisampledGlCapabilitiesChooser() {
 		if( glMultisampleCapabilitiesChooser != null ) {
 			return glMultisampleCapabilitiesChooser;
 		} else {
@@ -207,38 +207,38 @@ public class GlDrawableUtils {
 		}
 	}
 
-	public static javax.media.opengl.GLCapabilitiesChooser getNotMultisampledGlCapabilitiesChooser() {
+	public static com.jogamp.opengl.GLCapabilitiesChooser getNotMultisampledGlCapabilitiesChooser() {
 		return glDefaultCapabilitiesChooser;
 	}
 
-	public static javax.media.opengl.awt.GLCanvas createGLCanvas( edu.cmu.cs.dennisc.render.RenderCapabilities renderCapabilities ) {
-		return new javax.media.opengl.awt.GLCanvas( createGlCapabilities( renderCapabilities ), getPerhapsMultisampledGlCapabilitiesChooser(), null );
+	public static com.jogamp.opengl.awt.GLCanvas createGLCanvas( edu.cmu.cs.dennisc.render.RenderCapabilities renderCapabilities ) {
+		return new com.jogamp.opengl.awt.GLCanvas( createGlCapabilities( renderCapabilities ), getPerhapsMultisampledGlCapabilitiesChooser(), null );
 	}
 
-	public static javax.media.opengl.awt.GLJPanel createGLJPanel( edu.cmu.cs.dennisc.render.RenderCapabilities renderCapabilities ) {
-		return new javax.media.opengl.awt.GLJPanel( createGlCapabilitiesForLightweightComponent( renderCapabilities ), getPerhapsMultisampledGlCapabilitiesChooser() );
+	public static com.jogamp.opengl.awt.GLJPanel createGLJPanel( edu.cmu.cs.dennisc.render.RenderCapabilities renderCapabilities ) {
+		return new com.jogamp.opengl.awt.GLJPanel( createGlCapabilitiesForLightweightComponent( renderCapabilities ), getPerhapsMultisampledGlCapabilitiesChooser() );
 	}
 
 	public static boolean canCreateExternalGLDrawable() {
-		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
-		return glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() );
+		com.jogamp.opengl.GLProfile profile = com.jogamp.opengl.GLProfile.getDefault();
+		com.jogamp.opengl.GLDrawableFactory glDrawableFactory = com.jogamp.opengl.GLDrawableFactory.getFactory( profile );
+		return glDrawableFactory.canCreateExternalGLDrawable( com.jogamp.opengl.GLProfile.getDefaultDevice() );
 	}
 
-	public static javax.media.opengl.GLDrawable createExternalGLDrawable() {
-		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
-		if( glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() ) ) {
+	public static com.jogamp.opengl.GLDrawable createExternalGLDrawable() {
+		com.jogamp.opengl.GLProfile profile = com.jogamp.opengl.GLProfile.getDefault();
+		com.jogamp.opengl.GLDrawableFactory glDrawableFactory = com.jogamp.opengl.GLDrawableFactory.getFactory( profile );
+		if( glDrawableFactory.canCreateExternalGLDrawable( com.jogamp.opengl.GLProfile.getDefaultDevice() ) ) {
 			return glDrawableFactory.createExternalGLDrawable();
 		} else {
 			return null;
 		}
 	}
 
-	public javax.media.opengl.GLContext createExternalGLContext() {
-		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
-		if( glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() ) ) {
+	public com.jogamp.opengl.GLContext createExternalGLContext() {
+		com.jogamp.opengl.GLProfile profile = com.jogamp.opengl.GLProfile.getDefault();
+		com.jogamp.opengl.GLDrawableFactory glDrawableFactory = com.jogamp.opengl.GLDrawableFactory.getFactory( profile );
+		if( glDrawableFactory.canCreateExternalGLDrawable( com.jogamp.opengl.GLProfile.getDefaultDevice() ) ) {
 			return glDrawableFactory.createExternalGLContext();
 		} else {
 			return null;
@@ -246,16 +246,16 @@ public class GlDrawableUtils {
 	}
 
 	public static boolean canCreateGlPixelBuffer() {
-		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+		com.jogamp.opengl.GLProfile glProfile = com.jogamp.opengl.GLProfile.getDefault();
+		com.jogamp.opengl.GLDrawableFactory glDrawableFactory = com.jogamp.opengl.GLDrawableFactory.getFactory( glProfile );
 		return glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice(), glProfile );
 	}
 
-	public static javax.media.opengl.GLOffscreenAutoDrawable createGlPixelBuffer( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height, javax.media.opengl.GLContext share ) {
-		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+	public static com.jogamp.opengl.GLOffscreenAutoDrawable createGlPixelBuffer( com.jogamp.opengl.GLCapabilities glCapabilities, com.jogamp.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height, com.jogamp.opengl.GLContext share ) {
+		com.jogamp.opengl.GLProfile glProfile = com.jogamp.opengl.GLProfile.getDefault();
+		com.jogamp.opengl.GLDrawableFactory glDrawableFactory = com.jogamp.opengl.GLDrawableFactory.getFactory( glProfile );
 		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice(), glProfile ) ) {
-			javax.media.opengl.GLOffscreenAutoDrawable buffer = glDrawableFactory.createOffscreenAutoDrawable( glDrawableFactory.getDefaultDevice(), glCapabilities, glCapabilitiesChooser, width, height );//, share );
+			com.jogamp.opengl.GLOffscreenAutoDrawable buffer = glDrawableFactory.createOffscreenAutoDrawable( glDrawableFactory.getDefaultDevice(), glCapabilities, glCapabilitiesChooser, width, height );//, share );
 
 			// This is a work around for Linux users.
 			// Because of a bug in mesa (https://bugs.freedesktop.org/show_bug.cgi?id=24320) sometimes on Linux the method glXQueryDrawable() will
@@ -271,19 +271,19 @@ public class GlDrawableUtils {
 		}
 	}
 
-	public static jogamp.opengl.GLDrawableImpl createOffscreenDrawable( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height ) {
-		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+	public static jogamp.opengl.GLDrawableImpl createOffscreenDrawable( com.jogamp.opengl.GLCapabilities glCapabilities, com.jogamp.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height ) {
+		com.jogamp.opengl.GLProfile glProfile = com.jogamp.opengl.GLProfile.getDefault();
+		com.jogamp.opengl.GLDrawableFactory glDrawableFactory = com.jogamp.opengl.GLDrawableFactory.getFactory( glProfile );
 		return (jogamp.opengl.GLDrawableImpl)glDrawableFactory.createOffscreenDrawable( null, glCapabilities, glCapabilitiesChooser, width, height );
 	}
 
-	public static int getGlDrawableWidth( javax.media.opengl.GLDrawable drawable ) {
+	public static int getGlDrawableWidth( com.jogamp.opengl.GLDrawable drawable ) {
 		// Bug in linux opengl, getWidth ALWAYS returns 0
 		int width = drawable.getSurfaceWidth();
 		if( width == 0 ) {
 			if( mapPixelBufferToDimension != null ) {
-				if( drawable instanceof javax.media.opengl.GLOffscreenAutoDrawable ) {
-					javax.media.opengl.GLOffscreenAutoDrawable glPixelBuffer = (javax.media.opengl.GLOffscreenAutoDrawable)drawable;
+				if( drawable instanceof com.jogamp.opengl.GLOffscreenAutoDrawable ) {
+					com.jogamp.opengl.GLOffscreenAutoDrawable glPixelBuffer = (com.jogamp.opengl.GLOffscreenAutoDrawable)drawable;
 					java.awt.Dimension size = mapPixelBufferToDimension.get( glPixelBuffer );
 					if( size != null ) {
 						width = size.width;
@@ -294,13 +294,13 @@ public class GlDrawableUtils {
 		return width;
 	}
 
-	public static int getGlDrawableHeight( javax.media.opengl.GLDrawable drawable ) {
+	public static int getGlDrawableHeight( com.jogamp.opengl.GLDrawable drawable ) {
 		// Bug in linux opengl, getHeight ALWAYS returns 0
 		int height = drawable.getSurfaceHeight();
 		if( height == 0 ) {
 			if( mapPixelBufferToDimension != null ) {
-				if( drawable instanceof javax.media.opengl.GLOffscreenAutoDrawable ) {
-					javax.media.opengl.GLOffscreenAutoDrawable glPixelBuffer = (javax.media.opengl.GLOffscreenAutoDrawable)drawable;
+				if( drawable instanceof com.jogamp.opengl.GLOffscreenAutoDrawable ) {
+					com.jogamp.opengl.GLOffscreenAutoDrawable glPixelBuffer = (com.jogamp.opengl.GLOffscreenAutoDrawable)drawable;
 					java.awt.Dimension size = mapPixelBufferToDimension.get( glPixelBuffer );
 					if( size != null ) {
 						height = size.height;
@@ -311,8 +311,8 @@ public class GlDrawableUtils {
 		return height;
 	}
 
-	public static javax.media.opengl.GLContext getGlContextToShare( edu.cmu.cs.dennisc.render.gl.GlrRenderTarget glrRenderTarget ) {
-		javax.media.opengl.GLContext share;
+	public static com.jogamp.opengl.GLContext getGlContextToShare( edu.cmu.cs.dennisc.render.gl.GlrRenderTarget glrRenderTarget ) {
+		com.jogamp.opengl.GLContext share;
 		if( glrRenderTarget != null ) {
 			share = glrRenderTarget.getGLAutoDrawable().getContext();
 		} else {

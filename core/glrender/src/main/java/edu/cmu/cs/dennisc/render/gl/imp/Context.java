@@ -47,13 +47,13 @@ package edu.cmu.cs.dennisc.render.gl.imp;
  * @author Dennis Cosgrove
  */
 public abstract class Context {
-	public javax.media.opengl.GL2 gl;
-	public javax.media.opengl.glu.GLU glu;
+	public com.jogamp.opengl.GL2 gl;
+	public com.jogamp.opengl.glu.GLU glu;
 
-	private javax.media.opengl.glu.GLUquadric m_quadric;
+	private com.jogamp.opengl.glu.GLUquadric m_quadric;
 
 	public Context() {
-		glu = new javax.media.opengl.glu.GLU();
+		glu = new com.jogamp.opengl.glu.GLU();
 	}
 
 	private int scaledCount = 0;
@@ -97,7 +97,7 @@ public abstract class Context {
 	}
 
 	//todo: synchronize?
-	public javax.media.opengl.glu.GLUquadric getQuadric() {
+	public com.jogamp.opengl.glu.GLUquadric getQuadric() {
 		if( m_quadric == null ) {
 			m_quadric = glu.gluNewQuadric();
 		}
@@ -110,7 +110,7 @@ public abstract class Context {
 	//	public boolean isGLChanged() {
 	//		return this.isGLChanged;
 	//	}
-	public void setGL( javax.media.opengl.GL2 gl ) {
+	public void setGL( com.jogamp.opengl.GL2 gl ) {
 		//		this.isGLChanged = this.gl != gl;
 		//		if( this.isGLChanged ) {
 		if( this.gl != gl ) {

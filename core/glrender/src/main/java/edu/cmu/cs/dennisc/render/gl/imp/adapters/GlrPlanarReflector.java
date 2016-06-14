@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static javax.media.opengl.GL2ES1.GL_CLIP_PLANE0;
+import static com.jogamp.opengl.GL2ES1.GL_CLIP_PLANE0;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 /**

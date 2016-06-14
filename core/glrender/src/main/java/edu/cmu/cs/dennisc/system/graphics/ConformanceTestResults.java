@@ -43,19 +43,19 @@
 
 package edu.cmu.cs.dennisc.system.graphics;
 
-import static javax.media.opengl.GL.GL_CULL_FACE;
-import static javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
-import static javax.media.opengl.GL.GL_DEPTH_TEST;
-import static javax.media.opengl.GL.GL_EXTENSIONS;
-import static javax.media.opengl.GL.GL_LEQUAL;
-import static javax.media.opengl.GL.GL_RENDERER;
-import static javax.media.opengl.GL.GL_VENDOR;
-import static javax.media.opengl.GL.GL_VERSION;
-import static javax.media.opengl.GL2.GL_QUAD_STRIP;
-import static javax.media.opengl.GL2.GL_RENDER;
-import static javax.media.opengl.GL2.GL_SELECT;
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
+import static com.jogamp.opengl.GL.GL_CULL_FACE;
+import static com.jogamp.opengl.GL.GL_DEPTH_BUFFER_BIT;
+import static com.jogamp.opengl.GL.GL_DEPTH_TEST;
+import static com.jogamp.opengl.GL.GL_EXTENSIONS;
+import static com.jogamp.opengl.GL.GL_LEQUAL;
+import static com.jogamp.opengl.GL.GL_RENDERER;
+import static com.jogamp.opengl.GL.GL_VENDOR;
+import static com.jogamp.opengl.GL.GL_VERSION;
+import static com.jogamp.opengl.GL2.GL_QUAD_STRIP;
+import static com.jogamp.opengl.GL2.GL_RENDER;
+import static com.jogamp.opengl.GL2.GL_SELECT;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 import edu.cmu.cs.dennisc.render.gl.imp.GetUtilities;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 
@@ -66,7 +66,7 @@ public enum ConformanceTestResults {
 	SINGLETON;
 
 	public static class SharedDetails {
-		private SharedDetails( javax.media.opengl.GL gl ) {
+		private SharedDetails( com.jogamp.opengl.GL gl ) {
 			this.version = gl.glGetString( GL_VERSION );
 			this.vendor = gl.glGetString( GL_VENDOR );
 			this.renderer = gl.glGetString( GL_RENDERER );
@@ -79,8 +79,8 @@ public enum ConformanceTestResults {
 			}
 			final boolean IS_COLOR_FORMAT_AND_TYPE_TRACKED = false;
 			if( IS_COLOR_FORMAT_AND_TYPE_TRACKED ) {
-				int format = GetUtilities.getInteger( gl, javax.media.opengl.GL.GL_IMPLEMENTATION_COLOR_READ_FORMAT );
-				int type = GetUtilities.getInteger( gl, javax.media.opengl.GL.GL_IMPLEMENTATION_COLOR_READ_TYPE );
+				int format = GetUtilities.getInteger( gl, com.jogamp.opengl.GL.GL_IMPLEMENTATION_COLOR_READ_FORMAT );
+				int type = GetUtilities.getInteger( gl, com.jogamp.opengl.GL.GL_IMPLEMENTATION_COLOR_READ_TYPE );
 			}
 		}
 
@@ -123,7 +123,7 @@ public enum ConformanceTestResults {
 
 		private final boolean isPickFunctioningCorrectly;
 
-		private PickDetails( javax.media.opengl.GL2 gl ) {
+		private PickDetails( com.jogamp.opengl.GL2 gl ) {
 			//int n = GetUtilities.getInteger(gl, GL_NUM_EXTENSIONS);
 
 			final int SELECTION_CAPACITY = 256;
@@ -231,7 +231,7 @@ public enum ConformanceTestResults {
 		private final boolean isReportingPickCanBeHardwareAccelerated;
 		private final boolean isPickActuallyHardwareAccelerated;
 
-		private SynchronousPickDetails( javax.media.opengl.GL2 gl, boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated ) {
+		private SynchronousPickDetails( com.jogamp.opengl.GL2 gl, boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated ) {
 			super( gl );
 			this.isReportingPickCanBeHardwareAccelerated = isReportingPickCanBeHardwareAccelerated;
 			this.isPickActuallyHardwareAccelerated = isPickActuallyHardwareAccelerated;
@@ -247,7 +247,7 @@ public enum ConformanceTestResults {
 	}
 
 	public static final class AsynchronousPickDetails extends PickDetails {
-		public AsynchronousPickDetails( javax.media.opengl.GL2 gl ) {
+		public AsynchronousPickDetails( com.jogamp.opengl.GL2 gl ) {
 			super( gl );
 		}
 	}
@@ -256,7 +256,7 @@ public enum ConformanceTestResults {
 	private SynchronousPickDetails synchronousPickDetails;
 	private AsynchronousPickDetails asynchronousPickDetails;
 
-	private void updateSharedDetailsfNecessary( javax.media.opengl.GL gl ) {
+	private void updateSharedDetailsfNecessary( com.jogamp.opengl.GL gl ) {
 		if( this.sharedDetails != null ) {
 			//pass
 		} else {
@@ -264,11 +264,11 @@ public enum ConformanceTestResults {
 		}
 	}
 
-	public void updateRenderInformationIfNecessary( javax.media.opengl.GL gl ) {
+	public void updateRenderInformationIfNecessary( com.jogamp.opengl.GL gl ) {
 		this.updateSharedDetailsfNecessary( gl );
 	}
 
-	public void updateSynchronousPickInformationIfNecessary( javax.media.opengl.GL2 gl, boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated ) {
+	public void updateSynchronousPickInformationIfNecessary( com.jogamp.opengl.GL2 gl, boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated ) {
 		this.updateSharedDetailsfNecessary( gl );
 		if( this.synchronousPickDetails != null ) {
 			//pass
@@ -277,7 +277,7 @@ public enum ConformanceTestResults {
 		}
 	}
 
-	public void updateAsynchronousPickInformationIfNecessary( javax.media.opengl.GL2 gl ) {
+	public void updateAsynchronousPickInformationIfNecessary( com.jogamp.opengl.GL2 gl ) {
 		this.updateSharedDetailsfNecessary( gl );
 		if( this.asynchronousPickDetails != null ) {
 			//pass
