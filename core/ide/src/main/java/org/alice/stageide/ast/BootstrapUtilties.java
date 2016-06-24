@@ -75,7 +75,7 @@ public class BootstrapUtilties {
 		return rv;
 	}
 
-	private static org.lgna.project.ast.UserField createPrivateFinalField( Class<?> cls, String name ) {
+	protected static org.lgna.project.ast.UserField createPrivateFinalField( Class<?> cls, String name ) {
 		return createPrivateFinalField( org.lgna.project.ast.JavaType.getInstance( cls ), name );
 	}
 
@@ -101,11 +101,11 @@ public class BootstrapUtilties {
 		return createMethod( access, org.lgna.project.ast.JavaType.getInstance( cls ), name );
 	}
 
-	private static org.lgna.project.ast.FieldAccess createThisFieldAccess( org.lgna.project.ast.AbstractField field ) {
+	protected static org.lgna.project.ast.FieldAccess createThisFieldAccess( org.lgna.project.ast.AbstractField field ) {
 		return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), field );
 	}
 
-	private static org.lgna.project.ast.ExpressionStatement createMethodInvocationStatement( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression... argumentExpressions ) {
+	protected static org.lgna.project.ast.ExpressionStatement createMethodInvocationStatement( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression... argumentExpressions ) {
 		return org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( expression, method, argumentExpressions );
 	}
 
@@ -114,7 +114,7 @@ public class BootstrapUtilties {
 		return org.lgna.project.ast.AstUtilities.createLocalDeclarationStatement( local, new org.lgna.project.ast.InstanceCreation( type.getDeclaredConstructor() ) );
 	}
 
-	private static org.lgna.project.ast.FieldAccess createFieldAccess( Enum<?> value ) {
+	protected static org.lgna.project.ast.FieldAccess createFieldAccess( Enum<?> value ) {
 		return org.lgna.project.ast.AstUtilities.createStaticFieldAccess( value.getClass(), value.name() );
 	}
 
@@ -282,67 +282,6 @@ public class BootstrapUtilties {
 
 		org.lgna.project.ast.JavaMethod setPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SGround.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
 		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setPaintMethod, createFieldAccess( appearance ) ) );
-
-		return createProgramType( modelFields, setupStatements.toArray( new org.lgna.project.ast.ExpressionStatement[ setupStatements.size() ] ), atmosphereColor, fogDensity, aboveLightColor, belowLightColor );
-	}
-
-	//groundAppearance is optional and will cause the program to generate a ground in addition to a room
-	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.SGround.SurfaceAppearance groundAppearance, org.lgna.story.Paint floorAppearance, org.lgna.story.Paint wallAppearance, org.lgna.story.Paint ceilingAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
-
-		org.lgna.project.ast.UserField roomField = createPrivateFinalField( org.lgna.story.SRoom.class, "room" );
-		roomField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
-
-		org.lgna.project.ast.UserField groundField = groundAppearance != null ? createPrivateFinalField( org.lgna.story.SGround.class, "ground" ) : null;
-		if( groundField != null ) {
-			groundField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
-		}
-
-		org.lgna.project.ast.UserField[] modelFields;
-		if( groundField != null ) {
-			modelFields = new org.lgna.project.ast.UserField[] { roomField, groundField };
-		} else {
-			modelFields = new org.lgna.project.ast.UserField[] { roomField };
-		}
-
-		java.util.ArrayList<org.lgna.project.ast.ExpressionStatement> setupStatements = new java.util.ArrayList<org.lgna.project.ast.ExpressionStatement>();
-
-		org.lgna.project.ast.JavaMethod setFloorPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SRoom.class, "setFloorPaint", org.lgna.story.Paint.class, org.lgna.story.SetFloorPaint.Detail[].class );
-		org.lgna.project.ast.Expression floorPaintExpression = null;
-		org.lgna.project.ast.Expression wallPaintExpression = null;
-		org.lgna.project.ast.Expression ceilingPaintExpression = null;
-
-		try {
-			if( floorAppearance instanceof org.lgna.story.SRoom.FloorAppearance ) {
-				floorPaintExpression = createFieldAccess( (org.lgna.story.SRoom.FloorAppearance)floorAppearance );
-			} else {
-				floorPaintExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression( floorAppearance );
-			}
-
-			if( wallAppearance instanceof org.lgna.story.SRoom.WallAppearance ) {
-				wallPaintExpression = createFieldAccess( (org.lgna.story.SRoom.WallAppearance)wallAppearance );
-			} else {
-				wallPaintExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression( wallAppearance );
-			}
-
-			if( ceilingAppearance instanceof org.lgna.story.SRoom.CeilingAppearance ) {
-				ceilingPaintExpression = createFieldAccess( (org.lgna.story.SRoom.CeilingAppearance)ceilingAppearance );
-			} else {
-				ceilingPaintExpression = org.alice.stageide.StoryApiConfigurationManager.getInstance().getExpressionCreator().createExpression( ceilingAppearance );
-			}
-		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot create expression", e );
-		}
-
-		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setFloorPaintMethod, floorPaintExpression ) );
-		org.lgna.project.ast.JavaMethod setWallPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SRoom.class, "setWallPaint", org.lgna.story.Paint.class, org.lgna.story.SetWallPaint.Detail[].class );
-		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setWallPaintMethod, wallPaintExpression ) );
-		org.lgna.project.ast.JavaMethod setCeilingPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SRoom.class, "setCeilingPaint", org.lgna.story.Paint.class, org.lgna.story.SetCeilingPaint.Detail[].class );
-		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setCeilingPaintMethod, ceilingPaintExpression ) );
-
-		if( groundAppearance != null ) {
-			org.lgna.project.ast.JavaMethod setGroundPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SGround.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
-			setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setGroundPaintMethod, createFieldAccess( groundAppearance ) ) );
-		}
 
 		return createProgramType( modelFields, setupStatements.toArray( new org.lgna.project.ast.ExpressionStatement[ setupStatements.size() ] ), atmosphereColor, fogDensity, aboveLightColor, belowLightColor );
 	}

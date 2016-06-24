@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import org.alice.nonfree.NebulousIde;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -49,12 +51,14 @@ public class SetUpMethodGenerator {
 
 	private static org.alice.stageide.ast.ExpressionCreator expressionCreator = null;
 
-	private static org.alice.ide.ast.ExpressionCreator getExpressionCreator() {
-		if( ( org.alice.stageide.StageIDE.getActiveInstance() != null ) && ( org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager() != null ) && ( org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator() != null ) ) {
+	protected static org.alice.ide.ast.ExpressionCreator getExpressionCreator() {
+		if( ( org.alice.stageide.StageIDE.getActiveInstance() != null )
+				&& ( org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager() != null )
+				&& ( org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator() != null ) ) {
 			return org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator();
 		} else {
 			if( expressionCreator == null ) {
-				expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
+				expressionCreator = NebulousIde.nonfree.newExpressionCreator();
 			}
 			return expressionCreator;
 		}
@@ -74,17 +78,10 @@ public class SetUpMethodGenerator {
 		return org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpression );
 	}
 
-	private static org.lgna.project.ast.ExpressionStatement createStatement( Class<?> declarationCls, String methodName, Class<?>[] parameterClses, org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... argumentExpressions ) {
+	private static org.lgna.project.ast.ExpressionStatement createStatement( Class<?> declarationCls, String methodName, Class<?>[] parameterClses, org.lgna.project.ast.Expression instanceExpression,
+			org.lgna.project.ast.Expression... argumentExpressions ) {
 		org.lgna.project.ast.AbstractMethod method = org.lgna.project.ast.AstUtilities.lookupMethod( declarationCls, methodName, parameterClses );
 		return org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
-	}
-
-	public static org.lgna.project.ast.InstanceCreation createSims2PersonRecourseInstanceCreation( org.lgna.story.resources.sims2.PersonResource personResource ) throws org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException {
-		Class<?>[] parameterClses = { org.lgna.story.resources.sims2.Gender.class, org.lgna.story.Color.class, org.lgna.story.resources.sims2.EyeColor.class, org.lgna.story.resources.sims2.Hair.class, Number.class, org.lgna.story.resources.sims2.Outfit.class, org.lgna.story.resources.sims2.Face.class,
-		};
-		org.lgna.project.ast.Expression[] arguments = { getExpressionCreator().createExpression( personResource.getGender() ), getExpressionCreator().createExpression( personResource.getSkinColor() ), getExpressionCreator().createExpression( personResource.getEyeColor() ), getExpressionCreator().createExpression( personResource.getHair() ), getExpressionCreator().createExpression( personResource.getObesityLevel() ), getExpressionCreator().createExpression( personResource.getOutfit() ), getExpressionCreator().createExpression( personResource.getFace() ),
-		};
-		return org.lgna.project.ast.AstUtilities.createInstanceCreation( personResource.getClass(), parameterClses, arguments );
 	}
 
 	//	public static void fillInAutomaticPointOfViewAssignment(org.lgna.project.ast.StatementListProperty bodyStatementsProperty, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractField pointOfViewField)
@@ -97,13 +94,15 @@ public class SetUpMethodGenerator {
 
 	public static void fillInAutomaticVehicleAssignment( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractField vehicleField, boolean isVehicleScene ) {
 		if( vehicleField != null ) {
-			bodyStatementsProperty.add( createStatement( org.lgna.story.MutableRider.class, "setVehicle", org.lgna.story.SThing.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
+			bodyStatementsProperty.add( createStatement( org.lgna.story.MutableRider.class, "setVehicle", org.lgna.story.SThing.class, SetUpMethodGenerator.createInstanceExpression( false, field ),
+					SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) ) );
 		}
 	}
 
 	public static org.lgna.project.ast.ExpressionStatement createSetVehicleStatement( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractField vehicleField, boolean isVehicleScene ) {
 		if( ( vehicleField != null ) || isVehicleScene ) {
-			return createStatement( org.lgna.story.MutableRider.class, "setVehicle", org.lgna.story.SThing.class, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) );
+			return createStatement( org.lgna.story.MutableRider.class, "setVehicle", org.lgna.story.SThing.class, SetUpMethodGenerator.createInstanceExpression( false, field ),
+					SetUpMethodGenerator.createInstanceExpression( isVehicleScene, vehicleField ) );
 		} else {
 			return createStatement( org.lgna.story.MutableRider.class, "setVehicle", org.lgna.story.SThing.class, SetUpMethodGenerator.createInstanceExpression( false, field ), new org.lgna.project.ast.NullLiteral() );
 		}
@@ -147,8 +146,11 @@ public class SetUpMethodGenerator {
 		return createOrientationStatement( isThis, field, orientation, -1 );
 	}
 
-	public static org.lgna.project.ast.Statement createOrientationStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.story.Orientation orientation, double duration ) throws org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException {
-		org.lgna.project.ast.ExpressionStatement orientationStatement = createStatement( org.lgna.story.STurnable.class, "setOrientationRelativeToVehicle", new Class<?>[] { org.lgna.story.Orientation.class, org.lgna.story.SetOrientationRelativeToVehicle.Detail[].class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( orientation ) );
+	public static org.lgna.project.ast.Statement createOrientationStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.story.Orientation orientation, double duration )
+			throws org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException {
+		org.lgna.project.ast.ExpressionStatement orientationStatement = createStatement(
+				org.lgna.story.STurnable.class, "setOrientationRelativeToVehicle", new Class<?>[] { org.lgna.story.Orientation.class, org.lgna.story.SetOrientationRelativeToVehicle.Detail[].class },
+				SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( orientation ) );
 		if( duration != -1 ) {
 			org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)orientationStatement.expression.getValue();
 			org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
@@ -161,8 +163,11 @@ public class SetUpMethodGenerator {
 		return createPositionStatement( isThis, field, position, -1 );
 	}
 
-	public static org.lgna.project.ast.Statement createPositionStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.story.Position position, double duration ) throws org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException {
-		org.lgna.project.ast.ExpressionStatement positionStatement = createStatement( org.lgna.story.SMovableTurnable.class, "setPositionRelativeToVehicle", new Class<?>[] { org.lgna.story.Position.class, org.lgna.story.SetPositionRelativeToVehicle.Detail[].class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( position ) );
+	public static org.lgna.project.ast.Statement createPositionStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.story.Position position, double duration )
+			throws org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException {
+		org.lgna.project.ast.ExpressionStatement positionStatement = createStatement(
+				org.lgna.story.SMovableTurnable.class, "setPositionRelativeToVehicle", new Class<?>[] { org.lgna.story.Position.class, org.lgna.story.SetPositionRelativeToVehicle.Detail[].class },
+				SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( position ) );
 		if( duration != -1 ) {
 			org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)positionStatement.expression.getValue();
 			org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
@@ -172,7 +177,10 @@ public class SetUpMethodGenerator {
 	}
 
 	public static org.lgna.project.ast.MethodInvocation createSetterInvocation( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod setter, org.lgna.project.ast.Expression expression ) {
-		return org.lgna.project.ast.AstUtilities.createMethodInvocation( SetUpMethodGenerator.createInstanceExpression( isThis, field ), setter, expression );
+		return org.lgna.project.ast.AstUtilities.createMethodInvocation(
+				SetUpMethodGenerator.createInstanceExpression( isThis, field ),
+				setter,
+				expression );
 	}
 
 	public static org.lgna.project.ast.ExpressionStatement createSetterStatement( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.ast.AbstractMethod setter, org.lgna.project.ast.Expression expression ) {
@@ -183,7 +191,8 @@ public class SetUpMethodGenerator {
 		return false;
 	}
 
-	public static org.lgna.project.ast.Statement[] getSetupStatementsForField( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle, edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform ) {
+	public static org.lgna.project.ast.Statement[] getSetupStatementsForField( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle,
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform ) {
 		java.util.List<org.lgna.project.ast.Statement> statements = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 
 		org.lgna.project.ast.AbstractType<?, ?, ?> abstractType = field.getValueType();
@@ -207,7 +216,12 @@ public class SetUpMethodGenerator {
 					if( ( initialTransform.translation.y == 0.0 ) && shouldPlaceModelAboveGround( abstractType ) ) {
 						//place above ground
 						org.lgna.project.ast.Expression targetExpression = new org.lgna.project.ast.NullLiteral();
-						org.lgna.project.ast.ExpressionStatement placeStatement = createStatement( org.lgna.story.SMovableTurnable.class, "place", new Class[] { org.lgna.story.SpatialRelation.class, org.lgna.story.SThing.class, org.lgna.story.Place.Detail[].class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( org.lgna.story.SpatialRelation.ABOVE ), targetExpression );
+						org.lgna.project.ast.ExpressionStatement placeStatement = createStatement(
+								org.lgna.story.SMovableTurnable.class,
+								"place",
+								new Class[] { org.lgna.story.SpatialRelation.class, org.lgna.story.SThing.class, org.lgna.story.Place.Detail[].class },
+								SetUpMethodGenerator.createInstanceExpression( isThis, field ),
+								getExpressionCreator().createExpression( org.lgna.story.SpatialRelation.ABOVE ), targetExpression );
 						org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)placeStatement.expression.getValue();
 						org.lgna.project.ast.JavaMethod durationKeyMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.DurationAnimationStyleArgumentFactory.class, "duration", Number.class );
 						methodInvocation.keyedArguments.add( new org.lgna.project.ast.JavaKeyedArgument( methodInvocation.method.getValue().getKeyedParameter(), durationKeyMethod, new org.lgna.project.ast.DoubleLiteral( 0.0 ) ) );
@@ -252,7 +266,9 @@ public class SetUpMethodGenerator {
 		//Loop through all the get<joint>() methods and find the one that resolves to the joint we're seeing
 		for( org.alice.stageide.ast.JointedTypeInfo jti : jointedTypeInfos ) {
 			for( org.lgna.project.ast.AbstractMethod jointGetter : jti.getJointGetters() ) {
-				Object[] values = sceneInstance.getVM().ENTRY_POINT_evaluate( sceneInstance, new org.lgna.project.ast.Expression[] { new org.lgna.project.ast.MethodInvocation( new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), entityField ), jointGetter ) } );
+				Object[] values = sceneInstance.getVM().ENTRY_POINT_evaluate(
+						sceneInstance,
+						new org.lgna.project.ast.Expression[] { new org.lgna.project.ast.MethodInvocation( new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), entityField ), jointGetter ) } );
 				for( Object o : values ) {
 					if( o instanceof org.lgna.story.SJoint ) {
 						org.lgna.story.implementation.JointImp gottenJoint = org.lgna.story.EmployeesOnly.getImplementation( (org.lgna.story.SJoint)o );
@@ -298,7 +314,11 @@ public class SetUpMethodGenerator {
 							} else {
 								expression = getExpressionCreator().createExpression( value );
 							}
-							statements.add( org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( SetUpMethodGenerator.createInstanceExpression( isThis, field ), setter, expression ) );
+							statements.add(
+									org.lgna.project.ast.AstUtilities.createMethodInvocationStatement(
+											SetUpMethodGenerator.createInstanceExpression( isThis, field ),
+											setter,
+											expression ) );
 						} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "cannot create expression for: " + value );
 						}
@@ -310,7 +330,8 @@ public class SetUpMethodGenerator {
 					org.lgna.story.STurnable turnable = (org.lgna.story.STurnable)instance;
 					org.lgna.story.Orientation orientation = turnable.getOrientationRelativeToVehicle();
 					try {
-						statements.add( createOrientationStatement( isThis, field, orientation ) );
+						statements.add(
+								createOrientationStatement( isThis, field, orientation ) );
 					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 						throw new RuntimeException( ccee );
 					}
@@ -318,7 +339,8 @@ public class SetUpMethodGenerator {
 						org.lgna.story.SMovableTurnable movableTurnable = (org.lgna.story.SMovableTurnable)turnable;
 						org.lgna.story.Position position = movableTurnable.getPositionRelativeToVehicle();
 						try {
-							statements.add( createPositionStatement( isThis, field, position ) );
+							statements.add(
+									createPositionStatement( isThis, field, position ) );
 						} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 							throw new RuntimeException( ccee );
 						}
@@ -328,7 +350,11 @@ public class SetUpMethodGenerator {
 					org.lgna.story.Resizable resizable = (org.lgna.story.Resizable)instance;
 					org.lgna.story.Size size = resizable.getSize();
 					try {
-						statements.add( createStatement( org.lgna.story.Resizable.class, "setSize", new Class<?>[] { org.lgna.story.Size.class, org.lgna.story.SetSize.Detail[].class }, SetUpMethodGenerator.createInstanceExpression( isThis, field ), getExpressionCreator().createExpression( size ) ) );
+						statements.add(
+								createStatement(
+										org.lgna.story.Resizable.class, "setSize", new Class<?>[] { org.lgna.story.Size.class, org.lgna.story.SetSize.Detail[].class },
+										SetUpMethodGenerator.createInstanceExpression( isThis, field ),
+										getExpressionCreator().createExpression( size ) ) );
 					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 						throw new RuntimeException( ccee );
 					}
@@ -350,7 +376,9 @@ public class SetUpMethodGenerator {
 						for( org.lgna.project.ast.Expression getJointExpression : jointAccessExpressions ) {
 							Object[] values;
 							try {
-								values = sceneInstance.getVM().ENTRY_POINT_evaluate( sceneInstance, new org.lgna.project.ast.Expression[] { getJointExpression } );
+								values = sceneInstance.getVM().ENTRY_POINT_evaluate(
+										sceneInstance,
+										new org.lgna.project.ast.Expression[] { getJointExpression } );
 							} catch( Throwable t ) {
 								edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "set up method generator failed:", getJointExpression );
 								values = new Object[ 0 ];
@@ -364,7 +392,9 @@ public class SetUpMethodGenerator {
 									if( captureFullState || !currentTransform.orientation.isWithinReasonableEpsilonOf( originalTransform.orientation ) ) {
 										try {
 											org.lgna.story.Orientation orientation = jointEntity.getOrientationRelativeToVehicle();
-											org.lgna.project.ast.ExpressionStatement orientationStatement = createStatement( org.lgna.story.STurnable.class, "setOrientationRelativeToVehicle", new Class<?>[] { org.lgna.story.Orientation.class, org.lgna.story.SetOrientationRelativeToVehicle.Detail[].class }, getJointExpression, getExpressionCreator().createExpression( orientation ) );
+											org.lgna.project.ast.ExpressionStatement orientationStatement = createStatement(
+													org.lgna.story.STurnable.class, "setOrientationRelativeToVehicle", new Class<?>[] { org.lgna.story.Orientation.class, org.lgna.story.SetOrientationRelativeToVehicle.Detail[].class },
+													getJointExpression, getExpressionCreator().createExpression( orientation ) );
 											statements.add( orientationStatement );
 										} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 											throw new RuntimeException( ccee );
@@ -390,7 +420,8 @@ public class SetUpMethodGenerator {
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( statements, org.lgna.project.ast.Statement.class );
 	}
 
-	public static void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance, boolean getFullState ) {
+	public static void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, Object instance, org.lgna.project.virtualmachine.UserInstance sceneInstance,
+			boolean getFullState ) {
 		if( instance != null ) {
 			if( instance instanceof org.lgna.story.SThing ) {
 				org.lgna.story.SThing entity = (org.lgna.story.SThing)instance;

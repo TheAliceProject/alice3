@@ -43,6 +43,8 @@
 
 package org.alice.stageide.ast.sort;
 
+import org.alice.nonfree.NebulousIde;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -83,13 +85,9 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 	public static final org.lgna.project.ast.JavaMethod FOLD_WINGS_METHOD;
 
 	public static final org.lgna.project.ast.JavaMethod GROUND_SET_PAINT_METHOD;
-	public static final org.lgna.project.ast.JavaMethod ROOM_SET_CEILING_PAINT_METHOD;
-	public static final org.lgna.project.ast.JavaMethod ROOM_SET_WALL_PAINT_METHOD;
-	public static final org.lgna.project.ast.JavaMethod ROOM_SET_FLOOR_PAINT_METHOD;
 	public static final org.lgna.project.ast.JavaMethod MODEL_SET_PAINT_METHOD;
 
 	public static final org.lgna.project.ast.JavaMethod GROUND_SET_OPACITY_METHOD;
-	public static final org.lgna.project.ast.JavaMethod ROOM_SET_OPACITY_METHOD;
 	public static final org.lgna.project.ast.JavaMethod MODEL_SET_OPACITY_METHOD;
 
 	static {
@@ -100,7 +98,6 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		org.lgna.project.ast.JavaType cameraType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCamera.class );
 
 		org.lgna.project.ast.JavaType groundType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SGround.class );
-		org.lgna.project.ast.JavaType roomType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SRoom.class );
 		org.lgna.project.ast.JavaType modelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SModel.class );
 
 		TURN_METHOD = turnableType.getDeclaredMethod( "turn", org.lgna.story.TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class );
@@ -143,15 +140,7 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		GROUND_SET_PAINT_METHOD = getSetPaintMethod( groundType );
 		MODEL_SET_PAINT_METHOD = getSetPaintMethod( modelType );
 
-		ROOM_SET_CEILING_PAINT_METHOD = roomType.getDeclaredMethod( "setCeilingPaint", org.lgna.story.Paint.class, org.lgna.story.SetCeilingPaint.Detail[].class );
-		assert ROOM_SET_CEILING_PAINT_METHOD != null : roomType;
-		ROOM_SET_WALL_PAINT_METHOD = roomType.getDeclaredMethod( "setWallPaint", org.lgna.story.Paint.class, org.lgna.story.SetWallPaint.Detail[].class );
-		assert ROOM_SET_WALL_PAINT_METHOD != null : roomType;
-		ROOM_SET_FLOOR_PAINT_METHOD = roomType.getDeclaredMethod( "setFloorPaint", org.lgna.story.Paint.class, org.lgna.story.SetFloorPaint.Detail[].class );
-		assert ROOM_SET_FLOOR_PAINT_METHOD != null : roomType;
-
 		GROUND_SET_OPACITY_METHOD = getSetOpacityMethod( groundType );
-		ROOM_SET_OPACITY_METHOD = getSetOpacityMethod( roomType );
 		MODEL_SET_OPACITY_METHOD = getSetOpacityMethod( modelType );
 
 		double value = 1.0;
@@ -180,12 +169,9 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		map.put( MODEL_SET_PAINT_METHOD, value );
 		value += INCREMENT;
 
-		map.put( ROOM_SET_CEILING_PAINT_METHOD, value += INCREMENT );
-		map.put( ROOM_SET_WALL_PAINT_METHOD, value += INCREMENT );
-		map.put( ROOM_SET_FLOOR_PAINT_METHOD, value += INCREMENT );
+		NebulousIde.nonfree.setOneShotSortValues( map, value, INCREMENT );
 
 		map.put( GROUND_SET_OPACITY_METHOD, value );
-		map.put( ROOM_SET_OPACITY_METHOD, value );
 		map.put( MODEL_SET_OPACITY_METHOD, value );
 		value += INCREMENT;
 	}
@@ -196,7 +182,7 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		return rv;
 	}
 
-	private static org.lgna.project.ast.JavaMethod getSetOpacityMethod( org.lgna.project.ast.JavaType type ) {
+	static org.lgna.project.ast.JavaMethod getSetOpacityMethod( org.lgna.project.ast.JavaType type ) {
 		org.lgna.project.ast.JavaMethod rv = type.getDeclaredMethod( "setOpacity", Number.class, org.lgna.story.SetOpacity.Detail[].class );
 		assert rv != null : type;
 		return rv;

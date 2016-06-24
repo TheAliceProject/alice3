@@ -43,6 +43,12 @@
 
 package org.alice.stageide.openprojectpane.models;
 
+import java.net.URI;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.alice.nonfree.NebulousIde;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,7 +62,6 @@ public class TemplateUriState extends org.lgna.croquet.ImmutableDataSingleSelect
 
 		MARS( org.lgna.story.SGround.SurfaceAppearance.MARS, org.lgna.story.Color.PINK, 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 11 / 255.0, 0 / 255.0, 24 / 255.0 ) ),
 		SNOW( org.lgna.story.SGround.SurfaceAppearance.SNOW ),
-		ROOM( org.lgna.story.SGround.SurfaceAppearance.GRASS, org.lgna.story.SRoom.FloorAppearance.REDWOOD, org.lgna.story.SRoom.WallAppearance.YELLOW, org.lgna.story.Color.WHITE ),
 
 		WONDERLAND( org.lgna.story.SGround.SurfaceAppearance.DARK_GRASS, new org.lgna.story.Color( 0 / 255.0, 24 / 255.0, 75 / 255.0 ), 0, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 25 / 255.0, 0 / 255.0, 0 / 255.0 ) ),
 		SEA_SURFACE( org.lgna.story.SGround.SurfaceAppearance.WATER ),
@@ -64,7 +69,9 @@ public class TemplateUriState extends org.lgna.croquet.ImmutableDataSingleSelect
 
 		SWAMP( org.lgna.story.SGround.SurfaceAppearance.SWAMP, new org.lgna.story.Color( .2, .4, 0 ), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .2, .4, 0 ) ),
 		DESERT( org.lgna.story.SGround.SurfaceAppearance.DESERT ),
-		DIRT( org.lgna.story.SGround.SurfaceAppearance.DIRT );
+		DIRT( org.lgna.story.SGround.SurfaceAppearance.DIRT ),
+
+		ROOM( NebulousIde.nonfree.getFloorApperanceRedwood(), NebulousIde.nonfree.getWallApperanceYellow(), org.lgna.story.Color.WHITE );
 
 		public static Template getSurfaceAppearance( java.net.URI uri ) {
 			if( isValidUri( uri ) ) {
@@ -197,11 +204,18 @@ public class TemplateUriState extends org.lgna.croquet.ImmutableDataSingleSelect
 	};
 
 	private static java.net.URI[] createArray() {
-		Template[] values = Template.values();
-		java.net.URI[] array = new java.net.URI[ values.length ];
-		for( int i = 0; i < array.length; i++ ) {
-			array[ i ] = values[ i ].getUri();
+		List<URI> uris = new LinkedList<URI>();
+
+		for( Template template : Template.values() ) {
+			if( !NebulousIde.nonfree.isNonFreeEnabled() && ( template == Template.ROOM ) ) {
+				// pass
+			} else {
+				uris.add( template.getUri() );
+			}
 		}
+
+		java.net.URI[] array = new java.net.URI[ uris.size() ];
+		uris.toArray( array );
 		return array;
 	}
 

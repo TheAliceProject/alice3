@@ -59,7 +59,11 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		if( position != null ) {
 			Class<?> cls = org.lgna.story.Position.class;
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, this.createDoubleExpression( position.getRight(), MILLI_DECIMAL_PLACES ), this.createDoubleExpression( position.getUp(), MILLI_DECIMAL_PLACES ), this.createDoubleExpression( position.getBackward(), MILLI_DECIMAL_PLACES ) );
+			return org.lgna.project.ast.AstUtilities.createInstanceCreation(
+					constructor,
+					this.createDoubleExpression( position.getRight(), MILLI_DECIMAL_PLACES ),
+					this.createDoubleExpression( position.getUp(), MILLI_DECIMAL_PLACES ),
+					this.createDoubleExpression( position.getBackward(), MILLI_DECIMAL_PLACES ) );
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
 		}
@@ -71,7 +75,11 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( axes );
 			Class<?> cls = org.lgna.story.Orientation.class;
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class, Number.class );
-			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, this.createDoubleExpression( q.x, MICRO_DECIMAL_PLACES ), this.createDoubleExpression( q.y, MICRO_DECIMAL_PLACES ), this.createDoubleExpression( q.z, MICRO_DECIMAL_PLACES ), this.createDoubleExpression( q.w, MICRO_DECIMAL_PLACES ) );
+			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor,
+					this.createDoubleExpression( q.x, MICRO_DECIMAL_PLACES ),
+					this.createDoubleExpression( q.y, MICRO_DECIMAL_PLACES ),
+					this.createDoubleExpression( q.z, MICRO_DECIMAL_PLACES ),
+					this.createDoubleExpression( q.w, MICRO_DECIMAL_PLACES ) );
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
 		}
@@ -81,7 +89,11 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		if( scale != null ) {
 			Class<?> cls = org.lgna.story.Scale.class;
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, this.createDoubleExpression( scale.getLeftToRight(), MILLI_DECIMAL_PLACES ), this.createDoubleExpression( scale.getBottomToTop(), MILLI_DECIMAL_PLACES ), this.createDoubleExpression( scale.getFrontToBack(), MILLI_DECIMAL_PLACES ) );
+			return org.lgna.project.ast.AstUtilities.createInstanceCreation(
+					constructor,
+					this.createDoubleExpression( scale.getLeftToRight(), MILLI_DECIMAL_PLACES ),
+					this.createDoubleExpression( scale.getBottomToTop(), MILLI_DECIMAL_PLACES ),
+					this.createDoubleExpression( scale.getFrontToBack(), MILLI_DECIMAL_PLACES ) );
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
 		}
@@ -91,7 +103,11 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		if( size != null ) {
 			Class<?> cls = org.lgna.story.Size.class;
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, this.createDoubleExpression( size.getLeftToRight(), MILLI_DECIMAL_PLACES ), this.createDoubleExpression( size.getBottomToTop(), MILLI_DECIMAL_PLACES ), this.createDoubleExpression( size.getFrontToBack(), MILLI_DECIMAL_PLACES ) );
+			return org.lgna.project.ast.AstUtilities.createInstanceCreation(
+					constructor,
+					this.createDoubleExpression( size.getLeftToRight(), MILLI_DECIMAL_PLACES ),
+					this.createDoubleExpression( size.getBottomToTop(), MILLI_DECIMAL_PLACES ),
+					this.createDoubleExpression( size.getFrontToBack(), MILLI_DECIMAL_PLACES ) );
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
 		}
@@ -100,7 +116,10 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 	private org.lgna.project.ast.Expression createFontExpression( org.lgna.story.Font font ) throws CannotCreateExpressionException {
 		Class<?> cls = org.lgna.story.Font.class;
 		org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, org.lgna.story.fontattributes.Attribute[].class );
-		return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, this.createExpression( font.getFamily() ), this.createExpression( font.getWeight() ), this.createExpression( font.getPosture() ) );
+		return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor,
+				this.createExpression( font.getFamily() ),
+				this.createExpression( font.getWeight() ),
+				this.createExpression( font.getPosture() ) );
 	}
 
 	private org.lgna.project.ast.Expression createColorExpression( org.lgna.story.Color color ) {
@@ -116,7 +135,11 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			//pass
 		} else {
 			org.lgna.project.ast.JavaConstructor constructor = org.lgna.project.ast.JavaConstructor.getInstance( cls, Number.class, Number.class, Number.class );
-			rv = org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, this.createDoubleExpression( color.getRed(), MILLI_DECIMAL_PLACES ), this.createDoubleExpression( color.getGreen(), MILLI_DECIMAL_PLACES ), this.createDoubleExpression( color.getBlue(), MILLI_DECIMAL_PLACES ) );
+			rv = org.lgna.project.ast.AstUtilities.createInstanceCreation(
+					constructor,
+					this.createDoubleExpression( color.getRed(), MILLI_DECIMAL_PLACES ),
+					this.createDoubleExpression( color.getGreen(), MILLI_DECIMAL_PLACES ),
+					this.createDoubleExpression( color.getBlue(), MILLI_DECIMAL_PLACES ) );
 		}
 		return rv;
 	}
@@ -214,38 +237,6 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 		}
 	}
 
-	private org.lgna.project.ast.Expression createOutfitExpression( org.lgna.story.resources.sims2.Outfit outfit ) throws CannotCreateExpressionException {
-		if( outfit != null ) {
-			if( outfit instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
-				org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> topAndBottomOutfit = (org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?>)outfit;
-				org.lgna.story.resources.sims2.TopPiece topPiece = topAndBottomOutfit.getTopPiece();
-				org.lgna.story.resources.sims2.BottomPiece bottomPiece = topAndBottomOutfit.getBottomPiece();
-
-				org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( outfit.getClass() );
-				org.lgna.project.ast.JavaConstructor constructor = type.getDeclaredConstructors().get( 0 );
-				java.util.List<org.lgna.project.ast.JavaConstructorParameter> parameters = constructor.getRequiredParameters();
-				if( parameters.size() == 2 ) {
-					if( parameters.get( 0 ).getValueType().isAssignableFrom( topPiece.getClass() ) ) {
-						if( parameters.get( 1 ).getValueType().isAssignableFrom( bottomPiece.getClass() ) ) {
-							org.lgna.project.ast.Expression topExpression = this.createExpression( topPiece );
-							org.lgna.project.ast.Expression bottomExpression = this.createExpression( bottomPiece );
-							return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, topExpression, bottomExpression );
-						}
-					}
-				}
-				throw new CannotCreateExpressionException( outfit );
-			} else {
-				if( outfit.getClass().isEnum() ) {
-					return this.createEnumExpression( (Enum<? extends org.lgna.story.resources.sims2.Outfit>)outfit );
-				} else {
-					throw new CannotCreateExpressionException( outfit );
-				}
-			}
-		} else {
-			return new org.lgna.project.ast.NullLiteral();
-		}
-	}
-
 	@Override
 	protected org.lgna.project.ast.Expression createCustomExpression( Object value ) throws CannotCreateExpressionException {
 
@@ -261,17 +252,12 @@ public class ExpressionCreator extends org.alice.ide.ast.ExpressionCreator {
 			return this.createPaintExpression( (org.lgna.story.Paint)value );
 		} else if( value instanceof org.lgna.story.Font ) {
 			return this.createFontExpression( (org.lgna.story.Font)value );
-			//		} else if( value instanceof org.lgna.ik.poser.Pose ) {
-			//			return this.createPoseExpression( (org.lgna.ik.poser.Pose)value );
 		} else if( value instanceof org.lgna.story.Pose<?> ) {
 			return this.createPoseExpression( (org.lgna.story.Pose<?>)value );
-		} else if( value instanceof org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?> ) {
-			return this.createOutfitExpression( (org.lgna.story.resources.sims2.TopAndBottomOutfit<?, ?>)value );
 		} else if( value instanceof org.lgna.story.resources.JointId ) {
 			return this.createJointIdExpression( (org.lgna.story.resources.JointId)value );
 		} else {
 			throw new CannotCreateExpressionException( value );
 		}
-
 	}
 }

@@ -42,6 +42,7 @@
  */
 package org.lgna.story;
 
+import org.alice.nonfree.NebulousStoryApi;
 import org.lgna.story.implementation.JointIdTransformationPair;
 
 /**
@@ -172,13 +173,8 @@ public class EmployeesOnly {
 			if( nonfreeTexturePaint.isTextureValid() ) {
 				edu.cmu.cs.dennisc.texture.Texture texture = nonfreeTexturePaint.getTexture();
 
-				//todo
-				if( texture instanceof edu.cmu.cs.dennisc.nebulous.NebulousTexture ) {
-					edu.cmu.cs.dennisc.nebulous.NebulousTexture nebulousTexture = (edu.cmu.cs.dennisc.nebulous.NebulousTexture)texture;
-					nebulousTexture.setMipMappingDesired( true );
-				}
+				NebulousStoryApi.nonfree.setMipMappingDesiredOnNebulousTexture( texture );
 				return texture;
-
 			} else {
 				//todo?
 				return defaultValue;
