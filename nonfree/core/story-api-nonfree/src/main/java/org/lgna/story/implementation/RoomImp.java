@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.lgna.story.implementation;
 
 /**
@@ -52,7 +52,12 @@ public class RoomImp extends VisualScaleModelImp {
 
 	private static class WallSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVisual {
 		private final edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
-		private final edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] { edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 ),
+		private final edu.cmu.cs.dennisc.scenegraph.Vertex[] sgVertices = new edu.cmu.cs.dennisc.scenegraph.Vertex[] { edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 0 ), edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 1, 1 ),
+				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 ),
 		};
 
 		public WallSurface( float width, float depth, float height, float xTiling, float zTiling ) {

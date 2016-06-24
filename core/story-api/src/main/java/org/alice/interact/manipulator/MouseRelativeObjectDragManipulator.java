@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package org.alice.interact.manipulator;
 
@@ -320,14 +320,12 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 		worldUnitsPerPixelY = ( distancePerUpPixel + distancePerDownPixel ) / 2.0;
 	}
 
-	private Plane calculateCameraFacingPlane()
-	{
+	private Plane calculateCameraFacingPlane() {
 		AffineMatrix4x4 cameraTransform = this.camera.getParent().getAbsoluteTransformation();
 		Vector3 cameraFacingVector = cameraTransform.orientation.backward;
 		cameraFacingVector.y = 0.0;
 		cameraFacingVector.normalize();
-		if( !cameraFacingVector.isNaN() )
-		{
+		if( !cameraFacingVector.isNaN() ) {
 			Point3 planeLocation = Point3.createAddition( this.manipulatedTransformable.getAbsoluteTransformation().translation, this.offsetFromOrigin );
 			return Plane.createInstance( planeLocation, cameraFacingVector );
 		}

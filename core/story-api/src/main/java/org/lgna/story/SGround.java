@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package org.lgna.story;
 
@@ -88,7 +88,7 @@ public class SGround extends SThing implements MutableRider, VisualWithPaint {
 	private final org.lgna.story.implementation.GroundImp implementation = new org.lgna.story.implementation.GroundImp( this );
 
 	@Override
-	/* package-private */org.lgna.story.implementation.GroundImp getImplementation() {
+			/* package-private */org.lgna.story.implementation.GroundImp getImplementation() {
 		return this.implementation;
 	}
 

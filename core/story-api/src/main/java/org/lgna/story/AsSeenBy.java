@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package org.lgna.story;
 
@@ -47,10 +47,10 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class AsSeenBy implements
-//Turnable
-Turn.Detail, Roll.Detail, IsAbove.Detail, IsBelow.Detail, IsBehind.Detail, IsInFrontOf.Detail, IsToTheRightOf.Detail, IsToTheLeftOf.Detail, GetDistanceAbove.Detail, GetDistanceBehind.Detail, GetDistanceBelow.Detail, GetDistanceInFrontOf.Detail, GetDistanceToTheLeftOf.Detail, GetDistanceToTheRightOf.Detail,
-//MoveableTurnable
-Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail, Place.Detail {
+		//Turnable
+		Turn.Detail, Roll.Detail, IsAbove.Detail, IsBelow.Detail, IsBehind.Detail, IsInFrontOf.Detail, IsToTheRightOf.Detail, IsToTheLeftOf.Detail, GetDistanceAbove.Detail, GetDistanceBehind.Detail, GetDistanceBelow.Detail, GetDistanceInFrontOf.Detail, GetDistanceToTheLeftOf.Detail, GetDistanceToTheRightOf.Detail,
+		//MoveableTurnable
+		Move.Detail, MoveToward.Detail, MoveAwayFrom.Detail, Place.Detail {
 
 	private final SThing value;
 
