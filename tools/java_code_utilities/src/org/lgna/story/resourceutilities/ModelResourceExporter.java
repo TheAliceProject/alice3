@@ -145,6 +145,7 @@ public class ModelResourceExporter {
 	private boolean exportGalleryResources = true;
 	private boolean isDeprecated = false;
 	private boolean placeOnGround = false;
+	private boolean validData = false;
 
 	private boolean enableArraySupport = true;
 
@@ -246,6 +247,14 @@ public class ModelResourceExporter {
 
 	public boolean shouldRecenterXZ() {
 		return this.recenterXZ;
+	}
+
+	public boolean hasValidData() {
+		return this.validData;
+	}
+
+	public void setHasValidData( boolean validData ) {
+		this.validData = validData;
 	}
 
 	public boolean hasNewData() {
