@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,52 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser;
+
+package org.alice.stageide.oneshot;
+
+import org.alice.stageide.oneshot.edits.StrikePoseEdit;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ShapesTab extends GalleryTab {
-	// @formatter:off
-	private final java.util.List<org.alice.stageide.gallerybrowser.shapes.ShapeDragModel> dragModels = java.util.Collections.unmodifiableList(
-					edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
-						org.alice.stageide.gallerybrowser.shapes.DiscDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.ConeDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.CylinderDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.SphereDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.TorusDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.BoxDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.TextModelDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.BillboardDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.AxesDragModel.getInstance()
-						, org.alice.stageide.gallerybrowser.shapes.GroundDragModel.getInstance()
-					) );
-	// @formatter:on
-	public ShapesTab() {
-		super( java.util.UUID.fromString( "1e616f0e-4c57-460c-a4a7-919addbfc9d8" ) );
+public class StrikePoseMethodInvocationEditFactory implements MethodInvocationEditFactory {
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+	private final org.lgna.project.ast.AbstractMethod method;
+	private final org.lgna.project.ast.Expression[] argumentExpressions;
+
+	public StrikePoseMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		this.instanceFactory = instanceFactory;
+		this.method = method;
+		this.argumentExpressions = argumentExpressions;
 	}
 
 	@Override
-	protected org.alice.stageide.gallerybrowser.views.ShapesTabView createView() {
-		return new org.alice.stageide.gallerybrowser.views.ShapesTabView( this );
-	}
-
-	public java.util.List<org.alice.stageide.gallerybrowser.shapes.ShapeDragModel> getDragModels() {
-		return this.dragModels;
-	}
-
-	public org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel getDragModelForCls( Class<?> cls ) {
-		String simpleName = cls.getSimpleName();
-		if( simpleName.length() > 1 ) {
-			if( ( simpleName.charAt( 0 ) == 'S' ) && Character.isUpperCase( simpleName.charAt( 1 ) ) ) {
-				String desiredSimpleName = simpleName.substring( 1 ) + "DragModel";
-				for( org.alice.stageide.gallerybrowser.shapes.ShapeDragModel dragModel : this.dragModels ) {
-					if( desiredSimpleName.contentEquals( dragModel.getClass().getSimpleName() ) ) {
-						return dragModel;
-					}
-				}
-			}
-		}
-		return null;
+	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
+		return new StrikePoseEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }

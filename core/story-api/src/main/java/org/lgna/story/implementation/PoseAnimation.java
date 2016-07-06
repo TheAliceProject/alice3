@@ -48,6 +48,7 @@ import org.lgna.story.Pose;
 import edu.cmu.cs.dennisc.animation.DurationBasedAnimation;
 import edu.cmu.cs.dennisc.animation.Style;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Point3;
 
 /**
  * @author Matt May
@@ -78,7 +79,7 @@ public class PoseAnimation extends DurationBasedAnimation {
 			//If the pose affects the translation of the joint, use the supplied translation as the target
 			// Otherwise, use the current translation as the target
 			if( jtPair.affectsTranslation() ) {
-				m_m1 = jtPair.getTransformation();
+				m_m1 = new edu.cmu.cs.dennisc.math.AffineMatrix4x4( jtPair.getTransformation() );
 			} else {
 				m_m1 = this.jointImp.getLocalTransformation();
 			}
@@ -86,7 +87,8 @@ public class PoseAnimation extends DurationBasedAnimation {
 		}
 
 		public void setPortion( double portion ) {
-			m_mBuffer.translation.setToInterpolation( m_m0.translation, m_m1.translation, portion );
+			//Note that the scale of the jointedModel is applied to the translation. Since poses encode both orientation and position, they inherently encode the scale they were created at. This multiplication accounts for that.
+			m_mBuffer.translation.setToInterpolation( m_m0.translation, Point3.createMultiplication( m_m1.translation, this.jointImp.getJointedModelImplementation().getScale() ), portion );
 			m_qBuffer.setToInterpolation( m_q0, m_q1, portion );
 			m_mBuffer.orientation.setValue( m_qBuffer );
 
@@ -94,7 +96,8 @@ public class PoseAnimation extends DurationBasedAnimation {
 		}
 
 		public void epilogue() {
-			jointImp.setLocalTransformation( new AffineMatrix4x4( m_q1, m_m1.translation ) );
+			//Note that the scale of the jointedModel is applied to the translation. Since poses encode both orientation and position, they inherently encode the scale they were created at. This multiplication accounts for that.
+			jointImp.setLocalTransformation( new AffineMatrix4x4( m_q1, Point3.createMultiplication( m_m1.translation, this.jointImp.getJointedModelImplementation().getScale() ) ) );
 		}
 	}
 

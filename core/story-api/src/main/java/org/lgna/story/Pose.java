@@ -57,7 +57,7 @@ public class Pose<M extends SJointedModel> {
 		return this.modelCls;
 	}
 
-	/*package-private*/JointIdTransformationPair[] getJointIdTransformationPairs() {
+	public JointIdTransformationPair[] getJointIdTransformationPairs() {
 		return this.jointTPairs;
 	}
 
