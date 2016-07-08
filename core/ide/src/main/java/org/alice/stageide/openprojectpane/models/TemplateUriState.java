@@ -51,21 +51,29 @@ public class TemplateUriState extends org.lgna.croquet.ImmutableDataSingleSelect
 
 	public static enum Template {
 		GRASS( org.lgna.story.SGround.SurfaceAppearance.GRASS, new org.lgna.story.Color( 150 / 255.0, 226 / 255.0, 252 / 255.0 ) ),
-		SEA_FLOOR( org.lgna.story.SGround.SurfaceAppearance.OCEAN_FLOOR, org.lgna.story.Color.DARK_BLUE, 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 66 / 255.0, 195 / 255.0, 252 / 255.0 ) ),
-		MOON( org.lgna.story.SGround.SurfaceAppearance.MOON, org.lgna.story.Color.BLACK ),
+		SEA_FLOOR( org.lgna.story.SGround.SurfaceAppearance.OCEAN_FLOOR, new org.lgna.story.Color( 0.0, .431, .859 ), 0.3, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 0, .549, .565 ) ),
+		MOON( org.lgna.story.SGround.SurfaceAppearance.MOON, new org.lgna.story.Color( .11, .133, .178 ), 0, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .0, .118, .396 ) ),
+		MARS( org.lgna.story.SGround.SurfaceAppearance.MARS, new org.lgna.story.Color( .847, .69, .588 ), 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .541, .2, .0 ) ),
 
-		MARS( org.lgna.story.SGround.SurfaceAppearance.MARS, org.lgna.story.Color.PINK, 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 11 / 255.0, 0 / 255.0, 24 / 255.0 ) ),
-		SNOW( org.lgna.story.SGround.SurfaceAppearance.SNOW ),
+		SNOW( org.lgna.story.SGround.SurfaceAppearance.SNOW, new org.lgna.story.Color( .82, .941, 1.0 ), 0.22, org.lgna.story.Color.WHITE, org.lgna.story.Color.WHITE ),
 		ROOM( org.lgna.story.SGround.SurfaceAppearance.GRASS, org.lgna.story.SRoom.FloorAppearance.REDWOOD, org.lgna.story.SRoom.WallAppearance.YELLOW, org.lgna.story.Color.WHITE ),
+		WONDERLAND( org.lgna.story.SGround.SurfaceAppearance.DARK_GRASS, new org.lgna.story.Color( 0.0, .0941, .294 ), .1, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .541, 0.0, .125 ) ),
+		SEA_SURFACE( org.lgna.story.SGround.SurfaceAppearance.OCEAN, new org.lgna.story.Color( .659, .902, .922 ), .16, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .0, .424, .761 ), .7 ),
 
-		WONDERLAND( org.lgna.story.SGround.SurfaceAppearance.DARK_GRASS, new org.lgna.story.Color( 0 / 255.0, 24 / 255.0, 75 / 255.0 ), 0, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 25 / 255.0, 0 / 255.0, 0 / 255.0 ) ),
-		SEA_SURFACE( org.lgna.story.SGround.SurfaceAppearance.WATER ),
-		LAGOON_FLOOR( org.lgna.story.SGround.SurfaceAppearance.SAND, new org.lgna.story.Color( 75 / 255.0, 220 / 255.0, 255 / 255.0 ), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 0 / 255.0, 26 / 255.0, 60 / 255.0 ) ),
+		LAGOON_FLOOR( org.lgna.story.SGround.SurfaceAppearance.DESERT, new org.lgna.story.Color( .294, .863, 1.0 ), 0.16, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 1.0, .851, 0.0 ) ),
+		SWAMP( org.lgna.story.SGround.SurfaceAppearance.SWAMP, new org.lgna.story.Color( .0667, .118, .122 ), 0.27, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .0, 1.0, .741 ), .7 ),
+		DESERT( org.lgna.story.SGround.SurfaceAppearance.SANDY_DESERT, new org.lgna.story.Color( .886, .831, .51 ), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .322, .0745, .0 ) ),
+		DIRT( org.lgna.story.SGround.SurfaceAppearance.ROCKY_BROWN, new org.lgna.story.Color( .514, .376, .278 ), 0, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .384, .0, .22 ) ),
 
-		SWAMP( org.lgna.story.SGround.SurfaceAppearance.SWAMP, new org.lgna.story.Color( .2, .4, 0 ), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .2, .4, 0 ) ),
-		DESERT( org.lgna.story.SGround.SurfaceAppearance.DESERT ),
-		DIRT( org.lgna.story.SGround.SurfaceAppearance.DIRT );
+		SEA_SURFACE_NIGHT( org.lgna.story.SGround.SurfaceAppearance.OCEAN_NIGHT, new org.lgna.story.Color( .0, .11, .149 ), .2, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .529, 1.0, .0 ), .5 ),
+		ICE( org.lgna.story.SGround.SurfaceAppearance.ICE, new org.lgna.story.Color( .0, .278, .392 ), .15, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .0, .859, 1.0 ), .7 ),
+		AMAZON( org.lgna.story.SGround.SurfaceAppearance.JUNGLE, new org.lgna.story.Color( .918, 1.0, .471 ), .25, new org.lgna.story.Color( .341, .576, 1.0 ), new org.lgna.story.Color( .0, .00784, .38 ) ),
+		NORTHWEST_ISLAND( org.lgna.story.SGround.SurfaceAppearance.OCEAN, new org.lgna.story.Color( .663, .718, .843 ), .15, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 0, .235, .153 ) ),
 
+		NORTHWEST_FOREST( org.lgna.story.SGround.SurfaceAppearance.FOREST_FLOOR, new org.lgna.story.Color( .427, .533, .51 ), .2 ),
+		MAGIC( org.lgna.story.SGround.SurfaceAppearance.SWAMP, new org.lgna.story.Color( .0667, .118, .125 ), .27, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .169, .231, .29 ), .7 ),
+		GRASSY_DESERT( org.lgna.story.SGround.SurfaceAppearance.DRY_GRASS, new org.lgna.story.Color( .835, .769, .518 ), .13 ),
+		MARS_NIGHT( org.lgna.story.SGround.SurfaceAppearance.MARS, new org.lgna.story.Color( .11, .0824, .255 ), 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .541, .2, .0 ) );
 		public static Template getSurfaceAppearance( java.net.URI uri ) {
 			if( isValidUri( uri ) ) {
 				String fragment = uri.getFragment();
@@ -94,21 +102,27 @@ public class TemplateUriState extends org.lgna.croquet.ImmutableDataSingleSelect
 		//private final org.lgna.story.Color atmosphereColor;
 		private final org.lgna.story.Color atmosphereColor;
 		private final double fogDensity;
+		private final double groundOpacity;
 		private final org.lgna.story.Color aboveLightColor;
 		private final org.lgna.story.Color belowLightColor;
 		private final boolean isRoom;
 
-		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
+		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor, double groundOpacity ) {
 			this.surfaceAppearance = surfaceAppearance;
 			//this.atmosphereColor = atmosphereColor;
 			this.atmosphereColor = atmosphereColor;
 			this.fogDensity = fogDensity;
+			this.groundOpacity = groundOpacity;
 			this.aboveLightColor = aboveLightColor;
 			this.belowLightColor = belowLightColor;
 			this.isRoom = false;
 			this.floorAppearance = null;
 			this.wallAppearance = null;
 			this.ceilingAppearance = null;
+		}
+
+		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
+			this( surfaceAppearance, atmosphereColor, fogDensity, aboveLightColor, belowLightColor, 1.0 );
 		}
 
 		private Template( org.lgna.story.SGround.SurfaceAppearance surfaceAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor ) {
@@ -132,6 +146,7 @@ public class TemplateUriState extends org.lgna.croquet.ImmutableDataSingleSelect
 			//this.atmosphereColor = atmosphereColor;
 			this.atmosphereColor = null;
 			this.fogDensity = Double.NaN;
+			this.groundOpacity = 1.0;
 			this.aboveLightColor = null;
 			this.belowLightColor = null;
 			this.isRoom = true;
@@ -181,6 +196,10 @@ public class TemplateUriState extends org.lgna.croquet.ImmutableDataSingleSelect
 
 		public double getFogDensity() {
 			return this.fogDensity;
+		}
+
+		public double getGroundOpacity() {
+			return this.groundOpacity;
 		}
 
 		public java.net.URI getUri() {

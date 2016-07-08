@@ -59,7 +59,7 @@ public class SGround extends SThing implements MutableRider, VisualWithPaint {
 		SAND( "sand" ),
 		MARS( "mars" ),
 		DESERT( "desert" ),
-		SANDY_DESERT( "sandy_desert" ),
+		SANDY_DESERT( "desert_brown" ),
 		SNOW( "snow" ),
 		ICE( "ice" ),
 		SWAMP( "swamp" ),
@@ -72,7 +72,15 @@ public class SGround extends SThing implements MutableRider, VisualWithPaint {
 		OCEAN_FLOOR( "underwater" ),
 		MOON( "moon" ),
 		BROWN_SAVANA_GRASS( "brown_savana_grass" ),
-		GREEN_SAVANA_GRASS( "green_savana_grass" );
+		GREEN_SAVANA_GRASS( "green_savana_grass" ),
+		FOREST_FLOOR( "forest_floor_brown" ),
+		RED_FOREST_FLOOR( "forest_floor_red" ),
+		DARK_FOREST_FLOOR( "forest_floor_dark" ),
+		GOLD_COINS( "gold_coins" ),
+		ROCKY_SAND( "rocky_sand" ),
+		ROCKY_BROWN( "rocky_brown" ),
+		WOOD( "wood" ),
+		BRICK( "brick" );
 		private String resourceName;
 
 		SurfaceAppearance( String resourceName ) {

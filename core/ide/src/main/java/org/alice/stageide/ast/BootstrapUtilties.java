@@ -270,7 +270,7 @@ public class BootstrapUtilties {
 		return rv;
 	}
 
-	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.SGround.SurfaceAppearance appearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
+	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.SGround.SurfaceAppearance appearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor, double groundOpacity ) {
 
 		org.lgna.project.ast.UserField groundField = createPrivateFinalField( org.lgna.story.SGround.class, "ground" );
 
@@ -283,11 +283,16 @@ public class BootstrapUtilties {
 		org.lgna.project.ast.JavaMethod setPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SGround.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
 		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setPaintMethod, createFieldAccess( appearance ) ) );
 
+		if( groundOpacity != 1 ) {
+			org.lgna.project.ast.JavaMethod setGroundOpacityMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SGround.class, "setOpacity", Number.class, org.lgna.story.SetOpacity.Detail[].class );
+			setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setGroundOpacityMethod, new org.lgna.project.ast.DoubleLiteral( groundOpacity ) ) );
+		}
+
 		return createProgramType( modelFields, setupStatements.toArray( new org.lgna.project.ast.ExpressionStatement[ setupStatements.size() ] ), atmosphereColor, fogDensity, aboveLightColor, belowLightColor );
 	}
 
 	//groundAppearance is optional and will cause the program to generate a ground in addition to a room
-	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.SGround.SurfaceAppearance groundAppearance, org.lgna.story.Paint floorAppearance, org.lgna.story.Paint wallAppearance, org.lgna.story.Paint ceilingAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
+	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.SGround.SurfaceAppearance groundAppearance, org.lgna.story.Paint floorAppearance, org.lgna.story.Paint wallAppearance, org.lgna.story.Paint ceilingAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor, double groundOpacity ) {
 
 		org.lgna.project.ast.UserField roomField = createPrivateFinalField( org.lgna.story.SRoom.class, "room" );
 		roomField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
@@ -342,6 +347,10 @@ public class BootstrapUtilties {
 		if( groundAppearance != null ) {
 			org.lgna.project.ast.JavaMethod setGroundPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SGround.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
 			setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setGroundPaintMethod, createFieldAccess( groundAppearance ) ) );
+			if( groundOpacity != 1 ) {
+				org.lgna.project.ast.JavaMethod setGroundOpacityMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SGround.class, "setOpacity", Number.class, org.lgna.story.SetOpacity.Detail[].class );
+				setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setGroundOpacityMethod, new org.lgna.project.ast.DoubleLiteral( groundOpacity ) ) );
+			}
 		}
 
 		return createProgramType( modelFields, setupStatements.toArray( new org.lgna.project.ast.ExpressionStatement[ setupStatements.size() ] ), atmosphereColor, fogDensity, aboveLightColor, belowLightColor );
