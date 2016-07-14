@@ -11,7 +11,7 @@
 
 	<artifactId>starter-projects</artifactId>
 	<!-- starters.projects.version -->
-	<version>2016.07.11</version>
+	<version>2016.07.14</version>
 	<packaging>pom</packaging>
 
 	<licenses>
