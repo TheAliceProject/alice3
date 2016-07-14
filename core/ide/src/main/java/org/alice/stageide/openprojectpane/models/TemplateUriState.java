@@ -68,7 +68,7 @@ public class TemplateUriState extends org.lgna.croquet.ImmutableDataSingleSelect
 		SEA_SURFACE_NIGHT( org.lgna.story.SGround.SurfaceAppearance.OCEAN_NIGHT, new org.lgna.story.Color( .0, .11, .149 ), .2, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .529, 1.0, .0 ), .5 ),
 		ICE( org.lgna.story.SGround.SurfaceAppearance.ICE, new org.lgna.story.Color( .0, .278, .392 ), .15, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .0, .859, 1.0 ), .7 ),
 		AMAZON( org.lgna.story.SGround.SurfaceAppearance.JUNGLE, new org.lgna.story.Color( .918, 1.0, .471 ), .25, new org.lgna.story.Color( .341, .576, 1.0 ), new org.lgna.story.Color( .0, .00784, .38 ) ),
-		NORTHWEST_ISLAND( org.lgna.story.SGround.SurfaceAppearance.OCEAN, new org.lgna.story.Color( .663, .718, .843 ), .15, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 0, .235, .153 ) ),
+		NORTHWEST_ISLAND( org.lgna.story.SGround.SurfaceAppearance.OCEAN, new org.lgna.story.Color( .663, .718, .843 ), .15, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 0, .235, .153 ), .5 ),
 
 		NORTHWEST_FOREST( org.lgna.story.SGround.SurfaceAppearance.FOREST_FLOOR, new org.lgna.story.Color( .427, .533, .51 ), .2 ),
 		MAGIC( org.lgna.story.SGround.SurfaceAppearance.SWAMP, new org.lgna.story.Color( .0667, .118, .125 ), .27, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .169, .231, .29 ), .7 ),

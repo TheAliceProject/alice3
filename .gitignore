@@ -19,3 +19,7 @@ hs_*.log
 
 # Ignore these projects from Looking Glass so that people don't add these files to the Alice repository by mistake.
 /lookingglass
+/nonfree/core/ide-nonfree/target/classes/org/alice/stageide/ast/sort/*.class
+*.class
+*.lst
+*.marker

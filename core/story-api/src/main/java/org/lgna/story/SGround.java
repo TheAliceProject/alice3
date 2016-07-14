@@ -79,6 +79,7 @@ public class SGround extends SThing implements MutableRider, VisualWithPaint {
 		GOLD_COINS( "gold_coins" ),
 		ROCKY_SAND( "rocky_sand" ),
 		ROCKY_BROWN( "rocky_brown" ),
+		ROCKY_RED( "rocky_red" ),
 		WOOD( "wood" ),
 		BRICK( "brick" );
 		private String resourceName;
@@ -96,7 +97,7 @@ public class SGround extends SThing implements MutableRider, VisualWithPaint {
 	private final org.lgna.story.implementation.GroundImp implementation = new org.lgna.story.implementation.GroundImp( this );
 
 	@Override
-	/* package-private */org.lgna.story.implementation.GroundImp getImplementation() {
+			/* package-private */org.lgna.story.implementation.GroundImp getImplementation() {
 		return this.implementation;
 	}
 
