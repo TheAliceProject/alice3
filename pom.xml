@@ -71,9 +71,9 @@
 
 		<jogl.version>2.2.4</jogl.version>
 
-		<alice.model.version>2016.07.15</alice.model.version>
+		<alice.model.version>2016.07.19</alice.model.version>
 		<sound.gallery.version>2013.08.08</sound.gallery.version>
-		<starter.projects.version>2016.07.14</starter.projects.version>
+		<starter.projects.version>2016.07.19</starter.projects.version>
 		<nebulous.model.version>2016.07.15</nebulous.model.version>
 		<nebulous.person.version>2014.08.12</nebulous.person.version>
 		<nebulous.lib.version>2013.08.20</nebulous.lib.version>

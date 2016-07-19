@@ -5579,6 +5579,117 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					createMoreSpecificFieldPattern( "SHORT", "org.lgna.story.resources.prop.WychElmResource" ),
 					createMoreSpecificFieldReplacement( "DEFAULT", "org.lgna.story.resources.prop.WychElmResource" )
+					),
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.2.111.0.0" ),
+					new org.lgna.project.Version( "3.2.112.0.0" )
+					),
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.2.112.0.0" ),
+					new org.lgna.project.Version( "3.2.113.0.0" ),
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.FirTreeTrunkMirrorResource" ),
+					createMoreSpecificFieldReplacement( "MIRROR", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.FirTreeTrunkTallResource" ),
+					createMoreSpecificFieldReplacement( "TALL", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.FirTreeTrunkTallMirrorResource" ),
+					createMoreSpecificFieldReplacement( "TALL_MIRROR", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.FirTreeTrunkSnowResource" ),
+					createMoreSpecificFieldReplacement( "SNOW", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.FirTreeTrunkSnowMirrorResource" ),
+					createMoreSpecificFieldReplacement( "SNOW_MIRROR", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.FirTreeTrunkSnowTallResource" ),
+					createMoreSpecificFieldReplacement( "SNOW_TALL", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
+
+					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.FirTreeTrunkSnowTallMirrorResource" ),
+					createMoreSpecificFieldReplacement( "SNOW_TALL_MIRROR", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
+
+					createMoreSpecificFieldPattern( "SQUARE_DRYGRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "SQUARE_DRY_GRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "SQUARE_FORESTFLOOR", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "SQUARE_FOREST_FLOOR", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "SQUARE_FORESTFLOORBROWN", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "SQUARE_FOREST_FLOOR_BROWN", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "SQUARE_FORESTFLOORRED", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "SQUARE_FOREST_FLOOR_RED", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "CRESCENT_DRYGRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "CRESCENT_DRY_GRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "CRESCENT_FORESTFLOOR", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "CRESCENT_FOREST_FLOOR", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "CRESCENT_FORESTFLOORBROWN", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "CRESCENT_FOREST_FLOOR_BROWN", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "CRESCENT_FORESTFLOORRED", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "CRESCENT_FOREST_FLOOR_RED", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "BLOB_DRYGRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "BLOB_DRY_GRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "BLOB_FORESTFLOOR", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "BLOB_FOREST_FLOOR", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "BLOB_FORESTFLOORBROWN", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "BLOB_FOREST_FLOOR_BROWN", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "BLOB_FORESTFLOORRED", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "BLOB_FOREST_FLOOR_RED", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "OVAL_DRYGRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "OVAL_DRY_GRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "OVAL_FORESTFLOOR", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "OVAL_FOREST_FLOOR", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "OVAL_FORESTFLOORBROWN", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "OVAL_FOREST_FLOOR_BROWN", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "OVAL_FORESTFLOORRED", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "OVAL_FOREST_FLOOR_RED", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "FLAT_DRYGRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "FLAT_DRY_GRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "FLAT_FORESTFLOOR", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "FLAT_FOREST_FLOOR", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "FLAT_FORESTFLOORBROWN", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "FLAT_FOREST_FLOOR_BROWN", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "FLAT_FORESTFLOORRED", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "FLAT_FOREST_FLOOR_RED", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "FLAT_OCEANNIGHT", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "FLAT_OCEAN_NIGHT", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "FLAT_OVAL_DRYGRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "FLAT_OVAL_DRY_GRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "FLAT_OVAL_FORESTFLOOR", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "FLAT_OVAL_FOREST_FLOOR", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "FLAT_OVAL_FORESTFLOORBROWN", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "FLAT_OVAL_FOREST_FLOOR_BROWN", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "FLAT_OVAL_FORESTFLOORRED", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "FLAT_OVAL_FOREST_FLOOR_RED", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "FLAT_OVAL_OCEANNIGHT", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "FLAT_OVAL_OCEAN_NIGHT", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					"org.lgna.story.resources.prop.SandDunesResource",
+					"org.lgna.story.resources.prop.TerrainResource"
+
 					)
 
 			//			, EventAstMigration.getTextMigration()
