@@ -70,12 +70,12 @@ public class Build {
 		.isJavaDocGenerationDesired( commandLine.hasOption( "skipJavaDocs" ) == false )
 
 				.joglVersion( "2.2.4" )
-				.aliceModelSourceVersion( "2016.07.15" )
+				.aliceModelSourceVersion( "2016.07.19" )
 				.nebulousModelSourceVersion( "2016.07.15" )
 
 		//getUserProperties6File is expected to be in 6.9 even for 6.9.1
 		.netBeans6Version( "6.9" )
-		.netBeans8Version( "8.0.2" )
+		.netBeans8Version( "8.1" )
 
 		.build();
 		// @formatter:on
