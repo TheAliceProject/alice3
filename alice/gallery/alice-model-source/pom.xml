@@ -11,7 +11,7 @@
 
 	<artifactId>alice-model-source</artifactId>
 	<!-- alice.model.version -->
-	<version>2016.07.19</version>
+	<version>2016.07.21</version>
 	<packaging>pom</packaging>
 
 	<licenses>
