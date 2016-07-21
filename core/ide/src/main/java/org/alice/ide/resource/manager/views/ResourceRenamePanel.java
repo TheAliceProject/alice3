@@ -50,6 +50,7 @@ public class ResourceRenamePanel extends org.alice.ide.ast.rename.components.Ren
 	private static final int SIZE = 128;
 	private final org.lgna.croquet.views.BorderPanel centerPanel = new org.lgna.croquet.views.BorderPanel();
 	private final org.alice.imageeditor.croquet.views.ImageView imageView = new org.alice.imageeditor.croquet.views.ImageView();
+	private edu.cmu.cs.dennisc.media.Player audioPlayer = null;
 
 	public ResourceRenamePanel( org.alice.ide.resource.manager.RenameResourceComposite composite ) {
 		super( composite );
@@ -59,6 +60,10 @@ public class ResourceRenamePanel extends org.alice.ide.ast.rename.components.Ren
 	}
 
 	public void setResource( org.lgna.common.Resource resource ) {
+		if( this.audioPlayer != null ) {
+			this.audioPlayer.stop();
+			this.audioPlayer = null;
+		}
 		this.centerPanel.forgetAndRemoveAllComponents();
 		java.awt.Component awtComponent;
 		String constraint;
@@ -73,12 +78,20 @@ public class ResourceRenamePanel extends org.alice.ide.ast.rename.components.Ren
 			edu.cmu.cs.dennisc.media.Player player = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton().createPlayer( audioResource );
 			awtComponent = player.getControlPanelComponent();
 			constraint = java.awt.BorderLayout.PAGE_START;
+			this.audioPlayer = player;
 		} else {
 			awtComponent = null;
 			constraint = null;
 		}
 		if( awtComponent != null ) {
 			this.centerPanel.getAwtComponent().add( awtComponent, constraint );
+		}
+	}
+
+	public void onHide() {
+		if( this.audioPlayer != null ) {
+			this.audioPlayer.stop();
+			this.audioPlayer = null;
 		}
 	}
 }

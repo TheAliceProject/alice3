@@ -11,7 +11,7 @@
 
 	<artifactId>nebulous-model-resources</artifactId>
 	<!-- nebulous.model.version -->
-	<version>2014.09.11</version>
+	<version>2016.07.15</version>
 	<packaging>pom</packaging>
 
 	<licenses>

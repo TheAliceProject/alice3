@@ -30,6 +30,9 @@
 			<version>1.6.0</version>
 			<scope>system</scope>
 			<systemPath>${java.home}/../lib/tools.jar</systemPath>
+			<!--
+			<systemPath>${env.JDK6_HOME}/lib/tools.jar</systemPath>
+			-->
 		</dependency>
 	</dependencies>
 </project>

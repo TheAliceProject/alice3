@@ -47,15 +47,24 @@ package org.alice.stageide.ast;
  * @author Dennis Cosgrove
  */
 public class SimsBootstrapUtilties extends BootstrapUtilties {
-
-	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.Paint floorAppearance, org.lgna.story.Paint wallAppearance, org.lgna.story.Paint ceilingAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
+	//groundAppearance is optional and will cause the program to generate a ground in addition to a room
+	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.story.SGround.SurfaceAppearance groundAppearance, org.lgna.story.Paint floorAppearance, org.lgna.story.Paint wallAppearance, org.lgna.story.Paint ceilingAppearance, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor, double groundOpacity ) {
 
 		org.lgna.project.ast.UserField roomField = createPrivateFinalField( org.lgna.story.SRoom.class, "room" );
-
 		roomField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 
-		org.lgna.project.ast.UserField[] modelFields = { roomField
-		};
+		org.lgna.project.ast.UserField groundField = groundAppearance != null ? createPrivateFinalField( org.lgna.story.SGround.class, "ground" ) : null;
+		if( groundField != null ) {
+			groundField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
+		}
+
+		org.lgna.project.ast.UserField[] modelFields;
+		if( groundField != null ) {
+			modelFields = new org.lgna.project.ast.UserField[] { roomField, groundField };
+		} else {
+			modelFields = new org.lgna.project.ast.UserField[] { roomField };
+		}
+
 		java.util.ArrayList<org.lgna.project.ast.ExpressionStatement> setupStatements = new java.util.ArrayList<org.lgna.project.ast.ExpressionStatement>();
 
 		org.lgna.project.ast.JavaMethod setFloorPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SRoom.class, "setFloorPaint", org.lgna.story.Paint.class, org.lgna.story.SetFloorPaint.Detail[].class );
@@ -90,6 +99,15 @@ public class SimsBootstrapUtilties extends BootstrapUtilties {
 		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setWallPaintMethod, wallPaintExpression ) );
 		org.lgna.project.ast.JavaMethod setCeilingPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SRoom.class, "setCeilingPaint", org.lgna.story.Paint.class, org.lgna.story.SetCeilingPaint.Detail[].class );
 		setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( roomField ), setCeilingPaintMethod, ceilingPaintExpression ) );
+
+		if( groundAppearance != null ) {
+			org.lgna.project.ast.JavaMethod setGroundPaintMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SGround.class, "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+			setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setGroundPaintMethod, createFieldAccess( groundAppearance ) ) );
+			if( groundOpacity != 1 ) {
+				org.lgna.project.ast.JavaMethod setGroundOpacityMethod = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SGround.class, "setOpacity", Number.class, org.lgna.story.SetOpacity.Detail[].class );
+				setupStatements.add( createMethodInvocationStatement( createThisFieldAccess( groundField ), setGroundOpacityMethod, new org.lgna.project.ast.DoubleLiteral( groundOpacity ) ) );
+			}
+		}
 
 		return createProgramType( modelFields, setupStatements.toArray( new org.lgna.project.ast.ExpressionStatement[ setupStatements.size() ] ), atmosphereColor, fogDensity, aboveLightColor, belowLightColor );
 	}

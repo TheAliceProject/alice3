@@ -85,5 +85,11 @@ public class RenameResourceComposite extends org.alice.ide.ast.rename.RenameComp
 		super.handlePreShowDialog( step );
 	}
 
+	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		super.handlePostHideDialog( completionStep );
+		this.getView().onHide();
+	}
+
 	private final org.lgna.croquet.ItemState<org.lgna.common.Resource> resourceState;
 }

@@ -155,9 +155,9 @@ public final class ResourceManagerComposite extends org.lgna.croquet.LazyOperati
 			isReferenced = (Boolean)resourceTableModel.getValueAt( listSelectionModel.getLeadSelectionIndex(), ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX );
 			renameAndReplaceToolTipText = null;
 			if( isReferenced ) {
-				removeToolTipText = null;
-			} else {
 				removeToolTipText = "cannot remove resources that are referenced";
+			} else {
+				removeToolTipText = null;
 			}
 		} else {
 			isReferenced = false;

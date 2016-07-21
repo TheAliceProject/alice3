@@ -846,7 +846,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 				}
 			}
 
-			assert( ( this.globalDragAdapter != null ) && ( this.sceneCameraImp != null ) && ( this.orthographicCameraImp != null ) );
+			assert ( ( this.globalDragAdapter != null ) && ( this.sceneCameraImp != null ) && ( this.orthographicCameraImp != null ) );
 			{
 				this.globalDragAdapter.clearCameraViews();
 				this.globalDragAdapter.addCameraView( CameraView.MAIN, this.sceneCameraImp.getSgCamera(), null );
@@ -896,6 +896,12 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			}
 
 			//TODO: do we need to do anything to handle marker selection on scene change?
+			//Yes, we need to clear the selection on the markers so that no marker is selected on load and so no marker selection is carried over from the previous world
+			this.setSelectedCameraMarker( null );
+			this.setSelectedObjectMarker( null );
+			//			MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField( null );
+			//			MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField( null );
+
 			//			SideComposite.getInstance().getCameraMarkersTab().getMarkerListState().addAndInvokeValueListener( this.cameraMarkerFieldSelectionObserver );
 			//			SideComposite.getInstance().getObjectMarkersTab().getMarkerListState().addAndInvokeValueListener( this.objectMarkerFieldSelectionObserver );
 			//			ManagedCameraMarkerFieldState.getInstance( (NamedUserType)sceneAliceInstance.getType() ).addAndInvokeValueListener( this.cameraMarkerFieldSelectionObserver );

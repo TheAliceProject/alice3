@@ -110,8 +110,11 @@ public class IdeNonfree extends NebulousIde {
 
 	@Override
 	public org.lgna.project.ast.NamedUserType createProgramType( TemplateUriState.Template template ) {
-		return SimsBootstrapUtilties.createProgramType( template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(),
-				template.getBelowLightColor() );
+		return SimsBootstrapUtilties.createProgramType(
+				template.getSurfaceAppearance(),
+				template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(),
+				template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(),
+				template.getGroundOpacity() );
 	}
 
 	@Override
