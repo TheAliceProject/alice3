@@ -109,6 +109,11 @@ public class Config {
 			return this;
 		}
 
+		public Builder installerIncludedJvmVersion( String installerIncludedJvmVersion ) {
+			this.installerIncludedJvmVersion = installerIncludedJvmVersion;
+			return this;
+		}
+
 		public Config build() {
 			return new Config( this );
 		}
@@ -125,6 +130,7 @@ public class Config {
 		private String nebulousModelSourceVersion;
 		private String netBeans6Version;
 		private String netBeans8Version;
+		private String installerIncludedJvmVersion;
 	}
 
 	private Config( Builder builder ) {
@@ -154,6 +160,9 @@ public class Config {
 
 		assert builder.netBeans8Version != null : builder;
 		this.netBeans8Version = builder.netBeans8Version;
+
+		assert builder.installerIncludedJvmVersion != null : builder;
+		this.installerIncludedJvmVersion = builder.installerIncludedJvmVersion;
 	}
 
 	public Mode getMode() {
@@ -203,6 +212,10 @@ public class Config {
 	public String getNetBeans8Version() {
 		return this.netBeans8Version;
 	}
+	
+	public String getInstallerIncludedJvmVersion() {
+		return this.installerIncludedJvmVersion;
+	}
 
 	@Override
 	public String toString() {
@@ -222,6 +235,8 @@ public class Config {
 		sb.append( this.netBeans6Version );
 		sb.append( "\n\tnetBeans8Version: " );
 		sb.append( this.netBeans8Version );
+		sb.append( "\n\tinstallerIncludedJvmVersion: " );
+		sb.append( this.installerIncludedJvmVersion );
 		return sb.toString();
 	}
 
@@ -237,4 +252,5 @@ public class Config {
 	private final String nebulousModelSourceVersion;
 	private final String netBeans6Version;
 	private final String netBeans8Version;
+	private final String installerIncludedJvmVersion;
 }

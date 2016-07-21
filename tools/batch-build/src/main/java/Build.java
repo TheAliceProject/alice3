@@ -77,6 +77,8 @@ public class Build {
 		.netBeans6Version( "6.9" )
 		.netBeans8Version( "8.1" )
 
+		.installerIncludedJvmVersion( "1.8.0_102" )
+		
 		.build();
 		// @formatter:on
 
