@@ -113,6 +113,7 @@ public class Installer {
 		}
 
 		java.util.List<ProjectCollection> projectCollections = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+
 		projectCollections.add( new ProjectCollection.Builder( "core" )
 				.addProjectNames(
 						"util",
@@ -127,9 +128,17 @@ public class Installer {
 						"issue-reporting",
 						"ide" )
 				.build() );
+
 		projectCollections.add( new ProjectCollection.Builder( "alice" )
 				.addProjectNames(
 						"alice-ide" )
+				.build() );
+
+		projectCollections.add( new ProjectCollection.Builder( "nonfree/core" )
+				.addProjectNames(
+						"ide-nonfree",
+						"resources-nonfree",
+						"story-api-nonfree" )
 				.build() );
 
 		for( ProjectCollection projectCollection : projectCollections ) {
