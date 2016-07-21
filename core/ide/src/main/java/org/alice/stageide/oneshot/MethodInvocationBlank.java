@@ -82,7 +82,7 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 
 		org.lgna.project.ast.AbstractType<?, ?, ?> instanceFactoryValueType = this.instanceFactory.getValueType();
 		java.util.List<org.lgna.project.ast.JavaMethod> methods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		java.util.List<org.lgna.project.ast.MethodInvocation> methodInvocations = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		java.util.Map<org.lgna.project.ast.MethodInvocation, java.util.List<org.lgna.project.ast.SimpleArgument>> poseMethods = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		if( turnableType.isAssignableFrom( instanceFactoryValueType ) ) {
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.TURN_METHOD );
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROLL_METHOD );
@@ -124,7 +124,10 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 							if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
 								org.lgna.project.ast.MethodInvocation poseInvocation = (org.lgna.project.ast.MethodInvocation)expression;
 								if( "strikePose".equals( poseInvocation.method.getValue().getName() ) ) {
-									methodInvocations.add( poseInvocation );
+									if( poseInvocation.method.getValue() instanceof org.lgna.project.ast.JavaMethod ) {
+										java.util.List<org.lgna.project.ast.SimpleArgument> arguments = poseInvocation.requiredArguments.getValue();
+										poseMethods.put( poseInvocation, arguments );
+									}
 								}
 							}
 						}
@@ -177,12 +180,8 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 				children.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			}
 		}
-		for( org.lgna.project.ast.MethodInvocation methodInvocation : methodInvocations ) {
-			if( methodInvocation != null ) {
-				if( "strikePose".equals( methodInvocation.method.getValue().getName() ) ) {
-					children.add( StrikePoseMethodInvocationFillIn.getInstance( this.instanceFactory, methodInvocation ) );
-				}
-			}
+		for( java.util.Map.Entry<org.lgna.project.ast.MethodInvocation, java.util.List<org.lgna.project.ast.SimpleArgument>> poseMethodEntry : poseMethods.entrySet() ) {
+			children.add( StrikePoseMethodInvocationFillIn.getInstance( this.instanceFactory, (org.lgna.project.ast.JavaMethod)poseMethodEntry.getKey().method.getValue(), poseMethodEntry.getValue() ) );
 		}
 	}
 }
