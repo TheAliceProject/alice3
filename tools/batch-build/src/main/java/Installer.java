@@ -191,7 +191,7 @@ public class Installer {
 		assert dstInstall4JFile.exists() : dstInstall4JFile;
 	}
 
-	public void createInstallers() throws InterruptedException, java.io.IOException {
+	public void createInstallers( Config config ) throws InterruptedException, java.io.IOException {
 		java.io.File installerOutputDir = new java.io.File( this.root, "installerOutput" );
 		String underscoreVersionText = org.lgna.project.ProjectVersion.getCurrentVersionText().replaceAll( "\\.", "_" );
 		java.io.File win64File = new java.io.File( installerOutputDir, "Alice3_windows-x64_Offline_" + underscoreVersionText + ".exe" );
@@ -205,7 +205,7 @@ public class Installer {
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( macFile );
 
 		java.util.List<String> command = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		command.add( Install4JUtils.getInstall4JCommandFile().getAbsolutePath() );
+		command.add( Install4JUtils.getInstall4JCommandFile( config ).getAbsolutePath() );
 		command.add( "--build-selected" );
 		command.add( this.getInstall4JFile().getAbsolutePath() );
 		ProcessBuilder processBuilder = new ProcessBuilder( command );

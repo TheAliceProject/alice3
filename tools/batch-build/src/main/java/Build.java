@@ -78,7 +78,7 @@ public class Build {
 		.netBeans8Version( "8.1" )
 
 		.installerIncludedJvmVersion( "1.8.0_102" )
-		
+
 		.build();
 		// @formatter:on
 
@@ -87,7 +87,7 @@ public class Build {
 		AntUtils.initialize();
 		NetBeansUtils.initialize( config );
 		if( config.isInstallerDesired() ) {
-			Install4JUtils.initialize();
+			Install4JUtils.initialize( config );
 		}
 
 		BuildRepo buildRepo = new BuildRepo( config );
@@ -151,7 +151,7 @@ public class Build {
 			if( config.getMode().isDev() ) {
 				//pass
 			} else {
-				installer.createInstallers();
+				installer.createInstallers( config );
 				timer.mark( "createInstallers" );
 			}
 		}
