@@ -15,7 +15,7 @@
                         <specification-version>1.36.1</specification-version>
                     </run-dependency>
                 </dependency>
-                <dependency>
+				<dependency>
                     <code-name-base>org.netbeans.api.templates</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
@@ -231,6 +231,10 @@
             <class-path-extension>
                 <runtime-relative-path>ext/glrender-0.0.1-SNAPSHOT.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/glrender-0.0.1-SNAPSHOT.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/story-api-nonfree-0.0.1-SNAPSHOT.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/story-api-nonfree-0.0.1-SNAPSHOT.jar</binary-origin>
             </class-path-extension>
         </data>
     </configuration>
