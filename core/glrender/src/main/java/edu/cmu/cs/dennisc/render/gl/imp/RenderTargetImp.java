@@ -42,12 +42,8 @@
  */
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-<<<<<<< HEAD
-import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
-
-=======
 import static com.jogamp.opengl.GL.GL_COLOR_BUFFER_BIT;
->>>>>>> jogl_test_LOCAL
+
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
