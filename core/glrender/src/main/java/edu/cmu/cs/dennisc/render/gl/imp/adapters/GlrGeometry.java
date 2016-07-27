@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static javax.media.opengl.GL2.GL_COMPILE_AND_EXECUTE;
+import static com.jogamp.opengl.GL2.GL_COMPILE_AND_EXECUTE;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
@@ -111,9 +111,9 @@ public abstract class GlrGeometry<T extends edu.cmu.cs.dennisc.scenegraph.Geomet
 				rc.gl.glEndList();
 				{
 					int error = rc.gl.glGetError();
-					if( error != javax.media.opengl.GL.GL_NO_ERROR ) {
+					if( error != com.jogamp.opengl.GL.GL_NO_ERROR ) {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rc.glu.gluErrorString( error ), error, this );
-						//throw new javax.media.opengl.GLException( rc.glu.gluErrorString( error ) + " " + error + " " + this.toString() );
+						//throw new com.jogamp.opengl.GLException( rc.glu.gluErrorString( error ) + " " + error + " " + this.toString() );
 					}
 				}
 				setIsGeometryChanged( false );

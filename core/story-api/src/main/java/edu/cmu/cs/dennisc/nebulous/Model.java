@@ -27,9 +27,9 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 		Manager.initializeIfNecessary();
 	}
 
-	private native void render( javax.media.opengl.GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque );
+	private native void render( com.jogamp.opengl.GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque );
 
-	public void synchronizedRender( javax.media.opengl.GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque ) {
+	public void synchronizedRender( com.jogamp.opengl.GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque ) {
 		synchronized( renderLock ) {
 			try {
 				this.render( gl, globalBrightness, renderAlpha, renderOpaque );

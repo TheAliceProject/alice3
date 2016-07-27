@@ -42,8 +42,12 @@
  */
 package edu.cmu.cs.dennisc.render.gl.imp;
 
+<<<<<<< HEAD
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
 
+=======
+import static com.jogamp.opengl.GL.GL_COLOR_BUFFER_BIT;
+>>>>>>> jogl_test_LOCAL
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
@@ -90,7 +94,7 @@ public class RenderTargetImp {
 		return java.util.Collections.unmodifiableList( this.renderTargetListeners );
 	}
 
-	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, javax.media.opengl.GLAutoDrawable glAutoDrawable ) {
+	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, com.jogamp.opengl.GLAutoDrawable glAutoDrawable ) {
 		assert sgCamera != null : this;
 		this.sgCameras.add( sgCamera );
 		if( this.isListening() ) {
@@ -100,7 +104,7 @@ public class RenderTargetImp {
 		}
 	}
 
-	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, javax.media.opengl.GLAutoDrawable glAutoDrawable ) {
+	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, com.jogamp.opengl.GLAutoDrawable glAutoDrawable ) {
 		assert sgCamera != null;
 		this.sgCameras.remove( sgCamera );
 		if( this.isListening() ) {
@@ -110,7 +114,7 @@ public class RenderTargetImp {
 		}
 	}
 
-	public void clearSgCameras( javax.media.opengl.GLAutoDrawable glAutoDrawable ) {
+	public void clearSgCameras( com.jogamp.opengl.GLAutoDrawable glAutoDrawable ) {
 		if( this.sgCameras.size() > 0 ) {
 			this.sgCameras.clear();
 		}
@@ -218,7 +222,7 @@ public class RenderTargetImp {
 		return this.isListening;
 	}
 
-	public void startListening( javax.media.opengl.GLAutoDrawable drawable ) {
+	public void startListening( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		if( this.isListening ) {
 			if( drawable == this.drawable ) {
 				//pass
@@ -233,7 +237,7 @@ public class RenderTargetImp {
 		}
 	}
 
-	public void stopListening( javax.media.opengl.GLAutoDrawable drawable ) {
+	public void stopListening( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		if( drawable == this.drawable ) {
 			//pass
 		} else {
@@ -426,7 +430,7 @@ public class RenderTargetImp {
 	}
 
 	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer, boolean[] atIsUpsideDown ) {
-		javax.media.opengl.GLContext glCurrentContext = javax.media.opengl.GLContext.getCurrent();
+		com.jogamp.opengl.GLContext glCurrentContext = com.jogamp.opengl.GLContext.getCurrent();
 		if( ( glCurrentContext != null ) && ( glCurrentContext == this.drawable.getContext() ) ) {
 			this.renderContext.captureBuffers( rv, depthBuffer, atIsUpsideDown );
 		} else {
@@ -449,20 +453,20 @@ public class RenderTargetImp {
 		return rv;
 	}
 
-	private void initialize( javax.media.opengl.GLAutoDrawable drawable ) {
+	private void initialize( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "initialize", drawable );
 		assert drawable == this.drawable;
-		javax.media.opengl.GL2 gl = drawable.getGL().getGL2();
+		com.jogamp.opengl.GL2 gl = drawable.getGL().getGL2();
 		ConformanceTestResults.SINGLETON.updateRenderInformationIfNecessary( gl );
 
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( drawable.getChosenGLCapabilities() );
 
 		final boolean USE_DEBUG_GL = false;
 		if( USE_DEBUG_GL ) {
-			if( gl instanceof javax.media.opengl.DebugGL2 ) {
+			if( gl instanceof com.jogamp.opengl.DebugGL2 ) {
 				// pass
 			} else {
-				gl = new javax.media.opengl.DebugGL2( gl );
+				gl = new com.jogamp.opengl.DebugGL2( gl );
 				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "using debug gl: ", gl );
 				drawable.setGL( gl );
 			}
@@ -478,17 +482,17 @@ public class RenderTargetImp {
 	}
 
 	//todo: investigate not being invoked
-	private void handleInit( javax.media.opengl.GLAutoDrawable drawable ) {
+	private void handleInit( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
 		initialize( drawable );
 	}
 
-	private void handleDisplay( javax.media.opengl.GLAutoDrawable drawable ) {
+	private void handleDisplay( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
 		assert drawable == this.drawable;
 		//this.lookingGlass.commitAnyPendingChanges();
 		//todo?
-		javax.media.opengl.GL2 gl = drawable.getGL().getGL2();
+		com.jogamp.opengl.GL2 gl = drawable.getGL().getGL2();
 		if( this.renderContext.gl != null ) {
 			//pass
 		} else {
@@ -511,7 +515,7 @@ public class RenderTargetImp {
 		performRender();
 	}
 
-	private void handleReshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
+	private void handleReshape( com.jogamp.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "reshape", drawable, x, y, width, height );
 		assert drawable == this.drawable;
 		this.width = width;
@@ -519,19 +523,19 @@ public class RenderTargetImp {
 		this.fireResized( new edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent( this.getRenderTarget(), width, height ) );
 	}
 
-	//	public void displayChanged( javax.media.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
+	//	public void displayChanged( com.jogamp.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
 	//		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "displayChanged", drawable, modeChanged, deviceChanged );
 	//		assert drawable == this.drawable;
 	//		this.rtImp.fireDisplayChanged( new edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent( this.rtImp.getRenderTarget(), modeChanged, deviceChanged ) );
 	//	}
 
-	private void handleDispose( javax.media.opengl.GLAutoDrawable drawable ) {
+	private void handleDispose( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( drawable );
 	}
 
 	private final RenderContext renderContext = new RenderContext();
 
-	private javax.media.opengl.GLAutoDrawable drawable;
+	private com.jogamp.opengl.GLAutoDrawable drawable;
 	private int width;
 	private int height;
 
@@ -556,24 +560,24 @@ public class RenderTargetImp {
 
 	//
 	private static java.awt.Rectangle s_actualViewportBufferForReuse = new java.awt.Rectangle();
-	private final javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
+	private final com.jogamp.opengl.GLEventListener glEventListener = new com.jogamp.opengl.GLEventListener() {
 		@Override
-		public void init( javax.media.opengl.GLAutoDrawable drawable ) {
+		public void init( com.jogamp.opengl.GLAutoDrawable drawable ) {
 			handleInit( drawable );
 		}
 
 		@Override
-		public void display( javax.media.opengl.GLAutoDrawable drawable ) {
+		public void display( com.jogamp.opengl.GLAutoDrawable drawable ) {
 			handleDisplay( drawable );
 		}
 
 		@Override
-		public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
+		public void reshape( com.jogamp.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
 			handleReshape( drawable, x, y, width, height );
 		}
 
 		@Override
-		public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
+		public void dispose( com.jogamp.opengl.GLAutoDrawable drawable ) {
 			handleDispose( drawable );
 		}
 	};

@@ -43,10 +43,10 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static javax.media.opengl.GL.GL_BACK;
-import static javax.media.opengl.GL.GL_CULL_FACE;
-import static javax.media.opengl.GL.GL_FRONT;
-import static javax.media.opengl.GL.GL_FRONT_AND_BACK;
+import static com.jogamp.opengl.GL.GL_BACK;
+import static com.jogamp.opengl.GL.GL_CULL_FACE;
+import static com.jogamp.opengl.GL.GL_FRONT;
+import static com.jogamp.opengl.GL.GL_FRONT_AND_BACK;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.PickParameters;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
@@ -215,19 +215,19 @@ public class GlrVisual<T extends edu.cmu.cs.dennisc.scenegraph.Visual> extends G
 
 	private void preSilhouette( RenderContext rc ) {
 		rc.gl.glClearStencil( 0 );
-		rc.gl.glClear( javax.media.opengl.GL.GL_STENCIL_BUFFER_BIT );
-		rc.gl.glEnable( javax.media.opengl.GL.GL_STENCIL_TEST );
-		rc.gl.glStencilFunc( javax.media.opengl.GL.GL_ALWAYS, 1, -1 );
-		rc.gl.glStencilOp( javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_REPLACE );
+		rc.gl.glClear( com.jogamp.opengl.GL.GL_STENCIL_BUFFER_BIT );
+		rc.gl.glEnable( com.jogamp.opengl.GL.GL_STENCIL_TEST );
+		rc.gl.glStencilFunc( com.jogamp.opengl.GL.GL_ALWAYS, 1, -1 );
+		rc.gl.glStencilOp( com.jogamp.opengl.GL.GL_KEEP, com.jogamp.opengl.GL.GL_KEEP, com.jogamp.opengl.GL.GL_REPLACE );
 	}
 
 	private void postSilouette( RenderContext rc, int face ) {
-		rc.gl.glStencilFunc( javax.media.opengl.GL2.GL_NOTEQUAL, 1, -1 );
-		rc.gl.glStencilOp( javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_KEEP, javax.media.opengl.GL.GL_REPLACE );
+		rc.gl.glStencilFunc( com.jogamp.opengl.GL2.GL_NOTEQUAL, 1, -1 );
+		rc.gl.glStencilOp( com.jogamp.opengl.GL.GL_KEEP, com.jogamp.opengl.GL.GL_KEEP, com.jogamp.opengl.GL.GL_REPLACE );
 
 		this.silhouetteAdapter.setup( rc, face );
 		this.renderGeometry( rc, RenderType.SILHOUETTE );
-		rc.gl.glDisable( javax.media.opengl.GL.GL_STENCIL_TEST );
+		rc.gl.glDisable( com.jogamp.opengl.GL.GL_STENCIL_TEST );
 		rc.gl.glLineWidth( 1.0f );
 	}
 

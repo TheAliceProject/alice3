@@ -46,14 +46,14 @@ package org.alice.ide.issue.croquet;
  * @author Dennis Cosgrove
  */
 public final class GlExceptionComposite extends org.lgna.croquet.SimpleOperationUnadornedDialogCoreComposite<org.alice.ide.issue.croquet.views.GlExceptionView> {
-	private final javax.media.opengl.GLException glException;
+	private final com.jogamp.opengl.GLException glException;
 
-	public GlExceptionComposite( javax.media.opengl.GLException glException ) {
+	public GlExceptionComposite( com.jogamp.opengl.GLException glException ) {
 		super( java.util.UUID.fromString( "430294d2-f4e4-4a69-93af-93fc2f7a89ba" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 		this.glException = glException;
 	}
 
-	public javax.media.opengl.GLException getGlException() {
+	public com.jogamp.opengl.GLException getGlException() {
 		return this.glException;
 	}
 

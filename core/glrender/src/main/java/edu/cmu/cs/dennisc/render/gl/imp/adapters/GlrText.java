@@ -43,19 +43,19 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static javax.media.opengl.GL2.GL_QUAD_STRIP;
-import static javax.media.opengl.glu.GLU.GLU_OUT_OF_MEMORY;
-import static javax.media.opengl.glu.GLU.GLU_TESS_BEGIN;
-import static javax.media.opengl.glu.GLU.GLU_TESS_COMBINE;
-import static javax.media.opengl.glu.GLU.GLU_TESS_COORD_TOO_LARGE;
-import static javax.media.opengl.glu.GLU.GLU_TESS_END;
-import static javax.media.opengl.glu.GLU.GLU_TESS_ERROR;
-import static javax.media.opengl.glu.GLU.GLU_TESS_MISSING_BEGIN_CONTOUR;
-import static javax.media.opengl.glu.GLU.GLU_TESS_MISSING_BEGIN_POLYGON;
-import static javax.media.opengl.glu.GLU.GLU_TESS_MISSING_END_CONTOUR;
-import static javax.media.opengl.glu.GLU.GLU_TESS_MISSING_END_POLYGON;
-import static javax.media.opengl.glu.GLU.GLU_TESS_NEED_COMBINE_CALLBACK;
-import static javax.media.opengl.glu.GLU.GLU_TESS_VERTEX;
+import static com.jogamp.opengl.GL2.GL_QUAD_STRIP;
+import static com.jogamp.opengl.glu.GLU.GLU_OUT_OF_MEMORY;
+import static com.jogamp.opengl.glu.GLU.GLU_TESS_BEGIN;
+import static com.jogamp.opengl.glu.GLU.GLU_TESS_COMBINE;
+import static com.jogamp.opengl.glu.GLU.GLU_TESS_COORD_TOO_LARGE;
+import static com.jogamp.opengl.glu.GLU.GLU_TESS_END;
+import static com.jogamp.opengl.glu.GLU.GLU_TESS_ERROR;
+import static com.jogamp.opengl.glu.GLU.GLU_TESS_MISSING_BEGIN_CONTOUR;
+import static com.jogamp.opengl.glu.GLU.GLU_TESS_MISSING_BEGIN_POLYGON;
+import static com.jogamp.opengl.glu.GLU.GLU_TESS_MISSING_END_CONTOUR;
+import static com.jogamp.opengl.glu.GLU.GLU_TESS_MISSING_END_POLYGON;
+import static com.jogamp.opengl.glu.GLU.GLU_TESS_NEED_COMBINE_CALLBACK;
+import static com.jogamp.opengl.glu.GLU.GLU_TESS_VERTEX;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
@@ -64,8 +64,8 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
-	private static class MyTessAdapter extends javax.media.opengl.glu.GLUtessellatorCallbackAdapter {
-		public void set( javax.media.opengl.GL2 gl, double xOffset, double yOffset, double z, boolean isFront ) {
+	private static class MyTessAdapter extends com.jogamp.opengl.glu.GLUtessellatorCallbackAdapter {
+		public void set( com.jogamp.opengl.GL2 gl, double xOffset, double yOffset, double z, boolean isFront ) {
 			this.gl = gl;
 			this.xOffset = xOffset;
 			this.yOffset = yOffset;
@@ -126,7 +126,7 @@ public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( getErrorString( arg0 ), arg0 );
 		}
 
-		private javax.media.opengl.GL2 gl;
+		private com.jogamp.opengl.GL2 gl;
 		private double xOffset;
 		private double yOffset;
 		private double z;
@@ -147,22 +147,22 @@ public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
 
 			s_tessAdapter.set( context.gl, xOffset, yOffset, z, isFront );
 
-			javax.media.opengl.glu.GLUtessellator tesselator = javax.media.opengl.glu.GLU.gluNewTess();
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_BEGIN, s_tessAdapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_VERTEX, s_tessAdapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_END, s_tessAdapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_COMBINE, s_tessAdapter );
-			//			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_COMBINE_DATA, s_tessAdapter );
+			com.jogamp.opengl.glu.GLUtessellator tesselator = com.jogamp.opengl.glu.GLU.gluNewTess();
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_BEGIN, s_tessAdapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_VERTEX, s_tessAdapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_END, s_tessAdapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_COMBINE, s_tessAdapter );
+			//			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_COMBINE_DATA, s_tessAdapter );
 			final boolean IS_ERROR_OUTPUT_DESIRED = false;
 			if( IS_ERROR_OUTPUT_DESIRED ) {
-				javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_ERROR, s_tessAdapter );
+				com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU_TESS_ERROR, s_tessAdapter );
 			}
 			//			context.glu.gluTessCallback( tesselator, GLU_TESS_ERROR_DATA, s_tessAdapter );
 			try {
-				javax.media.opengl.glu.GLU.gluBeginPolygon( tesselator );
+				com.jogamp.opengl.glu.GLU.gluBeginPolygon( tesselator );
 				try {
 					for( java.util.List<edu.cmu.cs.dennisc.math.Point2f> faceContour : faceContours ) {
-						javax.media.opengl.glu.GLU.gluTessBeginContour( tesselator );
+						com.jogamp.opengl.glu.GLU.gluTessBeginContour( tesselator );
 						try {
 							int n = faceContour.size();
 							for( int i = 0; i < n; i++ ) {
@@ -173,14 +173,14 @@ public class GlrText extends GlrGeometry<edu.cmu.cs.dennisc.scenegraph.Text> {
 									p = faceContour.get( i );
 								}
 								double[] xyz = { p.x, p.y, 0 };
-								javax.media.opengl.glu.GLU.gluTessVertex( tesselator, xyz, 0, xyz );
+								com.jogamp.opengl.glu.GLU.gluTessVertex( tesselator, xyz, 0, xyz );
 							}
 						} finally {
-							javax.media.opengl.glu.GLU.gluTessEndContour( tesselator );
+							com.jogamp.opengl.glu.GLU.gluTessEndContour( tesselator );
 						}
 					}
 				} finally {
-					javax.media.opengl.glu.GLU.gluTessEndPolygon( tesselator );
+					com.jogamp.opengl.glu.GLU.gluTessEndPolygon( tesselator );
 				}
 			} finally {
 				owner.getGlyphVector().releaseFaceContours();
