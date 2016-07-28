@@ -69,7 +69,7 @@ public class Build {
 		.isCleanDesired( commandLine.hasOption( "skipClean" ) == false )
 		.isJavaDocGenerationDesired( commandLine.hasOption( "skipJavaDocs" ) == false )
 
-				.joglVersion( "2.2.4" )
+				.joglVersion( "2.3.2" )
 				.aliceModelSourceVersion( "2016.07.25" )
 				.nebulousModelSourceVersion( "2016.07.15" )
 
