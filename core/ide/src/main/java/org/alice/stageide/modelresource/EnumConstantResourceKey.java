@@ -93,9 +93,21 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 	}
 
 	@Override
-	public String getDisplayText() {
+	public String getInternalText() {
+		return IdeAliceResourceUtilities.getModelClassName( this, null );
+	}
+
+	@Override
+	public String getSearchText() {
+		return IdeAliceResourceUtilities.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
+	}
+
+	@Override
+	public String getLocalizedDisplayText() {
 		String simpleName = IdeAliceResourceUtilities.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
 		StringBuilder sb = new StringBuilder();
+
+		//TODO: Localize
 		sb.append( "new " );
 		sb.append( simpleName );
 		if( this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ) {
@@ -123,8 +135,7 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 			org.lgna.project.ast.NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );
 			org.lgna.project.ast.Expression[] argumentExpressions;
 			if( constructor.getRequiredParameters().size() == 1 ) {
-				argumentExpressions = new org.lgna.project.ast.Expression[] {
-						org.lgna.project.ast.AstUtilities.createStaticFieldAccess( argumentField )
+				argumentExpressions = new org.lgna.project.ast.Expression[] { org.lgna.project.ast.AstUtilities.createStaticFieldAccess( argumentField )
 				};
 			} else {
 				argumentExpressions = new org.lgna.project.ast.Expression[] {};

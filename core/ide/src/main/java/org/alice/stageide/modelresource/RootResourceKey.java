@@ -58,7 +58,13 @@ public class RootResourceKey extends ResourceKey {
 	}
 
 	@Override
-	public String getDisplayText() {
+	public String getInternalText() {
+		return this.displayText;
+	}
+
+	@Override
+	public String getLocalizedDisplayText() {
+		//TODO: Localize
 		return this.displayText;
 	}
 

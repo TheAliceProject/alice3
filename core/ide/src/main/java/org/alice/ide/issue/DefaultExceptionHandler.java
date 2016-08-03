@@ -92,7 +92,7 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 				if( this.isBugReportSubmissionPaneDesired ) {
 					try {
 						org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane exceptionPane;
-						if( throwable instanceof javax.media.opengl.GLException ) {
+						if( throwable instanceof com.jogamp.opengl.GLException ) {
 							exceptionPane = new org.alice.ide.issue.swing.views.CaughtGlExceptionPane();
 						} else {
 							exceptionPane = new org.alice.ide.issue.swing.views.CaughtExceptionPane();
@@ -171,7 +171,7 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 				@Override
 				public void run() {
 					super.run();
-					throw new javax.media.opengl.GLException( "DELETE ME" );
+					throw new com.jogamp.opengl.GLException( "DELETE ME" );
 					//throw new RuntimeException( "DELETE ME" );
 					//throw new org.lgna.common.LgnaIllegalArgumentException( "DELETE ME", 0, null );
 				}

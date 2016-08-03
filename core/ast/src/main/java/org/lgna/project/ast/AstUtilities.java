@@ -252,50 +252,30 @@ public class AstUtilities {
 	}
 
 	public static LocalDeclarationStatement createLocalDeclarationStatement( UserLocal local, Expression initializerExpression ) {
-		return new LocalDeclarationStatement(
-				local,
-				initializerExpression );
+		return new LocalDeclarationStatement( local, initializerExpression );
 	}
 
 	public static CountLoop createCountLoop( Expression count ) {
-		return new CountLoop(
-				new UserLocal( null, JavaType.INTEGER_OBJECT_TYPE, false ),
-				new UserLocal( null, JavaType.INTEGER_OBJECT_TYPE, true ),
-				count,
-				new BlockStatement() );
+		return new CountLoop( new UserLocal( null, JavaType.INTEGER_OBJECT_TYPE, false ), new UserLocal( null, JavaType.INTEGER_OBJECT_TYPE, true ), count, new BlockStatement() );
 	}
 
 	public static WhileLoop createWhileLoop( Expression conditional ) {
-		return new WhileLoop(
-				conditional,
-				new BlockStatement() );
+		return new WhileLoop( conditional, new BlockStatement() );
 	}
 
 	public static ConditionalStatement createConditionalStatement( Expression conditional ) {
-		return new ConditionalStatement(
-				new BooleanExpressionBodyPair[] {
-						new BooleanExpressionBodyPair(
-								conditional,
-								new BlockStatement()
-						)
-				},
-				new BlockStatement() );
+		return new ConditionalStatement( new BooleanExpressionBodyPair[] { new BooleanExpressionBodyPair( conditional, new BlockStatement() )
+		}, new BlockStatement() );
 	}
 
 	public static ForEachInArrayLoop createForEachInArrayLoop( Expression arrayExpression ) {
 		UserLocal item = new UserLocal( null, arrayExpression.getType().getComponentType(), true );
-		return new ForEachInArrayLoop(
-				item,
-				arrayExpression,
-				new BlockStatement() );
+		return new ForEachInArrayLoop( item, arrayExpression, new BlockStatement() );
 	}
 
 	public static EachInArrayTogether createEachInArrayTogether( Expression arrayExpression ) {
 		UserLocal item = new UserLocal( null, arrayExpression.getType().getComponentType(), true );
-		return new EachInArrayTogether(
-				item,
-				arrayExpression,
-				new BlockStatement() );
+		return new EachInArrayTogether( item, arrayExpression, new BlockStatement() );
 	}
 
 	public static MethodInvocation createStaticMethodInvocation( AbstractMethod method, Expression... argumentExpressions ) {
@@ -573,11 +553,7 @@ public class AstUtilities {
 			}
 			dstRequiredParameters[ i ] = new UserParameter( name, srcRequiredParameter.getValueType() );
 		}
-		UserLambda rv = new UserLambda(
-				singleAbstractMethod.getReturnType(),
-				dstRequiredParameters,
-				new BlockStatement()
-				);
+		UserLambda rv = new UserLambda( singleAbstractMethod.getReturnType(), dstRequiredParameters, new BlockStatement() );
 		rv.isSignatureLocked.setValue( true );
 		return rv;
 	}
@@ -587,8 +563,7 @@ public class AstUtilities {
 	}
 
 	public static LambdaExpression createLambdaExpression( AbstractType<?, ?, ?> type ) {
-		return new LambdaExpression(
-				createUserLambda( type ) );
+		return new LambdaExpression( createUserLambda( type ) );
 	}
 
 	public static LambdaExpression createLambdaExpression( Class<?> cls ) {

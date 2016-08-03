@@ -237,13 +237,14 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		org.alice.ide.ast.export.type.TypeSummary typeSummary = getTypeSummary();
 		String typeName = typeSummary != null ? typeSummary.getTypeName() : "???";
 
+		//TODO: Localize
 		org.alice.stageide.modelresource.InstanceCreatorKey resourceKey = this.getResourceKey();
 		if( resourceKey != null ) {
 			Class<?> modelResourceCls = resourceKey.getModelResourceCls();
 			if( ( modelResourceCls != null ) && modelResourceCls.isInterface() ) {
 				this.text = typeName;
 			} else {
-				this.text = resourceKey.getDisplayText();
+				this.text = resourceKey.getLocalizedDisplayText();
 			}
 		} else {
 			this.text = "new " + typeName + "()";

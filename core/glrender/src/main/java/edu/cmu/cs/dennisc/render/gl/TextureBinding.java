@@ -53,9 +53,9 @@ public final class TextureBinding implements ForgettableBinding {
 	private static class Data {
 		private com.jogamp.opengl.util.texture.Texture texture;
 		private com.jogamp.opengl.util.texture.TextureData textureData;
-		private javax.media.opengl.GL gl;
+		private com.jogamp.opengl.GL gl;
 
-		private void disposeTextureIdIfAppropriate( javax.media.opengl.GL gl ) {
+		private void disposeTextureIdIfAppropriate( com.jogamp.opengl.GL gl ) {
 			if( this.texture != null ) {
 				if( this.gl != gl ) {
 					//pass
@@ -66,7 +66,7 @@ public final class TextureBinding implements ForgettableBinding {
 			}
 		}
 
-		private boolean isUpdateNecessary( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData textureData ) {
+		private boolean isUpdateNecessary( com.jogamp.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData textureData ) {
 			if( this.texture != null ) {
 				if( this.textureData != textureData ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.info( "textureData changed", this.textureData, textureData );
@@ -90,7 +90,7 @@ public final class TextureBinding implements ForgettableBinding {
 			}
 		}
 
-		public void updateIfNecessary( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData textureData ) {
+		public void updateIfNecessary( com.jogamp.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData textureData ) {
 			if( this.isUpdateNecessary( gl, textureData ) ) {
 				this.disposeTextureIdIfAppropriate( gl );
 				this.textureData = textureData;
@@ -112,7 +112,7 @@ public final class TextureBinding implements ForgettableBinding {
 			this.texture.enable( this.gl );
 		}
 
-		public void forget( javax.media.opengl.GL gl ) {
+		public void forget( com.jogamp.opengl.GL gl ) {
 			if( this.texture != null ) {
 				this.disposeTextureIdIfAppropriate( gl );
 				this.texture = null;

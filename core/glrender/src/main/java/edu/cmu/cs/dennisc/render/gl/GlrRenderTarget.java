@@ -406,7 +406,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 
 	private String m_description = new String();
 
-	public abstract javax.media.opengl.GLAutoDrawable getGLAutoDrawable();
+	public abstract com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable();
 
 	private boolean m_isRenderingEnabled = true;
 

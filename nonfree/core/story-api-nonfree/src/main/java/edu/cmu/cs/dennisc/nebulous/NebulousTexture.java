@@ -71,7 +71,7 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 
 	public native void initializeIfNecessary( Object textureKey );
 
-	public native void setup( javax.media.opengl.GL gl );
+	public native void setup( com.jogamp.opengl.GL gl );
 
 	public native void addReference();
 
@@ -88,7 +88,7 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 		this.initializeIfNecessary( m_textureKey );
 	}
 
-	public void doSetup( javax.media.opengl.GL gl ) {
+	public void doSetup( com.jogamp.opengl.GL gl ) {
 		assert m_textureKey != null;
 		this.initializeIfNecessary( m_textureKey );
 		this.setup( gl );

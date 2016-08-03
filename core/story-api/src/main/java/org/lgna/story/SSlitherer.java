@@ -78,9 +78,6 @@ public class SSlitherer extends SJointedModel {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SlithererResource.MOUTH );
 	}
 
-	//	public SJoint getLowerLip() {
-	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SlithererResource.LOWER_LIP);
-	//	}
 	public SJoint getLeftEye() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.SlithererResource.LEFT_EYE );
 	}

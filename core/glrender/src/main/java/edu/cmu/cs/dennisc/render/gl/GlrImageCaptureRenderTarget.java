@@ -63,7 +63,7 @@ package edu.cmu.cs.dennisc.render.gl;
 	}
 
 	@Override
-	public javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable() {
 		return this.glDrawable;
 	}
 
@@ -74,5 +74,5 @@ package edu.cmu.cs.dennisc.render.gl;
 
 	private final int width;
 	private final int height;
-	private final javax.media.opengl.GLAutoDrawable glDrawable;
+	private final com.jogamp.opengl.GLAutoDrawable glDrawable;
 }

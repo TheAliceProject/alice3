@@ -138,15 +138,28 @@ public class PersonResourceKey extends InstanceCreatorKey {
 	}
 
 	@Override
-	public String getDisplayText() {
+	public String getInternalText() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "new " );
 		if( this.lifeStage != null ) {
 			sb.append( this.lifeStage.name().charAt( 0 ) );
 			sb.append( this.lifeStage.name().substring( 1 ).toLowerCase( java.util.Locale.ENGLISH ) );
 		} else {
 			sb.append( "Person" );
 		}
+		return sb.toString();
+	}
+
+	@Override
+	public String getSearchText() {
+		return getInternalText();
+	}
+
+	@Override
+	public String getLocalizedDisplayText() {
+		//TODO: Localize
+		StringBuilder sb = new StringBuilder();
+		sb.append( "new " );
+		sb.append( getInternalText() );
 		sb.append( "( ... )" );
 		return sb.toString();
 	}
@@ -195,6 +208,6 @@ public class PersonResourceKey extends InstanceCreatorKey {
 
 	@Override
 	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.getDisplayText() );
+		sb.append( this.getLocalizedDisplayText() );
 	}
 }

@@ -43,15 +43,15 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static javax.media.opengl.GL.GL_FLOAT;
-import static javax.media.opengl.GL.GL_TRIANGLES;
-import static javax.media.opengl.GL.GL_UNSIGNED_INT;
-import static javax.media.opengl.GL2ES3.GL_MAX_ELEMENTS_INDICES;
-import static javax.media.opengl.GL2ES3.GL_MAX_ELEMENTS_VERTICES;
-import static javax.media.opengl.GL2GL3.GL_DOUBLE;
-import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_NORMAL_ARRAY;
-import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_TEXTURE_COORD_ARRAY;
-import static javax.media.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
+import static com.jogamp.opengl.GL.GL_FLOAT;
+import static com.jogamp.opengl.GL.GL_TRIANGLES;
+import static com.jogamp.opengl.GL.GL_UNSIGNED_INT;
+import static com.jogamp.opengl.GL2ES3.GL_MAX_ELEMENTS_INDICES;
+import static com.jogamp.opengl.GL2ES3.GL_MAX_ELEMENTS_VERTICES;
+import static com.jogamp.opengl.GL2GL3.GL_DOUBLE;
+import static com.jogamp.opengl.fixedfunc.GLPointerFunc.GL_NORMAL_ARRAY;
+import static com.jogamp.opengl.fixedfunc.GLPointerFunc.GL_TEXTURE_COORD_ARRAY;
+import static com.jogamp.opengl.fixedfunc.GLPointerFunc.GL_VERTEX_ARRAY;
 
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;

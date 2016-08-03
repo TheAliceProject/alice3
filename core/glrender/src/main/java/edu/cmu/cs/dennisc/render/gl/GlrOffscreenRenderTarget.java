@@ -47,11 +47,11 @@ package edu.cmu.cs.dennisc.render.gl;
  * @author Dennis Cosgrove
  */
 /*package-private*/class GlrOffscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.OffscreenRenderTarget {
-	private final javax.media.opengl.GLOffscreenAutoDrawable glPbuffer;
+	private final com.jogamp.opengl.GLOffscreenAutoDrawable glPbuffer;
 
 	/* package-private */GlrOffscreenRenderTarget( GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		super( lookingGlassFactory, requestedCapabilities );
-		javax.media.opengl.GLContext share;
+		com.jogamp.opengl.GLContext share;
 		if( renderTargetToShareContextWith != null ) {
 			share = renderTargetToShareContextWith.getGLAutoDrawable().getContext();
 		} else {
@@ -84,11 +84,11 @@ package edu.cmu.cs.dennisc.render.gl;
 	}
 
 	@Override
-	public javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable() {
 		if( this.glPbuffer != null ) {
 			return this.glPbuffer;
 		} else {
-			throw new javax.media.opengl.GLException();
+			throw new com.jogamp.opengl.GLException();
 		}
 	}
 

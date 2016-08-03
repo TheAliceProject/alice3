@@ -126,6 +126,7 @@ public class SystemUtilities {
 	}
 
 	private static Platform platform;
+
 	static {
 		String lowercaseOSName = System.getProperty( "os.name" ).toLowerCase( java.util.Locale.ENGLISH );
 		if( lowercaseOSName.contains( "windows" ) ) {
@@ -195,6 +196,9 @@ public class SystemUtilities {
 
 	public static void loadLibrary( String libDirectoryName, String libraryName, LoadLibraryReportStyle loadLibraryReportStyle ) {
 		java.io.File directory = new java.io.File( ApplicationRoot.getArchitectureSpecificDirectory(), libDirectoryName );
+		if( libDirectoryName.equalsIgnoreCase( "jogl" ) ) {
+			directory = new java.io.File( directory, ApplicationRoot.getArchitectureSpecificJoglSubDirectory() );
+		}
 		String filename = System.mapLibraryName( libraryName );
 		if( isMac() ) {
 			//todo

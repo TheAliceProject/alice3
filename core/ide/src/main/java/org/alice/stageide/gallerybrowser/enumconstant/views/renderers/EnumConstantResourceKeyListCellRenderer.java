@@ -49,7 +49,7 @@ public class EnumConstantResourceKeyListCellRenderer extends edu.cmu.cs.dennisc.
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.stageide.modelresource.EnumConstantResourceKey value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( value != null ) {
-			rv.setText( value.getDisplayText() );
+			rv.setText( value.getLocalizedDisplayText() );
 			org.lgna.croquet.icon.IconFactory iconFactory = value.getIconFactory();
 			rv.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
 			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );

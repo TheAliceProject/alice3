@@ -47,10 +47,12 @@ package org.alice.stageide.modelresource;
  */
 public abstract class ResourceKey {
 	public String getSearchText() {
-		return this.getDisplayText();
+		return this.getLocalizedDisplayText();
 	}
 
-	public abstract String getDisplayText();
+	public abstract String getInternalText();
+
+	public abstract String getLocalizedDisplayText();
 
 	public abstract org.lgna.croquet.icon.IconFactory getIconFactory();
 

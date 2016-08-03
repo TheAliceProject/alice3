@@ -62,10 +62,20 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 	}
 
 	@Override
-	public String getDisplayText() {
-		//		 = this.cls.getSimpleName().replace( "Resource", "" );
+	public String getInternalText() {
+		return IdeAliceResourceUtilities.getModelClassName( this, null );
+	}
+
+	@Override
+	public String getSearchText() {
+		return IdeAliceResourceUtilities.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
+	}
+
+	@Override
+	public String getLocalizedDisplayText() {
 		String simpleName = IdeAliceResourceUtilities.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
 		StringBuilder sb = new StringBuilder();
+		//TODO: Localize
 		if( this.cls.isEnum() ) {
 			sb.append( "new " );
 			sb.append( simpleName );

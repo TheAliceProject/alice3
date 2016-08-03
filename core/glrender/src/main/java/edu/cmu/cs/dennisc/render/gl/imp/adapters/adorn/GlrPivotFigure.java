@@ -42,8 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters.adorn;
 
-import static javax.media.opengl.GL.GL_LINES;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
+import static com.jogamp.opengl.GL.GL_LINES;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 
 /**
  * @author Dennis Cosgrove
@@ -52,7 +52,7 @@ public class GlrPivotFigure extends GlrAdornment<edu.cmu.cs.dennisc.scenegraph.a
 	private static final float FULL = 1.0f;
 	private static final float ZERO = 0.0f;
 
-	private static void glPivotFigure( javax.media.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> glrParent ) {
+	private static void glPivotFigure( com.jogamp.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> glrParent ) {
 		gl.glPushMatrix();
 		try {
 			gl.glMultMatrixd( ltParent );

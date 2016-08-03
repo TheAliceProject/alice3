@@ -50,7 +50,7 @@ public class ThemeIcon extends org.lgna.croquet.icon.AbstractIcon {
 
 	public ThemeIcon( java.awt.Dimension size, org.alice.stageide.modelresource.ResourceKey key ) {
 		super( size );
-		this.icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( ThemeIcon.class.getResource( "themes/" + key.getSearchText() + ".png" ) );
+		this.icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( ThemeIcon.class.getResource( "themes/" + key.getInternalText() + ".png" ) );
 	}
 
 	@Override

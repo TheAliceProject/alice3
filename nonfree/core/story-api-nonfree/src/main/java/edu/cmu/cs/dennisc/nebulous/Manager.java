@@ -65,7 +65,7 @@ public class Manager {
 
 	private static native void unloadActiveModelData();
 
-	private static native void unloadUnusedTextures( javax.media.opengl.GL gl );
+	private static native void unloadUnusedTextures( com.jogamp.opengl.GL gl );
 
 	public static native void setDebugDraw( boolean debugDraw );
 
@@ -96,7 +96,7 @@ public class Manager {
 		}
 	}
 
-	public static void unloadUnusedNebulousTextureData( javax.media.opengl.GL gl ) {
+	public static void unloadUnusedNebulousTextureData( com.jogamp.opengl.GL gl ) {
 		if( isInitialized() ) {
 			try {
 				unloadUnusedTextures( gl );
@@ -144,7 +144,7 @@ public class Manager {
 			}
 			edu.cmu.cs.dennisc.render.gl.imp.RenderContext.addUnusedTexturesListener( new edu.cmu.cs.dennisc.render.gl.imp.RenderContext.UnusedTexturesListener() {
 				@Override
-				public void unusedTexturesCleared( javax.media.opengl.GL gl ) {
+				public void unusedTexturesCleared( com.jogamp.opengl.GL gl ) {
 					unloadUnusedNebulousTextureData( gl );
 				}
 			} );

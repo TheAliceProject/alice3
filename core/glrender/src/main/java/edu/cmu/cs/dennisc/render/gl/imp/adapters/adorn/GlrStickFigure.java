@@ -42,8 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters.adorn;
 
-import static javax.media.opengl.GL.GL_LINES;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
+import static com.jogamp.opengl.GL.GL_LINES;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 
 /**
  * @author Dennis Cosgrove
@@ -54,7 +54,7 @@ public class GlrStickFigure extends GlrAdornment<edu.cmu.cs.dennisc.scenegraph.a
 	private static final int TRANSLATION_Z_INDEX = 14;
 	private static final float[] COLOR = { 1.0f, 1.0f, 0.0f, 1.0f };
 
-	private static void glStickFigure( javax.media.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> glrParent ) {
+	private static void glStickFigure( com.jogamp.opengl.GL2 gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrComposite<?> glrParent ) {
 		gl.glPushMatrix();
 		try {
 			gl.glMultMatrixd( ltParent );

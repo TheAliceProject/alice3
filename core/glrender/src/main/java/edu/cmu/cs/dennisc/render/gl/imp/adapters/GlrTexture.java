@@ -108,13 +108,13 @@ public abstract class GlrTexture<T extends edu.cmu.cs.dennisc.texture.Texture> e
 		return v;
 	}
 
-	protected static com.jogamp.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, java.awt.image.BufferedImage image, boolean isMipMapDesired ) {
+	protected static com.jogamp.opengl.util.texture.TextureData newTextureData( com.jogamp.opengl.GL gl, java.awt.image.BufferedImage image, boolean isMipMapDesired ) {
 		com.jogamp.opengl.util.texture.TextureData rv = com.jogamp.opengl.util.texture.awt.AWTTextureIO.newTextureData( gl.getGLProfile(), image, isMipMapDesired );
 		return rv;
 		//return com.jogamp.opengl.util.texture.TextureIO.newTextureData( image, isMipMapDesired );
 	}
 
-	protected abstract com.jogamp.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTexture );
+	protected abstract com.jogamp.opengl.util.texture.TextureData newTextureData( com.jogamp.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTexture );
 
 	public ForgettableBinding bindTexture( RenderContext rc ) {
 		if( this.isDirty() ) {

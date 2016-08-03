@@ -42,18 +42,18 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static javax.media.opengl.GL.GL_LEQUAL;
-import static javax.media.opengl.GL.GL_LESS;
-import static javax.media.opengl.GL.GL_TEXTURE_2D;
-import static javax.media.opengl.GL2GL3.GL_FILL;
-import static javax.media.opengl.GL2GL3.GL_LINE;
-import static javax.media.opengl.GL2GL3.GL_POINT;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT_AND_DIFFUSE;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_EMISSION;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SHININESS;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
+import static com.jogamp.opengl.GL.GL_LEQUAL;
+import static com.jogamp.opengl.GL.GL_LESS;
+import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
+import static com.jogamp.opengl.GL2GL3.GL_FILL;
+import static com.jogamp.opengl.GL2GL3.GL_LINE;
+import static com.jogamp.opengl.GL2GL3.GL_POINT;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT_AND_DIFFUSE;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_EMISSION;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SHININESS;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 public class GlrSimpleAppearance<T extends edu.cmu.cs.dennisc.scenegraph.SimpleAppearance> extends GlrAppearance<T> {

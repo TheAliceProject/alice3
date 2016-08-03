@@ -69,10 +69,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.6</java.version>
 
-		<jogl.version>2.2.4</jogl.version>
+		<jogl.version>2.3.2</jogl.version>
 
-		<alice.model.version>2016.07.19</alice.model.version>
+		<alice.model.version>2016.07.25</alice.model.version>
 		<sound.gallery.version>2013.08.08</sound.gallery.version>
+		
+		<!-- note: temporarily rolled back to 2016.07.28 -->
 		<starter.projects.version>2016.07.19</starter.projects.version>
 		<nebulous.model.version>2016.07.15</nebulous.model.version>
 		<nebulous.person.version>2014.08.12</nebulous.person.version>

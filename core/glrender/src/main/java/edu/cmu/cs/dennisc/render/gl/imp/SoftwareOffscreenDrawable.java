@@ -44,7 +44,6 @@ package edu.cmu.cs.dennisc.render.gl.imp;
 
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -70,18 +69,18 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 	}
 
 	@Override
-	protected javax.media.opengl.GLDrawable getGlDrawable() {
+	protected com.jogamp.opengl.GLDrawable getGlDrawable() {
 		return this.glDrawable;
 	}
 
 	@Override
-	public void initialize( javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
+	public void initialize( com.jogamp.opengl.GLCapabilities glRequestedCapabilities, com.jogamp.opengl.GLCapabilitiesChooser glCapabilitiesChooser, com.jogamp.opengl.GLContext glShareContext, int width, int height ) {
 		assert this.glDrawable == null : this;
-		javax.media.opengl.GLCapabilities glCapabilities;
+		com.jogamp.opengl.GLCapabilities glCapabilities;
 		if( IS_HARDWARE_ACCELERATION_DESIRED ) {
 			glCapabilities = glRequestedCapabilities;
 		} else {
-			glCapabilities = (javax.media.opengl.GLCapabilities)glRequestedCapabilities.clone();
+			glCapabilities = (com.jogamp.opengl.GLCapabilities)glRequestedCapabilities.clone();
 			glCapabilities.setHardwareAccelerated( false );
 		}
 		this.glDrawable = GlDrawableUtils.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser, width, height );
@@ -98,7 +97,7 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 			this.glContext = null;
 		}
 		if( this.glDrawable != null ) {
-			javax.media.nativewindow.AbstractGraphicsDevice graphicsDevice = this.glDrawable.getNativeSurface().getGraphicsConfiguration().getScreen().getDevice();
+			com.jogamp.nativewindow.AbstractGraphicsDevice graphicsDevice = this.glDrawable.getNativeSurface().getGraphicsConfiguration().getScreen().getDevice();
 			this.glDrawable.setRealized( false );
 			this.glDrawable = null;
 			if( graphicsDevice != null ) {
@@ -139,7 +138,7 @@ public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 			} else {
 				sb.append( "initAdapter is null;" );
 			}
-			throw new javax.media.opengl.GLException( sb.toString() );
+			throw new com.jogamp.opengl.GLException( sb.toString() );
 		}
 	}
 

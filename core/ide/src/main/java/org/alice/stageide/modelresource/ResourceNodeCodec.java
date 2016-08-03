@@ -64,6 +64,6 @@ public enum ResourceNodeCodec implements org.lgna.croquet.ItemCodec<ResourceNode
 
 	@Override
 	public void appendRepresentation( StringBuilder sb, ResourceNode value ) {
-		sb.append( value != null ? value.getResourceKey().getDisplayText() : null );
+		sb.append( value != null ? value.getResourceKey().getLocalizedDisplayText() : null );
 	}
 }

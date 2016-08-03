@@ -98,7 +98,7 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 
 	private final JRecordPanel jPanel = new JRecordPanel();
 
-	private final javax.media.opengl.GLOffscreenAutoDrawable glPixelBuffer;
+	private final com.jogamp.opengl.GLOffscreenAutoDrawable glPixelBuffer;
 
 	private boolean[] atIsUpSideDown = { false };
 	private java.awt.image.BufferedImage image;
@@ -120,7 +120,7 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 	}
 
 	@Override
-	public javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable() {
 		return this.glPixelBuffer;
 	}
 

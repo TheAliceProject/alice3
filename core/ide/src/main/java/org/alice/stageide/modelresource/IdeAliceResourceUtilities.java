@@ -51,8 +51,7 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
  * @author Dennis Cosgrove
  */
 public class IdeAliceResourceUtilities extends org.lgna.story.implementation.alice.AliceResourceUtilties {
-	public static java.net.URL getThumbnailURL( ResourceKey key )
-	{
+	public static java.net.URL getThumbnailURL( ResourceKey key ) {
 		return getThumbnailURLInternal( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
@@ -60,8 +59,7 @@ public class IdeAliceResourceUtilities extends org.lgna.story.implementation.ali
 		if( key instanceof ClassResourceKey ) {
 			ClassResourceKey clsKey = (ClassResourceKey)key;
 			return clsKey.getModelResourceCls();
-		}
-		else if( key instanceof EnumConstantResourceKey ) {
+		} else if( key instanceof EnumConstantResourceKey ) {
 			EnumConstantResourceKey enumKey = (EnumConstantResourceKey)key;
 			return enumKey.getEnumConstant().getDeclaringClass();
 		}
@@ -71,16 +69,14 @@ public class IdeAliceResourceUtilities extends org.lgna.story.implementation.ali
 	public static String getEnumNameFromKey( ResourceKey key ) {
 		if( key instanceof ClassResourceKey ) {
 			return null;
-		}
-		else if( key instanceof EnumConstantResourceKey ) {
+		} else if( key instanceof EnumConstantResourceKey ) {
 			EnumConstantResourceKey enumKey = (EnumConstantResourceKey)key;
 			return enumKey.getEnumConstant().name();
 		}
 		return null;
 	}
 
-	public static BufferedImage getThumbnail( ResourceKey key )
-	{
+	public static BufferedImage getThumbnail( ResourceKey key ) {
 		return getThumbnailInternal( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
@@ -123,38 +119,31 @@ public class IdeAliceResourceUtilities extends org.lgna.story.implementation.ali
 		return getCreator( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
-	public static int getCreationYear( ResourceKey key )
-	{
+	public static int getCreationYear( ResourceKey key ) {
 		return getCreationYear( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
-	public static String[] getTags( ResourceKey key )
-	{
+	public static String[] getTags( ResourceKey key ) {
 		return getTags( getClassFromKey( key ), getEnumNameFromKey( key ), null );
 	}
 
-	public static String[] getTags( ResourceKey key, Locale locale )
-	{
+	public static String[] getTags( ResourceKey key, Locale locale ) {
 		return getTags( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
 	}
 
-	public static String[] getGroupTags( ResourceKey key )
-	{
+	public static String[] getGroupTags( ResourceKey key ) {
 		return getGroupTags( getClassFromKey( key ), getEnumNameFromKey( key ), null );
 	}
 
-	public static String[] getGroupTags( ResourceKey key, Locale locale )
-	{
+	public static String[] getGroupTags( ResourceKey key, Locale locale ) {
 		return getGroupTags( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
 	}
 
-	public static String[] getThemeTags( ResourceKey key )
-	{
+	public static String[] getThemeTags( ResourceKey key ) {
 		return getThemeTags( getClassFromKey( key ), getEnumNameFromKey( key ), null );
 	}
 
-	public static String[] getThemeTags( ResourceKey key, Locale locale )
-	{
+	public static String[] getThemeTags( ResourceKey key, Locale locale ) {
 		return getThemeTags( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
 	}
 

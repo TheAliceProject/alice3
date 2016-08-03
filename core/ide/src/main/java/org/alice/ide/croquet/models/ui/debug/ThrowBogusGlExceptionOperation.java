@@ -69,7 +69,7 @@ public class ThrowBogusGlExceptionOperation extends org.alice.ide.operations.Inc
 		new Thread() {
 			@Override
 			public void run() {
-				throw new javax.media.opengl.GLException( "DELETE THIS BOGUS GL EXCEPTION" );
+				throw new com.jogamp.opengl.GLException( "DELETE THIS BOGUS GL EXCEPTION" );
 			}
 		}.start();
 	}

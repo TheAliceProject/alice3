@@ -53,7 +53,7 @@ public abstract class IdeIssueConfiguration implements org.lgna.issue.Applicatio
 
 	@Override
 	public javax.swing.JPanel createHeaderPane( Thread thread, Throwable originalThrowable, Throwable originalThrowableOrTarget ) {
-		return originalThrowableOrTarget instanceof javax.media.opengl.GLException
+		return originalThrowableOrTarget instanceof com.jogamp.opengl.GLException
 				? new org.alice.ide.issue.swing.JGraphicsHeaderPane( this )
 				: new org.alice.ide.issue.swing.JStandardHeaderPane( this );
 	}

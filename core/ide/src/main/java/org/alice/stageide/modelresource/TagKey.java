@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,13 +61,20 @@ public abstract class TagKey extends ResourceKey {
 	}
 
 	@Override
-	public String getDisplayText() {
+	public String getInternalText() {
+		String tagValue;
 		int lastIndex = tag.lastIndexOf( GroupTagKey.SEPARATOR );
 		if( lastIndex != -1 ) {
-			return tag.substring( lastIndex + 1 );
+			tagValue = tag.substring( lastIndex + 1 );
 		} else {
-			return this.tag;
+			tagValue = this.tag;
 		}
+		return tagValue;
+	}
+
+	@Override
+	public String getLocalizedDisplayText() {
+		return AliceResourceUtilties.getLocalizedTag( getInternalText(), javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override
@@ -100,6 +109,6 @@ public abstract class TagKey extends ResourceKey {
 
 	@Override
 	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.getDisplayText() );
+		sb.append( this.getLocalizedDisplayText() );
 	}
 }

@@ -43,29 +43,29 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
-import static javax.media.opengl.GL.GL_CULL_FACE;
-import static javax.media.opengl.GL.GL_DEPTH_TEST;
-import static javax.media.opengl.GL.GL_FLOAT;
-import static javax.media.opengl.GL.GL_NO_ERROR;
-import static javax.media.opengl.GL.GL_REPEAT;
-import static javax.media.opengl.GL.GL_SCISSOR_TEST;
-import static javax.media.opengl.GL.GL_TEXTURE_2D;
-import static javax.media.opengl.GL.GL_TEXTURE_WRAP_S;
-import static javax.media.opengl.GL.GL_TEXTURE_WRAP_T;
-import static javax.media.opengl.GL.GL_UNSIGNED_BYTE;
-import static javax.media.opengl.GL2.GL_ABGR_EXT;
-import static javax.media.opengl.GL2.GL_CLAMP;
-import static javax.media.opengl.GL2ES1.GL_FOG;
-import static javax.media.opengl.GL2ES1.GL_FOG_COLOR;
-import static javax.media.opengl.GL2ES1.GL_LIGHT_MODEL_AMBIENT;
-import static javax.media.opengl.GL2ES2.GL_DEPTH_COMPONENT;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_COLOR_MATERIAL;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_NORMALIZE;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
+import static com.jogamp.opengl.GL.GL_COLOR_BUFFER_BIT;
+import static com.jogamp.opengl.GL.GL_CULL_FACE;
+import static com.jogamp.opengl.GL.GL_DEPTH_TEST;
+import static com.jogamp.opengl.GL.GL_FLOAT;
+import static com.jogamp.opengl.GL.GL_NO_ERROR;
+import static com.jogamp.opengl.GL.GL_REPEAT;
+import static com.jogamp.opengl.GL.GL_SCISSOR_TEST;
+import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
+import static com.jogamp.opengl.GL.GL_TEXTURE_WRAP_S;
+import static com.jogamp.opengl.GL.GL_TEXTURE_WRAP_T;
+import static com.jogamp.opengl.GL.GL_UNSIGNED_BYTE;
+import static com.jogamp.opengl.GL2.GL_ABGR_EXT;
+import static com.jogamp.opengl.GL2.GL_CLAMP;
+import static com.jogamp.opengl.GL2ES1.GL_FOG;
+import static com.jogamp.opengl.GL2ES1.GL_FOG_COLOR;
+import static com.jogamp.opengl.GL2ES1.GL_LIGHT_MODEL_AMBIENT;
+import static com.jogamp.opengl.GL2ES2.GL_DEPTH_COMPONENT;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_COLOR_MATERIAL;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_NORMALIZE;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
 import edu.cmu.cs.dennisc.render.gl.ForgettableBinding;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrGeometry;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrMultipleAppearance;
@@ -76,7 +76,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrTexture;
  */
 public class RenderContext extends Context {
 	public static interface UnusedTexturesListener {
-		public void unusedTexturesCleared( javax.media.opengl.GL gl ); //todo: rename
+		public void unusedTexturesCleared( com.jogamp.opengl.GL gl ); //todo: rename
 	}
 
 	private static final java.util.List<UnusedTexturesListener> unusedTexturesListeners = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();

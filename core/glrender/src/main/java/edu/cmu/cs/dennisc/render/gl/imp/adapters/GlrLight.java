@@ -43,14 +43,14 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_CONSTANT_ATTENUATION;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LINEAR_ATTENUATION;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_POSITION;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_QUADRATIC_ATTENUATION;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPOT_CUTOFF;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPOT_DIRECTION;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPOT_EXPONENT;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_CONSTANT_ATTENUATION;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LINEAR_ATTENUATION;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_POSITION;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_QUADRATIC_ATTENUATION;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SPOT_CUTOFF;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SPOT_DIRECTION;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SPOT_EXPONENT;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 
 /**

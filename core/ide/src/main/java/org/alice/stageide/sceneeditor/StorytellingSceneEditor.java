@@ -47,6 +47,8 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import org.alice.ide.instancefactory.croquet.InstanceFactoryState;
 import org.alice.ide.sceneeditor.AbstractSceneEditor;
 import org.alice.interact.AbstractDragAdapter.CameraView;
@@ -446,6 +448,21 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 				setSelectedFieldOnManipulator( field );
 			}
 			this.selectionIsFromMain = false;
+		}
+
+		//TEST
+		Runnable refresher = new Runnable() {
+			@Override
+			public void run() {
+				StorytellingSceneEditor.this.revalidateAndRepaint();
+				SideComposite.getInstance().getObjectPropertiesTab().getView().revalidateAndRepaint();
+
+			}
+		};
+		try {
+			SwingUtilities.invokeLater( refresher );
+		} catch( Throwable e ) {
+			e.printStackTrace();
 		}
 	}
 

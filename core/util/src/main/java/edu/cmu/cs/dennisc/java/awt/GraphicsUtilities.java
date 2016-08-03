@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.awt;
 
+import java.awt.Graphics2D;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -104,6 +106,41 @@ public class GraphicsUtilities {
 			image = image.getScaledInstance( widthFactor, heightFactor, java.awt.Image.SCALE_SMOOTH );
 		}
 		drawCenteredImage( g, image, component );
+	}
+
+	//Scales an image to fit a destination image and then draws that image centered in the destination image
+	public static void drawCenteredScaledToFitImage( java.awt.Image image, java.awt.Image destImage ) {
+		java.awt.Graphics g = destImage.getGraphics();
+		int imageWidth = image.getWidth( null );
+		int imageHeight = image.getHeight( null );
+		int destWidth = destImage.getWidth( null );
+		int destHeight = destImage.getHeight( null );
+		double widthRatio = (double)destWidth / imageWidth;
+		double heightRatio = (double)destHeight / imageHeight;
+		if( widthRatio < heightRatio ) {
+			imageWidth = destWidth;
+			imageHeight = (int)( imageHeight * widthRatio );
+		} else if( heightRatio < widthRatio ) {
+			imageWidth = (int)( imageWidth * heightRatio );
+			imageHeight = destHeight;
+		}
+		int x = ( destWidth - imageWidth ) / 2;
+		int y = ( destHeight - imageHeight ) / 2;
+		g.drawImage( image, x, y, imageWidth, imageHeight, null );
+	}
+
+	public static java.awt.Image getImageForIcon( javax.swing.Icon icon ) {
+		if( icon instanceof javax.swing.ImageIcon ) {
+			return ( (javax.swing.ImageIcon)icon ).getImage();
+		} else {
+			int width = icon.getIconWidth();
+			int height = icon.getIconHeight();
+			java.awt.image.BufferedImage newIconImage = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
+			Graphics2D g = newIconImage.createGraphics();
+			icon.paintIcon( null, g, 0, 0 );
+			g.dispose();
+			return newIconImage;
+		}
 	}
 
 	public static void drawCenteredText( java.awt.Graphics g, String s, int x, int y, int width, int height ) {

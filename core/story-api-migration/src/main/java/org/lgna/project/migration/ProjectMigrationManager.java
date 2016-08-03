@@ -5609,6 +5609,51 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldPattern( "DEFAULT", "org.lgna.story.resources.prop.FirTreeTrunkSnowTallMirrorResource" ),
 					createMoreSpecificFieldReplacement( "SNOW_TALL_MIRROR", "org.lgna.story.resources.prop.FirTreeTrunkResource" ),
 
+
+					"org.lgna.story.resources.prop.FirTreeTrunkMirrorResource",
+					"org.lgna.story.resources.prop.FirTreeTrunkResource",
+
+					"org.lgna.story.resources.prop.FirTreeTrunkTallResource",
+					"org.lgna.story.resources.prop.FirTreeTrunkResource",
+
+					"org.lgna.story.resources.prop.FirTreeTrunkTallMirrorResource",
+					"org.lgna.story.resources.prop.FirTreeTrunkResource",
+
+					"org.lgna.story.resources.prop.FirTreeTrunkSnowResource",
+					"org.lgna.story.resources.prop.FirTreeTrunkResource",
+
+					"org.lgna.story.resources.prop.FirTreeTrunkSnowMirrorResource",
+					"org.lgna.story.resources.prop.FirTreeTrunkResource",
+
+					"org.lgna.story.resources.prop.FirTreeTrunkSnowTallResource",
+					"org.lgna.story.resources.prop.FirTreeTrunkResource",
+
+					"org.lgna.story.resources.prop.FirTreeTrunkSnowTallMirrorResource",
+					"org.lgna.story.resources.prop.FirTreeTrunkResource",
+
+					"FirTreeTrunkSnowTallMirror",
+					"FirTreeTrunk",
+
+					"FirTreeTrunkSnowTall",
+					"FirTreeTrunk",
+
+					"FirTreeTrunkTallMirror",
+					"FirTreeTrunk",
+
+					"FirTreeTrunkSnowMirror",
+					"FirTreeTrunk",
+
+					"FirTreeTrunkSnow",
+					"FirTreeTrunk",
+
+					"FirTreeTrunkMirror",
+					"FirTreeTrunk",
+
+					"FirTreeTrunkTall",
+					"FirTreeTrunk",
+
+
+
 					createMoreSpecificFieldPattern( "SQUARE_DRYGRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
 					createMoreSpecificFieldReplacement( "SQUARE_DRY_GRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
 

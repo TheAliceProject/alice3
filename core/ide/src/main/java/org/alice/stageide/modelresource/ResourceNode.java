@@ -92,7 +92,7 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 
 	@Override
 	public String getText() {
-		return this.resourceKey.getDisplayText();
+		return this.resourceKey.getLocalizedDisplayText();
 	}
 
 	@Override

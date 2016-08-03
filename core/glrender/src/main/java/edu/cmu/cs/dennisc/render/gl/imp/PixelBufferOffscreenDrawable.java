@@ -49,17 +49,17 @@ import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
  * @author Dennis Cosgrove
  */
 public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
-	private final javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
+	private final com.jogamp.opengl.GLEventListener glEventListener = new com.jogamp.opengl.GLEventListener() {
 		@Override
-		public void init( javax.media.opengl.GLAutoDrawable drawable ) {
+		public void init( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		}
 
 		@Override
-		public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
+		public void reshape( com.jogamp.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
 		}
 
 		@Override
-		public void display( javax.media.opengl.GLAutoDrawable drawable ) {
+		public void display( com.jogamp.opengl.GLAutoDrawable drawable ) {
 			Throwable throwable = null;
 			try {
 				drawable.getGL();
@@ -80,23 +80,23 @@ public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 		}
 
 		@Override
-		public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
+		public void dispose( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		}
 	};
 
-	private javax.media.opengl.GLOffscreenAutoDrawable glPixelBuffer;
+	private com.jogamp.opengl.GLOffscreenAutoDrawable glPixelBuffer;
 
 	public PixelBufferOffscreenDrawable( DisplayCallback callback ) {
 		super( callback );
 	}
 
 	@Override
-	protected javax.media.opengl.GLOffscreenAutoDrawable getGlDrawable() {
+	protected com.jogamp.opengl.GLOffscreenAutoDrawable getGlDrawable() {
 		return this.glPixelBuffer;
 	}
 
 	@Override
-	public void initialize( javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
+	public void initialize( com.jogamp.opengl.GLCapabilities glRequestedCapabilities, com.jogamp.opengl.GLCapabilitiesChooser glCapabilitiesChooser, com.jogamp.opengl.GLContext glShareContext, int width, int height ) {
 		if( this.glPixelBuffer != null ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 		} else {

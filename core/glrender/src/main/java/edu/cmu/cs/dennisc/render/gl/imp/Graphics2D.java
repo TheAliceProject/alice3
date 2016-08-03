@@ -42,27 +42,27 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import static javax.media.opengl.GL.GL_BLEND;
-import static javax.media.opengl.GL.GL_CULL_FACE;
-import static javax.media.opengl.GL.GL_DEPTH_TEST;
-import static javax.media.opengl.GL.GL_FRONT_AND_BACK;
-import static javax.media.opengl.GL.GL_LINES;
-import static javax.media.opengl.GL.GL_LINE_LOOP;
-import static javax.media.opengl.GL.GL_LINE_STRIP;
-import static javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA;
-import static javax.media.opengl.GL.GL_RGBA;
-import static javax.media.opengl.GL.GL_SRC_ALPHA;
-import static javax.media.opengl.GL.GL_TRIANGLE_FAN;
-import static javax.media.opengl.GL.GL_UNSIGNED_BYTE;
-import static javax.media.opengl.GL2.GL_LINE_STIPPLE;
-import static javax.media.opengl.GL2.GL_POLYGON;
-import static javax.media.opengl.GL2ES1.GL_ALPHA_SCALE;
-import static javax.media.opengl.GL2GL3.GL_FILL;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
+import static com.jogamp.opengl.GL.GL_BLEND;
+import static com.jogamp.opengl.GL.GL_CULL_FACE;
+import static com.jogamp.opengl.GL.GL_DEPTH_TEST;
+import static com.jogamp.opengl.GL.GL_FRONT_AND_BACK;
+import static com.jogamp.opengl.GL.GL_LINES;
+import static com.jogamp.opengl.GL.GL_LINE_LOOP;
+import static com.jogamp.opengl.GL.GL_LINE_STRIP;
+import static com.jogamp.opengl.GL.GL_ONE_MINUS_SRC_ALPHA;
+import static com.jogamp.opengl.GL.GL_RGBA;
+import static com.jogamp.opengl.GL.GL_SRC_ALPHA;
+import static com.jogamp.opengl.GL.GL_TRIANGLE_FAN;
+import static com.jogamp.opengl.GL.GL_UNSIGNED_BYTE;
+import static com.jogamp.opengl.GL2.GL_LINE_STIPPLE;
+import static com.jogamp.opengl.GL2.GL_POLYGON;
+import static com.jogamp.opengl.GL2ES1.GL_ALPHA_SCALE;
+import static com.jogamp.opengl.GL2GL3.GL_FILL;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
-import javax.media.opengl.glu.GLU;
+import com.jogamp.opengl.glu.GLU;
 
 /**
  * @author Dennis Cosgrove
@@ -542,10 +542,10 @@ import javax.media.opengl.glu.GLU;
 
 	private void fill( java.awt.geom.PathIterator pi ) {
 
-		class MyTessAdapter implements javax.media.opengl.glu.GLUtessellatorCallback {
-			private javax.media.opengl.GL2 gl;
+		class MyTessAdapter implements com.jogamp.opengl.glu.GLUtessellatorCallback {
+			private com.jogamp.opengl.GL2 gl;
 
-			public MyTessAdapter( javax.media.opengl.GL2 gl ) {
+			public MyTessAdapter( com.jogamp.opengl.GL2 gl ) {
 				this.gl = gl;
 			}
 
@@ -623,35 +623,35 @@ import javax.media.opengl.glu.GLU;
 			}
 		}
 
-		javax.media.opengl.glu.GLUtessellatorCallback adapter = new MyTessAdapter( this.renderContext.gl );
-		javax.media.opengl.glu.GLUtessellator tesselator = javax.media.opengl.glu.GLU.gluNewTess();
+		com.jogamp.opengl.glu.GLUtessellatorCallback adapter = new MyTessAdapter( this.renderContext.gl );
+		com.jogamp.opengl.glu.GLUtessellator tesselator = com.jogamp.opengl.glu.GLU.gluNewTess();
 		try {
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, adapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, adapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_END, adapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_EDGE_FLAG, adapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, adapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, adapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, adapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, adapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_END, adapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_EDGE_FLAG, adapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, adapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, adapter );
 
 			double[] segment = new double[ 6 ];
 
 			//			this.renderContext.gl.glDisable( GL_CULL_FACE );
 			//			try {
-			javax.media.opengl.glu.GLU.gluBeginPolygon( tesselator );
+			com.jogamp.opengl.glu.GLU.gluBeginPolygon( tesselator );
 			try {
 				while( !pi.isDone() ) {
 					double[] xyz = new double[ 3 ];
 					switch( pi.currentSegment( segment ) ) {
 					case java.awt.geom.PathIterator.SEG_MOVETO:
-						javax.media.opengl.glu.GLU.gluTessBeginContour( tesselator );
+						com.jogamp.opengl.glu.GLU.gluTessBeginContour( tesselator );
 						//note: no break
 					case java.awt.geom.PathIterator.SEG_LINETO:
 						xyz[ 0 ] = segment[ 0 ];
 						xyz[ 1 ] = segment[ 1 ];
-						javax.media.opengl.glu.GLU.gluTessVertex( tesselator, xyz, 0, xyz );
+						com.jogamp.opengl.glu.GLU.gluTessVertex( tesselator, xyz, 0, xyz );
 						break;
 					case java.awt.geom.PathIterator.SEG_CLOSE:
-						javax.media.opengl.glu.GLU.gluTessEndContour( tesselator );
+						com.jogamp.opengl.glu.GLU.gluTessEndContour( tesselator );
 						break;
 
 					case java.awt.geom.PathIterator.SEG_QUADTO:
@@ -664,13 +664,13 @@ import javax.media.opengl.glu.GLU;
 					pi.next();
 				}
 			} finally {
-				javax.media.opengl.glu.GLU.gluTessEndPolygon( tesselator );
+				com.jogamp.opengl.glu.GLU.gluTessEndPolygon( tesselator );
 			}
 			//			} finally {
 			//				this.renderContext.gl.glEnable( GL_CULL_FACE );
 			//			}
 		} finally {
-			javax.media.opengl.glu.GLU.gluDeleteTess( tesselator );
+			com.jogamp.opengl.glu.GLU.gluDeleteTess( tesselator );
 		}
 	}
 
@@ -971,9 +971,9 @@ import javax.media.opengl.glu.GLU;
 
 	private static final class TextRendererHolder {
 		private com.jogamp.opengl.util.awt.TextRenderer textRenderer;
-		private javax.media.opengl.GL gl;
+		private com.jogamp.opengl.GL gl;
 
-		public com.jogamp.opengl.util.awt.TextRenderer getTextRenderer( java.awt.Font font, javax.media.opengl.GL gl ) {
+		public com.jogamp.opengl.util.awt.TextRenderer getTextRenderer( java.awt.Font font, com.jogamp.opengl.GL gl ) {
 			if( this.textRenderer != null ) {
 				if( this.gl == gl ) {
 					//pass
@@ -1242,7 +1242,7 @@ import javax.media.opengl.glu.GLU;
 
 	// edu.cmu.cs.dennisc.lookingglass.opengl.Graphics2D
 
-	public javax.media.opengl.GL getGL() {
+	public com.jogamp.opengl.GL getGL() {
 		return this.renderContext.gl;
 	}
 }

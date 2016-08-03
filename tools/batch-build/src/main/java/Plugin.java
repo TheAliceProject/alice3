@@ -147,6 +147,11 @@ public abstract class Plugin {
 						"story-api-nonfree" )
 				.build();
 
+		if( this.getJarsDir().exists() ) {
+			org.apache.commons.io.FileUtils.deleteDirectory( this.getJarsDir() );
+			assert this.getJarsDir().exists() == false : this.getJarsDir();
+		}
+
 		buildRepo.copyJars( coreProjectCollection, this.getJarsDir() );
 		buildRepo.copyJars( nonfreeProjectCollection, this.getJarsDir() );
 

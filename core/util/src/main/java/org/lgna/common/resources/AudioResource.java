@@ -44,6 +44,7 @@ package org.lgna.common.resources;
 
 public class AudioResource extends org.lgna.common.Resource {
 	private static java.util.Map<String, String> extensionToContentTypeMap;
+
 	static {
 		AudioResource.extensionToContentTypeMap = new java.util.HashMap<String, String>();
 		AudioResource.extensionToContentTypeMap.put( "au", "audio.basic" );
@@ -53,7 +54,7 @@ public class AudioResource extends org.lgna.common.Resource {
 
 	public static String getContentType( String path ) {
 		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( path );
-		String contentType = AudioResource.extensionToContentTypeMap.get( extension.toLowerCase( java.util.Locale.ENGLISH ) );
+		String contentType = extension != null ? AudioResource.extensionToContentTypeMap.get( extension.toLowerCase( java.util.Locale.ENGLISH ) ) : null;
 		return contentType;
 	}
 

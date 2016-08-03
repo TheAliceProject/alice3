@@ -166,13 +166,11 @@ public class AliceResourceUtilties {
 	}
 
 	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual decodeVisual( URL url ) {
-		try
-		{
+		try {
 			java.io.InputStream is = url.openStream();
 			edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
 			return decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable>() );
-		} catch( Exception e )
-		{
+		} catch( Exception e ) {
 			e.printStackTrace();
 		}
 		return null;
@@ -326,7 +324,7 @@ public class AliceResourceUtilties {
 	 * enum BaseVisualName { TEXTURE_NAME_1, TEXTURE_NAME_2,
 	 * DIFFERENT_VISUAL_NAME_TEXTURE_NAME_1,
 	 * DIFFERENT_VISUAL_NAME_TEXTURE_NAME_2 }
-	 * 
+	 *
 	 * Both 'BaseVisualName' and DIFFERENT_VISUAL_NAME are potentially the names
 	 * of visual resources. If the resource uses the base visual, then the enum
 	 * name is just the name of the texture (like the entries TEXTURE_NAME_1 and
@@ -452,8 +450,7 @@ public class AliceResourceUtilties {
 		return getTextureNameFromClassAndResource( resource.getClass(), resource.toString() );
 	}
 
-	public static String getVisualResourceFileName( Object resource )
-	{
+	public static String getVisualResourceFileName( Object resource ) {
 		return getVisualResourceFileName( resource.getClass(), resource.toString() );
 	}
 
@@ -722,7 +719,7 @@ public class AliceResourceUtilties {
 			if( !classToInfoMap.containsKey( parentKey ) ) {
 				String name = getName( modelResource );
 				try {
-					//xml files are not referenced off the 
+					//xml files are not referenced off the
 					InputStream is = getAliceResourceAsStream( modelResource, ModelResourceIoUtilities.getResourceSubDirWithSeparator( "" ) + name + ".xml" );
 					if( is != null ) {
 						Document doc = XMLUtilities.read( is );
@@ -814,8 +811,7 @@ public class AliceResourceUtilties {
 		if( info != null ) {
 			if( locale == null ) {
 				return info.getModelName();
-			}
-			else {
+			} else {
 				String packageName = modelResource.getPackage().getName();
 				return findLocalizedText( getClassNameLocalizationBundleName(), packageName + "." + info.getModelName(), locale );
 			}
@@ -896,7 +892,8 @@ public class AliceResourceUtilties {
 	}
 
 	private static String[] getLocalizedTags( String[] tags, String localizerBundleName, Locale locale, boolean acceptNull ) {
-		if( Locale.ENGLISH.getLanguage().equals( locale.getLanguage() ) ) {
+		//		if( Locale.ENGLISH.getLanguage().equals( locale.getLanguage() ) )
+		{
 			java.util.List<String> localizedTags = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 			for( String tag : tags ) {
 				String[] splitTags = tag.split( ":" );
@@ -907,8 +904,7 @@ public class AliceResourceUtilties {
 					String stringToUse;
 					if( hasStar ) {
 						stringToUse = t.substring( 1 );
-					}
-					else {
+					} else {
 						stringToUse = t;
 					}
 					String localizationKey = makeLocalizationKey( stringToUse );
@@ -931,9 +927,10 @@ public class AliceResourceUtilties {
 				}
 			}
 			return localizedTags.toArray( new String[ localizedTags.size() ] );
-		} else {
-			return new String[ 0 ];
 		}
+		//		else {
+		//			return new String[ 0 ];
+		//		}
 	}
 
 	public static String[] getTags( Class<?> modelResource, String resourceName, Locale locale ) {
@@ -950,8 +947,7 @@ public class AliceResourceUtilties {
 		}
 	}
 
-	public static String[] getGroupTags( Class<?> modelResource, String resourceName, Locale locale )
-	{
+	public static String[] getGroupTags( Class<?> modelResource, String resourceName, Locale locale ) {
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
 			if( ( locale == null ) || true ) {
@@ -964,8 +960,20 @@ public class AliceResourceUtilties {
 		}
 	}
 
-	public static String[] getThemeTags( Class<?> modelResource, String resourceName, Locale locale )
-	{
+	public static String getLocalizedTag( String tag, Locale locale ) {
+		if( locale == null ) {
+			return tag;
+		}
+		String result = findLocalizedText( getTagsLocalizationBundleName(), tag, locale );
+		if( result != null ) {
+			return result;
+		} else {
+			Logger.severe( "No localization for gallery tag '" + tag + "' for locale " + locale );
+			return tag;
+		}
+	}
+
+	public static String[] getThemeTags( Class<?> modelResource, String resourceName, Locale locale ) {
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
 			if( ( locale == null ) || true ) {

@@ -43,10 +43,10 @@
 
 package org.lgna.story.implementation.visualization;
 
-import static javax.media.opengl.GL.GL_LINES;
-import static javax.media.opengl.GL.GL_LINE_LOOP;
-import static javax.media.opengl.GL.GL_TEXTURE_2D;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
+import static com.jogamp.opengl.GL.GL_LINES;
+import static com.jogamp.opengl.GL.GL_LINE_LOOP;
+import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 
 /**
  * @author Dennis Cosgrove
@@ -210,12 +210,12 @@ public class GlrJointedModelVisualization extends edu.cmu.cs.dennisc.render.gl.i
 		}
 	}
 
-	private void pushOffset( javax.media.opengl.GL2 gl ) {
+	private void pushOffset( com.jogamp.opengl.GL2 gl ) {
 		gl.glPushMatrix();
 		//		gl.glTranslated( 1,0,0 );		
 	}
 
-	private void popOffset( javax.media.opengl.GL2 gl ) {
+	private void popOffset( com.jogamp.opengl.GL2 gl ) {
 		gl.glPopMatrix();
 	}
 

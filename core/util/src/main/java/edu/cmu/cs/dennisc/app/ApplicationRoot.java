@@ -100,6 +100,38 @@ public class ApplicationRoot {
 		return new java.io.File( getRootDirectory(), "platform" );
 	}
 
+	public static String getArchitectureSpecificJoglSubDirectory() {
+		StringBuilder sb = new StringBuilder( "natives/" );
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+			sb.append( "macosx-universal/" );
+		} else {
+			Integer bitCount = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBitCount();
+			if( bitCount != null ) {
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+					sb.append( "windows-" );
+				} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+					sb.append( "linux-" );
+				} else {
+					throw new RuntimeException( System.getProperty( "os.name" ) );
+				}
+				switch( bitCount ) {
+				case 32:
+					sb.append( "i586/" );
+					break;
+				case 64:
+					sb.append( "amd64/" );
+					break;
+				default:
+					throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
+				}
+
+			} else {
+				throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
+			}
+		}
+		return sb.toString();
+	}
+
 	public static java.io.File getArchitectureSpecificDirectory() {
 		StringBuilder sb = new StringBuilder();
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {

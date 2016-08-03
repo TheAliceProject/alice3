@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrScene;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual;

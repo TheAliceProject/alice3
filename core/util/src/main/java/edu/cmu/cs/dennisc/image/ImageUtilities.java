@@ -127,7 +127,11 @@ public class ImageUtilities {
 	}
 
 	public static String getCodecNameForExtension( String extension ) {
-		return s_extensionToCodecNameMap.get( extension.toLowerCase( java.util.Locale.ENGLISH ) );
+		if( extension != null ) {
+			return s_extensionToCodecNameMap.get( extension.toLowerCase( java.util.Locale.ENGLISH ) );
+		} else {
+			return null;
+		}
 	}
 
 	public static java.awt.image.BufferedImage read( String path ) throws java.io.IOException {

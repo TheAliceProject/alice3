@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
  */
 public class GlrBufferedImageTexture extends GlrTexture<edu.cmu.cs.dennisc.texture.BufferedImageTexture> {
 	@Override
-	protected com.jogamp.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
+	protected com.jogamp.opengl.util.texture.TextureData newTextureData( com.jogamp.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
 		return newTextureData( gl, owner.getBufferedImage(), owner.isMipMappingDesired() );
 	}
 	//	

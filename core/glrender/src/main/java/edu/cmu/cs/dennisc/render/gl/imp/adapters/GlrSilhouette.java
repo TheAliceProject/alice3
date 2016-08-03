@@ -48,16 +48,16 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 public class GlrSilhouette extends GlrElement<edu.cmu.cs.dennisc.scenegraph.Silhouette> {
 	public void setup( edu.cmu.cs.dennisc.render.gl.imp.RenderContext rc, int face ) {
 		rc.gl.glLineWidth( this.lineWidth );
-		rc.gl.glPolygonMode( face, javax.media.opengl.GL2.GL_LINE );
+		rc.gl.glPolygonMode( face, com.jogamp.opengl.GL2.GL_LINE );
 		rc.setIsShadingEnabled( false );
-		rc.gl.glDisable( javax.media.opengl.GL2.GL_TEXTURE_2D );
+		rc.gl.glDisable( com.jogamp.opengl.GL2.GL_TEXTURE_2D );
 
-		//rc.gl.glEnable( javax.media.opengl.GL.GL_LINE_SMOOTH );
-		//rc.gl.glEnable( javax.media.opengl.GL2.GL_POLYGON_SMOOTH );
-		//rc.gl.glHint( javax.media.opengl.GL.GL_LINE_SMOOTH_HINT, javax.media.opengl.GL.GL_NICEST );
-		//rc.gl.glHint( javax.media.opengl.GL2.GL_POLYGON_SMOOTH_HINT, javax.media.opengl.GL.GL_NICEST );
+		//rc.gl.glEnable( com.jogamp.opengl.GL.GL_LINE_SMOOTH );
+		//rc.gl.glEnable( com.jogamp.opengl.GL2.GL_POLYGON_SMOOTH );
+		//rc.gl.glHint( com.jogamp.opengl.GL.GL_LINE_SMOOTH_HINT, com.jogamp.opengl.GL.GL_NICEST );
+		//rc.gl.glHint( com.jogamp.opengl.GL2.GL_POLYGON_SMOOTH_HINT, com.jogamp.opengl.GL.GL_NICEST );
 		rc.gl.glColor4fv( this.color );
-		rc.gl.glDisable( javax.media.opengl.GL2.GL_BLEND );
+		rc.gl.glDisable( com.jogamp.opengl.GL2.GL_BLEND );
 	}
 
 	@Override

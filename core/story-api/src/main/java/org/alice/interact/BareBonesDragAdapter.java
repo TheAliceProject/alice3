@@ -290,7 +290,7 @@ public abstract class BareBonesDragAdapter {
 			try {
 				edu.cmu.cs.dennisc.render.PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
 				observer.done( pickResult );
-			} catch( javax.media.opengl.GLException gle ) {
+			} catch( com.jogamp.opengl.GLException gle ) {
 				if( isSuppressionOfGlExceptionDesired == IsSuppressionOfGlExceptionDesired.TRUE ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "Error picking into scene", gle );
 				} else {

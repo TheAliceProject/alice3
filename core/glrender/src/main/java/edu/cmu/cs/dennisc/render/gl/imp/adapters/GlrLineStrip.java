@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static javax.media.opengl.GL.GL_LINE_STRIP;
+import static com.jogamp.opengl.GL.GL_LINE_STRIP;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;

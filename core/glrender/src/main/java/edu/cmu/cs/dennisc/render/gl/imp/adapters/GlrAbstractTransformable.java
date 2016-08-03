@@ -76,7 +76,7 @@ public abstract class GlrAbstractTransformable<T extends edu.cmu.cs.dennisc.scen
 		boolean isUnscaling = this.isUnscalingDesired( c );
 		if( isUnscaling ) {
 			synchronized( unscalingBuffer ) {
-				c.gl.glGetDoublev( javax.media.opengl.GL2.GL_MODELVIEW_MATRIX, unscalingBuffer );
+				c.gl.glGetDoublev( com.jogamp.opengl.GL2.GL_MODELVIEW_MATRIX, unscalingBuffer );
 				double xScale = edu.cmu.cs.dennisc.math.Tuple3.calculateMagnitude( unscaling[ X_X ], unscaling[ X_Y ], unscaling[ X_Z ] );
 				double yScale = edu.cmu.cs.dennisc.math.Tuple3.calculateMagnitude( unscaling[ Y_X ], unscaling[ Y_Y ], unscaling[ Y_Z ] );
 				double zScale = edu.cmu.cs.dennisc.math.Tuple3.calculateMagnitude( unscaling[ Z_X ], unscaling[ Z_Y ], unscaling[ Z_Z ] );

@@ -108,7 +108,7 @@ public abstract class ResourceNodeTreeState extends org.lgna.croquet.CustomSingl
 
 	@Override
 	protected String getTextForNode( ResourceNode node ) {
-		return node.getResourceKey().getDisplayText();
+		return node.getResourceKey().getLocalizedDisplayText();
 	}
 
 	@Override
