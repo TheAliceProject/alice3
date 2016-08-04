@@ -45,10 +45,6 @@ package org.alice.stageide;
 import org.alice.nonfree.NebulousIde;
 
 public abstract class StageIDE extends org.alice.ide.IDE {
-	static {
-		org.alice.stageide.apis.org.lgna.story.ClassInfoUtilities.loadClassInfos();
-	}
-
 	public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
 	public static final String INITIALIZE_EVENT_LISTENERS_METHOD_NAME = "initializeEventListeners";
 

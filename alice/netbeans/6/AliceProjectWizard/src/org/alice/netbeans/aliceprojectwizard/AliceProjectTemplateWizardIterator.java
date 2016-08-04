@@ -39,7 +39,6 @@ import java.util.zip.ZipInputStream;
 import javax.swing.JComponent;
 import javax.swing.event.ChangeListener;
 import org.netbeans.api.project.ProjectManager;
-import org.netbeans.spi.project.ui.support.ProjectChooser;
 import org.netbeans.spi.project.ui.templates.support.Templates;
 import org.openide.WizardDescriptor;
 import org.openide.filesystems.FileObject;
@@ -448,20 +447,6 @@ public class AliceProjectTemplateWizardIterator implements WizardDescriptor./*Pr
 				jc.putClientProperty("WizardPanel_contentSelectedIndex", new Integer(i));
 				// Step name (actually the whole list for reference).
 				jc.putClientProperty("WizardPanel_contentData", steps);
-			}
-		}
-		final boolean IS_CLASS_INFO_REQUIRED = false;
-		if( IS_CLASS_INFO_REQUIRED ) {
-			String path = "/org/alice/stageide/apis/org/lgna/story/classinfos.zip";
-			java.io.InputStream is = AliceProjectTemplateWizardIterator.class.getResourceAsStream(path);
-			if (is != null) {
-				try {
-					org.lgna.project.reflect.ClassInfoManager.addClassInfosFrom(is);
-				} catch (java.io.IOException ioe) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable(ioe);
-				}
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe(path);
 			}
 		}
 	}

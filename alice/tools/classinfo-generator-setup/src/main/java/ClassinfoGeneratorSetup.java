@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006, 2016, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,17 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.ide.story;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AliceIde extends org.alice.stageide.StageIDE {
-	static {
-		org.alice.stageide.apis.org.lgna.story.ClassInfoUtilities.loadClassInfos();
+public class ClassinfoGeneratorSetup {
+	public static java.io.File getMavenRepositoryDir() {
+		return new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), ".m2/repository" );
 	}
 
-	public AliceIde( edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
-		super( new AliceIdeConfiguration(), crashDetector );
+	public static void main( String[] args ) throws Exception {
+		java.io.File mavenRepositoryRootDirectory = getMavenRepositoryDir();
+		assert mavenRepositoryRootDirectory.isDirectory() : mavenRepositoryRootDirectory;
+
+		java.io.File classinfoGeneratorRootDirectory = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getUserDirectory(), "Documents/Projects/Alice/Code/alice/alice/tools/ClassinfoGenerator" );
+		assert classinfoGeneratorRootDirectory.isDirectory() : classinfoGeneratorRootDirectory;
+
+		String[] jarNames = { "util", "ast" };
+		for( String jarName : jarNames ) {
+			java.io.File in = new java.io.File( mavenRepositoryRootDirectory, "org/alice/" + jarName + "/0.0.1-SNAPSHOT/" + jarName + "-0.0.1-SNAPSHOT.jar" );
+			assert in.exists() : in;
+
+			java.io.File out = new java.io.File( classinfoGeneratorRootDirectory, "org.alice.netbeans/release/modules/ext/" + jarName + "-0.0.1-SNAPSHOT.jar" );
+			edu.cmu.cs.dennisc.java.io.FileUtilities.copyFile( in, out );
+		}
 	}
 }
