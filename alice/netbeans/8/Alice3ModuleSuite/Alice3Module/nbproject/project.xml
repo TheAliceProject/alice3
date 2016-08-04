@@ -201,8 +201,8 @@
             </module-dependencies>
             <public-packages/>
             <class-path-extension>
-                <runtime-relative-path>ext/alice-model-source-2016.07.19.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/alice-model-source-2016.07.19.jar</binary-origin>
+                <runtime-relative-path>ext/alice-model-source-2016.07.25.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/alice-model-source-2016.07.25.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
                 <runtime-relative-path>ext/nebulous-model-source-2016.07.15.jar</runtime-relative-path>
