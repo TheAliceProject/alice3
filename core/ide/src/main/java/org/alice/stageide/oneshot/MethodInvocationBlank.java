@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,9 +39,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package org.alice.stageide.oneshot;
+
+import org.alice.nonfree.NebulousIde;
 
 /**
  * @author Dennis Cosgrove
@@ -77,7 +79,6 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 		org.lgna.project.ast.JavaType flyerType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SFlyer.class );
 		org.lgna.project.ast.JavaType cameraType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCamera.class );
 		org.lgna.project.ast.JavaType groundType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SGround.class );
-		org.lgna.project.ast.JavaType roomType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SRoom.class );
 		org.lgna.project.ast.JavaType modelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SModel.class );
 
 		org.lgna.project.ast.AbstractType<?, ?, ?> instanceFactoryValueType = this.instanceFactory.getValueType();
@@ -144,12 +145,7 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.GROUND_SET_PAINT_METHOD );
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.GROUND_SET_OPACITY_METHOD );
 		}
-		if( roomType.isAssignableFrom( instanceFactoryValueType ) ) {
-			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROOM_SET_CEILING_PAINT_METHOD );
-			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROOM_SET_WALL_PAINT_METHOD );
-			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROOM_SET_FLOOR_PAINT_METHOD );
-			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROOM_SET_OPACITY_METHOD );
-		}
+		NebulousIde.nonfree.addRoomMethods( instanceFactoryValueType, methods );
 		if( modelType.isAssignableFrom( instanceFactoryValueType ) ) {
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MODEL_SET_PAINT_METHOD );
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MODEL_SET_OPACITY_METHOD );
@@ -158,17 +154,14 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 		java.util.List<org.lgna.project.ast.JavaMethod> sortedMethods = org.alice.stageide.ast.sort.OneShotSorter.SINGLETON.createSortedList( methods );
 		for( org.lgna.project.ast.JavaMethod method : sortedMethods ) {
 			if( method != null ) {
+				org.lgna.croquet.CascadeBlankChild<?> roomFillin = NebulousIde.nonfree.getRoomFillIns( method, this.instanceFactory );
 				//todo
 				if( method == org.alice.stageide.ast.sort.OneShotSorter.STRAIGHTEN_OUT_JOINTS_METHOD ) {
 					children.add( AllJointLocalTransformationsMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				} else if( "setPaint".equals( method.getName() ) ) {
 					children.add( SetPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
-				} else if( "setCeilingPaint".equals( method.getName() ) ) {
-					children.add( SetCeilingPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
-				} else if( "setWallPaint".equals( method.getName() ) ) {
-					children.add( SetWallPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
-				} else if( "setFloorPaint".equals( method.getName() ) ) {
-					children.add( SetFloorPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+				} else if( roomFillin != null ) {
+					children.add( roomFillin );
 				} else if( "setOpacity".equals( method.getName() ) ) {
 					children.add( SetOpacityMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				} else if( "foldWings".equals( method.getName() ) || "spreadWings".equals( method.getName() ) ) {

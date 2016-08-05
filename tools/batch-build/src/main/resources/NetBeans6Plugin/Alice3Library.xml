@@ -20,6 +20,8 @@
 		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/alice-model-source-___ALICE_MODEL_SOURCE_VERSION___.jar!/</resource>
 		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/nebulous-model-source-___NEBULOUS_MODEL_SOURCE_VERSION___.jar!/</resource>
 
+		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/story-api-nonfree-0.0.1-SNAPSHOT.jar!/</resource>
+
 
 		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/ast-0.0.1-SNAPSHOT.jar!/</resource>
         <!--<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/story-api-migration-0.0.1-SNAPSHOT.jar!/</resource>-->

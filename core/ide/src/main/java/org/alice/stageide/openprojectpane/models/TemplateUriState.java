@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,9 +39,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package org.alice.stageide.openprojectpane.models;
+
+import java.net.URI;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.alice.nonfree.NebulousIde;
 
 /**
  * @author Dennis Cosgrove
@@ -56,7 +62,7 @@ public class TemplateUriState extends org.lgna.croquet.ImmutableDataSingleSelect
 		MARS( org.lgna.story.SGround.SurfaceAppearance.MARS, new org.lgna.story.Color( .847, .69, .588 ), 0.25, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .541, .2, .0 ) ),
 
 		SNOW( org.lgna.story.SGround.SurfaceAppearance.SNOW, new org.lgna.story.Color( .82, .941, 1.0 ), 0.22, org.lgna.story.Color.WHITE, org.lgna.story.Color.WHITE ),
-		ROOM( org.lgna.story.SGround.SurfaceAppearance.GRASS, org.lgna.story.SRoom.FloorAppearance.REDWOOD, org.lgna.story.SRoom.WallAppearance.YELLOW, org.lgna.story.Color.WHITE ),
+		ROOM( NebulousIde.nonfree.getFloorApperanceRedwood(), NebulousIde.nonfree.getWallApperanceYellow(), org.lgna.story.Color.WHITE ),
 		WONDERLAND( org.lgna.story.SGround.SurfaceAppearance.DARK_GRASS, new org.lgna.story.Color( 0.0, .0941, .294 ), .1, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .541, 0.0, .125 ) ),
 		SEA_SURFACE( org.lgna.story.SGround.SurfaceAppearance.OCEAN, new org.lgna.story.Color( .659, .902, .922 ), .16, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .0, .424, .761 ), .7 ),
 
@@ -216,11 +222,18 @@ public class TemplateUriState extends org.lgna.croquet.ImmutableDataSingleSelect
 	};
 
 	private static java.net.URI[] createArray() {
-		Template[] values = Template.values();
-		java.net.URI[] array = new java.net.URI[ values.length ];
-		for( int i = 0; i < array.length; i++ ) {
-			array[ i ] = values[ i ].getUri();
+		List<URI> uris = new LinkedList<URI>();
+
+		for( Template template : Template.values() ) {
+			if( !NebulousIde.nonfree.isNonFreeEnabled() && ( template == Template.ROOM ) ) {
+				// pass
+			} else {
+				uris.add( template.getUri() );
+			}
 		}
+
+		java.net.URI[] array = new java.net.URI[ uris.size() ];
+		uris.toArray( array );
 		return array;
 	}
 

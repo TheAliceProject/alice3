@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.lgna.story;
 
 import org.lgna.project.annotations.MethodTemplate;
@@ -52,7 +52,7 @@ public class SQuadruped extends SJointedModel implements Articulable {
 	private final org.lgna.story.implementation.QuadrupedImp implementation;
 
 	@Override
-	/* package-private */org.lgna.story.implementation.QuadrupedImp getImplementation() {
+			/* package-private */org.lgna.story.implementation.QuadrupedImp getImplementation() {
 		return this.implementation;
 	}
 

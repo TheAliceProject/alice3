@@ -155,6 +155,10 @@
 				<runtime-relative-path>ext/alice-model-source-___ALICE_MODEL_SOURCE_VERSION___.jar</runtime-relative-path>
 				<binary-origin>release/modules/ext/alice-model-source-___ALICE_MODEL_SOURCE_VERSION___.jar</binary-origin>
 			</class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/story-api-nonfree-0.0.1-SNAPSHOT.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/story-api-nonfree-0.0.1-SNAPSHOT.jar</binary-origin>
+            </class-path-extension>
 		</data>
 	</configuration>
 </project>

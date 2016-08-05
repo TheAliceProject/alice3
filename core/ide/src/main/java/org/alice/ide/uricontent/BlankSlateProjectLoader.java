@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,8 +39,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.alice.ide.uricontent;
+
+import org.alice.nonfree.NebulousIde;
 
 /**
  * @author Dennis Cosgrove
@@ -66,7 +68,7 @@ public class BlankSlateProjectLoader extends UriProjectLoader {
 	protected org.lgna.project.Project load() {
 		org.lgna.project.ast.NamedUserType programType;
 		if( template.isRoom() ) {
-			programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity() );
+			programType = NebulousIde.nonfree.createProgramType( this.template );
 		} else {
 			programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity() );
 		}

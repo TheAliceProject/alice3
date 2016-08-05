@@ -7,8 +7,8 @@
 	<volume>
 		<type>classpath</type>
 
-		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/gluegen-rt-2.2.4.jar!/</resource>
-		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/jogl-all-2.2.4.jar!/</resource>
+		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/gluegen-rt-2.3.2.jar!/</resource>
+		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/jogl-all-2.3.2.jar!/</resource>
 
 		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/jmf-2.1.1e.jar!/</resource>
 		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/javamp3-1.0.jar!/</resource>
@@ -17,8 +17,10 @@
 		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/scenegraph-0.0.1-SNAPSHOT.jar!/</resource>
 		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/glrender-0.0.1-SNAPSHOT.jar!/</resource>
 		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/story-api-0.0.1-SNAPSHOT.jar!/</resource>
-		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/alice-model-source-2014.08.20.jar!/</resource>
-		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/nebulous-model-source-2014.09.11.jar!/</resource>
+		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/alice-model-source-2016.07.25.jar!/</resource>
+		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/nebulous-model-source-2016.07.15.jar!/</resource>
+
+		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/story-api-nonfree-0.0.1-SNAPSHOT.jar!/</resource>
 
 
 		<resource>jar:nbinst://org.alice.netbeans.aliceprojectwizard/modules/ext/ast-0.0.1-SNAPSHOT.jar!/</resource>

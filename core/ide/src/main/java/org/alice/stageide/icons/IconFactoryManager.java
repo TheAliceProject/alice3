@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,8 +39,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.alice.stageide.icons;
+
+import org.alice.nonfree.NebulousIde;
 
 /**
  * @author Dennis Cosgrove
@@ -64,8 +66,7 @@ public class IconFactoryManager {
 			org.lgna.story.resources.AutomobileResource.class,
 			org.lgna.story.resources.AircraftResource.class,
 			org.lgna.story.resources.WatercraftResource.class,
-			org.lgna.story.resources.TrainResource.class
-			);
+			org.lgna.story.resources.TrainResource.class );
 
 	// @formatter:on
 
@@ -238,30 +239,7 @@ public class IconFactoryManager {
 
 		@Override
 		public org.lgna.croquet.icon.IconFactory createIconFactory() {
-			if( this.instance instanceof org.lgna.story.resources.sims2.PersonResource ) {
-				org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)this.instance;
-				try {
-					org.lgna.story.resourceutilities.AliceThumbnailMaker thumbnailMaker = org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance();
-					java.awt.image.BufferedImage image = thumbnailMaker.createThumbnailFromPersonResource( personResource );
-					int width = thumbnailMaker.getWidth();
-					int height = thumbnailMaker.getHeight();
-
-					//Used for saving out gallery thumbnails for the sims lifestages
-					//					java.io.File outputFile = new java.io.File( "C:/Users/dculyba/Documents/Alice/simThumbs/thumb_" + personResource.getGender().toString() + "_" + personResource.getLifeStage().toString() + "_" + Integer.toString( personResource.hashCode() ) + ".png" );
-					//					edu.cmu.cs.dennisc.image.ImageUtilities.write( outputFile, org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance( 240, 180 ).createGalleryThumbnailFromPersonResource( personResource ) );
-
-					if( ( width == image.getWidth() ) && ( height == image.getHeight() ) ) {
-						return new org.lgna.croquet.icon.ImageIconFactory( image );
-					} else {
-						return new org.lgna.croquet.icon.TrimmedImageIconFactory( image, width, height );
-					}
-				} catch( Throwable t ) {
-					t.printStackTrace();
-					return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
-				}
-			} else {
-				return null;
-			}
+			return NebulousIde.nonfree.createIconFactory( this.instance );
 		}
 
 		@Override

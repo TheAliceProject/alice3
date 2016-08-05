@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2016, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 /**
  * @author Dennis Cosgrove
@@ -132,7 +132,20 @@ public abstract class Plugin {
 	}
 
 	public void copyJars( BuildRepo buildRepo ) throws java.io.IOException {
-		ProjectCollection coreProjectCollection = new ProjectCollection.Builder( "core" ).addProjectNames( "util", "scenegraph", "glrender", "story-api", "ast", "story-api-migration" ).build();
+		ProjectCollection coreProjectCollection = new ProjectCollection.Builder( "core" )
+				.addProjectNames(
+						"util",
+						"scenegraph",
+						"glrender",
+						"story-api",
+						"ast",
+						"story-api-migration" )
+				.build();
+
+		ProjectCollection nonfreeProjectCollection = new ProjectCollection.Builder( "nonfree/core" )
+				.addProjectNames(
+						"story-api-nonfree" )
+				.build();
 
 		if( this.getJarsDir().exists() ) {
 			org.apache.commons.io.FileUtils.deleteDirectory( this.getJarsDir() );
@@ -140,6 +153,7 @@ public abstract class Plugin {
 		}
 
 		buildRepo.copyJars( coreProjectCollection, this.getJarsDir() );
+		buildRepo.copyJars( nonfreeProjectCollection, this.getJarsDir() );
 
 		java.util.List<String> jarPathsToCopyFromMaven = PluginCommon.getJarPathsToCopyFromMaven( this.config );
 
