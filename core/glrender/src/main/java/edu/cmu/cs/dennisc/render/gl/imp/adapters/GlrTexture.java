@@ -76,6 +76,25 @@ public abstract class GlrTexture<T extends edu.cmu.cs.dennisc.texture.Texture> e
 		this.renderContexts.remove( rc );
 	}
 
+	//Simple reference counting
+	//Single textures (like ground textures) can be referenced by multiple objects
+	//The ref adding and removing is handled by GlrTexturedAppearance when a new adapter is acquired
+	public void addReference() {
+		this.refCount++;
+	}
+
+	public void removeReference() {
+		if( this.refCount <= 0 ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "TRYING TO REMOVE REFERENCE WHEN REFCOUNT IN <= 0 " + this.hashCode() );
+		} else {
+			this.refCount--;
+		}
+	}
+
+	public boolean isReferenced() {
+		return this.refCount > 0;
+	}
+
 	@Override
 	protected void handleReleased() {
 		super.handleReleased();
@@ -132,4 +151,6 @@ public abstract class GlrTexture<T extends edu.cmu.cs.dennisc.texture.Texture> e
 	private final java.util.List<RenderContext> renderContexts = edu.cmu.cs.dennisc.java.util.Lists.newCopyOnWriteArrayList();
 	private com.jogamp.opengl.util.texture.TextureData textureData;
 	private boolean isTextureDataDirty = true;
+
+	private int refCount = 0;
 }
