@@ -1220,6 +1220,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
 		double dotProd = Vector3.calculateDotProduct( cameraTransform.orientation.up, Vector3.accessPositiveYAxis() );
 		if( ( dotProd == 1 ) || ( dotProd == -1 ) ) {
+			//TODO: Make this handle retina displays and the fact that surface size and screen size may be different
 			Dimension lookingGlassSize = renderTarget.getSurfaceSize();
 
 			Point3 cameraPosition = camera.getAbsoluteTransformation().translation;

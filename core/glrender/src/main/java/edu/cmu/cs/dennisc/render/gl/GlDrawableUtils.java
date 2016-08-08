@@ -42,6 +42,8 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl;
 
+import com.jogamp.nativewindow.ScalableSurface;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -309,6 +311,39 @@ public class GlDrawableUtils {
 			}
 		}
 		return height;
+	}
+
+	public static int getGLJPanelHeight( com.jogamp.opengl.GLDrawable drawable ) {
+		if( drawable instanceof com.jogamp.opengl.awt.GLJPanel ) {
+			com.jogamp.opengl.awt.GLJPanel glPanel = (com.jogamp.opengl.awt.GLJPanel)drawable;
+			return glPanel.getHeight();
+		} else if( drawable instanceof com.jogamp.opengl.awt.GLCanvas ) {
+			com.jogamp.opengl.awt.GLCanvas glCanvas = (com.jogamp.opengl.awt.GLCanvas)drawable;
+			return glCanvas.getHeight();
+		} else {
+			return getGlDrawableHeight( drawable );
+		}
+	}
+
+	public static int getGLJPanelWidth( com.jogamp.opengl.GLDrawable drawable ) {
+		if( drawable instanceof com.jogamp.opengl.awt.GLJPanel ) {
+			com.jogamp.opengl.awt.GLJPanel glPanel = (com.jogamp.opengl.awt.GLJPanel)drawable;
+			return glPanel.getWidth();
+		} else if( drawable instanceof com.jogamp.opengl.awt.GLCanvas ) {
+			com.jogamp.opengl.awt.GLCanvas glCanvas = (com.jogamp.opengl.awt.GLCanvas)drawable;
+			return glCanvas.getWidth();
+		} else {
+			return getGlDrawableWidth( drawable );
+		}
+	}
+
+	public static float[] getSurfaceScale( com.jogamp.opengl.GLDrawable drawable ) {
+		if( drawable instanceof ScalableSurface ) {
+			ScalableSurface ss = (ScalableSurface)drawable;
+			return ss.getCurrentSurfaceScale( new float[ 2 ] );
+		}
+		float[] rv = { 1.0f, 1.0f };
+		return rv;
 	}
 
 	public static com.jogamp.opengl.GLContext getGlContextToShare( edu.cmu.cs.dennisc.render.gl.GlrRenderTarget glrRenderTarget ) {
