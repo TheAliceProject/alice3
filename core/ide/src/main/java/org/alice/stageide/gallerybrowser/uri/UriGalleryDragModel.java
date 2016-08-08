@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,8 +39,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.alice.stageide.gallerybrowser.uri;
+
+import org.alice.nonfree.NebulousIde;
 
 /**
  * @author Dennis Cosgrove
@@ -120,8 +122,8 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 							Enum<? extends org.lgna.story.resources.ModelResource> enumConstant = (Enum<? extends org.lgna.story.resources.ModelResource>)fld.get( null );
 							this.resourceKey = new org.alice.stageide.modelresource.EnumConstantResourceKey( enumConstant );
 						} else {
-							if( org.lgna.story.resources.sims2.PersonResource.class.isAssignableFrom( resourceCls ) ) {
-								this.resourceKey = org.alice.stageide.modelresource.PersonResourceKey.getInstanceForResourceClass( resourceCls );
+							if( NebulousIde.nonfree.isPersonResourceAssignableFrom( resourceCls ) ) {
+								this.resourceKey = NebulousIde.nonfree.getPersonResourceKeyInstanceForResourceClass( resourceCls );
 							} else {
 								this.resourceKey = new org.alice.stageide.modelresource.ClassResourceKey( resourceCls );
 							}
@@ -347,7 +349,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 			} else {
 				return new org.alice.stageide.modelresource.AddFieldCascade( this, dropSite );
 			}
-		} else if( resourceKey instanceof org.alice.stageide.modelresource.PersonResourceKey ) {
+		} else if( NebulousIde.nonfree.isInstanceOfPersonResourceKey( resourceKey ) ) {
 			return this.getLeftButtonClickModel();
 		} else {
 			Class<?> thingCls = this.getThingCls();

@@ -15,6 +15,14 @@
                         <specification-version>1.36.1</specification-version>
                     </run-dependency>
                 </dependency>
+				<dependency>
+                    <code-name-base>org.netbeans.api.templates</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <specification-version>1.6.1</specification-version>
+                    </run-dependency>
+                </dependency>
                 <dependency>
                     <code-name-base>org.netbeans.libs.javacapi</code-name-base>
                     <build-prerequisite/>
@@ -51,11 +59,11 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
-                    <code-name-base>org.netbeans.modules.java.source</code-name-base>
+                    <code-name-base>org.netbeans.modules.java.source.base</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
                     <run-dependency>
-                        <specification-version>0.131.1.26.2.25.8</specification-version>
+                        <specification-version>2.9.1.2.2.25.8.1</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>
@@ -99,7 +107,7 @@
                     <build-prerequisite/>
                     <compile-dependency/>
                     <run-dependency>
-                        <specification-version>7.60.1</specification-version>
+                        <specification-version>7.65.1</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>
@@ -175,6 +183,14 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
+                    <code-name-base>org.openide.util.ui</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <specification-version>9.4.1</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
                     <code-name-base>org.openide.windows</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
@@ -185,12 +201,12 @@
             </module-dependencies>
             <public-packages/>
             <class-path-extension>
-                <runtime-relative-path>ext/alice-model-source-2015.01.07.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/alice-model-source-2015.01.07.jar</binary-origin>
+                <runtime-relative-path>ext/alice-model-source-2016.07.25.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/alice-model-source-2016.07.25.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/nebulous-model-source-2014.09.11.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/nebulous-model-source-2014.09.11.jar</binary-origin>
+                <runtime-relative-path>ext/nebulous-model-source-2016.07.15.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/nebulous-model-source-2016.07.15.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
                 <runtime-relative-path>ext/ast-0.0.1-SNAPSHOT.jar</runtime-relative-path>
@@ -215,6 +231,10 @@
             <class-path-extension>
                 <runtime-relative-path>ext/glrender-0.0.1-SNAPSHOT.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/glrender-0.0.1-SNAPSHOT.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/story-api-nonfree-0.0.1-SNAPSHOT.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/story-api-nonfree-0.0.1-SNAPSHOT.jar</binary-origin>
             </class-path-extension>
         </data>
     </configuration>

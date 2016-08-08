@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.alice.netbeans.aliceprojectwizard.alicecomponentpalette.items;
 
 import javax.swing.text.BadLocationException;
@@ -9,10 +5,6 @@ import javax.swing.text.JTextComponent;
 import org.alice.netbeans.aliceprojectwizard.alicecomponentpalette.items.resources.DoTogetherCustomizer;
 import org.openide.text.ActiveEditorDrop;
 
-/**
- *
- * @author Administrator
- */
 public class DoTogether implements ActiveEditorDrop {
 
 	private int runnableCount = 2;

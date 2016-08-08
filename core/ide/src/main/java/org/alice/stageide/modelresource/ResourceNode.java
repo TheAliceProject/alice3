@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,8 +39,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.alice.stageide.modelresource;
+
+import org.alice.nonfree.NebulousIde;
 
 /**
  * @author Dennis Cosgrove
@@ -115,12 +117,8 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
 			addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( this.resourceKey, true );
 			return addResourceKeyManagedFieldComposite.getLaunchOperation();
-		} else if( this.resourceKey instanceof PersonResourceKey ) {
-			PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
-			return org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( personResourceKey.getLifeStage() );
-			//todo
-			//		if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {
-			//			return new org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite( this.resourceKey ).getOperation();
+		} else if( NebulousIde.nonfree.isInstanceOfPersonResourceKey( this.resourceKey ) ) {
+			return NebulousIde.nonfree.getPersonResourceDropModel( this.resourceKey );
 		} else if( this.resourceKey instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
 			if( classResourceKey.isLeaf() ) {
@@ -153,7 +151,7 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 		if( ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull ) {
 			return null;
 		} else {
-			if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {
+			if( ( this.resourceKey instanceof EnumConstantResourceKey ) || NebulousIde.nonfree.isInstanceOfPersonResourceKey( this.resourceKey ) ) {
 				return this.getDropModel( null, null );
 			} else if( this.resourceKey instanceof ClassResourceKey ) {
 				ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;

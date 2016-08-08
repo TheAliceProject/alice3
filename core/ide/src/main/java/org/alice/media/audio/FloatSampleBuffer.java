@@ -1,3 +1,45 @@
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
+ *    Carnegie Mellon University.
+ *
+ * 4. All advertising materials mentioning features or use of this software must
+ *    display the following acknowledgement: "This product includes software
+ *    developed by Carnegie Mellon University"
+ *
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
+ *    source code that utilizes The Sims 2 Assets must also retain the copyright
+ *    notice, list of conditions and the disclaimer contained in
+ *    The Alice 3.0 Art Gallery License.
+ *
+ * DISCLAIMER:
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
+ * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *******************************************************************************/
 /**
  * A class for small buffers of samples in linear, 32-bit
  * floating point format. All samples are normalized to the
@@ -45,7 +87,7 @@
  * are processed using DSP algorithms), or it is preferred to switch it off, dithering can be explicitely switched on or off with the method setDitherMode(int).<br>
  * For a discussion about dithering, see <a href="http://www.iqsoft.com/IQSMagazine/BobsSoapbox/Dithering.htm"> here</a> and <a href="http://www.iqsoft.com/IQSMagazine/BobsSoapbox/Dithering2.htm">
  * here</a>.
- * 
+ *
  * @author Florian Bomers
  */
 
@@ -53,26 +95,6 @@ package org.alice.media.audio;
 
 /*
  * FloatSampleBuffer.java
- */
-
-/*
- *  Copyright (c) 2000 by Florian Bomers <florian@bome.com>
- *
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU Library General Public License as published
- *   by the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Library General Public License for more details.
- *
- *   You should have received a copy of the GNU Library General Public
- *   License along with this program; if not, write to the Free Software
- *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *
  */
 
 import java.util.ArrayList;
@@ -281,18 +303,18 @@ public class FloatSampleBuffer {
 	/**
 	 * Creates a new byte[] buffer and returns it. Throws an exception when
 	 * sample rate doesn't match.
-	 * 
+	 *
 	 * @see #convertToByteArray(byte[], int, AudioFormat)
-	 * 
+	 *
 	 *      public byte[] convertToByteArray(AudioFormat format) { // throws
 	 *      exception when sampleRate doesn't match // creates a new byte[]
 	 *      buffer and returns it byte[] res=new
 	 *      byte[getByteArrayBufferSize(format)]; convertToByteArray(res, 0,
 	 *      format); return res; }
-	 * 
+	 *
 	 *      //////////////////////////////// actions
 	 *      /////////////////////////////////
-	 * 
+	 *
 	 *      /** Resizes this buffer.
 	 *      <p>
 	 *      If <code>keepOldSamples</code> is true, as much as possible samples
@@ -309,8 +331,7 @@ public class FloatSampleBuffer {
 		init( getChannelCount(), newSampleCount, getSampleRate() );
 		if( keepOldSamples ) {
 			// copy old channels and eventually silence out new samples
-			int copyCount = newSampleCount < oldSampleCount ?
-					newSampleCount : oldSampleCount;
+			int copyCount = newSampleCount < oldSampleCount ? newSampleCount : oldSampleCount;
 			for( int ch = 0; ch < getChannelCount(); ch++ ) {
 				float[] oldSamples = (float[])oldChannels[ ch ];
 				float[] newSamples = (float[])getChannel( ch );
@@ -679,8 +700,7 @@ public class FloatSampleBuffer {
 		// let's see whether dithering is necessary
 		switch( ditherMode ) {
 		case DITHER_MODE_AUTOMATIC:
-			doDither = ( originalFormatType & F_SAMPLE_WIDTH_MASK ) >
-					( formatType & F_SAMPLE_WIDTH_MASK );
+			doDither = ( originalFormatType & F_SAMPLE_WIDTH_MASK ) > ( formatType & F_SAMPLE_WIDTH_MASK );
 			break;
 		case DITHER_MODE_ON:
 			doDither = true;
@@ -768,8 +788,7 @@ public class FloatSampleBuffer {
 		}
 		res += ( ( formatType & F_SIGNED ) == F_SIGNED ) ? " signed" : " unsigned";
 		if( ( formatType & F_SAMPLE_WIDTH_MASK ) != F_8 ) {
-			res += ( ( formatType & F_BIGENDIAN ) == F_BIGENDIAN ) ?
-					" big endian" : " little endian";
+			res += ( ( formatType & F_BIGENDIAN ) == F_BIGENDIAN ) ? " big endian" : " little endian";
 		}
 		return res;
 	}

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.alice.stageide.sceneeditor;
 
 import java.awt.Dimension;
@@ -58,6 +58,7 @@ import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.interact.manipulator.scenegraph.SnapGrid;
+import org.alice.nonfree.NebulousIde;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.side.SideComposite;
@@ -230,7 +231,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			StorytellingSceneEditor.this.animator.update();
 		}
 	};
-	private edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createLightweightOnscreenRenderTarget( new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder().stencilBits( 0 ).build() );
+	private edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget onscreenRenderTarget = edu.cmu.cs.dennisc.render.RenderUtils.getDefaultRenderFactory().createLightweightOnscreenRenderTarget(
+			new edu.cmu.cs.dennisc.render.RenderCapabilities.Builder()
+					.stencilBits( 0 )
+					.build() );
 
 	private class LookingGlassPanel extends org.lgna.croquet.views.CompassPointSpringPanel {
 		@Override
@@ -389,7 +393,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			}
 		} else if( expression instanceof MethodInvocation ) {
 			StorytellingSceneEditor.this.setSelectedExpression( expression );
-
 		} else if( expression instanceof org.lgna.project.ast.ArrayAccess ) {
 			StorytellingSceneEditor.this.setSelectedExpression( expression );
 		} else if( expression instanceof ThisExpression ) {
@@ -1189,10 +1192,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	protected void handleProjectOpened( org.lgna.project.Project nextProject ) {
 		if( this.onscreenRenderTarget != null ) {
 			this.onscreenRenderTarget.forgetAllCachedItems();
-			edu.cmu.cs.dennisc.nebulous.Manager.unloadNebulousModelData();
+			NebulousIde.nonfree.unloadNebulousModelData();
 		}
 
-		org.alice.stageide.personresource.PersonResourceComposite.getInstance().getPreviewComposite().unloadPerson();
+		NebulousIde.nonfree.unloadPerson();
 		if( this.globalDragAdapter != null ) {
 			this.globalDragAdapter.clear();
 		}

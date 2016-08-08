@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.alice.netbeans.aliceprojectwizard.alicecomponentpalette.items;
 
 import com.sun.source.tree.CompilationUnitTree;
@@ -22,10 +18,6 @@ import org.netbeans.api.java.source.WorkingCopy;
 import org.openide.text.IndentEngine;
 import org.openide.util.Exceptions;
 
-/**
- *
- * @author Administrator
- */
 public class AliceComponentPaletteUtilities {
 
 	public static void insert(final String s, final String[] imports, final JTextComponent target) throws BadLocationException {

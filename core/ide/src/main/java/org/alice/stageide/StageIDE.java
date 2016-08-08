@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,13 +39,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.alice.stageide;
 
+import org.alice.nonfree.NebulousIde;
+
 public abstract class StageIDE extends org.alice.ide.IDE {
-	static {
-		org.alice.stageide.apis.org.lgna.story.ClassInfoUtilities.loadClassInfos();
-	}
 	public static final String PERFORM_GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
 	public static final String INITIALIZE_EVENT_LISTENERS_METHOD_NAME = "initializeEventListeners";
 
@@ -53,7 +52,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( org.alice.ide.IDE.getActiveInstance(), StageIDE.class );
 	}
 
-	private org.alice.ide.cascade.ExpressionCascadeManager cascadeManager = new org.alice.stageide.cascade.ExpressionCascadeManager();
+	private org.alice.ide.cascade.ExpressionCascadeManager cascadeManager = NebulousIde.nonfree.newExpressionCascadeManager();
 
 	public StageIDE( org.alice.ide.IdeConfiguration ideConfiguration, edu.cmu.cs.dennisc.crash.CrashDetector crashDetector ) {
 		super( ideConfiguration, StoryApiConfigurationManager.getInstance(), crashDetector );
@@ -113,8 +112,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	@Override
 	protected void registerAdaptersForSceneEditorVm( org.lgna.project.virtualmachine.VirtualMachine vm ) {
 		vm.registerAbstractClassAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
-		vm.registerProtectedMethodAdapter(
-				edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( org.lgna.story.SJointedModel.class, "setJointedModelResource", org.lgna.story.resources.JointedModelResource.class ),
+		vm.registerProtectedMethodAdapter( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( org.lgna.story.SJointedModel.class, "setJointedModelResource", org.lgna.story.resources.JointedModelResource.class ),
 				edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( org.lgna.story.EmployeesOnly.class, "invokeSetJointedModelResource", org.lgna.story.SJointedModel.class, org.lgna.story.resources.JointedModelResource.class ) );
 	}
 
@@ -127,28 +125,16 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 	protected void promptForLicenseAgreements() {
 		final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
 		try {
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary(
-					org.lgna.project.License.class,
-					IS_LICENSE_ACCEPTED_PREFERENCE_KEY,
-					"License Agreement (Part 1 of 2): Alice 3",
-					org.lgna.project.License.TEXT,
-					"Alice" );
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary(
-					edu.cmu.cs.dennisc.nebulous.License.class,
-					IS_LICENSE_ACCEPTED_PREFERENCE_KEY,
-					"License Agreement (Part 2 of 2): The Sims (TM) 2 Art Assets",
-					edu.cmu.cs.dennisc.nebulous.License.TEXT,
-					"The Sims (TM) 2 Art Assets" );
+			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( org.lgna.project.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 1 of 2): Alice 3", org.lgna.project.License.TEXT, "Alice" );
+			NebulousIde.nonfree.promptForLicenseAgreements( IS_LICENSE_ACCEPTED_PREFERENCE_KEY );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
-			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "You must accept the license agreements in order to use Alice 3 and The Sims (TM) 2 Art Assets.  Exiting." )
-			.buildAndShow();
+			new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "You must accept the license agreements in order to use Alice 3 and The Sims (TM) 2 Art Assets.  Exiting." ).buildAndShow();
 			System.exit( -1 );
 		}
 	}
 
 	private static final org.lgna.project.ast.JavaType COLOR_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class );
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.JointedModelResource.class );
-	private static final org.lgna.project.ast.JavaType PERSON_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.PersonResource.class );
 
 	private javax.swing.Icon getIconFor( org.lgna.project.ast.AbstractField field ) {
 		if( field == null ) {
@@ -258,7 +244,7 @@ public abstract class StageIDE extends org.alice.ide.IDE {
 							org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 							if( constructor != null ) {
 								org.lgna.project.ast.AbstractType<?, ?, ?> type = constructor.getDeclaringType();
-								return ( COLOR_TYPE.isAssignableFrom( type ) || PERSON_RESOURCE_TYPE.isAssignableFrom( type ) ) == false;
+								return ( COLOR_TYPE.isAssignableFrom( type ) || NebulousIde.nonfree.isPersonResourceTypeAssingleFrom( type ) ) == false;
 							}
 						}
 					} else if( parent instanceof org.lgna.project.ast.MethodInvocation ) {

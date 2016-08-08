@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,9 +39,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package org.alice.stageide;
+
+import org.alice.nonfree.NebulousIde;
 
 /**
  * @author Dennis Cosgrove
@@ -50,14 +52,14 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	public static final org.lgna.project.ast.JavaMethod SET_ACTIVE_SCENE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SProgram.class, "setActiveScene", org.lgna.story.SScene.class );
 
 	private static class SingletonHolder {
-		private static StoryApiConfigurationManager instance = new StoryApiConfigurationManager();
+		private static StoryApiConfigurationManager instance = NebulousIde.nonfree.newStoryApiConfigurationManager();
 	}
 
 	public static StoryApiConfigurationManager getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
+	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = NebulousIde.nonfree.newExpressionCreator();
 	private final java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> categoryProcedureSubComposites;
 	private final java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> categoryFunctionSubComposites;
 	private final java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> categoryOrAlphabeticalProcedureSubComposites;
@@ -67,7 +69,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		return java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newLinkedList( subComposites ) );
 	}
 
-	private StoryApiConfigurationManager() {
+	public StoryApiConfigurationManager() {
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.SThing.class );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SScene.class, org.alice.stageide.icons.SceneIconFactory.getInstance() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCylinder.class, org.alice.stageide.icons.CylinderIconFactory.getInstance() );
@@ -79,19 +81,35 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.STextModel.class, org.alice.stageide.icons.TextModelIconFactory.getInstance() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SBillboard.class, org.alice.stageide.icons.BillboardIconFactory.getInstance() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SBox.class, org.alice.stageide.icons.BoxIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SRoom.class, org.alice.stageide.icons.RoomIconFactory.getInstance() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SGround.class, org.alice.stageide.icons.GroundIconFactory.getInstance() );
 
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SJoint.class, org.alice.stageide.icons.JointIconFactory.getInstance() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCamera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
 
-		this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList( org.alice.stageide.member.TextProceduresComposite.getInstance(), org.alice.stageide.member.AtmosphereProceduresComposite.getInstance(), org.alice.stageide.member.SayThinkProceduresComposite.getInstance(), org.alice.stageide.member.PositionProceduresComposite.getInstance(), org.alice.stageide.member.OrientationProceduresComposite.getInstance(), org.alice.stageide.member.PositionAndOrientationProceduresComposite.getInstance(), org.alice.stageide.member.SizeProceduresComposite.getInstance(), org.alice.stageide.member.AppearanceProceduresComposite.getInstance(), org.alice.stageide.member.VehicleProceduresComposite.getInstance(), org.alice.stageide.member.AudioProceduresComposite.getInstance(), org.alice.stageide.member.TimingProceduresComposite.getInstance() );
+		this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList(
+				org.alice.stageide.member.TextProceduresComposite.getInstance(),
+				org.alice.stageide.member.AtmosphereProceduresComposite.getInstance(),
+				org.alice.stageide.member.SayThinkProceduresComposite.getInstance(),
+				org.alice.stageide.member.PositionProceduresComposite.getInstance(),
+				org.alice.stageide.member.OrientationProceduresComposite.getInstance(),
+				org.alice.stageide.member.PositionAndOrientationProceduresComposite.getInstance(),
+				org.alice.stageide.member.SizeProceduresComposite.getInstance(),
+				org.alice.stageide.member.AppearanceProceduresComposite.getInstance(),
+				org.alice.stageide.member.VehicleProceduresComposite.getInstance(),
+				org.alice.stageide.member.AudioProceduresComposite.getInstance(),
+				org.alice.stageide.member.TimingProceduresComposite.getInstance() );
 
-		this.categoryFunctionSubComposites = createUnmodifiableSubCompositeList( org.alice.stageide.member.AtmosphereFunctionsComposite.getInstance(), org.alice.stageide.member.AppearanceFunctionsComposite.getInstance(), org.alice.stageide.member.SizeFunctionsComposite.getInstance(), org.alice.stageide.member.PromptUserFunctionsComposite.getInstance(), org.alice.stageide.member.SpatialRelationFunctionsComposite.getInstance() );
+		this.categoryFunctionSubComposites = createUnmodifiableSubCompositeList(
+				org.alice.stageide.member.AtmosphereFunctionsComposite.getInstance(),
+				org.alice.stageide.member.AppearanceFunctionsComposite.getInstance(),
+				org.alice.stageide.member.SizeFunctionsComposite.getInstance(),
+				org.alice.stageide.member.PromptUserFunctionsComposite.getInstance() );
 
-		this.categoryOrAlphabeticalProcedureSubComposites = createUnmodifiableSubCompositeList( org.alice.stageide.member.AddListenerProceduresComposite.getInstance() );
+		this.categoryOrAlphabeticalProcedureSubComposites = createUnmodifiableSubCompositeList(
+				org.alice.stageide.member.AddListenerProceduresComposite.getInstance() );
 
-		this.categoryOrAlphabeticalFunctionSubComposites = createUnmodifiableSubCompositeList( org.alice.stageide.member.JointFunctionsComposite.getInstance() );
+		this.categoryOrAlphabeticalFunctionSubComposites = createUnmodifiableSubCompositeList(
+				org.alice.stageide.member.JointFunctionsComposite.getInstance() );
 	}
 
 	private static enum TypeComparator implements java.util.Comparator<org.lgna.project.ast.AbstractType<?, ?, ?>> {
@@ -198,24 +216,16 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		return org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils.INSTANCE.getTopLevelGalleryTypes();
 	}
 
-	private static final org.lgna.project.ast.JavaType BIPED_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.BipedResource.class );
-	private static final org.lgna.project.ast.JavaType PERSON_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.PersonResource.class );
+	protected static final org.lgna.project.ast.JavaType BIPED_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.BipedResource.class );
 
 	@Override
 	public org.lgna.project.ast.JavaType getGalleryResourceParentFor( org.lgna.project.ast.JavaType type ) {
-		if( type == PERSON_RESOURCE_TYPE ) {
-			return BIPED_RESOURCE_TYPE;
-		} else {
-			return org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils.INSTANCE.getGalleryResourceParentFor( type );
-		}
+		return org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils.INSTANCE.getGalleryResourceParentFor( type );
 	}
 
 	@Override
 	public java.util.List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		java.util.List<org.lgna.project.ast.AbstractDeclaration> rv = org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils.INSTANCE.getGalleryResourceChildrenFor( type );
-		if( type == BIPED_RESOURCE_TYPE ) {
-			rv.add( 0, PERSON_RESOURCE_TYPE );
-		}
 		return rv;
 	}
 
@@ -437,7 +447,10 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( methodName, org.lgna.story.SJoint.class );
 								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 								org.lgna.project.ast.BlockStatement body = method.body.getValue();
-								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), getJointMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field ) );
+								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
+										new org.lgna.project.ast.ThisExpression(),
+										getJointMethod,
+										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field ) );
 								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.SJoint.class, expression ) );
 								rv.methods.add( method );
 							} else if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointId[].class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
@@ -448,7 +461,10 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( methodName, org.lgna.story.SJoint[].class );
 								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 								org.lgna.project.ast.BlockStatement body = method.body.getValue();
-								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), getJointArrayMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field ) );
+								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
+										new org.lgna.project.ast.ThisExpression(),
+										getJointArrayMethod,
+										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field ) );
 								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.SJoint[].class, expression ) );
 								rv.methods.add( method );
 							} else if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointArrayId.class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
@@ -459,7 +475,10 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( methodName, org.lgna.story.SJoint[].class );
 								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 								org.lgna.project.ast.BlockStatement body = method.body.getValue();
-								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation( new org.lgna.project.ast.ThisExpression(), getJointArrayIdMethod, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field ) );
+								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
+										new org.lgna.project.ast.ThisExpression(),
+										getJointArrayIdMethod,
+										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field ) );
 								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.SJoint[].class, expression ) );
 								rv.methods.add( method );
 							} else if( field.getValueType().isAssignableTo( org.lgna.story.Pose.class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {

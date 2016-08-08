@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2016, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 /**
  * @author Dennis Cosgrove
@@ -77,6 +77,8 @@ public class Build {
 		.netBeans6Version( "6.9" )
 		.netBeans8Version( "8.1" )
 
+		.installerIncludedJvmVersion( "1.8.0_102" )
+
 		.build();
 		// @formatter:on
 
@@ -85,7 +87,7 @@ public class Build {
 		AntUtils.initialize();
 		NetBeansUtils.initialize( config );
 		if( config.isInstallerDesired() ) {
-			Install4JUtils.initialize();
+			Install4JUtils.initialize( config );
 		}
 
 		BuildRepo buildRepo = new BuildRepo( config );
@@ -149,7 +151,7 @@ public class Build {
 			if( config.getMode().isDev() ) {
 				//pass
 			} else {
-				installer.createInstallers();
+				installer.createInstallers( config );
 				timer.mark( "createInstallers" );
 			}
 		}
