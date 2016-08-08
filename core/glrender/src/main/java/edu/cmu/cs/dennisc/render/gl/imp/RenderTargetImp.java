@@ -286,8 +286,8 @@ public class RenderTargetImp {
 			this.renderContext.actuallyForgetDisplayListsIfNecessary();
 			if( this.isDisplayIgnoredDueToPreviousException ) {
 				//pass
-			} else if( ( this.width == 0 ) || ( this.height == 0 ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, rt.getSurfaceSize() );
+			} else if( ( this.drawableWidth == 0 ) || ( this.drawableHeight == 0 ) ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.drawableWidth, this.drawableHeight, rt.getSurfaceSize() );
 			} else {
 				try {
 					//todo: separate clearing and rendering
@@ -301,15 +301,16 @@ public class RenderTargetImp {
 						this.renderContext.initialize();
 						for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : this.sgCameras ) {
 							GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( sgCamera );
-							cameraAdapterI.performClearAndRenderOffscreen( this.renderContext, this.width, this.height );
+							cameraAdapterI.performClearAndRenderOffscreen( this.renderContext, this.drawableWidth, this.drawableHeight );
 							this.reusableLookingGlassRenderEvent.prologue();
 							try {
-								cameraAdapterI.postRender( this.renderContext, this.width, this.height, rt, this.reusableLookingGlassRenderEvent.getGraphics2D() );
+								//Pass the screen size to post render because operations like speech bubbles use the screen size as a reference rather than the drawable size
+								cameraAdapterI.postRender( this.renderContext, this.screenWidth, this.screenHeight, rt, this.reusableLookingGlassRenderEvent.getGraphics2D() );
 							} finally {
 								this.reusableLookingGlassRenderEvent.epilogue();
 							}
 						}
-						this.renderContext.renderLetterboxingIfNecessary( this.width, this.height );
+						this.renderContext.renderLetterboxingIfNecessary( this.drawableWidth, this.drawableHeight );
 					} else {
 						this.renderContext.gl.glClearColor( 0, 0, 0, 1 );
 						this.renderContext.gl.glClear( GL_COLOR_BUFFER_BIT );
@@ -342,17 +343,19 @@ public class RenderTargetImp {
 
 	private java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
 		if( this.drawable != null ) {
-			if( ( this.width != GlDrawableUtils.getGlDrawableWidth( this.drawable ) ) || ( this.height != GlDrawableUtils.getGlDrawableHeight( this.drawable ) ) ) {
+			if( ( this.drawableWidth != GlDrawableUtils.getGlDrawableWidth( this.drawable ) ) || ( this.drawableHeight != GlDrawableUtils.getGlDrawableHeight( this.drawable ) ) ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
-				this.width = GlDrawableUtils.getGlDrawableWidth( this.drawable );
-				this.height = GlDrawableUtils.getGlDrawableHeight( this.drawable );
+				this.drawableWidth = GlDrawableUtils.getGlDrawableWidth( this.drawable );
+				this.drawableHeight = GlDrawableUtils.getGlDrawableHeight( this.drawable );
+				this.screenWidth = GlDrawableUtils.getGLJPanelWidth( drawable );
+				this.screenHeight = GlDrawableUtils.getGLJPanelHeight( drawable );
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: drawable null" );
 		}
 
-		if( ( this.width > 0 ) && ( this.height > 0 ) ) {
-			return new java.awt.image.BufferedImage( this.width, this.height, type );
+		if( ( this.drawableWidth > 0 ) && ( this.drawableHeight > 0 ) ) {
+			return new java.awt.image.BufferedImage( this.drawableWidth, this.drawableHeight, type );
 		} else {
 			return null;
 		}
@@ -410,7 +413,7 @@ public class RenderTargetImp {
 	}
 
 	public java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer() {
-		return java.nio.FloatBuffer.allocate( this.width * this.height );
+		return java.nio.FloatBuffer.allocate( this.drawableWidth * this.drawableHeight );
 	}
 
 	public java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv ) {
@@ -468,10 +471,10 @@ public class RenderTargetImp {
 			}
 		}
 
-		//Interesting note:
-		//The drawable width and height may not match the AWT width and height
-		this.width = GlDrawableUtils.getGlDrawableWidth( drawable );
-		this.height = GlDrawableUtils.getGlDrawableHeight( drawable );
+		this.drawableWidth = GlDrawableUtils.getGlDrawableWidth( drawable );
+		this.drawableHeight = GlDrawableUtils.getGlDrawableHeight( drawable );
+		this.screenWidth = GlDrawableUtils.getGLJPanelWidth( drawable );
+		this.screenHeight = GlDrawableUtils.getGLJPanelHeight( drawable );
 
 		this.renderContext.setGL( gl );
 		this.fireInitialized( new edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent( this.getRenderTarget(), GlDrawableUtils.getGlDrawableWidth( this.drawable ), GlDrawableUtils.getGlDrawableHeight( this.drawable ) ) );
@@ -495,15 +498,19 @@ public class RenderTargetImp {
 			initialize( drawable );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note: initialize necessary from display" );
 		}
-		if( ( this.width > 0 ) && ( this.height > 0 ) ) {
+		if( ( this.drawableWidth > 0 ) && ( this.drawableHeight > 0 ) ) {
 			//pass
 		} else {
 			int nextWidth = GlDrawableUtils.getGlDrawableWidth( drawable );
 			int nextHeight = GlDrawableUtils.getGlDrawableHeight( drawable );
-			if( ( this.width != nextWidth ) || ( this.height != nextHeight ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, nextWidth, nextHeight );
-				this.width = nextWidth;
-				this.height = nextHeight;
+			int nextScreenWidth = GlDrawableUtils.getGLJPanelWidth( drawable );
+			int nextScreenHeight = GlDrawableUtils.getGLJPanelHeight( drawable );
+			if( ( this.drawableWidth != nextWidth ) || ( this.drawableHeight != nextHeight ) ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.drawableWidth, this.drawableHeight, nextWidth, nextHeight );
+				this.drawableWidth = nextWidth;
+				this.drawableHeight = nextHeight;
+				this.screenHeight = nextScreenHeight;
+				this.screenWidth = nextScreenWidth;
 			}
 		}
 		this.renderContext.setGL( gl );
@@ -514,8 +521,10 @@ public class RenderTargetImp {
 	private void handleReshape( com.jogamp.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "reshape", drawable, x, y, width, height );
 		assert drawable == this.drawable;
-		this.width = width;
-		this.height = height;
+		this.drawableWidth = width;
+		this.drawableHeight = height;
+		this.screenWidth = GlDrawableUtils.getGLJPanelWidth( drawable );
+		this.screenHeight = GlDrawableUtils.getGLJPanelHeight( drawable );
 		this.fireResized( new edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent( this.getRenderTarget(), width, height ) );
 	}
 
@@ -532,8 +541,14 @@ public class RenderTargetImp {
 	private final RenderContext renderContext = new RenderContext();
 
 	private com.jogamp.opengl.GLAutoDrawable drawable;
-	private int width;
-	private int height;
+
+	//The drawable size and the screen size are not necessarily the same
+	//This is known to be the case on retina displays where the drawable size is 2x the screen size
+	//See https://jogamp.org/bugzilla/show_bug.cgi?id=741 for details
+	private int drawableWidth;
+	private int drawableHeight;
+	private int screenWidth;
+	private int screenHeight;
 
 	private java.awt.image.BufferedImage rvColorBuffer = null;
 	private java.nio.FloatBuffer rvDepthBuffer = null;
