@@ -5760,6 +5760,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 			new org.lgna.project.migration.ast.RemoveGetMySceneMethodFromProgramTypeAstMigration(
 					new org.lgna.project.Version( "3.1.70.0.0" ),
 					new org.lgna.project.Version( "3.1.72.0.0" )
+			),
+			new org.lgna.project.migration.ast.ChangeDeclaringClassForAxesSetVehicle(
+					new org.lgna.project.Version( "3.2.5.0.0" ),
+					new org.lgna.project.Version( "3.2.113.0.0" )
 			)
 	};
 
