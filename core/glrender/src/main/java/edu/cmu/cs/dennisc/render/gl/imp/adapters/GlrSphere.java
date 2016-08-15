@@ -61,9 +61,8 @@ public class GlrSphere extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Sphere> {
 
 	@Override
 	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
+		//Required for quadric shapes like spheres, discs, and cylinders
 		boolean isTextureEnabled = rc.isTextureEnabled();
-		//todo:
-		isTextureEnabled = true;
 		rc.glu.gluQuadricTexture( rc.getQuadric(), isTextureEnabled );
 		glSphere( rc );
 	}

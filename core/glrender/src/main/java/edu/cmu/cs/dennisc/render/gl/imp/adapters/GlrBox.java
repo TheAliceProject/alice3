@@ -43,7 +43,8 @@
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static com.jogamp.opengl.GL2GL3.GL_QUADS;
+import static com.jogamp.opengl.GL2ES3.GL_QUADS;
+
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
@@ -52,7 +53,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
-	private void glBox( Context c, boolean isLightingEnabled, boolean isSubElementRequired ) {
+	private void glBox( Context c, boolean isLightingEnabled, boolean isSubElementRequired, boolean isTexturingEnabled ) {
 		//todo: revist vertex ordering
 		//xMin face
 		//c.gl.glColor3d( 1,1,1 );
@@ -65,9 +66,25 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( -1, 0, 0 );
 		}
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( .25f, .66f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMin, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( .25f, .33f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMax, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.0f, .33f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMax, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.0f, .66f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMin, this.zMin );
 
 		//xMax face
@@ -78,9 +95,24 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 1, 0, 0 );
 		}
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.75f, .66f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMin, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.75f, .33f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMax, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.5f, .33f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMax, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.5f, .66f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMin, this.zMax );
 
 		//yMin face
@@ -91,9 +123,24 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 0, -1, 0 );
 		}
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.25f, 0.33f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMin, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.5f, 0.33f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMin, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.5f, 0.0f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMin, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.25f, 0.0f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMin, this.zMax );
 
 		//yMax face
@@ -104,9 +151,24 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 0, 1, 0 );
 		}
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.5f, .66f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMax, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.25f, .66f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMax, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.25f, 1.0f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMax, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.5f, 1.0f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMax, this.zMin );
 
 		//zMin face
@@ -117,9 +179,24 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 0, 0, -1 );
 		}
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 1.0f, .33f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMax, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.75f, .33f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMax, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.75f, .66f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMin, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 1.0f, .66f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMin, this.zMin );
 
 		//zMax face
@@ -130,9 +207,24 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 0, 0, 1 );
 		}
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( .25f, .66f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMin, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( .5f, .66f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMin, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( .5f, .33f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMax, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( .25f, .33f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMax, this.zMax );
 
 		c.gl.glEnd();
@@ -140,13 +232,13 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 
 	@Override
 	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		glBox( rc, true, false );
+		glBox( rc, true, false, rc.isTextureEnabled() );
 	}
 
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
 		pc.gl.glPushName( -1 );
-		glBox( pc, false, isSubElementRequired );
+		glBox( pc, false, isSubElementRequired, false );
 		pc.gl.glPopName();
 	}
 

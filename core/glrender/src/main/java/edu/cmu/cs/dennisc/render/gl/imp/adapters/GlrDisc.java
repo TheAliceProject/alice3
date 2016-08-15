@@ -46,7 +46,6 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
-import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType;
 
 /**
  * @author Dennis Cosgrove
@@ -81,6 +80,9 @@ public class GlrDisc extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Disc> {
 
 	@Override
 	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
+		//Required for quadric shapes like spheres, discs, and cylinders
+		boolean isTextureEnabled = rc.isTextureEnabled();
+		rc.glu.gluQuadricTexture( rc.getQuadric(), isTextureEnabled );
 		glDisc( rc );
 	}
 

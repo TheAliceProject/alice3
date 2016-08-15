@@ -78,6 +78,17 @@ public class TexturedAppearance extends SimpleAppearance {
 		this.diffuseColorTexture.setValue( diffuseColorTexture );
 	}
 
+	public void setDiffuseColorTextureAndInferAlphaBlend( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {
+		boolean isDiffuseColorTextureAlphaBlended;
+		if( diffuseColorTexture != null ) {
+			isDiffuseColorTextureAlphaBlended = diffuseColorTexture.isPotentiallyAlphaBlended();
+		} else {
+			isDiffuseColorTextureAlphaBlended = false;
+		}
+		this.diffuseColorTexture.setValue( diffuseColorTexture );
+		this.isDiffuseColorTextureAlphaBlended.setValue( isDiffuseColorTextureAlphaBlended );
+	}
+
 	public void setBumpTexture( edu.cmu.cs.dennisc.texture.Texture bumpTexture ) {
 		this.bumpTexture.setValue( bumpTexture );
 	}

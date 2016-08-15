@@ -113,6 +113,9 @@ public class GlrCylinder extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Cylinder
 
 	@Override
 	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
+		//Required for quadric shapes like spheres, discs, and cylinders
+		boolean isTextureEnabled = rc.isTextureEnabled();
+		rc.glu.gluQuadricTexture( rc.getQuadric(), isTextureEnabled );
 		glCylinder( rc );
 	}
 

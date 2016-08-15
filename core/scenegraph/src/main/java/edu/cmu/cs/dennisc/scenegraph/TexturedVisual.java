@@ -44,7 +44,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 /**
  * @author alice
- * 
+ *
  */
 public abstract class TexturedVisual extends edu.cmu.cs.dennisc.scenegraph.Visual {
 	public TexturedVisual() {
@@ -61,14 +61,7 @@ public abstract class TexturedVisual extends edu.cmu.cs.dennisc.scenegraph.Visua
 	}
 
 	public void setTexture( edu.cmu.cs.dennisc.texture.Texture texture ) {
-		this.sgAppearance.diffuseColorTexture.setValue( texture );
-		boolean isDiffuseColorTextureAlphaBlended;
-		if( texture != null ) {
-			isDiffuseColorTextureAlphaBlended = texture.isPotentiallyAlphaBlended();
-		} else {
-			isDiffuseColorTextureAlphaBlended = false;
-		}
-		this.sgAppearance.isDiffuseColorTextureAlphaBlended.setValue( isDiffuseColorTextureAlphaBlended );
+		this.sgAppearance.setDiffuseColorTextureAndInferAlphaBlend( texture );
 	}
 
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();

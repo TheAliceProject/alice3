@@ -67,7 +67,7 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 		this.setScale( new edu.cmu.cs.dennisc.math.Dimension3( value, value, value ) );
 	}
 
-	public final PaintProperty paint = new PaintProperty( ModelImp.this) {
+	public final PaintProperty paint = new PaintProperty( ModelImp.this ) {
 		@Override
 		protected void internalSetValue( org.lgna.story.Paint value ) {
 			edu.cmu.cs.dennisc.color.Color4f color4f = org.lgna.story.EmployeesOnly.getColor4f( value, edu.cmu.cs.dennisc.color.Color4f.WHITE );
@@ -83,13 +83,13 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 					if( edu.cmu.cs.dennisc.java.util.Objects.equals( texture, sgTexturedAppearance.diffuseColorTexture.getValue() ) ) {
 						//pass
 					} else {
-						sgTexturedAppearance.diffuseColorTexture.setValue( texture );
+						sgTexturedAppearance.setDiffuseColorTextureAndInferAlphaBlend( texture );
 					}
 				}
 			}
 		}
 	};
-	public final FloatProperty opacity = new FloatProperty( ModelImp.this) {
+	public final FloatProperty opacity = new FloatProperty( ModelImp.this ) {
 		@Override
 		public Float getValue() {
 			return ModelImp.this.getSgOpacityAppearances()[ 0 ].opacity.getValue();
@@ -239,7 +239,7 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 	}
 
 	public void animateSetWidth( double width, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		assert( isVolumePreserved && isAspectRatioPreserved ) == false;
+		assert ( isVolumePreserved && isAspectRatioPreserved ) == false;
 		double prevWidth = this.getWidth();
 		assert Double.isNaN( prevWidth ) == false;
 		assert prevWidth >= 0;
@@ -258,7 +258,7 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 	}
 
 	public void animateSetHeight( double height, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		assert( isVolumePreserved && isAspectRatioPreserved ) == false;
+		assert ( isVolumePreserved && isAspectRatioPreserved ) == false;
 		double prevHeight = this.getHeight();
 		assert Double.isNaN( prevHeight ) == false;
 		assert prevHeight >= 0;
@@ -277,7 +277,7 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 	}
 
 	public void animateSetDepth( double depth, boolean isVolumePreserved, boolean isAspectRatioPreserved, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
-		assert( isVolumePreserved && isAspectRatioPreserved ) == false;
+		assert ( isVolumePreserved && isAspectRatioPreserved ) == false;
 		double prevDepth = this.getDepth();
 		assert Double.isNaN( prevDepth ) == false;
 		assert prevDepth >= 0;
