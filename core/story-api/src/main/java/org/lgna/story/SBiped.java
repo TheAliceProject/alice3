@@ -58,7 +58,7 @@ public class SBiped extends SJointedModel implements Articulable {
 	}
 
 	@Override
-	/* package-private */org.lgna.story.implementation.BipedImp getImplementation() {
+			/* package-private */org.lgna.story.implementation.BipedImp getImplementation() {
 		return this.implementation;
 	}
 
@@ -74,6 +74,7 @@ public class SBiped extends SJointedModel implements Articulable {
 		reachFor( Limb.RIGHT_ARM, entity );
 	}
 
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void reachFor( Limb limb, SThing target ) {
 		implementation.reachFor( target, limb );
 	}
