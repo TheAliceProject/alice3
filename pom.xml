@@ -430,6 +430,9 @@
 			<id>non-free</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>zanata.locales</name>
+				</property>
 			</activation>
 
 			<modules>
