@@ -74,6 +74,7 @@ public class SBiped extends SJointedModel implements Articulable {
 		reachFor( Limb.RIGHT_ARM, entity );
 	}
 
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void reachFor( Limb limb, SThing target ) {
 		implementation.reachFor( target, limb );
 	}
