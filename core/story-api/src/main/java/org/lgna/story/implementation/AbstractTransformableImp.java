@@ -400,7 +400,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
 			data.epilogue();
 		} else {
-			perform( new edu.cmu.cs.dennisc.animation.DurationBasedAnimation( duration, style) {
+			perform( new edu.cmu.cs.dennisc.animation.DurationBasedAnimation( duration, style ) {
 				@Override
 				protected void prologue() {
 				}
@@ -412,7 +412,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 
 				@Override
 				protected void epilogue() {
-					data.epilogue( );
+					data.epilogue();
 				}
 			} );
 		}
@@ -623,7 +623,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
 			data.epilogue();
 		} else {
-			perform( new edu.cmu.cs.dennisc.animation.DurationBasedAnimation( duration, style) {
+			perform( new edu.cmu.cs.dennisc.animation.DurationBasedAnimation( duration, style ) {
 				@Override
 				protected void prologue() {
 				}
@@ -635,7 +635,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 
 				@Override
 				protected void epilogue() {
-					data.epilogue( );
+					data.epilogue();
 				}
 			} );
 		}
@@ -677,7 +677,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			} else {
 				q1 = edu.cmu.cs.dennisc.math.UnitQuaternion.accessIdentity();
 			}
-			perform( new edu.cmu.cs.dennisc.math.animation.UnitQuaternionAnimation( duration, style, q0, q1) {
+			perform( new edu.cmu.cs.dennisc.math.animation.UnitQuaternionAnimation( duration, style, q0, q1 ) {
 				@Override
 				protected void updateValue( edu.cmu.cs.dennisc.math.UnitQuaternion q ) {
 					buffer.setValue( q );
@@ -943,7 +943,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				this.perform( new SmoothPositionAnimation( this, edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity(), target, duration, style ) );
 			} else {
 				edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0 = this.getTransformation( target );
-				perform( new edu.cmu.cs.dennisc.math.animation.Point3Animation( duration, style, m0.translation, offset != null ? offset : edu.cmu.cs.dennisc.math.Point3.ORIGIN) {
+				perform( new edu.cmu.cs.dennisc.math.animation.Point3Animation( duration, style, m0.translation, offset != null ? offset : edu.cmu.cs.dennisc.math.Point3.ORIGIN ) {
 					@Override
 					protected void updateValue( edu.cmu.cs.dennisc.math.Point3 t ) {
 						AbstractTransformableImp.this.setPositionOnly( target, t );
@@ -1051,7 +1051,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			//			if( isSmooth ) {
 			//				this.perform( new SmoothAffineMatrix4x4Animation( duration, style, m0, m1 ) );
 			//			} else {
-			perform( new edu.cmu.cs.dennisc.math.animation.AffineMatrix4x4Animation( duration, style, m0, m1) {
+			perform( new edu.cmu.cs.dennisc.math.animation.AffineMatrix4x4Animation( duration, style, m0, m1 ) {
 				@Override
 				protected void updateValue( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
 					setTransformation( target, m );
@@ -1152,7 +1152,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public double getDistanceBehind( EntityImp other, ReferenceFrame asSeenBy ) {
 		double thisFrontZ = getSpatialRelationPoint( this, SpatialRelationDimension.FRONT, asSeenBy );
 		double otherBackZ = getSpatialRelationPoint( other, SpatialRelationDimension.BACK, asSeenBy );
-		double value = otherBackZ - thisFrontZ;
+		double value = ( otherBackZ - thisFrontZ ) * -1; //Front and back calculations are flipped because -Z if front
 		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
 			value = 0;
 		}
@@ -1162,7 +1162,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public double getDistanceInFrontOf( EntityImp other, ReferenceFrame asSeenBy ) {
 		double thisBackZ = getSpatialRelationPoint( this, SpatialRelationDimension.BACK, asSeenBy );
 		double otherFrontZ = getSpatialRelationPoint( other, SpatialRelationDimension.FRONT, asSeenBy );
-		double value = thisBackZ - otherFrontZ;
+		double value = ( thisBackZ - otherFrontZ ) * -1; //Front and back calculations are flipped because -Z if front
 		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
 			value = 0;
 		}
@@ -1172,7 +1172,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public double getDistanceToTheLeftOf( EntityImp other, ReferenceFrame asSeenBy ) {
 		double thisRightX = getSpatialRelationPoint( this, SpatialRelationDimension.RIGHT, asSeenBy );
 		double otherLeftX = getSpatialRelationPoint( other, SpatialRelationDimension.LEFT, asSeenBy );
-		double value = thisRightX - otherLeftX;
+		double value = otherLeftX - thisRightX; //A positive number measuring from the left of the reference object (other) to the right of this
 		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
 			value = 0;
 		}
@@ -1180,9 +1180,9 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	}
 
 	public double getDistanceToTheRightOf( EntityImp other, ReferenceFrame asSeenBy ) {
-		double thisLeftX = getSpatialRelationPoint( this, SpatialRelationDimension.RIGHT, asSeenBy );
-		double otherRightX = getSpatialRelationPoint( other, SpatialRelationDimension.LEFT, asSeenBy );
-		double value = otherRightX - thisLeftX;
+		double thisLeftX = getSpatialRelationPoint( this, SpatialRelationDimension.LEFT, asSeenBy );
+		double otherRightX = getSpatialRelationPoint( other, SpatialRelationDimension.RIGHT, asSeenBy );
+		double value = thisLeftX - otherRightX; //A positive number measuring from the left of this to the right of the reference object (other)
 		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
 			value = 0;
 		}

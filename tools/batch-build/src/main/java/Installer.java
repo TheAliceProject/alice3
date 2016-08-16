@@ -194,10 +194,10 @@ public class Installer {
 	public void createInstallers( Config config ) throws InterruptedException, java.io.IOException {
 		java.io.File installerOutputDir = new java.io.File( this.root, "installerOutput" );
 		String underscoreVersionText = org.lgna.project.ProjectVersion.getCurrentVersionText().replaceAll( "\\.", "_" );
-		java.io.File win64File = new java.io.File( installerOutputDir, "Alice3_windows-x64_Offline_" + underscoreVersionText + ".exe" );
-		java.io.File win32File = new java.io.File( installerOutputDir, "Alice3_windows_Offline_" + underscoreVersionText + ".exe" );
-		java.io.File linuxFile = new java.io.File( installerOutputDir, "Alice3_unix_Offline_" + underscoreVersionText + ".sh" );
-		java.io.File macFile = new java.io.File( installerOutputDir, "Alice3_macos_Offline_" + underscoreVersionText + ".dmg" );
+		java.io.File win64File = new java.io.File( installerOutputDir, "Alice3_windows-x64_" + underscoreVersionText + ".exe" );
+		java.io.File win32File = new java.io.File( installerOutputDir, "Alice3_windows_" + underscoreVersionText + ".exe" );
+		java.io.File linuxFile = new java.io.File( installerOutputDir, "Alice3_unix_" + underscoreVersionText + ".sh" );
+		java.io.File macFile = new java.io.File( installerOutputDir, "Alice3_macos_" + underscoreVersionText + ".dmg" );
 
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( win64File );
 		edu.cmu.cs.dennisc.java.io.FileSystemUtils.deleteIfExists( win32File );
