@@ -179,7 +179,9 @@
         </text>
       </splashScreen>
       <java mainClass="org.alice.stageide.EntryPoint" vmParameters="-ea -Xmx1024m -Dorg.alice.ide.rootDirectory=./ -Dswing.aatext=true -Djogamp.gluegen.UseTempJarCache=false" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true">
-        <classPath />
+         <classPath>
+___CLASSPATH___
+        </classPath>
         <nativeLibraryDirectories />
       </java>
       <includedFiles />
@@ -795,12 +797,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
     <macosArchive name="Mac OS X Single Bundle Archive" id="195" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Archive_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="macosx-amd64-1.8.0_102_unpacked" manualJREEntry="false" appleJre="false" launcherId="24">
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
-      <exclude>
-        <entry location="platform/linux-amd64" fileType="regular" />
-        <entry location="platform/linux-i586" fileType="regular" />
-        <entry location="platform/win32" fileType="regular" />
-        <entry location="platform/win64" fileType="regular" />
-      </exclude>
+      <exclude />
       <variables />
       <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
         <commentFiles />
