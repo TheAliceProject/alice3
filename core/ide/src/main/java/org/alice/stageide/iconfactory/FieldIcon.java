@@ -84,7 +84,11 @@ public class FieldIcon extends edu.cmu.cs.dennisc.javax.swing.AsynchronousIcon {
 		} else {
 			if( !USE_DYNAMICALLY_RENDERED_ICONS ) {
 				java.awt.image.BufferedImage newIconImage = new java.awt.image.BufferedImage( this.getIconWidthFallback(), this.getIconHeightFallback(), java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
-				java.awt.Image iconImage = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getImageForIcon( this.fallbackIcon );
+				javax.swing.Icon iconForImage = this.fallbackIcon;
+				if( this.fallbackIcon instanceof org.lgna.croquet.icon.TrimmedIcon ) {
+					iconForImage = ( (org.lgna.croquet.icon.TrimmedIcon)this.fallbackIcon ).getImageIcon();
+				}
+				java.awt.Image iconImage = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.getImageForIcon( iconForImage );
 				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredScaledToFitImage( iconImage, newIconImage );
 				this.imageIcon = new javax.swing.ImageIcon( newIconImage );
 			} else {

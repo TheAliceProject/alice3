@@ -72,7 +72,7 @@ public class TrimmedIcon extends AbstractIcon {
 			//todo
 			int dx;
 			int dy;
-			if( ( height != imageHeight ) && ( width != imageWidth ) ) {
+			if( ( height != imageHeight ) || ( width != imageWidth ) ) {
 				double factorX = width / (double)imageWidth;
 				double factorY = height / (double)imageHeight;
 				double factor;
