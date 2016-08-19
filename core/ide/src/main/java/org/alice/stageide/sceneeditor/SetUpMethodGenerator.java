@@ -348,13 +348,13 @@ public class SetUpMethodGenerator {
 				}
 				if( instance instanceof org.lgna.story.Resizable ) {
 					org.lgna.story.Resizable resizable = (org.lgna.story.Resizable)instance;
-					org.lgna.story.Size size = resizable.getSize();
+					org.lgna.story.Scale scale = resizable.getScale();
 					try {
 						statements.add(
 								createStatement(
-										org.lgna.story.Resizable.class, "setSize", new Class<?>[] { org.lgna.story.Size.class, org.lgna.story.SetSize.Detail[].class },
+										org.lgna.story.Resizable.class, "setScale", new Class<?>[] { org.lgna.story.Scale.class, org.lgna.story.SetScale.Detail[].class },
 										SetUpMethodGenerator.createInstanceExpression( isThis, field ),
-										getExpressionCreator().createExpression( size ) ) );
+										getExpressionCreator().createExpression( scale ) ) );
 					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 						throw new RuntimeException( ccee );
 					}
@@ -396,6 +396,17 @@ public class SetUpMethodGenerator {
 													org.lgna.story.STurnable.class, "setOrientationRelativeToVehicle", new Class<?>[] { org.lgna.story.Orientation.class, org.lgna.story.SetOrientationRelativeToVehicle.Detail[].class },
 													getJointExpression, getExpressionCreator().createExpression( orientation ) );
 											statements.add( orientationStatement );
+										} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+											throw new RuntimeException( ccee );
+										}
+									}
+									if( captureFullState || !currentTransform.translation.isWithinReasonableEpsilonOf( originalTransform.translation ) ) {
+										try {
+											org.lgna.story.Position position = jointEntity.getPositionRelativeToVehicle();
+											org.lgna.project.ast.ExpressionStatement positionStatement = createStatement(
+													org.lgna.story.SMovableTurnable.class, "setPositionRelativeToVehicle", new Class<?>[] { org.lgna.story.Position.class, org.lgna.story.SetPositionRelativeToVehicle.Detail[].class },
+													getJointExpression, getExpressionCreator().createExpression( position ) );
+											statements.add( positionStatement );
 										} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 											throw new RuntimeException( ccee );
 										}
