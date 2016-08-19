@@ -78,6 +78,7 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	protected void touchLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 current = this.nebModel.getLocalTransformationForJoint( this.jointId );
 		current.orientation.setValue( m.orientation );
+		current.translation.set( m.translation );
 		if( this.actualTranslation == null ) {
 			this.actualTranslation = new edu.cmu.cs.dennisc.math.Point3();
 		}
@@ -85,17 +86,17 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 		this.nebModel.setLocalTransformationForJoint( this.jointId, current );
 	}
 
-	//	
+	//
 	//	public void setSgParent( Composite sgParent )
 	//    {
 	//        this.sgParent = sgParent;
 	//    }
-	//	
+	//
 	//	@Override
 	//	public void setParent(Composite parent) {
 	//		super.setParent(parent);
 	//	}
-	//    
+	//
 	//    @Override
 	//    public Composite getParent()
 	//    {
@@ -105,15 +106,14 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	//        }
 	//        return super.getParent();
 	//    }
-	//    
+	//
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Composite getVehicle()
-	{
+	protected edu.cmu.cs.dennisc.scenegraph.Composite getVehicle() {
 		return this.getParent();
 	}
 
-	//    
-	//    
+	//
+	//
 	//    @Override
 	//    public Composite getRoot()
 	//    {
@@ -123,7 +123,7 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	//        }
 	//        return super.getRoot();
 	//    }
-	//    
+	//
 	//    @Override
 	//    public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
 	//        if (super.getParent() == null && this.sgParent != null)
@@ -158,12 +158,12 @@ public class NebulousJoint extends edu.cmu.cs.dennisc.scenegraph.AbstractTransfo
 	//        }
 	//        return super.getTransformation(rv, asSeenBy);
 	//    }
-	//    
+	//
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedBoundingBox() {
 		return this.nebModel.getAxisAlignedBoundingBoxForJoint( this.jointId );
 	}
 
-	//	
+	//
 	//	@Override
 	//	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
 	//		edu.cmu.cs.dennisc.scenegraph.Composite vehicle = this.getParent();
