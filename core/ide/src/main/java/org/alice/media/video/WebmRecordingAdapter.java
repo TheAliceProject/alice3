@@ -45,6 +45,8 @@ package org.alice.media.video;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.alice.media.audio.ScheduledAudioStream;
 
@@ -62,6 +64,8 @@ public class WebmRecordingAdapter implements MediaPlayerObserver {
 
 	private org.alice.media.audio.AudioMuxer audioMuxer;
 	private ImagesToWebmEncoder encoder;
+
+	private List<MediaPlayerAnimation> playingAnimations = new ArrayList<MediaPlayerAnimation>();
 
 	public WebmRecordingAdapter() {
 	}
@@ -86,11 +90,22 @@ public class WebmRecordingAdapter implements MediaPlayerObserver {
 	public void mediaPlayerStarted( MediaPlayerAnimation playerAnimation, double playTime ) {
 		assert this.audioMuxer != null;
 		edu.cmu.cs.dennisc.media.Player player = playerAnimation.getPlayer();
+		//Add the animation to the list of playing animations so we can stop any unfinished ones later
+		//	this.playingAnimations.add( playerAnimation );
 		if( player instanceof edu.cmu.cs.dennisc.media.jmf.Player ) {
 			edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
 			ScheduledAudioStream audioStream = new ScheduledAudioStream( jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel() );
 			this.audioMuxer.addAudioStream( audioStream );
 		}
+	}
+
+	public void stopAnimationsAndClear() {
+		for( MediaPlayerAnimation mpa : this.playingAnimations ) {
+			if( mpa.getPlayer() != null ) {
+				mpa.getPlayer().stop();
+			}
+		}
+		this.playingAnimations.clear();
 	}
 
 	public void startVideoEncoding() {

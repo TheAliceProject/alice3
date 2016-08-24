@@ -325,12 +325,16 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 			MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
 			this.isPrepared = mediaPlayer.prepareMedia( this.mediaPath );
 		} else {
-			MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
-			mediaPlayer.release();
-			this.mediaPath = null;
-			this.isPrepared = false;
+			shutdownMediaPlayer();
 		}
 		return this.isPrepared;
+	}
+
+	public void shutdownMediaPlayer() {
+		MediaPlayer mediaPlayer = this.mediaPlayerComponent.getMediaPlayer();
+		mediaPlayer.release();
+		this.mediaPath = null;
+		this.isPrepared = false;
 	}
 
 	@Override
