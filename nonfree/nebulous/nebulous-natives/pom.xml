@@ -11,7 +11,7 @@
 
 	<artifactId>nebulous-natives</artifactId>
 	<!-- nebulous.lib.version -->
-	<version>2013.08.20</version>
+	<version>2016.08.23</version>
 	<packaging>pom</packaging>
 
 	<licenses>
@@ -67,7 +67,7 @@
 
 	<!-- Deploy Command -->
 	<!-- mvn deploy -->
-
+	
 	<build>
 		<plugins>
 			<plugin>
