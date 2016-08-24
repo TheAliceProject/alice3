@@ -157,7 +157,7 @@ public class RenderTargetImp {
 		}
 	}
 
-	/*package-private*/void addDisplayTask( DisplayTask displayTask ) {
+			/*package-private*/void addDisplayTask( DisplayTask displayTask ) {
 		displayTask.setRtImp( this );
 		this.drawable.invoke( false, displayTask );
 	}
@@ -450,6 +450,22 @@ public class RenderTargetImp {
 			}
 		}
 		return rv;
+	}
+
+	public int getDrawableWidth() {
+		return this.drawableWidth;
+	}
+
+	public int getDrawableHeight() {
+		return this.drawableHeight;
+	}
+
+	public int getScreenHeight() {
+		return this.screenHeight;
+	}
+
+	public int getScreenWidth() {
+		return this.screenWidth;
 	}
 
 	private void initialize( com.jogamp.opengl.GLAutoDrawable drawable ) {

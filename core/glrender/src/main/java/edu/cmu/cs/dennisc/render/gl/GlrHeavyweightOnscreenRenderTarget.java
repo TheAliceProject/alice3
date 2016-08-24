@@ -43,14 +43,13 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
-
 /**
  * @author Dennis Cosgrove
  */
 class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<java.awt.Component> implements edu.cmu.cs.dennisc.render.HeavyweightOnscreenRenderTarget {
 	private com.jogamp.opengl.awt.GLCanvas m_glCanvas;
 
-	/* package-private */GlrHeavyweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	/* package-private */ GlrHeavyweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		super( lookingGlassFactory, requestedCapabilities );
 		m_glCanvas = GlDrawableUtils.createGLCanvas( requestedCapabilities );
 		//m_glCanvas.getChosenGLCapabilities().getDepthBits();
@@ -89,6 +88,15 @@ class GlrHeavyweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<java.aw
 	@Override
 	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
 		return m_glCanvas.getSize( rv );
+	}
+
+	@Override
+	protected java.awt.Dimension getDrawableSize( java.awt.Dimension rv ) {
+		//TEMP
+		java.awt.Dimension surfaceSize = this.getSurfaceSize();
+		//END TEMP
+		rv.setSize( m_glCanvas.getDelegatedDrawable().getSurfaceWidth(), m_glCanvas.getDelegatedDrawable().getSurfaceHeight() );
+		return rv;
 	}
 
 	@Override

@@ -57,6 +57,11 @@ public class NrImageCaptureRenderTarget extends NrRenderTarget implements edu.cm
 		return this.surfaceSize;
 	}
 
+	@Override
+	public java.awt.Dimension getDrawableSize() {
+		return this.surfaceSize;
+	}
+
 	private final java.awt.Dimension surfaceSize;
 	private final edu.cmu.cs.dennisc.render.RenderTarget renderTargetToShareContextWith;
 }

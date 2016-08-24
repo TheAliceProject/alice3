@@ -148,7 +148,7 @@ package edu.cmu.cs.dennisc.render.gl;
 		private Throwable prevThrowable = null;
 	}
 
-	/* package-private */GlrLightweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	/* package-private */ GlrLightweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		super( lookingGlassFactory, requestedCapabilities );
 		this.glPanel = new RenderPane( requestedCapabilities );
 		this.glPanel.setFocusable( true );
@@ -161,6 +161,11 @@ package edu.cmu.cs.dennisc.render.gl;
 
 	@Override
 	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
+		return this.glPanel.getSize( rv );
+	}
+
+	@Override
+	protected java.awt.Dimension getDrawableSize( java.awt.Dimension rv ) {
 		return this.glPanel.getSize( rv );
 	}
 

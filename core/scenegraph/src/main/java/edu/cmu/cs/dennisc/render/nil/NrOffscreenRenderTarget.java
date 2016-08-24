@@ -58,6 +58,11 @@ package edu.cmu.cs.dennisc.render.nil;
 	}
 
 	@Override
+	public java.awt.Dimension getDrawableSize() {
+		return this.surfaceSize;
+	}
+
+	@Override
 	public void clearAndRenderOffscreen() {
 	}
 

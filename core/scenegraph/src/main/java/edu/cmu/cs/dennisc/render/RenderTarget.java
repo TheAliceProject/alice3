@@ -58,6 +58,12 @@ public interface RenderTarget {
 
 	java.awt.Dimension getSurfaceSize();
 
+	int getDrawableWidth();
+
+	int getDrawableHeight();
+
+	java.awt.Dimension getDrawableSize();
+
 	String getDescription();
 
 	void setDescription( String description );

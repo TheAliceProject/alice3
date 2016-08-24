@@ -134,8 +134,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 					}
 				} );
 			} else {
-				java.awt.Dimension surfaceSize = renderTarget.getSurfaceSize();
-				if( ( surfaceSize.width > 0 ) && ( surfaceSize.height > 0 ) ) {
+				java.awt.Dimension drawableSize = renderTarget.getDrawableSize();
+				if( ( drawableSize.width > 0 ) && ( drawableSize.height > 0 ) ) {
 					if( image != null ) {
 						//pass
 					} else {
@@ -157,7 +157,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null" );
 					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", surfaceSize.width, "height:", surfaceSize.height );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "width:", drawableSize.width, "height:", drawableSize.height );
 				}
 			}
 		}
@@ -173,9 +173,10 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 
 	public void setRecording( boolean isRecording ) {
 		if( !this.isRecordingState.getValue() ) {
-			encoder.stopVideoEncoding();
-			MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( null );
+			this.encoder.stopAnimationsAndClear();
 			programContext.getProgramImp().getAnimator().setSpeedFactor( 0 );
+			MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( null );
+			encoder.stopVideoEncoding();
 		} else {
 			MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
 			programContext.getProgramImp().getAnimator().setFramesPerSecond( this.frameRateState.getValue() );
@@ -265,7 +266,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		getView().updateTime( 0 );
 		encoder = new WebmRecordingAdapter();
 		frameRateState.setEnabled( true );
-		encoder.setDimension( programContext.getOnscreenRenderTarget().getSurfaceSize() );
+		encoder.setDimension( programContext.getOnscreenRenderTarget().getDrawableSize() );
 		this.encoder.initializeAudioRecording();
 	}
 

@@ -42,7 +42,6 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -115,6 +114,13 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 
 	@Override
 	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
+		rv.setSize( this.size );
+		return rv;
+	}
+
+	@Override
+	protected java.awt.Dimension getDrawableSize( java.awt.Dimension rv ) {
+		//Drawable size and surface size are the same for this render target
 		rv.setSize( this.size );
 		return rv;
 	}

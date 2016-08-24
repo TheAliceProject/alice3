@@ -77,6 +77,16 @@ package edu.cmu.cs.dennisc.render.nil;
 	}
 
 	@Override
+	public int getDrawableWidth() {
+		return this.getDrawableSize().width;
+	}
+
+	@Override
+	public int getDrawableHeight() {
+		return this.getDrawableSize().height;
+	}
+
+	@Override
 	public String getDescription() {
 		return this.description;
 	}

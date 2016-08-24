@@ -64,6 +64,11 @@ import java.awt.Dimension;
 	}
 
 	@Override
+	public Dimension getDrawableSize() {
+		return this.awtComponent.getSize();
+	}
+
+	@Override
 	public void repaint() {
 		this.awtComponent.repaint();
 	}
