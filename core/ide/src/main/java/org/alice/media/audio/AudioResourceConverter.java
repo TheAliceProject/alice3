@@ -275,28 +275,26 @@ public class AudioResourceConverter implements ControllerListener, DataSinkListe
 		return null;
 	}
 
-	public static org.lgna.common.resources.AudioResource convert( org.lgna.common.resources.AudioResource resource, javax.media.format.AudioFormat destFormat )
-	{
+	public static org.lgna.common.resources.AudioResource convert( org.lgna.common.resources.AudioResource resource, javax.media.format.AudioFormat destFormat ) {
 		AudioResourceConverter converter = new AudioResourceConverter( resource );
 		return converter.convertTo( destFormat );
 	}
 
-	public static org.lgna.common.resources.AudioResource convert( org.lgna.common.resources.AudioResource resource, javax.sound.sampled.AudioFormat destFormat )
-	{
+	public static org.lgna.common.resources.AudioResource convert( org.lgna.common.resources.AudioResource resource, javax.sound.sampled.AudioFormat destFormat ) {
 		AudioResourceConverter converter = new AudioResourceConverter( resource );
 		return converter.convertTo( destFormat );
 	}
 
-	public static boolean needsConverting( org.lgna.common.resources.AudioResource resource, javax.sound.sampled.AudioFormat destFormat )
-	{
+	public static boolean needsConverting( org.lgna.common.resources.AudioResource resource, javax.sound.sampled.AudioFormat destFormat ) {
+		if( resource.getContentType().equals( "audio.mpeg" ) ) {
+			return true;
+		}
 		AudioInputStream audioStream = null;
 		ByteArrayInputStream dataStream = new ByteArrayInputStream( resource.getData() );
 
-		try
-		{
+		try {
 			audioStream = AudioSystem.getAudioInputStream( dataStream );
-		} catch( Exception e )
-		{
+		} catch( Exception e ) {
 			e.printStackTrace();
 			return false;
 		}
@@ -305,14 +303,11 @@ public class AudioResourceConverter implements ControllerListener, DataSinkListe
 		return needsConverting( currentFormat, destFormat );
 	}
 
-	public static boolean needsConverting( javax.sound.sampled.AudioFormat currentFormat, javax.sound.sampled.AudioFormat destFormat )
-	{
-		if( currentFormat.getSampleRate() != destFormat.getSampleRate() )
-		{
+	public static boolean needsConverting( javax.sound.sampled.AudioFormat currentFormat, javax.sound.sampled.AudioFormat destFormat ) {
+		if( currentFormat.getSampleRate() != destFormat.getSampleRate() ) {
 			return true;
 		}
-		if( currentFormat.getEncoding() != destFormat.getEncoding() )
-		{
+		if( currentFormat.getEncoding() != destFormat.getEncoding() ) {
 			return true;
 		}
 		return false;
