@@ -199,6 +199,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		if( ( encoder != null ) ) {
 			this.getOwner().setTempRecordedVideoFile( this.encoder.getEncodedVideoFile() );
 		}
+		this.getView().removeLookingGlassContainer();
 		super.handlePostDeactivation();
 	}
 
@@ -215,6 +216,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 			}
 		}
 		RandomUtilities.setSeed( owner.getRandomSeed() );
+		this.getView().addLookingGlassContainer();
 	}
 
 	private void handleImage( java.awt.image.BufferedImage image, int imageCount, boolean isUpsideDown ) {
@@ -251,7 +253,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 
 		programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, frameRateState.getValue() );
 		programContext.initializeInContainer( this.getView().getLookingGlassContainer().getAwtComponent() );
-
 		getView().revalidateAndRepaint();
 
 		UserInstance programInstance = programContext.getProgramInstance();

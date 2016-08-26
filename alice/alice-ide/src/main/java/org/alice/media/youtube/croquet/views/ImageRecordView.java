@@ -72,6 +72,14 @@ public class ImageRecordView extends org.lgna.croquet.views.MigPanel {
 		return this.lookingGlassContainer;
 	}
 
+	public void removeLookingGlassContainer() {
+		this.removeComponent( this.lookingGlassContainer );
+	}
+
+	public void addLookingGlassContainer() {
+		this.addComponent( this.lookingGlassContainer, "w 640, h 360, wrap" );
+	}
+
 	public void updateTime( double currTime ) {
 		this.timeLabel.setTimeInSeconds( currTime );
 	}
