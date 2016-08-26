@@ -130,6 +130,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 	@Override
 	public void handlePostDeactivation() {
 		isRecordingState.setValueTransactionlessly( false );
+		this.getView().disableLookingGlassContainer();
 		super.handlePostDeactivation();
 	}
 
@@ -139,6 +140,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView, E
 		if( programContext == null ) {
 			restartProgramContext();
 		}
+		this.getView().enableLookingGlassContainer();
 	}
 
 	private void restartProgramContext() {

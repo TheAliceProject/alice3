@@ -199,7 +199,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 		if( ( encoder != null ) ) {
 			this.getOwner().setTempRecordedVideoFile( this.encoder.getEncodedVideoFile() );
 		}
-		this.getView().removeLookingGlassContainer();
+		this.getView().disableLookingGlassContainer();
 		super.handlePostDeactivation();
 	}
 
@@ -216,7 +216,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView, E
 			}
 		}
 		RandomUtilities.setSeed( owner.getRandomSeed() );
-		this.getView().addLookingGlassContainer();
+		this.getView().enableLookingGlassContainer();
 	}
 
 	private void handleImage( java.awt.image.BufferedImage image, int imageCount, boolean isUpsideDown ) {

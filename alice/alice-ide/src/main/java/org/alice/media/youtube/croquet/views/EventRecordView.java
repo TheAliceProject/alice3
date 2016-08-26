@@ -49,7 +49,9 @@ import org.alice.media.youtube.croquet.EventRecordComposite;
  */
 public class EventRecordView extends org.lgna.croquet.views.MigPanel {
 
-	private final org.lgna.croquet.views.BorderPanel lookingGlassContainer = new org.lgna.croquet.views.BorderPanel();
+	private final org.lgna.croquet.views.BorderPanel lookingGlassRemoveableContainer = new org.lgna.croquet.views.BorderPanel();
+	private final org.lgna.croquet.views.BorderPanel lookingGlassPermanentContainer = new org.lgna.croquet.views.BorderPanel();
+
 	private final TimeLabel timeLabel;
 
 	public EventRecordView( EventRecordComposite eventRecordComposite ) {
@@ -63,15 +65,27 @@ public class EventRecordView extends org.lgna.croquet.views.MigPanel {
 		this.addComponent( eventRecordComposite.getRestartRecording().createButton(), "align right" );
 		this.addComponent( listPane, "grow, aligny top, spany 3, wrap" );
 
-		//this.addComponent( new org.lgna.croquet.components.FixedCenterPanel( lookingGlassContainer ), "wrap" );
-		this.addComponent( this.lookingGlassContainer, "w 640, h 360, wrap" );
+		this.addComponent( this.lookingGlassPermanentContainer, "w 640, h 360, wrap" );
+		this.lookingGlassPermanentContainer.addCenterComponent( this.lookingGlassRemoveableContainer );
 
 		this.addComponent( eventRecordComposite.getPlayRecordedOperation().createToggleButton(), "push, aligny top, split 2" );
 		this.addComponent( this.timeLabel, "growx, align right, aligny top" );
 	}
 
 	public org.lgna.croquet.views.BorderPanel getLookingGlassContainer() {
-		return this.lookingGlassContainer;
+		return this.lookingGlassRemoveableContainer;
+	}
+
+	//When running on macs, the render window will draw over the other cards in the wizard layout
+	// if the looking glass container is still in the hierarchy/
+	// This takes the panel out of the container so that it stops rendering
+	public void disableLookingGlassContainer() {
+		this.lookingGlassPermanentContainer.removeComponent( this.lookingGlassRemoveableContainer );
+	}
+
+	//Put the panel back in the container so it will render
+	public void enableLookingGlassContainer() {
+		this.lookingGlassPermanentContainer.addCenterComponent( this.lookingGlassRemoveableContainer );
 	}
 
 	public void updateTime( double timeInSeconds ) {
