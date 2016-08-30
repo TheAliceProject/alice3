@@ -51,16 +51,9 @@ public class TestBootstrap {
 		org.alice.stageide.openprojectpane.models.TemplateUriState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriState.Template.GRASS;
 		org.lgna.project.ast.NamedUserType programType;
 		if( template.isRoom() ) {
-			programType = org.alice.stageide.ast.SimsBootstrapUtilties.createProgramType(
-					template.getFloorAppearance(),
-					template.getWallAppearance(),
-					template.getCeilingAppearance(),
-					template.getAtmospherColor(),
-					template.getFogDensity(),
-					template.getAboveLightColor(),
-					template.getBelowLightColor() );
+			programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity() );
 		} else {
-			programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
+			programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor(), template.getGroundOpacity() );
 		}
 		//org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.SGround.SurfaceAppearance.GRASS, null, Double.NaN, org.lgna.story.Color.WHITE, null );
 		org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
