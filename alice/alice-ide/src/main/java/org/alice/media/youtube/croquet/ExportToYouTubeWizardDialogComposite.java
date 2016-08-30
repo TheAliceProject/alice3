@@ -57,7 +57,8 @@ import edu.cmu.cs.dennisc.matt.eventscript.events.EventScriptEvent;
 public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.SimpleOperationWizardDialogCoreComposite {
 	private final EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
 	private final ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
-	private final UploadComposite uploadComposite = new UploadComposite( this );
+	//	private final UploadComposite uploadComposite = new UploadComposite( this );
+	private final VideoExportComposite videoExportComposite = new VideoExportComposite( this );
 	private final StringValue mouseEventName = createStringValue( "mouseEvent" );
 	private final StringValue keyBoardEventName = createStringValue( "keyboardEvent" );
 	private final org.lgna.croquet.MutableDataSingleSelectListState<EventScriptEvent> eventList = createMutableListState( "eventList", EventScriptEvent.class, new EventScriptEventCodec( this ), -1 );
@@ -71,7 +72,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Simpl
 		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
 		this.addPage( this.eventRecordComposite );
 		this.addPage( this.imageRecordComposite );
-		this.addPage( this.uploadComposite );
+		this.addPage( this.videoExportComposite );
 	}
 
 	public org.lgna.croquet.MutableDataSingleSelectListState<EventScriptEvent> getEventList() {
@@ -125,11 +126,6 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Simpl
 	@Override
 	protected GoldenRatioPolicy getGoldenRatioPolicy() {
 		return null;
-	}
-
-	@Override
-	protected boolean isClearedForCommit() {
-		return super.isClearedForCommit() && uploadComposite.tryToUpload();
 	}
 
 	@Override
