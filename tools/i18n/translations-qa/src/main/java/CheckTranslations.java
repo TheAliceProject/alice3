@@ -94,6 +94,12 @@ public class CheckTranslations {
 				}
 			}
 		}
+
+		System.out.println( "Checking locales: " );
+		for( java.util.Locale l : locales ) {
+			System.out.println( "  " + l.getDisplayName() );
+		}
+
 		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<java.util.Locale, Mistranslation> mapLocaleToMistranslations = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentListHashMap();
 
 		java.util.List<Item> items = org.alice.ide.localize.review.core.LocalizeUtils.getItems( org.alice.ide.story.AliceIde.class, "alice-ide" );
@@ -160,6 +166,15 @@ public class CheckTranslations {
 
 		sb.append( "</html>" );
 
-		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "latestTranslationsValidityReport.html" ), sb.toString() );
+		java.io.File outputFile = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "latestTranslationsValidityReport.html" );
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( outputFile, sb.toString() );
+
+		System.out.println( "Translation check finished." );
+		System.out.println( "Results:" );
+		for( java.util.Locale locale : locales ) {
+			java.util.List<Mistranslation> mistranslations = mapLocaleToMistranslations.getInitializingIfAbsentToLinkedList( locale );
+			System.out.println( "  " + locale.getDisplayName() + " : " + mistranslations.size() + " errors" );
+		}
+		System.out.println( "Results written to:\n" + outputFile.getCanonicalPath() );
 	}
 }
