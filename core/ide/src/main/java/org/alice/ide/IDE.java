@@ -50,6 +50,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public static final org.lgna.croquet.Group EXPORT_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "624d4db6-2e1a-43c2-b1df-c0bfd6407b35" ), "EXPORT_GROUP" );
 
 	private static org.alice.ide.issue.DefaultExceptionHandler exceptionHandler;
+
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.DefaultExceptionHandler();
 
@@ -88,13 +89,28 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		IDE.exceptionHandler.setTitle( sb.toString() );
 		IDE.exceptionHandler.setApplicationName( getApplicationName() );
 		//initialize locale
+		//Checks the org.alice.ide.locale property to see if there is a specified locale to initialize Alice to
+		//If so, it sets that locale and adds the locale listener to the locale state
+		//If not, it adds and invokes the listener on the locale state which has been initialized based on saved preferences
 
-		org.alice.ide.croquet.models.ui.locale.LocaleState.getInstance().addAndInvokeNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
+		org.lgna.croquet.event.ValueListener<java.util.Locale> localeListener = new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
 			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
 				org.lgna.croquet.Application.getActiveInstance().setLocale( e.getNextValue() );
 			}
-		} );
+		};
+		String forcedLocaleString = System.getProperty( "org.alice.ide.locale" );
+		java.util.Locale forcedLocale = null;
+		if( forcedLocaleString != null ) {
+			forcedLocale = new java.util.Locale( forcedLocaleString );
+		}
+		if( forcedLocale != null ) {
+			org.lgna.croquet.Application.getActiveInstance().setLocale( forcedLocale );
+			org.alice.ide.croquet.models.ui.locale.LocaleState.getInstance().addNewSchoolValueListener( localeListener );
+
+		} else {
+			org.alice.ide.croquet.models.ui.locale.LocaleState.getInstance().addAndInvokeNewSchoolValueListener( localeListener );
+		}
 
 	}
 
@@ -253,8 +269,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				String message = this.reorganizeTypeFieldsIfNecessary( namedUserType, 0, alreadyMovedFields );
 				if( message != null ) {
 					new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( message )
-							.title( "Unable to Recover"
-							)
+							.title( "Unable to Recover" )
 							.messageType( edu.cmu.cs.dennisc.javax.swing.option.MessageType.ERROR )
 							.buildAndShow();
 				}
