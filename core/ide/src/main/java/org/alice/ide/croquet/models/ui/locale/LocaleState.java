@@ -60,28 +60,31 @@ public class LocaleState extends org.lgna.croquet.preferences.PreferenceMutableD
 				0,
 				org.alice.ide.croquet.codecs.LocaleCodec.SINGLETON,
 				new java.util.Locale( "en", "US" ),
-				new java.util.Locale( "pt" ),
+				//				new java.util.Locale( "pt" ),
 				new java.util.Locale( "pt", "BR" ),
 				new java.util.Locale( "es" ),
-				new java.util.Locale( "fr" ),
-				new java.util.Locale( "fr", "BE" ),
-				new java.util.Locale( "it" ),
-				new java.util.Locale( "nl" ),
-				new java.util.Locale( "de" ),
+				//				new java.util.Locale( "fr" ),
+				//				new java.util.Locale( "fr", "BE" ),
+				//				new java.util.Locale( "it" ),
+				//				new java.util.Locale( "nl" ),
+				//				new java.util.Locale( "de" ),
 				new java.util.Locale( "el" ),
 				new java.util.Locale( "ro" ),
-				new java.util.Locale( "cs" ),
+				//				new java.util.Locale( "cs" ),
 				new java.util.Locale( "sl" ),
-				new java.util.Locale( "lt" ),
+				//				new java.util.Locale( "lt" ),
 				new java.util.Locale( "ru" ),
 				new java.util.Locale( "uk" ),
 				new java.util.Locale( "tr" ),
 				new java.util.Locale( "ar" ),
-				new java.util.Locale( "iw" ),
-				new java.util.Locale( "in" ),
+				//				new java.util.Locale( "iw" ),
+				//				new java.util.Locale( "in" ),
 				new java.util.Locale( "zh", "CN" ),
-				new java.util.Locale( "zh", "TW" ),
-				new java.util.Locale( "ko" ) );
+				new java.util.Locale( "ja" ),
+				new java.util.Locale( "bg" )
+		//				new java.util.Locale( "zh", "TW" ),
+		//				new java.util.Locale( "ko" ) 
+		);
 		this.addNewSchoolValueListener( new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
 			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {

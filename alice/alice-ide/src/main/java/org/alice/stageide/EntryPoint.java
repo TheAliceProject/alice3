@@ -104,19 +104,30 @@ public class EntryPoint {
 				int height = DEFAULT_HEIGHT;
 				boolean isMaximizationDesired = true;
 				java.io.File file = null;
+				String localeString = null;
+				int index = 0;
 				if( args.length > 0 ) {
 					if( "null".equalsIgnoreCase( args[ 0 ] ) ) {
 						//pass
 					} else {
-						file = new java.io.File( args[ 0 ] );
+						if( "-l".equalsIgnoreCase( args[ 0 ] ) ) {
+							index = 1;
+							if( args.length > 1 ) {
+								localeString = args[ 1 ];
+								index = 2;
+							}
+						}
 					}
-					if( args.length > 2 ) {
+					if( args.length > index ) {
+						file = new java.io.File( args[ index ] );
+					}
+					if( args.length > ( index + 2 ) ) {
 						try {
-							xLocation = Integer.parseInt( args[ 1 ] );
-							yLocation = Integer.parseInt( args[ 2 ] );
-							if( args.length > 4 ) {
-								width = Integer.parseInt( args[ 3 ] );
-								height = Integer.parseInt( args[ 4 ] );
+							xLocation = Integer.parseInt( args[ index + 1 ] );
+							yLocation = Integer.parseInt( args[ index + 2 ] );
+							if( args.length > ( index + 4 ) ) {
+								width = Integer.parseInt( args[ index + 3 ] );
+								height = Integer.parseInt( args[ index + 4 ] );
 							}
 							isMaximizationDesired = false;
 						} catch( NumberFormatException nfe ) {
@@ -134,6 +145,11 @@ public class EntryPoint {
 
 				if( isMaximizationDesired ) {
 					rootFrame.setExtendedState( rootFrame.getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
+				}
+				if( localeString != null ) {
+					System.setProperty( "org.alice.ide.locale", localeString );
+					String localeTest = System.getProperty( "org.alice.ide.locale" );
+					System.out.println( localeTest );
 				}
 
 				org.alice.ide.story.AliceIde ide = new org.alice.ide.story.AliceIde( crashDetector );
