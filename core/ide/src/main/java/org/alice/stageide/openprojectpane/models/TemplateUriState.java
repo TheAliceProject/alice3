@@ -46,6 +46,7 @@ package org.alice.stageide.openprojectpane.models;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.MissingResourceException;
 
 import org.alice.nonfree.NebulousIde;
 
@@ -243,6 +244,22 @@ public class TemplateUriState extends org.lgna.croquet.ImmutableDataSingleSelect
 
 	public static TemplateUriState getInstance() {
 		return SingletonHolder.instance;
+	}
+
+	public static String getLocalizedName( Template templateValue ) {
+		return getLocalizedName( templateValue.toString() );
+	}
+
+	public static String getLocalizedName( String stateName ) {
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( TemplateUriState.class.getPackage().getName() + ".templateNames" );
+		if( stateName != null ) {
+			try {
+				stateName = resourceBundle.getString( stateName );
+			} catch( MissingResourceException e ) {
+				e.printStackTrace();
+			}
+		}
+		return stateName;
 	}
 
 	private TemplateUriState() {

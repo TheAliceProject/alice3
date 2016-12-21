@@ -108,7 +108,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 
 		@Override
 		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			assert( state instanceof ShowJointedModelJointAxesState );
+			assert ( state instanceof ShowJointedModelJointAxesState );
 			SceneObjectPropertyManagerPanel.this.setShowJointsOfField( ( (ShowJointedModelJointAxesState)state ).getField(), nextValue );
 		}
 	};
@@ -352,7 +352,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 
 						PropertyAdapterController<?> propertyController = AdapterControllerUtilities.getValuePanelForPropertyAdapter( propertyAdapter );
 						assert propertyController != null;
-						LabelValueControllerPair matchingLabelController = new LabelValueControllerPair( createLabel( propertyAdapter.getRepr() + " = " ), propertyController );
+						LabelValueControllerPair matchingLabelController = new LabelValueControllerPair( createLabel( propertyAdapter.getLocalizedRepr() + " = " ), propertyController );
 						assert matchingLabelController != null;
 						if( propertyAdapter instanceof SelectedInstanceAdapter ) {
 							//Don't add the fieldNameAdapter, just hold onto it so we can add it to the main panel later

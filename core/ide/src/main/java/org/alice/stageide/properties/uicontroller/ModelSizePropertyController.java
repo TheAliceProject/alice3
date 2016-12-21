@@ -48,6 +48,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.alice.ide.properties.uicontroller.AbstractAdapterController;
 import org.alice.ide.properties.uicontroller.DoubleTextField;
 import org.alice.stageide.properties.IsAllScaleLinkedState;
@@ -65,8 +66,7 @@ import org.lgna.story.implementation.ModelImp;
 
 import edu.cmu.cs.dennisc.math.Dimension3;
 
-public class ModelSizePropertyController extends AbstractAdapterController<Dimension3>
-{
+public class ModelSizePropertyController extends AbstractAdapterController<Dimension3> {
 
 	private org.lgna.croquet.State.ValueListener<Boolean> linkStateValueObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		@Override
@@ -106,8 +106,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 	private final int SCALE_YZ_X_POS = 4;
 	private final int SCALE_XY_X_POS = 3;
 
-	public ModelSizePropertyController( ModelSizeAdapter propertyAdapter )
-	{
+	public ModelSizePropertyController( ModelSizeAdapter propertyAdapter ) {
 		super( propertyAdapter );
 		IsAllScaleLinkedState.getInstance().addValueListener( linkStateValueObserver );
 		IsXYScaleLinkedState.getInstance().addValueListener( linkStateValueObserver );
@@ -116,27 +115,27 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 	}
 
 	@Override
-	public Class<?> getPropertyType()
-	{
+	public Class<?> getPropertyType() {
 		return org.lgna.story.SModel.class;
 	}
 
 	@Override
-	protected void initializeComponents()
-	{
+	protected void initializeComponents() {
 		super.initializeComponents();
 		this.valueChangeListener = new ActionListener() {
 
 			@Override
-			public void actionPerformed( ActionEvent e )
-			{
+			public void actionPerformed( ActionEvent e ) {
 				ModelSizePropertyController.this.updateAdapterFromUI( e );
 			}
 		};
 
-		this.widthLabel = new Label( "Width:" );
-		this.heightLabel = new Label( "Height:" );
-		this.depthLabel = new Label( "Depth:" );
+		String widthString = AbstractPropertyAdapter.getLocalizedString( "Width" );
+		String heightString = AbstractPropertyAdapter.getLocalizedString( "Height" );
+		String depthString = AbstractPropertyAdapter.getLocalizedString( "Depth" );
+		this.widthLabel = new Label( widthString + ":" );
+		this.heightLabel = new Label( heightString + ":" );
+		this.depthLabel = new Label( depthString + ":" );
 
 		this.widthField = new DoubleTextField( 3 );
 		this.widthField.addActionListener( this.valueChangeListener );
@@ -163,7 +162,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 				1, //gridHeight
 				0.0, //weightX
 				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
+				GridBagConstraints.EAST, //anchor
 				GridBagConstraints.NONE, //fill
 				new Insets( 2, 2, 2, 2 ), //insets
 				0, //ipadX
@@ -176,7 +175,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 				1, //gridHeight
 				0.0, //weightX
 				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.WEST, //anchor
 				GridBagConstraints.NONE, //fill
 				new Insets( 2, 2, 2, 2 ), //insets
 				0, //ipadX
@@ -189,7 +188,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 				1, //gridHeight
 				0.0, //weightX
 				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
+				GridBagConstraints.EAST, //anchor
 				GridBagConstraints.NONE, //fill
 				new Insets( 2, 2, 2, 2 ), //insets
 				0, //ipadX
@@ -202,7 +201,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 				1, //gridHeight
 				0.0, //weightX
 				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.WEST, //anchor
 				GridBagConstraints.NONE, //fill
 				new Insets( 2, 2, 2, 2 ), //insets
 				0, //ipadX
@@ -215,7 +214,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 				1, //gridHeight
 				0.0, //weightX
 				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
+				GridBagConstraints.EAST, //anchor
 				GridBagConstraints.NONE, //fill
 				new Insets( 2, 2, 2, 2 ), //insets
 				0, //ipadX
@@ -228,7 +227,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 				1, //gridHeight
 				0.0, //weightX
 				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.WEST, //anchor
 				GridBagConstraints.NONE, //fill
 				new Insets( 2, 2, 2, 2 ), //insets
 				0, //ipadX
@@ -241,7 +240,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 				3, //gridHeight
 				1.0, //weightX
 				1.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
+				GridBagConstraints.CENTER, //anchor
 				GridBagConstraints.BOTH, //fill
 				new Insets( 0, 0, 0, 0 ), //insets
 				0, //ipadX
@@ -251,8 +250,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 	}
 
 	@Override
-	protected void updateUIFromNewAdapter()
-	{
+	protected void updateUIFromNewAdapter() {
 		super.updateUIFromNewAdapter();
 
 		this.removeComponent( this.linkAllButton );
@@ -279,31 +277,25 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 					hasX = true;
 					hasY = true;
 					hasZ = true;
-				}
-				else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XY_PLANE ) {
+				} else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XY_PLANE ) {
 					hasLinkXY = true;
 					hasX = true;
 					hasY = true;
-				}
-				else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
+				} else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.XZ_PLANE ) {
 					hasLinkXZ = true;
 					hasX = true;
 					hasZ = true;
-				}
-				else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.YZ_PLANE ) {
+				} else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.YZ_PLANE ) {
 					hasLinkYZ = true;
 					hasY = true;
 					hasZ = true;
-				}
-				else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS ) {
+				} else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.X_AXIS ) {
 					hasX = true;
 					hasIndependentX = true;
-				}
-				else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
+				} else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Y_AXIS ) {
 					hasY = true;
 					hasIndependentY = true;
-				}
-				else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Z_AXIS ) {
+				} else if( r == edu.cmu.cs.dennisc.scenegraph.scale.Resizer.Z_AXIS ) {
 					hasZ = true;
 					hasIndependentZ = true;
 				}
@@ -318,7 +310,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 					3, //gridHeight
 					0.0, //weightX
 					0.0, //weightY
-					GridBagConstraints.WEST, //anchor 
+					GridBagConstraints.WEST, //anchor
 					GridBagConstraints.NONE, //fill
 					new Insets( 2, 2, 2, 2 ), //insets
 					0, //ipadX
@@ -333,7 +325,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 					3, //gridHeight
 					0.0, //weightX
 					0.0, //weightY
-					GridBagConstraints.NORTHWEST, //anchor 
+					GridBagConstraints.NORTHWEST, //anchor
 					GridBagConstraints.NONE, //fill
 					new Insets( 16, 2, 2, 2 ), //insets //16
 					0, //ipadX
@@ -348,7 +340,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 					3, //gridHeight
 					0.0, //weightX
 					0.0, //weightY
-					GridBagConstraints.WEST, //anchor 
+					GridBagConstraints.WEST, //anchor
 					GridBagConstraints.NONE, //fill
 					new Insets( 2, 2, 2, 2 ), //insets
 					0, //ipadX
@@ -363,7 +355,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 					3, //gridHeight
 					0.0, //weightX
 					0.0, //weightY
-					GridBagConstraints.NORTHWEST, //anchor 
+					GridBagConstraints.NORTHWEST, //anchor
 					GridBagConstraints.NONE, //fill
 					new Insets( 48, 2, 2, 2 ), //insets
 					0, //ipadX
@@ -402,14 +394,11 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		setResetButton();
 	}
 
-	private void setResetButton()
-	{
-		if( ( this.resetButton != null ) && ( this.resetButton.getAwtComponent().getParent() != null ) )
-		{
+	private void setResetButton() {
+		if( ( this.resetButton != null ) && ( this.resetButton.getAwtComponent().getParent() != null ) ) {
 			this.removeComponent( this.resetButton );
 		}
-		if( this.propertyAdapter != null )
-		{
+		if( this.propertyAdapter != null ) {
 
 			org.lgna.croquet.Operation operation = new org.alice.ide.properties.adapter.croquet.ModelSizePropertyValueOperation( this.propertyAdapter, getOriginalSize() );
 			operation.setName( "Reset" );
@@ -431,7 +420,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 					3, //gridHeight
 					0.0, //weightX
 					0.0, //weightY
-					GridBagConstraints.WEST, //anchor 
+					GridBagConstraints.WEST, //anchor
 					GridBagConstraints.NONE, //fill
 					new Insets( 2, 2, 2, 2 ), //insets
 					0, //ipadX
@@ -440,25 +429,21 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		}
 	}
 
-	private Dimension3 getOriginalSize()
-	{
+	private Dimension3 getOriginalSize() {
 		ModelImp baseModel = (ModelImp)this.propertyAdapter.getInstance();
 		Dimension3 scale = baseModel.getScale();
 		Dimension3 size = baseModel.getSize();
 		return new Dimension3( size.x / scale.x, size.y / scale.y, size.z / scale.z );
 	}
 
-	private Dimension3 getModelSize()
-	{
+	private Dimension3 getModelSize() {
 		ModelImp baseModel = (ModelImp)this.propertyAdapter.getInstance();
 		return baseModel.getSize();
 	}
 
 	@Override
-	protected void setValueOnUI( Dimension3 value )
-	{
-		if( value != null )
-		{
+	protected void setValueOnUI( Dimension3 value ) {
+		if( value != null ) {
 			this.doUpdateOnAdapter = false;
 			this.widthField.setValue( value.x );
 			this.heightField.setValue( value.y );
@@ -472,63 +457,46 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		this.depthField.setValue( null );
 	}
 
-	private Dimension3 getSizeFromUI( Object source )
-	{
+	private Dimension3 getSizeFromUI( Object source ) {
 		double desiredWidth = widthField.getValue();
 		double desiredHeight = heightField.getValue();
 		double desiredDepth = depthField.getValue();
-		if( Double.isNaN( desiredWidth ) || Double.isNaN( desiredHeight ) || Double.isNaN( desiredDepth ) )
-		{
+		if( Double.isNaN( desiredWidth ) || Double.isNaN( desiredHeight ) || Double.isNaN( desiredDepth ) ) {
 			return null;
 		}
 		double width = desiredWidth;
 		double height = desiredHeight;
 		double depth = desiredDepth;
-		if( source != null )
-		{
+		if( source != null ) {
 			Dimension3 size = this.getModelSize();
-			if( source == widthField )
-			{
+			if( source == widthField ) {
 				double relativeXScale = width / size.x;
-				if( IsAllScaleLinkedState.getInstance().getValue() )
-				{
+				if( IsAllScaleLinkedState.getInstance().getValue() ) {
 					height = relativeXScale * size.y;
 					depth = relativeXScale * size.z;
-				}
-				else if( IsXYScaleLinkedState.getInstance().getValue() ) {
+				} else if( IsXYScaleLinkedState.getInstance().getValue() ) {
 					height = relativeXScale * size.y;
-				}
-				else if( IsXZScaleLinkedState.getInstance().getValue() ) {
+				} else if( IsXZScaleLinkedState.getInstance().getValue() ) {
 					depth = relativeXScale * size.z;
 				}
-			}
-			else if( source == heightField )
-			{
+			} else if( source == heightField ) {
 				double relativeYScale = height / size.y;
-				if( IsAllScaleLinkedState.getInstance().getValue() )
-				{
+				if( IsAllScaleLinkedState.getInstance().getValue() ) {
 					width = relativeYScale * size.x;
 					depth = relativeYScale * size.z;
-				}
-				else if( IsXYScaleLinkedState.getInstance().getValue() ) {
+				} else if( IsXYScaleLinkedState.getInstance().getValue() ) {
 					width = relativeYScale * size.x;
-				}
-				else if( IsYZScaleLinkedState.getInstance().getValue() ) {
+				} else if( IsYZScaleLinkedState.getInstance().getValue() ) {
 					depth = relativeYScale * size.z;
 				}
-			}
-			else if( source == depthField )
-			{
+			} else if( source == depthField ) {
 				double relativeZScale = depth / size.z;
-				if( IsAllScaleLinkedState.getInstance().getValue() )
-				{
+				if( IsAllScaleLinkedState.getInstance().getValue() ) {
 					width = relativeZScale * size.x;
 					height = relativeZScale * size.y;
-				}
-				else if( IsXZScaleLinkedState.getInstance().getValue() ) {
+				} else if( IsXZScaleLinkedState.getInstance().getValue() ) {
 					width = relativeZScale * size.x;
-				}
-				else if( IsYZScaleLinkedState.getInstance().getValue() ) {
+				} else if( IsYZScaleLinkedState.getInstance().getValue() ) {
 					height = relativeZScale * size.y;
 				}
 			}
@@ -537,8 +505,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		return newSize;
 	}
 
-	private void updateUIFromLinkState( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue )
-	{
+	private void updateUIFromLinkState( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue ) {
 		if( !isUpdatingState && ( nextValue != prevValue ) ) {
 			isUpdatingState = true;
 			if( nextValue ) {
@@ -546,18 +513,15 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 					IsXYScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXYScaleLinkedState.getInstance().isEnabled() );
 					IsXZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXZScaleLinkedState.getInstance().isEnabled() );
 					IsYZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsYZScaleLinkedState.getInstance().isEnabled() );
-				}
-				else if( state == IsXYScaleLinkedState.getInstance() ) {
+				} else if( state == IsXYScaleLinkedState.getInstance() ) {
 					IsAllScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsAllScaleLinkedState.getInstance().isEnabled() );
 					IsXZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXZScaleLinkedState.getInstance().isEnabled() );
 					IsYZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsYZScaleLinkedState.getInstance().isEnabled() );
-				}
-				else if( state == IsXZScaleLinkedState.getInstance() ) {
+				} else if( state == IsXZScaleLinkedState.getInstance() ) {
 					IsAllScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsAllScaleLinkedState.getInstance().isEnabled() );
 					IsXYScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXYScaleLinkedState.getInstance().isEnabled() );
 					IsYZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsYZScaleLinkedState.getInstance().isEnabled() );
-				}
-				else if( state == IsYZScaleLinkedState.getInstance() ) {
+				} else if( state == IsYZScaleLinkedState.getInstance() ) {
 					IsAllScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsAllScaleLinkedState.getInstance().isEnabled() );
 					IsXZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXZScaleLinkedState.getInstance().isEnabled() );
 					IsXYScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXYScaleLinkedState.getInstance().isEnabled() );
@@ -567,17 +531,12 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		}
 	}
 
-	protected void updateAdapterFromUI( ActionEvent e )
-	{
-		if( this.doUpdateOnAdapter )
-		{
+	protected void updateAdapterFromUI( ActionEvent e ) {
+		if( this.doUpdateOnAdapter ) {
 			Dimension3 newScale = getSizeFromUI( e.getSource() );
-			if( newScale != null )
-			{
-				if( !newScale.equals( this.propertyAdapter.getValue() ) )
-				{
-					if( ( this.propertyAdapter.getLastSetValue() == null ) || !this.propertyAdapter.getLastSetValue().equals( newScale ) )
-					{
+			if( newScale != null ) {
+				if( !newScale.equals( this.propertyAdapter.getValue() ) ) {
+					if( ( this.propertyAdapter.getLastSetValue() == null ) || !this.propertyAdapter.getLastSetValue().equals( newScale ) ) {
 						org.lgna.croquet.Operation operation = new org.alice.ide.properties.adapter.croquet.ModelSizePropertyValueOperation( this.propertyAdapter, newScale );
 						operation.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 					}

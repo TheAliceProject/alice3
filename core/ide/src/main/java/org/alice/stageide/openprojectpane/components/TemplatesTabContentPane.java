@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.stageide.openprojectpane.components;
 
+import org.alice.stageide.openprojectpane.models.TemplateUriState;
+
 public class TemplatesTabContentPane extends org.alice.ide.projecturi.views.ListContentPanel {
 	public TemplatesTabContentPane( org.alice.ide.projecturi.TemplatesTab composite ) {
 		super( composite );
@@ -53,8 +55,9 @@ public class TemplatesTabContentPane extends org.alice.ide.projecturi.views.List
 			@Override
 			protected javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value ) {
 				java.net.URI uri = (java.net.URI)value;
-				String text = uri.getFragment();
-				javax.swing.ImageIcon imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TemplatesTabContentPane.class.getResource( "images/" + text + ".png" ) );
+				String textKey = uri.getFragment();
+				String text = TemplateUriState.getLocalizedName( textKey );
+				javax.swing.ImageIcon imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TemplatesTabContentPane.class.getResource( "images/" + textKey + ".png" ) );
 				javax.swing.Icon icon = imageIcon != null ? new org.alice.ide.projecturi.views.SnapshotIcon( imageIcon.getImage() ) : null;
 				rv.setIcon( icon );
 				rv.setText( text );
