@@ -79,7 +79,10 @@ public class AliceFormatter extends Formatter {
 				"org-lgna-story-SetDimensionPolicy-EnumConstants",
 				"org-lgna-story-SpatialRelation-EnumConstants",
 				"org-lgna-story-TurnDirection-EnumConstants",
-
+				"org-lgna-story-SGround-SurfaceAppearance-EnumConstants",
+				"org-lgna-story-SRoom-CeilingAppearance-EnumConstants",
+				"org-lgna-story-SRoom-FloorAppearance-EnumConstants",
+				"org-lgna-story-SRoom-WallAppearance-EnumConstants",
 				//todo
 				"org-alice-apis-moveandturn-HowMuch-EnumConstants",
 				"org-alice-apis-moveandturn-Parameters",

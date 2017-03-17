@@ -46,10 +46,12 @@ package org.alice.stageide.modelresource;
  * @author Dennis Cosgrove
  */
 public class RootResourceKey extends ResourceKey {
-	private final String displayText;
+	private final String keyText;
+	private final String defaultDisplayText;
 
-	public RootResourceKey( String displayText ) {
-		this.displayText = displayText;
+	public RootResourceKey( String keyText, String defaultDisplayText ) {
+		this.keyText = keyText;
+		this.defaultDisplayText = defaultDisplayText;
 	}
 
 	@Override
@@ -59,13 +61,21 @@ public class RootResourceKey extends ResourceKey {
 
 	@Override
 	public String getInternalText() {
-		return this.displayText;
+		return this.defaultDisplayText;
 	}
 
 	@Override
 	public String getLocalizedDisplayText() {
-		//TODO: Localize
-		return this.displayText;
+		Class cls = org.alice.stageide.gallerybrowser.GalleryComposite.class;
+		String bundleName = cls.getPackage().getName() + ".croquet";
+		try {
+			java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+			String rv = resourceBundle.getString( this.keyText );
+			return rv;
+		} catch( java.util.MissingResourceException mre ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls, this.keyText );
+			return this.defaultDisplayText;
+		}
 	}
 
 	@Override

@@ -74,10 +74,17 @@ public class GenerateDebugTranslation {
 		return matches;
 	}
 
-	private static void copyPropertiesFile( Path srcPath, Path localizePath, Path propertiesPath, boolean deleteOverride ) {
+	private static boolean shouldSkipValue( String value ) {
+		if( value.contains( "VK_" ) ) {
+			return true;
+		}
+		return false;
+	}
+
+	private static void copyPropertiesFile( Path srcPath, Path localizePath, Path propertiesPath, String suffix, String customKey, boolean deleteOverride ) {
 		Path relativePropertyPath = srcPath.relativize( propertiesPath );
 		Path localizePropertyPath = localizePath.resolve( relativePropertyPath );
-		Path newLocalizePropertyPath = localizePropertyPath.resolveSibling( relativePropertyPath.getFileName().toString().replace( ".properties", "_en_CA.properties" ) );
+		Path newLocalizePropertyPath = localizePropertyPath.resolveSibling( relativePropertyPath.getFileName().toString().replace( ".properties", suffix + ".properties" ) );
 
 		if( deleteOverride ) {
 			if( Files.exists( newLocalizePropertyPath ) ) {
@@ -103,7 +110,9 @@ public class GenerateDebugTranslation {
 			while( keys.hasMoreElements() ) {
 				String key = keys.nextElement();
 				String value = rb.getString( key );
-				writer.write( key + " = #" + value + "\r\n" );
+				if( !shouldSkipValue( value ) ) {
+					writer.write( key + " = " + customKey + value + customKey + "\r\n" );
+				}
 			}
 			writer.close();
 		} catch( Exception e ) {
@@ -113,12 +122,46 @@ public class GenerateDebugTranslation {
 		System.out.println( "Wrote new file: " + newLocalizePropertyPath );
 	}
 
-	public static void main( String[] args ) throws Exception {
+	public static String stripQuotes( String toStrip ) {
+		if( ( toStrip.startsWith( "\"" ) && toStrip.endsWith( "\"" ) ) || ( toStrip.startsWith( "\'" ) && toStrip.endsWith( "\'" ) ) ) {
+			toStrip = toStrip.substring( 1, toStrip.length() - 1 );
+		}
+		return toStrip;
+	}
 
+	public static void main( String[] args ) throws Exception {
 		boolean deleteOverride = false;
-		if( args.length > 0 ) {
-			if( args[ 0 ].equalsIgnoreCase( "-d" ) ) {
+		String exportPath = null;
+		String generatedFileSuffix = "_en_CA";
+		String customKey = "#";
+		int i = 0;
+		while( i < args.length ) {
+			if( args[ i ].equalsIgnoreCase( "-d" ) ) {
 				deleteOverride = true;
+				i++;
+			} else if( args[ i ].equalsIgnoreCase( "-x" ) ) {
+				if( ( i + 1 ) < args.length ) {
+					exportPath = args[ i + 1 ];
+					i += 2;
+				}
+			} else if( args[ i ].equalsIgnoreCase( "-s" ) ) {
+				if( ( i + 1 ) < args.length ) {
+					generatedFileSuffix = args[ i + 1 ];
+					generatedFileSuffix = stripQuotes( generatedFileSuffix );
+					i += 2;
+				} else {
+					generatedFileSuffix = "";
+					i += 1;
+				}
+			} else if( args[ i ].equalsIgnoreCase( "-k" ) ) {
+				if( ( i + 1 ) < args.length ) {
+					customKey = args[ i + 1 ];
+					customKey = stripQuotes( customKey );
+					i += 2;
+				} else {
+					customKey = "";
+					i += 1;
+				}
 			}
 		}
 
@@ -134,13 +177,18 @@ public class GenerateDebugTranslation {
 		for( Path rootPath : srcPaths ) {
 			List<Path> propertyPaths = new ArrayList<Path>();
 			Path srcPath = rootPath.resolve( "main" );
-			Path localizePath = rootPath.resolve( "l10n-alice" );
+			Path localizePath;
+			if( exportPath != null ) {
+				localizePath = Paths.get( exportPath );
+			} else {
+				localizePath = rootPath.resolve( "l10n-alice" );
+			}
 			try ( Stream<Path> stream = Files.walk( srcPath ) ) {
 				stream.filter( path -> isPropertiesFile( path ) ).forEach( path -> propertyPaths.add( path ) );
 			}
 
 			for( Path propertyPath : propertyPaths ) {
-				copyPropertiesFile( srcPath, localizePath, propertyPath, deleteOverride );
+				copyPropertiesFile( srcPath, localizePath, propertyPath, generatedFileSuffix, customKey, deleteOverride );
 				fileCount++;
 			}
 		}
