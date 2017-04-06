@@ -47,7 +47,7 @@ package org.alice.ide.codeeditor;
  */
 public class StatementListBorder implements javax.swing.border.Border {
 	private static final String TEXT = "drop statement here";
-	private static final String[] TEXTS = { TEXT, TEXT };
+	private static final String[] TEXTS = { null, null };
 	private static final int LONGER_INDEX = 1;
 	private static final java.awt.Stroke SOLID_STROKE = new java.awt.BasicStroke( 2.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	private static final java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 220 );
@@ -87,9 +87,19 @@ public class StatementListBorder implements javax.swing.border.Border {
 		this.minimum = minimum;
 	}
 
+	private static void initializeTextIfNecessary() {
+		if( TEXTS[ 0 ] == null ) {
+			String localizedText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringForKey( "dropStatementHere", "org.alice.ide.codeeditor.CodeEditor", "drop statement here" );
+			for( int i = 0; i < TEXTS.length; i++ ) {
+				TEXTS[ i ] = localizedText;
+			}
+		}
+	}
+
 	private static java.awt.geom.Rectangle2D getStringBounds( java.awt.Component c, java.awt.Graphics g, int index ) {
 		java.awt.FontMetrics fontMetrics = c.getFontMetrics( c.getFont() );
 		if( fontMetrics != null ) {
+			initializeTextIfNecessary();
 			return fontMetrics.getStringBounds( TEXTS[ index ], g );
 		} else {
 			return null;
@@ -197,6 +207,7 @@ public class StatementListBorder implements javax.swing.border.Border {
 					} else {
 						xText += PADDING;
 					}
+					initializeTextIfNecessary();
 					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, TEXTS[ textIndex ], xText, 0, (int)bounds.getWidth(), height );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
 				} else {

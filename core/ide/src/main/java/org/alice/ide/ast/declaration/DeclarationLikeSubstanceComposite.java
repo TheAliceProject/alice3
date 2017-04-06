@@ -348,7 +348,8 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		if( valueType != null ) {
 			return null;
 		} else {
-			return this.valueComponentTypeState.getSidekickLabel().getText().replaceAll( ":", "" ) + " must be set";
+			String mustBeSetTest = this.findLocalizedText( "mustBeSet" );
+			return mustBeSetTest.replaceAll( "</type/>", this.valueComponentTypeState.getSidekickLabel().getText().replaceAll( ":", "" ) );
 		}
 	}
 
@@ -368,13 +369,17 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 				if( this.isNameAvailable( declarationName ) ) {
 					return null;
 				} else {
-					return "\"" + declarationName + "\"" + " is not available.";
+					String notAvalableText = this.findLocalizedText( "isNotAvailable" );
+					return notAvalableText.replaceAll( "</name/>", "\"" + declarationName + "\"" );
 				}
 			} else {
-				return "\"" + declarationName + "\"" + " is not a valid name.";
+				String notValidNameText = this.findLocalizedText( "isNotAValidName" );
+				return notValidNameText.replaceAll( "</name/>", "\"" + declarationName + "\"" );
 			}
 		} else {
-			return "\"" + declarationName + "\" is not a valid " + this.nameState.getSidekickLabel().getText().replaceAll( ":", "" );
+			String notValidText = this.findLocalizedText( "isNotValid" );
+			notValidText = notValidText.replaceAll( "</name/>", "\"" + declarationName + "\"" );
+			return notValidText.replaceAll( "</type/>", this.nameState.getSidekickLabel().getText().replaceAll( ":", "" ) );
 		}
 	}
 
@@ -403,7 +408,8 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		if( ( initializer != null ) || ( this.isNullAllowedForInitializerUnderAnyCircumstances() && this.isNullAllowedForInitializer() ) ) {
 			return null;
 		} else {
-			return this.initializerState.getSidekickLabel().getText().replaceAll( ":", "" ) + " must be set";
+			String mustBeSetTest = this.findLocalizedText( "mustBeSet" );
+			return mustBeSetTest.replaceAll( "</type/>", this.initializerState.getSidekickLabel().getText().replaceAll( ":", "" ) );
 		}
 	}
 

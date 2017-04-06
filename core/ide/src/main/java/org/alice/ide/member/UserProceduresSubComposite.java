@@ -63,7 +63,8 @@ public class UserProceduresSubComposite extends UserMethodsSubComposite {
 
 	private UserProceduresSubComposite( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "55b386bf-a97b-452e-94c7-13160c27ac8c" ), type, org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( type ).getLaunchOperation() );
-		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "'s Editable Procedures" );
+		String titleText = this.findLocalizedText( "editableProceduresTitle" );
+		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( titleText );
 	}
 
 	@Override

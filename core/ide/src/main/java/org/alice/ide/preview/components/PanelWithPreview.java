@@ -92,17 +92,17 @@ public abstract class PanelWithPreview extends org.lgna.croquet.views.BorderPane
 
 			if( this.isPreviewDesired() ) {
 				this.previewPanel = this.createPreviewPanel();
+				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( PanelWithPreview.class.getPackage().getName() + ".previewPanel" );
+				String previewText = resourceBundle.getString( "previewTitle" );
 				org.lgna.croquet.views.PageAxisPanel northPanel = new org.lgna.croquet.views.PageAxisPanel(
 						new org.lgna.croquet.views.LineAxisPanel(
 								org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 16 ),
-								new org.lgna.croquet.views.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
+								new org.lgna.croquet.views.Label( previewText, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
 								org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 16 ),
-								this.previewPanel
-						),
+								this.previewPanel ),
 						org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ),
 						org.lgna.croquet.views.Separator.createInstanceSeparatingTopFromBottom(),
-						org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 )
-						);
+						org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) );
 				this.addPageStartComponent( northPanel );
 			}
 		}

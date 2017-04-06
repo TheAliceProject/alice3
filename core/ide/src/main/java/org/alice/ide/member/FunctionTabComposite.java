@@ -46,9 +46,9 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide.member.views.FunctionTabView> {
-	private static final String GROUP_BY_RETURN_TYPE = "group by return type";
+	private static final String GROUP_BY_RETURN_TYPE_KEY = "groupByReturnType";
 
-	private final org.lgna.croquet.ImmutableDataSingleSelectListState<String> sortState = this.createImmutableListState( "sortState", String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, GROUP_BY_CATEGORY, SORT_ALPHABETICALLY, GROUP_BY_RETURN_TYPE );
+	private final org.lgna.croquet.ImmutableDataSingleSelectListState<String> sortState = this.createImmutableListState( "sortState", String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, this.findLocalizedText( GROUP_BY_CATEGORY_KEY ), this.findLocalizedText( SORT_ALPHABETICALLY_KEY ), this.findLocalizedText( GROUP_BY_RETURN_TYPE_KEY ) );
 
 	public FunctionTabComposite() {
 		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ), org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ? null : new AddFunctionMenuModel() );
@@ -124,7 +124,7 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 
 	@Override
 	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
-		if( GROUP_BY_RETURN_TYPE.equals( this.getSortState().getValue() ) ) {
+		if( this.findLocalizedText( GROUP_BY_RETURN_TYPE_KEY ).equals( this.getSortState().getValue() ) ) {
 			return this.getByReturnTypeSubComposites();
 		} else {
 			return super.getSubComposites();
