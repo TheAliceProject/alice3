@@ -76,7 +76,7 @@
 		<starter.projects.version>2016.08.16</starter.projects.version>
 		<nebulous.model.version>2016.07.15</nebulous.model.version>
 		<nebulous.person.version>2014.08.12</nebulous.person.version>
-		<nebulous.lib.version>2016.08.23</nebulous.lib.version>
+		<nebulous.lib.version>2017.05.01</nebulous.lib.version>
 	</properties>
 
 	<modules>
@@ -267,7 +267,7 @@
 				<plugin>
 					<groupId>org.zanata</groupId>
 					<artifactId>zanata-maven-plugin</artifactId>
-					<version>3.9.1</version>
+					<version>4.1.1</version>
 					<configuration>
 						<projectConfig>${parent.basedir}/zanata.xml</projectConfig>
 						<sourceLang>en-US</sourceLang>
