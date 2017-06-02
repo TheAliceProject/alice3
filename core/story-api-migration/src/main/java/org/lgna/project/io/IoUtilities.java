@@ -415,7 +415,11 @@ public abstract class IoUtilities {
 	}
 
 	public static void writeProject( java.io.OutputStream os, final org.lgna.project.Project project, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
+		//	long getStreamStart = System.currentTimeMillis();
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
+		//	long getStreamEnd = System.currentTimeMillis();
+		//	System.out.println( "Get stream time: " + ( ( getStreamEnd - getStreamStart ) * .001 ) );
+		//	long startHeader = System.currentTimeMillis();
 		writeVersions( zos );
 		org.lgna.project.ast.AbstractType<?, ?, ?> programType = project.getProgramType();
 		writeType( programType, zos, PROGRAM_TYPE_ENTRY_NAME );
@@ -441,8 +445,15 @@ public abstract class IoUtilities {
 				}
 			} );
 		}
-		writeDataSources( zos, dataSources );
+		//	long endHeader = System.currentTimeMillis();
+		//	System.out.println( "Header write time: " + ( ( endHeader - startHeader ) * .001 ) );
 
+		//	long startData = System.currentTimeMillis();
+		writeDataSources( zos, dataSources );
+		//	long endData = System.currentTimeMillis();
+		//	System.out.println( "Data write time: " + ( ( endData - startData ) * .001 ) );
+
+		//	long startGetResources = System.currentTimeMillis();
 		java.util.Set<org.lgna.common.Resource> resources = project.getResources();
 
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.ResourceExpression> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.ResourceExpression>( org.lgna.project.ast.ResourceExpression.class ) {
@@ -463,14 +474,29 @@ public abstract class IoUtilities {
 			}
 		}
 
-		writeResources( zos, resources );
+		//	long endGetResources = System.currentTimeMillis();
+		//	System.out.println( "Get resources time: " + ( ( endGetResources - startGetResources ) * .001 ) );
 
+		//	long startResources = System.currentTimeMillis();
+		writeResources( zos, resources );
+		//	long endResources = System.currentTimeMillis();
+		//	System.out.println( "Resources write time: " + ( ( endResources - startResources ) * .001 ) );
+
+		//	long startFlush = System.currentTimeMillis();
 		zos.flush();
+		//	long endFlush = System.currentTimeMillis();
 		zos.close();
+		//	long endClose = System.currentTimeMillis();
+		//	System.out.println( "Flush time: " + ( ( endFlush - startFlush ) * .001 ) );
+		//	System.out.println( "Close time: " + ( ( endClose - endFlush ) * .001 ) );
 	}
 
 	public static void writeProject( java.io.File file, org.lgna.project.Project project, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
+		//	long startDir = System.currentTimeMillis();
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		//	long endDir = System.currentTimeMillis();
+		//	System.out.println( "Create directories time: " + ( ( endDir - startDir ) * .001 ) );
+
 		writeProject( new java.io.FileOutputStream( file ), project, dataSources );
 	}
 

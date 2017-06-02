@@ -377,10 +377,16 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	protected abstract java.awt.image.BufferedImage createThumbnail() throws Throwable;
 
 	public final void saveCopyOfProjectTo( java.io.File file ) throws java.io.IOException {
+		//		long startProject = System.currentTimeMillis();
 		org.lgna.project.Project project = this.getUpToDateProject();
+		//		long endProject = System.currentTimeMillis();
+		//		System.out.println( "Get project time: " + ( ( endProject - startProject ) * .001 ) );
 		edu.cmu.cs.dennisc.java.util.zip.DataSource[] dataSources;
 		try {
+			//			long startThumb = System.currentTimeMillis();
 			final java.awt.image.BufferedImage thumbnailImage = createThumbnail();
+			//			long endThumb = System.currentTimeMillis();
+			//			System.out.println( "Thumbnail render time: " + ( ( endThumb - startThumb ) * .001 ) );
 			if( thumbnailImage != null ) {
 				if( ( thumbnailImage.getWidth() > 0 ) && ( thumbnailImage.getHeight() > 0 ) ) {
 					//pass
@@ -405,11 +411,22 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		} catch( Throwable t ) {
 			dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] {};
 		}
+
+		//		long startWrite = System.currentTimeMillis();
 		org.lgna.project.io.IoUtilities.writeProject( file, project, dataSources );
+		//		long endWrite = System.currentTimeMillis();
+		//		System.out.println( "File total write time: " + ( ( endWrite - startWrite ) * .001 ) );
 	}
 
 	public final void saveProjectTo( java.io.File file ) throws java.io.IOException {
+		//		long startTime = System.currentTimeMillis();
+
 		this.saveCopyOfProjectTo( file );
+
+		//		long endTime = System.currentTimeMillis();
+		//		double saveTime = ( endTime - startTime ) * .001;
+		//		System.out.println( "Save time: " + saveTime );
+
 		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleSave( file );
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: better handling of file project loader", file );
