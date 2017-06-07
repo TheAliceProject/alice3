@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="5.1.15" transformSequenceNumber="4">
-  <directoryPresets config="./installerFiles" />
+  <directoryPresets config="./aliceInstallData/Alice3/platform/macosx/ffmpeg/ffmpeg" />
   <application name="Alice 3" distributionSourceDir="" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="Alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="http://www.alice.org" version="3.3.0.2.0" allPathsRelative="true" backupOnSave="false" autoSave="true" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.6" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
       <principalLanguage id="en" customLocalizationFile="" />
@@ -45,6 +45,9 @@
     <roots />
     <mountPoints>
       <mountPoint id="23" root="" location="" mode="755" />
+      <mountPoint id="301" root="" location="platform" mode="755" />
+      <mountPoint id="302" root="" location="platform/macosx" mode="755" />
+      <mountPoint id="303" root="" location="platform/macosx/ffmpeg" mode="755" />
     </mountPoints>
     <entries>
       <dirEntry mountPoint="23" file="./aliceInstallData/Alice3" overwriteMode="2" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" entryMode="direct" subDirectory="Alice3" excludeSuffixes="" dirMode="755" overrideDirMode="false">
@@ -58,6 +61,7 @@
           <entry location="errlog.txt" fileType="regular" />
         </exclude>
       </dirEntry>
+      <fileEntry mountPoint="303" file="./aliceInstallData/Alice3/platform/macosx/ffmpeg/ffmpeg" overwriteMode="4" shared="false" fileMode="755" uninstallMode="0" overrideFileMode="true" overrideOverwriteMode="false" overrideUninstallMode="false" />
     </entries>
     <components>
       <component name="aliceGallery" id="79" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
@@ -179,7 +183,7 @@
         </text>
       </splashScreen>
       <java mainClass="org.alice.stageide.EntryPoint" vmParameters="-ea -Xmx1024m -Dorg.alice.ide.rootDirectory=./ -Dswing.aatext=true -Djogamp.gluegen.UseTempJarCache=false" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true">
-         <classPath>
+        <classPath>
           <archive location="ext/axis/axis-jaxrpc/1.3/axis-jaxrpc-1.3.jar" failOnError="true" />
           <archive location="ext/axis/axis-saaj/1.3/axis-saaj-1.3.jar" failOnError="true" />
           <archive location="ext/axis/axis-wsdl4j/1.5.1/axis-wsdl4j-1.5.1.jar" failOnError="true" />
@@ -220,7 +224,6 @@
           <archive location="lib/story-api-migration-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/story-api-nonfree-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/util-0.0.1-SNAPSHOT.jar" failOnError="true" />
-
         </classPath>
         <nativeLibraryDirectories />
       </java>
