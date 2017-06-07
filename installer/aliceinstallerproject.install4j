@@ -52,13 +52,7 @@
     <entries>
       <dirEntry mountPoint="23" file="./aliceInstallData/Alice3" overwriteMode="2" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" entryMode="direct" subDirectory="Alice3" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude>
-          <entry location="Alice3.app" fileType="regular" />
-          <entry location="Alice3.exe" fileType="regular" />
-          <entry location="Alice3.ini" fileType="regular" />
-          <entry location="alice3.sh" fileType="regular" />
-          <entry location="Alice3Icon.ico" fileType="regular" />
-          <entry location="auxiliary" fileType="regular" />
-          <entry location="errlog.txt" fileType="regular" />
+          <entry location="platform/macosx/ffmpeg/ffmpeg" fileType="regular" />
         </exclude>
       </dirEntry>
       <fileEntry mountPoint="303" file="./aliceInstallData/Alice3/platform/macosx/ffmpeg/ffmpeg" overwriteMode="4" shared="false" fileMode="755" uninstallMode="0" overrideFileMode="true" overrideOverwriteMode="false" overrideUninstallMode="false" />
@@ -153,10 +147,6 @@
           <entry location="application/EULA_TheSimsTM2ArtAsset.txt" fileType="regular" />
           <entry location="application/SplashScreen.jpg" fileType="regular" />
           <entry location="application/SplashScreen.png" fileType="regular" />
-          <entry location="application/test.txt" fileType="regular" />
-          <entry location="EULA_Alice3.txt" fileType="regular" />
-          <entry location="EULA_LookingGlassWalkAndTouch.txt" fileType="regular" />
-          <entry location="EULA_TheSimsTM2ArtAsset.txt" fileType="regular" />
           <entry location="platform" fileType="regular" />
           <entry location="Alice 3" fileType="launcher" />
         </include>
