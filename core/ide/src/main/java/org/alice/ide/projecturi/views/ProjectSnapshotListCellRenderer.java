@@ -43,6 +43,8 @@
 
 package org.alice.ide.projecturi.views;
 
+import java.util.Locale;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -87,6 +89,22 @@ public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.Snapsho
 		}
 	};
 
+	private static final String PROJECT_LOCALIZATION_BUNDLE_NAME = "org.lgna.story.resources.ProjectNames";
+
+	private static String findLocalizedFileNameText( String key, String bundleName, Locale locale ) {
+		if( ( bundleName != null ) && ( key != null ) ) {
+			try {
+				java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
+				String rv = resourceBundle.getString( key );
+				return rv;
+			} catch( java.util.MissingResourceException mre ) {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
 	@Override
 	protected javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value ) {
 		java.net.URI uri = (java.net.URI)value;
@@ -109,6 +127,12 @@ public class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.Snapsho
 					final String SUFFIX = ".a3p";
 					if( text.endsWith( SUFFIX ) ) {
 						text = text.substring( 0, text.length() - SUFFIX.length() );
+					}
+
+					//Localize the text to display
+					String localizedName = findLocalizedFileNameText( text, PROJECT_LOCALIZATION_BUNDLE_NAME, javax.swing.JComponent.getDefaultLocale() );
+					if( localizedName != null ) {
+						text = localizedName;
 					}
 				}
 				if( file.exists() ) {
