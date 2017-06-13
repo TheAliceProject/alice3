@@ -964,6 +964,9 @@ public class AliceResourceUtilties {
 		if( locale == null ) {
 			return tag;
 		}
+		if( tag.contains( " " ) ) {
+			tag = tag.replace( " ", "_" );
+		}
 		String result = findLocalizedText( getTagsLocalizationBundleName(), tag, locale );
 		if( result != null ) {
 			return result;
