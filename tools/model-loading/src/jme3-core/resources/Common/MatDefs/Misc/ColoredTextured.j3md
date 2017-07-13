@@ -1,0 +1,21 @@
+Exception This material definition is deprecated. Please use Unshaded.j3md instead.
+MaterialDef Colored Textured {
+
+    MaterialParameters {
+        Texture2D ColorMap
+        Color Color (Color)
+    }
+
+    Technique {
+        VertexShader GLSL100:   Common/MatDefs/Misc/ColoredTextured.vert
+        FragmentShader GLSL100: Common/MatDefs/Misc/ColoredTextured.frag
+
+        WorldParameters {
+            WorldViewProjectionMatrix
+        }
+    }
+
+    Technique {
+    }
+
+}

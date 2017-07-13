@@ -1,0 +1,23 @@
+MaterialDef Radial Blur {
+
+    MaterialParameters {
+        Int NumSamples
+        Texture2D Texture
+        Color Color
+        Float SampleDist
+        Float SampleStrength
+        FloatArray Samples
+    }
+
+    Technique {
+        VertexShader GLSL120 GLSL150:   Common/MatDefs/Post/Post.vert
+        FragmentShader GLSL120 GLSL150: Common/MatDefs/Blur/RadialBlur.frag
+
+        WorldParameters {
+        }
+
+        Defines {
+            RESOLVE_MS : NumSamples
+        }
+    }
+}

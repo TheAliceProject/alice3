@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/dae4j/src"/>
+	<classpathentry kind="src" path="src/jme3-core/resources"/>
+	<classpathentry kind="src" path="src/jme3-blender/java"/>
+	<classpathentry kind="src" path="src/jme3-blender/resources"/>
+	<classpathentry kind="src" path="src/jme3-core/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/jmonkey/core-0.27.jar"/>
+	<classpathentry kind="lib" path="lib/jmonkey/dense64-0.27.jar"/>
+	<classpathentry kind="lib" path="lib/jmonkey/denseC64-0.27.jar"/>
+	<classpathentry kind="lib" path="lib/jmonkey/simple-0.27.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/scenegraph"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/util"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/glrender"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/story-api"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ide"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/java_code_utilities"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

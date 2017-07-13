@@ -1,0 +1,22 @@
+MaterialDef Debug Normals {
+    MaterialParameters {
+        // For instancing
+        Boolean UseInstancing
+    }
+
+    Technique {
+        VertexShader GLSL100 GLSL150:   Common/MatDefs/Misc/ShowNormals.vert
+        FragmentShader GLSL100 GLSL150: Common/MatDefs/Misc/ShowNormals.frag
+
+        WorldParameters {
+            WorldViewProjectionMatrix
+            ViewProjectionMatrix
+            ViewMatrix
+            ProjectionMatrix
+        }
+
+        Defines {
+            INSTANCING : UseInstancing
+	}
+    }
+}
