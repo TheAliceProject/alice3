@@ -51,7 +51,7 @@ import org.lgna.story.SpatialRelation;
  * @author Dennis Cosgrove
  */
 class TestPlaceProgram extends SProgram {
-	private final SBiped babyYeti = new SBiped( org.lgna.story.resources.biped.MonkeyKingResource.DEFAULT );
+	private final SBiped babyYeti = new SBiped( org.lgna.story.resources.biped.OgreResource.GREEN );
 	private final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
 	private final TestScene testScene = new TestScene( babyYeti, ogre );
 

@@ -12,7 +12,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.alice</groupId>
-			<artifactId>alice-ide</artifactId>
+			<artifactId>ide</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -29,7 +29,26 @@
 			<artifactId>tools</artifactId>
 			<version>1.6.0</version>
 			<scope>system</scope>
-			<systemPath>${env.JAVA_HOME}/lib/tools.jar</systemPath>
+			<!--
+			<systemPath>${java.home}/../lib/tools.jar</systemPath>
+			-->
+			<systemPath>${env.JDK6_HOME}/lib/tools.jar</systemPath>
 		</dependency>
 	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>non-free</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+
+			<dependencies>
+				<dependency>
+					<groupId>org.alice.nonfree</groupId>
+					<artifactId>ide-nonfree</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 </project>

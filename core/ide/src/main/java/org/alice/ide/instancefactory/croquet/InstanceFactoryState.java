@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package org.alice.ide.instancefactory.croquet;
 
@@ -174,7 +174,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 					createFillInMenuComboIfNecessary(
 							InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ),
 							apiConfigurationManager.getInstanceFactorySubMenuForThis( type )
-					)
+							)
 					);
 		}
 		if( type instanceof org.lgna.project.ast.NamedUserType ) {
@@ -197,8 +197,10 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SQuadruped.class ),
 							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SSwimmer.class ),
 							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SFlyer.class ),
+							org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SSlitherer.class ),
 
 							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SProp.class ),
+							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.STransport.class ),
 							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SShape.class ),
 							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SThing.class ),
 							org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( Object.class )
@@ -230,7 +232,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 								createFillInMenuComboIfNecessary(
 										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessFactory.getInstance( parameter ) ),
 										apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess( parameter )
-								)
+										)
 								);
 					}
 				}
@@ -246,7 +248,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 								createFillInMenuComboIfNecessary(
 										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessFactory.getInstance( local ) ),
 										apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess( local )
-								)
+										)
 								);
 					}
 				}
@@ -305,7 +307,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 																	createFillInMenuComboIfNecessary(
 																			InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessMethodInvocationFactory.getInstance( parameter, parameterMethod ) ),
 																			apiConfigurationManager.getInstanceFactorySubMenuForParameterAccessMethodInvocation( parameter, parameterMethod )
-																	)
+																			)
 																	);
 														}
 													}

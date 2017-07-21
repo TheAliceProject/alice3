@@ -69,14 +69,14 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.6</java.version>
 
-		<jogl.version>2.2.4</jogl.version>
+		<jogl.version>2.3.2</jogl.version>
 
-		<alice.model.version>2014.08.20</alice.model.version>
+		<alice.model.version>2016.08.19</alice.model.version>
 		<sound.gallery.version>2013.08.08</sound.gallery.version>
-		<starter.projects.version>2014.10.24</starter.projects.version>
-		<nebulous.model.version>2014.09.11</nebulous.model.version>
+		<starter.projects.version>2016.08.16</starter.projects.version>
+		<nebulous.model.version>2016.07.15</nebulous.model.version>
 		<nebulous.person.version>2014.08.12</nebulous.person.version>
-		<nebulous.lib.version>2013.08.20</nebulous.lib.version>
+		<nebulous.lib.version>2017.05.01</nebulous.lib.version>
 	</properties>
 
 	<modules>
@@ -172,16 +172,6 @@
 				<artifactId>alice-model-source</artifactId>
 				<version>${alice.model.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.alice.nonfree</groupId>
-				<artifactId>nebulous-model-source</artifactId>
-				<version>${nebulous.model.version}</version>
-			</dependency>
-			<!-- <dependency> -->
-			<!-- <groupId>org.alice.nonfree</groupId> -->
-			<!-- <artifactId>nebulous-person-source</artifactId> -->
-			<!-- <version>${nebulous.person.version}</version> -->
-			<!-- </dependency> -->
 
 			<!-- Third Party Libraries -->
 			<dependency>
@@ -277,7 +267,7 @@
 				<plugin>
 					<groupId>org.zanata</groupId>
 					<artifactId>zanata-maven-plugin</artifactId>
-					<version>3.8.1</version>
+					<version>4.1.1</version>
 					<configuration>
 						<projectConfig>${parent.basedir}/zanata.xml</projectConfig>
 						<sourceLang>en-US</sourceLang>
@@ -434,16 +424,53 @@
 			</build>
 		</profile>
 
-		<!-- TODO: open source -->
 		<!-- Non-free libraries/models -->
 		<profile>
 			<id>non-free</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>zanata.locales</name>
+				</property>
 			</activation>
-			<dependencies>
-				<!-- TODO: add the nebulous stuff here. -->
-			</dependencies>
+
+			<modules>
+				<module>nonfree/core</module>
+				<module>nonfree/core/ide-nonfree</module>
+				<module>nonfree/core/resources-nonfree</module>
+				<module>nonfree/core/story-api-nonfree</module>
+			</modules>
+
+			<dependencyManagement>
+				<dependencies>
+					<dependency>
+						<groupId>org.alice.nonfree</groupId>
+						<artifactId>ide-nonfree</artifactId>
+						<version>0.0.1-SNAPSHOT</version>
+					</dependency>
+					<dependency>
+						<groupId>org.alice.nonfree</groupId>
+						<artifactId>resources-nonfree</artifactId>
+						<version>0.0.1-SNAPSHOT</version>
+					</dependency>
+					<dependency>
+						<groupId>org.alice.nonfree</groupId>
+						<artifactId>story-api-nonfree</artifactId>
+						<version>0.0.1-SNAPSHOT</version>
+					</dependency>
+
+					<dependency>
+						<groupId>org.alice.nonfree</groupId>
+						<artifactId>nebulous-model-source</artifactId>
+						<version>${nebulous.model.version}</version>
+					</dependency>
+					<!-- <dependency> -->
+					<!-- <groupId>org.alice.nonfree</groupId> -->
+					<!-- <artifactId>nebulous-person-source</artifactId> -->
+					<!-- <version>${nebulous.person.version}</version> -->
+					<!-- </dependency> -->
+				</dependencies>
+			</dependencyManagement>
 		</profile>
 	</profiles>
 

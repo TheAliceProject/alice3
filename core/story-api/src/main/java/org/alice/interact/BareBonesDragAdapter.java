@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.alice.interact;
 
 import org.alice.interact.condition.ManipulatorConditionSet;
@@ -290,7 +290,7 @@ public abstract class BareBonesDragAdapter {
 			try {
 				edu.cmu.cs.dennisc.render.PickResult pickResult = onscreenRenderTarget.getSynchronousPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.render.PickSubElementPolicy.NOT_REQUIRED );
 				observer.done( pickResult );
-			} catch( javax.media.opengl.GLException gle ) {
+			} catch( com.jogamp.opengl.GLException gle ) {
 				if( isSuppressionOfGlExceptionDesired == IsSuppressionOfGlExceptionDesired.TRUE ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "Error picking into scene", gle );
 				} else {

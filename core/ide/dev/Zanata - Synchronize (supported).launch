@@ -6,7 +6,7 @@
 <booleanAttribute key="M2_OFFLINE" value="false"/>
 <stringAttribute key="M2_PROFILES" value="zanata"/>
 <listAttribute key="M2_PROPERTIES">
-<listEntry value="zanata.locales=ar,de,el,es,fa,fr,id,nl,pt,pt-BR,ro,ru,sl,uk,zh-CN,zh-TW"/>
+<listEntry value="zanata.locales=ar,bg,zh-CN,zh-TW,cs,nl,en,fa,fr,de,el,he,id,it,ja,ko,lt,pt,pt-BR,ro,ru,sl,es,tr,uk"/>
 </listAttribute>
 <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
 <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
@@ -14,6 +14,6 @@
 <booleanAttribute key="M2_UPDATE_SNAPSHOTS" value="false"/>
 <stringAttribute key="M2_USER_SETTINGS" value=""/>
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
-<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${project_loc:/ide}/../.."/>
 </launchConfiguration>

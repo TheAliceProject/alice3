@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package edu.cmu.cs.dennisc.render.gl.imp;
 
@@ -58,9 +58,9 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 		private final PickContext pickContext = new PickContext( true );
 		private final java.nio.IntBuffer selectionAsIntBuffer;
 
-		private final javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser;
-		private final javax.media.opengl.GLCapabilities glRequestedCapabilities;
-		private final javax.media.opengl.GLContext glShareContext;
+		private final com.jogamp.opengl.GLCapabilitiesChooser glCapabilitiesChooser;
+		private final com.jogamp.opengl.GLCapabilities glRequestedCapabilities;
+		private final com.jogamp.opengl.GLContext glShareContext;
 
 		private PickParameters pickParameters;
 
@@ -70,10 +70,10 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 			byteBuffer.order( java.nio.ByteOrder.nativeOrder() );
 			this.selectionAsIntBuffer = byteBuffer.asIntBuffer();
 
-			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-			this.glRequestedCapabilities = new javax.media.opengl.GLCapabilities( glProfile );
+			com.jogamp.opengl.GLProfile glProfile = com.jogamp.opengl.GLProfile.getDefault();
+			this.glRequestedCapabilities = new com.jogamp.opengl.GLCapabilities( glProfile );
 			this.glRequestedCapabilities.setDoubleBuffered( false );
-			this.glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
+			this.glCapabilitiesChooser = new com.jogamp.opengl.DefaultGLCapabilitiesChooser();
 			this.glShareContext = null;
 		}
 
@@ -101,7 +101,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 			} else {
 				this.glOffscreenDrawable = OffscreenDrawable.createInstance( new OffscreenDrawable.DisplayCallback() {
 					@Override
-					public void display( javax.media.opengl.GL2 gl ) {
+					public void display( com.jogamp.opengl.GL2 gl ) {
 						sharedActualPicker.performPick( gl );
 					}
 				}, glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
@@ -109,7 +109,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 			return this.glOffscreenDrawable;
 		}
 
-		private void performPick( javax.media.opengl.GL2 gl ) {
+		private void performPick( com.jogamp.opengl.GL2 gl ) {
 			this.pickContext.gl = gl;
 			ConformanceTestResults.SINGLETON.updateSynchronousPickInformationIfNecessary( gl, GlDrawableUtils.canCreateGlPixelBuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable );
 
@@ -127,7 +127,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 				this.selectionAsIntBuffer.rewind();
 				this.pickContext.gl.glSelectBuffer( SELECTION_CAPACITY, this.selectionAsIntBuffer );
 
-				this.pickContext.gl.glRenderMode( javax.media.opengl.GL2.GL_SELECT );
+				this.pickContext.gl.glRenderMode( com.jogamp.opengl.GL2.GL_SELECT );
 				this.pickContext.gl.glInitNames();
 
 				edu.cmu.cs.dennisc.render.RenderTarget renderTarget = pickParameters.getRenderTarget();
@@ -137,7 +137,7 @@ public final class SynchronousPicker implements edu.cmu.cs.dennisc.render.Synchr
 				this.pickContext.gl.glFlush();
 
 				this.selectionAsIntBuffer.rewind();
-				int length = this.pickContext.gl.glRenderMode( javax.media.opengl.GL2.GL_RENDER );
+				int length = this.pickContext.gl.glRenderMode( com.jogamp.opengl.GL2.GL_RENDER );
 				//todo: invesigate negative length
 				//assert length >= 0;
 

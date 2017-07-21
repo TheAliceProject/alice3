@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.alice.interact.handle;
 
 import org.alice.interact.AbstractDragAdapter;
@@ -233,14 +233,12 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			this.manipulatedObject = manipulatedObjectIn;
 			this.criteriaManager.setTargetTransformable( this.manipulatedObject );
 			this.setParent( this.manipulatedObject );
-
 			if( this.manipulatedObject != null ) {
 				this.setScale( this.getObjectScale() );
 				this.setVisualsShowing( true );
 			} else {
 				this.setVisualsShowing( false );
 			}
-
 		}
 		if( this.manipulatedObject != null ) {
 			Scalable s = getScalable( this.manipulatedObject );

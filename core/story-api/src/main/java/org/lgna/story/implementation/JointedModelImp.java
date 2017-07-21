@@ -1,52 +1,55 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package org.lgna.story.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
+import org.lgna.ik.core.solver.Bone.Direction;
 import org.lgna.story.SJoint;
+import org.lgna.story.SJointedModel;
 import org.lgna.story.resources.JointId;
 import org.lgna.story.resources.JointedModelResource;
 
@@ -75,6 +78,8 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 
 		public JointImp createJointImplementation( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImplementation, org.lgna.story.resources.JointId jointId );
 
+		public boolean hasJointImplementation( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImplementation, org.lgna.story.resources.JointId jointId );
+
 		public JointImp[] createJointArrayImplementation( org.lgna.story.implementation.JointedModelImp<?, ?> jointedModelImplementation, org.lgna.story.resources.JointArrayId jointArrayId );
 
 		public VisualData createVisualData();
@@ -90,6 +95,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		public JointImpWrapper( JointedModelImp<?, ?> jointedModelImp, JointImp joint ) {
 			super( jointedModelImp );
 			this.internalJointImp = joint;
+
 		}
 
 		@Override
@@ -223,17 +229,10 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		this.factory = factory;
 		this.visualData = this.factory.createVisualData();
 
-		List<JointId> missingJoints = this.getMissingJoints();
-		if( !missingJoints.isEmpty() ) {
-			StringBuilder sb = new StringBuilder();
-			String resourceName = this.getResource().getClass().getSimpleName();
-			sb.append( resourceName + " missing joints: " );
-			boolean first = true;
-			for( JointId id : missingJoints ) {
-				sb.append( ( !first ? ", " : "" ) + id.toString() );
-				first = false;
-			}
-			throw new RuntimeException( sb.toString() );
+		//Handle joint arrays
+		//This makes sure we have JointImps or JointWrappers for the given jointIds and adds them to mapIdToJoint for future retrieval
+		for( org.lgna.story.resources.JointArrayId arrayId : this.getJointArrayIds() ) {
+			this.createJointImpsAsNeededForJointArrayIds( arrayId, this.mapIdToJoint, true );
 		}
 
 		org.lgna.story.resources.JointId[] rootIds = this.getRootJointIds();
@@ -257,10 +256,17 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			}
 		}
 
-		//Handle joint arrays
-		//This makes sure we have JointImps or JointWrappers for the given jointIds and adds them to mapIdToJoint for future retrieval 
-		for( org.lgna.story.resources.JointArrayId arrayId : this.getJointArrayIds() ) {
-			this.createJointImpsAsNeededForJointArrayIds( arrayId, this.mapIdToJoint, true );
+		List<JointId> missingJoints = this.getMissingJoints();
+		if( !missingJoints.isEmpty() ) {
+			StringBuilder sb = new StringBuilder();
+			String resourceName = this.getResource().getClass().getSimpleName();
+			sb.append( resourceName + " missing joints: " );
+			boolean first = true;
+			for( JointId id : missingJoints ) {
+				sb.append( ( !first ? ", " : "" ) + id.toString() );
+				first = false;
+			}
+			throw new RuntimeException( sb.toString() );
 		}
 
 		this.visualData.setSGParent( sgComposite );
@@ -284,15 +290,14 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			for( org.lgna.story.resources.JointId childId : this.getRootJointIds() ) {
 				buildJointArrayMapHelper( childId, jointArrayId, arrayList );
 			}
-		}
-		else {
+		} else {
 			for( org.lgna.story.resources.JointId childId : currentJointId.getChildren( this.factory.getResource() ) ) {
 				buildJointArrayMapHelper( childId, jointArrayId, arrayList );
 			}
 		}
 	}
 
-	//Makes sure we have JointImps or JointWrappers for the given jointIds and adds them to mapIdToJoint for future retrieval 
+	//Makes sure we have JointImps or JointWrappers for the given jointIds and adds them to mapIdToJoint for future retrieval
 	private <J extends JointImp> void createJointImpsAsNeededForJointArrayIds( org.lgna.story.resources.JointArrayId jointArrayId, java.util.Map<org.lgna.story.resources.JointId, J> jointMap, boolean makeWrappers ) {
 		List<org.lgna.story.resources.JointId> jointIdList = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 		//Look for declared joints for
@@ -303,13 +308,11 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			for( JointImp jointImp : jointImpArray ) {
 				if( makeWrappers ) {
 					jointMap.put( jointImp.getJointId(), (J)( new JointImpWrapper( this, jointImp ) ) );
-				}
-				else {
+				} else {
 					jointMap.put( jointImp.getJointId(), (J)( jointImp ) );
 				}
 			}
-		}
-		else {
+		} else {
 			//If the jointIdList has ids in it, then it means the array is already made up of existing JointImps, so skip making new ones
 		}
 		//Add a map to the jointArrayId for later lookup (see method getJointIdArray)
@@ -338,7 +341,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		}
 		while( !jointsToCheck.isEmpty() ) {
 			JointId joint = jointsToCheck.remove( 0 );
-			if( this.createJointImplementation( joint ) == null ) {
+			if( !this.hasJointImplementation( joint ) ) {
 				missingJoints.add( joint );
 			}
 			for( JointId child : joint.getChildren( this.getResource() ) ) {
@@ -427,8 +430,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			return true;
 		}
 		for( org.lgna.story.resources.JointId childId : jointId.getChildren( this.factory.getResource() ) ) {
-			if( findJoint( childId, toFind ) )
-			{
+			if( findJoint( childId, toFind ) ) {
 				return true;
 			}
 		}
@@ -441,8 +443,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			if( newJoints.containsKey( jointEntry.getKey() ) ) {
 				JointImp newJoint = newJoints.get( jointEntry.getKey() );
 				jointEntry.getValue().replaceWithJoint( newJoint, mapIdToOriginalRotation.get( jointEntry.getKey() ) );
-			}
-			else {
+			} else {
 				toRemove.add( jointEntry.getKey() );
 			}
 		}
@@ -556,8 +557,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	public abstract org.lgna.story.resources.JointId[] getRootJointIds();
 
 	public edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getSgSkeletonVisual() {
-		if( this.getSgVisuals()[ 0 ] instanceof edu.cmu.cs.dennisc.scenegraph.SkeletonVisual )
-		{
+		if( this.getSgVisuals()[ 0 ] instanceof edu.cmu.cs.dennisc.scenegraph.SkeletonVisual ) {
 			return (edu.cmu.cs.dennisc.scenegraph.SkeletonVisual)this.getSgVisuals()[ 0 ];
 		}
 		return null;
@@ -606,7 +606,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, boolean ignoreJointOrientations ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans = this.getTransformation( asSeenBy );
 		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = new edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound();
-		this.updateCumulativeBound( cumulativeBound, trans );
+		this.updateCumulativeBound( cumulativeBound, trans, ignoreJointOrientations );
 		return cumulativeBound.getBoundingBox();
 	}
 
@@ -622,6 +622,16 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
 		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF, true );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getDynamicAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
+		return getAxisAlignedMinimumBoundingBox( asSeenBy, false );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getDynamicAxisAlignedMinimumBoundingBox() {
+		return getDynamicAxisAlignedMinimumBoundingBox( AsSeenBy.SELF );
 	}
 
 	@Override
@@ -642,8 +652,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
 			if( sgVisual instanceof edu.cmu.cs.dennisc.scenegraph.SkeletonVisual ) {
 				rv.addSkeletonVisual( (edu.cmu.cs.dennisc.scenegraph.SkeletonVisual)sgVisual, trans, ignoreJointOrientations );
-			}
-			else {
+			} else {
 				rv.add( sgVisual, trans );
 			}
 		}
@@ -659,9 +668,14 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		return this.factory.createJointImplementation( this, jointId );
 	}
 
+	protected final boolean hasJointImplementation( org.lgna.story.resources.JointId jointId ) {
+		return this.factory.hasJointImplementation( this, jointId );
+	}
+
 	private org.lgna.story.implementation.visualization.JointedModelVisualization visualization;
 
-	private org.lgna.story.implementation.visualization.JointedModelVisualization getVisualization() {
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.Leaf getVisualization() {
 		if( this.visualization != null ) {
 			//pass
 		} else {
@@ -670,10 +684,12 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		return this.visualization;
 	}
 
+	@Override
 	public void showVisualization() {
 		this.getVisualization().setParent( this.getSgComposite() );
 	}
 
+	@Override
 	public void hideVisualization() {
 		if( this.visualization != null ) {
 			this.visualization.setParent( null );
@@ -715,57 +731,129 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 	private static enum AddOp {
 		PREPEND {
 			@Override
-			public java.util.List<JointImp> add( java.util.List<JointImp> rv, JointImp joint ) {
+			public java.util.List<JointImp> add( java.util.List<JointImp> rv, JointImp joint, List<org.lgna.ik.core.solver.Bone.Direction> directions, org.lgna.ik.core.solver.Bone.Direction direction ) {
 				rv.add( 0, joint );
+				if( directions != null ) {
+					directions.add( 0, direction );
+				}
 				return rv;
 			}
 		},
 		APPEND {
 			@Override
-			public java.util.List<JointImp> add( java.util.List<JointImp> rv, JointImp joint ) {
+			public java.util.List<JointImp> add( java.util.List<JointImp> rv, JointImp joint, List<org.lgna.ik.core.solver.Bone.Direction> directions, org.lgna.ik.core.solver.Bone.Direction direction ) {
 				rv.add( joint );
+				if( directions != null ) {
+					directions.add( direction );
+				}
 				return rv;
 			}
 		};
-		public abstract java.util.List<JointImp> add( java.util.List<JointImp> rv, JointImp joint );
+		public abstract java.util.List<JointImp> add( java.util.List<JointImp> rv, JointImp joint, List<org.lgna.ik.core.solver.Bone.Direction> directions, org.lgna.ik.core.solver.Bone.Direction direction );
 	}
 
-	private java.util.List<JointImp> updateJointsBetween( java.util.List<JointImp> rv, JointImp joint, EntityImp ancestor, AddOp addOp ) {
-		if( joint == ancestor ) {
+	private java.util.List<JointImp> updateJointsBetween( java.util.List<JointImp> rv, List<org.lgna.ik.core.solver.Bone.Direction> directions, JointImp joint, EntityImp ancestorToReach, AddOp addOp ) {
+		if( joint == ancestorToReach ) {
 			//pass
 		} else {
 			org.lgna.story.resources.JointId parentId = joint.getJointId().getParent();
 			if( parentId != null ) {
 				JointImp parent = this.getJointImplementation( parentId );
-				this.updateJointsBetween( rv, parent, ancestor, addOp );
+				this.updateJointsBetween( rv, directions, parent, ancestorToReach, addOp );
 			}
 		}
-		addOp.add( rv, joint );
+		org.lgna.ik.core.solver.Bone.Direction direction;
+		if( addOp == AddOp.APPEND ) {
+			direction = org.lgna.ik.core.solver.Bone.Direction.DOWNSTREAM;
+		} else {
+			direction = org.lgna.ik.core.solver.Bone.Direction.UPSTREAM;
+		}
+		addOp.add( rv, joint, directions, direction );
 		return rv;
 	}
 
-	public java.util.List<JointImp> getInclusiveListOfJointsBetween( JointImp jointA, JointImp jointB ) {
+	public java.util.List<JointImp> getInclusiveListOfJointsBetween( JointImp jointA, JointImp jointB, java.util.List<org.lgna.ik.core.solver.Bone.Direction> directions ) {
 		assert jointA != null : this;
 		assert jointB != null : this;
 		java.util.List<JointImp> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		if( jointA == jointB ) {
 			//?
 			rv.add( jointA );
+			directions.add( org.lgna.ik.core.solver.Bone.Direction.DOWNSTREAM );
+			//			throw new RuntimeException( "To Gazi: Please ensure that direction is correct in this case." );
 		} else {
 			if( jointA.isDescendantOf( jointB ) ) {
-				this.updateJointsBetween( rv, jointA, jointB, AddOp.PREPEND );
+				this.updateJointsBetween( rv, directions, jointA, jointB, AddOp.PREPEND );
 			} else if( jointB.isDescendantOf( jointA ) ) {
-				this.updateJointsBetween( rv, jointB, jointA, AddOp.APPEND );
+				this.updateJointsBetween( rv, directions, jointB, jointA, AddOp.APPEND );
 			} else {
-				this.updateJointsBetween( rv, jointB, this, AddOp.APPEND );
-				this.updateJointsBetween( rv, jointA, this, AddOp.PREPEND );
+				//It shouldn't even use the joint on which direction is changed (the common ancestor)
+				//that's what the below call does
+				this.updateJointsUpToAndExcludingCommonAncestor( rv, directions, jointA, jointB );
 			}
 		}
 		return rv;
 	}
 
-	public java.util.List<JointImp> getInclusiveListOfJointsBetween( org.lgna.story.resources.JointId idA, org.lgna.story.resources.JointId idB ) {
-		return this.getInclusiveListOfJointsBetween( this.getJointImplementation( idA ), this.getJointImplementation( idB ) );
+	private void updateJointsUpToAndExcludingCommonAncestor( List<JointImp> rvPath, List<Direction> rvDirections, JointImp jointA, JointImp jointB ) {
+		java.util.List<JointImp> pathA = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+		java.util.List<JointImp> pathB = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
+
+		List<Direction> directionsA = new java.util.ArrayList<Direction>();
+		List<Direction> directionsB = new java.util.ArrayList<Direction>();
+
+		this.updateJointsBetween( pathA, directionsA, jointA, this, AddOp.PREPEND );
+		this.updateJointsBetween( pathB, directionsB, jointB, this, AddOp.APPEND );
+
+		JointImp commonAncestor = null;
+
+		for( JointImp jointInA : pathA ) {
+			if( pathB.contains( jointInA ) ) {
+				commonAncestor = jointInA;
+				break;
+			}
+		}
+
+		if( commonAncestor == null ) {
+			throw new RuntimeException( "Probably not connected with a chain." );
+		}
+
+		ListIterator<JointImp> pathAIterator = pathA.listIterator( pathA.size() );
+		ListIterator<Direction> directionsAIterator = directionsA.listIterator( directionsA.size() );
+		for( ; pathAIterator.hasPrevious(); ) {
+			JointImp jointImp = pathAIterator.previous();
+			directionsAIterator.previous();
+
+			pathAIterator.remove();
+			directionsAIterator.remove();
+
+			if( jointImp == commonAncestor ) {
+				break;
+			}
+		}
+
+		ListIterator<JointImp> pathBIterator = pathB.listIterator();
+		ListIterator<Direction> directionsBIterator = directionsB.listIterator();
+		for( ; pathBIterator.hasNext(); ) {
+			JointImp jointImp = (JointImp)pathBIterator.next();
+			directionsBIterator.next();
+
+			pathBIterator.remove();
+			directionsBIterator.remove();
+
+			if( jointImp == commonAncestor ) {
+				break;
+			}
+		}
+
+		rvPath.addAll( pathA );
+		rvPath.addAll( pathB );
+		rvDirections.addAll( directionsA );
+		rvDirections.addAll( directionsB );
+	}
+
+	public java.util.List<JointImp> getInclusiveListOfJointsBetween( org.lgna.story.resources.JointId idA, org.lgna.story.resources.JointId idB, java.util.List<org.lgna.ik.core.solver.Bone.Direction> directions ) {
+		return this.getInclusiveListOfJointsBetween( this.getJointImplementation( idA ), this.getJointImplementation( idB ), directions );
 	}
 
 	private static class JointData {
@@ -883,16 +971,20 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		this.animateStraightenOutJoints( DEFAULT_DURATION );
 	}
 
-	public void say( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
+	public void say( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference positionPreference ) {
 		duration = adjustDurationIfNecessary( duration );
-		org.lgna.story.implementation.overlay.BubbleImp bubbleImp = new org.lgna.story.implementation.overlay.SpeechBubbleImp( this, this.getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor );
+		org.lgna.story.implementation.overlay.BubbleImp bubbleImp = new org.lgna.story.implementation.overlay.SpeechBubbleImp( this, this.getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor, positionPreference );
 		this.displayBubble( bubbleImp, duration );
 	}
 
-	public void think( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor ) {
+	public void think( String text, double duration, java.awt.Font font, edu.cmu.cs.dennisc.color.Color4f textColor, edu.cmu.cs.dennisc.color.Color4f fillColor, edu.cmu.cs.dennisc.color.Color4f outlineColor, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.PositionPreference positionPreference ) {
 		duration = adjustDurationIfNecessary( duration );
-		org.lgna.story.implementation.overlay.BubbleImp bubbleImp = new org.lgna.story.implementation.overlay.ThoughtBubbleImp( this, this.getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor );
+		org.lgna.story.implementation.overlay.BubbleImp bubbleImp = new org.lgna.story.implementation.overlay.ThoughtBubbleImp( this, this.getSpeechBubbleOriginator(), text, font, textColor, fillColor, outlineColor, positionPreference );
 		this.displayBubble( bubbleImp, duration );
+	}
+
+	public void strikePose( org.lgna.story.Pose<? extends SJointedModel> pose, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
+		this.getProgram().perform( new PoseAnimation( duration, style, this, pose ), null );
 	}
 
 	private final A abstraction;

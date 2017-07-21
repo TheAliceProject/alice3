@@ -1,43 +1,43 @@
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -91,6 +91,7 @@ public class GalleryProgram extends SProgram {
 
 	private final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
 	private final State.ValueListener<ResourceNode> galleryListener = new State.ValueListener<ResourceNode>() {
+		@Override
 		public void changing( State<ResourceNode> state, ResourceNode prevValue, ResourceNode nextValue, boolean isAdjusting ) {
 		}
 
@@ -124,6 +125,7 @@ public class GalleryProgram extends SProgram {
 
 		}
 
+		@Override
 		public void changed( State<ResourceNode> state, ResourceNode prevValue, ResourceNode nextValue, boolean isAdjusting ) {
 			SJointedModel model;
 			org.alice.stageide.modelresource.ResourceKey resourceKey = nextValue.getResourceKey();
@@ -164,8 +166,7 @@ public class GalleryProgram extends SProgram {
 							BaseEyeColor.getRandom(),
 							HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
 							0.5,
-							FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender )
-							) );
+							FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender ) ) );
 				} else {
 					model = null;
 				}
@@ -202,6 +203,7 @@ public class GalleryProgram extends SProgram {
 		final SJoint leftElbow = flyer.getLeftWingElbow();
 		final SJoint head = flyer.getHead();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				head.turn( TurnDirection.FORWARD, .12, Turn.duration( 0.5 ) );
 				head.turn( TurnDirection.BACKWARD, .12, Turn.duration( 0.5 ) );
@@ -210,6 +212,7 @@ public class GalleryProgram extends SProgram {
 			}
 		}, "head" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				leftShoulder.turn( TurnDirection.BACKWARD, 0.12, Turn.duration( 0.5 ) );
 				leftShoulder.turn( TurnDirection.FORWARD, 0.25 );
@@ -218,6 +221,7 @@ public class GalleryProgram extends SProgram {
 			}
 		}, "leftArm" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				rightShoulder.turn( TurnDirection.BACKWARD, 0.12, Turn.duration( 0.5 ) );
 				rightShoulder.turn( TurnDirection.FORWARD, 0.25 );
@@ -226,6 +230,7 @@ public class GalleryProgram extends SProgram {
 			}
 		}, "rightArm" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				rightHip.turn( TurnDirection.RIGHT, 0.15 );
 				rightHip.turn( TurnDirection.LEFT, 0.15 );
@@ -236,6 +241,7 @@ public class GalleryProgram extends SProgram {
 			}
 		}, "leftLeg" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				leftHip.turn( TurnDirection.LEFT, 0.15 );
 				leftHip.turn( TurnDirection.RIGHT, 0.15 );
@@ -260,6 +266,7 @@ public class GalleryProgram extends SProgram {
 		final SJoint neck = quadruped.getNeck();
 		final SJoint head = quadruped.getHead();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				neck.turn( TurnDirection.FORWARD, 0.25 );
 				neck.turn( TurnDirection.BACKWARD, 0.25 );
@@ -270,6 +277,7 @@ public class GalleryProgram extends SProgram {
 			}
 		}, "head" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				rightShoulder.turn( TurnDirection.BACKWARD, 0.25 );
 				rightElbow.turn( TurnDirection.FORWARD, 0.25 );
@@ -278,6 +286,7 @@ public class GalleryProgram extends SProgram {
 			}
 		}, "rightFront" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				leftShoulder.turn( TurnDirection.BACKWARD, 0.25 );
 				leftElbow.turn( TurnDirection.FORWARD, 0.25 );
@@ -286,6 +295,7 @@ public class GalleryProgram extends SProgram {
 			}
 		}, "leftFront" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				leftHip.turn( TurnDirection.BACKWARD, 0.25 );
 				leftKnee.turn( TurnDirection.FORWARD, 0.25 );
@@ -294,6 +304,7 @@ public class GalleryProgram extends SProgram {
 			}
 		}, "rightBack" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				rightHip.turn( TurnDirection.BACKWARD, 0.25 );
 				rightKnee.turn( TurnDirection.FORWARD, 0.25 );
@@ -314,6 +325,7 @@ public class GalleryProgram extends SProgram {
 		final SJoint head = biped.getHead();
 		final SJoint leftKnee = biped.getLeftKnee();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				head.turn( TurnDirection.FORWARD, .12, Turn.duration( 0.5 ) );
 				head.turn( TurnDirection.BACKWARD, .12, Turn.duration( 0.5 ) );
@@ -322,6 +334,7 @@ public class GalleryProgram extends SProgram {
 			}
 		}, "head" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				leftShoulder.turn( TurnDirection.BACKWARD, 0.40 );
 				leftShoulder.turn( TurnDirection.FORWARD, 0.40 );
@@ -334,6 +347,7 @@ public class GalleryProgram extends SProgram {
 			}
 		}, "leftArm" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				rightShoulder.turn( TurnDirection.BACKWARD, 0.40 );
 				rightShoulder.turn( TurnDirection.FORWARD, 0.40 );
@@ -346,6 +360,7 @@ public class GalleryProgram extends SProgram {
 			}
 		}, "rightArm" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				rightHip.turn( TurnDirection.RIGHT, 0.15 );
 				rightHip.turn( TurnDirection.LEFT, 0.15 );
@@ -356,6 +371,7 @@ public class GalleryProgram extends SProgram {
 			}
 		}, "leftLeg" ).start();
 		new org.lgna.common.ComponentThread( new Runnable() {
+			@Override
 			public void run() {
 				leftHip.turn( TurnDirection.LEFT, 0.15 );
 				leftHip.turn( TurnDirection.RIGHT, 0.15 );
@@ -369,8 +385,8 @@ public class GalleryProgram extends SProgram {
 
 	private void initializeTest() {
 		this.setActiveScene( this.scene );
-		this.modelManipulationDragAdapter.setOnscreenLookingGlass( org.lgna.story.EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass() );
-		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( org.lgna.story.EmployeesOnly.getImplementation( this ).getOnscreenLookingGlass() );
+		this.modelManipulationDragAdapter.setOnscreenRenderTarget( org.lgna.story.EmployeesOnly.getImplementation( this ).getOnscreenRenderTarget() );
+		this.cameraNavigationDragAdapter.setOnscreenRenderTarget( org.lgna.story.EmployeesOnly.getImplementation( this ).getOnscreenRenderTarget() );
 		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
 		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
 
@@ -385,14 +401,14 @@ public class GalleryProgram extends SProgram {
 		ResourceNode.ACCEPTABLE_HACK_FOR_GALLERY_QA_setLeftClickModelAlwaysNull( true );
 		GalleryApplication app = new GalleryApplication();
 		app.initialize( args );
-		app.getFrame().setMainComposite( new gallery.croquet.GallerySplitComposite() );
+		app.getDocumentFrame().getFrame().setMainComposite( new gallery.croquet.GallerySplitComposite() );
 		GalleryProgram program = new GalleryProgram();
 
 		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( program );
 		program.initializeTest();
 
-		app.getFrame().setSize( 1200, 800 );
-		app.getFrame().setVisible( true );
+		app.getDocumentFrame().getFrame().setSize( 1200, 800 );
+		app.getDocumentFrame().getFrame().setVisible( true );
 
 		org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeState treeState = org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeState.getInstance();
 		treeState.setValueTransactionlessly( treeState.getChildren( treeState.getTreeModel().getRoot() ).get( 0 ) );

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,8 +39,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.lgna.story;
+
+import org.alice.nonfree.NebulousStoryApi;
+import org.lgna.story.implementation.JointIdTransformationPair;
 
 /**
  * @author Dennis Cosgrove
@@ -79,9 +82,7 @@ public class EmployeesOnly {
 	}
 
 	public static Color createInterpolation( Color a, Color b, float portion ) {
-		return Color.createInstance(
-				edu.cmu.cs.dennisc.color.Color4f.createInterpolation( a.getInternal(), b.getInternal(), portion )
-				);
+		return Color.createInstance( edu.cmu.cs.dennisc.color.Color4f.createInterpolation( a.getInternal(), b.getInternal(), portion ) );
 	}
 
 	public static Position createPosition( edu.cmu.cs.dennisc.math.Point3 xyz ) {
@@ -136,6 +137,10 @@ public class EmployeesOnly {
 		}
 	}
 
+	public static edu.cmu.cs.dennisc.animation.Style getInternal( AnimationStyle animationStyle ) {
+		return animationStyle.getInternal();
+	}
+
 	private static final java.util.Map<ImagePaint, edu.cmu.cs.dennisc.texture.BufferedImageTexture> mapImagePaintToTexture = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 
 	public static edu.cmu.cs.dennisc.texture.Texture getTexture( Paint paint, edu.cmu.cs.dennisc.texture.Texture defaultValue ) {
@@ -168,19 +173,13 @@ public class EmployeesOnly {
 			if( nonfreeTexturePaint.isTextureValid() ) {
 				edu.cmu.cs.dennisc.texture.Texture texture = nonfreeTexturePaint.getTexture();
 
-				//todo
-				if( texture instanceof edu.cmu.cs.dennisc.nebulous.NebulousTexture ) {
-					edu.cmu.cs.dennisc.nebulous.NebulousTexture nebulousTexture = (edu.cmu.cs.dennisc.nebulous.NebulousTexture)texture;
-					nebulousTexture.setMipMappingDesired( true );
-				}
+				NebulousStoryApi.nonfree.setMipMappingDesiredOnNebulousTexture( texture );
 				return texture;
-
 			} else {
 				//todo?
 				return defaultValue;
 			}
-		}
-		else {
+		} else {
 			return defaultValue;
 		}
 	}
@@ -200,4 +199,13 @@ public class EmployeesOnly {
 			return argumentValue;
 		}
 	}
+
+	public static void addJointIdTransformationPair( PoseBuilder<?, ?> poseBuilder, org.lgna.story.implementation.JointIdTransformationPair jointIdQuaternionPair ) {
+		poseBuilder.addJointIdQuaternionPair( jointIdQuaternionPair );
+	}
+
+	public static JointIdTransformationPair[] getJointIdTransformationPairs( Pose<?> pose ) {
+		return pose.getJointIdTransformationPairs();
+	}
+
 }

@@ -1,45 +1,45 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
@@ -48,10 +48,11 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.cmu.cs.dennisc.scenegraph.graphics.OnscreenBubble.PositionPreference;
-
 public class BubbleManager
 {
+	private static int Y_GAP = 8; //Default distance to place bubble from top or bottom of screen (is scaled based on font scale)
+	private static int X_GAP = 16; //Default distance to place bubble from left or right of screen (is scaled based on font scale)
+
 	private static class SingletonHolder {
 		private static BubbleManager instance = new BubbleManager();
 	}
@@ -63,20 +64,22 @@ public class BubbleManager
 	private Hashtable<Bubble, OnscreenBubble> bubbleMap = new Hashtable<Bubble, OnscreenBubble>();
 	private List<OnscreenBubble> activeBubbles = new LinkedList<OnscreenBubble>();
 
-	public synchronized OnscreenBubble addBubble( Bubble bubbleOwner, java.awt.geom.Point2D.Float originOfTail, java.awt.geom.Dimension2D textSize, float padding, java.awt.Rectangle viewport )
+	public synchronized OnscreenBubble addBubble( Bubble bubbleOwner, java.awt.geom.Point2D.Float originOfTail, java.awt.geom.Dimension2D textSize, float padding, float textScale, java.awt.Rectangle viewport )
 	{
-		OnscreenBubble.PositionPreference positionPreference;
-		if( originOfTail.x < ( viewport.width * .33 ) )
-		{
-			positionPreference = PositionPreference.LEFT;
-		}
-		else if( originOfTail.x < ( viewport.width * .66 ) )
-		{
-			positionPreference = PositionPreference.CENTER;
-		}
-		else
-		{
-			positionPreference = PositionPreference.RIGHT;
+		Bubble.PositionPreference positionPreference = bubbleOwner.getPositionPreference();
+		if( positionPreference == Bubble.PositionPreference.AUTOMATIC ) {
+			if( originOfTail.x < ( viewport.width * .33 ) )
+			{
+				positionPreference = Bubble.PositionPreference.TOP_LEFT;
+			}
+			else if( originOfTail.x < ( viewport.width * .66 ) )
+			{
+				positionPreference = Bubble.PositionPreference.TOP_CENTER;
+			}
+			else
+			{
+				positionPreference = Bubble.PositionPreference.TOP_RIGHT;
+			}
 		}
 		double IPAD = padding;
 		Rectangle2D.Double bubbleBounds = getRectForBubble( ( textSize.getWidth() + ( IPAD * 2 ) ), ( textSize.getHeight() + ( IPAD * 2 ) ), positionPreference, viewport );
@@ -99,13 +102,13 @@ public class BubbleManager
 		java.awt.geom.Point2D.Float endOfTail = new java.awt.geom.Point2D.Float( (float)tailEndX, (float)roundRect.getMaxY() );
 
 		OnscreenBubble bubble = new OnscreenBubble( originOfTail, endOfTail, roundRect, textBounds, positionPreference );
-		placeBubble( bubble, viewport );
+		placeBubble( bubble, viewport, textScale );
 		this.bubbleMap.put( bubbleOwner, bubble );
 		this.activeBubbles.add( bubble );
 		return bubble;
 	}
 
-	private Rectangle2D.Double getRectForBubble( double width, double height, OnscreenBubble.PositionPreference positionPreference, java.awt.Rectangle viewport )
+	private Rectangle2D.Double getRectForBubble( double width, double height, Bubble.PositionPreference positionPreference, java.awt.Rectangle viewport )
 	{
 		Rectangle2D.Double bubbleRect = new Rectangle2D.Double();
 		bubbleRect.width = width;
@@ -116,27 +119,27 @@ public class BubbleManager
 		return bubbleRect;
 	}
 
-	private void placeBubble( OnscreenBubble bubble, java.awt.Rectangle viewport )
+	private void placeBubble( OnscreenBubble bubble, java.awt.Rectangle viewport, float textScale )
 	{
-		double yGap = 4;
-		double xGap = 4;
+		double scaledYGap = Y_GAP * textScale;
+		double scaledXGap = X_GAP * textScale;
 		double x, y;
 		switch( bubble.getPositionPreference() )
 		{
-		case LEFT: {
-			x = xGap;
+		case TOP_LEFT: {
+			x = scaledXGap;
 		}
 			break;
-		case CENTER: {
+		case TOP_CENTER: {
 			x = ( viewport.width - bubble.getBubbleRect().width ) * .5f;
 		}
 			break;
-		case RIGHT: {
-			x = viewport.width - bubble.getBubbleRect().width - xGap;
+		case TOP_RIGHT: {
+			x = viewport.width - bubble.getBubbleRect().width - scaledXGap;
 		}
 			break;
 		default:
-			x = xGap;
+			x = scaledXGap;
 		}
 		double rightEdge = x + bubble.getBubbleRect().width;
 		double maxY = 0;
@@ -152,7 +155,7 @@ public class BubbleManager
 				}
 			}
 		}
-		y = maxY + yGap;
+		y = maxY + scaledYGap;
 		bubble.setPosition( x, y );
 	}
 

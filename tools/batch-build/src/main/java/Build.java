@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2016, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 /**
  * @author Dennis Cosgrove
@@ -57,9 +57,10 @@ public class Build {
 		org.apache.commons.cli.CommandLineParser parser = new org.apache.commons.cli.DefaultParser();
 		org.apache.commons.cli.CommandLine commandLine = parser.parse( options, args );
 
+		// @formatter:off
 		Config config = new Config.Builder()
-		.rootDir( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Code" ) )
-		.mode( commandLine.hasOption( "isDev" ) ? Mode.DEV : Mode.BUILD )
+				.rootDir( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Projects/Alice/Code" ) )
+				.mode( commandLine.hasOption( "isDev" ) ? Mode.DEV : Mode.BUILD )
 
 		.isPlugin6Desired( commandLine.hasOption( "skipPlugin6" ) == false )
 		.isPlugin8Desired( commandLine.hasOption( "skipPlugin8" ) == false )
@@ -68,21 +69,26 @@ public class Build {
 		.isCleanDesired( commandLine.hasOption( "skipClean" ) == false )
 		.isJavaDocGenerationDesired( commandLine.hasOption( "skipJavaDocs" ) == false )
 
-		.joglVersion( "2.2.4" )
-		.aliceModelSourceVersion( "2014.08.20" )
-		.nebulousModelSourceVersion( "2014.09.11" )
+				.joglVersion( "2.3.2" )
+				.aliceModelSourceVersion( "2016.08.19" )
+				.nebulousModelSourceVersion( "2016.07.15" )
 
 		//getUserProperties6File is expected to be in 6.9 even for 6.9.1
 		.netBeans6Version( "6.9" )
-		.netBeans8Version( "8.0.2" )
+		.netBeans8Version( "8.1" )
+
+		.installerIncludedJvmVersion( "1.8.0_102" )
 
 		.build();
+		// @formatter:on
 
 		JdkUtils.initialize();
 		MavenUtils.initialize();
 		AntUtils.initialize();
 		NetBeansUtils.initialize( config );
-		Install4JUtils.initialize();
+		if( config.isInstallerDesired() ) {
+			Install4JUtils.initialize( config );
+		}
 
 		BuildRepo buildRepo = new BuildRepo( config );
 		GitRepo repo;
@@ -145,7 +151,7 @@ public class Build {
 			if( config.getMode().isDev() ) {
 				//pass
 			} else {
-				installer.createInstallers();
+				installer.createInstallers( config );
 				timer.mark( "createInstallers" );
 			}
 		}
@@ -161,8 +167,12 @@ public class Build {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "assertions:", Build.class.desiredAssertionStatus() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "javaHomeDir:", JdkUtils.getJavaHomeDir() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "jdk8HomeDir:", JdkUtils.getJdk8HomeDir() );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "netbeansUserProperties6:", NetBeansUtils.getUserProperties6File() );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "netbeansUserProperties8:", NetBeansUtils.getUserProperties8File() );
+		if( config.isPlugin6Desired() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "netbeansUserProperties6:", NetBeansUtils.getUserProperties6File() );
+		}
+		if( config.isPlugin8Desired() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "netbeansUserProperties8:", NetBeansUtils.getUserProperties8File() );
+		}
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "mavenCommandFile:", MavenUtils.getMavenCommandFile() );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "antCommand:", AntUtils.getAntCommandFile() );

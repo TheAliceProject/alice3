@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,21 +39,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class DisplayTask implements javax.media.opengl.GLRunnable {
+/*package-private*/abstract class DisplayTask implements com.jogamp.opengl.GLRunnable {
 	public void setRtImp( RenderTargetImp rtImp ) {
 		this.rtImp = rtImp;
 	}
 
-	abstract IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl );
+	abstract IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, com.jogamp.opengl.GLAutoDrawable drawable, com.jogamp.opengl.GL2 gl );
 
 	@Override
-	public boolean run( javax.media.opengl.GLAutoDrawable drawable ) {
+	public boolean run( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		IsFrameBufferIntact isFrameBufferIntact = this.handleDisplay( this.rtImp, drawable, drawable.getGL().getGL2() );
 		return isFrameBufferIntact == IsFrameBufferIntact.TRUE;
 	}

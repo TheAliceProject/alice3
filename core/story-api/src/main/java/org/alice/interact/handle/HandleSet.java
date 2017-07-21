@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.alice.interact.handle;
 
 /**
@@ -55,6 +55,7 @@ public class HandleSet extends java.util.BitSet {
 	public static final HandleSet RESIZE_INTERACTION = new HandleSet( HandleGroup.RESIZE, HandleGroup.INTERACTION );
 	public static final HandleSet ROTATION_INTERACTION = new HandleSet( HandleGroup.ROTATION, HandleGroup.INTERACTION );
 	public static final HandleSet JOINT_ROTATION_INTERACTION = new HandleSet( HandleGroup.ROTATION, HandleGroup.INTERACTION );
+	public static final HandleSet JOINT_TRANSLATION_INTERACTION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.INTERACTION );
 	public static final HandleSet TRANSLATION_INTERACTION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.INTERACTION );
 	public static final HandleSet STOOD_UP_TRANSLATION_INTERACTION = new HandleSet( HandleGroup.STOOD_UP_TRANSLATION, HandleGroup.INTERACTION );
 	public static final HandleSet ABSOLUTE_TRANSLATION_INTERACTION = new HandleSet( HandleGroup.ABSOLUTE_TRANSLATION, HandleGroup.INTERACTION );

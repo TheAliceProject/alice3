@@ -1,3 +1,45 @@
+<!--
+    Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+   
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+   
+    1. Redistributions of source code must retain the above copyright notice,
+       this list of conditions and the following disclaimer.
+   
+    2. Redistributions in binary form must reproduce the above copyright notice,
+       this list of conditions and the following disclaimer in the documentation
+       and/or other materials provided with the distribution.
+   
+    3. Products derived from the software may not be called "Alice", nor may
+       "Alice" appear in their name, without prior written permission of
+       Carnegie Mellon University.
+   
+    4. All advertising materials mentioning features or use of this software must
+       display the following acknowledgement: "This product includes software
+       developed by Carnegie Mellon University"
+   
+    5. The gallery of art assets and animations provided with this software is
+       contributed by Electronic Arts Inc. and may be used for personal,
+       non-commercial, and academic use only. Redistributions of any program
+       source code that utilizes The Sims 2 Assets must also retain the copyright
+       notice, list of conditions and the disclaimer contained in
+       The Alice 3.0 Art Gallery License.
+   
+    DISCLAIMER:
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+    ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+    PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
+    SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+    INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+    THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -21,17 +63,6 @@
 		<project.resources.sound-gallery.directory>${project.resources.application.directory}/sound-gallery</project.resources.sound-gallery.directory>
 		<project.resources.starter-projects.directory>${project.resources.application.directory}/starter-projects</project.resources.starter-projects.directory>
 		<project.resources.platform.directory>${project.resources.directory}/platform</project.resources.platform.directory>
-
-		<platform.win32.label>win32</platform.win32.label>
-		<platform.win64.label>win64</platform.win64.label>
-		<platform.macosx.label>macosx</platform.macosx.label>
-		<platform.linux-i586.label>linux-i586</platform.linux-i586.label>
-		<platform.linux-amd64.label>linux-amd64</platform.linux-amd64.label>
-
-		<platform.ffmpeg.label>ffmpeg</platform.ffmpeg.label>
-		<platform.libvlc.label>libvlc</platform.libvlc.label>
-		<platform.nebulous.label>nebulous</platform.nebulous.label>
-		<platform.jogl.label>jogl</platform.jogl.label>
 	</properties>
 
 	<build>
@@ -57,6 +88,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -73,20 +105,6 @@
 									<groupId>org.alice</groupId>
 									<artifactId>alice-model-resources</artifactId>
 									<version>${alice.model.version}</version>
-									<type>zip</type>
-									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-model-resources</artifactId>
-									<version>${nebulous.model.version}</version>
-									<type>zip</type>
-									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-person-resources</artifactId>
-									<version>${nebulous.person.version}</version>
 									<type>zip</type>
 									<outputDirectory>${project.resources.gallery.directory}</outputDirectory>
 								</artifactItem>
@@ -130,14 +148,6 @@
 									<classifier>natives-linux-amd64</classifier>
 									<outputDirectory>${project.resources.platform.directory}/${platform.linux-amd64.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>linux-amd64</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.linux-amd64.label}/${platform.nebulous.label}</outputDirectory>
-								</artifactItem>
 
 								<!-- linux-i586 -->
 								<artifactItem>
@@ -154,14 +164,6 @@
 									<classifier>natives-linux-i586</classifier>
 									<outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>linux-i586</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.linux-i586.label}/${platform.nebulous.label}</outputDirectory>
-								</artifactItem>
 
 								<!-- macosx -->
 								<artifactItem>
@@ -177,14 +179,6 @@
 									<version>${jogl.version}</version>
 									<classifier>natives-macosx-universal</classifier>
 									<outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.jogl.label}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>macosx</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.macosx.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.videolan</groupId>
@@ -217,14 +211,6 @@
 									<outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.jogl.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>win32</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.win32.label}/${platform.nebulous.label}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
 									<groupId>org.videolan</groupId>
 									<artifactId>libvlc-win32</artifactId>
 									<version>2.1.5</version>
@@ -253,14 +239,6 @@
 									<version>${jogl.version}</version>
 									<classifier>natives-windows-amd64</classifier>
 									<outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.jogl.label}</outputDirectory>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.alice.nonfree</groupId>
-									<artifactId>nebulous-natives</artifactId>
-									<version>${nebulous.lib.version}</version>
-									<classifier>win64</classifier>
-									<type>zip</type>
-									<outputDirectory>${project.resources.platform.directory}/${platform.win64.label}/${platform.nebulous.label}</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.videolan</groupId>

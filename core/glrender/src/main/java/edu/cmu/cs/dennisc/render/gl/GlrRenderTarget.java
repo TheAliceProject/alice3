@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package edu.cmu.cs.dennisc.render.gl;
 
@@ -153,6 +153,29 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 	}
 
 	protected abstract java.awt.Dimension getSurfaceSize( java.awt.Dimension rv );
+
+	protected abstract java.awt.Dimension getDrawableSize( java.awt.Dimension rv );
+
+	@Override
+	public final java.awt.Dimension getDrawableSize() {
+		return getDrawableSize( new java.awt.Dimension() );
+	}
+
+	@Override
+	public final int getDrawableWidth() {
+		synchronized( s_sizeBufferForReuse ) {
+			getDrawableSize( s_sizeBufferForReuse );
+			return s_sizeBufferForReuse.width;
+		}
+	}
+
+	@Override
+	public final int getDrawableHeight() {
+		synchronized( s_sizeBufferForReuse ) {
+			getDrawableSize( s_sizeBufferForReuse );
+			return s_sizeBufferForReuse.height;
+		}
+	}
 
 	@Override
 	public final java.awt.Dimension getSurfaceSize() {
@@ -398,15 +421,19 @@ import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 		this.imp.clearUnusedTextures();
 	}
 
+	protected edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp getRenderTargetImp() {
+		return this.imp;
+	}
+
 	private final GlrRenderFactory glrRenderer;
 	private final edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities;
 	private final edu.cmu.cs.dennisc.render.RenderCapabilities actualCapabilities;
 
-	private final edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp imp = new edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp( this );
+	protected final edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp imp = new edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp( this );
 
 	private String m_description = new String();
 
-	public abstract javax.media.opengl.GLAutoDrawable getGLAutoDrawable();
+	public abstract com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable();
 
 	private boolean m_isRenderingEnabled = true;
 

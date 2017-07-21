@@ -1,45 +1,45 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package org.lgna.story.implementation.alice;
 
@@ -114,6 +114,15 @@ public class AliceResourceUtilties {
 			return this.key.hashCode();
 		}
 
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append( "ResourceIdentifier[" );
+			sb.append( this.key );
+			sb.append( "]" );
+			return sb.toString();
+		}
+
 	}
 
 	/*private*/protected AliceResourceUtilties() {
@@ -157,13 +166,11 @@ public class AliceResourceUtilties {
 	}
 
 	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual decodeVisual( URL url ) {
-		try
-		{
+		try {
 			java.io.InputStream is = url.openStream();
 			edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
 			return decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable>() );
-		} catch( Exception e )
-		{
+		} catch( Exception e ) {
 			e.printStackTrace();
 		}
 		return null;
@@ -317,7 +324,7 @@ public class AliceResourceUtilties {
 	 * enum BaseVisualName { TEXTURE_NAME_1, TEXTURE_NAME_2,
 	 * DIFFERENT_VISUAL_NAME_TEXTURE_NAME_1,
 	 * DIFFERENT_VISUAL_NAME_TEXTURE_NAME_2 }
-	 * 
+	 *
 	 * Both 'BaseVisualName' and DIFFERENT_VISUAL_NAME are potentially the names
 	 * of visual resources. If the resource uses the base visual, then the enum
 	 * name is just the name of the texture (like the entries TEXTURE_NAME_1 and
@@ -443,8 +450,7 @@ public class AliceResourceUtilties {
 		return getTextureNameFromClassAndResource( resource.getClass(), resource.toString() );
 	}
 
-	public static String getVisualResourceFileName( Object resource )
-	{
+	public static String getVisualResourceFileName( Object resource ) {
 		return getVisualResourceFileName( resource.getClass(), resource.toString() );
 	}
 
@@ -469,6 +475,9 @@ public class AliceResourceUtilties {
 	}
 
 	private static String createTextureBaseName( String modelName, String textureName ) {
+		if( modelName == null ) {
+			return null;
+		}
 		if( textureName == null ) {
 			textureName = "_cls";
 		} else if( textureName.equalsIgnoreCase( getDefaultTextureEnumName( modelName ) ) || modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) || textureName.equalsIgnoreCase( AliceResourceUtilties.makeEnumName( modelName ) ) ) {
@@ -476,7 +485,7 @@ public class AliceResourceUtilties {
 		} else if( textureName.length() > 0 ) {
 			textureName = "_" + makeEnumName( textureName );
 		}
-		return modelName.toLowerCase( java.util.Locale.ENGLISH ) + textureName;
+		return ( modelName != null ? modelName.toLowerCase( java.util.Locale.ENGLISH ) : null ) + textureName;
 	}
 
 	public static String getThumbnailResourceFileName( String modelName, String textureName ) {
@@ -554,6 +563,8 @@ public class AliceResourceUtilties {
 		edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = sgOriginal.geometries.getValue();
 		edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgTextureAppearances = sgOriginal.textures.getValue();
 		edu.cmu.cs.dennisc.scenegraph.WeightedMesh[] sgWeightedMeshes = sgOriginal.weightedMeshes.getValue();
+		edu.cmu.cs.dennisc.scenegraph.WeightedMesh[] sgDefaultPoseWeightedMeshes = sgOriginal.defaultPoseWeightedMeshes.getValue();
+		boolean hasDefaultPoseWeightedMeshes = sgOriginal.hasDefaultPoseWeightedMeshes.getValue();
 		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
 		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = sgOriginal.baseBoundingBox.getValue();
 		edu.cmu.cs.dennisc.math.Matrix3x3 scaleCopy = new edu.cmu.cs.dennisc.math.Matrix3x3( sgOriginal.scale.getValue() );
@@ -581,6 +592,8 @@ public class AliceResourceUtilties {
 		rv.skeleton.setValue( sgSkeletonRootCopy );
 		rv.geometries.setValue( sgGeometries );
 		rv.weightedMeshes.setValue( sgWeightedMeshes );
+		rv.defaultPoseWeightedMeshes.setValue( sgDefaultPoseWeightedMeshes );
+		rv.hasDefaultPoseWeightedMeshes.setValue( hasDefaultPoseWeightedMeshes );
 		rv.textures.setValue( sgTextureAppearances );
 		rv.frontFacingAppearance.setValue( sgFrontAppearanceCopy );
 		rv.backFacingAppearance.setValue( sgBackAppearanceCopy );
@@ -706,7 +719,7 @@ public class AliceResourceUtilties {
 			if( !classToInfoMap.containsKey( parentKey ) ) {
 				String name = getName( modelResource );
 				try {
-					//xml files are not referenced off the 
+					//xml files are not referenced off the
 					InputStream is = getAliceResourceAsStream( modelResource, ModelResourceIoUtilities.getResourceSubDirWithSeparator( "" ) + name + ".xml" );
 					if( is != null ) {
 						Document doc = XMLUtilities.read( is );
@@ -798,8 +811,7 @@ public class AliceResourceUtilties {
 		if( info != null ) {
 			if( locale == null ) {
 				return info.getModelName();
-			}
-			else {
+			} else {
 				String packageName = modelResource.getPackage().getName();
 				return findLocalizedText( getClassNameLocalizationBundleName(), packageName + "." + info.getModelName(), locale );
 			}
@@ -880,7 +892,8 @@ public class AliceResourceUtilties {
 	}
 
 	private static String[] getLocalizedTags( String[] tags, String localizerBundleName, Locale locale, boolean acceptNull ) {
-		if( Locale.ENGLISH.getLanguage().equals( locale.getLanguage() ) ) {
+		//		if( Locale.ENGLISH.getLanguage().equals( locale.getLanguage() ) )
+		{
 			java.util.List<String> localizedTags = edu.cmu.cs.dennisc.java.util.Lists.newArrayList();
 			for( String tag : tags ) {
 				String[] splitTags = tag.split( ":" );
@@ -891,8 +904,7 @@ public class AliceResourceUtilties {
 					String stringToUse;
 					if( hasStar ) {
 						stringToUse = t.substring( 1 );
-					}
-					else {
+					} else {
 						stringToUse = t;
 					}
 					String localizationKey = makeLocalizationKey( stringToUse );
@@ -915,9 +927,10 @@ public class AliceResourceUtilties {
 				}
 			}
 			return localizedTags.toArray( new String[ localizedTags.size() ] );
-		} else {
-			return new String[ 0 ];
 		}
+		//		else {
+		//			return new String[ 0 ];
+		//		}
 	}
 
 	public static String[] getTags( Class<?> modelResource, String resourceName, Locale locale ) {
@@ -934,8 +947,7 @@ public class AliceResourceUtilties {
 		}
 	}
 
-	public static String[] getGroupTags( Class<?> modelResource, String resourceName, Locale locale )
-	{
+	public static String[] getGroupTags( Class<?> modelResource, String resourceName, Locale locale ) {
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
 			if( ( locale == null ) || true ) {
@@ -948,8 +960,23 @@ public class AliceResourceUtilties {
 		}
 	}
 
-	public static String[] getThemeTags( Class<?> modelResource, String resourceName, Locale locale )
-	{
+	public static String getLocalizedTag( String tag, Locale locale ) {
+		if( locale == null ) {
+			return tag;
+		}
+		if( tag.contains( " " ) ) {
+			tag = tag.replace( " ", "_" );
+		}
+		String result = findLocalizedText( getTagsLocalizationBundleName(), tag, locale );
+		if( result != null ) {
+			return result;
+		} else {
+			Logger.severe( "No localization for gallery tag '" + tag + "' for locale " + locale );
+			return tag;
+		}
+	}
+
+	public static String[] getThemeTags( Class<?> modelResource, String resourceName, Locale locale ) {
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
 			if( ( locale == null ) || true ) {

@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
@@ -65,7 +65,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 	protected abstract void fireDone( edu.cmu.cs.dennisc.render.gl.imp.PickParameters pickParameters );
 
 	@Override
-	public final IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
+	public final IsFrameBufferIntact handleDisplay( RenderTargetImp rtImp, com.jogamp.opengl.GLAutoDrawable drawable, com.jogamp.opengl.GL2 gl ) {
 		this.pickContext.gl = gl;
 
 		//todo:
@@ -80,7 +80,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 		this.selectionAsIntBuffer.rewind();
 		this.pickContext.gl.glSelectBuffer( SELECTION_CAPACITY, this.selectionAsIntBuffer );
 
-		this.pickContext.gl.glRenderMode( javax.media.opengl.GL2.GL_SELECT );
+		this.pickContext.gl.glRenderMode( com.jogamp.opengl.GL2.GL_SELECT );
 		this.pickContext.gl.glInitNames();
 
 		java.awt.Rectangle actualViewport = rt.getActualViewportAsAwtRectangle( sgCamera );
@@ -89,7 +89,7 @@ import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
 		this.pickContext.gl.glFlush();
 
 		this.selectionAsIntBuffer.rewind();
-		int length = this.pickContext.gl.glRenderMode( javax.media.opengl.GL2.GL_RENDER );
+		int length = this.pickContext.gl.glRenderMode( com.jogamp.opengl.GL2.GL_RENDER );
 		//todo: invesigate negative length
 		//assert length >= 0;
 

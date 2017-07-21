@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,9 +39,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl;
-
 
 /**
  * @author Dennis Cosgrove
@@ -98,7 +97,7 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 
 	private final JRecordPanel jPanel = new JRecordPanel();
 
-	private final javax.media.opengl.GLOffscreenAutoDrawable glPixelBuffer;
+	private final com.jogamp.opengl.GLOffscreenAutoDrawable glPixelBuffer;
 
 	private boolean[] atIsUpSideDown = { false };
 	private java.awt.image.BufferedImage image;
@@ -120,7 +119,14 @@ public class GlrCaptureFauxOnscreenRenderTarget extends GlrRenderTarget implemen
 	}
 
 	@Override
-	public javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
+	protected java.awt.Dimension getDrawableSize( java.awt.Dimension rv ) {
+		//Drawable size and surface size are the same for this render target
+		rv.setSize( this.size );
+		return rv;
+	}
+
+	@Override
+	public com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable() {
 		return this.glPixelBuffer;
 	}
 

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,9 +39,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package org.lgna.story.implementation;
+
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
+import edu.cmu.cs.dennisc.math.Point3;
 
 /**
  * @author Dennis Cosgrove
@@ -503,10 +507,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		@Override
 		protected void setM( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevM = this.getSubject().getSgComposite().getLocalTransformation();
-			edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextM = new edu.cmu.cs.dennisc.math.AffineMatrix4x4(
-					orientation,
-					prevM.translation
-					);
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextM = new edu.cmu.cs.dennisc.math.AffineMatrix4x4( orientation, prevM.translation );
 			this.getSubject().getSgComposite().setLocalTransformation( nextM );
 		}
 	}
@@ -794,18 +795,9 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.m1 = m1;
 
 			double s = -8;//this.m0.translation.calculateMagnitude();
-			this.xHermite = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic(
-					m0.translation.x, m1.translation.x,
-					s * m0.orientation.backward.x, s * m1.orientation.backward.x
-					);
-			this.yHermite = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic(
-					m0.translation.y, m1.translation.y,
-					s * m0.orientation.backward.y, s * m1.orientation.backward.y
-					);
-			this.zHermite = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic(
-					m0.translation.z, m1.translation.z,
-					s * m0.orientation.backward.z, s * m1.orientation.backward.z
-					);
+			this.xHermite = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( m0.translation.x, m1.translation.x, s * m0.orientation.backward.x, s * m1.orientation.backward.x );
+			this.yHermite = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( m0.translation.y, m1.translation.y, s * m0.orientation.backward.y, s * m1.orientation.backward.y );
+			this.zHermite = new edu.cmu.cs.dennisc.math.polynomial.HermiteCubic( m0.translation.z, m1.translation.z, s * m0.orientation.backward.z, s * m1.orientation.backward.z );
 		}
 
 		@Override
@@ -1088,5 +1080,112 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	public double getDistanceTo( AbstractTransformableImp other ) {
 		edu.cmu.cs.dennisc.math.Point3 translation = this.getSgComposite().getTranslation( other.getSgComposite() );
 		return translation.calculateMagnitude();
+	}
+
+	private enum SpatialRelationDimension {
+		TOP,
+		BOTTOM,
+		LEFT,
+		RIGHT,
+		FRONT,
+		BACK
+	}
+
+	private double getSpatialRelationPoint( EntityImp other, SpatialRelationDimension spatialRelation, ReferenceFrame asSeenBy ) {
+		if( other instanceof ModelImp ) {
+			ModelImp modelImp = (ModelImp)other;
+			AxisAlignedBox bbox = modelImp.getDynamicAxisAlignedMinimumBoundingBox( asSeenBy );
+			switch( spatialRelation ) {
+			case RIGHT:
+				return bbox.getXMaximum();
+			case LEFT:
+				return bbox.getXMinimum();
+			case TOP:
+				return bbox.getYMaximum();
+			case BOTTOM:
+				return bbox.getYMinimum();
+			case BACK:
+				return bbox.getZMaximum();
+			case FRONT:
+				return bbox.getZMinimum();
+			default:
+				return 0;
+			}
+		} else {
+			Point3 point = other.getSgComposite().getTranslation( asSeenBy.getSgReferenceFrame() );
+			switch( spatialRelation ) {
+			case RIGHT:
+			case LEFT:
+				return point.x;
+			case TOP:
+			case BOTTOM:
+				return point.y;
+			case BACK:
+			case FRONT:
+				return point.z;
+			default:
+				return 0;
+			}
+		}
+	}
+
+	public double getDistanceAbove( EntityImp other, ReferenceFrame asSeenBy ) {
+		double thisBottomY = getSpatialRelationPoint( this, SpatialRelationDimension.BOTTOM, asSeenBy );
+		double otherTopY = getSpatialRelationPoint( other, SpatialRelationDimension.TOP, asSeenBy );
+		double value = thisBottomY - otherTopY;
+		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
+			value = 0;
+		}
+		return value;
+	}
+
+	public double getDistanceBelow( EntityImp other, ReferenceFrame asSeenBy ) {
+		double thisTopY = getSpatialRelationPoint( this, SpatialRelationDimension.TOP, asSeenBy );
+		double otherBottomY = getSpatialRelationPoint( other, SpatialRelationDimension.BOTTOM, asSeenBy );
+		double value = otherBottomY - thisTopY;
+		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
+			value = 0;
+		}
+		return value;
+	}
+
+	public double getDistanceBehind( EntityImp other, ReferenceFrame asSeenBy ) {
+		double thisFrontZ = getSpatialRelationPoint( this, SpatialRelationDimension.FRONT, asSeenBy );
+		double otherBackZ = getSpatialRelationPoint( other, SpatialRelationDimension.BACK, asSeenBy );
+		double value = ( otherBackZ - thisFrontZ ) * -1; //Front and back calculations are flipped because -Z if front
+		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
+			value = 0;
+		}
+		return value;
+	}
+
+	public double getDistanceInFrontOf( EntityImp other, ReferenceFrame asSeenBy ) {
+		double thisBackZ = getSpatialRelationPoint( this, SpatialRelationDimension.BACK, asSeenBy );
+		double otherFrontZ = getSpatialRelationPoint( other, SpatialRelationDimension.FRONT, asSeenBy );
+		double value = ( thisBackZ - otherFrontZ ) * -1; //Front and back calculations are flipped because -Z if front
+		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
+			value = 0;
+		}
+		return value;
+	}
+
+	public double getDistanceToTheLeftOf( EntityImp other, ReferenceFrame asSeenBy ) {
+		double thisRightX = getSpatialRelationPoint( this, SpatialRelationDimension.RIGHT, asSeenBy );
+		double otherLeftX = getSpatialRelationPoint( other, SpatialRelationDimension.LEFT, asSeenBy );
+		double value = otherLeftX - thisRightX; //A positive number measuring from the left of the reference object (other) to the right of this
+		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
+			value = 0;
+		}
+		return value;
+	}
+
+	public double getDistanceToTheRightOf( EntityImp other, ReferenceFrame asSeenBy ) {
+		double thisLeftX = getSpatialRelationPoint( this, SpatialRelationDimension.LEFT, asSeenBy );
+		double otherRightX = getSpatialRelationPoint( other, SpatialRelationDimension.RIGHT, asSeenBy );
+		double value = thisLeftX - otherRightX; //A positive number measuring from the left of this to the right of the reference object (other)
+		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
+			value = 0;
+		}
+		return value;
 	}
 }

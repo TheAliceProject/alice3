@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,14 +39,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import static javax.media.opengl.GL.GL_FLOAT;
-import static javax.media.opengl.GL.GL_NO_ERROR;
-import static javax.media.opengl.GL.GL_UNSIGNED_BYTE;
-import static javax.media.opengl.GL2.GL_ABGR_EXT;
-import static javax.media.opengl.GL2ES2.GL_DEPTH_COMPONENT;
+import static com.jogamp.opengl.GL.GL_FLOAT;
+import static com.jogamp.opengl.GL.GL_NO_ERROR;
+import static com.jogamp.opengl.GL.GL_UNSIGNED_BYTE;
+import static com.jogamp.opengl.GL2.GL_ABGR_EXT;
+import static com.jogamp.opengl.GL2ES2.GL_DEPTH_COMPONENT;
 
 /**
  * @author Dennis Cosgrove
@@ -61,7 +61,7 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
 	}
 
 	@Override
-	/*package-private*/IsFrameBufferIntact handleDisplay( edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp rtImp, javax.media.opengl.GLAutoDrawable drawable, javax.media.opengl.GL2 gl ) {
+	/*package-private*/IsFrameBufferIntact handleDisplay( edu.cmu.cs.dennisc.render.gl.imp.RenderTargetImp rtImp, com.jogamp.opengl.GLAutoDrawable drawable, com.jogamp.opengl.GL2 gl ) {
 		synchronized( this.imageBuffer.getImageLock() ) {
 
 			if( this.renderTask != null ) {
@@ -145,7 +145,7 @@ public final class ImageCaptureDisplayTask extends DisplayTask {
 						}
 					}
 					if( errors != null ) {
-						javax.media.opengl.glu.GLU glu = new javax.media.opengl.glu.GLU();
+						com.jogamp.opengl.glu.GLU glu = new com.jogamp.opengl.glu.GLU();
 						String description = glu.gluErrorString( errors.get( 0 ) );
 						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to capture back buffer:", description );
 					}

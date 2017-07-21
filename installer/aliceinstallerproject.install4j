@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="5.1.15" transformSequenceNumber="4">
   <directoryPresets config="./installerFiles" />
-  <application name="Alice 3" distributionSourceDir="" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="Alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="http://www.alice.org" version="3.2.7.0.0" allPathsRelative="true" backupOnSave="false" autoSave="true" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.6" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
+  <application name="Alice 3" distributionSourceDir="" applicationId="8894-1892-1685-3469" mediaDir="./installerOutput" mediaFilePattern="${compiler:sys.shortName}_${compiler:sys.platform}_${compiler:sys.version}" compression="6" lzmaCompression="false" pack200Compression="false" excludeSignedFromPacking="true" commonExternalFiles="false" createMd5Sums="true" shrinkRuntime="true" shortName="Alice3" publisher="Alice Team, Carnegie Mellon University" publisherWeb="http://www.alice.org" version="3.3.1.0.0" allPathsRelative="true" backupOnSave="false" autoSave="true" convertDotsToUnderscores="true" macSignature="????" installerName="" javaMinVersion="1.6" javaMaxVersion="" allowBetaVM="true" jdkMode="runtimeJre" jdkName="">
     <languages skipLanguageSelection="false" languageSelectionInPrincipalLanguage="false">
       <principalLanguage id="en" customLocalizationFile="" />
       <additionalLanguages>
@@ -44,9 +44,13 @@
     <filesets />
     <roots />
     <mountPoints>
+      <mountPoint id="301" root="" location="platform" mode="755" />
+      <mountPoint id="302" root="" location="platform/macosx" mode="755" />
+      <mountPoint id="303" root="" location="platform/macosx/ffmpeg" mode="755" />
       <mountPoint id="23" root="" location="" mode="755" />
     </mountPoints>
     <entries>
+      <fileEntry mountPoint="303" file="./aliceInstallData/Alice3/platform/macosx/ffmpeg/ffmpeg" overwriteMode="4" shared="false" fileMode="755" uninstallMode="0" overrideFileMode="true" overrideOverwriteMode="false" overrideUninstallMode="false" />
       <dirEntry mountPoint="23" file="./aliceInstallData/Alice3" overwriteMode="2" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" entryMode="direct" subDirectory="Alice3" excludeSuffixes="" dirMode="755" overrideDirMode="false">
         <exclude>
           <entry location="Alice3.app" fileType="regular" />
@@ -55,7 +59,7 @@
           <entry location="alice3.sh" fileType="regular" />
           <entry location="Alice3Icon.ico" fileType="regular" />
           <entry location="auxiliary" fileType="regular" />
-          <entry location="errlog.txt" fileType="regular" />
+          <entry location="platform/macosx/ffmpeg/ffmpeg" fileType="regular" />
         </exclude>
       </dirEntry>
     </entries>
@@ -179,60 +183,48 @@
         </text>
       </splashScreen>
       <java mainClass="org.alice.stageide.EntryPoint" vmParameters="-ea -Xmx1024m -Dorg.alice.ide.rootDirectory=./ -Dswing.aatext=true -Djogamp.gluegen.UseTempJarCache=false" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true">
-        <classPath>
-          <archive location="ext/axis/axis/1.3/axis-1.3.jar" failOnError="true" />
+         <classPath>
           <archive location="ext/axis/axis-jaxrpc/1.3/axis-jaxrpc-1.3.jar" failOnError="true" />
           <archive location="ext/axis/axis-saaj/1.3/axis-saaj-1.3.jar" failOnError="true" />
           <archive location="ext/axis/axis-wsdl4j/1.5.1/axis-wsdl4j-1.5.1.jar" failOnError="true" />
+          <archive location="ext/axis/axis/1.3/axis-1.3.jar" failOnError="true" />
           <archive location="ext/com/atlassian/jira/plugins/jira-soapclient/4.0/jira-soapclient-4.0.jar" failOnError="true" />
-          <archive location="ext/com/google/code/findbugs/jsr305/1.3.7/jsr305-1.3.7.jar" failOnError="true" />
-          <archive location="ext/com/google/gdata/core/1.47.1/core-1.47.1.jar" failOnError="true" />
-          <archive location="ext/com/google/guava/guava/13.0.1/guava-13.0.1.jar" failOnError="true" />
-          <archive location="ext/com/google/http-client/google-http-client/1.11.0-beta/google-http-client-1.11.0-beta.jar" failOnError="true" />
-          <archive location="ext/com/google/oauth-client/google-oauth-client/1.11.0-beta/google-oauth-client-1.11.0-beta.jar" failOnError="true" />
-          <archive location="ext/com/google/oauth-client/google-oauth-client-java6/1.11.0-beta/google-oauth-client-java6-1.11.0-beta.jar" failOnError="true" />
-          <archive location="ext/com/google/oauth-client/google-oauth-client-jetty/1.11.0-beta/google-oauth-client-jetty-1.11.0-beta.jar" failOnError="true" />
           <archive location="ext/com/miglayout/miglayout-core/4.2/miglayout-core-4.2.jar" failOnError="true" />
           <archive location="ext/com/miglayout/miglayout-swing/4.2/miglayout-swing-4.2.jar" failOnError="true" />
           <archive location="ext/com/sun/javamp3/1.0/javamp3-1.0.jar" failOnError="true" />
           <archive location="ext/com/yuvimasory/orange-extensions/1.3.0/orange-extensions-1.3.0.jar" failOnError="true" />
-          <archive location="ext/commons-codec/commons-codec/1.3/commons-codec-1.3.jar" failOnError="true" />
           <archive location="ext/commons-discovery/commons-discovery/0.2/commons-discovery-0.2.jar" failOnError="true" />
           <archive location="ext/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar" failOnError="true" />
           <archive location="ext/de/java2html/java2html/5.0/java2html-5.0.jar" failOnError="true" />
           <archive location="ext/javax/activation/activation/1.1/activation-1.1.jar" failOnError="true" />
-          <archive location="ext/javax/mail/mail/1.4/mail-1.4.jar" failOnError="true" />
           <archive location="ext/javax/mail/mailapi/1.4.3/mailapi-1.4.3.jar" failOnError="true" />
           <archive location="ext/javax/media/jmf/2.1.1e/jmf-2.1.1e.jar" failOnError="true" />
           <archive location="ext/net/java/dev/jna/jna/3.5.2/jna-3.5.2.jar" failOnError="true" />
           <archive location="ext/net/java/dev/jna/platform/3.5.2/platform-3.5.2.jar" failOnError="true" />
-          <archive location="ext/org/alice/alice-model-source/2014.08.20/alice-model-source-2014.08.20.jar" failOnError="true" />
+          <archive location="ext/org/alice/alice-model-source/2016.08.19/alice-model-source-2016.08.19.jar" failOnError="true" />
           <archive location="ext/org/alice/external/wrapped-flow-layout/1.0/wrapped-flow-layout-1.0.jar" failOnError="true" />
-          <archive location="ext/org/alice/nonfree/nebulous-model-source/2014.09.11/nebulous-model-source-2014.09.11.jar" failOnError="true" />
-          <archive location="ext/org/apache/httpcomponents/httpclient/4.0.3/httpclient-4.0.3.jar" failOnError="true" />
-          <archive location="ext/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar" failOnError="true" />
-          <archive location="ext/org/jogamp/gluegen/gluegen-rt/2.2.4/gluegen-rt-2.2.4.jar" failOnError="true" />
-          <archive location="ext/org/jogamp/jogl/jogl-all/2.2.4/jogl-all-2.2.4.jar" failOnError="true" />
-          <archive location="ext/org/mortbay/jetty/jetty/6.1.26/jetty-6.1.26.jar" failOnError="true" />
-          <archive location="ext/org/mortbay/jetty/jetty-util/6.1.26/jetty-util-6.1.26.jar" failOnError="true" />
-          <archive location="ext/org/mortbay/jetty/servlet-api/2.5-20081211/servlet-api-2.5-20081211.jar" failOnError="true" />
+          <archive location="ext/org/jogamp/gluegen/gluegen-rt/2.3.2/gluegen-rt-2.3.2.jar" failOnError="true" />
+          <archive location="ext/org/jogamp/jogl/jogl-all/2.3.2/jogl-all-2.3.2.jar" failOnError="true" />
           <archive location="ext/redstone/xmlrpc/xmlrpc/1.1.1/xmlrpc-1.1.1.jar" failOnError="true" />
           <archive location="ext/uk/co/caprica/vlcj/3.1.0/vlcj-3.1.0.jar" failOnError="true" />
           <archive location="ext/uk/co/mmscomputing/mmsc/1.0/mmsc-1.0.jar" failOnError="true" />
           <archive location="ext/wsdl4j/wsdl4j/1.5.1/wsdl4j-1.5.1.jar" failOnError="true" />
-          <archive location="ext/xpp3/xpp3/1.1.4c/xpp3-1.1.4c.jar" failOnError="true" />
           <archive location="lib/alice-ide-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/ast-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/croquet-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/glrender-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/i18n-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/ide-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/ide-nonfree-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/image-editor-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/issue-reporting-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/resources-nonfree-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/scenegraph-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/story-api-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/story-api-migration-0.0.1-SNAPSHOT.jar" failOnError="true" />
+          <archive location="lib/story-api-nonfree-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/util-0.0.1-SNAPSHOT.jar" failOnError="true" />
+
         </classPath>
         <nativeLibraryDirectories />
       </java>
@@ -776,7 +768,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
     </applications>
   </installerGui>
   <mediaSets>
-    <windows name="Windows 64 Offline" id="101" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="64" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="windows-amd64-1.8.0_31" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-amd64-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerDataTest" verifyIntegrity="true">
+    <windows name="Windows 64 Offline" id="101" customizedId="" mediaFileName="" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="64" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="windows-amd64-1.8.0_102.tar.gz" manualJREEntry="true" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-amd64-1.8.0_102.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerDataTest" verifyIntegrity="true">
       <excludedLaunchers />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
@@ -794,7 +786,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
       <excludedComponents />
       <includedDownloadableComponents />
     </windows>
-    <macos name="Mac OS X Single Bundle Offline" id="105" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="macosx-amd64-1.8.0_31_unpacked" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/macosx-amd64-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" appleJre="false" requiredVmIdPrefix="" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" launcherId="24">
+    <macos name="Mac OS X Single Bundle Offline" id="105" customizedId="" mediaFileName="" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="macosx-amd64-1.8.0_102.tar.gz" manualJREEntry="true" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/macosx-amd64-1.8.0_102.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" appleJre="false" requiredVmIdPrefix="" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" launcherId="24">
       <excludedBeans>
         <bean refId="142" />
       </excludedBeans>
@@ -813,7 +805,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
       <excludedComponents />
       <includedDownloadableComponents />
     </macos>
-    <unixInstaller name="Unix Installer Offline" id="111" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="" manualJREEntry="false" bundleType="1" jreURL="" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData">
+    <unixInstaller name="Unix Installer Offline" id="111" customizedId="" mediaFileName="" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="" manualJREEntry="false" bundleType="1" jreURL="" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData">
       <excludedLaunchers />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
@@ -833,16 +825,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
         <content />
       </installerScript>
     </unixInstaller>
-    <windows name="Windows 32 Offline" id="117" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Offline_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="windows-x86-1.8.0_31" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-x86-1.7.0_67.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" verifyIntegrity="true">
+    <windows name="Windows 32 Offline" id="117" customizedId="" mediaFileName="" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="windows-x86-1.8.0_102.tar.gz" manualJREEntry="true" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/windows-x86-1.8.0_102.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" downloadURL="http://www.alice.org/downloads/installerOnlineData" verifyIntegrity="true">
       <excludedLaunchers />
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
-      <exclude>
-        <entry location="platform/linux-amd64" fileType="regular" />
-        <entry location="platform/linux-i586" fileType="regular" />
-        <entry location="platform/macosx" fileType="regular" />
-        <entry location="platform/win64" fileType="regular" />
-      </exclude>
+      <exclude />
       <variables />
       <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
         <commentFiles />
@@ -851,15 +838,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
       <excludedComponents />
       <includedDownloadableComponents />
     </windows>
-    <macosArchive name="Mac OS X Single Bundle Archive" id="195" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_Archive_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="macosx-amd64-1.7.0_67" manualJREEntry="false" appleJre="false" launcherId="24">
+    <macosArchive name="Mac OS X Single Bundle Archive" id="195" customizedId="" mediaFileName="" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" includedJRE="macosx-amd64-1.8.0_102_unpacked.tar.gz" manualJREEntry="true" appleJre="false" launcherId="24">
       <excludedBeans />
       <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
-      <exclude>
-        <entry location="platform/linux-amd64" fileType="regular" />
-        <entry location="platform/linux-i586" fileType="regular" />
-        <entry location="platform/win32" fileType="regular" />
-        <entry location="platform/win64" fileType="regular" />
-      </exclude>
+      <exclude />
       <variables />
       <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
         <commentFiles />

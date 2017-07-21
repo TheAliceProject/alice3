@@ -1,45 +1,45 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package org.lgna.story;
 
@@ -51,7 +51,7 @@ import org.lgna.project.annotations.Visibility;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SModel extends SMovableTurnable implements MutableRider, Resizable, Visual {
+public abstract class SModel extends SMovableTurnable implements MutableRider, Resizable, VisualWithPaint {
 	@Override
 	/* package-private */abstract org.lgna.story.implementation.ModelImp getImplementation();
 
@@ -60,6 +60,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 
+	//VisualWithPaint interface
 	@Override
 	@MethodTemplate( )
 	@GetterTemplate( isPersistent = true )
@@ -73,6 +74,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	//Visual interface
 	@Override
 	@MethodTemplate( )
 	@GetterTemplate( isPersistent = true )
@@ -88,6 +90,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
+	//Resizable interface
 	@Override
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public Scale getScale() {
@@ -163,7 +166,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 	@MethodTemplate( )
 	public void resize( Number factor, Resize.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( factor, 0 );
-		//todo: explain how to make things smaller 
+		//todo: explain how to make things smaller
 		this.getImplementation().animateResize( factor.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -171,7 +174,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 	@MethodTemplate( )
 	public void resizeWidth( Number factor, ResizeWidth.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( factor, 0 );
-		//todo: explain how to make things smaller 
+		//todo: explain how to make things smaller
 		this.getImplementation().animateResizeWidth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -179,7 +182,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 	@MethodTemplate( )
 	public void resizeHeight( Number factor, ResizeHeight.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( factor, 0 );
-		//todo: explain how to make things smaller 
+		//todo: explain how to make things smaller
 		this.getImplementation().animateResizeHeight( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
@@ -187,7 +190,7 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 	@MethodTemplate( )
 	public void resizeDepth( Number factor, ResizeDepth.Detail... details ) {
 		org.lgna.common.LgnaIllegalArgumentException.checkArgumentIsPositive( factor, 0 );
-		//todo: explain how to make things smaller 
+		//todo: explain how to make things smaller
 		this.getImplementation().animateResizeDepth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 }

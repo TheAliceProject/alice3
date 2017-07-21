@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.alice.ide.member;
 
 /**
@@ -56,8 +56,8 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		}
 	}
 
-	protected static final String GROUP_BY_CATEGORY = "group by category";
-	protected static final String SORT_ALPHABETICALLY = "sort alphabetically";
+	protected static final String GROUP_BY_CATEGORY_KEY = "groupByCategory";
+	protected static final String SORT_ALPHABETICALLY_KEY = "sortAlphabetically";
 
 	public static org.alice.ide.member.MethodsSubComposite SEPARATOR = null;
 
@@ -212,7 +212,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		}
 
 		String sortValue = this.getSortState().getValue();
-		if( SORT_ALPHABETICALLY.equals( sortValue ) ) {
+		if( SORT_ALPHABETICALLY_KEY.equals( sortValue ) ) {
 			//todo
 		} else {
 			java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategorySubComposites();

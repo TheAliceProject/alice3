@@ -1,68 +1,68 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import static javax.media.opengl.GL.GL_BLEND;
-import static javax.media.opengl.GL.GL_CULL_FACE;
-import static javax.media.opengl.GL.GL_DEPTH_TEST;
-import static javax.media.opengl.GL.GL_FRONT_AND_BACK;
-import static javax.media.opengl.GL.GL_LINES;
-import static javax.media.opengl.GL.GL_LINE_LOOP;
-import static javax.media.opengl.GL.GL_LINE_STRIP;
-import static javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA;
-import static javax.media.opengl.GL.GL_RGBA;
-import static javax.media.opengl.GL.GL_SRC_ALPHA;
-import static javax.media.opengl.GL.GL_TRIANGLE_FAN;
-import static javax.media.opengl.GL.GL_UNSIGNED_BYTE;
-import static javax.media.opengl.GL2.GL_LINE_STIPPLE;
-import static javax.media.opengl.GL2.GL_POLYGON;
-import static javax.media.opengl.GL2ES1.GL_ALPHA_SCALE;
-import static javax.media.opengl.GL2GL3.GL_FILL;
-import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
-import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
+import static com.jogamp.opengl.GL.GL_BLEND;
+import static com.jogamp.opengl.GL.GL_CULL_FACE;
+import static com.jogamp.opengl.GL.GL_DEPTH_TEST;
+import static com.jogamp.opengl.GL.GL_FRONT_AND_BACK;
+import static com.jogamp.opengl.GL.GL_LINES;
+import static com.jogamp.opengl.GL.GL_LINE_LOOP;
+import static com.jogamp.opengl.GL.GL_LINE_STRIP;
+import static com.jogamp.opengl.GL.GL_ONE_MINUS_SRC_ALPHA;
+import static com.jogamp.opengl.GL.GL_RGBA;
+import static com.jogamp.opengl.GL.GL_SRC_ALPHA;
+import static com.jogamp.opengl.GL.GL_TRIANGLE_FAN;
+import static com.jogamp.opengl.GL.GL_UNSIGNED_BYTE;
+import static com.jogamp.opengl.GL2.GL_LINE_STIPPLE;
+import static com.jogamp.opengl.GL2.GL_POLYGON;
+import static com.jogamp.opengl.GL2ES1.GL_ALPHA_SCALE;
+import static com.jogamp.opengl.GL2GL3.GL_FILL;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
-import javax.media.opengl.glu.GLU;
+import com.jogamp.opengl.glu.GLU;
 
 /**
  * @author Dennis Cosgrove
@@ -542,10 +542,10 @@ import javax.media.opengl.glu.GLU;
 
 	private void fill( java.awt.geom.PathIterator pi ) {
 
-		class MyTessAdapter implements javax.media.opengl.glu.GLUtessellatorCallback {
-			private javax.media.opengl.GL2 gl;
+		class MyTessAdapter implements com.jogamp.opengl.glu.GLUtessellatorCallback {
+			private com.jogamp.opengl.GL2 gl;
 
-			public MyTessAdapter( javax.media.opengl.GL2 gl ) {
+			public MyTessAdapter( com.jogamp.opengl.GL2 gl ) {
 				this.gl = gl;
 			}
 
@@ -623,35 +623,35 @@ import javax.media.opengl.glu.GLU;
 			}
 		}
 
-		javax.media.opengl.glu.GLUtessellatorCallback adapter = new MyTessAdapter( this.renderContext.gl );
-		javax.media.opengl.glu.GLUtessellator tesselator = javax.media.opengl.glu.GLU.gluNewTess();
+		com.jogamp.opengl.glu.GLUtessellatorCallback adapter = new MyTessAdapter( this.renderContext.gl );
+		com.jogamp.opengl.glu.GLUtessellator tesselator = com.jogamp.opengl.glu.GLU.gluNewTess();
 		try {
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, adapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, adapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_END, adapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_EDGE_FLAG, adapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, adapter );
-			javax.media.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, adapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, adapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, adapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_END, adapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_EDGE_FLAG, adapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, adapter );
+			com.jogamp.opengl.glu.GLU.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, adapter );
 
 			double[] segment = new double[ 6 ];
 
 			//			this.renderContext.gl.glDisable( GL_CULL_FACE );
 			//			try {
-			javax.media.opengl.glu.GLU.gluBeginPolygon( tesselator );
+			com.jogamp.opengl.glu.GLU.gluBeginPolygon( tesselator );
 			try {
 				while( !pi.isDone() ) {
 					double[] xyz = new double[ 3 ];
 					switch( pi.currentSegment( segment ) ) {
 					case java.awt.geom.PathIterator.SEG_MOVETO:
-						javax.media.opengl.glu.GLU.gluTessBeginContour( tesselator );
+						com.jogamp.opengl.glu.GLU.gluTessBeginContour( tesselator );
 						//note: no break
 					case java.awt.geom.PathIterator.SEG_LINETO:
 						xyz[ 0 ] = segment[ 0 ];
 						xyz[ 1 ] = segment[ 1 ];
-						javax.media.opengl.glu.GLU.gluTessVertex( tesselator, xyz, 0, xyz );
+						com.jogamp.opengl.glu.GLU.gluTessVertex( tesselator, xyz, 0, xyz );
 						break;
 					case java.awt.geom.PathIterator.SEG_CLOSE:
-						javax.media.opengl.glu.GLU.gluTessEndContour( tesselator );
+						com.jogamp.opengl.glu.GLU.gluTessEndContour( tesselator );
 						break;
 
 					case java.awt.geom.PathIterator.SEG_QUADTO:
@@ -664,13 +664,13 @@ import javax.media.opengl.glu.GLU;
 					pi.next();
 				}
 			} finally {
-				javax.media.opengl.glu.GLU.gluTessEndPolygon( tesselator );
+				com.jogamp.opengl.glu.GLU.gluTessEndPolygon( tesselator );
 			}
 			//			} finally {
 			//				this.renderContext.gl.glEnable( GL_CULL_FACE );
 			//			}
 		} finally {
-			javax.media.opengl.glu.GLU.gluDeleteTess( tesselator );
+			com.jogamp.opengl.glu.GLU.gluDeleteTess( tesselator );
 		}
 	}
 
@@ -971,9 +971,9 @@ import javax.media.opengl.glu.GLU;
 
 	private static final class TextRendererHolder {
 		private com.jogamp.opengl.util.awt.TextRenderer textRenderer;
-		private javax.media.opengl.GL gl;
+		private com.jogamp.opengl.GL gl;
 
-		public com.jogamp.opengl.util.awt.TextRenderer getTextRenderer( java.awt.Font font, javax.media.opengl.GL gl ) {
+		public com.jogamp.opengl.util.awt.TextRenderer getTextRenderer( java.awt.Font font, com.jogamp.opengl.GL gl ) {
 			if( this.textRenderer != null ) {
 				if( this.gl == gl ) {
 					//pass
@@ -1242,7 +1242,7 @@ import javax.media.opengl.glu.GLU;
 
 	// edu.cmu.cs.dennisc.lookingglass.opengl.Graphics2D
 
-	public javax.media.opengl.GL getGL() {
+	public com.jogamp.opengl.GL getGL() {
 		return this.renderContext.gl;
 	}
 }

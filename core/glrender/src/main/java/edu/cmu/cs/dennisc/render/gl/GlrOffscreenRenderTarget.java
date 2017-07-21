@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package edu.cmu.cs.dennisc.render.gl;
 
@@ -47,11 +47,11 @@ package edu.cmu.cs.dennisc.render.gl;
  * @author Dennis Cosgrove
  */
 /*package-private*/class GlrOffscreenRenderTarget extends GlrRenderTarget implements edu.cmu.cs.dennisc.render.OffscreenRenderTarget {
-	private final javax.media.opengl.GLOffscreenAutoDrawable glPbuffer;
+	private final com.jogamp.opengl.GLOffscreenAutoDrawable glPbuffer;
 
-	/* package-private */GlrOffscreenRenderTarget( GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	/* package-private */ GlrOffscreenRenderTarget( GlrRenderFactory lookingGlassFactory, int width, int height, GlrRenderTarget renderTargetToShareContextWith, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		super( lookingGlassFactory, requestedCapabilities );
-		javax.media.opengl.GLContext share;
+		com.jogamp.opengl.GLContext share;
 		if( renderTargetToShareContextWith != null ) {
 			share = renderTargetToShareContextWith.getGLAutoDrawable().getContext();
 		} else {
@@ -62,6 +62,17 @@ package edu.cmu.cs.dennisc.render.gl;
 
 	@Override
 	protected java.awt.Dimension getSurfaceSize( java.awt.Dimension rv ) {
+		//TODO: Should we change this to getGLJPanelHeight and getGLJPanelWidth? This is returning the drawable width and height, not the size of the associated panel
+		if( this.glPbuffer != null ) {
+			rv.setSize( GlDrawableUtils.getGlDrawableWidth( this.glPbuffer ), GlDrawableUtils.getGlDrawableHeight( this.glPbuffer ) );
+		} else {
+			rv.setSize( 0, 0 );
+		}
+		return rv;
+	}
+
+	@Override
+	protected java.awt.Dimension getDrawableSize( java.awt.Dimension rv ) {
 		if( this.glPbuffer != null ) {
 			rv.setSize( GlDrawableUtils.getGlDrawableWidth( this.glPbuffer ), GlDrawableUtils.getGlDrawableHeight( this.glPbuffer ) );
 		} else {
@@ -84,11 +95,11 @@ package edu.cmu.cs.dennisc.render.gl;
 	}
 
 	@Override
-	public javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable() {
 		if( this.glPbuffer != null ) {
 			return this.glPbuffer;
 		} else {
-			throw new javax.media.opengl.GLException();
+			throw new com.jogamp.opengl.GLException();
 		}
 	}
 

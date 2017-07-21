@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package edu.cmu.cs.dennisc.render.gl;
 
@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.render.gl;
 /*package-private*/class GlrLightweightOnscreenRenderTarget extends GlrOnscreenRenderTarget<javax.swing.JPanel> implements edu.cmu.cs.dennisc.render.LightweightOnscreenRenderTarget {
 	private static final boolean IS_IMAGE_TRACKING_READY_FOR_PRIME_TIME = false;
 
-	private class RenderPane extends javax.media.opengl.awt.GLJPanel {
+	private class RenderPane extends com.jogamp.opengl.awt.GLJPanel {
 		private java.awt.Image mostRecentDrawnImage;
 		private java.awt.Image disabledImage;
 
@@ -148,7 +148,7 @@ package edu.cmu.cs.dennisc.render.gl;
 		private Throwable prevThrowable = null;
 	}
 
-	/* package-private */GlrLightweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
+	/* package-private */ GlrLightweightOnscreenRenderTarget( GlrRenderFactory lookingGlassFactory, edu.cmu.cs.dennisc.render.RenderCapabilities requestedCapabilities ) {
 		super( lookingGlassFactory, requestedCapabilities );
 		this.glPanel = new RenderPane( requestedCapabilities );
 		this.glPanel.setFocusable( true );
@@ -165,14 +165,19 @@ package edu.cmu.cs.dennisc.render.gl;
 	}
 
 	@Override
+	protected java.awt.Dimension getDrawableSize( java.awt.Dimension rv ) {
+		return this.glPanel.getSize( rv );
+	}
+
+	@Override
 	public void repaint() {
 		this.glPanel.repaint();
 	}
 
 	@Override
-	public javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
+	public com.jogamp.opengl.GLAutoDrawable getGLAutoDrawable() {
 		return this.glPanel;
 	}
 
-	private final javax.media.opengl.awt.GLJPanel glPanel;
+	private final com.jogamp.opengl.awt.GLJPanel glPanel;
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,7 +39,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package org.alice.stageide.sceneeditor.interact;
 
@@ -116,8 +116,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 
 	private final org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor;
 
-	public GlobalDragAdapter( org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor )
-	{
+	public GlobalDragAdapter( org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor ) {
 		this.sceneEditor = sceneEditor;
 		this.setUpControls();
 	}
@@ -127,8 +126,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 		return this.sceneEditor != null;
 	}
 
-	private void setUpControls()
-	{
+	private void setUpControls() {
 		if( ENABLE_SELECTION_ONLY_MODE ) {
 			//Selection visual handle
 			org.alice.interact.handle.SelectionIndicator selectionIndicator = new org.alice.interact.handle.SelectionIndicator();
@@ -148,9 +146,9 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			dragFromGallery.addCondition( new DragAndDropCondition() );
 			this.addManipulatorConditionSet( dragFromGallery );
 
-			if( this.sceneEditor != null )
-			{
-				InteractionGroup selectionOnly = new InteractionGroup( HandleSet.DEFAULT_INTERACTION, selectObject, org.alice.interact.PickHint.PickType.MOVEABLE );
+			if( this.sceneEditor != null ) {
+				final InteractionGroup.PossibleObjects anyObjects = new InteractionGroup.PossibleObjects( ObjectType.ANY );
+				InteractionGroup selectionOnly = new InteractionGroup( new InteractionGroup.InteractionInfo( anyObjects, HandleSet.DEFAULT_INTERACTION, selectObject, org.alice.interact.PickHint.PickType.MOVEABLE ) );
 
 				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.DEFAULT, selectionOnly );
 				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.ROTATION, selectionOnly );
@@ -159,8 +157,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 
 				org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener( this.handleStyleListener );
 			}
-		}
-		else {
+		} else {
 			MovementKey[] movementKeys = {
 					//Forward
 					new MovementKey( KeyEvent.VK_UP, new MovementDescription( MovementDirection.FORWARD ) ),
@@ -194,11 +191,9 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 
 			MovementKey[] zoomKeys = {
 					//Zoom out
-					new MovementKey( KeyEvent.VK_MINUS, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ) ),
-					new MovementKey( KeyEvent.VK_SUBTRACT, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ) ),
+					new MovementKey( KeyEvent.VK_MINUS, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ) ), new MovementKey( KeyEvent.VK_SUBTRACT, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ) ),
 					//Zoom in
-					new MovementKey( KeyEvent.VK_EQUALS, new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ) ),
-					new MovementKey( KeyEvent.VK_ADD, new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ) ),
+					new MovementKey( KeyEvent.VK_EQUALS, new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ) ), new MovementKey( KeyEvent.VK_ADD, new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ) ),
 			};
 
 			MovementKey[] turnKeys = {
@@ -360,59 +355,74 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			//			rotateAboutYAxisStoodUp.addToSet( HandleSet.ROTATION_INTERACTION );
 			rotateAboutYAxisStoodUp.addToSet( HandleSet.DEFAULT_INTERACTION );
 			rotateAboutYAxisStoodUp.addToGroups( HandleSet.HandleGroup.DEFAULT, HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.STOOD_UP_ROTATION );
-			rotateAboutYAxisStoodUp.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Rotate,
-					new MovementDescription( MovementDirection.UP, MovementType.STOOD_UP ),
-					PickHint.PickType.TURNABLE.pickHint() ) );
-			rotateAboutYAxisStoodUp.addCondition(
-					new ManipulationEventCriteria( ManipulationEvent.EventType.Rotate,
-							new MovementDescription( MovementDirection.DOWN, MovementType.STOOD_UP ),
-							PickHint.PickType.TURNABLE.pickHint() ) );
+			rotateAboutYAxisStoodUp.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Rotate, new MovementDescription( MovementDirection.UP, MovementType.STOOD_UP ), PickHint.PickType.TURNABLE.pickHint() ) );
+			rotateAboutYAxisStoodUp.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Rotate, new MovementDescription( MovementDirection.DOWN, MovementType.STOOD_UP ), PickHint.PickType.TURNABLE.pickHint() ) );
 			this.addManipulationListener( rotateAboutYAxisStoodUp );
 			rotateAboutYAxisStoodUp.setDragAdapterAndAddHandle( this );
 			rotateAboutYAxisStoodUp.setName( "rotateAboutYAxisStoodUp" );
 
-			RotationRingHandle rotateAboutYAxis = new RotationRingHandle( MovementDirection.UP, Color4f.GREEN );
+			RotationRingHandle rotateAboutYAxis = new RotationRingHandle( MovementDirection.UP, Color4f.RED );
 			rotateAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateAboutYAxis.addToSet( HandleSet.ROTATION_INTERACTION );
 			rotateAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION );
 			rotateAboutYAxis.setDragAdapterAndAddHandle( this );
 			rotateAboutYAxis.setName( "rotateAboutYAxis" );
 
-			RotationRingHandle rotateAboutXAxis = new RotationRingHandle( MovementDirection.LEFT, Color4f.RED );
+			RotationRingHandle rotateAboutXAxis = new RotationRingHandle( MovementDirection.LEFT, Color4f.BLUE );
 			rotateAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateAboutXAxis.addToSet( HandleSet.ROTATION_INTERACTION );
 			rotateAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION );
 			rotateAboutXAxis.setDragAdapterAndAddHandle( this );
 			rotateAboutXAxis.setName( "rotateAboutXAxis" );
 
-			RotationRingHandle rotateAboutZAxis = new RotationRingHandle( MovementDirection.BACKWARD, Color4f.BLUE );
+			RotationRingHandle rotateAboutZAxis = new RotationRingHandle( MovementDirection.BACKWARD, Color4f.WHITE );
 			rotateAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateAboutZAxis.addToSet( HandleSet.ROTATION_INTERACTION );
 			rotateAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
 			rotateAboutZAxis.setDragAdapterAndAddHandle( this );
 			rotateAboutZAxis.setName( "rotateAboutZAxis" );
 
-			JointRotationRingHandle rotateJointAboutZAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.BLUE );
+			JointRotationRingHandle rotateJointAboutZAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.WHITE );
 			rotateJointAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateJointAboutZAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
 			rotateJointAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
 			rotateJointAboutZAxis.setDragAdapterAndAddHandle( this );
 			rotateJointAboutZAxis.setName( "rotateJointAboutZAxis" );
 
-			JointRotationRingHandle rotateJointAboutYAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.UP, Color4f.GREEN );
+			JointRotationRingHandle rotateJointAboutYAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.UP, Color4f.RED );
 			rotateJointAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateJointAboutYAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
 			rotateJointAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
 			rotateJointAboutYAxis.setDragAdapterAndAddHandle( this );
 			rotateJointAboutYAxis.setName( "rotateJointAboutYAxis" );
 
-			JointRotationRingHandle rotateJointAboutXAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.LEFT, Color4f.RED );
+			JointRotationRingHandle rotateJointAboutXAxis = new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.LEFT, Color4f.BLUE );
 			rotateJointAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
 			rotateJointAboutXAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
 			rotateJointAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
 			rotateJointAboutXAxis.setDragAdapterAndAddHandle( this );
 			rotateJointAboutXAxis.setName( "rotateJointAboutXAxis" );
+
+			LinearTranslateHandle translateJointYAxis = new LinearTranslateHandle( new MovementDescription( MovementDirection.UP, MovementType.LOCAL ), Color4f.GREEN );
+			translateJointYAxis.setManipulation( new LinearDragManipulator() );
+			translateJointYAxis.addToGroups( HandleSet.HandleGroup.LOCAL, HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
+			translateJointYAxis.addToSet( HandleSet.JOINT_TRANSLATION_INTERACTION );
+			translateJointYAxis.setDragAdapterAndAddHandle( this );
+			translateJointYAxis.setName( "translateJointYAxis" );
+
+			LinearTranslateHandle translateJointXAxis = new LinearTranslateHandle( new MovementDescription( MovementDirection.RIGHT, MovementType.LOCAL ), Color4f.RED );
+			translateJointXAxis.setManipulation( new LinearDragManipulator() );
+			translateJointXAxis.addToGroups( HandleSet.HandleGroup.LOCAL, HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
+			translateJointXAxis.addToSet( HandleSet.JOINT_TRANSLATION_INTERACTION );
+			translateJointXAxis.setDragAdapterAndAddHandle( this );
+			translateJointXAxis.setName( "translateJointXAxis" );
+
+			LinearTranslateHandle translateJointZAxis = new LinearTranslateHandle( new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ), Color4f.WHITE );
+			translateJointZAxis.setManipulation( new LinearDragManipulator() );
+			translateJointZAxis.addToGroups( HandleSet.HandleGroup.LOCAL, HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
+			translateJointZAxis.addToSet( HandleSet.JOINT_TRANSLATION_INTERACTION );
+			translateJointZAxis.setDragAdapterAndAddHandle( this );
+			translateJointZAxis.setName( "translateJointZAxis" );
 
 			LinearTranslateHandle translateUp = new LinearTranslateHandle( new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ), Color4f.YELLOW );
 			LinearTranslateHandle translateDown = new LinearTranslateHandle( new MovementDescription( MovementDirection.DOWN, MovementType.ABSOLUTE ), Color4f.YELLOW );
@@ -422,22 +432,8 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			translateUp.addToGroup( HandleSet.HandleGroup.INTERACTION );
 			translateUp.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
 			translateDown.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
-			//			translateDown.addCondition( new ManipulationEventCriteria(
-			//					ManipulationEvent.EventType.Translate,
-			//					new MovementDescription( MovementDirection.DOWN, MovementType.STOOD_UP ),
-			//					PickHint.PickType.MOVEABLE.pickHint() ) );
-			//			translateUp.addCondition( new ManipulationEventCriteria(
-			//					ManipulationEvent.EventType.Translate,
-			//					new MovementDescription( MovementDirection.UP, MovementType.STOOD_UP ),
-			//					PickHint.PickType.MOVEABLE.pickHint() ) );
-			translateDown.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Translate,
-					new MovementDescription( MovementDirection.DOWN, MovementType.ABSOLUTE ),
-					PickHint.PickType.MOVEABLE.pickHint() ) );
-			translateUp.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Translate,
-					new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ),
-					PickHint.PickType.MOVEABLE.pickHint() ) );
+			translateDown.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.DOWN, MovementType.ABSOLUTE ), PickHint.PickType.MOVEABLE.pickHint() ) );
+			translateUp.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ), PickHint.PickType.MOVEABLE.pickHint() ) );
 			this.addManipulationListener( translateUp );
 			this.addManipulationListener( translateDown );
 			translateDown.setDragAdapterAndAddHandle( this );
@@ -454,22 +450,8 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			translateXAxisLeft.addToGroup( HandleSet.HandleGroup.INTERACTION );
 			translateXAxisLeft.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
 			translateXAxisRight.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
-			//			translateXAxisLeft.addCondition( new ManipulationEventCriteria(
-			//					ManipulationEvent.EventType.Translate,
-			//					new MovementDescription( MovementDirection.LEFT, MovementType.STOOD_UP ),
-			//					PickHint.PickType.MOVEABLE.pickHint() ) );
-			//			translateXAxisRight.addCondition( new ManipulationEventCriteria(
-			//					ManipulationEvent.EventType.Translate,
-			//					new MovementDescription( MovementDirection.RIGHT, MovementType.STOOD_UP ),
-			//					PickHint.PickType.MOVEABLE.pickHint() ) );
-			translateXAxisLeft.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Translate,
-					new MovementDescription( MovementDirection.LEFT, MovementType.ABSOLUTE ),
-					PickHint.PickType.MOVEABLE.pickHint() ) );
-			translateXAxisRight.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Translate,
-					new MovementDescription( MovementDirection.RIGHT, MovementType.ABSOLUTE ),
-					PickHint.PickType.MOVEABLE.pickHint() ) );
+			translateXAxisLeft.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.LEFT, MovementType.ABSOLUTE ), PickHint.PickType.MOVEABLE.pickHint() ) );
+			translateXAxisRight.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.RIGHT, MovementType.ABSOLUTE ), PickHint.PickType.MOVEABLE.pickHint() ) );
 			this.addManipulationListener( translateXAxisRight );
 			this.addManipulationListener( translateXAxisLeft );
 			translateXAxisRight.setDragAdapterAndAddHandle( this );
@@ -485,22 +467,8 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			translateForward.addToGroup( HandleSet.HandleGroup.INTERACTION );
 			translateForward.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
 			translateBackward.addToGroup( HandleSet.HandleGroup.VISUALIZATION );
-			//			translateBackward.addCondition( new ManipulationEventCriteria(
-			//					ManipulationEvent.EventType.Translate,
-			//					new MovementDescription( MovementDirection.BACKWARD, MovementType.STOOD_UP ),
-			//					PickHint.PickType.MOVEABLE.pickHint() ) );
-			//			translateForward.addCondition( new ManipulationEventCriteria(
-			//					ManipulationEvent.EventType.Translate,
-			//					new MovementDescription( MovementDirection.FORWARD, MovementType.STOOD_UP ),
-			//					PickHint.PickType.MOVEABLE.pickHint() ) );
-			translateBackward.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Translate,
-					new MovementDescription( MovementDirection.BACKWARD, MovementType.ABSOLUTE ),
-					PickHint.PickType.MOVEABLE.pickHint() ) );
-			translateForward.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Translate,
-					new MovementDescription( MovementDirection.FORWARD, MovementType.ABSOLUTE ),
-					PickHint.PickType.MOVEABLE.pickHint() ) );
+			translateBackward.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.BACKWARD, MovementType.ABSOLUTE ), PickHint.PickType.MOVEABLE.pickHint() ) );
+			translateForward.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.FORWARD, MovementType.ABSOLUTE ), PickHint.PickType.MOVEABLE.pickHint() ) );
 			this.addManipulationListener( translateForward );
 			this.addManipulationListener( translateBackward );
 			translateForward.setDragAdapterAndAddHandle( this );
@@ -512,10 +480,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			scaleAxisUniform.setManipulation( new ScaleDragManipulator() );
 			scaleAxisUniform.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisUniform.addToGroups( HandleSet.HandleGroup.RESIZE_AXIS, HandleSet.HandleGroup.VISUALIZATION );
-			scaleAxisUniform.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Scale,
-					scaleAxisUniform.getMovementDescription(),
-					PickHint.PickType.RESIZABLE.pickHint() ) );
+			scaleAxisUniform.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Scale, scaleAxisUniform.getMovementDescription(), PickHint.PickType.RESIZABLE.pickHint() ) );
 			scaleAxisUniform.setDragAdapterAndAddHandle( this );
 			scaleAxisUniform.setName( "scaleAxisUniform" );
 
@@ -523,10 +488,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			scaleAxisX.setManipulation( new ScaleDragManipulator() );
 			scaleAxisX.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisX.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION );
-			scaleAxisX.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Scale,
-					scaleAxisX.getMovementDescription(),
-					PickHint.PickType.RESIZABLE.pickHint() ) );
+			scaleAxisX.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Scale, scaleAxisX.getMovementDescription(), PickHint.PickType.RESIZABLE.pickHint() ) );
 			scaleAxisX.setDragAdapterAndAddHandle( this );
 			scaleAxisX.setName( "scaleAxisX" );
 
@@ -534,10 +496,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			scaleAxisY.setManipulation( new ScaleDragManipulator() );
 			scaleAxisY.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisY.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION );
-			scaleAxisY.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Scale,
-					scaleAxisY.getMovementDescription(),
-					PickHint.PickType.RESIZABLE.pickHint() ) );
+			scaleAxisY.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Scale, scaleAxisY.getMovementDescription(), PickHint.PickType.RESIZABLE.pickHint() ) );
 			scaleAxisY.setDragAdapterAndAddHandle( this );
 			scaleAxisY.setName( "scaleAxisY" );
 
@@ -545,10 +504,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			scaleAxisZ.setManipulation( new ScaleDragManipulator() );
 			scaleAxisZ.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisZ.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
-			scaleAxisZ.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Scale,
-					scaleAxisZ.getMovementDescription(),
-					PickHint.PickType.RESIZABLE.pickHint() ) );
+			scaleAxisZ.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Scale, scaleAxisZ.getMovementDescription(), PickHint.PickType.RESIZABLE.pickHint() ) );
 			scaleAxisZ.setDragAdapterAndAddHandle( this );
 			scaleAxisZ.setName( "scaleAxisZ" );
 
@@ -556,10 +512,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			scaleAxisXY.setManipulation( new ScaleDragManipulator() );
 			scaleAxisXY.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisXY.addToGroups( HandleSet.HandleGroup.X_AND_Y_AXIS, HandleSet.HandleGroup.VISUALIZATION );
-			scaleAxisXY.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Scale,
-					scaleAxisXY.getMovementDescription(),
-					PickHint.PickType.RESIZABLE.pickHint() ) );
+			scaleAxisXY.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Scale, scaleAxisXY.getMovementDescription(), PickHint.PickType.RESIZABLE.pickHint() ) );
 			scaleAxisXY.setDragAdapterAndAddHandle( this );
 			scaleAxisXY.setName( "scaleAxisXY" );
 
@@ -567,10 +520,7 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			scaleAxisXZ.setManipulation( new ScaleDragManipulator() );
 			scaleAxisXZ.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisXZ.addToGroups( HandleSet.HandleGroup.X_AND_Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
-			scaleAxisXZ.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Scale,
-					scaleAxisXZ.getMovementDescription(),
-					PickHint.PickType.RESIZABLE.pickHint() ) );
+			scaleAxisXZ.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Scale, scaleAxisXZ.getMovementDescription(), PickHint.PickType.RESIZABLE.pickHint() ) );
 			scaleAxisXZ.setDragAdapterAndAddHandle( this );
 			scaleAxisXZ.setName( "scaleAxisXZ" );
 
@@ -578,33 +528,36 @@ public class GlobalDragAdapter extends org.alice.stageide.sceneeditor.interact.C
 			scaleAxisYZ.setManipulation( new ScaleDragManipulator() );
 			scaleAxisYZ.addToSet( HandleSet.RESIZE_INTERACTION );
 			scaleAxisYZ.addToGroups( HandleSet.HandleGroup.Y_AND_Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
-			scaleAxisYZ.addCondition( new ManipulationEventCriteria(
-					ManipulationEvent.EventType.Scale,
-					scaleAxisYZ.getMovementDescription(),
-					PickHint.PickType.RESIZABLE.pickHint() ) );
+			scaleAxisYZ.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Scale, scaleAxisYZ.getMovementDescription(), PickHint.PickType.RESIZABLE.pickHint() ) );
 			scaleAxisYZ.setDragAdapterAndAddHandle( this );
 			scaleAxisYZ.setName( "scaleAxisYZ" );
 
-			if( this.sceneEditor != null )
-			{
-				InteractionGroup selectionOnly = new InteractionGroup( HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE );
-				InteractionGroup defaultInteraction = new InteractionGroup( HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE );
-				InteractionGroup rotationInteraction = new InteractionGroup( HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, org.alice.interact.PickHint.PickType.TURNABLE );
-				InteractionGroup translationInteraction = new InteractionGroup( HandleSet.ABSOLUTE_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE );
-				InteractionGroup resizeInteraction = new InteractionGroup( HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject, org.alice.interact.PickHint.PickType.RESIZABLE );
+			if( this.sceneEditor != null ) {
+
+				final InteractionGroup.PossibleObjects notJointObjects = new InteractionGroup.PossibleObjects( ObjectType.MODEL, ObjectType.OBJECT_MARKER, ObjectType.CAMERA_MARKER );
+				final InteractionGroup.PossibleObjects joints = new InteractionGroup.PossibleObjects( ObjectType.JOINT );
+				final InteractionGroup.PossibleObjects anyObjects = new InteractionGroup.PossibleObjects( ObjectType.ANY );
+
+				InteractionGroup selectionOnly = new InteractionGroup( new InteractionGroup.InteractionInfo( anyObjects, HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE ) );
+				InteractionGroup defaultInteraction = new InteractionGroup( new InteractionGroup.InteractionInfo( anyObjects, HandleSet.DEFAULT_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE ) );
+
+				//TODO: Make joint and non joint interactions
+				InteractionGroup rotationInteraction = new InteractionGroup();
+				rotationInteraction.addInteractionInfo( notJointObjects, HandleSet.ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, org.alice.interact.PickHint.PickType.TURNABLE );
+				rotationInteraction.addInteractionInfo( joints, HandleSet.JOINT_ROTATION_INTERACTION, leftClickMouseRotateObjectLeftRight, org.alice.interact.PickHint.PickType.TURNABLE );
+
+				InteractionGroup translationInteraction = new InteractionGroup();
+				translationInteraction.addInteractionInfo( notJointObjects, HandleSet.ABSOLUTE_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE );
+				translationInteraction.addInteractionInfo( joints, HandleSet.JOINT_TRANSLATION_INTERACTION, leftClickMouseTranslateObject, org.alice.interact.PickHint.PickType.MOVEABLE );
+
+				InteractionGroup resizeInteraction = new InteractionGroup( new InteractionGroup.InteractionInfo( notJointObjects, HandleSet.RESIZE_INTERACTION, leftClickMouseResizeObject, org.alice.interact.PickHint.PickType.RESIZABLE ) );
 
 				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.DEFAULT, defaultInteraction );
 				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.ROTATION, rotationInteraction );
 				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.TRANSLATION, translationInteraction );
 				this.mapHandleStyleToInteractionGroup.put( org.alice.interact.handle.HandleStyle.RESIZE, resizeInteraction );
-				//			this.interactionSelectionState.addItem(defaultInteraction);
-				//			this.interactionSelectionState.addItem(rotationInteraction);
-				//			this.interactionSelectionState.addItem(translationInteraction);
-				//			this.interactionSelectionState.addItem(resizeInteraction);
-				//
-				//			this.interactionSelectionState.setSelectedItem(defaultInteraction);
-
 				org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeNewSchoolValueListener( this.handleStyleListener );
+				this.setHandleSelectionState( org.alice.interact.handle.HandleStyle.DEFAULT );
 			}
 		}
 

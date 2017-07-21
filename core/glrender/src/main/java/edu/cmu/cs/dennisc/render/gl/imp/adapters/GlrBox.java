@@ -1,49 +1,50 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 
 package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 
-import static javax.media.opengl.GL2GL3.GL_QUADS;
+import static com.jogamp.opengl.GL2ES3.GL_QUADS;
+
 import edu.cmu.cs.dennisc.render.gl.imp.Context;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
 import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
@@ -52,7 +53,7 @@ import edu.cmu.cs.dennisc.render.gl.imp.RenderContext;
  * @author Dennis Cosgrove
  */
 public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
-	private void glBox( Context c, boolean isLightingEnabled, boolean isSubElementRequired ) {
+	private void glBox( Context c, boolean isLightingEnabled, boolean isSubElementRequired, boolean isTexturingEnabled ) {
 		//todo: revist vertex ordering
 		//xMin face
 		//c.gl.glColor3d( 1,1,1 );
@@ -65,9 +66,25 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( -1, 0, 0 );
 		}
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( .25f, .66f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMin, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( .25f, .33f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMax, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.0f, .33f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMax, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.0f, .66f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMin, this.zMin );
 
 		//xMax face
@@ -78,9 +95,24 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 1, 0, 0 );
 		}
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.75f, .66f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMin, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.75f, .33f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMax, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.5f, .33f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMax, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.5f, .66f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMin, this.zMax );
 
 		//yMin face
@@ -91,9 +123,24 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 0, -1, 0 );
 		}
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.25f, 0.33f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMin, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.5f, 0.33f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMin, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.5f, 0.0f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMin, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.25f, 0.0f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMin, this.zMax );
 
 		//yMax face
@@ -104,9 +151,24 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 0, 1, 0 );
 		}
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.5f, .66f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMax, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.25f, .66f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMax, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.25f, 1.0f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMax, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.5f, 1.0f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMax, this.zMin );
 
 		//zMin face
@@ -117,9 +179,24 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 0, 0, -1 );
 		}
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 1.0f, .33f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMax, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.75f, .33f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMax, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 0.75f, .66f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMin, this.zMin );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( 1.0f, .66f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMin, this.zMin );
 
 		//zMax face
@@ -130,9 +207,24 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 		if( isLightingEnabled ) {
 			c.gl.glNormal3d( 0, 0, 1 );
 		}
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( .25f, .66f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMin, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( .5f, .66f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMin, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( .5f, .33f );
+		}
 		c.gl.glVertex3d( this.xMax, this.yMax, this.zMax );
+
+		if( isTexturingEnabled ) {
+			c.gl.glTexCoord2f( .25f, .33f );
+		}
 		c.gl.glVertex3d( this.xMin, this.yMax, this.zMax );
 
 		c.gl.glEnd();
@@ -140,13 +232,13 @@ public class GlrBox extends GlrShape<edu.cmu.cs.dennisc.scenegraph.Box> {
 
 	@Override
 	protected void renderGeometry( RenderContext rc, GlrVisual.RenderType renderType ) {
-		glBox( rc, true, false );
+		glBox( rc, true, false, rc.isTextureEnabled() );
 	}
 
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
 		pc.gl.glPushName( -1 );
-		glBox( pc, false, isSubElementRequired );
+		glBox( pc, false, isSubElementRequired, false );
 		pc.gl.glPopName();
 	}
 

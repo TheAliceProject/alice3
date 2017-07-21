@@ -1,48 +1,49 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without 
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright notice, 
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
  *
- * 3. Products derived from the software may not be called "Alice", nor may 
- *    "Alice" appear in their name, without prior written permission of 
+ * 3. Products derived from the software may not be called "Alice", nor may
+ *    "Alice" appear in their name, without prior written permission of
  *    Carnegie Mellon University.
  *
  * 4. All advertising materials mentioning features or use of this software must
- *    display the following acknowledgement: "This product includes software 
+ *    display the following acknowledgement: "This product includes software
  *    developed by Carnegie Mellon University"
  *
- * 5. The gallery of art assets and animations provided with this software is 
- *    contributed by Electronic Arts Inc. and may be used for personal, 
- *    non-commercial, and academic use only. Redistributions of any program 
+ * 5. The gallery of art assets and animations provided with this software is
+ *    contributed by Electronic Arts Inc. and may be used for personal,
+ *    non-commercial, and academic use only. Redistributions of any program
  *    source code that utilizes The Sims 2 Assets must also retain the copyright
- *    notice, list of conditions and the disclaimer contained in 
+ *    notice, list of conditions and the disclaimer contained in
  *    The Alice 3.0 Art Gallery License.
- * 
+ *
  * DISCLAIMER:
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
- * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
- * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
  * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
- * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package edu.cmu.cs.dennisc.render.gl.imp;
 
-import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
+import static com.jogamp.opengl.GL.GL_COLOR_BUFFER_BIT;
+
 import edu.cmu.cs.dennisc.render.gl.GlDrawableUtils;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.AdapterFactory;
 import edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrAbstractCamera;
@@ -89,7 +90,7 @@ public class RenderTargetImp {
 		return java.util.Collections.unmodifiableList( this.renderTargetListeners );
 	}
 
-	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, javax.media.opengl.GLAutoDrawable glAutoDrawable ) {
+	public void addSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, com.jogamp.opengl.GLAutoDrawable glAutoDrawable ) {
 		assert sgCamera != null : this;
 		this.sgCameras.add( sgCamera );
 		if( this.isListening() ) {
@@ -99,7 +100,7 @@ public class RenderTargetImp {
 		}
 	}
 
-	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, javax.media.opengl.GLAutoDrawable glAutoDrawable ) {
+	public void removeSgCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, com.jogamp.opengl.GLAutoDrawable glAutoDrawable ) {
 		assert sgCamera != null;
 		this.sgCameras.remove( sgCamera );
 		if( this.isListening() ) {
@@ -109,7 +110,7 @@ public class RenderTargetImp {
 		}
 	}
 
-	public void clearSgCameras( javax.media.opengl.GLAutoDrawable glAutoDrawable ) {
+	public void clearSgCameras( com.jogamp.opengl.GLAutoDrawable glAutoDrawable ) {
 		if( this.sgCameras.size() > 0 ) {
 			this.sgCameras.clear();
 		}
@@ -156,7 +157,7 @@ public class RenderTargetImp {
 		}
 	}
 
-	/*package-private*/void addDisplayTask( DisplayTask displayTask ) {
+			/*package-private*/void addDisplayTask( DisplayTask displayTask ) {
 		displayTask.setRtImp( this );
 		this.drawable.invoke( false, displayTask );
 	}
@@ -217,7 +218,7 @@ public class RenderTargetImp {
 		return this.isListening;
 	}
 
-	public void startListening( javax.media.opengl.GLAutoDrawable drawable ) {
+	public void startListening( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		if( this.isListening ) {
 			if( drawable == this.drawable ) {
 				//pass
@@ -232,7 +233,7 @@ public class RenderTargetImp {
 		}
 	}
 
-	public void stopListening( javax.media.opengl.GLAutoDrawable drawable ) {
+	public void stopListening( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		if( drawable == this.drawable ) {
 			//pass
 		} else {
@@ -285,8 +286,8 @@ public class RenderTargetImp {
 			this.renderContext.actuallyForgetDisplayListsIfNecessary();
 			if( this.isDisplayIgnoredDueToPreviousException ) {
 				//pass
-			} else if( ( this.width == 0 ) || ( this.height == 0 ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, rt.getSurfaceSize() );
+			} else if( ( this.drawableWidth == 0 ) || ( this.drawableHeight == 0 ) ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.drawableWidth, this.drawableHeight, rt.getSurfaceSize() );
 			} else {
 				try {
 					//todo: separate clearing and rendering
@@ -300,15 +301,16 @@ public class RenderTargetImp {
 						this.renderContext.initialize();
 						for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : this.sgCameras ) {
 							GlrAbstractCamera<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( sgCamera );
-							cameraAdapterI.performClearAndRenderOffscreen( this.renderContext, this.width, this.height );
+							cameraAdapterI.performClearAndRenderOffscreen( this.renderContext, this.drawableWidth, this.drawableHeight );
 							this.reusableLookingGlassRenderEvent.prologue();
 							try {
-								cameraAdapterI.postRender( this.renderContext, this.width, this.height, rt, this.reusableLookingGlassRenderEvent.getGraphics2D() );
+								//Pass the screen size to post render because operations like speech bubbles use the screen size as a reference rather than the drawable size
+								cameraAdapterI.postRender( this.renderContext, this.screenWidth, this.screenHeight, rt, this.reusableLookingGlassRenderEvent.getGraphics2D() );
 							} finally {
 								this.reusableLookingGlassRenderEvent.epilogue();
 							}
 						}
-						this.renderContext.renderLetterboxingIfNecessary( this.width, this.height );
+						this.renderContext.renderLetterboxingIfNecessary( this.drawableWidth, this.drawableHeight );
 					} else {
 						this.renderContext.gl.glClearColor( 0, 0, 0, 1 );
 						this.renderContext.gl.glClear( GL_COLOR_BUFFER_BIT );
@@ -341,17 +343,19 @@ public class RenderTargetImp {
 
 	private java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
 		if( this.drawable != null ) {
-			if( ( this.width != GlDrawableUtils.getGlDrawableWidth( this.drawable ) ) || ( this.height != GlDrawableUtils.getGlDrawableHeight( this.drawable ) ) ) {
+			if( ( this.drawableWidth != GlDrawableUtils.getGlDrawableWidth( this.drawable ) ) || ( this.drawableHeight != GlDrawableUtils.getGlDrawableHeight( this.drawable ) ) ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
-				this.width = GlDrawableUtils.getGlDrawableWidth( this.drawable );
-				this.height = GlDrawableUtils.getGlDrawableHeight( this.drawable );
+				this.drawableWidth = GlDrawableUtils.getGlDrawableWidth( this.drawable );
+				this.drawableHeight = GlDrawableUtils.getGlDrawableHeight( this.drawable );
+				this.screenWidth = GlDrawableUtils.getGLJPanelWidth( drawable );
+				this.screenHeight = GlDrawableUtils.getGLJPanelHeight( drawable );
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: drawable null" );
 		}
 
-		if( ( this.width > 0 ) && ( this.height > 0 ) ) {
-			return new java.awt.image.BufferedImage( this.width, this.height, type );
+		if( ( this.drawableWidth > 0 ) && ( this.drawableHeight > 0 ) ) {
+			return new java.awt.image.BufferedImage( this.drawableWidth, this.drawableHeight, type );
 		} else {
 			return null;
 		}
@@ -409,7 +413,7 @@ public class RenderTargetImp {
 	}
 
 	public java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer() {
-		return java.nio.FloatBuffer.allocate( this.width * this.height );
+		return java.nio.FloatBuffer.allocate( this.drawableWidth * this.drawableHeight );
 	}
 
 	public java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv ) {
@@ -425,7 +429,7 @@ public class RenderTargetImp {
 	}
 
 	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer, boolean[] atIsUpsideDown ) {
-		javax.media.opengl.GLContext glCurrentContext = javax.media.opengl.GLContext.getCurrent();
+		com.jogamp.opengl.GLContext glCurrentContext = com.jogamp.opengl.GLContext.getCurrent();
 		if( ( glCurrentContext != null ) && ( glCurrentContext == this.drawable.getContext() ) ) {
 			this.renderContext.captureBuffers( rv, depthBuffer, atIsUpsideDown );
 		} else {
@@ -448,59 +452,81 @@ public class RenderTargetImp {
 		return rv;
 	}
 
-	private void initialize( javax.media.opengl.GLAutoDrawable drawable ) {
+	public int getDrawableWidth() {
+		return this.drawableWidth;
+	}
+
+	public int getDrawableHeight() {
+		return this.drawableHeight;
+	}
+
+	public int getScreenHeight() {
+		return this.screenHeight;
+	}
+
+	public int getScreenWidth() {
+		return this.screenWidth;
+	}
+
+	private void initialize( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "initialize", drawable );
 		assert drawable == this.drawable;
-		javax.media.opengl.GL2 gl = drawable.getGL().getGL2();
+		com.jogamp.opengl.GL2 gl = drawable.getGL().getGL2();
 		ConformanceTestResults.SINGLETON.updateRenderInformationIfNecessary( gl );
 
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( drawable.getChosenGLCapabilities() );
 
 		final boolean USE_DEBUG_GL = false;
 		if( USE_DEBUG_GL ) {
-			if( gl instanceof javax.media.opengl.DebugGL2 ) {
+			if( gl instanceof com.jogamp.opengl.DebugGL2 ) {
 				// pass
 			} else {
-				gl = new javax.media.opengl.DebugGL2( gl );
+				gl = new com.jogamp.opengl.DebugGL2( gl );
 				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "using debug gl: ", gl );
 				drawable.setGL( gl );
 			}
 		}
 
-		this.width = GlDrawableUtils.getGlDrawableWidth( drawable );
-		this.height = GlDrawableUtils.getGlDrawableHeight( drawable );
+		this.drawableWidth = GlDrawableUtils.getGlDrawableWidth( drawable );
+		this.drawableHeight = GlDrawableUtils.getGlDrawableHeight( drawable );
+		this.screenWidth = GlDrawableUtils.getGLJPanelWidth( drawable );
+		this.screenHeight = GlDrawableUtils.getGLJPanelHeight( drawable );
 
 		this.renderContext.setGL( gl );
 		this.fireInitialized( new edu.cmu.cs.dennisc.render.event.RenderTargetInitializeEvent( this.getRenderTarget(), GlDrawableUtils.getGlDrawableWidth( this.drawable ), GlDrawableUtils.getGlDrawableHeight( this.drawable ) ) );
 	}
 
 	//todo: investigate not being invoked
-	private void handleInit( javax.media.opengl.GLAutoDrawable drawable ) {
+	private void handleInit( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
 		initialize( drawable );
 	}
 
-	private void handleDisplay( javax.media.opengl.GLAutoDrawable drawable ) {
+	private void handleDisplay( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
 		assert drawable == this.drawable;
 		//this.lookingGlass.commitAnyPendingChanges();
 		//todo?
-		javax.media.opengl.GL2 gl = drawable.getGL().getGL2();
+		com.jogamp.opengl.GL2 gl = drawable.getGL().getGL2();
 		if( this.renderContext.gl != null ) {
 			//pass
 		} else {
 			initialize( drawable );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note: initialize necessary from display" );
 		}
-		if( ( this.width > 0 ) && ( this.height > 0 ) ) {
+		if( ( this.drawableWidth > 0 ) && ( this.drawableHeight > 0 ) ) {
 			//pass
 		} else {
 			int nextWidth = GlDrawableUtils.getGlDrawableWidth( drawable );
 			int nextHeight = GlDrawableUtils.getGlDrawableHeight( drawable );
-			if( ( this.width != nextWidth ) || ( this.height != nextHeight ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, nextWidth, nextHeight );
-				this.width = nextWidth;
-				this.height = nextHeight;
+			int nextScreenWidth = GlDrawableUtils.getGLJPanelWidth( drawable );
+			int nextScreenHeight = GlDrawableUtils.getGLJPanelHeight( drawable );
+			if( ( this.drawableWidth != nextWidth ) || ( this.drawableHeight != nextHeight ) ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.drawableWidth, this.drawableHeight, nextWidth, nextHeight );
+				this.drawableWidth = nextWidth;
+				this.drawableHeight = nextHeight;
+				this.screenHeight = nextScreenHeight;
+				this.screenWidth = nextScreenWidth;
 			}
 		}
 		this.renderContext.setGL( gl );
@@ -508,29 +534,37 @@ public class RenderTargetImp {
 		performRender();
 	}
 
-	private void handleReshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
+	private void handleReshape( com.jogamp.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "reshape", drawable, x, y, width, height );
 		assert drawable == this.drawable;
-		this.width = width;
-		this.height = height;
+		this.drawableWidth = width;
+		this.drawableHeight = height;
+		this.screenWidth = GlDrawableUtils.getGLJPanelWidth( drawable );
+		this.screenHeight = GlDrawableUtils.getGLJPanelHeight( drawable );
 		this.fireResized( new edu.cmu.cs.dennisc.render.event.RenderTargetResizeEvent( this.getRenderTarget(), width, height ) );
 	}
 
-	//	public void displayChanged( javax.media.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
+	//	public void displayChanged( com.jogamp.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
 	//		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "displayChanged", drawable, modeChanged, deviceChanged );
 	//		assert drawable == this.drawable;
 	//		this.rtImp.fireDisplayChanged( new edu.cmu.cs.dennisc.renderer.event.RenderTargetDisplayChangeEvent( this.rtImp.getRenderTarget(), modeChanged, deviceChanged ) );
 	//	}
 
-	private void handleDispose( javax.media.opengl.GLAutoDrawable drawable ) {
+	private void handleDispose( com.jogamp.opengl.GLAutoDrawable drawable ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( drawable );
 	}
 
 	private final RenderContext renderContext = new RenderContext();
 
-	private javax.media.opengl.GLAutoDrawable drawable;
-	private int width;
-	private int height;
+	private com.jogamp.opengl.GLAutoDrawable drawable;
+
+	//The drawable size and the screen size are not necessarily the same
+	//This is known to be the case on retina displays where the drawable size is 2x the screen size
+	//See https://jogamp.org/bugzilla/show_bug.cgi?id=741 for details
+	private int drawableWidth;
+	private int drawableHeight;
+	private int screenWidth;
+	private int screenHeight;
 
 	private java.awt.image.BufferedImage rvColorBuffer = null;
 	private java.nio.FloatBuffer rvDepthBuffer = null;
@@ -553,24 +587,24 @@ public class RenderTargetImp {
 
 	//
 	private static java.awt.Rectangle s_actualViewportBufferForReuse = new java.awt.Rectangle();
-	private final javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
+	private final com.jogamp.opengl.GLEventListener glEventListener = new com.jogamp.opengl.GLEventListener() {
 		@Override
-		public void init( javax.media.opengl.GLAutoDrawable drawable ) {
+		public void init( com.jogamp.opengl.GLAutoDrawable drawable ) {
 			handleInit( drawable );
 		}
 
 		@Override
-		public void display( javax.media.opengl.GLAutoDrawable drawable ) {
+		public void display( com.jogamp.opengl.GLAutoDrawable drawable ) {
 			handleDisplay( drawable );
 		}
 
 		@Override
-		public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
+		public void reshape( com.jogamp.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
 			handleReshape( drawable, x, y, width, height );
 		}
 
 		@Override
-		public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
+		public void dispose( com.jogamp.opengl.GLAutoDrawable drawable ) {
 			handleDispose( drawable );
 		}
 	};

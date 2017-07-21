@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*******************************************************************************
+ * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -39,25 +39,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- */
+ *******************************************************************************/
 package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ShapesTab extends GalleryTab {
-	private final java.util.List<org.alice.stageide.gallerybrowser.shapes.ShapeDragModel> dragModels = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
-			org.alice.stageide.gallerybrowser.shapes.DiscDragModel.getInstance(),
-			org.alice.stageide.gallerybrowser.shapes.ConeDragModel.getInstance(),
-			org.alice.stageide.gallerybrowser.shapes.CylinderDragModel.getInstance(),
-			org.alice.stageide.gallerybrowser.shapes.SphereDragModel.getInstance(),
-			org.alice.stageide.gallerybrowser.shapes.TorusDragModel.getInstance(),
-			org.alice.stageide.gallerybrowser.shapes.BoxDragModel.getInstance(),
-			org.alice.stageide.gallerybrowser.shapes.TextModelDragModel.getInstance(),
-			org.alice.stageide.gallerybrowser.shapes.BillboardDragModel.getInstance(),
-			org.alice.stageide.gallerybrowser.shapes.AxesDragModel.getInstance()
-			) );
-
+	// @formatter:off
+	private final java.util.List<org.alice.stageide.gallerybrowser.shapes.ShapeDragModel> dragModels = java.util.Collections.unmodifiableList(
+					edu.cmu.cs.dennisc.java.util.Lists.newArrayList(
+						org.alice.stageide.gallerybrowser.shapes.DiscDragModel.getInstance()
+						, org.alice.stageide.gallerybrowser.shapes.ConeDragModel.getInstance()
+						, org.alice.stageide.gallerybrowser.shapes.CylinderDragModel.getInstance()
+						, org.alice.stageide.gallerybrowser.shapes.SphereDragModel.getInstance()
+						, org.alice.stageide.gallerybrowser.shapes.TorusDragModel.getInstance()
+						, org.alice.stageide.gallerybrowser.shapes.BoxDragModel.getInstance()
+						, org.alice.stageide.gallerybrowser.shapes.TextModelDragModel.getInstance()
+						, org.alice.stageide.gallerybrowser.shapes.BillboardDragModel.getInstance()
+						, org.alice.stageide.gallerybrowser.shapes.AxesDragModel.getInstance()
+						, org.alice.stageide.gallerybrowser.shapes.GroundDragModel.getInstance()
+					) );
+	// @formatter:on
 	public ShapesTab() {
 		super( java.util.UUID.fromString( "1e616f0e-4c57-460c-a4a7-919addbfc9d8" ) );
 	}
