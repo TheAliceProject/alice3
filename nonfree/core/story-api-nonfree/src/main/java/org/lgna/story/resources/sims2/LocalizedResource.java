@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006, 2017, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,50 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.stageide.personresource.views.renderers;
-
-import org.lgna.story.resources.sims2.LocalizedResource;
+package org.lgna.story.resources.sims2;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
  */
-public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
-	SINGLETON;
+public interface LocalizedResource {
 
-	private edu.cmu.cs.dennisc.javax.swing.components.JBorderPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
-	private javax.swing.JLabel label = new javax.swing.JLabel();
+	public String getLocalizedDisplayText();
 
-	private SimpleListCellRenderer() {
-		label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
-		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8, 2, 8 ) );
-		label.setOpaque( true );
-		pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
-		pane.setOpaque( false );
-		pane.add( label, java.awt.BorderLayout.CENTER );
-	}
-
-	public String getLocalizedText( Object value ) {
-		return value.toString();
-	}
-
-	@Override
-	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-		String text;
-		if( value instanceof LocalizedResource ) {
-			text = ( (LocalizedResource)value ).getLocalizedDisplayText();
-		} else {
-			text = value.toString();
-		}
-		this.label.setText( text );
-		if( isSelected ) {
-			this.label.setBackground( org.alice.stageide.personresource.views.IngredientsView.SELECTED_COLOR );
-			this.label.setForeground( java.awt.Color.BLACK );
-			this.label.setOpaque( true );
-		} else {
-			this.label.setBackground( org.alice.stageide.personresource.views.IngredientsView.UNSELECTED_COLOR );
-			this.label.setForeground( list.isEnabled() ? java.awt.Color.BLACK : java.awt.Color.GRAY );
-			this.label.setOpaque( list.isEnabled() );
-		}
-		return this.pane;
-	}
 }
