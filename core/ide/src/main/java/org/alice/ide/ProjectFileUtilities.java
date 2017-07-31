@@ -152,7 +152,7 @@ class ProjectFileUtilities {
 		return backupDir.resolve(fileName).toFile();
 	}
 
-	private void removeExtraBackups(String type, Path backupDir) {
+	private void removeExtraBackups(final String type, Path backupDir) {
 		File[] backups = listFiles(backupDir.toFile(), new FileFilter() {
 			@Override public boolean accept(File file) {
 				return file.isFile() && file.getName().startsWith(type);

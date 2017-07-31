@@ -379,6 +379,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	protected abstract java.awt.image.BufferedImage createThumbnail() throws Throwable;
 
 	public final void saveProjectTo( java.io.File file ) throws java.io.IOException {
+		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleSave( file );
+		uriProjectLoader = new org.alice.ide.uricontent.FileProjectLoader( file );
+
 		//		long startTime = System.currentTimeMillis();
 
 		projectFileUtilities.saveProjectTo( file);
@@ -387,11 +390,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		//		double saveTime = ( endTime - startTime ) * .001;
 		//		System.out.println( "Save time: " + saveTime );
 
-		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleSave( file );
-
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: better handling of file project loader", file );
-
-		this.uriProjectLoader = new org.alice.ide.uricontent.FileProjectLoader( file );
 		this.updateHistoryIndexFileSync();
 	}
 
