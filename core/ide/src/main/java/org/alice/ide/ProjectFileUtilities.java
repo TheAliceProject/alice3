@@ -8,6 +8,7 @@ import org.lgna.project.Project;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -102,12 +103,14 @@ class ProjectFileUtilities {
 	}
 
 	private Runnable autosaveActiveProject() {
-		return () -> {
-			try {
-				backupActiveProject();
-			} catch (IOException e) {
-				Logger.throwable(e, "Unable to autosave project.");
-				e.printStackTrace();
+		return new Runnable() {
+			@Override public void run() {
+				try {
+					ProjectFileUtilities.this.backupActiveProject();
+				} catch (IOException e) {
+					Logger.throwable(e, "Unable to autosave project.");
+					e.printStackTrace();
+				}
 			}
 		};
 	}
@@ -150,7 +153,11 @@ class ProjectFileUtilities {
 	}
 
 	private void removeExtraBackups(String type, Path backupDir) {
-		File[] backups = listFiles(backupDir.toFile(), file -> file.isFile() && file.getName().startsWith(type));
+		File[] backups = listFiles(backupDir.toFile(), new FileFilter() {
+			@Override public boolean accept(File file) {
+				return file.isFile() && file.getName().startsWith(type);
+			}
+		});
 		if (backups.length > BACKUP_MAX) {
 			Arrays.sort(backups);
 			for (int i = 0; i < backups.length - BACKUP_MAX; i++) {
