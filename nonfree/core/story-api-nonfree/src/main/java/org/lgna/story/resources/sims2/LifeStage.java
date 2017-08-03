@@ -149,12 +149,11 @@ public enum LifeStage implements LocalizedResource {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.name().charAt( 0 ) );
 		sb.append( this.name().substring( 1 ).toLowerCase( java.util.Locale.ENGLISH ) );
-
 		return sb.toString();
 	}
 
 	@Override
 	public String getLocalizedDisplayText() {
-		return PersonResource.getLocalizedDisplayText( getDisplayText() );
+		return PersonResource.getLocalizedDisplayText( this.name().toLowerCase( java.util.Locale.ENGLISH ) );
 	}
 }
