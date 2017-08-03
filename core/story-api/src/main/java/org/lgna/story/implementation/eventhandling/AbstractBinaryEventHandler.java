@@ -44,7 +44,7 @@ package org.lgna.story.implementation.eventhandling;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.lgna.common.ComponentThread;
+import org.lgna.common.ComponentExecutor;
 import org.lgna.story.MultipleEventPolicy;
 
 /**
@@ -64,7 +64,7 @@ public abstract class AbstractBinaryEventHandler<L, E extends org.lgna.story.eve
 			isFiringMap.get( listener ).put( two, false );
 		}
 		if( shouldFire ) {
-			ComponentThread thread = new org.lgna.common.ComponentThread( new Runnable() {
+			ComponentExecutor thread = new org.lgna.common.ComponentExecutor( new Runnable() {
 				@Override
 				public void run() {
 					fire( listener, event );

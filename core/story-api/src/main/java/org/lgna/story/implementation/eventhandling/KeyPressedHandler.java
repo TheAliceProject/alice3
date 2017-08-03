@@ -48,7 +48,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.lgna.common.ComponentThread;
+import org.lgna.common.ComponentExecutor;
 import org.lgna.story.HeldKeyPolicy;
 import org.lgna.story.Key;
 import org.lgna.story.MultipleEventPolicy;
@@ -148,13 +148,13 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_MULTIPLE ) {
 						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
 							firePolicyMap.get( listener ).put( key, true );
-							final ComponentThread thread = new ComponentThread( new Runnable() {
+							final ComponentExecutor thread = new ComponentExecutor( new Runnable() {
 								@Override
 								public void run() {
 									while( firePolicyMap.get( listener ).get( key ) ) {
 										fireEvent( listener, event );
 										try {
-											ComponentThread.sleep( sleepTime );
+											Thread.sleep( sleepTime );
 										} catch( InterruptedException e ) {
 											e.printStackTrace();
 										}
@@ -178,13 +178,13 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_MULTIPLE ) {
 						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
 							firePolicyMap.get( listener ).put( key, true );
-							final ComponentThread thread = new ComponentThread( new Runnable() {
+							final ComponentExecutor thread = new ComponentExecutor(new Runnable() {
 								@Override
 								public void run() {
 									while( firePolicyMap.get( listener ).get( key ) ) {
 										fireEvent( listener, event );
 										try {
-											ComponentThread.sleep( sleepTime );
+											Thread.sleep( sleepTime );
 										} catch( InterruptedException e ) {
 											e.printStackTrace();
 										}

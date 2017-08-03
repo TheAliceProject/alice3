@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.alice.ide.sceneeditor;
 
-import org.lgna.common.ComponentThread;
+import org.lgna.common.ComponentExecutor;
 import org.lgna.project.ast.Expression;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -240,7 +240,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.views.BorderP
 	public abstract org.lgna.project.ast.Statement getCurrentStateCodeForField( org.lgna.project.ast.UserField field );
 
 	public void setFieldToState( org.lgna.project.ast.UserField field, final org.lgna.project.ast.Statement... statements ) {
-		new ComponentThread( new Runnable() {
+		new ComponentExecutor( new Runnable() {
 			@Override
 			public void run() {
 				executeStatements( statements );
