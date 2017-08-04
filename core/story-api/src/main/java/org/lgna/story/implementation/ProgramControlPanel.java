@@ -158,6 +158,7 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 	}
 
 	private final void updateLabel() {
+		//TODO: localize
 		StringBuilder sb = new StringBuilder();
 		sb.append( "speed: " );
 		sb.append( this.boundedRangeModel.getValue() );

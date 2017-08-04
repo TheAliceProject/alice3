@@ -133,6 +133,17 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 
+	private String findLocalizedText( String key, String defaultValue ) {
+		String bundleName = SceneObjectPropertyManagerPanel.class.getPackage().getName() + ".ScenePropertyManager";
+		try {
+			java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+			String rv = resourceBundle.getString( key );
+			return rv;
+		} catch( java.util.MissingResourceException mre ) {
+			return defaultValue;
+		}
+	}
+
 	private void setShowJointsOfField( org.lgna.project.ast.AbstractField field, boolean showJoints ) {
 		JointedModelImp<? extends SJointedModel, ? extends JointedModelResource> imp = IDE.getActiveInstance().getSceneEditor().getImplementation( field );
 		if( imp != null ) {
@@ -358,7 +369,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 							//Don't add the fieldNameAdapter, just hold onto it so we can add it to the main panel later
 							fieldNamePair = matchingLabelController;
 							//TODO: Localize this
-							fieldNamePair.label.setText( "Selected: " );
+							fieldNamePair.label.setText( this.findLocalizedText( "selected", "Selected:" ) );
 						} else {
 							this.addPropertyToPanel( matchingLabelController, this.morePropertiesPanel, extraPropertyCount );
 							extraPropertyCount++;
@@ -437,7 +448,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel {
 
 						this.showJointsState = ShowJointedModelJointAxesState.getInstance( fieldAccessFactory.getField() );
 						this.showJointsState.addValueListener( this.showJointsStateObserver );
-						this.addNameAndControllerToPanel( createLabel( "Show Joints: " ), this.showJointsState.createCheckBox(), this, mainPropertyCount++ );
+						this.addNameAndControllerToPanel( createLabel( this.findLocalizedText( "showJoints", "Show Joints:" ) ), this.showJointsState.createCheckBox(), this, mainPropertyCount++ );
 					}
 
 					this.addComponent( BoxUtilities.createVerticalGlue(), new GridBagConstraints(

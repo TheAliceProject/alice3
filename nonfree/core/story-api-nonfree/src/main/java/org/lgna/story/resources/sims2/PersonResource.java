@@ -77,6 +77,19 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		return org.lgna.story.EmployeesOnly.createColor( baseSkinTone.getColor() );
 	}
 
+	protected static String getLocalizedDisplayText( String key ) {
+		Class cls = org.lgna.story.resources.sims2.PersonResource.class;
+		String bundleName = cls.getPackage().getName() + ".PersonStrings";
+		try {
+			java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+			String rv = resourceBundle.getString( key );
+			return rv;
+		} catch( java.util.MissingResourceException mre ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls, key );
+			return key;
+		}
+	}
+
 	public PersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
 		this( gender, skinTone, getClosestColor( skinTone ), eyeColor, hair, obesityLevel, outfit, face );
 	}
