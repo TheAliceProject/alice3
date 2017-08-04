@@ -194,6 +194,7 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 	@Override
 	public void stop() {
 		this.player.stop();
+		this.player.close();
 	}
 
 	@Override

@@ -90,23 +90,16 @@ public class ScheduledAudioStream implements Comparable<ScheduledAudioStream>
 			try
 			{
 				this.audioStream = AudioSystem.getAudioInputStream( dataStream );
-			} catch( Exception e )
-			{
-				e.printStackTrace();
-			}
-
-			AudioFormat af = this.audioStream.getFormat();
-			double frameRate = af.getFrameRate(); //frames per second
-			int frameSize = af.getFrameSize(); //bytes per frame
-			this.bytesPerSecond = frameRate * frameSize;
-			try
-			{
+				AudioFormat af = this.audioStream.getFormat();
+				double frameRate = af.getFrameRate(); //frames per second
+				int frameSize = af.getFrameSize(); //bytes per frame
+				this.bytesPerSecond = frameRate * frameSize;
 				this.audioStream.skip( (long)( this.bytesPerSecond * this.entryPoint ) );
+				this.initialized = true;
 			} catch( Exception e )
 			{
 				e.printStackTrace();
 			}
-			this.initialized = true;
 		}
 	}
 
