@@ -276,7 +276,9 @@ public class MixingFloatAudioInputStream extends AudioInputStream {
 		while( streamIterator.hasNext() ) {
 			ScheduledAudioStream scheduledStream = (ScheduledAudioStream)streamIterator.next();
 			AudioInputStream stream = scheduledStream.getAudioStream();
-			stream.skip( lLength );
+			if (stream != null) {
+				stream.skip(lLength);
+			}
 		}
 		return lLength;
 	}
@@ -305,7 +307,9 @@ public class MixingFloatAudioInputStream extends AudioInputStream {
 		while( streamIterator.hasNext() ) {
 			ScheduledAudioStream scheduledStream = (ScheduledAudioStream)streamIterator.next();
 			AudioInputStream stream = scheduledStream.getAudioStream();
-			stream.mark( nReadLimit );
+			if (stream != null) {
+				stream.mark(nReadLimit);
+			}
 		}
 	}
 
@@ -319,7 +323,9 @@ public class MixingFloatAudioInputStream extends AudioInputStream {
 		while( streamIterator.hasNext() ) {
 			ScheduledAudioStream scheduledStream = (ScheduledAudioStream)streamIterator.next();
 			AudioInputStream stream = scheduledStream.getAudioStream();
-			stream.reset();
+			if (stream != null) {
+				stream.reset();
+			}
 		}
 	}
 
@@ -332,7 +338,7 @@ public class MixingFloatAudioInputStream extends AudioInputStream {
 		while( streamIterator.hasNext() ) {
 			ScheduledAudioStream scheduledStream = (ScheduledAudioStream)streamIterator.next();
 			AudioInputStream stream = scheduledStream.getAudioStream();
-			if( !stream.markSupported() ) {
+			if (stream == null || !stream.markSupported() ) {
 				return false;
 			}
 		}

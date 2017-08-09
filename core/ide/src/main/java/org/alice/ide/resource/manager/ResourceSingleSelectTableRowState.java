@@ -61,15 +61,35 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 		}
 	}
 
+	private String findLocalizedText( String subKey, String defaultValue ) {
+		String bundleName = ResourceSingleSelectTableRowState.class.getPackage().getName() + ".croquet";
+		try {
+			java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+			String key = ResourceSingleSelectTableRowState.class.getSimpleName();
+
+			if( subKey != null ) {
+				StringBuilder sb = new StringBuilder();
+				sb.append( key );
+				sb.append( "." );
+				sb.append( subKey );
+				key = sb.toString();
+			}
+			String rv = resourceBundle.getString( key );
+			return rv;
+		} catch( java.util.MissingResourceException mre ) {
+			return defaultValue;
+		}
+	}
+
 	@Override
 	public String getColumnName( int columnIndex ) {
 		switch( columnIndex ) {
 		case ResourceSingleSelectTableRowState.IS_REFERENCED_COLUMN_INDEX:
-			return "is referenced?";
+			return findLocalizedText( "isReferenced", "is referenced?" );
 		case ResourceSingleSelectTableRowState.NAME_COLUMN_INDEX:
-			return "name";
+			return findLocalizedText( "name", "name" );
 		case ResourceSingleSelectTableRowState.TYPE_COLUMN_INDEX:
-			return "type";
+			return findLocalizedText( "type", "type" );
 		default:
 			return null;
 		}

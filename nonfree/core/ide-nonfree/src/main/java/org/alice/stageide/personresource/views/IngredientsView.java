@@ -136,6 +136,7 @@ public class IngredientsView extends org.lgna.croquet.views.MigPanel {
 
 		//this.addComponent( new MelaninSlider( composite.getSkinColorState() ) );
 		final org.lgna.croquet.views.Button customColorDialogButton = composite.getSkinColorState().getChooserDialogCoreComposite().getLaunchOperation().createButton();
+		//TODO: Localize
 		customColorDialogButton.setClobberText( "Custom Color..." );
 
 		org.lgna.croquet.event.ValueListener<java.awt.Color> colorListener = new org.lgna.croquet.event.ValueListener<java.awt.Color>() {
