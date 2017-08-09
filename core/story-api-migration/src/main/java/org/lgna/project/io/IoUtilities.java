@@ -52,6 +52,7 @@ public abstract class IoUtilities {
 
 	public static final String PROJECT_EXTENSION = "a3p";
 	public static final String TYPE_EXTENSION = "a3c";
+	public static final String BACKUP_EXTENSION = "bak";
 
 	public static java.io.File[] listProjectFiles( java.io.File directory ) {
 		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, PROJECT_EXTENSION );

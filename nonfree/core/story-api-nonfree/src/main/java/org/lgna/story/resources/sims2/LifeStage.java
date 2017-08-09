@@ -45,7 +45,7 @@ package org.lgna.story.resources.sims2;
 /**
  * @author Dennis Cosgrove
  */
-public enum LifeStage {
+public enum LifeStage implements LocalizedResource {
 	TODDLER {
 		@Override
 		public PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
@@ -144,4 +144,16 @@ public enum LifeStage {
 	}
 
 	public abstract PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face );
+
+	public String getDisplayText() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.name().charAt( 0 ) );
+		sb.append( this.name().substring( 1 ).toLowerCase( java.util.Locale.ENGLISH ) );
+		return sb.toString();
+	}
+
+	@Override
+	public String getLocalizedDisplayText() {
+		return PersonResource.getLocalizedDisplayText( this.name().toLowerCase( java.util.Locale.ENGLISH ) );
+	}
 }

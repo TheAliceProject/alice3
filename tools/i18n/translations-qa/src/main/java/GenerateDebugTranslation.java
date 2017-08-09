@@ -133,7 +133,7 @@ public class GenerateDebugTranslation {
 		boolean deleteOverride = false;
 		String exportPath = null;
 		String generatedFileSuffix = "_en_CA";
-		String customKey = "#";
+		String customKey = "|";
 		int i = 0;
 		while( i < args.length ) {
 			if( args[ i ].equalsIgnoreCase( "-d" ) ) {

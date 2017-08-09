@@ -42,11 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.personresource.views.renderers;
 
+import org.lgna.story.resources.sims2.LocalizedResource;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
 	SINGLETON;
+
 	private edu.cmu.cs.dennisc.javax.swing.components.JBorderPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
 	private javax.swing.JLabel label = new javax.swing.JLabel();
 
@@ -59,9 +62,19 @@ public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
 		pane.add( label, java.awt.BorderLayout.CENTER );
 	}
 
+	public String getLocalizedText( Object value ) {
+		return value.toString();
+	}
+
 	@Override
 	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-		this.label.setText( value.toString() );
+		String text;
+		if( value instanceof LocalizedResource ) {
+			text = ( (LocalizedResource)value ).getLocalizedDisplayText();
+		} else {
+			text = value.toString();
+		}
+		this.label.setText( text );
 		if( isSelected ) {
 			this.label.setBackground( org.alice.stageide.personresource.views.IngredientsView.SELECTED_COLOR );
 			this.label.setForeground( java.awt.Color.BLACK );
