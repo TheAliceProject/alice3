@@ -14,6 +14,9 @@ import com.dddviewr.collada.controller.Controller;
 import com.dddviewr.collada.controller.Joints;
 import com.dddviewr.collada.controller.LibraryControllers;
 import com.dddviewr.collada.controller.Skin;
+import com.dddviewr.collada.geometry.Geometry;
+import com.dddviewr.collada.images.Image;
+import com.dddviewr.collada.materials.Material;
 import com.dddviewr.collada.nodes.Node;
 import com.dddviewr.collada.scene.InstanceVisualScene;
 import com.dddviewr.collada.visualscene.LibraryVisualScenes;
@@ -21,41 +24,20 @@ import com.dddviewr.collada.visualscene.VisualScene;
 
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 public class AliceModelLoader {
-
-	private static boolean nodeIsJoint( Node n ) {
-		return n.getType().equals( "JOINT" );
-	}
-	
-	private static Node findRootNode( List<Node> nodes ) {
-		for (Node n : nodes) {
-			if (nodeIsJoint(n)) {
-				if (n.getName().equalsIgnoreCase( "root" )) {
-					return n;
-				}
-			}
-		}
-		for (Node n : nodes) {
-			Node childRoot = findRootNode(n.getChildNodes());
-			if (childRoot != null) {
-				return childRoot;
-			}
-		}
-		return null;
-	}
 	
 	public static SkeletonVisual loadAliceModelFromCollada(Collada colladaModel, String modelName) {
 		
-		List<edu.cmu.cs.dennisc.scenegraph.Mesh> meshes = new ArrayList<>();
-		List<edu.cmu.cs.dennisc.texture.Texture> textures = new ArrayList<>();
+		try {
+			SkeletonVisual v = AliceColladaModelLoader.loadAliceModelFromCollada( colladaModel, modelName );
+		}
+		catch (ModelLoadingException e) {
+			e.printStackTrace();
+		}
 		
 		
-		VisualScene scene = colladaModel.getLibraryVisualScenes().getScene( colladaModel.getScene().getInstanceVisualScene().getUrl() );
-		
-		//Find and build the skeleton first
-		Joint scenegraphSkeleton = null;
-		Node rootNode = findRootNode(scene.getNodes());
 //		for (Controller controller : libraryControllers.getControllers()) {
 //			Skin skin = controller.getSkin();
 //			Joints joints = skin.getJoints();
