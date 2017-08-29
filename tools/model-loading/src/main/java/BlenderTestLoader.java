@@ -26,10 +26,6 @@ import com.jme3.system.MockJmeSystemDelegate;
 
 public class BlenderTestLoader {
 	
-	
-	static {
-        JmeSystem.setSystemDelegate(new MockJmeSystemDelegate());
-    }
 
 	public static void printChildren( Spatial s, String indent ){
 		if (s != null) {
@@ -49,39 +45,10 @@ public class BlenderTestLoader {
 	
 	public static void main( String[] args ) {
 		
-		
-		DesktopAssetManager dam =  new DesktopAssetManager();
-		dam.registerLocator(".", FileLocator.class);
-		dam.registerLocator("/", ClasspathLocator.class);
-		dam.registerLoader(J3MLoader.class, "j3m");
-		dam.registerLoader(J3MLoader.class, "j3md");
-		dam.registerLoader(GLSLLoader.class, "vert", "frag","geom","tsctrl","tseval","glsllib");
-		
-		BlenderLoader blenderLoader = new BlenderLoader();
-		OBJLoader objLoader = new OBJLoader();
-		
-		File objFile  = new File( "C:/Users/dculyba/Documents/Alice/Model Exports/chicken.obj" );
-		File blenderFile  = new File( "C:/Users/dculyba/Documents/Alice/Blender Files/Alfred.blend" );
-//		File colladaFile  = new File( "C:/Users/dculyba/Documents/Alice/Collada/Alfred.dae" );
 		File colladaFile  = new File( "C:/Users/dculyba/Documents/Alice/Collada/chicken.dae" );
 		
-		try {
-			Collada colladaModel = Collada.readFile( colladaFile.toURL() );
-			AliceModelLoader.loadAliceModelFromCollada( colladaModel, "chicken" );
-			colladaModel.dump( System.out, 0 );
-		} catch( FileNotFoundException e1 ) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch( MalformedURLException e1 ) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch( SAXException e1 ) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch( IOException e1 ) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		AliceModelLoader.loadAliceModelFromCollada( colladaFile, "chicken");
+
 		
 //		UrlAssetInfo uai;
 //		try {

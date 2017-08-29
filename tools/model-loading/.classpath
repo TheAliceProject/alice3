@@ -18,5 +18,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ide"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/java_code_utilities"/>
 	<classpathentry kind="lib" path="C:/Users/dculyba/.m2/repository/org/alice/alice-model-source/2016.08.19/alice-model-source-2016.08.19.jar"/>
+	<classpathentry kind="lib" path="/MayaToAliceBatch/lib/jogamp/jogl/jogl-all/2.3.2/jogl-all-2.3.2.jar"/>
+	<classpathentry kind="lib" path="/MayaToAliceBatch/lib/jogamp/gluegen/gluegen-rt/2.3.2/gluegen-rt-2.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
