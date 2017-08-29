@@ -40,7 +40,7 @@ class ProjectFileUtilities {
 
 	ProjectFileUtilities(ProjectApplication app) {
 		projectApp = app;
-		savingService = Executors.newScheduledThreadPool(0);
+		savingService = Executors.newSingleThreadScheduledExecutor();
 	}
 
 	final void saveProjectTo(File file) throws IOException {
