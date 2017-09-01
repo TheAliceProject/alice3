@@ -71,17 +71,16 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		AbstractWindow.map.put( window, this );
 		this.contentPane = new ContentPane( this );
 		this.rootPane = new RootPane( this );
-		addWindowStateListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				AbstractWindow.map.remove( window );
-			}
-		});
 	}
 
 	@Override
 	public final W getAwtComponent() {
 		return this.window;
+	}
+
+	public void release() {
+		window.dispose();
+		AbstractWindow.map.remove( window );
 	}
 
 	@Override
