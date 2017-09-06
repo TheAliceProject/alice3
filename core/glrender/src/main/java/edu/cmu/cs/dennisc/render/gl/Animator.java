@@ -43,8 +43,6 @@
 
 package edu.cmu.cs.dennisc.render.gl;
 
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -107,12 +105,10 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
 				if( ( tCurrent - tPrev ) < sleepMillis ) {
 					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( sleepMillis );
 				} else {
-
 					millisSinceLastFps += (tCurrent - tPrev);
 					fps++;
 					if (millisSinceLastFps > 1000) {
 						frameRate = fps;
-						PrintUtilities.println( "FPS " + frameRate);
 						millisSinceLastFps = 0;
 						fps = 0;
 					}
