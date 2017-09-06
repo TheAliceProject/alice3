@@ -155,9 +155,6 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 	@Override
 	protected void handlePreShowWindow( org.lgna.croquet.views.Frame frame ) {
 		super.handlePreShowWindow( frame );
-		if( frame.isAlwaysOnTopSupported() ) {
-			frame.setAlwaysOnTop( true );
-		}
 		this.startProgram();
 		if( this.size != null ) {
 			frame.setSize( this.size );
