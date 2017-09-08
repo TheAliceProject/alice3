@@ -1,7 +1,5 @@
 package org.lgna.common;
 
-import java.util.Collection;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,6 +12,7 @@ public class ComponentExecutor implements Runnable{
 		this.target = target;
 	}
 
+	@Override
 	public void run() {
 		org.lgna.common.ProgramClosedException.invokeAndCatchProgramClosedException( this.target );
 	}
