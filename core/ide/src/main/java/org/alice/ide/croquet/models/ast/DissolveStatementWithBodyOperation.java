@@ -43,6 +43,8 @@
 
 package org.alice.ide.croquet.models.ast;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -74,8 +76,8 @@ public class DissolveStatementWithBodyOperation extends org.lgna.croquet.ActionO
 	@Override
 	protected void localize() {
 		super.localize();
-		//todo
-		this.setName( "Dissolve " + this.statementWithBody.getClass().getSimpleName() );
+		String statementName = ResourceBundleUtilities.getStringFromSimpleNames( statementWithBody.getClass(), "org.alice.ide.controlflow.Templates", javax.swing.JComponent.getDefaultLocale() );
+		this.setName( getImp().getName() + " " + statementName );
 	}
 
 	@Override
