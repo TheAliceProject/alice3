@@ -176,6 +176,14 @@ public abstract class ProgramImp {
 		this.getAnimator().setSpeedFactor( speedFactor );
 	}
 
+	public String getSpeedFormat() {
+		return speedFormat;
+	}
+
+	public void setSpeedFormat(String format) {
+		speedFormat = format;
+	}
+
 	public javax.swing.Action getRestartAction() {
 		return this.restartAction;
 	}
@@ -365,6 +373,7 @@ public abstract class ProgramImp {
 	private final org.lgna.story.SProgram abstraction;
 	private final edu.cmu.cs.dennisc.render.OnscreenRenderTarget<?> onscreenRenderTarget;
 	private double simulationSpeedFactor = 1.0;
+	private String speedFormat;
 	private javax.swing.Action restartAction;
 	private boolean isAnimatorStarted = false;
 	private boolean isProgramClosedExceptionDesired = false;
