@@ -376,15 +376,15 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 		if( currentNode instanceof Transformable ) {
 			oTransformationPost = AffineMatrix4x4.createMultiplication( oTransformationPre, ( (Transformable)currentNode ).localTransformation.getValue() );
 
-			if( ( currentNode instanceof Joint ) && ( currentNode.getName().equals( "eye_R" ) || currentNode.getName().equals( "eye_L" ) ) ) {
+			if( ( currentNode instanceof Joint ) ) {
 				rc.gl.glPushMatrix();
 				rc.gl.glMultMatrixd( DoubleBuffer.wrap( oTransformationPost.getAsColumnMajorArray16() ) );
 				rc.gl.glBegin( GL_LINES );
-				rc.gl.glLineWidth( 5 );
+				//				rc.gl.glLineWidth( 50 );
 				try {
 					final float FULL = 1.0f;
 					final float ZERO = 0.0f;
-					final float LENGTH = 1f;
+					final float LENGTH = .1f;
 
 					rc.gl.glDepthFunc( com.jogamp.opengl.GL2.GL_ALWAYS );
 					//					rc.gl.glDisable( com.jogamp.opengl.GL2.GL_DEPTH_TEST );

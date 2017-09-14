@@ -59,7 +59,6 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import com.jme3.math.Matrix4f;
 
 
 public class Utilities {
@@ -632,16 +631,6 @@ public class Utilities {
         IntBuffer buf = createIntBuffer( convertIntBufferToArray(data) );
         return buf;
     }
-	
-	public static AffineMatrix convertJMEMatrix4f( Matrix4f jmeMatrix )
-	{
-	    AffineMatrix matrix = new AffineMatrix();
-	    matrix.setXAxis(jmeMatrix.m00, jmeMatrix.m10, jmeMatrix.m20);
-	    matrix.setYAxis(jmeMatrix.m01, jmeMatrix.m11, jmeMatrix.m21);
-	    matrix.setZAxis(jmeMatrix.m02, jmeMatrix.m12, jmeMatrix.m22);
-	    matrix.setTranslationAxis(jmeMatrix.m03, jmeMatrix.m13, jmeMatrix.m23);
-	    return matrix;
-	}
 	
 	public static edu.cmu.cs.dennisc.scenegraph.WeightedMesh copySgWeightedMesh( edu.cmu.cs.dennisc.scenegraph.WeightedMesh toCopy )
 	{

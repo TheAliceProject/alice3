@@ -1,24 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" output="target/classes" path="src/dae4j/src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="src" path="src/dae4j/src"/>
-	<classpathentry kind="src" path="src/jme3-core/resources"/>
-	<classpathentry kind="src" path="src/jme3-blender/java"/>
-	<classpathentry kind="src" path="src/jme3-blender/resources"/>
-	<classpathentry kind="src" path="src/jme3-core/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/jmonkey/core-0.27.jar"/>
-	<classpathentry kind="lib" path="lib/jmonkey/dense64-0.27.jar"/>
-	<classpathentry kind="lib" path="lib/jmonkey/denseC64-0.27.jar"/>
-	<classpathentry kind="lib" path="lib/jmonkey/simple-0.27.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/scenegraph"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/util"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/glrender"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/story-api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ide"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/java_code_utilities"/>
-	<classpathentry kind="lib" path="C:/Users/dculyba/.m2/repository/org/alice/alice-model-source/2016.08.19/alice-model-source-2016.08.19.jar"/>
-	<classpathentry kind="lib" path="/MayaToAliceBatch/lib/jogamp/jogl/jogl-all/2.3.2/jogl-all-2.3.2.jar"/>
-	<classpathentry kind="lib" path="/MayaToAliceBatch/lib/jogamp/gluegen/gluegen-rt/2.3.2/gluegen-rt-2.3.2.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/alice-ide"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/glrender"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
