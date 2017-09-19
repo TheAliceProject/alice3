@@ -65,7 +65,7 @@ public class UpAsSeenBy implements
 		return defaultValue;
 	}
 
-	//Testing a different way to make keyword parameters on the java side
+	//Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
 	public static UpAsSeenBy make( SThing value ) {
 		return new UpAsSeenBy( value );
 	}

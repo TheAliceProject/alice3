@@ -63,7 +63,7 @@ public class BubbleOutlineColor implements Say.Detail, Think.Detail {
 		return defaultValue;
 	}
 
-	//Testing a different way to make keyword parameters on the java side
+	//Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
 	public static BubbleOutlineColor make( Color value ) {
 		return new BubbleOutlineColor( value );
 	}

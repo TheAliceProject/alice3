@@ -99,7 +99,7 @@ public class Duration implements
 		return getValue( details, DEFAULT_VALUE );
 	}
 
-	//Testing a different way to make keyword parameters on the java side
+	//Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
 	public static Duration make( Number value ) {
 		return new Duration( value );
 	}

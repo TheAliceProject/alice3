@@ -71,7 +71,7 @@ public class AlongAxisOffset implements
 		return getValue( details, DEFAULT_VALUE );
 	}
 
-	//Testing a different way to make keyword parameters on the java side
+	//Testing a different way to make keyword parameters on the java side. For use in exported NetBeans project.
 	public static AlongAxisOffset make( Number value ) {
 		return new AlongAxisOffset( value );
 	}
