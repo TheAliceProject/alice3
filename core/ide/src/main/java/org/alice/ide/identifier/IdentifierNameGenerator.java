@@ -43,6 +43,10 @@
 
 package org.alice.ide.identifier;
 
+import org.alice.stageide.modelresource.ResourceKey;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.JavaType;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -83,6 +87,36 @@ public enum IdentifierNameGenerator {
 		} else {
 			return null;
 		}
+	}
+
+	public String createIdentifierNameFromResourceKey( ResourceKey key ) {
+		if (key != null) {
+
+			// Try to use JavaType, untranslated, if it exists.
+			InstanceCreation creation = key.createInstanceCreation();
+			if( creation != null ) {
+				org.lgna.project.ast.AbstractConstructor constructor = creation.constructor.getValue();
+				if (constructor != null) {
+					org.lgna.project.ast.AbstractType<?, ?, ?> type = constructor.getDeclaringType();
+					if (type != null && type instanceof JavaType) {
+						String typeName = type.getName();
+						if (typeName != null) {
+							if (typeName.length() > 1 && (typeName.charAt(0) == 'S') && Character.isUpperCase(typeName.charAt(1))) {
+								typeName = typeName.substring(1);
+							}
+							return convertFirstCharacterToLowerCase(typeName);
+						}
+					}
+				}
+			}
+
+			// Otherwise use translated resource
+			String localizedName = key.getSearchText();
+			if (localizedName != null) {
+				return convertFirstCharacterToLowerCase(localizedName);
+			}
+		}
+		return "";
 	}
 
 	public String createIdentifierNameFromInstanceCreation( org.lgna.project.ast.InstanceCreation instanceCreation ) {
