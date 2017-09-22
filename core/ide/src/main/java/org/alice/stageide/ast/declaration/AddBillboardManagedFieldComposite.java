@@ -43,6 +43,9 @@
 
 package org.alice.stageide.ast.declaration;
 
+import org.alice.stageide.gallerybrowser.shapes.BillboardDragModel;
+import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,6 +62,10 @@ public class AddBillboardManagedFieldComposite extends AddModelManagedFieldCompo
 
 	private AddBillboardManagedFieldComposite() {
 		super( java.util.UUID.fromString( "bba3fc83-4db4-4be4-87d4-5111dbda4f60" ), org.lgna.story.SBillboard.class );
+	}
+
+	@Override protected ShapeDragModel getDragModel() {
+		return BillboardDragModel.getInstance();
 	}
 
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getBackPaintState() {

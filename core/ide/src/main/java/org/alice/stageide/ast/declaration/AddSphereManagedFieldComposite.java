@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+import org.alice.stageide.gallerybrowser.shapes.SphereDragModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,6 +61,10 @@ public class AddSphereManagedFieldComposite extends AddModelManagedFieldComposit
 
 	private AddSphereManagedFieldComposite() {
 		super( java.util.UUID.fromString( "1e534a32-fcbd-41a8-870b-ca050ea94b1d" ), org.lgna.story.SSphere.class );
+	}
+
+	@Override protected ShapeDragModel getDragModel() {
+		return SphereDragModel.getInstance();
 	}
 
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getRadiusState() {

@@ -119,6 +119,10 @@ public enum IdentifierNameGenerator {
 		return "";
 	}
 
+	public String createIdentifierNameFromClassName(String className) {
+		return convertFirstCharacterToLowerCase(className);
+	}
+
 	public String createIdentifierNameFromInstanceCreation( org.lgna.project.ast.InstanceCreation instanceCreation ) {
 		String rv = "";
 		if( instanceCreation != null ) {

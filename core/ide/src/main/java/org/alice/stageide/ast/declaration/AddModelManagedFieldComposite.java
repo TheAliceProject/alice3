@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import org.alice.ide.identifier.IdentifierNameGenerator;
+import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,5 +62,11 @@ public abstract class AddModelManagedFieldComposite extends org.alice.ide.ast.de
 
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getOpacityState() {
 		return this.opacityState;
+	}
+
+	protected abstract ShapeDragModel getDragModel();
+
+	public String generateName() {
+		return IdentifierNameGenerator.SINGLETON.createIdentifierNameFromClassName(getDragModel().getLocalizedClassName());
 	}
 }
