@@ -66,6 +66,7 @@ public abstract class AddModelManagedFieldComposite extends org.alice.ide.ast.de
 
 	protected abstract ShapeDragModel getDragModel();
 
+	@Override
 	public String generateName() {
 		return IdentifierNameGenerator.SINGLETON.createIdentifierNameFromClassName(getDragModel().getLocalizedClassName());
 	}
