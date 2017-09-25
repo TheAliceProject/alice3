@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
+import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,6 +58,11 @@ public class AddObjectMarkerFieldComposite extends AddMarkerFieldComposite {
 
 	private AddObjectMarkerFieldComposite() {
 		super( java.util.UUID.fromString( "d342bfca-8f67-481a-a0ce-1b8f51eb673c" ), org.lgna.story.SThingMarker.class );
+	}
+
+	@Override
+	protected String generateName() {
+		return MarkerUtilities.getBaseNameForObjectMarker();
 	}
 
 	@Override
