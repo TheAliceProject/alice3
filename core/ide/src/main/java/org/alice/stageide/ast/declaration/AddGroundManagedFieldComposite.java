@@ -43,6 +43,9 @@
 package org.alice.stageide.ast.declaration;
 
 import org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
+
+import javax.swing.*;
 
 /**
  * @author dculyba
@@ -60,6 +63,11 @@ public class AddGroundManagedFieldComposite extends AddPredeterminedValueTypeMan
 
 	public static AddGroundManagedFieldComposite getInstance() {
 		return SingletonHolder.instance;
+	}
+
+	@Override
+	protected String generateName() {
+		return AliceResourceUtilties.getLocalizedTag("ground", JComponent.getDefaultLocale());
 	}
 
 	private AddGroundManagedFieldComposite() {
