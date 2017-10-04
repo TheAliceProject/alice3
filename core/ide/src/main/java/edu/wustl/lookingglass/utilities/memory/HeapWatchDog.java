@@ -101,8 +101,8 @@ public class HeapWatchDog {
 	private void showMemoryWarning() {
 		Logger.warning( "Memory " + ( MEMORY_FULL_WARNING_THRESHOLD * 100.0 ) + "% full." );
 		JOptionPane.showMessageDialog(null,
-						ResourceBundleUtilities.getStringForKey( "message", BUNDLE_NAME, "OOM" ),
-						ResourceBundleUtilities.getStringForKey( "title", BUNDLE_NAME, "OOM" ),
+						ResourceBundleUtilities.getStringForKey( "message", BUNDLE_NAME ),
+						ResourceBundleUtilities.getStringForKey( "title", BUNDLE_NAME ),
 						JOptionPane.WARNING_MESSAGE);
 	}
 }
