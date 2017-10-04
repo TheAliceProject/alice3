@@ -108,7 +108,7 @@ public abstract class ModalFrameComposite<V extends org.lgna.croquet.views.Compo
 						frame.getAwtComponent().setEnabled( true );
 					}
 					//e.getComponent().setVisible( false );
-					frame.getAwtComponent().dispose();
+					frame.release();
 				}
 			}
 

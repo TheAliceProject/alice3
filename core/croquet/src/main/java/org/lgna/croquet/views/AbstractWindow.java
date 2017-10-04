@@ -43,6 +43,9 @@
 
 package org.lgna.croquet.views;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,7 +53,7 @@ package org.lgna.croquet.views;
 public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenElement {
 	private static java.util.Map<java.awt.Component, AbstractWindow<?>> map = edu.cmu.cs.dennisc.java.util.Maps.newWeakHashMap();
 
-	/* package-private */static AbstractWindow<?> lookup( java.awt.Component component ) {
+	 /*package-private*/ static AbstractWindow<?> lookup( java.awt.Component component ) {
 		if( component != null ) {
 			return AbstractWindow.map.get( component );
 		} else {
@@ -73,6 +76,11 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	@Override
 	public final W getAwtComponent() {
 		return this.window;
+	}
+
+	public void release() {
+		window.dispose();
+		AbstractWindow.map.remove( window );
 	}
 
 	@Override

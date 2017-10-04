@@ -47,14 +47,14 @@ package edu.cmu.cs.dennisc.render.gl;
  * @author Dennis Cosgrove
  */
 /*package-private*/abstract class Animator implements Runnable {
-	public static final long DEFAULT_SLEEP_MILLIS = 5;
+	private static final long DEFAULT_SLEEP_MILLIS = 16;
 	private boolean isActive = false;
 	private long tStart;
 	private int frameCount;
+	private int frameRate;
 	private long sleepMillis = DEFAULT_SLEEP_MILLIS;
 
 	public enum ThreadDeferenceAction {
-		DO_NOTHING,
 		SLEEP,
 		YIELD
 	}
@@ -62,15 +62,17 @@ package edu.cmu.cs.dennisc.render.gl;
 	public void start() {
 		this.isActive = true;
 		this.frameCount = 0;
+		frameRate = 0;
 		this.tStart = System.currentTimeMillis();
-		//		javax.swing.SwingUtilities.invokeLater( this );
 		new Thread( this ).start();
 	}
 
 	public void stop() {
 		this.isActive = false;
-		//long tDelta = System.currentTimeMillis() - this.tStart;
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( this.frameCount, tDelta, this.frameCount/(tDelta*0.001) );
+	}
+
+	public int getFrameRate() {
+		return frameRate;
 	}
 
 	public int getFrameCount() {
@@ -93,39 +95,36 @@ package edu.cmu.cs.dennisc.render.gl;
 
 	@Override
 	public void run() {
-		final long THRESHOLD = 5;
-		long tPrev = System.currentTimeMillis() - THRESHOLD;
+		long tPrev = 0;
+		int fps = 0;
+		int millisSinceLastFps = 0;
+
 		while( this.isActive ) {
-			//			int i = 0;
 			while( true ) {
 				long tCurrent = System.currentTimeMillis();
-				if( ( tCurrent - tPrev ) < THRESHOLD ) {
-					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 5 );
-					//					i++;
+				if( ( tCurrent - tPrev ) < sleepMillis ) {
+					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( sleepMillis );
 				} else {
+					millisSinceLastFps += (tCurrent - tPrev);
+					fps++;
+					if (millisSinceLastFps > 1000) {
+						frameRate = fps;
+						millisSinceLastFps = 0;
+						fps = 0;
+					}
 					tPrev = tCurrent;
 					break;
 				}
 			}
-			//			if( i>3 ) {
-			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "sleep count:", i );
-			//			}
-			//		if( this.isActive ) {
-			//			try {
 			ThreadDeferenceAction threadAction = this.step();
 			if( threadAction == ThreadDeferenceAction.SLEEP ) {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "sleep", this.sleepMillis );
 				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( this.sleepMillis );
 			} else if( threadAction == ThreadDeferenceAction.YIELD ) {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "yield" );
 				Thread.yield();
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "threadAction", threadAction );
 			}
 			this.frameCount++;
-			//			} finally {
-			//				javax.swing.SwingUtilities.invokeLater( this );
-			//			}
 		}
 	}
 }
