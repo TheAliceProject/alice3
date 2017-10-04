@@ -290,7 +290,7 @@ public abstract class ModelImp extends TransformableImp implements edu.cmu.cs.de
 			}
 		} else {
 			if( depth != 0.0 ) {
-				throw new RuntimeException( "unable to set the height of model that has zero(0) height" );
+				throw new RuntimeException( "unable to set the depth of model that has zero(0) depth" );
 			}
 		}
 	}

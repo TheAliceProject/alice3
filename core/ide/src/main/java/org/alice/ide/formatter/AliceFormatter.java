@@ -43,6 +43,8 @@
 package org.alice.ide.formatter;
 
 /**
+ * Formats code on Alice tiles in the Alice language.
+ *
  * @author Dennis Cosgrove
  */
 public class AliceFormatter extends Formatter {

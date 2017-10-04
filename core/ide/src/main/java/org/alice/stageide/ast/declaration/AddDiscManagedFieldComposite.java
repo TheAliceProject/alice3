@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import org.alice.stageide.gallerybrowser.shapes.DiscDragModel;
+import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,6 +61,10 @@ public class AddDiscManagedFieldComposite extends AddModelManagedFieldComposite 
 
 	private AddDiscManagedFieldComposite() {
 		super( java.util.UUID.fromString( "cd6bf4c0-329b-4bfb-b5ff-1c6e858095f1" ), org.lgna.story.SDisc.class );
+	}
+
+	@Override protected ShapeDragModel getDragModel() {
+		return DiscDragModel.getInstance();
 	}
 
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getRadiusState() {

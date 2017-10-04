@@ -65,6 +65,10 @@ public abstract class ShapeDragModel extends GalleryDragModel {
 		return this.text;
 	}
 
+	public String getLocalizedClassName() {
+		return this.findDefaultLocalizedText();
+	}
+
 	@Override
 	public boolean isInstanceCreator() {
 		return true;

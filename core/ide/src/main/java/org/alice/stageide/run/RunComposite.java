@@ -55,6 +55,7 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 	}
 
 	private final org.lgna.croquet.PlainStringValue restartLabel = this.createStringValue( "restart" );
+	private final org.lgna.croquet.PlainStringValue speedFormat= this.createStringValue( "speed" );
 
 	private RunComposite() {
 		super( java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ), org.alice.ide.IDE.RUN_GROUP );
@@ -92,6 +93,7 @@ public class RunComposite extends org.lgna.croquet.SimpleModalFrameComposite<org
 		public ProgramRunnable( org.lgna.story.implementation.ProgramImp.AwtContainerInitializer awtContainerInitializer ) {
 			RunComposite.this.programContext = new org.alice.stageide.program.RunProgramContext();
 			RunComposite.this.programContext.getProgramImp().setRestartAction( RunComposite.this.restartAction );
+			RunComposite.this.programContext.getProgramImp().setSpeedFormat( RunComposite.this.speedFormat.getText());
 			RunComposite.this.programContext.initializeInContainer( awtContainerInitializer );
 		}
 

@@ -176,7 +176,7 @@ public abstract class AddFieldComposite extends FieldComposite {
 		return null;
 	}
 
-	private String generateNameFromInitializer() {
+	protected String generateName() {
 		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
 		return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.createIdentifierNameFromInstanceCreation( instanceCreation );
 	}
@@ -192,7 +192,7 @@ public abstract class AddFieldComposite extends FieldComposite {
 	@Override
 	protected String getNameInitialValue() {
 		if( this.isNameGenerationDesired() ) {
-			String baseName = generateNameFromInitializer();
+			String baseName = generateName();
 			boolean isNumberAppendedToNameOfFirstField = this.isNumberAppendedToNameOfFirstField();
 			final boolean IS_GENERATING_AVAILABLE_NAME_ENABLED = true;
 			if( IS_GENERATING_AVAILABLE_NAME_ENABLED ) {

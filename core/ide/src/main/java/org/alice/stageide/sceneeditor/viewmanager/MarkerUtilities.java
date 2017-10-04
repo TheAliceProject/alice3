@@ -448,22 +448,11 @@ public class MarkerUtilities {
 		}
 	}
 
-	private static String getNameForMarker( NamedUserType ownerType, String baseMarkerName, org.lgna.story.Color color ) {
-		MarkerColorValidator nameValidator = new MarkerColorValidator( ownerType );
-		int addOnNumber = 0;
-		String markerName = makeMarkerName( baseMarkerName, color, addOnNumber );
-		while( nameValidator.getExplanationIfOkButtonShouldBeDisabled( markerName ) != null ) {
-			addOnNumber++;
-			markerName = makeMarkerName( baseMarkerName, color, addOnNumber );
-		}
-		return markerName;
+	public static String getBaseNameForObjectMarker() {
+		return findLocalizedText( "defaultMarkerName" );
 	}
 
-	public static String getNameForCameraMarker( NamedUserType ownerType, org.lgna.story.Color color ) {
-		return getNameForMarker( ownerType, findLocalizedText( "defaultCameraMarkerName" ), color );
-	}
-
-	public static String getNameForObjectMarker( NamedUserType ownerType, UserField selectedField, org.lgna.story.Color color ) {
-		return getNameForMarker( ownerType, selectedField.getName(), color );
+	public static String getBaseNameForCameraMarker() {
+		return findLocalizedText( "defaultCameraMarkerName" );
 	}
 }

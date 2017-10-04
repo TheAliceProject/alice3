@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import org.alice.ide.identifier.IdentifierNameGenerator;
+import org.alice.stageide.gallerybrowser.shapes.AxesDragModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,5 +59,10 @@ public class AddAxesManagedFieldComposite extends org.alice.ide.ast.declaration.
 
 	private AddAxesManagedFieldComposite() {
 		super( java.util.UUID.fromString( "576234e8-8b33-4b18-b184-37de28603579" ), org.lgna.story.SAxes.class );
+	}
+
+	@Override
+	protected String generateName() {
+		return IdentifierNameGenerator.SINGLETON.createIdentifierNameFromClassName(AxesDragModel.getInstance().getLocalizedClassName());
 	}
 }

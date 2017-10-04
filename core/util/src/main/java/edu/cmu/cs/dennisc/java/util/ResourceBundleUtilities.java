@@ -84,15 +84,15 @@ public abstract class ResourceBundleUtilities {
 		return java.util.ResourceBundle.getBundle( baseName, locale, new Utf8ResourceBundleControl() );
 	}
 
-	public static String getStringForKey( String key, String bundleName, String defaultValue ) {
+	public static String getStringForKey( String key, String bundleName) {
 		try {
 			java.util.Locale locale = javax.swing.JComponent.getDefaultLocale();
-			java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
+			java.util.ResourceBundle resourceBundle = getUtf8Bundle( bundleName, locale );
 			return resourceBundle.getString( key );
 		} catch( java.util.MissingResourceException mre ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( mre, bundleName, key );
+			return key;
 		}
-		return defaultValue;
 	}
 
 	public static String getStringFromSimpleNames( Class<?> cls, String baseName, java.util.Locale locale ) {

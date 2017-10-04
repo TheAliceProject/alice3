@@ -93,11 +93,11 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 		boundedRangeModel.addChangeListener( new javax.swing.event.ChangeListener() {
 			@Override
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				ProgramControlPanel.this.updateLabel();
+				ProgramControlPanel.this.updateLabel(programImp.getSpeedFormat());
 				programImp.handleSpeedChange( boundedRangeModel.getValue() );
 			}
 		} );
-		this.updateLabel();
+		this.updateLabel(programImp.getSpeedFormat());
 
 		javax.swing.JSlider slider = new javax.swing.JSlider( boundedRangeModel );
 		slider.addMouseListener( new java.awt.event.MouseListener() {
@@ -157,13 +157,8 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 		}
 	}
 
-	private final void updateLabel() {
-		//TODO: localize
-		StringBuilder sb = new StringBuilder();
-		sb.append( "speed: " );
-		sb.append( this.boundedRangeModel.getValue() );
-		sb.append( "x" );
-		this.label.setText( sb.toString() );
+	private void updateLabel(String speedFormat) {
+		label.setText(String.format(speedFormat, boundedRangeModel.getValue()));
 	}
 
 	private final javax.swing.JLabel label = new javax.swing.JLabel();

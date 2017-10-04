@@ -43,6 +43,10 @@
 package org.alice.ide.formatter;
 
 /**
+ * Formats code expressed in org.lgna.project.ast.Statements.
+ * Used to display the code on Alice tiles.
+ * Concrete subclasses apply specific language choices.
+ *
  * @author Dennis Cosgrove
  */
 public abstract class Formatter {

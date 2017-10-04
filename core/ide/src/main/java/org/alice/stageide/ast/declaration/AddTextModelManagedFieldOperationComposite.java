@@ -43,6 +43,9 @@
 
 package org.alice.stageide.ast.declaration;
 
+import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+import org.alice.stageide.gallerybrowser.shapes.TextModelDragModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,6 +62,10 @@ public class AddTextModelManagedFieldOperationComposite extends AddModelManagedF
 
 	private AddTextModelManagedFieldOperationComposite() {
 		super( java.util.UUID.fromString( "d82699ca-eb75-4db2-ab9e-b2c18d957f25" ), org.lgna.story.STextModel.class );
+	}
+
+	@Override protected ShapeDragModel getDragModel() {
+		return TextModelDragModel.getInstance();
 	}
 
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getValueState() {
