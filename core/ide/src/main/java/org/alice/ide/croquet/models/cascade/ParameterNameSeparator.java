@@ -43,6 +43,8 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -69,13 +71,7 @@ public class ParameterNameSeparator extends org.lgna.croquet.CascadeLabelSeparat
 	}
 
 	@Override
-	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
-		String rv = this.parameter.getRepr();
-		//		if( rv != null && rv.length() > 0 && "null".equals( rv )==false ) {
-		//			//pass
-		//		} else {
-		//			rv = "part";
-		//		}
-		return rv;
+	protected String findDefaultLocalizedText() {
+		return FormatterState.getInstance().getValue().getNameForDeclaration( parameter );
 	}
 }

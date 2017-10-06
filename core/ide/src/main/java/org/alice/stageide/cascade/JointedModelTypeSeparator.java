@@ -69,7 +69,7 @@ public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSepa
 	}
 
 	@Override
-	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
+	protected String getMenuItemIconProxyText() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.type.getRepr() );
 		sb.append( " Joints" );
