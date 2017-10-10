@@ -69,33 +69,11 @@ public abstract class Formatter {
 		return resourceBundle.getString( e.name() );
 	}
 
-	protected abstract String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy );
-
-	protected abstract String getTextForJavaParameter( org.lgna.project.ast.JavaParameter javaParameter );
-
 	public String getNameForDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		if( declaration instanceof org.lgna.project.ast.JavaMethod ) {
-			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)declaration;
-			return this.getTextForMethodReflectionProxy( javaMethod.getMethodReflectionProxy() );
-		} else if( declaration instanceof org.lgna.project.ast.JavaParameter ) {
-			org.lgna.project.ast.JavaParameter javaParameter = (org.lgna.project.ast.JavaParameter)declaration;
-			return this.getTextForJavaParameter( javaParameter );
-		} else if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
-			return this.getTextForType( type );
-		} else if( declaration instanceof org.lgna.project.ast.JavaField ) {
-			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)declaration;
-			if( field.isStatic() ) {
-				return this.getNameForField( field.getFieldReflectionProxy().getReification() );
-			} else {
-				return declaration.getName();
-			}
-		} else {
-			return declaration.getName();
-		}
+		return declaration.formatName(this::localizeName);
 	}
 
-	protected abstract String getNameForField( java.lang.reflect.Field fld );
+	protected abstract String localizeName(String key, String name);
 
 	public abstract boolean isTypeExpressionDesired();
 
@@ -103,24 +81,8 @@ public abstract class Formatter {
 
 	public abstract String getTextForNull();
 
-	protected abstract String getTextForCls( Class<?> cls );
-
 	public String getTextForType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		if( type != null ) {
-			if( type.isArray() ) {
-				return this.getTextForType( type.getComponentType() ) + "[]";
-			} else {
-				if( type instanceof org.lgna.project.ast.JavaType ) {
-					org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
-					Class<?> cls = javaType.getClassReflectionProxy().getReification();
-					return this.getTextForCls( cls );
-				} else {
-					return type.getName();
-				}
-			}
-		} else {
-			return this.getTextForNull();
-		}
+		return type == null ? getTextForNull() : type.formatName(this::localizeName);
 	}
 
 	public abstract String getFinalText();

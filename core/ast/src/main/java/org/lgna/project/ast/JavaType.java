@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import java.util.function.BinaryOperator;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -579,4 +581,10 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			}
 		}
 	};
+
+	@Override
+	protected String formatTypeName(BinaryOperator<String> localizer) {
+		Class<?> cls = getClassReflectionProxy().getReification();
+		return localizer.apply(cls.getName(), cls.getSimpleName());
+	}
 }

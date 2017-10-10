@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+import java.util.function.BinaryOperator;
 
 /**
  * @author Dennis Cosgrove
@@ -77,6 +78,10 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 	protected java.util.Set<AbstractDeclaration> fillInDeclarationSet( java.util.Set<AbstractDeclaration> rv, java.util.Set<AbstractNode> nodes ) {
 		rv.add( this );
 		return super.fillInDeclarationSet( rv, nodes );
+	}
+
+	public String formatName(BinaryOperator<String> localizer) {
+		return localizer.apply(getName(), getName());
 	}
 
 	@Override

@@ -134,6 +134,11 @@ public class AliceFormatter extends Formatter {
 		return null;
 	}
 
+	@Override
+	protected String localizeName(String key, String name) {
+		return getLocalizedText(key, name);
+	}
+
 	private String getLocalizedText( String text, String rvIfNull ) {
 		if( text != null ) {
 			String rv = this.map.get( text );
@@ -163,9 +168,6 @@ public class AliceFormatter extends Formatter {
 		return getLocalizedText( text, text );
 	}
 
-	//	public String getTextForThis() {
-	//		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( org.lgna.project.ast.ThisExpression.class, "org.lgna.project.ast.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getLocale() );
-	//	}
 	@Override
 	public String getTextForThis() {
 		return this.getLocalizedText( "this" );
@@ -185,32 +187,8 @@ public class AliceFormatter extends Formatter {
 	}
 
 	@Override
-	protected String getTextForCls( Class<?> cls ) {
-		if( cls != null ) {
-			return this.getLocalizedText( cls.getName(), cls.getSimpleName() );
-		} else {
-			return this.getTextForNull();
-		}
-	}
-
-	@Override
-	protected String getTextForJavaParameter( org.lgna.project.ast.JavaParameter javaParameter ) {
-		return this.getLocalizedText( javaParameter.getName() );
-	}
-
-	@Override
-	protected String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy ) {
-		return this.getLocalizedText( methodReflectionProxy.getName() );
-	}
-
-	@Override
 	public boolean isTypeExpressionDesired() {
 		return false;
-	}
-
-	@Override
-	protected String getNameForField( java.lang.reflect.Field fld ) {
-		return this.getLocalizedText( fld.getName() );
 	}
 
 	@Override
