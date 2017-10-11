@@ -54,6 +54,11 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+/**
+ * Developer tool to scan the story package and identify all methods that are marked as MethodTemplates but are
+ * not COMPLETELY_HIDDEN. Then lists them out to the console as properties file entries for English and the developer
+ * Canadian.
+ */
 public class GenerateMethod18nProperties {
 
 	/**
