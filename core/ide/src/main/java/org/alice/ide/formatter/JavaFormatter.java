@@ -155,10 +155,9 @@ public class JavaFormatter extends Formatter {
 		return rv;
 	}
 
+	// No localization for java
 	@Override
-	protected String getTextForCls( Class<?> cls ) {
-		return cls.getSimpleName();
-	}
+	protected String localizeName(String key, String name) { return name; }
 
 	@Override
 	public String getTextForNull() {
@@ -171,23 +170,8 @@ public class JavaFormatter extends Formatter {
 	}
 
 	@Override
-	protected String getTextForJavaParameter( org.lgna.project.ast.JavaParameter javaParameter ) {
-		return javaParameter.getName();
-	}
-
-	@Override
-	protected String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy ) {
-		return methodReflectionProxy.getName();
-	}
-
-	@Override
 	public boolean isTypeExpressionDesired() {
 		return true;
-	}
-
-	@Override
-	protected String getNameForField( java.lang.reflect.Field fld ) {
-		return fld.getName();
 	}
 
 	@Override

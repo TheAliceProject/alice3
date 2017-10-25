@@ -44,6 +44,9 @@
 package org.lgna.project.ast;
 
 //todo: add generic capability
+
+import java.util.function.BinaryOperator;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -268,5 +271,14 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 
 	public AbstractMethod findMethod( String name ) {
 		return findMethod( name, new AbstractType<?, ?, ?>[] {} );
+	}
+
+	@Override
+	public String formatName(BinaryOperator<String> localizer) {
+		return isArray() ? getComponentType().formatName(localizer) + "[]" : formatTypeName(localizer);
+	}
+
+	protected String formatTypeName(BinaryOperator<String> localizer) {
+		return localizer.apply(getName(), getName());
 	}
 }

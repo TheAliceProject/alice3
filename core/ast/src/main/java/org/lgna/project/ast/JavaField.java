@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import java.util.function.BinaryOperator;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -201,6 +203,12 @@ public class JavaField extends AbstractField {
 	@Override
 	public boolean isUserAuthored() {
 		return false;
+	}
+
+	@Override
+	public String formatName(BinaryOperator<String> localizer) {
+		String name = isStatic() ? getFieldReflectionProxy().getReification().getName() : getName();
+		return localizer.apply(name, name);
 	}
 
 	private final FieldReflectionProxy fieldReflectionProxy;
