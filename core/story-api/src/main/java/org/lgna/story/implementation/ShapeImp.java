@@ -43,12 +43,14 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.Dimension3;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ShapeImp extends SimpleModelImp {
 	@Override
-	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		return new edu.cmu.cs.dennisc.math.Dimension3( 1, 1, 1 );
+	public Dimension3 getScale() {
+		return new Dimension3(1, 1, 1);
 	}
 }

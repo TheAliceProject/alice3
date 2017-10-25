@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -63,8 +65,10 @@ public class Sphere extends Shape {
 	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 0.5 ) {
 		@Override
 		public void setValue( Double value ) {
-			assert value >= 0.0 : this;
-			super.setValue( value );
+			if (value >= 0.0)
+				super.setValue( value );
+			else
+				Logger.outln("Attempt to set sphere radius to " + value + " ignored.");
 		}
 	};
 }
