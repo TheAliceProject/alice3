@@ -76,7 +76,7 @@ public class DissolveStatementWithBodyOperation extends org.lgna.croquet.ActionO
 	@Override
 	protected void localize() {
 		super.localize();
-		String statementName = ResourceBundleUtilities.getStringFromSimpleNames( statementWithBody.getClass(), "org.alice.ide.controlflow.Templates", javax.swing.JComponent.getDefaultLocale() );
+		String statementName = ResourceBundleUtilities.getStringFromSimpleNames( statementWithBody.getClass(), "org.alice.ide.controlflow.Templates");
 		this.setName( getImp().getName() + " " + statementName );
 	}
 

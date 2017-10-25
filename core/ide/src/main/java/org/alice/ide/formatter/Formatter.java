@@ -59,7 +59,7 @@ public abstract class Formatter {
 	public abstract String getTrailerTextForCode( org.lgna.project.ast.UserCode code );
 
 	public String getTemplateText( Class<?> cls ) {
-		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates", javax.swing.JComponent.getDefaultLocale() );
+		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates");
 	}
 
 	public String getInfixExpressionText( org.lgna.project.ast.InfixExpression<?> infixExpression ) {
