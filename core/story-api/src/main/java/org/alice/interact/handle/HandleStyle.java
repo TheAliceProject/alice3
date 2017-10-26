@@ -43,27 +43,28 @@
 
 package org.alice.interact.handle;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum HandleStyle {
 
-	//TODO: Localize this
-	DEFAULT( "defaultHandlesIcon.png", "Default handles: provide simple rotation and simple movement." ),
-	ROTATION( "rotationHandlesIcon.png", "Rotation handles: allow you to rotate the object about the X, Y, and Z axes." ),
-	TRANSLATION( "translateHandlesIcon.png", "Movement handles: allow you to move the object along the X, Y, and Z axes." ),
-	RESIZE( "resizeHandlesIcon.png", "Resize handles: allow you to change the total size of an object as well as stretch it along the X, Y, and Z axes." );
+	DEFAULT( "defaultHandlesIcon.png", "tooltipDefault" ),
+	ROTATION( "rotationHandlesIcon.png", "tooltipRotation" ),
+	TRANSLATION( "translateHandlesIcon.png", "tooltipTranslation" ),
+	RESIZE( "resizeHandlesIcon.png", "tooltipResize" );
 
 	private javax.swing.Icon icon;
-	private String toolTipText;
+	private String toolTipKey;
 
-	private HandleStyle( String iconName, String toolTipText )
+	HandleStyle( String iconName, String toolTipKey )
 	{
 		if( iconName != null )
 		{
 			this.icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( HandleStyle.class.getResource( "images/" + iconName ) );
 		}
-		this.toolTipText = toolTipText;
+		this.toolTipKey = toolTipKey;
 	}
 
 	public javax.swing.Icon getIcon()
@@ -71,8 +72,10 @@ public enum HandleStyle {
 		return this.icon;
 	}
 
+	private String bundleName = getClass().getPackage().getName() + ".handle";
+
 	public String getToolTipText()
 	{
-		return this.toolTipText;
+		return ResourceBundleUtilities.getStringForKey(toolTipKey, bundleName);
 	}
 }
