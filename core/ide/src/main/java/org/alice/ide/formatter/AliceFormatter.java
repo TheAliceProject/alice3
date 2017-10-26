@@ -195,4 +195,12 @@ public class AliceFormatter extends Formatter {
 	public String getFinalText() {
 		return "constant";
 	}
+
+	@Override protected String getClassesFormat() {
+		return "%s " + getLocalizedText( "classes" );
+	}
+
+	@Override public String getNewFormat() {
+		return getLocalizedText( "new" ) + " %s( %s )";
+	}
 }

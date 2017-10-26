@@ -178,4 +178,12 @@ public class JavaFormatter extends Formatter {
 	public String getFinalText() {
 		return "final";
 	}
+
+	@Override protected String getClassesFormat() {
+		return "%s classes";
+	}
+
+	@Override public String getNewFormat() {
+		return "new %s( %s )";
+	}
 }
