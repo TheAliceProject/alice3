@@ -401,7 +401,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		if( this.propertyAdapter != null ) {
 
 			org.lgna.croquet.Operation operation = new org.alice.ide.properties.adapter.croquet.ModelSizePropertyValueOperation( this.propertyAdapter, getOriginalSize() );
-			operation.setName( "Reset" );
+			operation.setName( AbstractPropertyAdapter.getLocalizedString( "Reset" ) );
 			this.resetButton = operation.createButton();
 
 		}
