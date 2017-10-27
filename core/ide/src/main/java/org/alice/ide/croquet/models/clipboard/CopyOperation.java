@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.clipboard;
 
+import edu.cmu.cs.dennisc.java.lang.SystemUtilities;
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,23 +63,11 @@ public class CopyOperation extends org.alice.ide.operations.InconsequentialActio
 
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		String modifierText;
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			modifierText = "<b>Alt</b>";
-		} else {
-			modifierText = "<b>Control</b>";
-		}
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>Selection is not yet implemented.  Copy is limited to:<br>" );
-		sb.append( "<ol><li> dragging statements to and from the clipboard in the top right corner with the " );
-		sb.append( modifierText );
-		sb.append( " key pressed.</li><br>" );
-		sb.append( "<li> dragging statements with the " );
-		sb.append( modifierText );
-		sb.append( " key pressed within the code editor.</li></ol></html>" );
-
-		new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( sb.toString() )
-				.title( "Copy coming soon" )
+		String modifierId = SystemUtilities.isMac() ? "alt" : "control";
+		String modifier = findLocalizedText( modifierId );
+		String content = String.format( findLocalizedText( "content"), modifier, modifier );
+		new OkDialog.Builder( content )
+				.title( findLocalizedText( "title" ) )
 				.buildAndShow();
 	}
 }

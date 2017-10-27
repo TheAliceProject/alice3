@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.clipboard;
 
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,8 +62,8 @@ public class CutOperation extends org.alice.ide.operations.InconsequentialAction
 
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Selection is not yet implemented.  Cut is limited to dragging statements to the clipboard in the top right corner." )
-				.title( "Cut coming soon" )
+		new OkDialog.Builder( findLocalizedText( "content" ) )
+				.title( findLocalizedText( "title" ) )
 				.buildAndShow();
 	}
 }
