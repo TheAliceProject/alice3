@@ -44,7 +44,10 @@ package org.alice.ide.declarationseditor.events.components;
 
 import javax.swing.BorderFactory;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.ide.codeeditor.ArgumentListPropertyPane;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
 import org.alice.ide.x.components.StatementListPropertyView;
 import org.lgna.croquet.views.AwtComponentView;
 import org.lgna.croquet.views.BorderPanel;
@@ -74,11 +77,11 @@ public class EventListenerComponent extends BorderPanel {
 				if( lambdaExpression.value.getValue() instanceof UserLambda ) {
 					UserLambda lambda = (UserLambda)lambdaExpression.value.getValue();
 					//ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda );
-
+					Formatter formatter = FormatterState.getInstance().getValue();
 					LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(
-							new Label( "declare procedure", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
+							getDeclareProcedureLabel(),
 							org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 4 ),
-							new Label( singleAbstractMethod.getName(), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ),
+							new Label( formatter.getNameForDeclaration( singleAbstractMethod ), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ),
 							org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ),
 							new org.alice.ide.eventseditor.components.EventAccessorMethodsPanel( lambda )
 							);
@@ -101,12 +104,13 @@ public class EventListenerComponent extends BorderPanel {
 	}
 
 	private SwingComponentView<?> createHeader( MethodInvocation methodInvocation ) {
+		Formatter formatter = FormatterState.getInstance().getValue();
 		AbstractMethod method = methodInvocation.method.getValue();
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.setBorder( BorderFactory.createEmptyBorder( 0, 0, 4, 0 ) );
 		rv.addComponent( new org.alice.ide.common.ThisPane() );
 		rv.addComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 4 ) );
-		Label label = new Label( methodInvocation.method.getValue().getName(), edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		Label label = new Label( formatter.getNameForDeclaration( method ), edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		rv.addComponent( label );
 		if( method.getRequiredParameters() != null ) {
 			SimpleArgumentListProperty requiredArgumentsProperty = methodInvocation.getRequiredArgumentsProperty();
@@ -133,4 +137,11 @@ public class EventListenerComponent extends BorderPanel {
 		return rv;
 	}
 
+	private Label getDeclareProcedureLabel() {
+		return new Label( localize( "declare" ) + " " + localize( "procedure" ), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+	}
+
+	private String localize( String key ) {
+		return ResourceBundleUtilities.getStringForKey( key, "org.alice.ide.codeeditor.CodeEditor" );
+	}
 }

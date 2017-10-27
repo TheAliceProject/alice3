@@ -74,6 +74,7 @@ public class AliceFormatter extends Formatter {
 				"org-lgna-story-Functions",
 				"org-lgna-story-MoveDirection-EnumConstants",
 				"org-lgna-story-MultipleEventPolicy-EnumConstants",
+				"org-lgna-story-HeldKeyPolicy-EnumConstants",
 				"org-lgna-story-PathStyle-EnumConstants",
 				"org-lgna-story-Procedures",
 				"org-lgna-story-Properties",
