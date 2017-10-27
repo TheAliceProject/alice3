@@ -42,18 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.lgna.project.ast.AbstractType;
+
 /**
  * @author Dennis Cosgrove
  */
 public class TypeComponent extends org.lgna.croquet.views.SwingComponentView<javax.swing.JLabel> {
-	public static TypeComponent createInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		TypeComponent rv = new TypeComponent( type );
-		return rv;
+	public static TypeComponent createInstance( AbstractType<?, ?, ?> type ) {
+		return new TypeComponent( type );
 	}
 
-	private org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private AbstractType<?, ?, ?> type;
 
-	private TypeComponent( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	private TypeComponent( AbstractType<?, ?, ?> type ) {
 		this.type = type;
 	}
 
