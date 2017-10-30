@@ -55,8 +55,11 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite;
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsMethodFrequencyTabComposite;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
 import org.lgna.croquet.MutableDataSingleSelectListState;
 import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.State;
@@ -70,6 +73,7 @@ import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LineAxisPanel;
 import org.lgna.croquet.views.ScrollPane;
 import org.lgna.croquet.views.ScrollPane.HorizontalScrollbarPolicy;
+import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.UserMethod;
 
@@ -118,11 +122,11 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 			if( !value.equals( StatisticsMethodFrequencyTabComposite.root ) ) {
 				if( value instanceof AbstractMethod ) {
 					AbstractMethod userMethod = (AbstractMethod)value;
-					rv.setText( userMethod.getName() );
+					rv.setText( getFormattedName(userMethod) );
 					return rv.getAwtComponent();
 				}
 			}
-			rv.setText( "<HTML><Strong>MyProject</Strong></HTML>" );
+			rv.setText( "<HTML><Strong>" + getLocalizedStringByKey("myProject") + "</Strong></HTML>" );
 			return rv.getAwtComponent();
 		}
 	}
@@ -270,7 +274,7 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 		}
 
 		private void populateRightCol( UserMethod selected ) {
-			( (Label)getCell( 0, 0 ) ).setText( "<HTML><Strong>" + selected.getName() + "</Strong></HTML>" );
+			( (Label)getCell( 0, 0 ) ).setText( "<HTML><Strong>" + getFormattedName(selected) + "</Strong></HTML>" );
 			List<Integer> rightColVals = ( (StatisticsMethodFrequencyTabComposite)getComposite() ).getRightColVals( selected );
 			int index = 1;
 			for( Integer i : rightColVals ) {
@@ -320,6 +324,15 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 		public void changed( State<UserMethod> state, UserMethod prevValue, UserMethod nextValue, boolean isAdjusting ) {
 			update( nextValue );
 		}
+	}
+
+	private String getFormattedName( AbstractDeclaration declaration ) {
+		Formatter formatter = FormatterState.getInstance().getValue();
+		return formatter.getNameForDeclaration( declaration );
+	}
+
+	private static String getLocalizedStringByKey( String key ) {
+		return ResourceBundleUtilities.getStringForKey( key, StatisticsFrameComposite.class );
 	}
 
 }
