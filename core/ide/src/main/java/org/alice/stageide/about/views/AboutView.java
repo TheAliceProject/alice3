@@ -43,6 +43,11 @@
 
 package org.alice.stageide.about.views;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.alice.stageide.about.AboutComposite;
+import org.lgna.croquet.views.HtmlMultiLineLabel;
+import org.lgna.project.ProjectVersion;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -69,17 +74,16 @@ public class AboutView extends org.lgna.croquet.views.BorderPanel {
 		super( composite );
 
 		StringBuilder sb = new StringBuilder();
-		sb.append( "<html><strong>Alice 3</strong> is supported by:" );
-		sb.append( "<br>" );
-		sb.append( "<ul>" );
+		sb.append( "<html>" );
+		sb.append( getLocalizedStringByKey( "aboutSupport" ) );
+		sb.append( "<br><ul>" );
 		for( String sponsor : new String[] { "Sun Foundation", "Oracle", "Electronic Arts Foundation", "The National Science Foundation", "Defense Advanced Research Projects Agency", "Hearst Foundations", "Heinz Endowments", "Google", "Disney and Hyperion" } ) {
 			sb.append( "<li><strong>" );
 			sb.append( sponsor );
 			sb.append( "</strong></li>" );
 		}
 		sb.append( "</ul>" );
-		//sb.append( "<br>" );
-		sb.append( "<b>The Sims <sup>TM</sup> 2</b> Art Assets donated by <strong>Electronic Arts</strong>." );
+		sb.append( getLocalizedStringByKey( "aboutSimsDonation" ) );
 		sb.append( "</html>" );
 
 		org.lgna.croquet.views.Label supportedByLabel = new org.lgna.croquet.views.Label( sb.toString() );
@@ -107,11 +111,16 @@ public class AboutView extends org.lgna.croquet.views.BorderPanel {
 		//		otherPanel.addComponent( lineAxisPanel );
 		otherPanel.addComponent( org.alice.stageide.about.MainSiteBrowserOperation.getInstance().createHyperlink() );
 		otherPanel.addComponent( composite.getCreditsDialogLaunchOperation().createHyperlink() );
-		otherPanel.addComponent( new org.lgna.croquet.views.HtmlMultiLineLabel( "current version: " + org.lgna.project.ProjectVersion.getCurrentVersionText() ) );
+		otherPanel.addComponent( new HtmlMultiLineLabel(
+						String.format( getLocalizedStringByKey( "aboutVersion"), ProjectVersion.getCurrentVersionText() ) ) );
 		otherPanel.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 16 ) );
-		otherPanel.addComponent( new org.lgna.croquet.views.HtmlMultiLineLabel( "Alice 3 is dedicated to Randy." ) );
+		otherPanel.addComponent( new HtmlMultiLineLabel( getLocalizedStringByKey( "aboutDedication" ) ) );
 
 		otherPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
 		this.addCenterComponent( otherPanel );
+	}
+
+	private String getLocalizedStringByKey( String key ) {
+		return ResourceBundleUtilities.getStringForKey( key, AboutComposite.class );
 	}
 }
