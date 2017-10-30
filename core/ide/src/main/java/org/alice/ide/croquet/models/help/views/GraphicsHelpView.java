@@ -42,68 +42,64 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help.views;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults;
+import org.alice.ide.croquet.models.help.GraphicsHelpComposite;
+import org.lgna.croquet.views.Label;
+
 /**
  * @author Dennis Cosgrove
  */
 public class GraphicsHelpView extends org.lgna.croquet.views.MigPanel {
 	private static String getSystemInformation() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "System information: " );
-		sb.append( System.getProperty( "os.name" ) );
-		sb.append( " " );
-		sb.append( System.getProperty( "sun.arch.data.model" ) );
-		sb.append( "-bit" );
-		return sb.toString();
+		return String.format( getLocalizedStringByKey( "systemInfo" ),
+						System.getProperty( "os.name" ),
+						System.getProperty( "sun.arch.data.model" ) );
 	}
 
 	private static String getGraphicsInformation() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Graphics information: " );
-		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSharedDetails();
-		if( sharedDetails != null ) {
-			sb.append( sharedDetails.getRenderer() );
-		} else {
-			sb.append( "<unknown>" );
-		}
-		return sb.toString();
+		ConformanceTestResults.SharedDetails sharedDetails = ConformanceTestResults.SINGLETON.getSharedDetails();
+
+		return String.format( getLocalizedStringByKey( "graphicsInfo" ),
+						sharedDetails != null ? sharedDetails.getRenderer() : getLocalizedStringByKey( "unknownGraphics" ));
 	}
 
 	public GraphicsHelpView() {
-		edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = edu.cmu.cs.dennisc.system.graphics.ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
-		StringBuilder sb = new StringBuilder();
-		sb.append( "FYI: " );
-		if( synchronousPickDetails != null ) {
-			if( synchronousPickDetails.isPickFunctioningCorrectly() ) {
-				sb.append( "Clicking into the scene appears to be functioning correctly" );
-				if( synchronousPickDetails.isPickActuallyHardwareAccelerated() ) {
-					sb.append( " in hardware" );
-				} else {
-					sb.append( " in software (updating your video drivers might help)" );
-					if( synchronousPickDetails.isReportingPickCanBeHardwareAccelerated() ) {
-						sb.append( "(video card reports hardware support but fails)" );
-					}
-				}
-			} else {
-				sb.append( "Clicking into the scene appears to be suboptimal (updating your video drivers might help)" );
-			}
-		} else {
-			sb.append( "There is no information on clicking into the scene" );
-		}
-		sb.append( "." );
 		final int LEVEL_1 = 16;
 		final int LEVEL_2 = 32;
 
-		this.addComponent( new org.lgna.croquet.views.Label( "The most common way to fix graphics problems is to update your video driver.", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
-		this.addComponent( new org.lgna.croquet.views.Label( "Where to go for help:" ), "wrap, gapleft " + LEVEL_1 );
+		this.addComponent( new Label( getLocalizedStringByKey( "commonFix" ), 1.2f, TextWeight.BOLD ), "wrap" );
+		this.addComponent( new Label( getLocalizedStringByKey( "helpHeader" ) ), "wrap, gapleft " + LEVEL_1 );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 			this.addComponent( org.alice.ide.system.croquet.WindowsSystemAssessmentToolComposite.getInstance().getLaunchOperation().createButton(), "wrap, gapleft " + LEVEL_2 );
 			this.addComponent( org.alice.ide.system.croquet.StartPerformanceInformationAndToolsOperation.getInstance().createButton(), "wrap, gapleft " + LEVEL_2 );
 		}
 		this.addComponent( org.alice.ide.croquet.models.help.SearchForGraphicsDriversOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
 		this.addComponent( org.alice.ide.issue.croquet.GraphicsDriverHelpOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
-		this.addComponent( new org.lgna.croquet.views.Label( "About your computer:" ), "wrap, gaptop 16, gapleft " + LEVEL_1 );
-		this.addComponent( new org.lgna.croquet.views.Label( getGraphicsInformation() ), "wrap, gapleft " + LEVEL_2 );
-		this.addComponent( new org.lgna.croquet.views.Label( getSystemInformation() ), "wrap, gapleft " + LEVEL_2 );
-		this.addComponent( new org.lgna.croquet.views.Label( sb.toString() ), "wrap, gaptop 24" );
+		this.addComponent( new Label( getLocalizedStringByKey( "aboutHeader" ) ), "wrap, gaptop 16, gapleft " + LEVEL_1 );
+		this.addComponent( new Label( getGraphicsInformation() ), "wrap, gapleft " + LEVEL_2 );
+		this.addComponent( new Label( getSystemInformation() ), "wrap, gapleft " + LEVEL_2 );
+		this.addComponent( new Label( getLocalizedStringByKey( getPickInfoKey() ) ), "wrap, gaptop 24" );
+	}
+
+	private String getPickInfoKey() {
+		ConformanceTestResults.SynchronousPickDetails synchronousPickDetails = ConformanceTestResults.SINGLETON.getSynchronousPickDetails();
+		if (synchronousPickDetails == null)
+			return "sceneClickNothing";
+
+		if( synchronousPickDetails.isPickFunctioningCorrectly() )
+			if( synchronousPickDetails.isPickActuallyHardwareAccelerated() )
+				return "sceneClickHardware";
+			else
+				return synchronousPickDetails.isReportingPickCanBeHardwareAccelerated() ?
+								"sceneClickSoftwareAccel" :
+								"sceneClickSoftware";
+		else
+			return "sceneClickNoPick";
+	}
+
+	private static String getLocalizedStringByKey( String key ) {
+		return ResourceBundleUtilities.getStringForKey( key, GraphicsHelpComposite.class );
 	}
 }
