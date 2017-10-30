@@ -42,20 +42,23 @@
  *******************************************************************************/
 package org.alice.ide.warning.components;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink;
+import edu.cmu.cs.dennisc.javax.swing.SpringUtilities;
+import org.alice.ide.warning.WarningDialogComposite;
+import org.lgna.croquet.views.PlainMultiLineLabel;
+
+import javax.swing.JLabel;
+import java.awt.Component;
+import java.util.List;
+
 public class WarningView extends org.lgna.croquet.views.PageAxisPanel {
 	public WarningView( org.alice.ide.warning.WarningDialogComposite composite ) {
 		super( composite );
 		this.addComponent( new org.lgna.croquet.views.Label( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( WarningView.class.getResource( "images/toxic.png" ) ) ) );
 		this.addComponent( org.lgna.croquet.views.BoxUtilities.createVerticalSliver( 8 ) );
 
-		StringBuilder sb = new StringBuilder();
-		sb.append( "WARNING: Alice3 is not for the faint of heart.\n\n" );
-		sb.append( "Alice3 is currently under development.\n" );
-		sb.append( "We are working very hard to make this dialog box obsolete.\n" );
-		sb.append( "Thank you for your patience.\n" );
-		sb.append( "We welcome your feedback.\n" );
-
-		org.lgna.croquet.views.PlainMultiLineLabel descriptionLabel = new org.lgna.croquet.views.PlainMultiLineLabel( sb.toString() );
+		PlainMultiLineLabel descriptionLabel = new PlainMultiLineLabel( getLocalizedStringByKey( "content" ) );
 		descriptionLabel.scaleFont( 1.4f );
 		descriptionLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		this.addComponent( descriptionLabel );
@@ -66,18 +69,18 @@ public class WarningView extends org.lgna.croquet.views.PageAxisPanel {
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
 			}
 
-			private java.awt.Component createLabel( String text ) {
-				javax.swing.JLabel rv = new javax.swing.JLabel( text );
+			private Component createLabel( String key ) {
+				JLabel rv = new JLabel( getLocalizedStringByKey( key ) );
 				rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 				return rv;
 			}
 
 			@Override
-			protected java.util.List<java.awt.Component[]> addComponentRows( java.util.List<java.awt.Component[]> rv ) {
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "updates:" ), new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://www.alice.org/3" ) ) );
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "blog:" ), new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://blog.alice.org/" ) ) );
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "community:" ), new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://www.alice.org/community/" ) ) );
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "bug reports:" ), new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://bugs.alice.org:8080/" ) ) );
+			protected List<Component[]> addComponentRows( List<Component[]> rv ) {
+				rv.add( SpringUtilities.createRow( createLabel( "updates" ), new JBrowserHyperlink( "http://www.alice.org/3" ) ) );
+				rv.add( SpringUtilities.createRow( createLabel( "blog" ), new JBrowserHyperlink( "http://blog.alice.org/" ) ) );
+				rv.add( SpringUtilities.createRow( createLabel( "community" ), new JBrowserHyperlink( "http://www.alice.org/community/" ) ) );
+				rv.add( SpringUtilities.createRow( createLabel( "bugReports" ), new JBrowserHyperlink( "http://bugs.alice.org:8080/" ) ) );
 				return rv;
 			}
 		}
@@ -85,5 +88,9 @@ public class WarningView extends org.lgna.croquet.views.PageAxisPanel {
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
 		this.setBackgroundColor( org.lgna.croquet.views.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+	}
+
+	private String getLocalizedStringByKey( String key ) {
+		return ResourceBundleUtilities.getStringForKey( key, WarningDialogComposite.class );
 	}
 }
