@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Step;
+
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,7 +64,7 @@ public abstract class PotentialClearanceIteratingOperation extends org.lgna.croq
 	}
 
 	@Override
-	protected java.util.Iterator<org.lgna.croquet.Model> createIteratingData() {
+	protected Iterator<Model> createIteratingData() {
 		java.util.List<org.lgna.croquet.Model> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getActiveInstance();
 		boolean isPostClearanceModelDesired = this.postClearanceModel != null;
@@ -82,14 +89,12 @@ public abstract class PotentialClearanceIteratingOperation extends org.lgna.croq
 	}
 
 	@Override
-	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
-		java.util.Iterator<org.lgna.croquet.Model> iterator = (java.util.Iterator<org.lgna.croquet.Model>)iteratingData;
+	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iterator ) {
 		return iterator.hasNext();
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
-		java.util.Iterator<org.lgna.croquet.Model> iterator = (java.util.Iterator<org.lgna.croquet.Model>)iteratingData;
+	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iterator ) {
 		return iterator.next();
 	}
 

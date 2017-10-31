@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.croquet;
 
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Step;
+
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,12 +62,12 @@ public final class ImportTypeIteratingOperation extends org.lgna.croquet.SingleT
 	}
 
 	@Override
-	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
+	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		return subSteps.size() < 2;
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
+	protected org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		switch( subSteps.size() ) {
 		case 0:
 			return ImportTypeFileDialogValueCreator.getInstance();

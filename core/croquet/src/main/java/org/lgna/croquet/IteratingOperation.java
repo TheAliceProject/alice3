@@ -42,6 +42,12 @@
  *******************************************************************************/
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Step;
+
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,13 +60,13 @@ public abstract class IteratingOperation extends Operation {
 		return new org.lgna.croquet.history.TransactionHistory();
 	}
 
-	protected Object createIteratingData() {
+	protected Iterator<Model> createIteratingData() {
 		return null;
 	}
 
-	protected abstract boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData );
+	protected abstract boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData );
 
-	protected abstract Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData );
+	protected abstract Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData );
 
 	protected abstract void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps );
 
@@ -68,7 +74,7 @@ public abstract class IteratingOperation extends Operation {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, this.createTransactionHistoryIfNecessary() );
 		try {
 			java.util.List<org.lgna.croquet.history.Step<?>> subSteps = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-			Object iteratingData = this.createIteratingData();
+			Iterator<Model> iteratingData = this.createIteratingData();
 			while( this.hasNext( step, subSteps, iteratingData ) ) {
 				Model model = this.getNext( step, subSteps, iteratingData );
 				if( model != null ) {

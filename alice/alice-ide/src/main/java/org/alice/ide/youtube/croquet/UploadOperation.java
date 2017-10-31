@@ -43,6 +43,7 @@
 package org.alice.ide.youtube.croquet;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 
 import org.alice.ide.IDE;
@@ -107,7 +108,7 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Object iteratingData ) {
+	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		int size = subSteps.size();
 		if( size == 0 ) {
 			return true;
@@ -129,7 +130,7 @@ public class UploadOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Object iteratingData ) {
+	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		java.io.File fileKnownToBeNotExecuable = getFFmpegFileIfNotExecutable();
 		if( subSteps.size() == 0 ) {
 			if( fileKnownToBeNotExecuable != null ) {

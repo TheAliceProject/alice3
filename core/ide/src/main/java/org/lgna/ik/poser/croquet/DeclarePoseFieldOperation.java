@@ -47,6 +47,9 @@ import org.lgna.croquet.SingleThreadIteratingOperation;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Matt May
  */
@@ -72,12 +75,12 @@ public class DeclarePoseFieldOperation extends SingleThreadIteratingOperation {
 	}
 
 	@Override
-	protected boolean hasNext( CompletionStep<?> step, java.util.List<Step<?>> subSteps, Object iteratingData ) {
+	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		return subSteps.size() < 2;
 	}
 
 	@Override
-	protected Model getNext( CompletionStep<?> step, java.util.List<Step<?>> subSteps, Object iteratingData ) {
+	protected Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		switch( subSteps.size() ) {
 		case 0:
 			return PoseExpressionCreatorComposite.getInstance( this.declaringType ).getValueCreator();
