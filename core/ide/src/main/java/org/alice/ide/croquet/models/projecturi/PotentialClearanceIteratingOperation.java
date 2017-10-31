@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog;
+import edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult;
+import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Model;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.history.Step;
@@ -68,18 +71,15 @@ public abstract class PotentialClearanceIteratingOperation extends org.lgna.croq
 		java.util.List<org.lgna.croquet.Model> models = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getActiveInstance();
 		boolean isPostClearanceModelDesired = this.postClearanceModel != null;
-		if( application.isProjectUpToDateWithFile() ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult result = new edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelDialog.Builder( "Your program has been modified.  Would you like to save it?" )
-					.title( "Save changed project?" )
+		if (!application.isProjectUpToDateWithFile()) {
+			YesNoCancelResult result = new YesNoCancelDialog.Builder( findLocalizedText("message") )
+					.title( findLocalizedText("title") )
 					.buildAndShow();
-			if( result == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult.YES ) {
+			if( result == YesNoCancelResult.CANCEL ) {
+				throw new CancelException();
+			}
+			if( result == YesNoCancelResult.YES ) {
 				models.add( SaveProjectOperation.getInstance() );
-			} else if( result == edu.cmu.cs.dennisc.javax.swing.option.YesNoCancelResult.NO ) {
-				//pass
-			} else {
-				isPostClearanceModelDesired = false;
 			}
 		}
 		if( isPostClearanceModelDesired ) {
