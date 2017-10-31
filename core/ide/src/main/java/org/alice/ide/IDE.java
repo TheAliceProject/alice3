@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.ide;
 
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.triggers.Trigger;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -416,12 +419,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private final org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation clearanceCheckingExitOperation = new org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation( this.getDocumentFrame() );
 
 	@Override
-	public final void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+	public final CompletionStep<?> handleQuit( Trigger trigger ) {
 		this.preservePreferences();
 		if( this.crashDetector != null ) {
 			this.crashDetector.close();
 		}
-		this.clearanceCheckingExitOperation.fire( trigger );
+		return clearanceCheckingExitOperation.fire( trigger );
 	}
 
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachineForSceneEditor() {
