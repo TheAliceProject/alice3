@@ -43,6 +43,9 @@
 
 package org.alice.ide.croquet.models.cascade;
 
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,7 +59,8 @@ public class RelationalObjectCascadeMenu extends ExpressionCascadeMenu<org.lgna.
 
 	@Override
 	protected String findDefaultLocalizedText() {
-		return "Relational (" + this.type.getName() + ") { ==, != }";
+		Formatter formatter = FormatterState.getInstance().getValue();
+		return String.format( super.findDefaultLocalizedText(), formatter.getNameForDeclaration(type) );
 	}
 
 	@Override
