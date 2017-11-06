@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.ast.components;
 
+import org.alice.ide.formatter.AliceFormatter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -120,7 +122,8 @@ public class DeclarationNameLabel extends org.lgna.croquet.views.Label {
 	}
 
 	protected final String getTextForBlankName() {
-		return "<unset>";
+		// Show "unset", localized for user
+		return "<" + AliceFormatter.getInstance().getTextForNull() + ">";
 	}
 
 	private void updateText() {

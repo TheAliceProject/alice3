@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.codeeditor;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -76,15 +78,19 @@ public class ParametersPane extends org.alice.ide.croquet.components.AbstractLis
 				text = null;
 				break;
 			case 1:
-				text = " with parameter: ";
+				text = " " + localize("withParameter" ) + ": ";
 				break;
 			default:
-				text = " with parameters: ";
+				text = " " + localize("withParameters" ) + ": ";
 			}
 			if( text != null ) {
 				this.addComponent( new org.lgna.croquet.views.Label( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 			}
 		}
+	}
+
+	private String localize( String key ) {
+		return ResourceBundleUtilities.getStringForKey(key, "org.alice.ide.codeeditor.CodeEditor");
 	}
 
 	@Override

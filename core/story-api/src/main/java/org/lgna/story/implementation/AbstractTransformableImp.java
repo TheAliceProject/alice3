@@ -597,8 +597,8 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				o1 = m0.orientation;
 				//no op
 			} else {
-				edu.cmu.cs.dennisc.math.ForwardAndUpGuide fowardAndUpGuide = new edu.cmu.cs.dennisc.math.ForwardAndUpGuide( forward, null );
-				o1 = fowardAndUpGuide.createOrthogonalMatrix3x3();
+				edu.cmu.cs.dennisc.math.ForwardAndUpGuide forwardAndUpGuide = new edu.cmu.cs.dennisc.math.ForwardAndUpGuide( forward, null );
+				o1 = forwardAndUpGuide.createOrthogonalMatrix3x3();
 			}
 			return new OrientToPointAtData( subject, m0.orientation, o1, upAsSeenBy );
 		}

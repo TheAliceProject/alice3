@@ -43,6 +43,9 @@
 
 package org.alice.ide.croquet.codecs.typeeditor;
 
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -77,6 +80,11 @@ public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec<org.
 
 	@Override
 	public void appendRepresentation( StringBuilder sb, org.alice.ide.declarationseditor.DeclarationComposite<?, ?> value ) {
-		sb.append( value != null ? value.getDeclaration().getName() : value );
+		if (value == null) {
+			sb.append((Object) null);
+		} else {
+			Formatter formatter = FormatterState.getInstance().getValue();
+			sb.append(formatter.getNameForDeclaration(value.getDeclaration()));
+		}
 	}
 }

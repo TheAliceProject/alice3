@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -156,16 +159,10 @@ public class PersonResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String getLocalizedDisplayText() {
-		//TODO: Java Localize
-		StringBuilder sb = new StringBuilder();
-		sb.append( "new " );
-		if( this.lifeStage != null ) {
-			sb.append( this.lifeStage.getLocalizedDisplayText() );
-		} else {
-			sb.append( "Person" );
-		}
-		sb.append( "( ... )" );
-		return sb.toString();
+		Formatter formatter = FormatterState.getInstance().getValue();
+		String className = (lifeStage == null) ? "Person" : lifeStage.getLocalizedDisplayText();
+
+		return String.format(formatter.getNewFormat(), className, "…");
 	}
 
 	@Override

@@ -191,13 +191,13 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 					if( rv != null ) {
 						return null;
 					} else {
-						return text + " is not valid.";
+						return "isNotValid";
 					}
 				} catch( NumberFormatException nfe ) {
-					return text + " is not valid.";
+					return "isNotValid";
 				}
 			} else {
-				return "Enter a number.";
+				return "enterNumber";
 			}
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( ble );

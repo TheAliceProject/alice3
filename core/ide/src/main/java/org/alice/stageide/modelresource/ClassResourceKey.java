@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -73,24 +76,8 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String getLocalizedDisplayText() {
-		String simpleName = IdeAliceResourceUtilities.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
-		StringBuilder sb = new StringBuilder();
-		//TODO: Localize
-		if( this.cls.isEnum() ) {
-			sb.append( "new " );
-			sb.append( simpleName );
-			sb.append( "(" );
-			if( this.isLeaf() ) {
-				//pass
-			} else {
-				sb.append( " \u2423 " );
-			}
-			sb.append( ")" );
-		} else {
-			sb.append( simpleName );
-			sb.append( " classes" );
-		}
-		return sb.toString();
+		Formatter formatter = FormatterState.getInstance().getValue();
+		return formatter.galleryLabelFor(this);
 	}
 
 	@Override

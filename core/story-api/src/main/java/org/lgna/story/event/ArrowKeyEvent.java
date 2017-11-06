@@ -73,7 +73,7 @@ public class ArrowKeyEvent extends AbstractKeyEvent {
 		if( plane.equals( MoveDirectionPlane.UP_DOWN_LEFT_RIGHT ) ) {
 			return getUpDownLeftRightMoveDirection();
 		}
-		return getFowardBackwardLeftRightMoveDirection();
+		return getForwardBackwardLeftRightMoveDirection();
 	}
 
 	public org.lgna.story.TurnDirection getTurnDirection() {
@@ -89,7 +89,7 @@ public class ArrowKeyEvent extends AbstractKeyEvent {
 		return null;
 	}
 
-	private org.lgna.story.MoveDirection getFowardBackwardLeftRightMoveDirection() {
+	private org.lgna.story.MoveDirection getForwardBackwardLeftRightMoveDirection() {
 		if( this.isKey( Key.A ) || this.isKey( Key.LEFT ) ) {
 			return org.lgna.story.MoveDirection.LEFT;
 		} else if( this.isKey( Key.S ) || this.isKey( Key.DOWN ) ) {

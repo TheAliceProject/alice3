@@ -55,7 +55,7 @@ public class SearchForGraphicsDriversOperation extends org.alice.ide.browser.Bro
 	}
 
 	private SearchForGraphicsDriversOperation() {
-		super( java.util.UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea" ) );
+		super( java.util.UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-2623de06a8ea" ) );
 	}
 
 	private static String getRendererSearchTerm( String renderer ) {

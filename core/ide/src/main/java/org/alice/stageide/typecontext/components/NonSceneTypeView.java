@@ -43,8 +43,10 @@
 
 package org.alice.stageide.typecontext.components;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.lgna.croquet.views.Label;
+
 class SelectedTypeView extends org.lgna.croquet.views.BorderPanel {
-	private final org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label( "selected type:" );
 	private final org.lgna.croquet.views.Label typeLabel = new org.lgna.croquet.views.Label();
 	private final org.lgna.croquet.views.Label snapshotLabel = new org.lgna.croquet.views.Label();
 	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
@@ -57,7 +59,8 @@ class SelectedTypeView extends org.lgna.croquet.views.BorderPanel {
 	public SelectedTypeView() {
 		//this.typeLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
 		this.snapshotLabel.setHorizontalAlignment( org.lgna.croquet.views.HorizontalAlignment.CENTER );
-		this.addPageStartComponent( new org.lgna.croquet.views.LineAxisPanel( this.label, this.typeLabel ) );
+		Label label = new Label( ResourceBundleUtilities.getStringForKey( "selectedType", getClass() ) );
+		this.addPageStartComponent( new org.lgna.croquet.views.LineAxisPanel( label, this.typeLabel ) );
 		this.addCenterComponent( this.snapshotLabel );
 	}
 
@@ -101,7 +104,8 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.views.Button {
 		javax.swing.JButton jButton = this.getAwtComponent();
 		jButton.setLayout( new javax.swing.BoxLayout( jButton, javax.swing.BoxLayout.LINE_AXIS ) );
 		this.internalAddComponent( new org.lgna.croquet.views.Label( BACK_ICON ) );
-		this.internalAddComponent( new org.lgna.croquet.views.Label( "back to:" ) );
+		String backToText = ResourceBundleUtilities.getStringForKey( "backTo", getClass());
+		this.internalAddComponent( new Label( backToText ) );
 		this.internalAddComponent( org.lgna.croquet.views.BoxUtilities.createHorizontalSliver( 8 ) );
 		this.internalAddComponent( this.thumbnailLabel );
 		this.internalAddComponent( this.typeIconLabel );

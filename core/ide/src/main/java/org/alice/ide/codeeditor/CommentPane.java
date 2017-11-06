@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.codeeditor;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,8 +53,9 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 
 	public CommentLine( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Comment comment ) {
 		this.setText( comment.text.getValue() );
-		this.setTextForBlankCondition( "enter your comment here" );
-		//super( comment.text.getValue() );
+		String localizedSuggestion = ResourceBundleUtilities
+						.getStringForKey( "commentHint", "org.alice.ide.codeeditor.CodeEditor");
+		this.setTextForBlankCondition( localizedSuggestion );
 		this.comment = comment;
 		this.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			@Override

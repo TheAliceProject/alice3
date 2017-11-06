@@ -56,19 +56,16 @@ public class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
-		this.forgetAndRemoveAllComponents();
+		forgetAndRemoveAllComponents();
+
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
-			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.userConstructor.getDeclaringType() ) );
-			this.addComponent( new org.lgna.croquet.views.Label( "()" ) );
+			addComponent( org.alice.ide.common.TypeComponent.createInstance( userConstructor.getDeclaringType() ) );
+			addComponent( new org.lgna.croquet.views.Label( "()" ) );
 		} else {
-			this.addComponent( new org.lgna.croquet.views.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
-			this.addComponent( new org.lgna.croquet.views.Label( "constructor", NAME_SCALE ) );
-			//			this.addComponent( new org.lgna.croquet.components.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
-			//			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userConstructor.getDeclaringType() ) );
-			if( this.isPreview() ) {
-				//pass
-			} else {
-				this.addComponent( new ParametersPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), this.userConstructor ) );
+			addComponent(getDeclareLabel());
+			addComponent( new org.lgna.croquet.views.Label( localize("constructor" ), NAME_SCALE ) );
+			if (!isPreview()) {
+				addComponent( new ParametersPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), userConstructor ) );
 			}
 		}
 	}

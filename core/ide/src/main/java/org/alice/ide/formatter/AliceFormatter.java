@@ -74,6 +74,7 @@ public class AliceFormatter extends Formatter {
 				"org-lgna-story-Functions",
 				"org-lgna-story-MoveDirection-EnumConstants",
 				"org-lgna-story-MultipleEventPolicy-EnumConstants",
+				"org-lgna-story-HeldKeyPolicy-EnumConstants",
 				"org-lgna-story-PathStyle-EnumConstants",
 				"org-lgna-story-Procedures",
 				"org-lgna-story-Properties",
@@ -193,6 +194,14 @@ public class AliceFormatter extends Formatter {
 
 	@Override
 	public String getFinalText() {
-		return "constant";
+		return getLocalizedText( "constant" );
+	}
+
+	@Override protected String getClassesFormat() {
+		return "%s " + getLocalizedText( "classes" );
+	}
+
+	@Override public String getNewFormat() {
+		return getLocalizedText( "new" ) + " %s( %s )";
 	}
 }

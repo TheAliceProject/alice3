@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.formatter;
 
+import org.alice.stageide.modelresource.ClassResourceKey;
+
 /**
  * Formats code expressed in org.lgna.project.ast.Statements.
  * Used to display the code on Alice tiles.
@@ -59,7 +61,7 @@ public abstract class Formatter {
 	public abstract String getTrailerTextForCode( org.lgna.project.ast.UserCode code );
 
 	public String getTemplateText( Class<?> cls ) {
-		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates", javax.swing.JComponent.getDefaultLocale() );
+		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates");
 	}
 
 	public String getInfixExpressionText( org.lgna.project.ast.InfixExpression<?> infixExpression ) {
@@ -93,4 +95,18 @@ public abstract class Formatter {
 	}
 
 	private final String repr;
+
+	public String galleryLabelFor( ClassResourceKey key) {
+		String className = key.getSearchText();
+		if (key.getType().isEnum()) {
+			String params = key.isLeaf() ? "" : "\u2423";
+			return String.format(getNewFormat(), className, params);
+		} else {
+			return String.format( getClassesFormat(), className );
+		}
+	}
+
+	protected abstract String getClassesFormat();
+
+	public abstract String getNewFormat();
 }

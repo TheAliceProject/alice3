@@ -88,8 +88,8 @@ public abstract class DeclarationComposite<D extends org.lgna.project.ast.Abstra
 	}
 
 	@Override
-	protected String findDefaultLocalizedText() {
-		return this.declaration.getName();
+	protected String getSubKeyForLocalization() {
+		return declaration.getName();
 	}
 
 	public D getDeclaration() {
