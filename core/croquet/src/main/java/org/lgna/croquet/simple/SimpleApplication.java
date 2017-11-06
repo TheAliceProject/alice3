@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.lgna.croquet.simple;
 
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.triggers.Trigger;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,8 +63,9 @@ public class SimpleApplication extends org.lgna.croquet.Application<org.lgna.cro
 	}
 
 	@Override
-	public void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+	public CompletionStep<?> handleQuit( Trigger trigger ) {
 		System.exit( 0 );
+		return null;
 	}
 
 	@Override

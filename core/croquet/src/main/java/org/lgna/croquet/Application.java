@@ -43,6 +43,10 @@
 
 package org.lgna.croquet;
 
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.triggers.AppleApplicationEventTrigger;
+import org.lgna.croquet.triggers.Trigger;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -121,7 +125,10 @@ public abstract class Application<D extends DocumentFrame> {
 			application.setQuitHandler( new com.apple.eawt.QuitHandler() {
 				@Override
 				public void handleQuitRequestWith( com.apple.eawt.AppEvent.QuitEvent e, com.apple.eawt.QuitResponse quitResponse ) {
-					Application.this.handleQuit( org.lgna.croquet.triggers.AppleApplicationEventTrigger.createUserInstance( e ) );
+					CompletionStep<?> completion = Application.this.handleQuit( AppleApplicationEventTrigger.createUserInstance( e ) );
+					if (completion.isCanceled()) {
+						quitResponse.cancelQuit();
+					}
 				}
 			} );
 
@@ -181,7 +188,7 @@ public abstract class Application<D extends DocumentFrame> {
 
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 
-	public abstract void handleQuit( org.lgna.croquet.triggers.Trigger trigger );
+	public abstract CompletionStep<?> handleQuit( Trigger trigger );
 
 	private boolean isDragInProgress = false;
 

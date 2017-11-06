@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.alice.imageeditor.croquet;
 
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Step;
+
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,7 +67,7 @@ public final class SaveOperation extends org.lgna.croquet.SingleThreadIteratingO
 	}
 
 	@Override
-	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
+	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		if( subSteps.size() == 0 ) {
 			this.file = this.owner.getFile();
 			if( this.file != null ) {
@@ -74,7 +81,7 @@ public final class SaveOperation extends org.lgna.croquet.SingleThreadIteratingO
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
+	protected org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		//note: could return from within switch, but switches without breaks seem ill advised at the moment
 		org.lgna.croquet.Model rv;
 		switch( subSteps.size() ) {
