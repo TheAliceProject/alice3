@@ -167,7 +167,6 @@ public abstract class ExpressionCascadeManager {
 				boolean areCountLoopLocalsViewable = org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava();
 				if( areCountLoopLocalsViewable ) {
 					rv.add( countLoopParent.variable.getValue() );
-					rv.add( countLoopParent.constant.getValue() );
 				}
 			} else if( statementParent instanceof org.lgna.project.ast.AbstractForEachLoop ) {
 				org.lgna.project.ast.AbstractForEachLoop forEachLoopParent = (org.lgna.project.ast.AbstractForEachLoop)statementParent;
