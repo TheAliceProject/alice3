@@ -51,7 +51,7 @@ import org.lgna.story.SModel;
  */
 public abstract class MouseClickEvent extends AbstractEvent {
 
-	private final MouseClickEventImp implementation;
+	protected final MouseClickEventImp implementation;
 
 	public MouseClickEvent( MouseClickEventImp e ) {
 		this.implementation = e;
@@ -70,10 +70,6 @@ public abstract class MouseClickEvent extends AbstractEvent {
 	public Double[] getRelativeXYPosition() {
 		Double[] rv = { this.getScreenDistanceFromLeft(), this.getScreenDistanceFromBottom() };
 		return rv;
-	}
-
-	public SModel getModelAtMouseLocation() {
-		return implementation.getModelAtMouseLocation();
 	}
 
 }

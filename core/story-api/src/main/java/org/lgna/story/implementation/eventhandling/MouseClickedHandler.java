@@ -88,9 +88,10 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 	@Override
 	protected void fire( Object listener, MouseClickEvent event ) {
 		if( listener instanceof MouseClickOnObjectListener ) {
-			if( event.getModelAtMouseLocation() != null ) {
+			MouseClickOnObjectEvent objectClickEvent = (MouseClickOnObjectEvent) event;
+			if( objectClickEvent.getModelAtMouseLocation() != null ) {
 				MouseClickOnObjectListener mouseCOOL = (MouseClickOnObjectListener)listener;
-				mouseCOOL.mouseClicked( (MouseClickOnObjectEvent)event );
+				mouseCOOL.mouseClicked( objectClickEvent );
 			}
 		} else if( listener instanceof MouseClickOnScreenListener ) {
 			MouseClickOnScreenListener mouseCOSL = (MouseClickOnScreenListener)listener;
