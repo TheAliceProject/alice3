@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import org.lgna.project.virtualmachine.VirtualMachine;
 /**
  * @author Dennis Cosgrove
  */
@@ -133,4 +134,12 @@ public final class InstanceCreation extends Expression implements ArgumentOwner 
 	public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
 	public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
 	public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
+
+	public Object evaluate( VirtualMachine virtualMachine ) {
+		AbstractType<?, ?, ?> fallbackType = getParent() instanceof AbstractField ?
+						((AbstractField) getParent()).getValueType() :
+						null;
+		Object[] arguments = virtualMachine.evaluateArguments( constructor.getValue(), requiredArguments, variableArguments, keyedArguments );
+		return constructor.getValue().evaluate( virtualMachine, fallbackType, arguments );
+	}
 }

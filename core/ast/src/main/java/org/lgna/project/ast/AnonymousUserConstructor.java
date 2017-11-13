@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.virtualmachine.VirtualMachine;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -66,6 +68,11 @@ public class AnonymousUserConstructor extends UserConstructor {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public Object evaluate( VirtualMachine vm, AbstractType fallbackType, Object[] arguments ) {
+		throw new RuntimeException( "todo" );
 	}
 
 	private java.util.ArrayList<AbstractParameter> parameters = new java.util.ArrayList<AbstractParameter>();
