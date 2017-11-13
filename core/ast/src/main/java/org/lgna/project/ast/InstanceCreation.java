@@ -118,7 +118,10 @@ public final class InstanceCreation extends Expression implements ArgumentOwner 
 	@Override
 	public void appendJava( JavaCodeGenerator generator ) {
 		generator.appendString( "new " );
-		generator.appendTypeName( this.constructor.getValue().getDeclaringType() );
+		AbstractType<?, ?, ?> type = getType();
+		if (null == type)
+			type = ((UserField) getParent()).valueType.getValue();
+		generator.appendTypeName( type );
 		generator.appendChar( '(' );
 		generator.appendArguments( this );
 		generator.appendChar( ')' );
