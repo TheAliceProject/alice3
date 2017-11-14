@@ -43,7 +43,12 @@
 
 package org.alice.ide.resource.manager.views;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+
 abstract class ResourceTableCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.TableCellRenderer<E> {
+
+	static final String BUNDLE_NAME = "org.alice.ide.resource.manager.croquet";
+
 	@Override
 	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, E value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
@@ -72,13 +77,8 @@ class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer<Bo
 	@Override
 	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Boolean value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
-		String text;
-		if( value ) {
-			text = "yes";
-		} else {
-			text = "NO";
-		}
-		rv.setText( text );
+		String key = value ? "yes" : "no";
+		rv.setText( ResourceBundleUtilities.getStringForKey( key, BUNDLE_NAME ) );
 		rv.setForeground( this.getForegroundColor( value, isSelected ) );
 		return rv;
 	}
@@ -88,19 +88,9 @@ class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer<Class<? ex
 	@Override
 	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Class<? extends org.lgna.common.Resource> value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
-		String text;
-		if( value != null ) {
-			text = value.getSimpleName();
-			final String RESOURCE_TEXT = "Resource";
-			if( text.endsWith( RESOURCE_TEXT ) ) {
-				text = text.substring( 0, text.length() - RESOURCE_TEXT.length() );
-			}
-			//			text += " (";
-			//			text += value.getContentType();
-			//			text += ")";
-		} else {
-			text = "ERROR";
-		}
+		String text = value != null ?
+						ResourceBundleUtilities.getStringForKey( value.getSimpleName(), BUNDLE_NAME ) :
+						"ERROR";
 		rv.setText( text );
 		rv.setForeground( this.getForegroundColor( value != null, isSelected ) );
 		return rv;
