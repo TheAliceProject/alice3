@@ -43,6 +43,10 @@
 
 package org.alice.ide.resource.manager;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import org.lgna.common.Resource;
+import org.lgna.project.ProgramTypeUtilities;
+
 class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 	private org.lgna.common.Resource[] resources;
 	private java.util.Set<org.lgna.common.Resource> referencedResources;
@@ -115,8 +119,9 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 
 	public void reload( org.lgna.project.Project project ) {
 		if( project != null ) {
-			this.resources = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( project.getResources(), org.lgna.common.Resource.class, true );
-			this.referencedResources = org.lgna.project.ProgramTypeUtilities.getReferencedResources( project );
+			// Calling getReferencedResources will update project with all currently used resources.
+			this.referencedResources = ProgramTypeUtilities.getReferencedResources( project );
+			this.resources = ArrayUtilities.createArray( project.getResources(), Resource.class, true );
 		} else {
 			this.resources = new org.lgna.common.Resource[] {};
 			this.referencedResources = java.util.Collections.emptySet();
