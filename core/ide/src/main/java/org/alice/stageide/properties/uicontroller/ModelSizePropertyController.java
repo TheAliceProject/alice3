@@ -57,6 +57,7 @@ import org.alice.stageide.properties.IsXZScaleLinkedState;
 import org.alice.stageide.properties.IsYZScaleLinkedState;
 import org.alice.stageide.properties.LinkScaleButton;
 import org.alice.stageide.properties.ModelSizeAdapter;
+import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.views.BooleanStateButton;
 import org.lgna.croquet.views.BoxUtilities;
 import org.lgna.croquet.views.Button;
@@ -95,6 +96,11 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 	private BooleanStateButton<javax.swing.AbstractButton> linkXYButton;
 	private BooleanStateButton<javax.swing.AbstractButton> linkXZButton;
 	private BooleanStateButton<javax.swing.AbstractButton> linkYZButton;
+
+	private boolean hasLinkAll = false;
+	private boolean hasLinkXY = false;
+	private boolean hasLinkXZ = false;
+	private boolean hasLinkYZ = false;
 
 	private boolean isUpdatingState = false;
 	private boolean doUpdateOnAdapter = true;
@@ -258,10 +264,10 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		this.removeComponent( this.linkXZButton );
 		this.removeComponent( this.linkYZButton );
 
-		boolean hasLinkAll = false;
-		boolean hasLinkXY = false;
-		boolean hasLinkXZ = false;
-		boolean hasLinkYZ = false;
+		hasLinkAll = false;
+		hasLinkXY = false;
+		hasLinkXZ = false;
+		hasLinkYZ = false;
 		boolean hasX = false;
 		boolean hasY = false;
 		boolean hasZ = false;
@@ -510,25 +516,30 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			isUpdatingState = true;
 			if( nextValue ) {
 				if( state == IsAllScaleLinkedState.getInstance() ) {
-					IsXYScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXYScaleLinkedState.getInstance().isEnabled() );
-					IsXZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXZScaleLinkedState.getInstance().isEnabled() );
-					IsYZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsYZScaleLinkedState.getInstance().isEnabled() );
+					updateLinkState( hasLinkXY, IsXYScaleLinkedState.getInstance() );
+					updateLinkState( hasLinkXZ, IsXZScaleLinkedState.getInstance() );
+					updateLinkState( hasLinkYZ, IsYZScaleLinkedState.getInstance() );
 				} else if( state == IsXYScaleLinkedState.getInstance() ) {
-					IsAllScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsAllScaleLinkedState.getInstance().isEnabled() );
-					IsXZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXZScaleLinkedState.getInstance().isEnabled() );
-					IsYZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsYZScaleLinkedState.getInstance().isEnabled() );
+					updateLinkState( hasLinkAll, IsAllScaleLinkedState.getInstance() );
+					updateLinkState( hasLinkXZ, IsXZScaleLinkedState.getInstance() );
+					updateLinkState( hasLinkYZ, IsYZScaleLinkedState.getInstance() );
 				} else if( state == IsXZScaleLinkedState.getInstance() ) {
-					IsAllScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsAllScaleLinkedState.getInstance().isEnabled() );
-					IsXYScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXYScaleLinkedState.getInstance().isEnabled() );
-					IsYZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsYZScaleLinkedState.getInstance().isEnabled() );
+					updateLinkState( hasLinkAll, IsAllScaleLinkedState.getInstance() );
+					updateLinkState( hasLinkXY, IsXYScaleLinkedState.getInstance() );
+					updateLinkState( hasLinkYZ, IsYZScaleLinkedState.getInstance() );
 				} else if( state == IsYZScaleLinkedState.getInstance() ) {
-					IsAllScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsAllScaleLinkedState.getInstance().isEnabled() );
-					IsXZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXZScaleLinkedState.getInstance().isEnabled() );
-					IsXYScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXYScaleLinkedState.getInstance().isEnabled() );
+					updateLinkState( hasLinkAll, IsAllScaleLinkedState.getInstance() );
+					updateLinkState( hasLinkXZ, IsXZScaleLinkedState.getInstance() );
+					updateLinkState( hasLinkXY, IsXYScaleLinkedState.getInstance() );
 				}
 			}
 			isUpdatingState = false;
 		}
+	}
+
+	private void updateLinkState( boolean isPresent, BooleanState xy ) {
+		if (isPresent)
+			xy.setValueTransactionlessly( !xy.isEnabled() );
 	}
 
 	protected void updateAdapterFromUI( ActionEvent e ) {
