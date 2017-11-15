@@ -56,7 +56,7 @@ public class JavaFormatter extends Formatter {
 		java.util.Map<Class<?>, String> tempTemplateMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		tempTemplateMap.put( org.lgna.project.ast.ExpressionStatement.class, "</expression/>;" );
 		tempTemplateMap.put( org.lgna.project.ast.WhileLoop.class, "while( </conditional/> ) {\n\t</body/>\n}" );
-		tempTemplateMap.put( org.lgna.project.ast.CountLoop.class, "</__constant__/> = </count/>;\nfor( </__variable__/> = 0; </_variable_/> < </_constant_/>; </_variable_/>++ ) {\n\t</body/>\n}" );
+		tempTemplateMap.put( org.lgna.project.ast.CountLoop.class, "for( </__variable__/> = 0; </_variable_/> < </count/>; </_variable_/>++ ) {\n\t</body/>\n}" );
 		tempTemplateMap.put( org.lgna.project.ast.BooleanExpressionBodyPair.class, "if( </expression/> ) {\n\t</body/>" );
 		tempTemplateMap.put( org.lgna.project.ast.ConditionalStatement.class, "</booleanExpressionBodyPairs/>\n} else {\n\t</elseBody/>\n}" );
 		tempTemplateMap.put( org.lgna.project.ast.MethodInvocation.class, "</expression/></method/>(</requiredArguments/></variableArguments/></keyedArguments/>)" );

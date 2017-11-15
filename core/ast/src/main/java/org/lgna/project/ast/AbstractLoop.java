@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,5 +62,33 @@ public abstract class AbstractLoop extends AbstractStatementWithBody {
 	protected void appendJavaInternal( JavaCodeGenerator generator ) {
 		this.appendJavaLoopPrefix( generator );
 		this.body.getValue().appendJava( generator );
+	}
+
+	@Override
+	public String generateLocalName( UserLocal local ) {
+		return local.isFinal.getValue() ? getConstantName() : getVariableName();
+	}
+
+	String getVariableName() {
+		return "index" + getDepthSuffix();
+	}
+
+	private String getConstantName() {
+		return "COUNT_" + getDepthSuffix();
+	}
+
+	private int getInstanceDepth() {
+		UserCode code = getFirstAncestorAssignableTo( UserCode.class );
+		if (code == null) {
+			return -1;
+		}
+		IsInstanceCrawler<CountLoop> countLoopCrawler = IsInstanceCrawler.createInstance( CountLoop.class );
+		code.crawl( countLoopCrawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY, null );
+		return countLoopCrawler.getList().indexOf( this );
+	}
+
+	private char getDepthSuffix() {
+		int index = getInstanceDepth( );
+		return index != -1 ? (char) (((int) 'A') + index) : '_';
 	}
 }

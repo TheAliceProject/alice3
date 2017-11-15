@@ -733,6 +733,12 @@ public abstract class AbstractNode extends Element implements Node {
 		return sb.toString();
 	}
 
+	@Override
+	public String generateLocalName( UserLocal local ) {
+		// This is overridden in the loop subclasses that will display the name.
+		return "unusedName";
+	}
+
 	protected StringBuilder appendStringDetails( StringBuilder rv ) {
 		return rv;
 	}

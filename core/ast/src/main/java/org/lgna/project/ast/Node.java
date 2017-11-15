@@ -61,4 +61,6 @@ public interface Node extends edu.cmu.cs.dennisc.property.InstancePropertyOwner,
 	public boolean contentEquals( Node other, ContentEqualsStrictness strictness );
 
 	public String getRepr();
+
+	String generateLocalName( UserLocal local );
 }
