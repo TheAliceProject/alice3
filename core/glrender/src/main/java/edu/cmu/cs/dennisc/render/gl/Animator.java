@@ -97,7 +97,7 @@ package edu.cmu.cs.dennisc.render.gl;
 	public void run() {
 		long tPrev = 0;
 		int fps = 0;
-		int millisSinceLastFps = 0;
+		long millisSinceLastFps = 0;
 
 		while( this.isActive ) {
 			while( true ) {

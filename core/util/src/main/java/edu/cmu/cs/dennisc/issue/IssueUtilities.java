@@ -46,16 +46,16 @@ package edu.cmu.cs.dennisc.issue;
  * @author Dennis Cosgrove
  */
 public class IssueUtilities {
-	private static final java.util.List<String> systemPropertiesForEnnvironmentField = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( "java.version", "os.name", "os.arch" ) );
+	private static final java.util.List<String> systemPropertiesForEnvironmentField = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( "java.version", "os.name", "os.arch" ) );
 
 	public static java.util.List<String> getSystemPropertiesForEnvironmentField() {
-		return systemPropertiesForEnnvironmentField;
+		return systemPropertiesForEnvironmentField;
 	}
 
 	public static final String getEnvironmentLongDescription() {
 		StringBuilder sb = new StringBuilder();
 		String intersticial = "";
-		for( String propertyName : systemPropertiesForEnnvironmentField ) {
+		for( String propertyName : systemPropertiesForEnvironmentField) {
 			sb.append( intersticial );
 			sb.append( propertyName );
 			sb.append( ": " );
@@ -68,7 +68,7 @@ public class IssueUtilities {
 	public static final String getEnvironmentShortDescription() {
 		StringBuilder sb = new StringBuilder();
 		String intersticial = "";
-		for( String propertyName : systemPropertiesForEnnvironmentField ) {
+		for( String propertyName : systemPropertiesForEnvironmentField) {
 			sb.append( intersticial );
 			sb.append( System.getProperty( propertyName ) );
 			intersticial = ";";

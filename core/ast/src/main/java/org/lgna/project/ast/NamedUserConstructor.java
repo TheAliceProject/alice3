@@ -43,6 +43,9 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.project.virtualmachine.VirtualMachine;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -53,6 +56,11 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	public NamedUserConstructor( UserParameter[] parameters, ConstructorBlockStatement body ) {
 		this.requiredParameters.add( parameters );
 		this.body.setValue( body );
+	}
+
+	@Override
+	public UserInstance evaluate( VirtualMachine vm, AbstractType fallbackType, Object[] arguments ) {
+		return UserInstance.createInstance( vm, this, (UserType<?>) fallbackType, arguments );
 	}
 
 	@Override
