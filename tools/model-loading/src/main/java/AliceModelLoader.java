@@ -396,7 +396,7 @@ public class AliceModelLoader {
 			JarOutputStream aliceSourceStream = new JarOutputStream(new FileOutputStream(sourceJarFile));
 			JarOutputStream aliceResourceStream = new JarOutputStream(new FileOutputStream(resourceJarFile));
 			
-			ModelResourceInfo returnInfo = mre.addToJar(srcPath, resourcePath, aliceResourceStream, aliceSourceStream, AliceModelLoader.destAliceResourceDirPrefix, true, true);
+			ModelResourceInfo returnInfo = mre.addToJar(srcPath, resourcePath, aliceResourceStream, aliceSourceStream, "", true, true);
 			
 			aliceSourceStream.close();
 			aliceResourceStream.close();
@@ -431,13 +431,14 @@ public class AliceModelLoader {
 	public static void main( String[] args ) {
 			
 			File colladaFile  = new File( "C:/Users/dculyba/Documents/Alice/Collada/alien.dae" );
-			SkeletonVisual sv = AliceModelLoader.loadAliceModelFromCollada( colladaFile, "alien");
+			String modelName = "alien2";
+			SkeletonVisual sv = AliceModelLoader.loadAliceModelFromCollada( colladaFile, modelName);
 			
 			renameJoints(sv);
 			
 			JPanel imagePanel = showVisual( sv, null );
 			
-			ModelResourceExporter mre = createModelExporter( sv, "alien", ModelClassData.BIPED_CLASS_DATA );
+			ModelResourceExporter mre = createModelExporter( sv, modelName, ModelClassData.BIPED_CLASS_DATA );
 			try {
 				saveModelResourceFiles(sv, mre, "C:/Users/dculyba/Documents/Alice/Alice Export/");
 			}
