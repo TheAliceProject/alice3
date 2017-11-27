@@ -326,6 +326,11 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.sonatype.install4j</groupId>
+					<artifactId>install4j-maven-plugin</artifactId>
+					<version>1.0.8</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -347,6 +352,23 @@
 						<phase>initialize</phase>
 						<configuration>
 							<property>parent.basedir</property>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.install4j</groupId>
+				<artifactId>install4j-maven-plugin</artifactId>
+				<version>1.0.8</version>
+				<executions>
+					<execution>
+						<id>compile-installers</id>
+						<phase>package</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<projectFile>${project.basedir}/tools/batch-build/src/main/resources/Installer/aliceinstallerproject.install4j</projectFile>
 						</configuration>
 					</execution>
 				</executions>
