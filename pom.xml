@@ -365,7 +365,7 @@
 						<id>compile-installers</id>
 						<phase>package</phase>
 						<goals>
-							<goal>compile</goal>
+							<goal>install</goal>
 						</goals>
 						<configuration>
 							<projectFile>${project.basedir}/tools/batch-build/src/main/resources/Installer/aliceinstallerproject.install4j</projectFile>
