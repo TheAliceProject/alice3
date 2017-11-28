@@ -369,7 +369,15 @@
 						</goals>
 						<configuration>
 							<projectFile>${project.basedir}/tools/batch-build/src/main/resources/Installer/aliceinstallerproject.install4j</projectFile>
+							<attach>true</attach>
 						</configuration>
+					</execution>
+					<execution>
+						<id>install-license</id>
+						<phase>package</phase>
+						<goals>
+							<goal>install-license</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
