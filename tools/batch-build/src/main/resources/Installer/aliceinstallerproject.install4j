@@ -46,24 +46,28 @@
     <filesets />
     <roots />
     <mountPoints>
-      <mountPoint id="301" root="" location="platform" mode="755" />
-      <mountPoint id="302" root="" location="platform/macosx" mode="755" />
-      <mountPoint id="303" root="" location="platform/macosx/ffmpeg" mode="755" />
       <mountPoint id="23" root="" location="" mode="755" />
+      <mountPoint id="521" root="" location="lib" mode="755" />
     </mountPoints>
     <entries>
-      <fileEntry mountPoint="303" file="./aliceInstallData/Alice3/platform/macosx/ffmpeg/ffmpeg" overwriteMode="4" shared="false" fileMode="755" uninstallMode="0" overrideFileMode="true" overrideOverwriteMode="false" overrideUninstallMode="false" />
-      <dirEntry mountPoint="23" file="./aliceInstallData/Alice3" overwriteMode="2" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="true" overrideUninstallMode="false" entryMode="direct" subDirectory="Alice3" excludeSuffixes="" dirMode="755" overrideDirMode="false">
-        <exclude>
-          <entry location="Alice3.app" fileType="regular" />
-          <entry location="Alice3.exe" fileType="regular" />
-          <entry location="Alice3.ini" fileType="regular" />
-          <entry location="alice3.sh" fileType="regular" />
-          <entry location="Alice3Icon.ico" fileType="regular" />
-          <entry location="auxiliary" fileType="regular" />
-          <entry location="platform/macosx/ffmpeg/ffmpeg" fileType="regular" />
-        </exclude>
+      <dirEntry mountPoint="23" file="../../../../../../core/resources/target/distribution" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="distribution" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+        <exclude />
       </dirEntry>
+      <fileEntry mountPoint="521" file="../../../../../../nonfree/core/story-api-nonfree/target/story-api-nonfree-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../alice/alice-ide/target/alice-ide-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../core/ast/target/ast-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../core/croquet/target/croquet-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../core/glrender/target/glrender-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../core/ide/target/ide-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../core/image-editor/target/image-editor-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../core/issue-reporting/target/issue-reporting-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../core/i18n/target/i18n-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../core/scenegraph/target/scenegraph-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../core/story-api/target/story-api-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../core/story-api-migration/target/story-api-migration-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../core/util/target/util-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../nonfree/core/ide-nonfree/target/ide-nonfree-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="521" file="../../../../../../nonfree/core/resources-nonfree/target/resources-nonfree-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
     </entries>
     <components>
       <component name="aliceGallery" id="79" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
