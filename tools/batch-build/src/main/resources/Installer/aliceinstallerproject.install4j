@@ -38,21 +38,20 @@
     </searchSequence>
     <variables>
       <variable name="included_jre_version" value="1.8.0_152" description="" category="" />
+      <variable name="maven_local_repository" value="../../../../../../../../../.m2/repository" description="" category="" />
     </variables>
     <mergedProjects />
     <codeSigning macEnabled="false" macPkcs12File="" windowsEnabled="false" windowsKeySource="pkcs12" windowsPvkFile="" windowsSpcFile="" windowsPkcs12File="" />
   </application>
-  <files keepModificationTimes="true" missingFilesStrategy="error" globalExcludeSuffixes="" defaultOverwriteMode="2" defaultUninstallMode="0" launcherOverwriteMode="3" defaultFileMode="644" defaultDirMode="755">
+  <files keepModificationTimes="true" missingFilesStrategy="error" globalExcludeSuffixes="*.sha1,*.lastUpdated,*.pom,*.repositories,*.DS_Store" defaultOverwriteMode="2" defaultUninstallMode="0" launcherOverwriteMode="3" defaultFileMode="644" defaultDirMode="755">
     <filesets />
     <roots />
     <mountPoints>
-      <mountPoint id="23" root="" location="" mode="755" />
       <mountPoint id="521" root="" location="lib" mode="755" />
+      <mountPoint id="769" root="" location="ext" mode="755" />
+      <mountPoint id="23" root="" location="" mode="755" />
     </mountPoints>
     <entries>
-      <dirEntry mountPoint="23" file="../../../../../../core/resources/target/distribution" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="distribution" excludeSuffixes="" dirMode="755" overrideDirMode="false">
-        <exclude />
-      </dirEntry>
       <fileEntry mountPoint="521" file="../../../../../../nonfree/core/story-api-nonfree/target/story-api-nonfree-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
       <fileEntry mountPoint="521" file="../../../../../../alice/alice-ide/target/alice-ide-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
       <fileEntry mountPoint="521" file="../../../../../../core/ast/target/ast-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
@@ -68,6 +67,36 @@
       <fileEntry mountPoint="521" file="../../../../../../core/util/target/util-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
       <fileEntry mountPoint="521" file="../../../../../../nonfree/core/ide-nonfree/target/ide-nonfree-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
       <fileEntry mountPoint="521" file="../../../../../../nonfree/core/resources-nonfree/target/resources-nonfree-0.0.1-SNAPSHOT.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/axis/axis-jaxrpc/1.3/axis-jaxrpc-1.3.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/axis/axis-saaj/1.3/axis-saaj-1.3.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/axis/axis-wsdl4j/1.5.1/axis-wsdl4j-1.5.1.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/axis/axis/1.3/axis-1.3.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/com/atlassian/jira/plugins/jira-soapclient/4.0/jira-soapclient-4.0.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/com/miglayout/miglayout-core/4.2/miglayout-core-4.2.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/com/miglayout/miglayout-swing/4.2/miglayout-swing-4.2.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/com/sun/javamp3/1.0/javamp3-1.0.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/com/yuvimasory/orange-extensions/1.3.0/orange-extensions-1.3.0.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/commons-discovery/commons-discovery/0.2/commons-discovery-0.2.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/de/java2html/java2html/5.0/java2html-5.0.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/javax/activation/activation/1.1/activation-1.1.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/javax/mail/mailapi/1.4.3/mailapi-1.4.3.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/javax/media/jmf/2.1.1e/jmf-2.1.1e.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/net/java/dev/jna/jna/3.5.2/jna-3.5.2.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/net/java/dev/jna/platform/3.5.2/platform-3.5.2.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/org/alice/alice-model-source/2016.08.19/alice-model-source-2016.08.19.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/org/alice/external/wrapped-flow-layout/1.0/wrapped-flow-layout-1.0.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/org/alice/nonfree/nebulous-model-source/2016.07.15/nebulous-model-source-2016.07.15.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/org/jogamp/gluegen/gluegen-rt/2.3.2/gluegen-rt-2.3.2.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/org/jogamp/jogl/jogl-all/2.3.2/jogl-all-2.3.2.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/redstone/xmlrpc/xmlrpc/1.1.1/xmlrpc-1.1.1.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/uk/co/caprica/vlcj/3.1.0/vlcj-3.1.0.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/uk/co/mmscomputing/mmsc/1.0/mmsc-1.0.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+      <fileEntry mountPoint="769" file="${compiler:maven_local_repository}/wsdl4j/wsdl4j/1.5.1/wsdl4j-1.5.1.jar" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" />
+
+      <dirEntry mountPoint="23" file="../../../../../../core/resources/target/distribution" overwriteMode="4" shared="false" fileMode="644" uninstallMode="0" overrideFileMode="false" overrideOverwriteMode="false" overrideUninstallMode="false" entryMode="direct" subDirectory="distribution" excludeSuffixes="" dirMode="755" overrideDirMode="false">
+        <exclude />
+      </dirEntry>
     </entries>
     <components>
       <component name="aliceGallery" id="79" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
@@ -125,22 +154,7 @@
       <component name="externalLibs" id="86" customizedId="" displayDescription="false" hideHelpButton="false" selected="true" changeable="false" downloadable="true" hidden="true">
         <description />
         <include all="false">
-          <entry location="ext/axis" fileType="regular" />
-          <entry location="ext/com" fileType="regular" />
-          <entry location="ext/commons-codec" fileType="regular" />
-          <entry location="ext/commons-discovery" fileType="regular" />
-          <entry location="ext/commons-logging" fileType="regular" />
-          <entry location="ext/de" fileType="regular" />
-          <entry location="ext/javax" fileType="regular" />
-          <entry location="ext/net" fileType="regular" />
-          <entry location="ext/org/alice/external" fileType="regular" />
-          <entry location="ext/org/apache" fileType="regular" />
-          <entry location="ext/org/jogamp" fileType="regular" />
-          <entry location="ext/org/mortbay" fileType="regular" />
-          <entry location="ext/redstone" fileType="regular" />
-          <entry location="ext/uk" fileType="regular" />
-          <entry location="ext/wsdl4j" fileType="regular" />
-          <entry location="ext/xpp3" fileType="regular" />
+          <entry location="ext" fileType="regular" />
         </include>
         <dependencies />
       </component>
@@ -190,32 +204,32 @@
       </splashScreen>
       <java mainClass="org.alice.stageide.EntryPoint" mainMode="1" vmParameters="-ea -Xmx1024m -Dorg.alice.ide.rootDirectory=./ -Dswing.aatext=true -Djogamp.gluegen.UseTempJarCache=false" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true">
         <classPath>
-          <archive location="ext/axis/axis-jaxrpc/1.3/axis-jaxrpc-1.3.jar" failOnError="true" />
-          <archive location="ext/axis/axis-saaj/1.3/axis-saaj-1.3.jar" failOnError="true" />
-          <archive location="ext/axis/axis-wsdl4j/1.5.1/axis-wsdl4j-1.5.1.jar" failOnError="true" />
-          <archive location="ext/axis/axis/1.3/axis-1.3.jar" failOnError="true" />
-          <archive location="ext/com/atlassian/jira/plugins/jira-soapclient/4.0/jira-soapclient-4.0.jar" failOnError="true" />
-          <archive location="ext/com/miglayout/miglayout-core/4.2/miglayout-core-4.2.jar" failOnError="true" />
-          <archive location="ext/com/miglayout/miglayout-swing/4.2/miglayout-swing-4.2.jar" failOnError="true" />
-          <archive location="ext/com/sun/javamp3/1.0/javamp3-1.0.jar" failOnError="true" />
-          <archive location="ext/com/yuvimasory/orange-extensions/1.3.0/orange-extensions-1.3.0.jar" failOnError="true" />
-          <archive location="ext/commons-discovery/commons-discovery/0.2/commons-discovery-0.2.jar" failOnError="true" />
-          <archive location="ext/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar" failOnError="true" />
-          <archive location="ext/de/java2html/java2html/5.0/java2html-5.0.jar" failOnError="true" />
-          <archive location="ext/javax/activation/activation/1.1/activation-1.1.jar" failOnError="true" />
-          <archive location="ext/javax/mail/mailapi/1.4.3/mailapi-1.4.3.jar" failOnError="true" />
-          <archive location="ext/javax/media/jmf/2.1.1e/jmf-2.1.1e.jar" failOnError="true" />
-          <archive location="ext/net/java/dev/jna/jna/3.5.2/jna-3.5.2.jar" failOnError="true" />
-          <archive location="ext/net/java/dev/jna/platform/3.5.2/platform-3.5.2.jar" failOnError="true" />
-          <archive location="ext/org/alice/alice-model-source/2016.08.19/alice-model-source-2016.08.19.jar" failOnError="true" />
-          <archive location="ext/org/alice/external/wrapped-flow-layout/1.0/wrapped-flow-layout-1.0.jar" failOnError="true" />
-          <archive location="ext/org/alice/nonfree/nebulous-model-source/2016.07.15/nebulous-model-source-2016.07.15.jar" failOnError="true" />
-          <archive location="ext/org/jogamp/gluegen/gluegen-rt/2.3.2/gluegen-rt-2.3.2.jar" failOnError="true" />
-          <archive location="ext/org/jogamp/jogl/jogl-all/2.3.2/jogl-all-2.3.2.jar" failOnError="true" />
-          <archive location="ext/redstone/xmlrpc/xmlrpc/1.1.1/xmlrpc-1.1.1.jar" failOnError="true" />
-          <archive location="ext/uk/co/caprica/vlcj/3.1.0/vlcj-3.1.0.jar" failOnError="true" />
-          <archive location="ext/uk/co/mmscomputing/mmsc/1.0/mmsc-1.0.jar" failOnError="true" />
-          <archive location="ext/wsdl4j/wsdl4j/1.5.1/wsdl4j-1.5.1.jar" failOnError="true" />
+          <archive location="ext/axis-jaxrpc-1.3.jar" failOnError="true" />
+          <archive location="ext/axis-saaj-1.3.jar" failOnError="true" />
+          <archive location="ext/axis-wsdl4j-1.5.1.jar" failOnError="true" />
+          <archive location="ext/axis-1.3.jar" failOnError="true" />
+          <archive location="ext/jira-soapclient-4.0.jar" failOnError="true" />
+          <archive location="ext/miglayout-core-4.2.jar" failOnError="true" />
+          <archive location="ext/miglayout-swing-4.2.jar" failOnError="true" />
+          <archive location="ext/javamp3-1.0.jar" failOnError="true" />
+          <archive location="ext/orange-extensions-1.3.0.jar" failOnError="true" />
+          <archive location="ext/commons-discovery-0.2.jar" failOnError="true" />
+          <archive location="ext/commons-logging-1.0.4.jar" failOnError="true" />
+          <archive location="ext/java2html-5.0.jar" failOnError="true" />
+          <archive location="ext/activation-1.1.jar" failOnError="true" />
+          <archive location="ext/mailapi-1.4.3.jar" failOnError="true" />
+          <archive location="ext/jmf-2.1.1e.jar" failOnError="true" />
+          <archive location="ext/jna-3.5.2.jar" failOnError="true" />
+          <archive location="ext/platform-3.5.2.jar" failOnError="true" />
+          <archive location="ext/alice-model-source-2016.08.19.jar" failOnError="true" />
+          <archive location="ext/wrapped-flow-layout-1.0.jar" failOnError="true" />
+          <archive location="ext/nebulous-model-source-2016.07.15.jar" failOnError="true" />
+          <archive location="ext/gluegen-rt-2.3.2.jar" failOnError="true" />
+          <archive location="ext/jogl-all-2.3.2.jar" failOnError="true" />
+          <archive location="ext/xmlrpc-1.1.1.jar" failOnError="true" />
+          <archive location="ext/vlcj-3.1.0.jar" failOnError="true" />
+          <archive location="ext/mmsc-1.0.jar" failOnError="true" />
+          <archive location="ext/wsdl4j-1.5.1.jar" failOnError="true" />
           <archive location="lib/alice-ide-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/ast-0.0.1-SNAPSHOT.jar" failOnError="true" />
           <archive location="lib/croquet-0.0.1-SNAPSHOT.jar" failOnError="true" />
