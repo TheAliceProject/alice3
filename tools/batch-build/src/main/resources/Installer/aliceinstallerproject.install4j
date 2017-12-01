@@ -174,11 +174,11 @@
     </components>
   </files>
   <launchers>
-    <launcher name="Alice 3" id="24" customizedId="" external="false" excludeFromMenu="false" unixMode="755" unixAutoStart="true" menuName="" icnsFile="./installerFiles/macIcon_flat.icns" customMacBundleIdentifier="false" macBundleIdentifier="" swtApp="false" fileset="" macBundleBinary="JavaApplicationStub" addMacEntitlements="false" macEntitlementsFile="" useCustomMacosExecutableName="false" customMacosExecutableName="" useJavaMinVersionOverride="false" javaMinVersionOverride="" useJavaMaxVersionOverride="false" javaMaxVersionOverride="" checkUpdater="false" updateExecutionMode="unattendedProgress" unattendedUpdateTitle="${i18n:updater.WindowTitle(&quot;${compiler:sys.fullName}&quot;)}">
+    <launcher name="Alice 3" id="24" customizedId="" external="false" excludeFromMenu="false" unixMode="755" unixAutoStart="true" menuName="" icnsFile="../../../../../../installer/installerFiles/macIcon_flat.icns" customMacBundleIdentifier="false" macBundleIdentifier="" swtApp="false" fileset="" macBundleBinary="JavaApplicationStub" addMacEntitlements="false" macEntitlementsFile="" useCustomMacosExecutableName="false" customMacosExecutableName="" useJavaMinVersionOverride="false" javaMinVersionOverride="" useJavaMaxVersionOverride="false" javaMaxVersionOverride="" checkUpdater="false" updateExecutionMode="unattendedProgress" unattendedUpdateTitle="${i18n:updater.WindowTitle(&quot;${compiler:sys.fullName}&quot;)}">
       <executable name="Alice 3" type="1" iconSet="true" iconFile="" executableDir="." redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="false" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false" singleInstanceActivate="true" dpiAware="java9+">
         <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" />
       </executable>
-      <splashScreen show="true" width="684" height="301" bitmapFile="./installerFiles/SplashScreen.png" textOverlay="true">
+      <splashScreen show="true" width="684" height="301" bitmapFile="../../../../../../core/resources/src/application/resources/SplashScreen.png" textOverlay="true">
         <text>
           <statusLine x="26" y="262" text="Loading..." fontSize="8" fontColor="0,0,0" bold="false" />
           <versionLine x="541" y="262" text="version ${compiler:sys.version}" fontSize="8" fontColor="0,0,0" bold="false" />
@@ -244,11 +244,11 @@
         <content />
       </infoPlist>
       <iconImageFiles>
-        <file path="./installerFiles/desktopIcon16.png" />
-        <file path="./installerFiles/desktopIcon32.png" />
-        <file path="./installerFiles/desktopIcon48.png" />
-        <file path="./installerFiles/desktopIcon64.png" />
-        <file path="./installerFiles/desktopIcon128.png" />
+        <file path="../../../../../../installer/installerFiles/desktopIcon16.png" />
+        <file path="../../../../../../installer/installerFiles/desktopIcon32.png" />
+        <file path="../../../../../../installer/installerFiles/desktopIcon48.png" />
+        <file path="../../../../../../installer/installerFiles/desktopIcon64.png" />
+        <file path="../../../../../../installer/installerFiles/desktopIcon128.png" />
       </iconImageFiles>
     </launcher>
   </launchers>
@@ -260,34 +260,34 @@
       <customAttributes />
     </autoUpdate>
     <applications>
-      <application name="" id="installer" customizedId="" beanClass="com.install4j.runtime.beans.applications.InstallerApplication" enabled="true" commentSet="false" comment="" actionElevationType="none" styleId="401" fileset="" customIcnsFile="./installerFiles/macInstallIcon.icns" customIcoFile="" macEntitlementsFile="" automaticLauncherIntegration="false" launchMode="startupFirstWindow" launchInNewProcess="false" launchSchedule="updateSchedule" allLaunchers="true">
+      <application name="" id="installer" customizedId="" beanClass="com.install4j.runtime.beans.applications.InstallerApplication" enabled="true" commentSet="false" comment="" actionElevationType="none" styleId="401" fileset="" customIcnsFile="../../../../../../installer/installerFiles/macInstallIcon.icns" customIcoFile="" macEntitlementsFile="" automaticLauncherIntegration="false" launchMode="startupFirstWindow" launchInNewProcess="false" launchSchedule="updateSchedule" allLaunchers="true">
         <serializedBean>
           <java class="java.beans.XMLDecoder">
             <object class="com.install4j.runtime.beans.applications.InstallerApplication" id="InstallerApplication0">
               <void property="customIconImageFiles">
                 <void method="add">
                   <object class="com.install4j.api.beans.ExternalFile">
-                    <string>./installerFiles/aliceInstallerIcon16.png</string>
+                    <string>../../../../../../installer/installerFiles/aliceInstallerIcon16.png</string>
                   </object>
                 </void>
                 <void method="add">
                   <object class="com.install4j.api.beans.ExternalFile">
-                    <string>./installerFiles/aliceInstallerIcon32.png</string>
+                    <string>../../../../../../installer/installerFiles/aliceInstallerIcon32.png</string>
                   </object>
                 </void>
                 <void method="add">
                   <object class="com.install4j.api.beans.ExternalFile">
-                    <string>./installerFiles/aliceInstallerIcon48.png</string>
+                    <string>../../../../../../installer/installerFiles/aliceInstallerIcon48.png</string>
                   </object>
                 </void>
                 <void method="add">
                   <object class="com.install4j.api.beans.ExternalFile">
-                    <string>./installerFiles/aliceInstallerIcon64.png</string>
+                    <string>../../../../../../installer/installerFiles/aliceInstallerIcon64.png</string>
                   </object>
                 </void>
                 <void method="add">
                   <object class="com.install4j.api.beans.ExternalFile">
-                    <string>./installerFiles/aliceInstallerIcon128.png</string>
+                    <string>../../../../../../installer/installerFiles/aliceInstallerIcon128.png</string>
                   </object>
                 </void>
               </void>
@@ -319,7 +319,7 @@
                     </void>
                     <void property="imageFile">
                       <object class="com.install4j.api.beans.ExternalFile">
-                        <string>./installerFiles/aliceInstallerIcon.png</string>
+                        <string>../../../../../../installer/installerFiles/aliceInstallerIcon.png</string>
                       </object>
                     </void>
                   </object>
@@ -380,7 +380,7 @@
                         </void>
                         <void property="imageFile">
                           <object class="com.install4j.api.beans.ExternalFile">
-                            <string>./installerFiles/aliceBanner.png</string>
+                            <string>../../../../../../installer/installerFiles/aliceBanner.png</string>
                           </object>
                         </void>
                       </object>
@@ -846,7 +846,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
                         </void>
                         <void property="imageFile">
                           <object class="com.install4j.api.beans.ExternalFile">
-                            <string>./installerFiles/aliceBanner.png</string>
+                            <string>../../../../../../installer/installerFiles/aliceBanner.png</string>
                           </object>
                         </void>
                       </object>
@@ -888,27 +888,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
               <void property="customIconImageFiles">
                 <void method="add">
                   <object class="com.install4j.api.beans.ExternalFile">
-                    <string>./installerFiles/aliceInstallerIcon16.png</string>
+                    <string>../../../../../../installer/installerFiles/aliceInstallerIcon16.png</string>
                   </object>
                 </void>
                 <void method="add">
                   <object class="com.install4j.api.beans.ExternalFile">
-                    <string>./installerFiles/aliceInstallerIcon16.png</string>
+                    <string>../../../../../../installer/installerFiles/aliceInstallerIcon16.png</string>
                   </object>
                 </void>
                 <void method="add">
                   <object class="com.install4j.api.beans.ExternalFile">
-                    <string>./installerFiles/aliceInstallerIcon48.png</string>
+                    <string>../../../../../../installer/installerFiles/aliceInstallerIcon48.png</string>
                   </object>
                 </void>
                 <void method="add">
                   <object class="com.install4j.api.beans.ExternalFile">
-                    <string>./installerFiles/aliceInstallerIcon64.png</string>
+                    <string>../../../../../../installer/installerFiles/aliceInstallerIcon64.png</string>
                   </object>
                 </void>
                 <void method="add">
                   <object class="com.install4j.api.beans.ExternalFile">
-                    <string>./installerFiles/aliceInstallerIcon128.png</string>
+                    <string>../../../../../../installer/installerFiles/aliceInstallerIcon128.png</string>
                   </object>
                 </void>
               </void>
@@ -983,7 +983,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL EXP
                         </void>
                         <void property="imageFile">
                           <object class="com.install4j.api.beans.ExternalFile">
-                            <string>./installerFiles/witchBanner.png</string>
+                            <string>../../../../../../installer/installerFiles/witchBanner.png</string>
                           </object>
                         </void>
                       </object>
@@ -1110,7 +1110,7 @@ return console.askYesNo(message, true);
                         </void>
                         <void property="imageFile">
                           <object class="com.install4j.api.beans.ExternalFile">
-                            <string>./installerFiles/witchBanner.png</string>
+                            <string>../../../../../../installer/installerFiles/witchBanner.png</string>
                           </object>
                         </void>
                       </object>
