@@ -1682,7 +1682,7 @@ return console.askYesNo(message, true);
         <customAttributes />
       </autoUpdate>
     </windows>
-    <macosArchive name="Mac OS X Single Bundle Archive" id="195" customizedId="" mediaFileName="" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="" includeAllDownloadableComponents="true" includedJRE="" manualJREEntry="false" archiveType="dmg" volumeName="${compiler:sys.shortName}" launcherId="24">
+    <macosArchive name="Mac OS X Single Bundle Archive" id="195" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="" includeAllDownloadableComponents="true" includedJRE="" manualJREEntry="false" archiveType="dmg" volumeName="${compiler:sys.shortName}" launcherId="24">
       <excludedComponents />
       <includedDownloadableComponents />
       <excludedBeans />
@@ -1695,6 +1695,19 @@ return console.askYesNo(message, true);
       </autoUpdate>
       <topLevelFiles />
     </macosArchive>
+    <windowsArchive name="Windows Archive" id="891" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="${compiler:sys.shortName}" overridePrincipalLanguage="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="" includeAllDownloadableComponents="true" includedJRE="" manualJREEntry="false">
+      <excludedComponents />
+      <includedDownloadableComponents />
+      <excludedLaunchers />
+      <excludedBeans />
+      <overriddenPrincipalLanguage id="en" customLocalizationFile="" />
+      <exclude />
+      <variables />
+      <autoUpdate useMinUpdatableVersion="false" minUpdatableVersion="" useMaxUpdatableVersion="false" maxUpdatableVersion="">
+        <commentFiles />
+        <customAttributes />
+      </autoUpdate>
+    </windowsArchive>
   </mediaSets>
   <buildIds buildAll="false">
     <mediaSet refId="101" />
