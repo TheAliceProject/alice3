@@ -330,7 +330,6 @@
 					<groupId>org.sonatype.install4j</groupId>
 					<artifactId>install4j-maven-plugin</artifactId>
 					<version>1.0.8</version>
-					<inherited>false</inherited>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -365,6 +364,7 @@
 					<execution>
 						<id>compile-installers</id>
 						<phase>package</phase>
+						<inherited>false</inherited>
 						<goals>
 							<goal>compile</goal>
 						</goals>
