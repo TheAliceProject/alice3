@@ -170,8 +170,7 @@
           <entry location="application/EULA_Alice3.txt" fileType="regular" />
           <entry location="application/EULA_LookingGlassWalkAndTouch.txt" fileType="regular" />
           <entry location="application/EULA_TheSimsTM2ArtAsset.txt" fileType="regular" />
-          <entry location="application/SplashScreen.jpg" fileType="regular" />
-          <entry location="application/SplashScreen.png" fileType="regular" />
+          <entry location="../../../../../../installer/installerFiles/SplashScreen.png" fileType="regular" />
           <entry location="application/test.txt" fileType="regular" />
           <entry location="EULA_Alice3.txt" fileType="regular" />
           <entry location="EULA_LookingGlassWalkAndTouch.txt" fileType="regular" />
@@ -195,7 +194,7 @@
       <executable name="Alice 3" type="1" iconSet="true" iconFile="" executableDir="." redirectStderr="true" stderrFile="error.log" stderrMode="overwrite" redirectStdout="false" stdoutFile="output.log" stdoutMode="overwrite" failOnStderrOutput="true" executableMode="1" changeWorkingDirectory="true" workingDirectory="." singleInstance="false" serviceStartType="2" serviceDependencies="" serviceDescription="" jreLocation="" executionLevel="asInvoker" checkConsoleParameter="false" globalSingleInstance="false" singleInstanceActivate="true" dpiAware="java9+">
         <versionInfo include="false" fileVersion="" fileDescription="" legalCopyright="" internalName="" productName="" />
       </executable>
-      <splashScreen show="true" width="684" height="301" bitmapFile="../../../../../../core/resources/src/application/resources/SplashScreen.png" textOverlay="true">
+      <splashScreen show="true" width="684" height="301" bitmapFile="../../../../../../installer/installerFiles/SplashScreen.png" textOverlay="true">
         <text>
           <statusLine x="26" y="262" text="Loading..." fontSize="8" fontColor="0,0,0" bold="false" />
           <versionLine x="541" y="262" text="version ${compiler:sys.version}" fontSize="8" fontColor="0,0,0" bold="false" />
