@@ -1609,7 +1609,7 @@ return console.askYesNo(message, true);
     </styles>
   </installerGui>
   <mediaSets>
-    <windows name="Windows 64 Offline" id="101" customizedId="" mediaFileName="" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="64" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="http://www.alice.org/downloads/installerDataTest" includeAllDownloadableComponents="false" includedJRE="" manualJREEntry="false" bundleType="2" jreURL="http://www.alice.org/downloads/jre_bundles/windows-amd64-${compiler:included_jre_version}.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" verifyIntegrity="true">
+    <windows name="Windows 64 Offline" id="101" customizedId="" mediaFileName="" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="64" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="http://www.alice.org/downloads/installerDataTest" includeAllDownloadableComponents="false" includedJRE="windows-amd64-{compiler:included_jre_version}" manualJREEntry="false" bundleType="2" jreURL="http://www.alice.org/downloads/jre_bundles/windows-amd64-${compiler:included_jre_version}.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" verifyIntegrity="true">
       <excludedComponents />
       <includedDownloadableComponents />
       <excludedLaunchers />
@@ -1627,7 +1627,7 @@ return console.askYesNo(message, true);
         <customAttributes />
       </autoUpdate>
     </windows>
-    <macos name="Mac OS X Single Bundle Offline" id="105" customizedId="" mediaFileName="" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="http://www.alice.org/downloads/installerOnlineData" includeAllDownloadableComponents="false" includedJRE="" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/macosx-amd64-${compiler:included_jre_version}.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" requiredVmIdPrefix="" customInstallBaseDir="" contentFilesType="1" installerName="${i18n:InstallerName(${compiler:sys.fullName})}" volumeName="${compiler:sys.shortName}" compressDmg="false" launcherId="24">
+    <macos name="Mac OS X Single Bundle Offline" id="105" customizedId="" mediaFileName="" installDir="Alice 3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="http://www.alice.org/downloads/installerOnlineData" includeAllDownloadableComponents="false" includedJRE="macosx-amd64-{compiler:included_jre_version}_unpacked" manualJREEntry="false" bundleType="1" jreURL="http://www.alice.org/downloads/jre_bundles/macosx-amd64-${compiler:included_jre_version}.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" requiredVmIdPrefix="" customInstallBaseDir="" contentFilesType="1" installerName="${i18n:InstallerName(${compiler:sys.fullName})}" volumeName="${compiler:sys.shortName}" compressDmg="false" launcherId="24">
       <excludedComponents />
       <includedDownloadableComponents />
       <excludedBeans>
@@ -1647,7 +1647,7 @@ return console.askYesNo(message, true);
       </autoUpdate>
       <topLevelFiles />
     </macos>
-    <unixInstaller name="Unix Installer Offline" id="111" customizedId="" mediaFileName="" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="http://www.alice.org/downloads/installerOnlineData" includeAllDownloadableComponents="false" includedJRE="" manualJREEntry="false" bundleType="1" jreURL="" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1">
+    <unixInstaller name="Unix Installer Offline" id="111" customizedId="" mediaFileName="" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="http://www.alice.org/downloads/installerOnlineData" includeAllDownloadableComponents="false" includedJRE="macosx-amd64-{compiler:included_jre_version}_unpacked" manualJREEntry="false" bundleType="1" jreURL="" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1">
       <excludedComponents />
       <includedDownloadableComponents />
       <excludedLaunchers />
@@ -1667,7 +1667,7 @@ return console.askYesNo(message, true);
         <content />
       </installerScript>
     </unixInstaller>
-    <windows name="Windows 32 Offline" id="117" customizedId="" mediaFileName="" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="http://www.alice.org/downloads/installerOnlineData" includeAllDownloadableComponents="false" includedJRE="" manualJREEntry="false" bundleType="2" jreURL="http://www.alice.org/downloads/jre_bundles/windows-x86-${compiler:included_jre_version}.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" verifyIntegrity="true">
+    <windows name="Windows 32 Offline" id="117" customizedId="" mediaFileName="" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="http://www.alice.org/downloads/installerOnlineData" includeAllDownloadableComponents="false" includedJRE="windows-x86-{compiler:included_jre_version}" manualJREEntry="false" bundleType="2" jreURL="http://www.alice.org/downloads/jre_bundles/windows-x86-${compiler:included_jre_version}.tar.gz" jreShared="false" directDownload="false" installOnlyIfNecessary="false" customInstallBaseDir="" contentFilesType="1" verifyIntegrity="true">
       <excludedComponents />
       <includedDownloadableComponents />
       <excludedLaunchers />
@@ -1680,7 +1680,7 @@ return console.askYesNo(message, true);
         <customAttributes />
       </autoUpdate>
     </windows>
-    <macosArchive name="Mac OS X Single Bundle Archive" id="195" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="" includeAllDownloadableComponents="true" includedJRE="" manualJREEntry="false" archiveType="dmg" volumeName="${compiler:sys.shortName}" launcherId="24">
+    <macosArchive name="Mac OS X Single Bundle Archive" id="195" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="Alice3" overridePrincipalLanguage="false" jreBitType="all" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="" includeAllDownloadableComponents="true" includedJRE="macosx-amd64-${compiler:included_jre_version}_unpacked" manualJREEntry="false" archiveType="dmg" volumeName="${compiler:sys.shortName}" launcherId="24">
       <excludedComponents />
       <includedDownloadableComponents />
       <excludedBeans />
@@ -1693,7 +1693,7 @@ return console.askYesNo(message, true);
       </autoUpdate>
       <topLevelFiles />
     </macosArchive>
-    <windowsArchive name="Windows Archive" id="891" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="${compiler:sys.shortName}" overridePrincipalLanguage="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="" includeAllDownloadableComponents="true" includedJRE="" manualJREEntry="false">
+    <windowsArchive name="Windows Archive" id="891" customizedId="" mediaFileName="${compiler:sys.shortName}_${compiler:sys.platform}_bundle_${compiler:sys.version}" installDir="${compiler:sys.shortName}" overridePrincipalLanguage="false" jreBitType="32" runPostProcessor="false" postProcessor="" failOnPostProcessorError="false" useLegacyMediaFileIds="false" legacyMediaFileIds="" downloadURL="" includeAllDownloadableComponents="true" includedJRE="windows-x86-{compiler:included_jre_version}" manualJREEntry="false">
       <excludedComponents />
       <includedDownloadableComponents />
       <excludedLaunchers />
