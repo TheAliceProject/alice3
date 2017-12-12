@@ -50,7 +50,7 @@ public final class Version implements Comparable<Version> {
 
 	public Version( String text ) {
 		String[] subTexts = text.split( "\\." );
-		final int N = (subTexts[subTexts.length - 1].equals( "dev" )) ? subTexts.length - 1 : subTexts.length;
+		final int N = subTexts.length;
 		this.subNumbers = new int[ N ];
 		for( int i = 0; i < N; i++ ) {
 			try {
