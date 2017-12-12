@@ -1,1 +1,1 @@
-${alice.build.version}.dev
+${alice.build.version}.${alice.build.patch}
