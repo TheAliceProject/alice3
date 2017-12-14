@@ -68,6 +68,8 @@
 
 		<jogl.version>2.3.2</jogl.version>
 
+		<alice.build.version>3.3.2</alice.build.version>
+		<alice.build.patch>0</alice.build.patch>
 		<alice.model.version>2016.08.19</alice.model.version>
 		<sound.gallery.version>2017.08.09</sound.gallery.version>
 		<starter.projects.version>2016.08.16</starter.projects.version>
@@ -326,6 +328,11 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.sonatype.install4j</groupId>
+					<artifactId>install4j-maven-plugin</artifactId>
+					<version>1.0.8</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -351,6 +358,33 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.sonatype.install4j</groupId>
+				<artifactId>install4j-maven-plugin</artifactId>
+				<version>1.0.8</version>
+				<executions>
+					<execution>
+						<id>compile-installers</id>
+						<phase>package</phase>
+						<inherited>false</inherited>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<projectFile>${project.basedir}/tools/batch-build/src/main/resources/Installer/aliceinstallerproject.install4j</projectFile>
+							<attach>true</attach>
+							<release>${alice.build.version}.${alice.build.patch}</release>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-license</id>
+						<phase>package</phase>
+						<goals>
+							<goal>install-license</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 
 		<resources>
@@ -362,8 +396,20 @@
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.txt</include>
+				</includes>
 				<excludes>
 					<exclude>**/*.gitkeep</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/*.gitkeep</exclude>
+					<exclude>**/*.txt</exclude>
 				</excludes>
 			</resource>
 

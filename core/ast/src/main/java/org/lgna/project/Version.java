@@ -80,6 +80,10 @@ public final class Version implements Comparable<Version> {
 		return this.subNumbers[ 1 ];
 	}
 
+	public String getMajorAndMinor() {
+		return getMajor() + "." + getMinor();
+	}
+
 	public int getBuild() {
 		return this.subNumbers[ 2 ];
 	}

@@ -43,6 +43,8 @@
 
 package org.alice.ide;
 
+import org.lgna.project.ProjectVersion;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -120,16 +122,16 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 	}
 
-	public static final String getApplicationName() {
+	public static String getApplicationName() {
 		return "Alice";
 	}
 
-	public static final String getVersionText() {
-		return org.lgna.project.ProjectVersion.getCurrentVersionText();
+	public static String getVersionText() {
+		return ProjectVersion.getCurrentVersionText();
 	}
 
-	public static final String getVersionAdornment() {
-		return " 3.3";
+	public static String getVersionAdornment() {
+		return ProjectVersion.getCurrentVersion().getMajorAndMinor();
 	}
 
 	public static final String getApplicationSubPath() {
