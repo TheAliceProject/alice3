@@ -94,6 +94,7 @@
 		<module>core/util</module>
 
 		<module>alice/alice-ide</module>
+		<module>installer</module>
 	</modules>
 
 	<dependencyManagement>
@@ -355,33 +356,6 @@
 						<configuration>
 							<property>parent.basedir</property>
 						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.sonatype.install4j</groupId>
-				<artifactId>install4j-maven-plugin</artifactId>
-				<version>1.0.8</version>
-				<executions>
-					<execution>
-						<id>compile-installers</id>
-						<phase>package</phase>
-						<inherited>false</inherited>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-						<configuration>
-							<projectFile>${project.basedir}/tools/batch-build/src/main/resources/Installer/aliceinstallerproject.install4j</projectFile>
-							<attach>true</attach>
-							<release>${alice.build.version}.${alice.build.patch}</release>
-						</configuration>
-					</execution>
-					<execution>
-						<id>install-license</id>
-						<phase>package</phase>
-						<goals>
-							<goal>install-license</goal>
-						</goals>
 					</execution>
 				</executions>
 			</plugin>
