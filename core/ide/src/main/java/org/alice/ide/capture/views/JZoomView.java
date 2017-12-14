@@ -42,6 +42,11 @@
  *******************************************************************************/
 package org.alice.ide.capture.views;
 
+import edu.cmu.cs.dennisc.java.awt.ComponentUtilities;
+
+import javax.swing.JFrame;
+import javax.swing.JRootPane;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -82,15 +87,13 @@ public class JZoomView extends javax.swing.JComponent {
 
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
-		if( e != null ) {
+		JRootPane jRootPane = getEventRootPane();
+		if( jRootPane != null ) {
 			java.awt.Component c = e.getComponent();
-
-			javax.swing.JFrame jFrame = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.getRootJFrame( c );
-			javax.swing.JRootPane jRootPane = jFrame.getRootPane();
 			javax.swing.JMenuBar jMenuBar = jRootPane.getJMenuBar();
 			java.awt.Container jContentPane = jRootPane.getContentPane();
 
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
 
 			int xCenter = SIZE.width / 2;
 			int yCenter = SIZE.height / 2;
@@ -105,6 +108,16 @@ public class JZoomView extends javax.swing.JComponent {
 		} else {
 			super.paintComponent( g );
 		}
+	}
+
+	private JRootPane getEventRootPane() {
+		if (e != null) {
+			JFrame jFrame = ComponentUtilities.getRootJFrame( e.getComponent() );
+			if (jFrame != null) {
+				 return jFrame.getRootPane();
+			}
+		}
+		return null;
 	}
 
 	public void handleMouseMovedOrDragged( java.awt.event.MouseEvent e ) {
