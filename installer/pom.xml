@@ -76,7 +76,7 @@
 							<goal>compile</goal>
 						</goals>
 						<configuration>
-							<projectFile>${project.basedir}/tools/batch-build/src/main/resources/Installer/aliceinstallerproject.install4j</projectFile>
+							<projectFile>${parent.basedir}/tools/batch-build/src/main/resources/Installer/aliceinstallerproject.install4j</projectFile>
 							<attach>true</attach>
 							<release>${alice.build.version}.${alice.build.patch}</release>
 						</configuration>
