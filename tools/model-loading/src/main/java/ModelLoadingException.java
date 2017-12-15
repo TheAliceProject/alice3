@@ -5,4 +5,8 @@ public class ModelLoadingException extends Exception {
 		super( message );
 	}
 	
+	public ModelLoadingException(String message, Throwable cause) {
+        super(message, cause);
+    }
+	
 }
