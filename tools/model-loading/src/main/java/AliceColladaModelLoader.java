@@ -567,6 +567,20 @@ public class AliceColladaModelLoader {
 		return colladaModel.findImage( textureName );
 	}
 	
+	
+	/**
+	 * 	Alice models are in a different geometric space than maya models
+	 *	Maya models are modeled with:
+	 *	  forward = +z
+	 *	  right   = -x
+	 *	  up      = +y
+	 *	
+	 *	Alice models are modeled with:
+	 *	  forward = -z
+	 *	  right   = +x
+	 *	  up      = +y
+	 *  This converts a transform in maya space into Alice space
+	 */
 	private static AffineMatrix4x4 flipTransform( AffineMatrix4x4 transform ) {		
 		transform.orientation.right.y *= -1;
 		
@@ -698,6 +712,10 @@ public class AliceColladaModelLoader {
 	}
 	
 	
+	/**
+	 * 	Alice models are in a different geometric space than maya models
+	 *  Models must have their space transformed so that the look correct in Alice
+	 */
 	private static void flipAliceModel(SkeletonVisual sv) {
 		flipJoints(sv.skeleton.getValue());
 		for (edu.cmu.cs.dennisc.scenegraph.Geometry g : sv.geometries.getValue()) {
@@ -747,24 +765,13 @@ public class AliceColladaModelLoader {
 		
 	}
 	
+	
+	//Looks at the transforms in the skeleton and removes any scaling found in the orientation matrices
+	//Scaling is removed by applying that scale to the children of that joint and normalizing the matrix
 	private static void removeImplicitScale(SkeletonVisual sv) {
 		//Implicit scale is set on the orientation of the root joint of the skeleton
 		Vector3 rootScale = getImplicitScale( sv.skeleton.getValue() );
 		removeImplicitScaleFromSkeleton(sv.skeleton.getValue(), new Vector3(1,1,1));
-		
-//		
-//		//First step is to normalize the orientation
-//		AffineMatrix4x4 rootTransform = sv.skeleton.getValue().getLocalTransformation();
-//		rootTransform.orientation.normalizeColumns();
-//		sv.skeleton.getValue().localTransformation.setValue( rootTransform );
-//		//Scale all the child joints. This skips the translation of the root joint which should not be scaled
-//		for( int i = 0; i < sv.skeleton.getValue().getComponentCount(); i++ )
-//		{
-//			Component comp = sv.skeleton.getValue().getComponentAt( i );
-//			if (comp instanceof Joint) {
-//				scaleJoints((Joint)comp, scale);
-//			}
-//		}
 		for (edu.cmu.cs.dennisc.scenegraph.Geometry g : sv.geometries.getValue()) {
 			//The collada import pipeline only supports meshes, so we only need to worry about transforming meshes
 			//If we start to support things like cylinders and boxes, then this would need to be updated
@@ -773,10 +780,7 @@ public class AliceColladaModelLoader {
 				scaleMesh(m, rootScale);
 			}
 		}
-		for (WeightedMesh wm : sv.weightedMeshes.getValue()) {
-//			scaleMesh(wm, scale);
-//			removeImplicitScaleFromWeightInfo(wm.weightInfo.getValue());
-		}
+
 	}
 	
 	private static Vector3 getImplicitScale( Joint skeleton ) {
@@ -824,9 +828,8 @@ public class AliceColladaModelLoader {
 		//Find and build the skeleton first
 		Node rootNode = findRootNode(scene.getNodes());
 		Joint aliceSkeleton = createAliceSkeletonFromNode( rootNode );
-		printJoints(aliceSkeleton, "");
 		
-		
+		//Find and build meshes (both static and weighted) from the collada model
 		List<Mesh> aliceMeshes = createAliceMeshesFromCollada( colladaModel );
 		
 		SkeletonVisual skeletonVisual = new SkeletonVisual();
@@ -851,18 +854,13 @@ public class AliceColladaModelLoader {
 		skeletonVisual.geometries.setValue( aliceGeometry.toArray( new Mesh[aliceGeometry.size()] ) );
 		skeletonVisual.weightedMeshes.setValue( aliceWeightedMeshes.toArray( new WeightedMesh[aliceWeightedMeshes.size()] ) );
 		
-		
+		//Remove any scale from the model
 		removeImplicitScale( skeletonVisual );
-		
-		printJoints(aliceSkeleton, "");
-//		Vector3 implicitScale = getImplicitScale(aliceSkeleton);
-//		if (implicitScale.x != 1.0 || implicitScale.y != 1.0 || implicitScale.z != 1.0) {
-//			
-//		}
 		float extraScale = colladaModel.getUnit().getMeter();
 		if (extraScale != 1.0f) {
 			scaleAliceModel( skeletonVisual, new Vector3(extraScale, extraScale, extraScale));
 		}
+		//Convert the model from maya/collada space to Alice space
 		flipAliceModel( skeletonVisual );
 		
 		
