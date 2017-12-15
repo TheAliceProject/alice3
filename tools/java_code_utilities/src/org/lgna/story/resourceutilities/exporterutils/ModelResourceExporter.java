@@ -1447,6 +1447,7 @@ public class ModelResourceExporter {
 		try {
 			if( source.isDirectory() ) {
 				String name = source.getPath().replace( "\\", "/" );
+				name = name.replace( "//", "/" );
 				if( name.length() > 0 ) {
 					if( !name.endsWith( "/" ) ) {
 						name += "/";
