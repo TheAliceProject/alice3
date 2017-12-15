@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.story.resourceutilities;
+package org.lgna.story.resourceutilities.exporterutils;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -83,6 +83,10 @@ import org.lgna.story.resources.FlyerResource;
 import org.lgna.story.resources.ImplementationAndVisualType;
 import org.lgna.story.resources.QuadrupedResource;
 import org.lgna.story.resources.SwimmerResource;
+import org.lgna.story.resourceutilities.JavaCodeUtilities;
+import org.lgna.story.resourceutilities.ModelClassData;
+import org.lgna.story.resourceutilities.ModelResourceInfo;
+import org.lgna.story.resourceutilities.ModelSubResourceExporter;
 import org.w3c.dom.Document;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
@@ -571,10 +575,6 @@ public class ModelResourceExporter {
 	public void addSubResource( ModelSubResourceExporter subResource ) {
 		this.subResources.add( subResource );
 	}
-
-	//	public void addResource( String modelName, String textureName, String resourceType ) {
-	//		this.addSubResource( new ModelSubResourceExporter( modelName, textureName, resourceType ) );
-	//	}
 
 	public void addResource( String modelName, String textureName, String resourceType, String attributionName, String attributionYear ) {
 		String attributionNameToUse = null;

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="aliceJavadoc/src"/>
+	<classpathentry kind="src" path="batch-build/src/main/java"/>
+	<classpathentry kind="src" path="export_ground/src"/>
+	<classpathentry kind="src" path="gallery-qa/src/main/java"/>
+	<classpathentry kind="src" path="galleryDiff/src"/>
+	<classpathentry kind="src" path="i18n/gallery-i18n-seed-generation/src/main/java"/>
+	<classpathentry kind="src" path="i18n/joint-i18n-seed-generation/src/main/java"/>
+	<classpathentry kind="src" path="i18n/translations-qa/src/main/java"/>
+	<classpathentry kind="src" path="java_code_utilities/src"/>
+	<classpathentry kind="src" path="jdk_bugs/drag_mouse_wheel/src"/>
+	<classpathentry kind="src" path="jira_add_version/src"/>
+	<classpathentry kind="src" path="jira_search/src"/>
+	<classpathentry kind="src" path="list-project-resources/src/main/java"/>
+	<classpathentry kind="src" path="migrate-projects/src/main/java"/>
+	<classpathentry kind="src" path="output_arch/src"/>
+	<classpathentry kind="src" path="project_file_editor/src"/>
+	<classpathentry kind="src" path="project-launcher/src/main/java"/>
+	<classpathentry kind="src" path="rose/src"/>
+	<classpathentry kind="src" path="source-copyright-batch/src/main/java"/>
+	<classpathentry kind="src" path="spreadsheet/src"/>
+	<classpathentry kind="lib" path="java_code_utilities/lib/tools.jar"/>
+	<classpathentry kind="lib" path="rose/lib/jai-1_1_3/lib/jai_codec.jar"/>
+	<classpathentry kind="lib" path="rose/lib/jai-1_1_3/lib/jai_core.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="batch-build/target/classes"/>
+</classpath>
