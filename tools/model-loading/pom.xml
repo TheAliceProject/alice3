@@ -4,11 +4,9 @@
   <name>Model Loading</name>
   <description>Project for loading external models into Alice</description>
   <build>
-    <sourceDirectory>src/dae4j/src</sourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
         <configuration>
           <source/>
           <target/>
@@ -27,5 +25,18 @@
   		<groupId>org.alice</groupId>
   		<artifactId>ide</artifactId>
   	</dependency>
+    <dependency>
+      <groupId>org.alice</groupId>
+      <artifactId>alice-ide</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.alice</groupId>
+      <artifactId>alice-ide</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.alice</groupId>
+      <artifactId>collada</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>
