@@ -662,9 +662,6 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 			unscaledTransform.translation.z *= inverseScale.backward.z;
 
 			if( currentNode instanceof Joint ) {
-				Joint joint = (Joint)currentNode;
-				System.out.println( "\nOn joint " + joint.jointID.getValue() );
-				PrintUtilities.print( "Local transform: ", joint.localTransformation.getValue().translation, joint.localTransformation.getValue().orientation );
 				for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() ) {
 					for( WeightedMeshControl wmc : controlEntry.getValue() ) {
 						wmc.process( (Joint)currentNode, unscaledTransform );
