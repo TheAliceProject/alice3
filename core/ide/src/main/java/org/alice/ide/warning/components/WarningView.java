@@ -77,8 +77,8 @@ public class WarningView extends org.lgna.croquet.views.PageAxisPanel {
 
 			@Override
 			protected List<Component[]> addComponentRows( List<Component[]> rv ) {
-				rv.add( SpringUtilities.createRow( createLabel( "updates" ), new JBrowserHyperlink( "http://www.alice.org/3" ) ) );
-				rv.add( SpringUtilities.createRow( createLabel( "blog" ), new JBrowserHyperlink( "http://blog.alice.org/" ) ) );
+				rv.add( SpringUtilities.createRow( createLabel( "updates" ), new JBrowserHyperlink( "http://www.alice.org/get-alice/alice-3" ) ) );
+				rv.add( SpringUtilities.createRow( createLabel( "blog" ), new JBrowserHyperlink( "https://www.alice.org/news/" ) ) );
 				rv.add( SpringUtilities.createRow( createLabel( "community" ), new JBrowserHyperlink( "http://www.alice.org/community/" ) ) );
 				rv.add( SpringUtilities.createRow( createLabel( "bugReports" ), new JBrowserHyperlink( "http://bugs.alice.org:8080/" ) ) );
 				return rv;
