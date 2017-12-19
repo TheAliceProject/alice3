@@ -46,7 +46,7 @@ package org.alice.ide.issue.swing;
  * @author Dennis Cosgrove
  */
 public class CheckForNewAliceVersionAction extends javax.swing.AbstractAction {
-	private static final String SPEC = "http://www.alice.org/3";
+	private static final String SPEC = "http://www.alice.org/get-alice/alice-3";
 
 	public CheckForNewAliceVersionAction() {
 		this.putValue( javax.swing.Action.NAME, SPEC );

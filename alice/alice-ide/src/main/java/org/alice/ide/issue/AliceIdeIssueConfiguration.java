@@ -53,7 +53,7 @@ public class AliceIdeIssueConfiguration extends IdeIssueConfiguration {
 
 	@Override
 	public String getDownloadUrlSpec() {
-		return "http://www.alice.org/3";
+		return "http://www.alice.org/get-alice/alice-3";
 	}
 
 	@Override

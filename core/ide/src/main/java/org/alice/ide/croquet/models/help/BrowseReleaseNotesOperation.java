@@ -47,6 +47,6 @@ package org.alice.ide.croquet.models.help;
  */
 public class BrowseReleaseNotesOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
 	public BrowseReleaseNotesOperation() {
-		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ), org.alice.ide.help.HelpBrowserOperation.HELP_URL_SPEC + "w/page/57571480/Release%20Notes%20Alice%203_1" );
+		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ), "http://www.alice.org/get-alice/alice-3" );
 	}
 }
