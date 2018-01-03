@@ -93,6 +93,11 @@
 		<module>core/story-api</module>
 		<module>core/util</module>
 
+		<module>nonfree/core</module>
+		<module>nonfree/core/ide-nonfree</module>
+		<module>nonfree/core/resources-nonfree</module>
+		<module>nonfree/core/story-api-nonfree</module>
+
 		<module>alice/alice-ide</module>
 		<module>installer</module>
 	</modules>
@@ -166,11 +171,34 @@
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 
+			<!-- Non-free libraries/models -->
+			<dependency>
+				<groupId>org.alice.nonfree</groupId>
+				<artifactId>ide-nonfree</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.alice.nonfree</groupId>
+				<artifactId>resources-nonfree</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.alice.nonfree</groupId>
+				<artifactId>story-api-nonfree</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
 			<!-- Gallery/Models -->
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>alice-model-source</artifactId>
 				<version>${alice.model.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.alice.nonfree</groupId>
+				<artifactId>nebulous-model-source</artifactId>
+				<version>${nebulous.model.version}</version>
 			</dependency>
 
 			<!-- Third Party Libraries -->
@@ -461,55 +489,6 @@
 					</plugin>
 				</plugins>
 			</build>
-		</profile>
-
-		<!-- Non-free libraries/models -->
-		<profile>
-			<id>non-free</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-				<property>
-					<name>zanata.locales</name>
-				</property>
-			</activation>
-
-			<modules>
-				<module>nonfree/core</module>
-				<module>nonfree/core/ide-nonfree</module>
-				<module>nonfree/core/resources-nonfree</module>
-				<module>nonfree/core/story-api-nonfree</module>
-			</modules>
-
-			<dependencyManagement>
-				<dependencies>
-					<dependency>
-						<groupId>org.alice.nonfree</groupId>
-						<artifactId>ide-nonfree</artifactId>
-						<version>0.0.1-SNAPSHOT</version>
-					</dependency>
-					<dependency>
-						<groupId>org.alice.nonfree</groupId>
-						<artifactId>resources-nonfree</artifactId>
-						<version>0.0.1-SNAPSHOT</version>
-					</dependency>
-					<dependency>
-						<groupId>org.alice.nonfree</groupId>
-						<artifactId>story-api-nonfree</artifactId>
-						<version>0.0.1-SNAPSHOT</version>
-					</dependency>
-
-					<dependency>
-						<groupId>org.alice.nonfree</groupId>
-						<artifactId>nebulous-model-source</artifactId>
-						<version>${nebulous.model.version}</version>
-					</dependency>
-					<!-- <dependency> -->
-					<!-- <groupId>org.alice.nonfree</groupId> -->
-					<!-- <artifactId>nebulous-person-source</artifactId> -->
-					<!-- <version>${nebulous.person.version}</version> -->
-					<!-- </dependency> -->
-				</dependencies>
-			</dependencyManagement>
 		</profile>
 	</profiles>
 
