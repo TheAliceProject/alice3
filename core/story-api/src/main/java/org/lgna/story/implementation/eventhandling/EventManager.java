@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation.eventhandling;
 
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -156,6 +157,16 @@ public class EventManager {
 		}
 	};
 
+	private java.awt.event.FocusListener focusAdapter = new java.awt.event.FocusListener() {
+
+		@Override public void focusGained( FocusEvent e ) {
+		}
+
+		@Override public void focusLost( FocusEvent e ) {
+			keyHandler.releaseAllKeys();
+		}
+	};
+
 	//	private final java.util.List< org.lgna.story.event.MouseButtonListener > mouseButtonListeners = Collections.newCopyOnWriteArrayList();
 	//	private final java.util.List< org.lgna.story.event.KeyListener > keyListeners = Collections.newCopyOnWriteArrayList();
 
@@ -189,6 +200,7 @@ public class EventManager {
 		component.addMouseListener( this.mouseAdapter );
 		component.addMouseMotionListener( this.mouseAdapter );
 		component.addKeyListener( this.keyAdapter );
+		component.addFocusListener( this.focusAdapter );
 	}
 
 	public void removeListenersFrom( OnscreenRenderTarget onscreenRenderTarget ) {
@@ -196,6 +208,7 @@ public class EventManager {
 		component.removeMouseListener( this.mouseAdapter );
 		component.removeMouseMotionListener( this.mouseAdapter );
 		component.removeKeyListener( this.keyAdapter );
+		component.removeFocusListener( this.focusAdapter );
 	}
 
 	//	public void mouseButtonClicked(MouseButtonEvent e) {
