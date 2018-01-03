@@ -318,7 +318,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 
 	@Override
 	protected String getDefaultCommitText() {
-		return "Finish";
+		return this.findLocalizedText( "finish" );
 	}
 
 	@Override
