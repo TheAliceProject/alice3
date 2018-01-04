@@ -5854,7 +5854,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"GRAY"
 					),
 
-			new TextMigration( new Version( "3.0" ), new Version( "3.4.0" ),
+			new TextMigration( new Version( "3.3.0.0.0" ), new Version( "3.4.0" ),
 					"<method isVarArgs=\"false\" name=\"getModelAtMouseLocation\"><declaringClass name=\"org.lgna.story.event.MouseClickEvent\"/><parameters/></method>",
 					"<method isVarArgs=\"false\" name=\"getModelAtMouseLocation\"><declaringClass name=\"org.lgna.story.event.MouseClickOnObjectEvent\"/><parameters/></method>"
 					)
