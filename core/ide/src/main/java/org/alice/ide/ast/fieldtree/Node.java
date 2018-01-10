@@ -81,7 +81,7 @@ public abstract class Node<N extends org.lgna.project.ast.AbstractDeclaration> i
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.getClass().getSimpleName() );
 		sb.append( "[" );
-		sb.append( this.declaration.getName() );
+		sb.append( declaration == null ? " - " : declaration.getName() );
 		sb.append( "]" );
 		return sb.toString();
 	}
