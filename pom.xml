@@ -503,6 +503,19 @@
 			<name>Alice External Repository</name>
 			<url>http://maven.alice.org/external</url>
 		</repository>
+
+		<repository>
+			<id>thirdparty-releases</id>
+			<name>JBoss Thirdparty Releases</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
+		</repository>
+
+		<repository>
+			<id>atlassian-public</id>
+			<name>Atlassian Public Repository</name>
+			<layout>default</layout>
+			<url>https://maven.atlassian.com/maven-external</url>
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
