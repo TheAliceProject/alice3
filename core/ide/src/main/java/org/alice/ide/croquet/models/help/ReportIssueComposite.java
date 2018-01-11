@@ -43,6 +43,7 @@
 package org.alice.ide.croquet.models.help;
 
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
+import org.alice.ide.issue.ReportSubmissionConfiguration;
 import org.lgna.croquet.ImmutableDataSingleSelectListState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.event.ValueListener;
@@ -204,7 +205,7 @@ public final class ReportIssueComposite extends AbstractIssueComposite<ReportIss
 	private final StringState summaryState = createStringState( "summaryState" );
 	private final StringState descriptionState = createStringState( "descriptionState" );
 	private final ImmutableDataSingleSelectListState<BugSubmitAttachment> attachmentState = createImmutableListStateForEnum( "attachmentState", BugSubmitAttachment.class, null );
-	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
+	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), ReportSubmissionConfiguration.JIRA_URL );
 	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "079f108d-c3bb-4581-b107-f21b8d7286ca" ), BugLoginComposite.getInstance() );
 	private final org.lgna.croquet.Operation reportBugLaunchOperation;
 	private final org.lgna.croquet.Operation requestNewFeatureLaunchOperation;
