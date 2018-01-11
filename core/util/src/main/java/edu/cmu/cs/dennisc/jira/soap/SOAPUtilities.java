@@ -42,60 +42,60 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.jira.soap;
 
+import com.atlassian.jira.rpc.soap.client.JiraSoapService;
+import com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue;
+import com.atlassian.jira.rpc.soap.client.RemoteIssue;
+import com.atlassian.jira.rpc.soap.client.RemoteVersion;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
+import edu.cmu.cs.dennisc.issue.Attachment;
+import edu.cmu.cs.dennisc.jira.JIRAReport;
+
+import java.rmi.RemoteException;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SOAPUtilities {
-	//	public String logIn( com.atlassian.jira.rpc.soap.client.JiraSoapService service, String username, String password ) throws java.rmi.RemoteException {
-	//		return service.login( username, password );
-	//	}
 
-	private static com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue createCustomField( int key, String value ) {
-		return new com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue( "customfield_" + key, "", new String[] { value } );
+	private static RemoteCustomFieldValue createCustomField( int key, String value ) {
+		return new RemoteCustomFieldValue( "customfield_" + key, "", new String[] { value } );
 	}
 
-	private static com.atlassian.jira.rpc.soap.client.RemoteVersion[] getRemoteAffectsVersions( edu.cmu.cs.dennisc.jira.JIRAReport jiraReport, com.atlassian.jira.rpc.soap.client.JiraSoapService service, String token, String project ) throws java.rmi.RemoteException {
+	private static RemoteVersion[] getRemoteAffectsVersions( JIRAReport jiraReport, JiraSoapService service, String token, String project ) {
 		String[] affectsVersions = jiraReport.getAffectsVersions();
 		if( ( affectsVersions != null ) && ( affectsVersions.length > 0 ) ) {
 			String affectsVersion = affectsVersions[ 0 ];
-			com.atlassian.jira.rpc.soap.client.RemoteVersion[] versions = service.getVersions( token, project );
-			for( com.atlassian.jira.rpc.soap.client.RemoteVersion version : versions ) {
+			RemoteVersion[] versions;
+			try {
+				versions = service.getVersions( token, project );
+			} catch (RemoteException e) {
+				e.printStackTrace();
+				return new RemoteVersion[] {};
+			}
+			for( RemoteVersion version : versions ) {
 				String versionName = version.getName();
 				if( ( versionName != null ) && ( versionName.length() > 0 ) ) {
 					if( versionName.equals( affectsVersion ) ) {
-						return new com.atlassian.jira.rpc.soap.client.RemoteVersion[] { version };
+						return new RemoteVersion[] { version };
 					}
 				}
 			}
 		}
-		return new com.atlassian.jira.rpc.soap.client.RemoteVersion[] {};
+		return new RemoteVersion[] {};
 	}
 
-	private static com.atlassian.jira.rpc.soap.client.RemoteIssue createPreparedIssue( edu.cmu.cs.dennisc.jira.JIRAReport jiraReport ) {
-		com.atlassian.jira.rpc.soap.client.RemoteIssue remoteIssue = new com.atlassian.jira.rpc.soap.client.RemoteIssue();
+	private static RemoteIssue createPreparedIssue( JIRAReport jiraReport ) {
+		RemoteIssue remoteIssue = new RemoteIssue();
 		remoteIssue.setSummary( edu.cmu.cs.dennisc.jira.JIRAUtilities.ensureStringWithinLimit( jiraReport.getSummary(), 254 ) );
 		remoteIssue.setType( Integer.toString( edu.cmu.cs.dennisc.jira.JIRAUtilities.getType( jiraReport.getType() ) ) );
 
-		StringBuilder sb = new StringBuilder();
-		sb.append( jiraReport.getDescription() );
+		String description = jiraReport.getCreditedDescription();
+		remoteIssue.setDescription( description );
 
-		String reportedBy = jiraReport.getReportedBy();
-		if( ( reportedBy != null ) && ( reportedBy.length() > 0 ) ) {
-			sb.append( "\nreported by: " );
-			sb.append( reportedBy );
-		}
-
-		String emailAddress = jiraReport.getEmailAddress();
-		if( ( emailAddress != null ) && ( emailAddress.length() > 0 ) ) {
-			sb.append( "\nemail address: " );
-			sb.append( emailAddress );
-		}
-
-		remoteIssue.setDescription( sb.toString() );
-
-		com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue steps = createCustomField( 10000, jiraReport.getSteps() );
-		com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue exception = createCustomField( 10001, jiraReport.getException() );
-		remoteIssue.setCustomFieldValues( new com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue[] { steps, exception } );
+		RemoteCustomFieldValue steps = createCustomField( 10000, jiraReport.getSteps() );
+		RemoteCustomFieldValue exception = createCustomField( 10001, jiraReport.getException() );
+		remoteIssue.setCustomFieldValues( new RemoteCustomFieldValue[] { steps, exception } );
 
 		StringBuffer environment = new StringBuffer();
 		String[] affectsVersions = jiraReport.getAffectsVersions();
@@ -109,21 +109,20 @@ public class SOAPUtilities {
 		return remoteIssue;
 	}
 
-	public static com.atlassian.jira.rpc.soap.client.RemoteIssue createIssue( edu.cmu.cs.dennisc.jira.JIRAReport jiraReport, com.atlassian.jira.rpc.soap.client.JiraSoapService service, String token ) throws java.rmi.RemoteException {
+	public static RemoteIssue createIssue( JIRAReport jiraReport, JiraSoapService service, String token ) throws java.rmi.RemoteException {
 		String project = jiraReport.getProjectKey();
-		com.atlassian.jira.rpc.soap.client.RemoteIssue remoteIssue = createPreparedIssue( jiraReport );
+		RemoteIssue remoteIssue = createPreparedIssue( jiraReport );
 		remoteIssue.setProject( project );
-		com.atlassian.jira.rpc.soap.client.RemoteVersion[] remoteAffectsVersions = SOAPUtilities.getRemoteAffectsVersions( jiraReport, service, token, project );
+		RemoteVersion[] remoteAffectsVersions = SOAPUtilities.getRemoteAffectsVersions( jiraReport, service, token, project );
 		remoteIssue.setAffectsVersions( remoteAffectsVersions );
-		com.atlassian.jira.rpc.soap.client.RemoteIssue rv = service.createIssue( token, remoteIssue );
-		return rv;
+		return service.createIssue( token, remoteIssue );
 	}
 
-	public static com.atlassian.jira.rpc.soap.client.RemoteIssue addAttachment( com.atlassian.jira.rpc.soap.client.RemoteIssue rv, edu.cmu.cs.dennisc.issue.Attachment attachment, com.atlassian.jira.rpc.soap.client.JiraSoapService service, String token ) throws java.rmi.RemoteException {
+	public static RemoteIssue addAttachment( RemoteIssue rv, Attachment attachment, JiraSoapService service, String token ) throws java.rmi.RemoteException {
 		String[] names = { attachment.getFileName() };
 		final boolean isBase64EncodingDesired = true; // addAttachmentsToIssue is slow and uses too much memory
 		if( isBase64EncodingDesired ) {
-			String[] base64s = { org.apache.axis.encoding.Base64.encode( attachment.getBytes() ) };
+			String[] base64s = { Base64.encode( attachment.getBytes() ) };
 			service.addBase64EncodedAttachmentsToIssue( token, rv.getKey(), names, base64s );
 		} else {
 			byte[][] data = { attachment.getBytes() };
