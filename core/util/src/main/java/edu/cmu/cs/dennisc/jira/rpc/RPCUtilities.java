@@ -75,8 +75,8 @@ public class RPCUtilities {
 		String project = jiraReport.getProjectKey();
 		redstone.xmlrpc.XmlRpcStruct rv = new redstone.xmlrpc.XmlRpcStruct();
 		rv.put( "project", project );
-		rv.put( "type", edu.cmu.cs.dennisc.jira.JIRAUtilities.getType( jiraReport.getType() ) );
-		rv.put( "summary", edu.cmu.cs.dennisc.jira.JIRAUtilities.ensureStringWithinLimit( jiraReport.getSummary(), 254 ) );
+		rv.put( "type", jiraReport.getTypeID() );
+		rv.put( "summary", jiraReport.getTruncatedSummary() );
 
 		StringBuilder sb = new StringBuilder();
 		sb.append( jiraReport.getDescription() );
@@ -114,7 +114,6 @@ public class RPCUtilities {
 		customFields.add( createCustomField( 10000, jiraReport.getSteps() ) );
 		customFields.add( createCustomField( 10001, jiraReport.getException() ) );
 		rv.put( "customFieldValues", customFields );
-		rv.put( "priority", edu.cmu.cs.dennisc.jira.JIRAUtilities.getPriority() );
 		return (redstone.xmlrpc.XmlRpcStruct)client.invoke( "jira1.createIssue", new Object[] { token, rv } );
 	}
 

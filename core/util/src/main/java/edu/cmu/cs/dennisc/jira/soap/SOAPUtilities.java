@@ -87,8 +87,8 @@ public class SOAPUtilities {
 
 	private static RemoteIssue createPreparedIssue( JIRAReport jiraReport ) {
 		RemoteIssue remoteIssue = new RemoteIssue();
-		remoteIssue.setSummary( edu.cmu.cs.dennisc.jira.JIRAUtilities.ensureStringWithinLimit( jiraReport.getSummary(), 254 ) );
-		remoteIssue.setType( Integer.toString( edu.cmu.cs.dennisc.jira.JIRAUtilities.getType( jiraReport.getType() ) ) );
+		remoteIssue.setSummary( jiraReport.getTruncatedSummary() );
+		remoteIssue.setType( Integer.toString( jiraReport.getTypeID() ) );
 
 		String description = jiraReport.getCreditedDescription();
 		remoteIssue.setDescription( description );
@@ -105,7 +105,6 @@ public class SOAPUtilities {
 			environment.append( ";\n" );
 		}
 		remoteIssue.setEnvironment( jiraReport.getEnvironment() );
-		remoteIssue.setPriority( edu.cmu.cs.dennisc.jira.JIRAUtilities.getPriority() );
 		return remoteIssue;
 	}
 

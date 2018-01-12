@@ -43,10 +43,14 @@
 
 package edu.cmu.cs.dennisc.jira;
 
+import edu.cmu.cs.dennisc.issue.IssueType;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
+	private final static int SUMMARY_MAX = 254;
+
 	private final String projectKey;
 	private final edu.cmu.cs.dennisc.issue.IssueType type;
 	private final String summary;
@@ -84,8 +88,21 @@ public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 		return this.type;
 	}
 
-	public String getSummary() {
-		return this.summary;
+	public int getTypeID() {
+		switch (type) {
+		case BUG:
+			return 1;
+		case NEW_FEATURE:
+			return 2;
+		case IMPROVEMENT:
+			return 4;
+		default:
+			throw new RuntimeException();
+		}
+	}
+
+	public String getTruncatedSummary() {
+		return summary.length() < SUMMARY_MAX ? summary : summary.substring( 0, SUMMARY_MAX );
 	}
 
 	public String getDescription() {
