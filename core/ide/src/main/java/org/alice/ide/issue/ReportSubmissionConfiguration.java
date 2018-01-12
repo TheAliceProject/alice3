@@ -45,7 +45,7 @@ package org.alice.ide.issue;
 import java.net.URI;
 
 public class ReportSubmissionConfiguration implements edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration {
-	public static final String JIRA_URL = "http://bugs3.alice.org:8080/";
+	public static final String JIRA_URL = "http://bugs.alice.org:8080/";
 	private static final String JIRA_RPC_URL = JIRA_URL + "rpc/xmlrpc";
 	public static final String JIRA_SOAP_URL = JIRA_URL + "rpc/soap/jirasoapservice-v2";
 
