@@ -75,10 +75,27 @@
 			<artifactId>xmlrpc</artifactId>
 			<version>1.1.1</version>
 		</dependency>
+		<!-- This sets the version used below in the jira rest code, which references two different versions. -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.12</version>
+		</dependency>
+		<dependency>
+			<groupId>com.atlassian.fugue</groupId>
+			<artifactId>fugue</artifactId>
+			<version>2.2.1</version>
+		</dependency>
 		<dependency>
 			<groupId>com.atlassian.jira.plugins</groupId>
 			<artifactId>jira-soapclient</artifactId>
 			<version>6.4.9</version>
+		</dependency>
+		<dependency>
+			<groupId>com.atlassian.jira</groupId>
+			<artifactId>jira-rest-java-client-parent</artifactId>
+			<version>4.0.0</version>
+			<type>pom</type>
 		</dependency>
 		<dependency>
 			<groupId>com.atlassian.jira</groupId>
