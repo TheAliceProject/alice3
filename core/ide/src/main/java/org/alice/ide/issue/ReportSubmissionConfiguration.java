@@ -42,15 +42,25 @@
  *******************************************************************************/
 package org.alice.ide.issue;
 
+import java.net.URI;
+
 public class ReportSubmissionConfiguration implements edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration {
+	public static final String JIRA_URL = "http://bugs.alice.org:8080/";
+	private static final String JIRA_RPC_URL = JIRA_URL + "rpc/xmlrpc";
+	public static final String JIRA_SOAP_URL = JIRA_URL + "rpc/soap/jirasoapservice-v2";
+
+	@Override public URI getJIRAViaRestServer() {
+		return URI.create( JIRA_URL );
+	}
+
 	@Override
 	public java.net.URL getJIRAViaRPCServer() throws java.net.MalformedURLException {
-		return new java.net.URL( "http://bugs.alice.org:8080/rpc/xmlrpc" );
+		return new java.net.URL( JIRA_RPC_URL );
 	}
 
 	@Override
 	public java.net.URL getJIRAViaSOAPServer() throws java.net.MalformedURLException {
-		return new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" );
+		return new java.net.URL( JIRA_SOAP_URL );
 	}
 
 	@Override

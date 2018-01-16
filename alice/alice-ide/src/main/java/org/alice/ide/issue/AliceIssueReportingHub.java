@@ -56,7 +56,7 @@ public class AliceIssueReportingHub implements org.lgna.issue.IssueReportingHub 
 		com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 		com.atlassian.jira.rpc.soap.client.JiraSoapService service = null;
 		try {
-			java.net.URL url = new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" );
+			java.net.URL url = new java.net.URL( ReportSubmissionConfiguration.JIRA_SOAP_URL );
 			service = jiraSoapServiceLocator.getJirasoapserviceV2( url );
 		} catch( java.net.MalformedURLException murle ) {
 			// error

@@ -45,6 +45,7 @@ package org.alice.ide.warning.components;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities;
+import org.alice.ide.issue.ReportSubmissionConfiguration;
 import org.alice.ide.warning.WarningDialogComposite;
 import org.lgna.croquet.views.PlainMultiLineLabel;
 
@@ -80,7 +81,7 @@ public class WarningView extends org.lgna.croquet.views.PageAxisPanel {
 				rv.add( SpringUtilities.createRow( createLabel( "updates" ), new JBrowserHyperlink( "http://www.alice.org/get-alice/alice-3" ) ) );
 				rv.add( SpringUtilities.createRow( createLabel( "blog" ), new JBrowserHyperlink( "https://www.alice.org/news/" ) ) );
 				rv.add( SpringUtilities.createRow( createLabel( "community" ), new JBrowserHyperlink( "http://www.alice.org/community/" ) ) );
-				rv.add( SpringUtilities.createRow( createLabel( "bugReports" ), new JBrowserHyperlink( "http://bugs.alice.org:8080/" ) ) );
+				rv.add( SpringUtilities.createRow( createLabel( "bugReports" ), new JBrowserHyperlink( ReportSubmissionConfiguration.JIRA_URL ) ) );
 				return rv;
 			}
 		}

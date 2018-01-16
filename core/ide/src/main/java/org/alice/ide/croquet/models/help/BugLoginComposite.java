@@ -43,6 +43,7 @@
 package org.alice.ide.croquet.models.help;
 
 import org.alice.ide.croquet.models.help.views.LoginView;
+import org.alice.ide.issue.ReportSubmissionConfiguration;
 import org.alice.ide.issue.swing.views.LogInStatusPane;
 
 /**
@@ -71,7 +72,7 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 	protected boolean tryToLogin() {
 		try {
 			com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
-			com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
+			com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( ReportSubmissionConfiguration.JIRA_SOAP_URL ) );
 			String username = userNameState.getValue();
 			String password = passwordState.getValue();
 			String token;

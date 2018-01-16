@@ -43,6 +43,14 @@
 
 package edu.cmu.cs.dennisc.issue;
 
+import com.atlassian.jira.rest.client.api.domain.BasicIssue;
+import com.atlassian.jira.rpc.soap.client.JiraSoapService;
+import com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator;
+import com.atlassian.jira.rpc.soap.client.RemoteIssue;
+import edu.cmu.cs.dennisc.jira.JIRAReport;
+import edu.cmu.cs.dennisc.jira.rest.RestUtilities;
+import edu.cmu.cs.dennisc.jira.soap.SOAPUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -68,13 +76,33 @@ public final class IssueReportWorker extends javax.swing.SwingWorker<Boolean, St
 		this.process( edu.cmu.cs.dennisc.java.util.Lists.newArrayList( chunks ) );
 	}
 
-	protected boolean uploadToJIRAViaSOAP() throws Exception {
+	private void uploadToJiraViaRest() throws Exception {
+		JIRAReport jiraReport = issueReportGenerator.generateIssueForSOAP();
+		if( jiraReport != null ) {
+			BasicIssue result = RestUtilities.createIssue(reportSubmissionConfiguration.getJIRAViaRestServer(), jiraReport);
+			this.key = result.getKey();
+
+			java.util.List<Attachment> attachments = jiraReport.getAttachments();
+			if( ( attachments != null ) && ( attachments.size() > 0 ) ) {
+				this.process( "\n" );
+				for( Attachment attachment : attachments ) {
+					this.process( "\t" + attachment.getFileName() + "... " );
+					RestUtilities.addAttachment(reportSubmissionConfiguration.getJIRAViaRestServer(), result, attachment);
+					this.process( "done.\n" );
+				}
+			}
+		} else {
+			throw new Exception( "pass" );
+		}
+	}
+
+	private boolean uploadToJIRAViaSOAP() throws Exception {
 		edu.cmu.cs.dennisc.jira.JIRAReport jiraReport = this.issueReportGenerator.generateIssueForSOAP();
 		if( jiraReport != null ) {
-			com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
-			com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( this.reportSubmissionConfiguration.getJIRAViaSOAPServer() );
+			JiraSoapServiceServiceLocator jiraSoapServiceLocator = new JiraSoapServiceServiceLocator();
+			JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( this.reportSubmissionConfiguration.getJIRAViaSOAPServer() );
 			String token = this.reportSubmissionConfiguration.getJIRAViaSOAPAuthenticator().login( service );
-			com.atlassian.jira.rpc.soap.client.RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( jiraReport, service, token );
+			RemoteIssue result = SOAPUtilities.createIssue( jiraReport, service, token );
 
 			java.util.List<Attachment> attachments = jiraReport.getAttachments();
 			boolean rv = true;
@@ -102,7 +130,7 @@ public final class IssueReportWorker extends javax.swing.SwingWorker<Boolean, St
 		}
 	}
 
-	protected void uploadToJIRAViaRPC() throws Exception {
+	private void uploadToJIRAViaRPC() throws Exception {
 		edu.cmu.cs.dennisc.jira.JIRAReport jiraReport = this.issueReportGenerator.generateIssueForRPC();
 		if( jiraReport != null ) {
 			final boolean STREAM_MESSAGES = true;
@@ -132,57 +160,66 @@ public final class IssueReportWorker extends javax.swing.SwingWorker<Boolean, St
 	@Override
 	protected Boolean doInBackground() throws Exception {
 		this.process( "attempting to submit bug report...\n" );
+
+		this.process( "* uploading directly to database via REST... " );
 		try {
-			this.process( "* uploading directly to database... " );
-			boolean isSuccessAttachment = this.uploadToJIRAViaSOAP();
-			if( isSuccessAttachment ) {
-				this.process( "SUCCEEDED.\n" );
-			} else {
-				this.process( "PARTIALLY SUCCEEDED (attachments failed).\n" );
-				//				this.process( "* sending mail (on smtp port)... " );
-				//				try {
-				//					this.sendMail( false, null );
-				//					this.process( "SUCCEEDED.\n" );
-				//				} catch( Exception eC ) {
-				//					eC.printStackTrace();
-				//					this.process( "FAILED.\n" );
-				//				}
-			}
-		} catch( Exception eA ) {
-			eA.printStackTrace();
+			uploadToJiraViaRest();
+			this.process( "SUCCEEDED.\n" );
+		} catch ( Exception e) {
+			e.printStackTrace();
 			try {
 				this.process( "FAILED.\n" );
-				this.process( "* uploading directly to database via RPC... " );
-				this.uploadToJIRAViaRPC();
-				this.process( "SUCCEEDED.\n" );
-			} catch( Exception eB ) {
-				eB.printStackTrace();
-				this.process( "FAILED.\n" );
-				//				this.process( "* sending mail (on smtp port)... " );
-				//				try {
-				//					this.sendMail( false, null );
-				//					this.process( "SUCCEEDED.\n" );
-				//				} catch( Exception eC ) {
-				//					eC.printStackTrace();
-				//					this.process( "FAILED.\n" );
-				//					//					this.process( "* sending secure mail (on secure smtp port)... " );
-				//					//					try {
-				//					//						this.sendMail( true, null );
-				//					//						this.process( "SUCCEEDED.\n" );
-				//					//					} catch( Exception eD ) {
-				//					//						eD.printStackTrace();
-				//					//						this.process( "FAILED.\n" );
-				//					//						this.process( "* sending secure mail (on http port)... " );
-				//					//						try {
-				//					//							this.sendMail( true, 80 );
-				//					//							this.process( "SUCCEEDED.\n" );
-				//					//						} catch( Exception eE ) {
-				//					//							eE.printStackTrace();
-				//					this.process( "FAILED.\n" );
-				//					return false;
-				//					//						}
-				//					//					}
-				//				}
+				this.process( "* uploading directly to database via SOAP... " );
+				boolean isSuccessAttachment = this.uploadToJIRAViaSOAP();
+				if( isSuccessAttachment ) {
+					this.process( "SUCCEEDED.\n" );
+				} else {
+					this.process( "PARTIALLY SUCCEEDED (attachments failed).\n" );
+					//				this.process( "* sending mail (on smtp port)... " );
+					//				try {
+					//					this.sendMail( false, null );
+					//					this.process( "SUCCEEDED.\n" );
+					//				} catch( Exception eC ) {
+					//					eC.printStackTrace();
+					//					this.process( "FAILED.\n" );
+					//				}
+				}
+			} catch( Exception eA ) {
+				eA.printStackTrace();
+				try {
+					this.process( "FAILED.\n" );
+					this.process( "* uploading directly to database via RPC... " );
+					this.uploadToJIRAViaRPC();
+					this.process( "SUCCEEDED.\n" );
+				} catch (Exception eB) {
+					eB.printStackTrace();
+					this.process( "FAILED.\n" );
+					//				this.process( "* sending mail (on smtp port)... " );
+					//				try {
+					//					this.sendMail( false, null );
+					//					this.process( "SUCCEEDED.\n" );
+					//				} catch( Exception eC ) {
+					//					eC.printStackTrace();
+					//					this.process( "FAILED.\n" );
+					//					//					this.process( "* sending secure mail (on secure smtp port)... " );
+					//					//					try {
+					//					//						this.sendMail( true, null );
+					//					//						this.process( "SUCCEEDED.\n" );
+					//					//					} catch( Exception eD ) {
+					//					//						eD.printStackTrace();
+					//					//						this.process( "FAILED.\n" );
+					//					//						this.process( "* sending secure mail (on http port)... " );
+					//					//						try {
+					//					//							this.sendMail( true, 80 );
+					//					//							this.process( "SUCCEEDED.\n" );
+					//					//						} catch( Exception eE ) {
+					//					//							eE.printStackTrace();
+					//					this.process( "FAILED.\n" );
+					//					return false;
+					//					//						}
+					//					//					}
+					//				}
+				}
 			}
 		}
 		return true;
