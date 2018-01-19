@@ -164,6 +164,7 @@
       <java mainClass="org.alice.stageide.EntryPoint" mainMode="1" vmParameters="-ea -Xmx1024m -Dorg.alice.ide.rootDirectory=./ -Dswing.aatext=true -Djogamp.gluegen.UseTempJarCache=false" arguments="" allowVMPassthroughParameters="true" preferredVM="" bundleRuntime="true">
         <classPath>
           <directory location="lib/*" failOnError="true" />
+          <directory location="lib/*" failOnError="true" />
         </classPath>
         <modulePath />
         <nativeLibraryDirectories />
