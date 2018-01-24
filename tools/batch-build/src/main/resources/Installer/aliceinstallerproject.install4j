@@ -177,8 +177,22 @@
       <customScript mode="1" file="">
         <content />
       </customScript>
-      <infoPlist mode="1" file="">
-        <content />
+      <infoPlist mode="3" file="">
+        <content>&lt;key&gt;CFBundleDocumentTypes&lt;/key&gt;
+&lt;array&gt;
+  &lt;dict&gt;
+    &lt;key&gt;CFBundleTypeExtensions&lt;/key&gt;
+    &lt;array&gt;
+      &lt;string&gt;a3p&lt;/string&gt;
+    &lt;/array&gt;
+    &lt;key&gt;CFBundleTypeIconFile&lt;/key&gt;
+    &lt;string&gt;app.icns&lt;/string&gt;
+    &lt;key&gt;CFBundleTypeName&lt;/key&gt;
+    &lt;string&gt;alice3project&lt;/string&gt;
+    &lt;key&gt;CFBundleTypeRole&lt;/key&gt;
+    &lt;string&gt;Editor&lt;/string&gt;
+  &lt;/dict&gt;
+&lt;/array&gt;</content>
       </infoPlist>
       <iconImageFiles>
         <file path="../../../../../../installer/installerFiles/desktopIcon16.png" />
