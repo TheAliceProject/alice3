@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.alice.ide;
 
+import org.alice.ide.croquet.models.projecturi.OpenProjectFromOsOperation;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.Trigger;
 
@@ -411,7 +412,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		if (files != null && !files.isEmpty()) {
 			File file = files.get( 0 );
 			if( file.exists() ) {
-				setProjectFileToLoadOnWindowOpened( file );
+				new OpenProjectFromOsOperation( file ).fire( null );
 			}
 		}
 	}
