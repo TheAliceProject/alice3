@@ -12,9 +12,7 @@ import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientF
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import edu.cmu.cs.dennisc.issue.Attachment;
@@ -27,7 +25,6 @@ public class RestUtilities {
 	private static final String STEPS_FIELD_ID = "customfield_10000";
 	private static final String EXCEPTION_FIELD_ID = "customfield_10001";
 	private static final String ENVIRONMENT_FIELD_ID = "environment";
-	private static final ArrayList<String> EMPTY_VERSION_LIST = new ArrayList<>( 0 );
 
 	private static final AsynchronousJiraRestClientFactory JIRA_REST_CLIENT_FACTORY = new AsynchronousJiraRestClientFactory();
 
@@ -55,26 +52,25 @@ public class RestUtilities {
 	}
 
 	private static IssueInput buildJiraIssueInput( JIRAReport jiraReport, JiraRestClient restClient ) {
-		return new IssueInputBuilder().setProjectKey( jiraReport.getProjectKey() )
-						.setIssueTypeId( (long) jiraReport.getTypeID() )
-						.setSummary( jiraReport.getTruncatedSummary() )
+		final IssueInputBuilder issueBuilder = new IssueInputBuilder().setProjectKey( jiraReport.getProjectKey() )
+						.setIssueTypeId( (long) jiraReport.getTypeID() ).setSummary( jiraReport.getTruncatedSummary() )
 						.setDescription( jiraReport.getCreditedDescription() )
-						.setAffectedVersionsNames( getRemoteVersionMatch( jiraReport, restClient ) )
 						.setFieldValue( ENVIRONMENT_FIELD_ID, jiraReport.getEnvironment() )
 						.setFieldValue( EXCEPTION_FIELD_ID, jiraReport.getException() )
-						.setFieldValue( STEPS_FIELD_ID, jiraReport.getSteps() )
-						.build();
+						.setFieldValue( STEPS_FIELD_ID, jiraReport.getSteps() );
+		addFirstRemoteVersionName( issueBuilder, jiraReport, restClient );
+		return issueBuilder.build();
 	}
 
-	private static List<String> getRemoteVersionMatch( JIRAReport jiraReport, JiraRestClient restClient ) {
+	private static void addFirstRemoteVersionName( IssueInputBuilder issueBuilder, JIRAReport jiraReport, JiraRestClient restClient ) {
 		String affectsVersion = jiraReport.getAffectsVersionText();
 		Iterable<Version> versions = restClient.getProjectClient().getProject( jiraReport.getProjectKey()).claim().getVersions();
 
 		for( Version version : versions) {
 			if( affectsVersion.equals( version.getName() ) ) {
-				return Collections.singletonList( affectsVersion );
+				issueBuilder.setAffectedVersionsNames( Collections.singletonList( affectsVersion ) );
+				return;
 			}
 		}
-		return EMPTY_VERSION_LIST;
 	}
 }
