@@ -47,6 +47,8 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class ProgramImp {
+	// Hack for Netbeans plugin to operate without IDE localization
+	private static final String DEFAULT_SPEED_FORMAT = "speed: %dx";
 	private static Object ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock = new Object();
 	private static Class<? extends ProgramImp> ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
 	private static Class<?>[] ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes;
@@ -177,7 +179,7 @@ public abstract class ProgramImp {
 	}
 
 	public String getSpeedFormat() {
-		return speedFormat;
+		return (speedFormat == null) ? DEFAULT_SPEED_FORMAT : speedFormat;
 	}
 
 	public void setSpeedFormat(String format) {
