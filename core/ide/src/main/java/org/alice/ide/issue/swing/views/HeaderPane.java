@@ -42,12 +42,14 @@
  *******************************************************************************/
 package org.alice.ide.issue.swing.views;
 
+import org.alice.ide.issue.ReportSubmissionConfiguration;
+
 public class HeaderPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
 	public HeaderPane() {
 		this.setBackground( java.awt.Color.DARK_GRAY );
 		this.setOpaque( true );
 
-		edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink hyperlink = new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://bugs.alice.org:8080/" );
+		edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink hyperlink = new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( ReportSubmissionConfiguration.JIRA_URL );
 		hyperlink.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( HeaderPane.class.getResource( "images/logo.png" ) ) );
 		hyperlink.setDefaultColor( java.awt.Color.LIGHT_GRAY );
 		hyperlink.setArmedColor( java.awt.Color.YELLOW );

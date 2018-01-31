@@ -42,7 +42,13 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.uri;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.alice.ide.ast.type.merge.croquet.MembersToolPalette;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
 import org.alice.nonfree.NebulousIde;
+
+import static edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringForKey;
 
 /**
  * @author Dennis Cosgrove
@@ -237,7 +243,6 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		org.alice.ide.ast.export.type.TypeSummary typeSummary = getTypeSummary();
 		String typeName = typeSummary != null ? typeSummary.getTypeName() : "???";
 
-		//TODO: Localize
 		org.alice.stageide.modelresource.InstanceCreatorKey resourceKey = this.getResourceKey();
 		if( resourceKey != null ) {
 			Class<?> modelResourceCls = resourceKey.getModelResourceCls();
@@ -247,17 +252,20 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 				this.text = resourceKey.getLocalizedDisplayText();
 			}
 		} else {
-			this.text = "new " + typeName + "()";
+			Formatter formatter = FormatterState.getInstance().getValue();
+			this.text = String.format(formatter.getNewFormat(), typeName, "");
 		}
 
 		if( typeName != null ) {
 			java.io.File file = new java.io.File( this.uri );
 			if( file.exists() ) {
 				String baseName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( file );
-				if( typeName.contentEquals( baseName ) ) {
-					//pass
-				} else {
-					this.text = "<html>" + this.text + " <em>from " + file.getName() + "</em></html>";
+				if (!typeName.contentEquals( baseName )) {
+					// Use existing l18n string and remove trailing :
+					String fromFormat = ResourceBundleUtilities.getStringForKey( "MembersToolPalette.fromImportHeader", MembersToolPalette.class );
+					fromFormat = fromFormat.replaceFirst(":", "" );
+					fromFormat = fromFormat.replaceFirst("</filename/>", file.getName() );
+					this.text = "<html>" + this.text + " <em>" + fromFormat + "</em></html>";
 				}
 			}
 		}

@@ -42,8 +42,7 @@
  *******************************************************************************/
 package org.lgna.project.virtualmachine;
 
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.*;
 
 /**
  * @author Dennis Cosgrove
@@ -111,7 +110,7 @@ public abstract class VirtualMachine {
 	}
 
 	public UserInstance ENTRY_POINT_createInstance( org.lgna.project.ast.NamedUserType entryPointType, Object... arguments ) {
-		return this.createInstanceFromUserConstructor( getConstructor( entryPointType, arguments ), arguments );
+		return getConstructor( entryPointType, arguments ).evaluate( this, null, arguments );
 	}
 
 	public UserInstance ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMap( org.lgna.project.ast.NamedUserType entryPointType, Object... arguments ) {
@@ -199,15 +198,6 @@ public abstract class VirtualMachine {
 		this.mapProtectedMthdToAdapterMthd.put( anonymousMthd, adapterMthd );
 	}
 
-	protected UserInstance createInstanceFromUserConstructor( org.lgna.project.ast.NamedUserConstructor constructor, Object[] arguments ) {
-		return UserInstance.createInstance( this, constructor, arguments );
-	}
-
-	protected Object createInstanceFromConstructorDeclaredInJava( org.lgna.project.ast.JavaConstructor constructor, Object[] arguments ) {
-		UserInstance.updateArrayWithInstancesInJavaIfNecessary( arguments );
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( constructor.getConstructorReflectionProxy().getReification(), arguments );
-	}
-
 	/* package-private */Object createInstance( org.lgna.project.ast.UserType<?> type, final UserInstance userInstance, java.lang.reflect.Constructor<?> cnstrctr, Object... arguments ) {
 		Class<?> cls = cnstrctr.getDeclaringClass();
 		Class<?> adapterCls = this.mapAbstractClsToAdapterCls.get( cls );
@@ -223,54 +213,6 @@ public abstract class VirtualMachine {
 			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
 		} else {
 			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, arguments );
-		}
-	}
-
-	protected Object createInstanceFromAnonymousConstructor( org.lgna.project.ast.AnonymousUserConstructor constructor, Object[] arguments ) {
-		throw new RuntimeException( "todo" );
-		//		org.lgna.project.ast.AbstractType<?,?,?> type = constructor.getDeclaringType();
-		//		if( type instanceof org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice ) {
-		//			org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice anonymousType = (org.lgna.project.ast.AnonymousInnerTypeDeclaredInAlice)type;
-		//			org.lgna.project.ast.AbstractType<?,?,?> superType = anonymousType.getSuperType();
-		//			if( superType instanceof org.lgna.project.ast.TypeDeclaredInJava ) {
-		//				Class< ? > anonymousCls = ((org.lgna.project.ast.TypeDeclaredInJava)superType).getClassReflectionProxy().getReification();
-		//				Class< ? > adapterCls = this.mapAnonymousClsToAdapterCls.get( anonymousCls );
-		//				if( adapterCls != null ) {
-		//					final InstanceInAlice instance = this.getThis();
-		//					Context context = new Context() {
-		//						public void invokeEntryPoint( final org.lgna.project.ast.AbstractMethod method, final Object... arguments ) {
-		////							new Thread() {
-		////								@Override
-		////								public void run() {
-		//									VirtualMachine.this.ENTRY_POINT_invoke( instance, method, arguments );
-		////								}
-		////							}.start();
-		//						}
-		//					};
-		//					Class< ? >[] parameterTypes = { Context.class, org.lgna.project.ast.AbstractTypeDeclaredInAlice.class, Object[].class };
-		//					Object[] args = { context, anonymousType, arguments };
-		//					return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
-		//				} else {
-		//					throw new RuntimeException();
-		//				}
-		//			} else {
-		//				throw new RuntimeException();
-		//			}
-		//		} else {
-		//			throw new RuntimeException();
-		//		}
-	}
-
-	protected Object createInstance( org.lgna.project.ast.AbstractConstructor constructor, Object... arguments ) {
-		assert constructor != null;
-		if( constructor instanceof org.lgna.project.ast.NamedUserConstructor ) {
-			return this.createInstanceFromUserConstructor( (org.lgna.project.ast.NamedUserConstructor)constructor, arguments );
-		} else if( constructor instanceof org.lgna.project.ast.JavaConstructor ) {
-			return this.createInstanceFromConstructorDeclaredInJava( (org.lgna.project.ast.JavaConstructor)constructor, arguments );
-		} else if( constructor instanceof org.lgna.project.ast.AnonymousUserConstructor ) {
-			return this.createInstanceFromAnonymousConstructor( (org.lgna.project.ast.AnonymousUserConstructor)constructor, arguments );
-		} else {
-			throw new RuntimeException();
 		}
 	}
 
@@ -316,8 +258,8 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected Object[] evaluateArguments( org.lgna.project.ast.AbstractCode code, org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.SimpleArgument> arguments,
-			org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.SimpleArgument> variableArguments, org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.JavaKeyedArgument> keyedArguments ) {
+	public Object[] evaluateArguments( AbstractCode code, NodeListProperty<SimpleArgument> arguments,
+					NodeListProperty<SimpleArgument> variableArguments, NodeListProperty<JavaKeyedArgument> keyedArguments ) {
 		//todo: when variable length and keyed parameters are offered in the IDE (User) this code will need to be updated
 		java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = code.getRequiredParameters();
 		org.lgna.project.ast.AbstractParameter variableParameter = code.getVariableLengthParameter();
@@ -637,12 +579,6 @@ public abstract class VirtualMachine {
 		return booleanLiteral.value.getValue();
 	}
 
-	protected Object evaluateInstanceCreation( org.lgna.project.ast.InstanceCreation classInstanceCreation ) {
-		//		AbstractType classType =classInstanceCreation.constructor.getValue().getDeclaringType();
-		Object[] arguments = this.evaluateArguments( classInstanceCreation.constructor.getValue(), classInstanceCreation.requiredArguments, classInstanceCreation.variableArguments, classInstanceCreation.keyedArguments );
-		return this.createInstance( classInstanceCreation.constructor.getValue(), arguments );
-	}
-
 	protected Object evaluateArrayInstanceCreation( org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation ) {
 		Object[] values = new Object[ arrayInstanceCreation.expressions.size() ];
 		for( int i = 0; i < values.length; i++ ) {
@@ -891,7 +827,7 @@ public abstract class VirtualMachine {
 			} else if( expression instanceof org.lgna.project.ast.BooleanLiteral ) {
 				rv = this.evaluateBooleanLiteral( (org.lgna.project.ast.BooleanLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
-				rv = this.evaluateInstanceCreation( (org.lgna.project.ast.InstanceCreation)expression );
+				rv = ( (org.lgna.project.ast.InstanceCreation) expression ).evaluate(this );
 			} else if( expression instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
 				rv = this.evaluateArrayInstanceCreation( (org.lgna.project.ast.ArrayInstanceCreation)expression );
 			} else if( expression instanceof org.lgna.project.ast.ArrayLength ) {

@@ -119,6 +119,13 @@ public class AddCopiedManagedFieldComposite extends AddManagedFieldComposite {
 		this.initialInstanceCreation = initialInstanceCreation;
 	}
 
+	@Override
+	protected String generateName() {
+		String sourceName =  fieldToCopy == null ? super.generateName() : fieldToCopy.getName();
+		// Remove trailing digits to avoid odd name suggestions
+		return sourceName.replaceAll("\\d*$", "");
+	}
+
 	public void setFieldToBeCopied( org.lgna.project.ast.UserField fieldToCopy, org.lgna.project.ast.Statement... setupStatements ) {
 		this.fieldToCopy = fieldToCopy;
 		org.lgna.project.ast.Expression newInitializer = org.lgna.project.ast.AstUtilities.createCopy( fieldToCopy.initializer.getValue(), (org.lgna.project.ast.NamedUserType)fieldToCopy.getDeclaringType() );

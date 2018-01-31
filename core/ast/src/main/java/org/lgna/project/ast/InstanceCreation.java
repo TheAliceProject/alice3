@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import org.lgna.project.virtualmachine.VirtualMachine;
 /**
  * @author Dennis Cosgrove
  */
@@ -117,7 +118,10 @@ public final class InstanceCreation extends Expression implements ArgumentOwner 
 	@Override
 	public void appendJava( JavaCodeGenerator generator ) {
 		generator.appendString( "new " );
-		generator.appendTypeName( this.constructor.getValue().getDeclaringType() );
+		AbstractType<?, ?, ?> type = getType();
+		if (null == type)
+			type = ((UserField) getParent()).valueType.getValue();
+		generator.appendTypeName( type );
 		generator.appendChar( '(' );
 		generator.appendArguments( this );
 		generator.appendChar( ')' );
@@ -133,4 +137,12 @@ public final class InstanceCreation extends Expression implements ArgumentOwner 
 	public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
 	public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );
 	public final KeyedArgumentListProperty keyedArguments = new KeyedArgumentListProperty( this );
+
+	public Object evaluate( VirtualMachine virtualMachine ) {
+		AbstractType<?, ?, ?> fallbackType = getParent() instanceof AbstractField ?
+						((AbstractField) getParent()).getValueType() :
+						null;
+		Object[] arguments = virtualMachine.evaluateArguments( constructor.getValue(), requiredArguments, variableArguments, keyedArguments );
+		return constructor.getValue().evaluate( virtualMachine, fallbackType, arguments );
+	}
 }

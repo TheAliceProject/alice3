@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import org.alice.stageide.gallerybrowser.shapes.CylinderDragModel;
+import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,6 +62,10 @@ public class AddCylinderManagedFieldComposite extends AddModelManagedFieldCompos
 
 	private AddCylinderManagedFieldComposite() {
 		super( java.util.UUID.fromString( "a674d706-3c7b-476b-979a-4a2b1cf8e17c" ), org.lgna.story.SCylinder.class );
+	}
+
+	@Override protected ShapeDragModel getDragModel() {
+		return CylinderDragModel.getInstance();
 	}
 
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getRadiusState() {

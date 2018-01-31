@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import org.alice.ide.identifier.IdentifierNameGenerator;
+import org.alice.stageide.modelresource.ResourceKey;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -70,7 +73,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		}
 	};
 
-	private org.lgna.project.ast.InstanceCreation initialInstanceCreation;
+	private ResourceKey resourceKey;
 	private boolean isChangeResourceAllowed;
 
 	private AddResourceKeyManagedFieldComposite() {
@@ -82,18 +85,23 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		this.getInitializerState().addAndInvokeNewSchoolValueListener( initializerListener );
 	}
 
-	private void setInitializerInitialValue( org.lgna.project.ast.InstanceCreation initialInstanceCreation, boolean isChangeResourceAllowed ) {
-		this.initialInstanceCreation = initialInstanceCreation;
+	public void setResourceKeyToBeUsedByGetInitializerInitialValue( ResourceKey resourceKey, boolean isChangeResourceAllowed ) {
+		this.resourceKey = resourceKey;
 		this.isChangeResourceAllowed = isChangeResourceAllowed;
 	}
 
-	public void setResourceKeyToBeUsedByGetInitializerInitialValue( org.alice.stageide.modelresource.ResourceKey resourceKey, boolean isChangeResourceAllowed ) {
-		this.setInitializerInitialValue( resourceKey != null ? resourceKey.createInstanceCreation() : null, isChangeResourceAllowed );
+	protected ResourceKey getResourceKey() {
+		return resourceKey;
 	}
 
 	@Override
 	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
-		return this.initialInstanceCreation;
+		return resourceKey != null ? resourceKey.createInstanceCreation() : null;
+	}
+
+	@Override
+	protected String generateName() {
+		return IdentifierNameGenerator.SINGLETON.createIdentifierNameFromResourceKey( getResourceKey());
 	}
 
 	@Override
@@ -175,6 +183,6 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
-		this.initialInstanceCreation = null;
+		this.resourceKey = null;
 	}
 }

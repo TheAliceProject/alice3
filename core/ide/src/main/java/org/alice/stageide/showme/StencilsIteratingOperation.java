@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.alice.stageide.showme;
 
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Step;
+
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,12 +61,12 @@ public abstract class StencilsIteratingOperation extends org.lgna.croquet.Iterat
 	}
 
 	@Override
-	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
+	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		return subSteps.size() < stencilModels.length;
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
+	protected org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		int i = subSteps.size();
 		if( i < this.stencilModels.length ) {
 			return this.stencilModels[ i ];

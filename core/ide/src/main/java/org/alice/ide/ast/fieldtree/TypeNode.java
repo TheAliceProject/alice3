@@ -100,8 +100,8 @@ public class TypeNode extends Node<org.lgna.project.ast.AbstractType<?, ?, ?>> {
 		for( TypeNode typeNode : copy ) {
 			typeNode.removeEmptyTypeNodes();
 		}
-		if( this.fieldNodes.size() == 0 ) {
-			TypeNode superTypeNode = this.getParent();
+		TypeNode superTypeNode = this.getParent();
+		if( this.fieldNodes.size() == 0 && superTypeNode != null) {
 			superTypeNode.typeNodes.remove( this );
 			if( this.typeNodes.size() > 0 ) {
 				superTypeNode.typeNodes.addAll( this.typeNodes );

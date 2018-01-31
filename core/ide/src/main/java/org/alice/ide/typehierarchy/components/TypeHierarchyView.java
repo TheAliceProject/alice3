@@ -43,6 +43,11 @@
 
 package org.alice.ide.typehierarchy.components;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import edu.cmu.cs.dennisc.java.awt.font.TextWeight;
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.lgna.croquet.views.Label;
+
 class NamedUserTypeTreeModel extends edu.cmu.cs.dennisc.javax.swing.models.AbstractTreeModel<edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType>> {
 	@Override
 	public edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> getChild( Object parent, int index ) {
@@ -166,7 +171,8 @@ public class TypeHierarchyView extends org.lgna.croquet.views.BorderPanel {
 
 		org.lgna.croquet.views.SwingComponentView<?> viewportView = new org.lgna.croquet.views.SwingAdapter( this.jTree );
 		org.lgna.croquet.views.ScrollPane scrollPane = new org.lgna.croquet.views.ScrollPane( viewportView );
-		org.lgna.croquet.views.Label label = new org.lgna.croquet.views.Label( "type hierarchy", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
+		String hierarchyText = ResourceBundleUtilities.getStringForKey( "typeHierarchy", getClass());
+		Label label = new Label( hierarchyText, 1.2f, TextPosture.OBLIQUE, TextWeight.LIGHT );
 		this.setBackgroundColor( color );
 		this.addPageStartComponent( label );
 		this.addCenterComponent( scrollPane );

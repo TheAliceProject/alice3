@@ -53,8 +53,11 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFlowControlFrequencyComposite;
 import org.alice.ide.croquet.models.project.stats.croquet.StatisticsFrameComposite;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
 import org.lgna.croquet.SingleSelectListState;
 import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.views.AwtComponentView;
@@ -63,16 +66,7 @@ import org.lgna.croquet.views.GridPanel;
 import org.lgna.croquet.views.HorizontalAlignment;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.ScrollPane;
-import org.lgna.project.ast.AbstractEachInTogether;
-import org.lgna.project.ast.AbstractForEachLoop;
-import org.lgna.project.ast.ConditionalStatement;
-import org.lgna.project.ast.CountLoop;
-import org.lgna.project.ast.DoInOrder;
-import org.lgna.project.ast.DoTogether;
-import org.lgna.project.ast.LocalDeclarationStatement;
-import org.lgna.project.ast.ReturnStatement;
-import org.lgna.project.ast.UserMethod;
-import org.lgna.project.ast.WhileLoop;
+import org.lgna.project.ast.*;
 
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
@@ -190,22 +184,22 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 			if( selected == null ) {
 				selected = StatisticsFlowControlFrequencyComposite.root;
 			}
-			( (Label)getCell( 0, 0 ) ).setText( "<HTML><Strong>" + selected.getName() + "</Strong></HTML>" );
+			( (Label)getCell( 0, 0 ) ).setText( "<HTML><Strong>" + getFormattedName(selected) + "</Strong></HTML>" );
 			for( int i = 1; i != numRows; ++i ) {
 				setCell( 1, i, getCount( selected, clsArr[ i - 1 ] ) );
 			}
 		}
 
 		private void populateLeftCol() {
-			( (Label)getCell( 0, 1 ) ).setText( "If" );
-			( (Label)getCell( 0, 2 ) ).setText( "CountLoop" );
-			( (Label)getCell( 0, 3 ) ).setText( "WhileLoop" );
-			( (Label)getCell( 0, 4 ) ).setText( "ForEach" );
-			( (Label)getCell( 0, 5 ) ).setText( "EachTogether" );
-			( (Label)getCell( 0, 6 ) ).setText( "Return" );
-			( (Label)getCell( 0, 7 ) ).setText( "LocalDeclaration" );
-			( (Label)getCell( 0, 8 ) ).setText( "DoInOrder" );
-			( (Label)getCell( 0, 9 ) ).setText( "DoTogether" );
+			( (Label)getCell( 0, 1 ) ).setText( getLocalizedStringByKey( "labelIf" ) );
+			( (Label)getCell( 0, 2 ) ).setText( getLocalizedStringByKey( "labelCount" ) );
+			( (Label)getCell( 0, 3 ) ).setText( getLocalizedStringByKey( "labelWhile" ) );
+			( (Label)getCell( 0, 4 ) ).setText( getLocalizedStringByKey( "labelFor" ) );
+			( (Label)getCell( 0, 5 ) ).setText( getLocalizedStringByKey( "labelEachTogether" ) );
+			( (Label)getCell( 0, 6 ) ).setText( getLocalizedStringByKey( "labelReturn" ) );
+			( (Label)getCell( 0, 7 ) ).setText( getLocalizedStringByKey( "labelLocal" ) );
+			( (Label)getCell( 0, 8 ) ).setText( getLocalizedStringByKey( "labelDoInOrder" ) );
+			( (Label)getCell( 0, 9 ) ).setText( getLocalizedStringByKey( "labelDoTogether" ) );
 		}
 
 		private void setCell( int col, int row, int count ) {
@@ -241,12 +235,21 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 			if( !value.equals( StatisticsFlowControlFrequencyComposite.root ) ) {
 				if( value instanceof UserMethod ) {
 					UserMethod userMethod = (UserMethod)value;
-					rv.setText( userMethod.getName() );
+					rv.setText( getFormattedName(userMethod) );
 					return rv.getAwtComponent();
 				}
 			}
-			rv.setText( "<HTML><Strong>MyProject</Strong></HTML>" );
+			rv.setText( "<HTML><Strong>" + getLocalizedStringByKey("myProject") + "</Strong></HTML>" );
 			return rv.getAwtComponent();
 		}
+	}
+
+	private String getFormattedName( AbstractDeclaration declaration ) {
+		Formatter formatter = FormatterState.getInstance().getValue();
+		return formatter.getNameForDeclaration( declaration );
+	}
+
+	private static String getLocalizedStringByKey( String key ) {
+		return ResourceBundleUtilities.getStringForKey( key, StatisticsFrameComposite.class );
 	}
 }

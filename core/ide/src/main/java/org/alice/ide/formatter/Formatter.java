@@ -42,7 +42,13 @@
  *******************************************************************************/
 package org.alice.ide.formatter;
 
+import org.alice.stageide.modelresource.ClassResourceKey;
+
 /**
+ * Formats code expressed in org.lgna.project.ast.Statements.
+ * Used to display the code on Alice tiles.
+ * Concrete subclasses apply specific language choices.
+ *
  * @author Dennis Cosgrove
  */
 public abstract class Formatter {
@@ -55,7 +61,7 @@ public abstract class Formatter {
 	public abstract String getTrailerTextForCode( org.lgna.project.ast.UserCode code );
 
 	public String getTemplateText( Class<?> cls ) {
-		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates", javax.swing.JComponent.getDefaultLocale() );
+		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates");
 	}
 
 	public String getInfixExpressionText( org.lgna.project.ast.InfixExpression<?> infixExpression ) {
@@ -65,33 +71,11 @@ public abstract class Formatter {
 		return resourceBundle.getString( e.name() );
 	}
 
-	protected abstract String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy );
-
-	protected abstract String getTextForJavaParameter( org.lgna.project.ast.JavaParameter javaParameter );
-
 	public String getNameForDeclaration( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		if( declaration instanceof org.lgna.project.ast.JavaMethod ) {
-			org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)declaration;
-			return this.getTextForMethodReflectionProxy( javaMethod.getMethodReflectionProxy() );
-		} else if( declaration instanceof org.lgna.project.ast.JavaParameter ) {
-			org.lgna.project.ast.JavaParameter javaParameter = (org.lgna.project.ast.JavaParameter)declaration;
-			return this.getTextForJavaParameter( javaParameter );
-		} else if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
-			return this.getTextForType( type );
-		} else if( declaration instanceof org.lgna.project.ast.JavaField ) {
-			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)declaration;
-			if( field.isStatic() ) {
-				return this.getNameForField( field.getFieldReflectionProxy().getReification() );
-			} else {
-				return declaration.getName();
-			}
-		} else {
-			return declaration.getName();
-		}
+		return declaration.formatName(this::localizeName);
 	}
 
-	protected abstract String getNameForField( java.lang.reflect.Field fld );
+	protected abstract String localizeName(String key, String name);
 
 	public abstract boolean isTypeExpressionDesired();
 
@@ -99,24 +83,8 @@ public abstract class Formatter {
 
 	public abstract String getTextForNull();
 
-	protected abstract String getTextForCls( Class<?> cls );
-
 	public String getTextForType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		if( type != null ) {
-			if( type.isArray() ) {
-				return this.getTextForType( type.getComponentType() ) + "[]";
-			} else {
-				if( type instanceof org.lgna.project.ast.JavaType ) {
-					org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
-					Class<?> cls = javaType.getClassReflectionProxy().getReification();
-					return this.getTextForCls( cls );
-				} else {
-					return type.getName();
-				}
-			}
-		} else {
-			return this.getTextForNull();
-		}
+		return type == null ? getTextForNull() : type.formatName(this::localizeName);
 	}
 
 	public abstract String getFinalText();
@@ -127,4 +95,18 @@ public abstract class Formatter {
 	}
 
 	private final String repr;
+
+	public String galleryLabelFor( ClassResourceKey key) {
+		String className = key.getSearchText();
+		if (key.getType().isEnum()) {
+			String params = key.isLeaf() ? "" : "\u2423";
+			return String.format(getNewFormat(), className, params);
+		} else {
+			return String.format( getClassesFormat(), className );
+		}
+	}
+
+	protected abstract String getClassesFormat();
+
+	public abstract String getNewFormat();
 }

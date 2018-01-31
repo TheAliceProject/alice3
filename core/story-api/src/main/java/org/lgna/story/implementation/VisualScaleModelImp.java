@@ -105,13 +105,13 @@ public abstract class VisualScaleModelImp extends ModelImp {
 		//		edu.cmu.cs.dennisc.math.Vector3 newScaleVec = new edu.cmu.cs.dennisc.math.Vector3(scale);
 		edu.cmu.cs.dennisc.math.Dimension3 currentScale = this.getScale();
 		edu.cmu.cs.dennisc.math.Vector3 appliedScaleVec = new edu.cmu.cs.dennisc.math.Vector3( scale.x / currentScale.x, scale.y / currentScale.y, scale.z / currentScale.z );
-		if( Double.isNaN( appliedScaleVec.x ) ) {
+		if( Double.isNaN( appliedScaleVec.x ) || Double.isInfinite( appliedScaleVec.x )) {
 			appliedScaleVec.x = 1;
 		}
-		if( Double.isNaN( appliedScaleVec.y ) ) {
+		if( Double.isNaN( appliedScaleVec.y ) || Double.isInfinite( appliedScaleVec.y )) {
 			appliedScaleVec.y = 1;
 		}
-		if( Double.isNaN( appliedScaleVec.z ) ) {
+		if( Double.isNaN( appliedScaleVec.z ) || Double.isInfinite( appliedScaleVec.z )) {
 			appliedScaleVec.z = 1;
 		}
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, RIGHT_NOW ) ) {

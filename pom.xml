@@ -2,9 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<prerequisites>
-		<maven>3.0</maven>
-	</prerequisites>
 
 	<groupId>org.alice</groupId>
 	<artifactId>parent</artifactId>
@@ -67,12 +64,15 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.6</java.version>
+		<java.version>1.8</java.version>
 
 		<jogl.version>2.3.2</jogl.version>
 
+		<alice.build.version>3.4.0.0</alice.build.version>
+		<alice.build.prerelease>-alpha</alice.build.prerelease>
+		<alice.build.metadata></alice.build.metadata>
 		<alice.model.version>2016.08.19</alice.model.version>
-		<sound.gallery.version>2013.08.08</sound.gallery.version>
+		<sound.gallery.version>2017.08.09</sound.gallery.version>
 		<starter.projects.version>2016.08.16</starter.projects.version>
 		<nebulous.model.version>2016.07.15</nebulous.model.version>
 		<nebulous.person.version>2014.08.12</nebulous.person.version>
@@ -94,7 +94,13 @@
 		<module>core/story-api</module>
 		<module>core/util</module>
 
+		<module>nonfree/core</module>
+		<module>nonfree/core/ide-nonfree</module>
+		<module>nonfree/core/resources-nonfree</module>
+		<module>nonfree/core/story-api-nonfree</module>
+
 		<module>alice/alice-ide</module>
+		<module>installer</module>
 	</modules>
 
 	<dependencyManagement>
@@ -166,11 +172,34 @@
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 
+			<!-- Non-free libraries/models -->
+			<dependency>
+				<groupId>org.alice.nonfree</groupId>
+				<artifactId>ide-nonfree</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.alice.nonfree</groupId>
+				<artifactId>resources-nonfree</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.alice.nonfree</groupId>
+				<artifactId>story-api-nonfree</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
 			<!-- Gallery/Models -->
 			<dependency>
 				<groupId>org.alice</groupId>
 				<artifactId>alice-model-source</artifactId>
 				<version>${alice.model.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.alice.nonfree</groupId>
+				<artifactId>nebulous-model-source</artifactId>
+				<version>${nebulous.model.version}</version>
 			</dependency>
 
 			<!-- Third Party Libraries -->
@@ -216,9 +245,31 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<inherited>true</inherited>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>3.0.0</version>
+					<executions>
+					  <execution>
+						<id>enforce-maven-3</id>
+						<goals>
+						  <goal>enforce</goal>
+						</goals>
+						<configuration>
+						  <rules>
+							<requireMavenVersion>
+							  <version>3.5.0</version>
+							</requireMavenVersion>
+						  </rules>
+						  <fail>true</fail>
+						</configuration>
+					  </execution>
+					</executions>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.1</version>
+					<version>3.6.2</version>
 					<configuration>
 						<compilerId>eclipse</compilerId>
 						<source>${java.version}</source>
@@ -235,29 +286,29 @@
 						<dependency>
 							<groupId>org.codehaus.plexus</groupId>
 							<artifactId>plexus-compiler-eclipse</artifactId>
-							<version>2.3</version>
+							<version>2.8.2</version>
 						</dependency>
 					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
-					<version>2.8</version>
+					<version>2.10</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.6</version>
+					<version>3.0.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>build-helper-maven-plugin</artifactId>
-					<version>1.8</version>
+					<version>3.0.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>versions-maven-plugin</artifactId>
-					<version>2.1</version>
+					<version>2.4</version>
 				</plugin>
 				<plugin>
 					<groupId>org.commonjava.maven.plugins</groupId>
@@ -267,7 +318,7 @@
 				<plugin>
 					<groupId>org.zanata</groupId>
 					<artifactId>zanata-maven-plugin</artifactId>
-					<version>4.1.1</version>
+					<version>4.2.1</version>
 					<configuration>
 						<projectConfig>${parent.basedir}/zanata.xml</projectConfig>
 						<sourceLang>en-US</sourceLang>
@@ -307,6 +358,11 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.sonatype.install4j</groupId>
+					<artifactId>install4j-maven-plugin</artifactId>
+					<version>1.0.8</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -343,8 +399,20 @@
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*.txt</include>
+				</includes>
 				<excludes>
 					<exclude>**/*.gitkeep</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/*.gitkeep</exclude>
+					<exclude>**/*.txt</exclude>
 				</excludes>
 			</resource>
 
@@ -423,55 +491,6 @@
 				</plugins>
 			</build>
 		</profile>
-
-		<!-- Non-free libraries/models -->
-		<profile>
-			<id>non-free</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-				<property>
-					<name>zanata.locales</name>
-				</property>
-			</activation>
-
-			<modules>
-				<module>nonfree/core</module>
-				<module>nonfree/core/ide-nonfree</module>
-				<module>nonfree/core/resources-nonfree</module>
-				<module>nonfree/core/story-api-nonfree</module>
-			</modules>
-
-			<dependencyManagement>
-				<dependencies>
-					<dependency>
-						<groupId>org.alice.nonfree</groupId>
-						<artifactId>ide-nonfree</artifactId>
-						<version>0.0.1-SNAPSHOT</version>
-					</dependency>
-					<dependency>
-						<groupId>org.alice.nonfree</groupId>
-						<artifactId>resources-nonfree</artifactId>
-						<version>0.0.1-SNAPSHOT</version>
-					</dependency>
-					<dependency>
-						<groupId>org.alice.nonfree</groupId>
-						<artifactId>story-api-nonfree</artifactId>
-						<version>0.0.1-SNAPSHOT</version>
-					</dependency>
-
-					<dependency>
-						<groupId>org.alice.nonfree</groupId>
-						<artifactId>nebulous-model-source</artifactId>
-						<version>${nebulous.model.version}</version>
-					</dependency>
-					<!-- <dependency> -->
-					<!-- <groupId>org.alice.nonfree</groupId> -->
-					<!-- <artifactId>nebulous-person-source</artifactId> -->
-					<!-- <version>${nebulous.person.version}</version> -->
-					<!-- </dependency> -->
-				</dependencies>
-			</dependencyManagement>
-		</profile>
 	</profiles>
 
 	<repositories>
@@ -484,6 +503,19 @@
 			<id>org.alice.external</id>
 			<name>Alice External Repository</name>
 			<url>http://maven.alice.org/external</url>
+		</repository>
+
+		<repository>
+			<id>thirdparty-releases</id>
+			<name>JBoss Thirdparty Releases</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases</url>
+		</repository>
+
+		<repository>
+			<id>atlassian-public</id>
+			<name>Atlassian Public Repository</name>
+			<layout>default</layout>
+			<url>https://maven.atlassian.com/maven-external</url>
 		</repository>
 	</repositories>
 

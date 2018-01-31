@@ -43,6 +43,8 @@
 package org.alice.stageide.gallerybrowser.shapes;
 
 import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
 
 /**
  * @author Dennis Cosgrove
@@ -57,12 +59,17 @@ public abstract class ShapeDragModel extends GalleryDragModel {
 	@Override
 	protected void localize() {
 		super.localize();
-		this.text = "new " + this.findDefaultLocalizedText() + "()";
+		Formatter formatter = FormatterState.getInstance().getValue();
+		this.text = String.format(formatter.getNewFormat(), findDefaultLocalizedText(), "");
 	}
 
 	@Override
 	public final String getText() {
 		return this.text;
+	}
+
+	public String getLocalizedClassName() {
+		return this.findDefaultLocalizedText();
 	}
 
 	@Override

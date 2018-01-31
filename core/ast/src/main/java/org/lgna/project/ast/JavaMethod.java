@@ -43,6 +43,8 @@
 
 package org.lgna.project.ast;
 
+import java.util.function.BinaryOperator;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -99,6 +101,11 @@ public class JavaMethod extends AbstractMethod {
 
 	public boolean isAnnotationPresent( Class<? extends java.lang.annotation.Annotation> annotationCls ) {
 		return this.getMethodReflectionProxy().getReification().isAnnotationPresent( annotationCls );
+	}
+
+	@Override
+	public String formatName(BinaryOperator<String> localizer) {
+		return localizer.apply(getMethodReflectionProxy().getName(), getMethodReflectionProxy().getName());
 	}
 
 	@Override

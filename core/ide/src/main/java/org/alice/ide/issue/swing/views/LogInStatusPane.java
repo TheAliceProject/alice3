@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.issue.swing.views;
 
+import org.alice.ide.issue.ReportSubmissionConfiguration;
+
 class PasswordPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	private static final String HIDDEN_KEY = "HIDDEN_KEY";
 	private static final String EXPOSED_KEY = "EXPOSED_KEY";
@@ -109,7 +111,7 @@ class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane 
 		protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 			try {
 				com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
-				com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
+				com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( ReportSubmissionConfiguration.JIRA_SOAP_URL ) );
 				String username = textUsername.getText();
 				try {
 					String password = passwordPane.getPassword();

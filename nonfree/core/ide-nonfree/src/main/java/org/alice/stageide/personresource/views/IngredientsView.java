@@ -43,6 +43,9 @@
 
 package org.alice.stageide.personresource.views;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.alice.stageide.custom.ColorCustomExpressionCreatorComposite;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -136,7 +139,9 @@ public class IngredientsView extends org.lgna.croquet.views.MigPanel {
 
 		//this.addComponent( new MelaninSlider( composite.getSkinColorState() ) );
 		final org.lgna.croquet.views.Button customColorDialogButton = composite.getSkinColorState().getChooserDialogCoreComposite().getLaunchOperation().createButton();
-		customColorDialogButton.setClobberText( "Custom Color..." );
+		String customColorLabel = ResourceBundleUtilities.getStringForKey("ColorCustomExpressionCreatorComposite",
+						ColorCustomExpressionCreatorComposite.class);
+		customColorDialogButton.setClobberText( customColorLabel );
 
 		org.lgna.croquet.event.ValueListener<java.awt.Color> colorListener = new org.lgna.croquet.event.ValueListener<java.awt.Color>() {
 			@Override

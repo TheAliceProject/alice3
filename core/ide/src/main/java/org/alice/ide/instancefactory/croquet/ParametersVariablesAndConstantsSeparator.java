@@ -53,7 +53,7 @@ public final class ParametersVariablesAndConstantsSeparator extends org.lgna.cro
 	}
 
 	@Override
-	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
+	protected String getMenuItemIconProxyText() {
 		return this.menuItemText;
 	}
 

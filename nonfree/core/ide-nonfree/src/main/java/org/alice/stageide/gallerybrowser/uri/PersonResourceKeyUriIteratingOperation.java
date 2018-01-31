@@ -42,6 +42,13 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.uri;
 
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Step;
+
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -64,7 +71,7 @@ public class PersonResourceKeyUriIteratingOperation extends ResourceKeyUriIterat
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
+	protected org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		org.alice.stageide.modelresource.PersonResourceKey personResourceKey = (org.alice.stageide.modelresource.PersonResourceKey)this.resourceKey;
 		switch( subSteps.size() ) {
 		case 0:

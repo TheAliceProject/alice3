@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.common;
 
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -87,7 +90,7 @@ public class TypeIcon implements javax.swing.Icon {
 	}
 
 	private String getTypeText() {
-		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterState.getInstance().getValue();
+		Formatter formatter = FormatterState.getInstance().getValue();
 		return formatter.getTextForType( this.type );
 	}
 

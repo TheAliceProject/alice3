@@ -80,23 +80,13 @@ public class UserLocal extends AbstractTransient {
 		return true;
 	}
 
-	protected String generateName( Node context ) {
-		//todo
-		if( this.isFinal.getValue() ) {
-			return "N";
-		} else {
-			return "i";
-		}
+	private String generateName() {
+		return getParent().generateLocalName(this);
 	}
 
 	@Override
 	public final String getValidName( Node context ) {
-		String name = this.name.getValue();
-		if( name != null ) {
-			return name;
-		} else {
-			return generateName( context );
-		}
+		return getName() != null ? getName() : generateName();
 	}
 
 	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null ) {

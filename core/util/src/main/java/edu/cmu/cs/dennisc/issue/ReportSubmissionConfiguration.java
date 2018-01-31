@@ -43,6 +43,8 @@
 package edu.cmu.cs.dennisc.issue;
 
 public interface ReportSubmissionConfiguration {
+	public java.net.URI getJIRAViaRestServer();
+
 	public java.net.URL getJIRAViaRPCServer() throws java.net.MalformedURLException;
 
 	public edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator();

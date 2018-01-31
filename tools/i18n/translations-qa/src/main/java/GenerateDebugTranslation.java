@@ -12,6 +12,8 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
+import org.apache.commons.text.translate.*;
+
 /**
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  *
@@ -62,6 +64,11 @@ public class GenerateDebugTranslation {
 
 	private static PathMatcher PROPERTIES_MATCHER = FileSystems.getDefault().getPathMatcher( "glob:**.properties" );
 
+	// Based on StringEscapeUtils.escapeJava, but does not escape "s
+	private static CharSequenceTranslator JAVA_ESCAPE = new AggregateTranslator(new LookupTranslator(EntityArrays.JAVA_CTRL_CHARS_ESCAPE)).with(
+					JavaUnicodeEscaper.outsideOf(32, 127));
+
+
 	private static boolean isSrcFolder( Path path ) {
 		if( Files.exists( path.resolve( "main" ) ) && Files.exists( path.resolve( "l10n-alice" ) ) ) {
 			return true;
@@ -111,7 +118,7 @@ public class GenerateDebugTranslation {
 				String key = keys.nextElement();
 				String value = rb.getString( key );
 				if( !shouldSkipValue( value ) ) {
-					writer.write( key + " = " + customKey + value + customKey + "\r\n" );
+					writer.write( key + " = " + customKey + escapeJava(value) + customKey + "\r\n" );
 				}
 			}
 			writer.close();
@@ -120,6 +127,10 @@ public class GenerateDebugTranslation {
 		}
 
 		System.out.println( "Wrote new file: " + newLocalizePropertyPath );
+	}
+
+	private static String escapeJava(String value) {
+		return JAVA_ESCAPE.translate(value);
 	}
 
 	public static String stripQuotes( String toStrip ) {
@@ -133,7 +144,7 @@ public class GenerateDebugTranslation {
 		boolean deleteOverride = false;
 		String exportPath = null;
 		String generatedFileSuffix = "_en_CA";
-		String customKey = "#";
+		String customKey = "|";
 		int i = 0;
 		while( i < args.length ) {
 			if( args[ i ].equalsIgnoreCase( "-d" ) ) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006, 2017, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,33 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package edu.cmu.cs.dennisc.jira;
+package org.lgna.story.resources.sims2;
 
 /**
- * @author Dennis Cosgrove
+ * @author dculyba
  */
-public class JIRAUtilities {
-	public static int getType( edu.cmu.cs.dennisc.issue.IssueType type ) {
-		if( type == edu.cmu.cs.dennisc.issue.IssueType.BUG ) {
-			return 1;
-		} else if( type == edu.cmu.cs.dennisc.issue.IssueType.NEW_FEATURE ) {
-			return 2;
-		} else if( type == edu.cmu.cs.dennisc.issue.IssueType.IMPROVEMENT ) {
-			return 4;
-		} else {
-			throw new RuntimeException();
-		}
-	}
+public interface LocalizedResource {
 
-	public static String getPriority() {
-		return "6"; //Unspecified
-	}
+	public String getLocalizedDisplayText();
 
-	public static String ensureStringWithinLimit( String s, int limit ) {
-		if( s.length() > limit ) {
-			return s.substring( 0, limit + 1 );
-		} else {
-			return s;
-		}
-	}
 }

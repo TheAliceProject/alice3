@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -105,19 +108,10 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 	@Override
 	public String getLocalizedDisplayText() {
 		String simpleName = IdeAliceResourceUtilities.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
-		StringBuilder sb = new StringBuilder();
+		String params = this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ? this.enumConstant.name() : "";
 
-		//TODO: Localize
-		sb.append( "new " );
-		sb.append( simpleName );
-		if( this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ) {
-			sb.append( "( " );
-			sb.append( this.enumConstant.name() );
-			sb.append( " )" );
-		} else {
-			sb.append( "()" );
-		}
-		return sb.toString();
+		Formatter formatter = FormatterState.getInstance().getValue();
+		return String.format(formatter.getNewFormat(), simpleName, params);
 	}
 
 	@Override

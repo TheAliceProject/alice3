@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+import org.alice.stageide.gallerybrowser.shapes.TorusDragModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,6 +62,10 @@ public class AddTorusManagedFieldComposite extends AddModelManagedFieldComposite
 
 	private AddTorusManagedFieldComposite() {
 		super( java.util.UUID.fromString( "c840fcdc-3a3e-4fd1-b0ad-a66c7e8fb2a8" ), org.lgna.story.STorus.class );
+	}
+
+	@Override protected ShapeDragModel getDragModel() {
+		return TorusDragModel.getInstance();
 	}
 
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getInnerRadiusState() {

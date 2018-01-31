@@ -90,8 +90,7 @@ public class MenuItemContainerUtilities {
 	public static void setMenuElements( MenuItemContainer menuItemContainer, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models, MenuElementObserver observer ) {
 		final boolean IS_REUSE_READY_FOR_PRIME_TIME = false;
 		if( IS_REUSE_READY_FOR_PRIME_TIME ) {
-			java.util.Set<AwtComponentView<?>> set = edu.cmu.cs.dennisc.java.util.Sets.newHashSet( menuItemContainer.getMenuComponents() );
-			for( AwtComponentView<?> component : set ) {
+			for( AwtComponentView<?> component : menuItemContainer.getMenuComponents() ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
 			}
 		} else {

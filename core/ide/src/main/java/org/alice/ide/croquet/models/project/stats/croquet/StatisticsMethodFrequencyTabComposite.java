@@ -48,6 +48,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.alice.ide.croquet.models.project.stats.croquet.views.StatisticsMethodFrequencyView;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.MutableDataSingleSelectListState;
 import org.lgna.croquet.SimpleTabComposite;
@@ -235,12 +237,13 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 	}
 
 	public LinkedList<String> getLeftColVals( UserMethod selected ) {
+		Formatter formatter = FormatterState.getInstance().getValue();
 		LinkedList<String> rv = new LinkedList<String>();
 		InvocationCounts invocationsCount = getMapMethodToInvocationCounts().get( selected );
 		for( MethodCountPair pair : invocationsCount.getMethodCountPairs() ) {
 			if( !pair.getMethod().isFunction() || getShowFunctionsState().getValue() ) {
 				if( !pair.getMethod().isProcedure() || getShowProceduresState().getValue() ) {
-					rv.add( pair.getMethod().getName() );
+					rv.add( formatter.getNameForDeclaration(pair.getMethod() ) );
 				}
 			}
 		}

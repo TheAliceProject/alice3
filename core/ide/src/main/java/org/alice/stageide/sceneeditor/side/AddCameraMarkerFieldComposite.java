@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor.side;
 
+import org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,6 +58,11 @@ public class AddCameraMarkerFieldComposite extends AddMarkerFieldComposite {
 
 	private AddCameraMarkerFieldComposite() {
 		super( java.util.UUID.fromString( "4ba682d4-4375-4330-b809-266c1a08701e" ), org.lgna.story.SCameraMarker.class );
+	}
+
+	@Override
+	protected String generateName() {
+		return MarkerUtilities.getBaseNameForCameraMarker();
 	}
 
 	@Override

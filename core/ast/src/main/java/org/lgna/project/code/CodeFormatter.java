@@ -95,14 +95,22 @@ public class CodeFormatter {
 		s = s.replaceAll( "\\}\\s*else\\{", "} else{" );
 
 		s = s.replaceAll( "=", " = " );
+		s = s.replaceAll( ">", " > " );
+		s = s.replaceAll( "<", " < " );
 		s = s.replaceAll( "=\\s*=", "==" );
+		s = s.replaceAll( "<\\s*=", " <=" );
+		s = s.replaceAll( ">\\s*=", " >=" );
+		s = s.replaceAll( "-\\s*>", " ->" );
 		s = s.replaceAll( ":", " : " );
 		s = s.replaceAll( ";", "; " );
 		s = s.replaceAll( ",", ", " );
 		s = s.replaceAll( "\\{", " { " );
 		s = s.replaceAll( "\\(", "( " );
 		s = s.replaceAll( "\\)", " )" );
+		s = s.replaceAll( "\\}", " }" );
 		s = s.replaceAll( "\\} ,", "}," );
+		s = s.replaceAll( "\\|\\|", " || " );
+		s = s.replaceAll( "&&", " && " );
 		// remove extra spaces
 		s = s.replaceAll( "  +", " " );
 		s = s.replaceAll( "\t +", "\t" );

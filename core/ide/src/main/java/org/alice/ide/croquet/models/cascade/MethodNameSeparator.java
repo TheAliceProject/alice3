@@ -66,7 +66,7 @@ public final class MethodNameSeparator extends org.lgna.croquet.CascadeLabelSepa
 	}
 
 	@Override
-	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
+	protected String getMenuItemIconProxyText() {
 		return this.method.getName();
 	}
 

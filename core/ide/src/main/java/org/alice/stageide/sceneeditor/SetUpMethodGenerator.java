@@ -42,7 +42,14 @@
  *******************************************************************************/
 package org.alice.stageide.sceneeditor;
 
+import org.alice.ide.ast.ExpressionCreator;
 import org.alice.nonfree.NebulousIde;
+import org.lgna.story.Resizable;
+import org.lgna.story.SBox;
+import org.lgna.story.Scale;
+import org.lgna.story.SetScale;
+import org.lgna.story.SetSize;
+import org.lgna.story.Size;
 
 /**
  * @author Dennis Cosgrove
@@ -348,15 +355,27 @@ public class SetUpMethodGenerator {
 				}
 				if( instance instanceof org.lgna.story.Resizable ) {
 					org.lgna.story.Resizable resizable = (org.lgna.story.Resizable)instance;
-					org.lgna.story.Scale scale = resizable.getScale();
-					try {
-						statements.add(
-								createStatement(
-										org.lgna.story.Resizable.class, "setScale", new Class<?>[] { org.lgna.story.Scale.class, org.lgna.story.SetScale.Detail[].class },
-										SetUpMethodGenerator.createInstanceExpression( isThis, field ),
-										getExpressionCreator().createExpression( scale ) ) );
-					} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-						throw new RuntimeException( ccee );
+					if (instance instanceof SBox) {
+						try {
+							statements.add(createStatement(Resizable.class, "setSize",
+											new Class<?>[] { Size.class, SetSize.Detail[].class },
+											createInstanceExpression(isThis, field),
+											getExpressionCreator().createExpression(resizable.getSize())));
+						} catch( ExpressionCreator.CannotCreateExpressionException ccee ) {
+							throw new RuntimeException( ccee );
+						}
+					} else {
+						Scale scale = resizable.getScale();
+						if (!Scale.IDENTITY.equals(scale)) {
+							try {
+								statements.add(createStatement(Resizable.class, "setScale",
+												new Class<?>[] { Scale.class, SetScale.Detail[].class },
+												createInstanceExpression(isThis, field),
+												getExpressionCreator().createExpression(scale)));
+							} catch (ExpressionCreator.CannotCreateExpressionException ccee) {
+								throw new RuntimeException(ccee);
+							}
+						}
 					}
 				}
 				if( instance instanceof org.lgna.story.SJointedModel ) {

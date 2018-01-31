@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+import org.alice.ide.formatter.Formatter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -141,11 +144,11 @@ public class PersonResourceKey extends InstanceCreatorKey {
 	public String getInternalText() {
 		StringBuilder sb = new StringBuilder();
 		if( this.lifeStage != null ) {
-			sb.append( this.lifeStage.name().charAt( 0 ) );
-			sb.append( this.lifeStage.name().substring( 1 ).toLowerCase( java.util.Locale.ENGLISH ) );
+			sb.append( this.lifeStage.getDisplayText() );
 		} else {
 			sb.append( "Person" );
 		}
+
 		return sb.toString();
 	}
 
@@ -156,12 +159,10 @@ public class PersonResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String getLocalizedDisplayText() {
-		//TODO: Localize
-		StringBuilder sb = new StringBuilder();
-		sb.append( "new " );
-		sb.append( getInternalText() );
-		sb.append( "( ... )" );
-		return sb.toString();
+		Formatter formatter = FormatterState.getInstance().getValue();
+		String className = (lifeStage == null) ? "Person" : lifeStage.getLocalizedDisplayText();
+
+		return String.format(formatter.getNewFormat(), className, "…");
 	}
 
 	@Override

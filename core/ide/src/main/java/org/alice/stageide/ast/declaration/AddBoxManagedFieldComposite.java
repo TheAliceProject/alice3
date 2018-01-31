@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import org.alice.stageide.gallerybrowser.shapes.BoxDragModel;
+import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,6 +63,10 @@ public class AddBoxManagedFieldComposite extends AddModelManagedFieldComposite {
 
 	private AddBoxManagedFieldComposite() {
 		super( java.util.UUID.fromString( "c2f02836-1016-4477-abe2-9ab63e530db6" ), org.lgna.story.SBox.class );
+	}
+
+	@Override protected ShapeDragModel getDragModel() {
+		return BoxDragModel.getInstance();
 	}
 
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getWidthState() {

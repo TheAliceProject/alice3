@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.stageide.ast.declaration;
 
+import org.alice.stageide.gallerybrowser.shapes.ConeDragModel;
+import org.alice.stageide.gallerybrowser.shapes.ShapeDragModel;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,6 +62,10 @@ public final class AddConeManagedFieldComposite extends AddModelManagedFieldComp
 
 	private AddConeManagedFieldComposite() {
 		super( java.util.UUID.fromString( "c3df5655-242d-4580-aeb9-b1b0e23f7e00" ), org.lgna.story.SCone.class );
+	}
+
+	@Override protected ShapeDragModel getDragModel() {
+		return ConeDragModel.getInstance();
 	}
 
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getBaseRadiusState() {

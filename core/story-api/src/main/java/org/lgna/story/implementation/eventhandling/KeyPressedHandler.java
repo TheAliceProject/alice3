@@ -48,7 +48,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.lgna.common.ComponentThread;
+import org.lgna.common.ComponentExecutor;
 import org.lgna.story.HeldKeyPolicy;
 import org.lgna.story.Key;
 import org.lgna.story.MultipleEventPolicy;
@@ -136,65 +136,8 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 	public void handleKeyPress( final KeyEvent event ) {
 		if( shouldFire ) {
 			final Key key = event.getKey();
-			if( keyToListenersMap.get( key ) != null ) {
-				for( final Object listener : keyToListenersMap.get( key ) ) {
-					if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_PRESS ) {
-						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
-							firePolicyMap.get( listener ).put( key, true );
-							fireEvent( listener, event );
-						}
-					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_RELEASE ) {
-						//pass
-					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_MULTIPLE ) {
-						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
-							firePolicyMap.get( listener ).put( key, true );
-							final ComponentThread thread = new ComponentThread( new Runnable() {
-								@Override
-								public void run() {
-									while( firePolicyMap.get( listener ).get( key ) ) {
-										fireEvent( listener, event );
-										try {
-											ComponentThread.sleep( sleepTime );
-										} catch( InterruptedException e ) {
-											e.printStackTrace();
-										}
-									}
-								}
-							}, "keyPressedThread" );
-							thread.start();
-						}
-					}
-				}
-			} else {
-				for( final Object listener : keyToListenersMap.get( empty ) ) {
-					if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_PRESS ) {
-						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
-							System.out.println( "FIRE_ONCE_ON_PRESS" );
-							firePolicyMap.get( listener ).put( key, true );
-							fireEvent( listener, event );
-						}
-					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_RELEASE ) {
-						//pass
-					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_MULTIPLE ) {
-						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
-							firePolicyMap.get( listener ).put( key, true );
-							final ComponentThread thread = new ComponentThread( new Runnable() {
-								@Override
-								public void run() {
-									while( firePolicyMap.get( listener ).get( key ) ) {
-										fireEvent( listener, event );
-										try {
-											ComponentThread.sleep( sleepTime );
-										} catch( InterruptedException e ) {
-											e.printStackTrace();
-										}
-									}
-								}
-							}, "keyPressedThread" );
-							thread.start();
-						}
-					}
-				}
+			for( Object listener : listenerMapFor( key )) {
+				firePressEvent( event, key, listener );
 			}
 		}
 	}
@@ -202,31 +145,81 @@ public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 	public void handleKeyRelease( KeyEvent event ) {
 		if( shouldFire ) {
 			Key key = event.getKey();
-			if( keyToListenersMap.get( key ) != null ) {
-				for( Object listener : keyToListenersMap.get( key ) ) {
-					if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_PRESS ) {
-						//this entry should not really be null unless the key was pressed while the window didn't have focus and was released after it gained focus
-						if( ( firePolicyMap.get( listener ).get( key ) != null ) && firePolicyMap.get( listener ).get( key ) ) {
-							firePolicyMap.get( listener ).put( key, false );
+			for( Object listener : listenerMapFor( key )) {
+				fireReleaseEvent( event, key, listener );
+			}
+		}
+	}
+
+	private CopyOnWriteArrayList<Object> listenerMapFor( Key key ) {
+		CopyOnWriteArrayList<Object> listenerMap = keyToListenersMap.get( key );
+		if( listenerMap == null ) {
+			listenerMap = keyToListenersMap.get( empty );
+		}
+		return listenerMap;
+	}
+
+	private void firePressEvent( KeyEvent event, Key key, Object listener ) {
+		if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_PRESS ) {
+			if(isFirstPress( key, listener )) {
+				System.out.println( "FIRE_ONCE_ON_PRESS" );
+				fireEvent( listener, event );
+			}
+		} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_RELEASE ) {
+			//pass
+		} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_MULTIPLE ) {
+			if(isFirstPress( key, listener )) {
+				final ComponentExecutor thread = new ComponentExecutor( new Runnable() {
+					@Override
+					public void run() {
+						while( firePolicyMap.get( listener ).get( key ) ) {
+							fireEvent( listener, event );
+							try {
+								Thread.sleep( sleepTime );
+							} catch( InterruptedException e ) {
+								e.printStackTrace();
+							}
 						}
-					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_RELEASE ) {
-						fireEvent( listener, event );
-					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_MULTIPLE ) {
-						firePolicyMap.get( listener ).put( key, false );
 					}
-				}
-			} else {
-				for( Object listener : keyToListenersMap.get( empty ) ) {
-					if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_PRESS ) {
-						if( ( firePolicyMap.get( listener ).get( key ) != null ) && firePolicyMap.get( listener ).get( key ) ) {
-							firePolicyMap.get( listener ).put( key, false );
-						}
-					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_RELEASE ) {
-						fireEvent( listener, event );
-					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_MULTIPLE ) {
-						firePolicyMap.get( listener ).put( key, false );
-					}
-				}
+				}, "keyPressedThread" );
+				thread.start();
+			}
+		}
+	}
+
+	private boolean isFirstPress( Key key, Object listener ) {
+		boolean firstPress = !isKeyPressed(key, listener);
+		if (firstPress) {
+			firePolicyMap.get( listener ).put( key, true );
+		}
+		return firstPress;
+	}
+
+	private boolean isKeyPressed( Key key, Object listener ) {
+		// This entry should only be null if the key was pressed while the window didn't have focus and was released after it gained focus.
+		return ( firePolicyMap.get( listener ).get( key ) != null ) && firePolicyMap.get( listener ).get( key );
+	}
+
+	private void fireReleaseEvent( KeyEvent event, Key key, Object listener ) {
+		if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_PRESS ) {
+			releaseKey( key, listener );
+		} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_RELEASE ) {
+			fireEvent( listener, event );
+		} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_MULTIPLE ) {
+			firePolicyMap.get( listener ).put( key, false );
+		}
+	}
+
+	private void releaseKey( Key key, Object listener ) {
+		if(isKeyPressed( key, listener )) {
+			firePolicyMap.get( listener ).put( key, false );
+		}
+	}
+
+	void releaseAllKeys() {
+		for ( Map<Key, Boolean> keyMap : firePolicyMap.values() ) {
+			for ( Key key : keyMap.keySet() ) {
+				keyMap.put( key, false );
 			}
 		}
 	}

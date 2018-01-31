@@ -43,10 +43,14 @@
 
 package edu.cmu.cs.dennisc.jira;
 
+import edu.cmu.cs.dennisc.issue.IssueType;
+
 /**
  * @author Dennis Cosgrove
  */
 public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
+	private final static int SUMMARY_MAX = 254;
+
 	private final String projectKey;
 	private final edu.cmu.cs.dennisc.issue.IssueType type;
 	private final String summary;
@@ -84,8 +88,21 @@ public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 		return this.type;
 	}
 
-	public String getSummary() {
-		return this.summary;
+	public int getTypeID() {
+		switch (type) {
+		case BUG:
+			return 1;
+		case NEW_FEATURE:
+			return 2;
+		case IMPROVEMENT:
+			return 4;
+		default:
+			throw new RuntimeException();
+		}
+	}
+
+	public String getTruncatedSummary() {
+		return summary.length() < SUMMARY_MAX ? summary : summary.substring( 0, SUMMARY_MAX );
 	}
 
 	public String getDescription() {
@@ -117,17 +134,27 @@ public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 	}
 
 	public String getAffectsVersionText() {
-		String rv;
 		if( ( this.affectsVersions != null ) && ( this.affectsVersions.length > 0 ) ) {
-			rv = this.affectsVersions[ 0 ];
+			return affectsVersions[ 0 ];
 		} else {
-			rv = null;
+			return "";
 		}
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = "";
+	}
+
+	public String getCreditedDescription() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( getDescription() );
+		sb.append( "\n\n" );
+		if( ( reportedBy != null ) && ( reportedBy.length() > 0 ) ) {
+			sb.append( "\nReported by: " );
+			sb.append( reportedBy );
 		}
-		return rv;
+		if( ( emailAddress != null ) && ( emailAddress.length() > 0 ) ) {
+			sb.append( "\nEmail address: " );
+			sb.append( emailAddress );
+		}
+		sb.append( "\nAffects version: " );
+		sb.append( getAffectsVersionText() );
+		return sb.toString();
 	}
 }

@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.clipboard;
 
+import edu.cmu.cs.dennisc.javax.swing.option.OkDialog;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,8 +62,8 @@ public class PasteOperation extends org.alice.ide.operations.InconsequentialActi
 
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		new edu.cmu.cs.dennisc.javax.swing.option.OkDialog.Builder( "Insertion is not yet implemented.  Paste is limited to dragging statements from the clipboard in the top right corner." )
-				.title( "Paste coming soon" )
+		new OkDialog.Builder( findLocalizedText( "content" ) )
+				.title( findLocalizedText( "title" ) )
 				.buildAndShow();
 	}
 }

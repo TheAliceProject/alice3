@@ -42,6 +42,19 @@
  *******************************************************************************/
 package org.alice.ide.codeeditor;
 
+import edu.cmu.cs.dennisc.java.awt.font.TextPosture;
+import org.alice.ide.common.TypeComponent;
+import org.alice.ide.croquet.models.ast.MethodHeaderMenuModel;
+import org.lgna.croquet.MenuModel;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.views.AwtComponentView;
+import org.lgna.croquet.views.Label;
+import org.lgna.croquet.views.SwingComponentView;
+import org.lgna.croquet.views.ViewController;
+
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,84 +69,72 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 	}
 
 	protected org.lgna.croquet.views.SwingComponentView<?> createNameLabel() {
-		return this.factory.createNameView( this.userMethod );
+		return factory.createNameView( userMethod );
 	}
 
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
-		this.forgetAndRemoveAllComponents();
-		//		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
+		forgetAndRemoveAllComponents();
+
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterState.isJava() ) {
-			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userMethod.getReturnType() ) );
-			//			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalSliver( 8 ) );
+			addComponent( TypeComponent.createInstance( userMethod.getReturnType() ) );
 		} else {
-			this.addComponent( new org.lgna.croquet.views.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
-			StringBuffer sb = new StringBuffer();
+			addComponent( getDeclareLabel() );
+			StringBuilder sb = new StringBuilder();
 			if( userMethod.isStatic() ) {
-				sb.append( "*static* " );
+				sb.append( "*" );
+				sb.append( localize("static" ) );
+				sb.append( "* " );
 			}
 			if( userMethod.isProcedure() ) {
-				sb.append( "procedure " );
+				sb.append( localize("procedure" ) );
+				sb.append( " " );
 			} else {
-				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userMethod.getReturnType() ) );
-				sb.append( " function " );
+				addComponent( TypeComponent.createInstance( userMethod.getReturnType() ) );
+				sb.append( " " );
+				sb.append( localize("function" ) );
+				sb.append( " " );
 			}
-			this.addComponent( new org.lgna.croquet.views.Label( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			addComponent( new Label( sb.toString(), TextPosture.OBLIQUE ) );
 		}
 
-		org.lgna.croquet.views.SwingComponentView<?> nameLabel = this.createNameLabel();
+		SwingComponentView<?> nameLabel = createNameLabel();
 		nameLabel.scaleFont( NAME_SCALE );
 
 		if( userMethod.isSignatureLocked.getValue() ) {
-			this.addComponent( nameLabel );
+			addComponent( nameLabel );
 		} else {
-			class PopupPanel extends org.lgna.croquet.views.ViewController<javax.swing.JPanel, org.lgna.croquet.Model> {
-				private org.lgna.croquet.views.AwtComponentView<?> centerComponent;
+			addComponent( new PopupPanel( nameLabel, MethodHeaderMenuModel.getInstance( userMethod ).getPopupPrepModel() ) );
+		}
 
-				public PopupPanel( org.lgna.croquet.views.AwtComponentView<?> centerComponent, org.lgna.croquet.MenuModel.InternalPopupPrepModel popupMenuOperation ) {
-					super( null );
-					this.centerComponent = centerComponent;
-					this.setPopupPrepModel( popupMenuOperation );
-				}
+		if( !isPreview() || ( userMethod.requiredParameters.size() > 0 ) ) {
+			addComponent( new ParametersPane( factory, userMethod ) );
+		}
+	}
 
+	class PopupPanel extends ViewController<JPanel, Model> {
+		private AwtComponentView<?> centerComponent;
+
+		PopupPanel( AwtComponentView<?> component, MenuModel.InternalPopupPrepModel popupMenuOperation ) {
+			super( null );
+			centerComponent = component;
+			setPopupPrepModel( popupMenuOperation );
+		}
+
+		@Override
+		protected JPanel createAwtComponent() {
+			JPanel rv = new JPanel() {
 				@Override
-				protected javax.swing.JPanel createAwtComponent() {
-					javax.swing.JPanel rv = new javax.swing.JPanel() {
-						@Override
-						public java.awt.Dimension getMaximumSize() {
-							return this.getPreferredSize();
-						}
-					};
-					rv.setBackground( null );
-					rv.setOpaque( false );
-					rv.setLayout( new java.awt.BorderLayout() );
-					rv.add( centerComponent.getAwtComponent(), java.awt.BorderLayout.CENTER );
-					return rv;
+				public Dimension getMaximumSize() {
+					return getPreferredSize();
 				}
-			}
-			this.addComponent(
-					new PopupPanel(
-							nameLabel,
-							org.alice.ide.croquet.models.ast.MethodHeaderMenuModel.getInstance( userMethod ).getPopupPrepModel()
-					)
-					);
+			};
+			rv.setBackground( null );
+			rv.setOpaque( false );
+			rv.setLayout( new BorderLayout() );
+			rv.add( centerComponent.getAwtComponent(), BorderLayout.CENTER );
+			return rv;
 		}
-		if( ( this.isPreview() == false ) || ( this.userMethod.requiredParameters.size() > 0 ) ) {
-			this.addComponent( new ParametersPane( this.factory, this.userMethod ) );
-		}
-		//		if( declaringType != null ) {
-		//			//pass
-		//		} else {
-		//			declaringType = userMethod.getDeclaringType();
-		//		}
-		//		if( declaringType != null ) {
-		//			if( declaringType instanceof org.lgna.project.ast.AnonymousUserType ) {
-		//				//pass
-		//			} else {
-		//				this.addComponent( new org.lgna.croquet.components.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
-		//				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( declaringType ) );
-		//			}
-		//		}
 	}
 }

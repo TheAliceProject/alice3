@@ -59,29 +59,28 @@ public abstract class CascadeLabelSeparator extends CascadeSeparator {
 		this.menuItemText = this.findDefaultLocalizedText();
 	}
 
-	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
-		if( this.menuItemText != null ) {
-			//pass
-		} else {
-			this.initializeIfNecessary();
+	protected String getMenuItemIconProxyText() {
+		if (menuItemText == null) {
+			initializeIfNecessary();
 		}
-		return this.menuItemText;
+		return menuItemText;
 	}
 
 	public boolean isValid() {
-		String text = this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
-		return ( text != null ) && ( text.length() > 0 ) && ( "null".equals( text ) == false );
+		return isValid(getMenuItemIconProxyText());
+	}
+
+	private boolean isValid(String text) {
+		return ( text != null ) && ( text.length() > 0 ) && (!"null".equals(text));
 	}
 
 	@Override
 	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.imp.cascade.ItemNode<? super Void, Void> step ) {
-		if( this.isValid() ) {
-			String text = this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
+		String text = getMenuItemIconProxyText();
+		if( isValid(text) ) {
 			javax.swing.JLabel rv = new javax.swing.JLabel();
 			rv.setText( text + ":" );
 			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-			//			rv.setVerticalTextPosition( javax.swing.JLabel.LEADING );
-			//			rv.setSize( new java.awt.Dimension( 300, 200 ) );
 			return rv;
 		} else {
 			return null;

@@ -42,6 +42,9 @@
  *******************************************************************************/
 package edu.cmu.cs.dennisc.java.util;
 
+import javax.swing.*;
+import java.util.ResourceBundle;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -84,19 +87,25 @@ public abstract class ResourceBundleUtilities {
 		return java.util.ResourceBundle.getBundle( baseName, locale, new Utf8ResourceBundleControl() );
 	}
 
-	public static String getStringForKey( String key, String bundleName, String defaultValue ) {
-		try {
-			java.util.Locale locale = javax.swing.JComponent.getDefaultLocale();
-			java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
-			return resourceBundle.getString( key );
-		} catch( java.util.MissingResourceException mre ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( mre, bundleName, key );
-		}
-		return defaultValue;
+	private static ResourceBundle getUtf8Bundle(String bundleName) {
+		return getUtf8Bundle( bundleName, JComponent.getDefaultLocale() );
 	}
 
-	public static String getStringFromSimpleNames( Class<?> cls, String baseName, java.util.Locale locale ) {
-		java.util.ResourceBundle resourceBundle = getUtf8Bundle( baseName, locale );
+	public static String getStringForKey( String key, String bundleName) {
+		try {
+			return getUtf8Bundle( bundleName ).getString( key );
+		} catch( java.util.MissingResourceException mre ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( mre, bundleName, key );
+			return key;
+		}
+	}
+
+	public static String getStringForKey( String key, Class<?> cls ) {
+		return getStringForKey( key, cls.getPackage().getName() + ".croquet" );
+	}
+
+	public static String getStringFromSimpleNames( Class<?> cls, String baseName ) {
+		ResourceBundle resourceBundle = getUtf8Bundle( baseName );
 		String key;
 		Class<?> c = cls;
 		do {
@@ -117,7 +126,4 @@ public abstract class ResourceBundleUtilities {
 		} while( true );
 		return resourceBundle.getString( key );
 	}
-	//	public static String getStringFromSimpleNames( Class<?> cls, String baseName ) {
-	//		return getStringFromSimpleNames( cls, baseName, javax.swing.JComponent.getDefaultLocale() );
-	//	}
 }

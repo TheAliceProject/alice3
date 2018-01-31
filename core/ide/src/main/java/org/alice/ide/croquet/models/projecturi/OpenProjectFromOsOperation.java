@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2018 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,33 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.common;
+package org.alice.ide.croquet.models.projecturi;
 
-/**
- * @author Dennis Cosgrove
- */
-public final class ComponentThread extends Thread {
-	private static final ThreadGroup threadGroup = new ThreadGroup( ComponentThread.class.getPackage().getName() + " component thread group" );
-	private final Runnable target;
-	private Thread parentThread;
+import org.alice.ide.IDE;
+import org.alice.ide.uricontent.FileProjectLoader;
+import org.alice.ide.uricontent.UriProjectLoader;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Step;
 
-	public ComponentThread( Runnable target, String description ) {
-		super( threadGroup, null, description );
-		this.target = target;
-	}
+import java.io.File;
+import java.util.List;
 
-	public Thread getParentThread() {
-		return this.parentThread;
-	}
+public class OpenProjectFromOsOperation extends UriPotentialClearanceIteratingOperation {
 
-	@Override
-	public void run() {
-		org.lgna.common.ProgramClosedException.invokeAndCatchProgramClosedException( this.target );
+	public OpenProjectFromOsOperation( File file) {
+		super( java.util.UUID.fromString( "f51873eb-06da-4974-9890-7345adff3ac4" ), IDE.getActiveInstance().getDocumentFrame(), null );
+		this.file = file;
 	}
 
 	@Override
-	public synchronized void start() {
-		this.parentThread = Thread.currentThread();
-		super.start();
+	protected void localize() {
+		super.localize();
+		this.setName( file.getAbsolutePath() );
 	}
+
+	@Override
+	protected UriProjectLoader getUriProjectLoader( CompletionStep<?> step, List<Step<?>> subSteps ) {
+		return new FileProjectLoader( file );
+	}
+
+	private final File file;
 }

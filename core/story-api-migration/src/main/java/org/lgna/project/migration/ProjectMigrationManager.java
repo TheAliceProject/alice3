@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.lgna.project.migration;
 
+import org.lgna.project.Version;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -5850,6 +5852,11 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					"INDIA_WATER_TANK",
 					"GRAY"
+					),
+
+			new TextMigration( new Version( "3.3.0.0.0" ), new Version( "3.4.0.0" ),
+					"<method isVarArgs=\"false\" name=\"getModelAtMouseLocation\"><declaringClass name=\"org.lgna.story.event.MouseClickEvent\"/><parameters/></method>",
+					"<method isVarArgs=\"false\" name=\"getModelAtMouseLocation\"><declaringClass name=\"org.lgna.story.event.MouseClickOnObjectEvent\"/><parameters/></method>"
 					)
 
 			//			, EventAstMigration.getTextMigration()

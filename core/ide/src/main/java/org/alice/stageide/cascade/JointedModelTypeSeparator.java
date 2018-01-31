@@ -43,6 +43,9 @@
 
 package org.alice.stageide.cascade;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.alice.ide.croquet.models.ui.formatter.FormatterState;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -69,10 +72,8 @@ public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSepa
 	}
 
 	@Override
-	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.type.getRepr() );
-		sb.append( " Joints" );
-		return sb.toString();
+	protected String findDefaultLocalizedText() {
+		String jointsFormat = ResourceBundleUtilities.getStringForKey( "JointsFormat", "org.alice.stageide.joint.croquet");
+		return String.format(jointsFormat, FormatterState.getInstance().getValue().getNameForDeclaration( type ));
 	}
 }

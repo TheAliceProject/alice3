@@ -59,7 +59,7 @@ public class ThreadUtilities {
 			final java.util.List<RuntimeException> runtimeExceptions = new java.util.LinkedList<RuntimeException>();
 			final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( runnables.length + 1 );
 			for( final Runnable runnable : runnables ) {
-				new ComponentThread( new Runnable() {
+				new ComponentExecutor( new Runnable() {
 					@Override
 					public void run() {
 						try {

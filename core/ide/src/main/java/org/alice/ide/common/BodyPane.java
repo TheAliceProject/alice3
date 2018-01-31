@@ -46,7 +46,7 @@ public class BodyPane extends org.alice.ide.common.StatementLikeSubstance {
 	public BodyPane( org.lgna.croquet.views.AwtComponentView<?> statementListComponent ) {
 		super( null, org.lgna.project.ast.DoInOrder.class, javax.swing.BoxLayout.PAGE_AXIS );
 
-		String doInOrderText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringForKey( "DoInOrder", "org.alice.ide.controlflow.Templates", "do in order" );
+		String doInOrderText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringForKey( "DoInOrder", "org.alice.ide.controlflow.Templates");
 
 		this.addComponent( new org.lgna.croquet.views.Label( doInOrderText ), java.awt.BorderLayout.NORTH );
 		this.addComponent( statementListComponent, java.awt.BorderLayout.CENTER );

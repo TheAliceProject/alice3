@@ -77,88 +77,97 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 	private boolean isInTheMidstOfHandlingAThrowable = false;
 
 	@Override
-	protected synchronized void handleThrowable( Thread thread, Throwable throwable ) {
+	protected void handleThrowable( Thread thread, Throwable throwable ) {
 		try {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( throwable );
 		} catch( Throwable t ) {
 			t.printStackTrace();
 		}
-		if( isInTheMidstOfHandlingAThrowable ) {
-			//pass
-		} else {
-			this.isInTheMidstOfHandlingAThrowable = true;
-			try {
-				this.count++;
-				if( this.isBugReportSubmissionPaneDesired ) {
-					try {
-						org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane exceptionPane;
-						if( throwable instanceof com.jogamp.opengl.GLException ) {
-							exceptionPane = new org.alice.ide.issue.swing.views.CaughtGlExceptionPane();
-						} else {
-							exceptionPane = new org.alice.ide.issue.swing.views.CaughtExceptionPane();
-						}
+		if (isFirstThrowable()) {
+			handleFirstThrowable( thread, throwable );
+		}
+	}
 
-						exceptionPane.setThreadAndThrowable( thread, throwable );
+	private synchronized boolean isFirstThrowable() {
+		if (isInTheMidstOfHandlingAThrowable) {
+			return false;
+		}
+		isInTheMidstOfHandlingAThrowable = true;
+		return true;
+	}
 
-						java.awt.Component owner;
-						org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-						if( application != null ) {
-							org.lgna.croquet.views.Frame frame = application.getDocumentFrame().getFrame();
-							if( frame != null ) {
-								owner = frame.getAwtComponent();
-							} else {
-								owner = null;
-							}
+	private void handleFirstThrowable( Thread thread, Throwable throwable ) {
+		try {
+			this.count++;
+			if( this.isBugReportSubmissionPaneDesired ) {
+				try {
+					org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane exceptionPane;
+					if( throwable instanceof com.jogamp.opengl.GLException ) {
+						exceptionPane = new org.alice.ide.issue.swing.views.CaughtGlExceptionPane();
+					} else {
+						exceptionPane = new org.alice.ide.issue.swing.views.CaughtExceptionPane();
+					}
+
+					exceptionPane.setThreadAndThrowable( thread, throwable );
+
+					java.awt.Component owner;
+					org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+					if( application != null ) {
+						org.lgna.croquet.views.Frame frame = application.getDocumentFrame().getFrame();
+						if( frame != null ) {
+							owner = frame.getAwtComponent();
 						} else {
 							owner = null;
 						}
+					} else {
+						owner = null;
+					}
 
-						javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( exceptionPane, owner, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-						dialog.getRootPane().setDefaultButton( exceptionPane.getSubmitButton() );
-						dialog.setVisible( true );
+					javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( exceptionPane, owner, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+					dialog.getRootPane().setDefaultButton( exceptionPane.getSubmitButton() );
+					dialog.setVisible( true );
 
-						if( exceptionPane.isSubmitAttempted() ) {
-							if( exceptionPane.isSubmitDone() ) {
-								if( exceptionPane.isSubmitSuccessful() ) {
-									javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report has been successfully submitted.  Thank you." );
-								} else {
-									javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report FAILED to submit.  Thank you for trying." );
-								}
+					if( exceptionPane.isSubmitAttempted() ) {
+						if( exceptionPane.isSubmitDone() ) {
+							if( exceptionPane.isSubmitSuccessful() ) {
+								javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report has been successfully submitted.  Thank you." );
 							} else {
-								//backgrounded
+								javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report FAILED to submit.  Thank you for trying." );
 							}
 						} else {
-							if( this.count > 1 ) {
-								Object[] options = { CONTINUE_TEXT, SILENTLY_FAIL_TEXT };
-								String message = "If you are caught in an unending stream of exceptions:\n    1) Press the \"" + SILENTLY_FAIL_TEXT + "\" button,\n    2) Attempt save your project to a different file (use Save As...), and\n    3) Restart " + this.applicationName + ".\nElse\n    1) Press the \"" + CONTINUE_TEXT + "\" button.";
-								String title = "Multiple Exceptions Detected";
-								int resultIgnore = javax.swing.JOptionPane.showOptionDialog( owner, message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.ERROR_MESSAGE, null, options, CONTINUE_TEXT );
-								if( resultIgnore == javax.swing.JOptionPane.NO_OPTION ) {
-									this.isBugReportSubmissionPaneDesired = false;
-								}
+							//backgrounded
+						}
+					} else {
+						if( this.count > 1 ) {
+							Object[] options = { CONTINUE_TEXT, SILENTLY_FAIL_TEXT };
+							String message = "If you are caught in an unending stream of exceptions:\n    1) Press the \"" + SILENTLY_FAIL_TEXT + "\" button,\n    2) Attempt save your project to a different file (use Save As...), and\n    3) Restart " + this.applicationName + ".\nElse\n    1) Press the \"" + CONTINUE_TEXT + "\" button.";
+							String title = "Multiple Exceptions Detected";
+							int resultIgnore = javax.swing.JOptionPane.showOptionDialog( owner, message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.ERROR_MESSAGE, null, options, CONTINUE_TEXT );
+							if( resultIgnore == javax.swing.JOptionPane.NO_OPTION ) {
+								this.isBugReportSubmissionPaneDesired = false;
 							}
 						}
-						//					}
-					} catch( Throwable t ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
+					}
+					//					}
+				} catch( Throwable t ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
+				}
+			}
+		} finally {
+			boolean isSystemExitDesired = true;
+			org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+			if( application != null ) {
+				org.lgna.croquet.views.Frame frame = application.getDocumentFrame().getFrame();
+				if( frame != null ) {
+					if( frame.isVisible() ) {
+						isSystemExitDesired = false;
 					}
 				}
-			} finally {
-				boolean isSystemExitDesired = true;
-				org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-				if( application != null ) {
-					org.lgna.croquet.views.Frame frame = application.getDocumentFrame().getFrame();
-					if( frame != null ) {
-						if( frame.isVisible() ) {
-							isSystemExitDesired = false;
-						}
-					}
-				}
-				this.isInTheMidstOfHandlingAThrowable = false;
-				if( isSystemExitDesired ) {
-					javax.swing.JOptionPane.showMessageDialog( null, "Exception occurred before application was able to show window.  Exiting." );
-					System.exit( -1 );
-				}
+			}
+			this.isInTheMidstOfHandlingAThrowable = false;
+			if( isSystemExitDesired ) {
+				javax.swing.JOptionPane.showMessageDialog( null, "Exception occurred before application was able to show window.  Exiting." );
+				System.exit( -1 );
 			}
 		}
 	}

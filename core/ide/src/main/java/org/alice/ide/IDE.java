@@ -42,6 +42,12 @@
  *******************************************************************************/
 package org.alice.ide;
 
+import org.alice.ide.croquet.models.projecturi.OpenProjectFromOsOperation;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.triggers.Trigger;
+
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -403,6 +409,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	@Override
 	protected void handleOpenFiles( java.util.List<java.io.File> files ) {
+		if (files != null && !files.isEmpty()) {
+			File file = files.get( 0 );
+			if( file.exists() ) {
+				new OpenProjectFromOsOperation( file ).fire( null );
+			}
+		}
 	}
 
 	protected void preservePreferences() {
@@ -416,12 +428,12 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	private final org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation clearanceCheckingExitOperation = new org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation( this.getDocumentFrame() );
 
 	@Override
-	public final void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
+	public final CompletionStep<?> handleQuit( Trigger trigger ) {
 		this.preservePreferences();
 		if( this.crashDetector != null ) {
 			this.crashDetector.close();
 		}
-		this.clearanceCheckingExitOperation.fire( trigger );
+		return clearanceCheckingExitOperation.fire( trigger );
 	}
 
 	protected org.lgna.project.virtualmachine.VirtualMachine createVirtualMachineForSceneEditor() {

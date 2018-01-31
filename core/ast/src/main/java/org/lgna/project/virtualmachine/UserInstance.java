@@ -43,15 +43,9 @@
 
 package org.lgna.project.virtualmachine;
 
-import org.lgna.project.ast.AbstractConstructor;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.ConstructorBlockStatement;
-import org.lgna.project.ast.ConstructorInvocationStatement;
-import org.lgna.project.ast.ConstructorReflectionProxy;
-import org.lgna.project.ast.JavaConstructor;
-import org.lgna.project.ast.NamedUserConstructor;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserType;
+import org.lgna.project.ast.*;
+
+import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -84,12 +78,13 @@ public class UserInstance {
 		return rv;
 	}
 
-	public static UserInstance createInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments ) {
-		return new UserInstance( vm, constructor, arguments, new java.util.HashMap<UserField, Object>(), null );
+	public static UserInstance createInstance( VirtualMachine vm, NamedUserConstructor constructor,
+					UserType<?> fallbackType, Object[] arguments ) {
+		return new UserInstance( vm, constructor, arguments, fallbackType, new java.util.HashMap<UserField, Object>(), null );
 	}
 
 	public static UserInstance createInstanceWithInverseMap( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments ) {
-		return new UserInstance( vm, constructor, arguments, new java.util.HashMap<UserField, Object>(), new java.util.HashMap<Object, UserField>() );
+		return new UserInstance( vm, constructor, arguments, null, new java.util.HashMap<UserField, Object>(), new java.util.HashMap<Object, UserField>() );
 	}
 
 	private final VirtualMachine vm;
@@ -98,9 +93,12 @@ public class UserInstance {
 	private final java.util.Map<UserField, Object> fieldMap;
 	private java.util.Map<Object, UserField> inverseFieldMap;
 
-	private UserInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments, java.util.Map<UserField, Object> fieldMap, java.util.Map<Object, UserField> inverseFieldMap ) {
+	private UserInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments,
+					UserType<?> fallbackType, Map<UserField, Object> fieldMap, Map<Object, UserField> inverseFieldMap ) {
 		this.vm = vm;
-		this.type = constructor.getDeclaringType();
+		UserType<?> constType = constructor.getDeclaringType();
+
+		this.type = (constType == null) ? fallbackType : constType;
 
 		assert this.type != null : constructor.getId();
 
@@ -119,7 +117,7 @@ public class UserInstance {
 		try {
 			Object[] nextArguments = vm.evaluateArguments( nextConstructor, constructorInvocationStatement.requiredArguments, constructorInvocationStatement.variableArguments, constructorInvocationStatement.keyedArguments );
 			if( nextConstructor.isUserAuthored() ) {
-				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fieldMap, inverseFieldMap );
+				this.nextInstance = new UserInstance( vm, (NamedUserConstructor)nextConstructor, nextArguments, fallbackType, fieldMap, inverseFieldMap );
 			} else {
 				JavaConstructor nextConstructorDeclaredInJava = (JavaConstructor)nextConstructor;
 				ConstructorReflectionProxy constructorReflectionProxy = nextConstructorDeclaredInJava.getConstructorReflectionProxy();

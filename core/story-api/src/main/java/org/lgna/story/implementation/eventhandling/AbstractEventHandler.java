@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.lgna.common.ComponentThread;
+import org.lgna.common.ComponentExecutor;
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
@@ -76,7 +76,7 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 			isFiringMap.get( listener ).put( o, false );
 		}
 		if( shouldFire ) {
-			ComponentThread thread = new org.lgna.common.ComponentThread( new Runnable() {
+			ComponentExecutor thread = new org.lgna.common.ComponentExecutor( new Runnable() {
 				@Override
 				public void run() {
 					fire( listener, event );

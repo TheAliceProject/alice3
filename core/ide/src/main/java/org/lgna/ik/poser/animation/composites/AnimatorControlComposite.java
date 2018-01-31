@@ -45,7 +45,7 @@ package org.lgna.ik.poser.animation.composites;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lgna.common.ComponentThread;
+import org.lgna.common.ComponentExecutor;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BoundedDoubleState;
@@ -180,7 +180,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 			final M model = (M)parent.getModel();
 			final TimeLine timeLine = tlComposite.getTimeLine();
 			final List<KeyFrameData> keyFrames = timeLine.getKeyFrames();
-			final ComponentThread timerThread = new ComponentThread( new Runnable() {
+			final ComponentExecutor timerThread = new ComponentExecutor( new Runnable() {
 
 				@Override
 				public void run() {
@@ -199,7 +199,7 @@ public class AnimatorControlComposite<M extends SJointedModel> extends AbstractP
 				}
 
 			}, "runAnimation" );
-			ComponentThread thread = new ComponentThread( new Runnable() {
+			ComponentExecutor thread = new ComponentExecutor(new Runnable() {
 
 				@Override
 				public void run() {

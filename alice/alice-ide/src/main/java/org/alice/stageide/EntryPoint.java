@@ -42,12 +42,16 @@
  *******************************************************************************/
 package org.alice.stageide;
 
+import edu.wustl.lookingglass.utilities.memory.HeapWatchDog;
+
 /**
  * @author Dennis Cosgrove
  */
 public class EntryPoint {
 	private static final String NIMBUS_LOOK_AND_FEEL_NAME = "Nimbus";
 	private static final String MENU_BAR_UI_NAME = "MenuBarUI";
+
+	private static HeapWatchDog heapMonitor;
 
 	public static void main( final String[] args ) {
 		final edu.cmu.cs.dennisc.crash.CrashDetector crashDetector = new edu.cmu.cs.dennisc.crash.CrashDetector( EntryPoint.class );
@@ -162,6 +166,7 @@ public class EntryPoint {
 				}
 				ide.initialize( args );
 				ide.getDocumentFrame().getFrame().setVisible( true );
+				heapMonitor = new HeapWatchDog();
 			}
 		} );
 	}

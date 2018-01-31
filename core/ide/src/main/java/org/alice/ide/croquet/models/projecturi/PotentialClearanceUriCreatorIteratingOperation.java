@@ -42,6 +42,10 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.projecturi;
 
+import org.lgna.croquet.Model;
+
+import java.util.Iterator;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,7 +58,7 @@ public abstract class PotentialClearanceUriCreatorIteratingOperation extends Uri
 	}
 
 	@Override
-	protected java.util.Iterator<org.lgna.croquet.Model> createIteratingData() {
+	protected Iterator<Model> createIteratingData() {
 		java.util.Iterator<org.lgna.croquet.Model> rv = super.createIteratingData();
 		org.alice.ide.projecturi.SelectProjectUriComposite.getInstance().selectAppropriateTab( this.isNew );
 		return rv;

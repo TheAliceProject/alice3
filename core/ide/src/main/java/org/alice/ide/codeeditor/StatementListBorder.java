@@ -89,7 +89,7 @@ public class StatementListBorder implements javax.swing.border.Border {
 
 	private static void initializeTextIfNecessary() {
 		if( TEXTS[ 0 ] == null ) {
-			String localizedText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringForKey( "dropStatementHere", "org.alice.ide.codeeditor.CodeEditor", "drop statement here" );
+			String localizedText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringForKey( "dropStatementHere", "org.alice.ide.codeeditor.CodeEditor");
 			for( int i = 0; i < TEXTS.length; i++ ) {
 				TEXTS[ i ] = localizedText;
 			}

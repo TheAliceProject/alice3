@@ -47,8 +47,45 @@ package org.lgna.project;
  */
 public final class Version implements Comparable<Version> {
 	private int[] subNumbers;
+	private String prerelease;
+	private String metadata;
 
+	/**
+	 * Alice 3's semantic versioning effectively shifts Major and Minor over one place.
+	 * 3.Major.Minor.Patch{-prerelease}{+metadata}
+	 *
+	 * Following the 3 is the semantic version - https://semver.org/
+	 * This means prerelease and metadata are both optional.
+	 *
+	 * Some older versions of Alice have additional subpatch numbers
+	 *
+	 * @param text formatted to follow Alice's semantic versioning
+	 */
 	public Version( String text ) {
+		String remainder = extractMetadata( text );
+		remainder = extractPrerelease( remainder );
+		extractSubNumbers( remainder);
+	}
+
+	private String extractPrerelease( String text ) {
+		String[] chunks = text.split( "-" );
+		final int chunkCount = chunks.length;
+		if (chunkCount > 1) {
+			prerelease = chunks[1];
+		}
+		return chunks[0];
+	}
+
+	private String extractMetadata( String text ) {
+		String[] chunks = text.split( "\\+" );
+		final int chunkCount = chunks.length;
+		if (chunkCount > 1) {
+			metadata = chunks[1];
+		}
+		return chunks[0];
+	}
+
+	private void extractSubNumbers( String text ) {
 		String[] subTexts = text.split( "\\." );
 		final int N = subTexts.length;
 		this.subNumbers = new int[ N ];
@@ -72,16 +109,33 @@ public final class Version implements Comparable<Version> {
 		return true;
 	}
 
-	public int getMajor() {
+	// This will remain 3. It is as much branding as version.
+	public int getAliceIdentifier() {
 		return this.subNumbers[ 0 ];
 	}
 
-	public int getMinor() {
+	public int getMajor() {
 		return this.subNumbers[ 1 ];
 	}
 
-	public int getBuild() {
+	public int getMinor() {
 		return this.subNumbers[ 2 ];
+	}
+
+	public String getMajorAndMinor() {
+		return getAliceIdentifier() + "." + getMajor() + "." + getMinor();
+	}
+
+	public int getPatch() {
+		return this.subNumbers[ 3 ];
+	}
+
+	public boolean hasMetadata() {
+		return metadata != null && metadata.length() > 0;
+	}
+
+	public boolean hasPrerelease() {
+		return prerelease != null && prerelease.length() > 0;
 	}
 
 	private static int[] growIfNecessary( int[] source, int[] other ) {
@@ -100,12 +154,16 @@ public final class Version implements Comparable<Version> {
 		int[] otherSubNumbers = growIfNecessary( other.subNumbers, this.subNumbers );
 		for( int i = 0; i < thisSubNumbers.length; i++ ) {
 			int result = Integer.signum( thisSubNumbers[ i ] - otherSubNumbers[ i ] );
-			if( result == 0 ) {
-				//pass
-			} else {
+			if( result != 0 ) {
 				return result;
 			}
 		}
+		// Version numbers match. Check prerelease. The one without is behind.
+		if (this.hasPrerelease() && !other.hasPrerelease())
+			return -1;
+		if (!this.hasPrerelease() && other.hasPrerelease())
+			return 1;
+		// The metadata is not considered in ordering
 		return 0;
 	}
 
@@ -117,6 +175,14 @@ public final class Version implements Comparable<Version> {
 			sb.append( separator );
 			sb.append( subNumber );
 			separator = ".";
+		}
+		if (hasPrerelease()) {
+			sb.append( '-' )
+							.append( prerelease );
+		}
+		if (hasMetadata()) {
+			sb.append( '+' )
+							.append( metadata );
 		}
 		return sb.toString();
 	}

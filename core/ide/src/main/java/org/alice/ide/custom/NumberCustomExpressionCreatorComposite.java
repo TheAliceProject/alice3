@@ -81,7 +81,8 @@ public abstract class NumberCustomExpressionCreatorComposite extends CustomExpre
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
 		if( text != null ) {
-			this.errorStatus.setText( text );
+			String errorFormat = findLocalizedText( text );
+			this.errorStatus.setText( String.format(errorFormat, numberModel.getTextField().getText() ) );
 			return errorStatus;
 		} else {
 			return IS_GOOD_TO_GO_STATUS;

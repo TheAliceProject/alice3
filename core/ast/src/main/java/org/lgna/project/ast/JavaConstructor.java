@@ -43,6 +43,9 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.virtualmachine.UserInstance;
+import org.lgna.project.virtualmachine.VirtualMachine;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -68,6 +71,12 @@ public class JavaConstructor extends AbstractConstructor {
 
 	public static JavaConstructor getInstance( Class<?> declaringCls, Class<?>... parameterClses ) {
 		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( declaringCls, parameterClses ) );
+	}
+
+	@Override
+	public Object evaluate( VirtualMachine vm, AbstractType fallbackType, Object[] arguments ) {
+		UserInstance.updateArrayWithInstancesInJavaIfNecessary( arguments );
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( getConstructorReflectionProxy().getReification(), arguments );
 	}
 
 	private JavaConstructor( ConstructorReflectionProxy constructorReflectionProxy ) {

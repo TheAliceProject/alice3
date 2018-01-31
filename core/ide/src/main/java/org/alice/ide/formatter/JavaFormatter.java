@@ -43,6 +43,8 @@
 package org.alice.ide.formatter;
 
 /**
+ * Formats code on Alice tiles in a Java style.
+ *
  * @author Dennis Cosgrove
  */
 public class JavaFormatter extends Formatter {
@@ -54,7 +56,7 @@ public class JavaFormatter extends Formatter {
 		java.util.Map<Class<?>, String> tempTemplateMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		tempTemplateMap.put( org.lgna.project.ast.ExpressionStatement.class, "</expression/>;" );
 		tempTemplateMap.put( org.lgna.project.ast.WhileLoop.class, "while( </conditional/> ) {\n\t</body/>\n}" );
-		tempTemplateMap.put( org.lgna.project.ast.CountLoop.class, "</__constant__/> = </count/>;\nfor( </__variable__/> = 0; </_variable_/> < </_constant_/>; </_variable_/>++ ) {\n\t</body/>\n}" );
+		tempTemplateMap.put( org.lgna.project.ast.CountLoop.class, "for( </__variable__/> = 0; </_variable_/> < </count/>; </_variable_/>++ ) {\n\t</body/>\n}" );
 		tempTemplateMap.put( org.lgna.project.ast.BooleanExpressionBodyPair.class, "if( </expression/> ) {\n\t</body/>" );
 		tempTemplateMap.put( org.lgna.project.ast.ConditionalStatement.class, "</booleanExpressionBodyPairs/>\n} else {\n\t</elseBody/>\n}" );
 		tempTemplateMap.put( org.lgna.project.ast.MethodInvocation.class, "</expression/></method/>(</requiredArguments/></variableArguments/></keyedArguments/>)" );
@@ -153,10 +155,9 @@ public class JavaFormatter extends Formatter {
 		return rv;
 	}
 
+	// No localization for java
 	@Override
-	protected String getTextForCls( Class<?> cls ) {
-		return cls.getSimpleName();
-	}
+	protected String localizeName(String key, String name) { return name; }
 
 	@Override
 	public String getTextForNull() {
@@ -169,27 +170,20 @@ public class JavaFormatter extends Formatter {
 	}
 
 	@Override
-	protected String getTextForJavaParameter( org.lgna.project.ast.JavaParameter javaParameter ) {
-		return javaParameter.getName();
-	}
-
-	@Override
-	protected String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy ) {
-		return methodReflectionProxy.getName();
-	}
-
-	@Override
 	public boolean isTypeExpressionDesired() {
 		return true;
 	}
 
 	@Override
-	protected String getNameForField( java.lang.reflect.Field fld ) {
-		return fld.getName();
-	}
-
-	@Override
 	public String getFinalText() {
 		return "final";
+	}
+
+	@Override protected String getClassesFormat() {
+		return "%s classes";
+	}
+
+	@Override public String getNewFormat() {
+		return "new %s( %s )";
 	}
 }

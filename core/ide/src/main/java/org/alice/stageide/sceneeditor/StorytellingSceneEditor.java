@@ -1287,14 +1287,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		return initialTransform;
 	}
 
-	public String getSuggestedNameForNewObjectMarker( org.lgna.story.Color color ) {
-		return MarkerUtilities.getNameForObjectMarker( this.getActiveSceneType(), this.getSelectedField(), color );
-	}
-
-	public String getSuggestedNameForNewCameraMarker( org.lgna.story.Color color ) {
-		return MarkerUtilities.getNameForCameraMarker( this.getActiveSceneType(), color );
-	}
-
 	public org.lgna.story.Color getColorForNewObjectMarker() {
 		return MarkerUtilities.getNewObjectMarkerColor();
 	}

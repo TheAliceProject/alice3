@@ -42,14 +42,17 @@
  *******************************************************************************/
 package org.alice.ide.codeeditor;
 
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import org.lgna.croquet.views.Label;
+
 /**
  * @author Dennis Cosgrove
  */
 class AbstractCodeHeaderPane extends org.lgna.croquet.views.Panel {
-	protected static final float NAME_SCALE = 1.8f;
+	static final float NAME_SCALE = 1.8f;
 	private final boolean isPreview;
 
-	public AbstractCodeHeaderPane( boolean isPreview ) {
+	AbstractCodeHeaderPane( boolean isPreview ) {
 		this.isPreview = isPreview;
 	}
 
@@ -68,5 +71,13 @@ class AbstractCodeHeaderPane extends org.lgna.croquet.views.Panel {
 
 	protected void addComponent( org.lgna.croquet.views.AwtComponentView<?> component ) {
 		this.internalAddComponent( component );
+	}
+
+	Label getDeclareLabel() {
+		return new Label( localize("declare") + " ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+	}
+
+	String localize(String key) {
+		return ResourceBundleUtilities.getStringForKey(key, "org.alice.ide.codeeditor.CodeEditor");
 	}
 }

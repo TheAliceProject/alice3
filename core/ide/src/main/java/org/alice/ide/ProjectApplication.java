@@ -43,6 +43,8 @@
 
 package org.alice.ide;
 
+import org.lgna.project.ProjectVersion;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,6 +59,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	private org.lgna.croquet.undo.event.HistoryListener projectHistoryListener;
 
 	public ProjectApplication( IdeConfiguration ideConfiguration, ApiConfigurationManager apiConfigurationManager ) {
+		this.projectFileUtilities = new ProjectFileUtilities(this);
 		this.projectDocumentFrame = new ProjectDocumentFrame( ideConfiguration, apiConfigurationManager );
 		this.projectHistoryListener = new org.lgna.croquet.undo.event.HistoryListener() {
 			@Override
@@ -119,16 +122,16 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 	}
 
-	public static final String getApplicationName() {
+	public static String getApplicationName() {
 		return "Alice";
 	}
 
-	public static final String getVersionText() {
-		return org.lgna.project.ProjectVersion.getCurrentVersionText();
+	public static String getVersionText() {
+		return ProjectVersion.getCurrentVersionText();
 	}
 
-	public static final String getVersionAdornment() {
-		return " 3.3";
+	public static String getVersionAdornment() {
+		return ProjectVersion.getCurrentVersion().getMajorAndMinor();
 	}
 
 	public static final String getApplicationSubPath() {
@@ -364,6 +367,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		this.setUriProjectPair( uriProjectLoader );
 		this.updateHistoryIndexFileSync();
 		this.updateUndoRedoEnabled();
+		projectFileUtilities.startAutoSaving();
 	}
 
 	public final void loadProjectFrom( java.io.File file ) {
@@ -376,62 +380,18 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	protected abstract java.awt.image.BufferedImage createThumbnail() throws Throwable;
 
-	public final void saveCopyOfProjectTo( java.io.File file ) throws java.io.IOException {
-		//		long startProject = System.currentTimeMillis();
-		org.lgna.project.Project project = this.getUpToDateProject();
-		//		long endProject = System.currentTimeMillis();
-		//		System.out.println( "Get project time: " + ( ( endProject - startProject ) * .001 ) );
-		edu.cmu.cs.dennisc.java.util.zip.DataSource[] dataSources;
-		try {
-			//			long startThumb = System.currentTimeMillis();
-			final java.awt.image.BufferedImage thumbnailImage = createThumbnail();
-			//			long endThumb = System.currentTimeMillis();
-			//			System.out.println( "Thumbnail render time: " + ( ( endThumb - startThumb ) * .001 ) );
-			if( thumbnailImage != null ) {
-				if( ( thumbnailImage.getWidth() > 0 ) && ( thumbnailImage.getHeight() > 0 ) ) {
-					//pass
-				} else {
-					throw new RuntimeException();
-				}
-			} else {
-				throw new NullPointerException();
-			}
-			final byte[] data = edu.cmu.cs.dennisc.image.ImageUtilities.writeToByteArray( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, thumbnailImage );
-			dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] { new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
-				@Override
-				public String getName() {
-					return "thumbnail.png";
-				}
-
-				@Override
-				public void write( java.io.OutputStream os ) throws java.io.IOException {
-					os.write( data );
-				}
-			} };
-		} catch( Throwable t ) {
-			dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] {};
-		}
-
-		//		long startWrite = System.currentTimeMillis();
-		org.lgna.project.io.IoUtilities.writeProject( file, project, dataSources );
-		//		long endWrite = System.currentTimeMillis();
-		//		System.out.println( "File total write time: " + ( ( endWrite - startWrite ) * .001 ) );
-	}
-
 	public final void saveProjectTo( java.io.File file ) throws java.io.IOException {
+		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleSave( file );
+		uriProjectLoader = new org.alice.ide.uricontent.FileProjectLoader( file );
+
 		//		long startTime = System.currentTimeMillis();
 
-		this.saveCopyOfProjectTo( file );
+		projectFileUtilities.saveProjectTo( file);
 
 		//		long endTime = System.currentTimeMillis();
 		//		double saveTime = ( endTime - startTime ) * .001;
 		//		System.out.println( "Save time: " + saveTime );
 
-		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleSave( file );
-
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: better handling of file project loader", file );
-
-		this.uriProjectLoader = new org.alice.ide.uricontent.FileProjectLoader( file );
 		this.updateHistoryIndexFileSync();
 	}
 
@@ -447,4 +407,5 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	public abstract void ensureProjectCodeUpToDate();
 
 	private final ProjectDocumentFrame projectDocumentFrame;
+	private final ProjectFileUtilities projectFileUtilities;
 }

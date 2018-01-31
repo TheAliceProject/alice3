@@ -43,6 +43,12 @@
 package org.alice.stageide.gallerybrowser.uri;
 
 import org.alice.nonfree.NebulousIde;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.croquet.history.Step;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -95,7 +101,7 @@ public abstract class ResourceKeyUriIteratingOperation extends org.lgna.croquet.
 	protected abstract int getStepCount();
 
 	@Override
-	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
+	protected boolean hasNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData ) {
 		return subSteps.size() < this.getStepCount();
 	}
 
@@ -129,7 +135,7 @@ public abstract class ResourceKeyUriIteratingOperation extends org.lgna.croquet.
 	}
 
 	@Override
-	protected abstract org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData );
+	protected abstract org.lgna.croquet.Model getNext( CompletionStep<?> step, List<Step<?>> subSteps, Iterator<Model> iteratingData );
 
 	@Override
 	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {

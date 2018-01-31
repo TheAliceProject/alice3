@@ -127,7 +127,10 @@ public abstract class AbstractFindComposite extends org.lgna.croquet.FrameCompos
 			if( isNavigationEnabledState.getValue() && ( nextValue != null ) ) {
 				if( nextValue.getValue() instanceof Expression ) {
 					IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
-					searchResultsState.getValue().stencilHighlightForReference( (Expression)nextValue.getValue() );
+					SearchResult searchResults = searchResultsState.getValue();
+					if (searchResults != null) {
+						searchResults.stencilHighlightForReference( (Expression) nextValue.getValue() );
+					}
 				} else {
 					IDE.getActiveInstance().getDocumentFrame().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getChildren().get( 0 ).getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
 					IDE.getActiveInstance().getDocumentFrame().getHighlightStencil().hideIfNecessary();

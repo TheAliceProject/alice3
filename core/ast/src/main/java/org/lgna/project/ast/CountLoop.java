@@ -82,46 +82,13 @@ public class CountLoop extends AbstractLoop {
 
 	@Override
 	protected void appendJavaLoopPrefix( JavaCodeGenerator generator ) {
-		Expression countValue = this.count.getValue();
-		String[] a = generator.getVariableAndConstantNameForCountLoop( this );
-		String variableName = a[ 0 ];
-		String constantName = a[ 1 ];
-		boolean isInline;
-		if( countValue instanceof IntegerLiteral ) {
-			isInline = true;
-		} else if( countValue instanceof ParameterAccess ) {
-			isInline = true;
-		} else if( countValue instanceof LocalAccess ) {
-			LocalAccess access = (LocalAccess)countValue;
-			isInline = access.local.getValue().isFinal.getValue();
-		} else if( countValue instanceof FieldAccess ) {
-			FieldAccess access = (FieldAccess)countValue;
-			isInline = access.field.getValue().isFinal();
-		} else if( countValue instanceof ArrayLength ) {
-			//todo?
-			isInline = true;
-		} else {
-			isInline = false;
-		}
-		if( isInline ) {
-			//pass
-		} else {
-			generator.appendString( "final int " );
-			generator.appendString( constantName );
-			generator.appendString( "=" );
-			generator.appendExpression( countValue );
-			generator.appendSemicolon();
-		}
+		String variableName = getVariableName();
 		generator.appendString( "for(Integer " );
 		generator.appendString( variableName );
 		generator.appendString( "=0;" );
 		generator.appendString( variableName );
 		generator.appendString( "<" );
-		if( isInline ) {
-			generator.appendExpression( countValue );
-		} else {
-			generator.appendString( constantName );
-		}
+		generator.appendExpression( count.getValue() );
 		generator.appendString( ";" );
 		generator.appendString( variableName );
 		generator.appendString( "++)" );
