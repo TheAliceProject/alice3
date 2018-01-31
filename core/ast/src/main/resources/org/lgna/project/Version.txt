@@ -1,1 +1,1 @@
-${alice.build.version}.${alice.build.patch}
+${alice.build.version}${alice.build.prerelease}${alice.build.metadata}
