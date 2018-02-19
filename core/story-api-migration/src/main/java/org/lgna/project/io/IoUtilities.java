@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.lgna.project.io;
 
+import org.alice.serialization.xml.Decoder;
+import org.alice.serialization.xml.Encoder;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -206,7 +209,7 @@ public abstract class IoUtilities {
 		};
 
 		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName, migrationManagerDecodedVersionPairs );
-		org.lgna.project.ast.NamedUserType rv = (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, decodedProjectVersion );
+		org.lgna.project.ast.NamedUserType rv = (org.lgna.project.ast.NamedUserType) Decoder.decode( xmlDocument, decodedProjectVersion );
 
 		org.lgna.project.Project projectIfApplicable = null;
 		org.lgna.project.migration.ast.AstMigrationUtilities.migrateNode( rv, projectIfApplicable, migrationManagerDecodedVersionPairs );
@@ -344,7 +347,7 @@ public abstract class IoUtilities {
 	}
 
 	private static void writeType( org.lgna.project.ast.AbstractType<?, ?, ?> type, java.util.zip.ZipOutputStream zos, String entryName ) throws java.io.IOException {
-		writeXML( type.encode(), zos, entryName );
+		writeXML( Encoder.encode(type), zos, entryName );
 	}
 
 	private static void writeDataSources( java.util.zip.ZipOutputStream zos, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {

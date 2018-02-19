@@ -344,16 +344,6 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
 	}
 
 	@Override
-	protected void handleMissingProperty( String propertyName, Object value ) {
-		assert propertyName.equals( "expressionType" );
-		if( value == JavaType.DOUBLE_OBJECT_TYPE ) {
-			value = JavaType.getInstance( Number.class );
-		}
-		this.leftOperandType.setValue( (AbstractType<?, ?, ?>)value );
-		this.rightOperandType.setValue( (AbstractType<?, ?, ?>)value );
-	}
-
-	@Override
 	public void appendJava( JavaCodeGenerator generator ) {
 		generator.appendExpression( this.leftOperand.getValue() );
 		this.operator.getValue().appendJava( generator );

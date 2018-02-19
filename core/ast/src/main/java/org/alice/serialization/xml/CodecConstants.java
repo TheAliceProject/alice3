@@ -40,69 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
+package org.alice.serialization.xml;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ConditionalInfixExpression extends InfixExpression<ConditionalInfixExpression.Operator> {
-	public static enum Operator implements CodeAppender {
-		AND() {
-			@Override
-			public Boolean operate( Boolean leftOperand, Boolean rightOperand ) {
-				return leftOperand && rightOperand;
-			}
-
-			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
-				generator.appendString( "&&" );
-			}
-		},
-		OR() {
-			@Override
-			public Boolean operate( Boolean leftOperand, Boolean rightOperand ) {
-				return leftOperand || rightOperand;
-			}
-
-			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
-				generator.appendString( "||" );
-			}
-		};
-		public abstract Boolean operate( Boolean leftOperand, Boolean rightOperand );
-
-		@Override
-		public abstract void appendJava( JavaCodeGenerator generator );
-	}
-
-	public ConditionalInfixExpression() {
-	}
-
-	public ConditionalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand ) {
-		super( leftOperand, operator, rightOperand );
-	}
-
-	@Override
-	protected AbstractType<?, ?, ?> getLeftOperandType() {
-		return JavaType.BOOLEAN_OBJECT_TYPE;
-	}
-
-	@Override
-	protected AbstractType<?, ?, ?> getRightOperandType() {
-		return JavaType.BOOLEAN_OBJECT_TYPE;
-	}
-
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.BOOLEAN_OBJECT_TYPE;
-	}
-
-	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendExpression( this.leftOperand.getValue() );
-		this.operator.getValue().appendJava( generator );
-		generator.appendExpression( this.rightOperand.getValue() );
-	}
+interface CodecConstants {
+	String UNIQUE_KEY_ATTRIBUTE = "key";
+	String TYPE_ATTRIBUTE = "type";
+	String ID_ATTRIBUTE = "uuid";
+	double CURRENT_VERSION = 3.10062;
+	double MINIMUM_ACCEPTABLE_VERSION = 3.1;
 }

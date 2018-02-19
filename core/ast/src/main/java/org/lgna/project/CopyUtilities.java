@@ -42,15 +42,20 @@
  *******************************************************************************/
 package org.lgna.project;
 
+import org.alice.serialization.xml.Decoder;
+import org.alice.serialization.xml.Encoder;
+import org.alice.serialization.xml.DecodeIdPolicy;
+import org.w3c.dom.Document;
+
 /**
  * @author Dennis Cosgrove
  */
 public class CopyUtilities {
-	public static Project createCopy( Project other, org.lgna.project.ast.DecodeIdPolicy policy ) {
-		org.w3c.dom.Document xmlDocument = other.getProgramType().encode();
+	public static Project createCopy( Project other, DecodeIdPolicy policy ) {
+		Document xmlDocument = Encoder.encode(other.getProgramType());
 		try {
 			java.util.Map<Integer, org.lgna.project.ast.AbstractDeclaration> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-			org.lgna.project.ast.AbstractNode dst = org.lgna.project.ast.AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, policy );
+			org.lgna.project.ast.AbstractNode dst = Decoder.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, policy );
 			org.lgna.project.ast.NamedUserType programType = (org.lgna.project.ast.NamedUserType)dst;
 
 			java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes = java.util.Collections.emptySet();
@@ -74,6 +79,6 @@ public class CopyUtilities {
 
 	@Deprecated
 	public static Project createCopy( Project other ) {
-		return createCopy( other, org.lgna.project.ast.DecodeIdPolicy.NEW_IDS );
+		return createCopy( other, DecodeIdPolicy.NEW_IDS );
 	}
 }
