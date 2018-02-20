@@ -55,11 +55,6 @@ public class BlankSlateProjectLoader extends UriProjectLoader {
 	}
 
 	@Override
-	protected boolean isCacheAndCopyStyle() {
-		return false;
-	}
-
-	@Override
 	public java.net.URI getUri() {
 		return this.template.getUri();
 	}

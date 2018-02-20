@@ -45,7 +45,6 @@ package org.lgna.project.ast;
 
 import org.alice.serialization.xml.Decoder;
 import org.alice.serialization.xml.Encoder;
-import org.alice.serialization.xml.DecodeIdPolicy;
 import org.w3c.dom.Document;
 
 import java.util.Map;
@@ -58,7 +57,7 @@ public class AstUtilities {
 		throw new AssertionError();
 	}
 
-	public static <N extends Node> N createCopy( N original, NamedUserType root, DecodeIdPolicy policy ) {
+	public static <N extends Node> N createCopy( N original, NamedUserType root) {
 		java.util.Set<AbstractDeclaration> abstractDeclarations;
 		if( root != null ) {
 			abstractDeclarations = root.createDeclarationSet();
@@ -69,26 +68,12 @@ public class AstUtilities {
 		Map<Integer, AbstractDeclaration> map = Decoder.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
 		Document xmlDocument = Encoder.encode(( (AbstractNode)original ), abstractDeclarations);
 		try {
-			AbstractNode dst = Decoder.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, policy );
+			AbstractNode dst = Decoder.copy( xmlDocument, map );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
 			return (N)dst;
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
 			throw new AssertionError( vnse );
 		}
-	}
-
-	public static <N extends Node> N createCopy( N original, NamedUserType root ) {
-		return createCopy( original, root, DecodeIdPolicy.NEW_IDS );
-	}
-
-	public static <N extends Node> N createDeepCopy( N original, DecodeIdPolicy decodeIdPolicy ) {
-		return createCopy( original, null, decodeIdPolicy );
-	}
-
-	public static UserMethod createCopyWithoutBodyStatements( UserMethod original, NamedUserType root, DecodeIdPolicy policy ) {
-		UserMethod copy = createCopy( original, root, policy );
-		copy.body.getValue().statements.clear();
-		return copy;
 	}
 
 	public static boolean isKeywordExpression( Expression expression ) {

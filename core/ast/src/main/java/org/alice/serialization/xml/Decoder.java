@@ -512,7 +512,7 @@ public class Decoder {
 		return value;
 	}
 
-	public static AbstractNode decode( Document xmlDocument, Version projectVersion, Map<Integer, AbstractDeclaration> map, DecodeIdPolicy policy ) throws VersionNotSupportedException {
+	private static AbstractNode decode( Document xmlDocument, Version projectVersion, Map<Integer, AbstractDeclaration> map, DecodeIdPolicy policy ) throws VersionNotSupportedException {
 		Element xmlElement = xmlDocument.getDocumentElement();
 		double astVersion = Double.parseDouble( xmlElement.getAttribute( "version" ) );
 		if( astVersion >= CodecConstants.MINIMUM_ACCEPTABLE_VERSION ) {
@@ -521,6 +521,10 @@ public class Decoder {
 		} else {
 			throw new VersionNotSupportedException( CodecConstants.MINIMUM_ACCEPTABLE_VERSION, astVersion );
 		}
+	}
+
+	public static AbstractNode copy( Document xmlDocument, Map<Integer, AbstractDeclaration> map ) throws VersionNotSupportedException {
+		return decode( xmlDocument, ProjectVersion.getCurrentVersion(), map, DecodeIdPolicy.NEW_IDS );
 	}
 
 	public static AbstractNode decode( Document xmlDocument, Version projectVersion, Map<Integer, AbstractDeclaration> map ) throws VersionNotSupportedException {

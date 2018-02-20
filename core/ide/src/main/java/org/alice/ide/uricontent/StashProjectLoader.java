@@ -63,9 +63,4 @@ public final class StashProjectLoader extends UriProjectLoader {
 	public java.net.URI getUri() {
 		return this.uri;
 	}
-
-	@Override
-	protected boolean isCacheAndCopyStyle() {
-		return false;
-	}
 }

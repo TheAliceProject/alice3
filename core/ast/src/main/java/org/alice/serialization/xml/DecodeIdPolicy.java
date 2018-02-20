@@ -45,12 +45,12 @@ package org.alice.serialization.xml;
 /**
  * @author Dennis Cosgrove
  */
-public enum DecodeIdPolicy {
+enum DecodeIdPolicy {
 	PRESERVE_IDS( true ),
 	NEW_IDS( false );
 	private final boolean isIdPreserved;
 
-	private DecodeIdPolicy( boolean isIdPreserved ) {
+	DecodeIdPolicy( boolean isIdPreserved ) {
 		this.isIdPreserved = isIdPreserved;
 	}
 

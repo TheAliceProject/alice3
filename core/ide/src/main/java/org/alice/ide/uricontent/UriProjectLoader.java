@@ -64,20 +64,4 @@ public abstract class UriProjectLoader extends UriContentLoader<org.lgna.project
 			return null;
 		}
 	}
-
-	protected abstract boolean isCacheAndCopyStyle();
-
-	@Override
-	protected boolean isWorkerCachingAppropriate( org.alice.ide.uricontent.UriContentLoader.MutationPlan intention ) {
-		return this.isCacheAndCopyStyle() || super.isWorkerCachingAppropriate( intention );
-	}
-
-	@Override
-	protected org.lgna.project.Project createCopyIfNecessary( org.lgna.project.Project value ) {
-		if( this.isCacheAndCopyStyle() ) {
-			return org.lgna.project.CopyUtilities.createCopy( value );
-		} else {
-			return value;
-		}
-	}
 }

@@ -55,11 +55,6 @@ public abstract class AbstractFileProjectLoader extends UriProjectLoader {
 	}
 
 	@Override
-	protected boolean isCacheAndCopyStyle() {
-		return false;
-	}
-
-	@Override
 	protected org.lgna.project.Project load() {
 		if( file.exists() ) {
 			final java.util.Locale locale = java.util.Locale.ENGLISH;
