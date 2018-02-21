@@ -46,11 +46,8 @@ package org.alice.serialization.xml;
 import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.map.MapToMap;
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.xml.XMLUtilities;
-import org.lgna.project.ProjectVersion;
-import org.lgna.project.Version;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.*;
 import org.w3c.dom.Document;
@@ -69,93 +66,26 @@ import java.util.UUID;
  * @author Dennis Cosgrove
  */
 public class Decoder {
-	private static class ClassReflectionProxyAndMethodName {
-		private final ClassReflectionProxy classReflectionProxy;
-		private final String name;
 
-		public ClassReflectionProxyAndMethodName( ClassReflectionProxy classReflectionProxy, String name ) {
-			this.classReflectionProxy = classReflectionProxy;
-			this.name = name;
-		}
-
-		public ClassReflectionProxy getClassReflectionProxy() {
-			return this.classReflectionProxy;
-		}
-
-		public String getName() {
-			return this.name;
-		}
-	}
-
-	private static final MapToMap<ClassReflectionProxy, String, ClassReflectionProxyAndMethodName> betweenClassesMethodMap = MapToMap.newInstance();
-	private static final MapToMap<ClassReflectionProxy, String, String> intraClassMethodMap = MapToMap.newInstance();
-	private static final Map<String, String> mapClassNameToClassName = Maps.newHashMap();
-
-	public static void addMethodFilterWithinClass( ClassReflectionProxy classReflectionProxy, String prevName, String nextName ) {
-		Decoder.intraClassMethodMap.put( classReflectionProxy, prevName, nextName );
-	}
-
-	public static void addMethodFilterWithinClass( Class<?> cls, String prevName, String nextName ) {
-		addMethodFilterWithinClass( JavaType.getInstance( cls ).getClassReflectionProxy(), prevName, nextName );
-	}
-
-	public static void addMethodFilterBetweenClasses( ClassReflectionProxy prevClassReflectionProxy, String prevName, ClassReflectionProxy nextClassReflectionProxy, String nextName ) {
-		Decoder.betweenClassesMethodMap.put( prevClassReflectionProxy, prevName, new ClassReflectionProxyAndMethodName( nextClassReflectionProxy, nextName ) );
-	}
-
-	public static void addMethodFilterBetweenClasses( Class<?> prevCls, String prevName, Class<?> nextCls, String nextName ) {
-		addMethodFilterBetweenClasses( JavaType.getInstance( prevCls ).getClassReflectionProxy(), prevName, JavaType.getInstance( nextCls ).getClassReflectionProxy(), nextName );
-	}
-
-	public static void addClassFilter( ClassReflectionProxy prevClassReflectionProxy, ClassReflectionProxy nextClassReflectionProxy ) {
-		Decoder.mapClassNameToClassName.put( prevClassReflectionProxy.getName(), nextClassReflectionProxy.getName() );
-	}
-
-	public static void addClassFilter( ClassReflectionProxy prevClassReflectionProxy, Class<?> nextCls ) {
-		addClassFilter( prevClassReflectionProxy, JavaType.getInstance( nextCls ).getClassReflectionProxy() );
-	}
-
-	public static void addClassFilter( Class<?> prevCls, Class<?> nextCls ) {
-		addClassFilter( JavaType.getInstance( prevCls ).getClassReflectionProxy(), JavaType.getInstance( nextCls ).getClassReflectionProxy() );
-	}
-
-	private static String filterClassNameIfNecessary( String clsName ) {
-		String rv = Decoder.mapClassNameToClassName.get( clsName );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = clsName;
-		}
-		return rv;
-	}
-
-	//	private static String filterMethodNameIfNecessary( ClassReflectionProxy classReflectionProxy, String name ) {
-	//		String rv = Decoder.intraClassMethodMap.get( classReflectionProxy, name );
-	//		if( rv != null ) {
-	//			//pass
-	//		} else {
-	//			rv = name;
-	//		}
-	//		return rv;
-	//	}
-
-	public Decoder( Version srcVersion, Version dstVersion, DecodeIdPolicy policy ) {
-		this.srcVersion = srcVersion;
-		this.dstVersion = dstVersion;
+	private Decoder( DecodeIdPolicy policy ) {
 		this.policy = policy;
 	}
 
+	public static AbstractNode copy( Document xmlDocument, Set<AbstractDeclaration> terminals ) throws VersionNotSupportedException {
+		Map<Integer, AbstractDeclaration> map = Decoder.createMapOfDeclarationsThatShouldNotBeCopied( terminals );
+		return decode( xmlDocument, map, DecodeIdPolicy.NEW_IDS );
+	}
+
+	public static AbstractNode decode( Document xmlDocument ) throws VersionNotSupportedException {
+		return decode( xmlDocument, new HashMap<>(), DecodeIdPolicy.PRESERVE_IDS );
+	}
+
 	private static ClassReflectionProxy createClassReflectionProxy( String clsName ) {
-		return new ClassReflectionProxy( filterClassNameIfNecessary( clsName ) );
+		return new ClassReflectionProxy( clsName );
 	}
 
 	private String getClassName( Element xmlElement ) {
-		String rv = xmlElement.getAttribute( CodecConstants.TYPE_ATTRIBUTE );
-		return rv;
-	}
-
-	private ClassReflectionProxy getJavaClassInfo( Element xmlElement ) {
-		return createClassReflectionProxy( getClassName( xmlElement ) );
+		return xmlElement.getAttribute( CodecConstants.TYPE_ATTRIBUTE );
 	}
 
 	//todo: investigate
@@ -168,7 +98,7 @@ public class Decoder {
 		return ReflectionUtilities.newInstance( getClassName( xmlElement ) );
 	}
 
-	public Object decodeValue( Element xmlValue, Map<Integer, AbstractDeclaration> map ) {
+	private Object decodeValue( Element xmlValue, Map<Integer, AbstractDeclaration> map ) {
 		Object rv;
 		if( xmlValue.hasAttribute( "isNull" ) ) {
 			rv = null;
@@ -288,18 +218,6 @@ public class Decoder {
 		ClassReflectionProxy declaringCls = decodeDeclaringClass( xmlMethod );
 		String name = xmlMethod.getAttribute( "name" );
 
-		String potentialReplacement = Decoder.intraClassMethodMap.get( declaringCls, name );
-		if( potentialReplacement != null ) {
-			name = potentialReplacement;
-		} else {
-			ClassReflectionProxyAndMethodName classReflectionProxyAndMethodName = Decoder.betweenClassesMethodMap.get( declaringCls, name );
-			if( classReflectionProxyAndMethodName != null ) {
-				declaringCls = classReflectionProxyAndMethodName.getClassReflectionProxy();
-				name = classReflectionProxyAndMethodName.getName();
-			}
-		}
-
-		//		name = filterMethodNameIfNecessary( declaringCls, name );
 		ClassReflectionProxy[] parameterClses = decodeParameters( xmlMethod );
 		boolean isVarArgs = Boolean.parseBoolean( xmlMethod.getAttribute( "isVarArgs" ) );
 		return new MethodReflectionProxy( declaringCls, name, parameterClses, isVarArgs );
@@ -309,7 +227,7 @@ public class Decoder {
 		return Integer.parseInt( xmlElement.getAttribute( CodecConstants.UNIQUE_KEY_ATTRIBUTE ), 16 );
 	}
 
-	public AbstractNode decode( Element xmlElement, Map<Integer, AbstractDeclaration> map ) {
+	private AbstractNode decode( Element xmlElement, Map<Integer, AbstractDeclaration> map ) {
 		AbstractNode rv;
 		if( xmlElement.hasAttribute( CodecConstants.TYPE_ATTRIBUTE ) ) {
 			String clsName = getClassName( xmlElement );
@@ -460,7 +378,6 @@ public class Decoder {
 		return rv;
 	}
 
-
 	private void decodeNode( AbstractNode node, Element xmlElement, Map<Integer, AbstractDeclaration> map ) {
 		NodeList nodeList = xmlElement.getChildNodes();
 		for( int i = 0; i < nodeList.getLength(); i++ ) {
@@ -512,27 +429,15 @@ public class Decoder {
 		return value;
 	}
 
-	private static AbstractNode decode( Document xmlDocument, Version projectVersion, Map<Integer, AbstractDeclaration> map, DecodeIdPolicy policy ) throws VersionNotSupportedException {
+	private static AbstractNode decode( Document xmlDocument, Map<Integer, AbstractDeclaration> map, DecodeIdPolicy policy ) throws VersionNotSupportedException {
 		Element xmlElement = xmlDocument.getDocumentElement();
 		double astVersion = Double.parseDouble( xmlElement.getAttribute( "version" ) );
 		if( astVersion >= CodecConstants.MINIMUM_ACCEPTABLE_VERSION ) {
-			Decoder decoder = new Decoder( projectVersion, ProjectVersion.getCurrentVersion(), policy );
+			Decoder decoder = new Decoder( policy );
 			return decoder.decode( xmlElement, map );
 		} else {
 			throw new VersionNotSupportedException( CodecConstants.MINIMUM_ACCEPTABLE_VERSION, astVersion );
 		}
-	}
-
-	public static AbstractNode copy( Document xmlDocument, Map<Integer, AbstractDeclaration> map ) throws VersionNotSupportedException {
-		return decode( xmlDocument, ProjectVersion.getCurrentVersion(), map, DecodeIdPolicy.NEW_IDS );
-	}
-
-	public static AbstractNode decode( Document xmlDocument, Version projectVersion, Map<Integer, AbstractDeclaration> map ) throws VersionNotSupportedException {
-		return decode( xmlDocument, projectVersion, map, DecodeIdPolicy.PRESERVE_IDS );
-	}
-
-	public static AbstractNode decode( Document xmlDocument, Version projectVersion ) throws VersionNotSupportedException {
-		return decode( xmlDocument, projectVersion, new HashMap<Integer, AbstractDeclaration>() );
 	}
 
 	private static int createUniqueKey( Map<?, ?> map ) {
@@ -543,7 +448,7 @@ public class Decoder {
 		map.put( createUniqueKey( map ), declaration );
 	}
 
-	public static Map<Integer, AbstractDeclaration> createMapOfDeclarationsThatShouldNotBeCopied( Set<AbstractDeclaration> set ) {
+	private static Map<Integer, AbstractDeclaration> createMapOfDeclarationsThatShouldNotBeCopied( Set<AbstractDeclaration> set ) {
 		Map<Integer, AbstractDeclaration> rv = new HashMap<Integer, AbstractDeclaration>();
 		for( AbstractDeclaration abstractDeclaration : set ) {
 			getUniqueKeyAndPutInDecodeMap( abstractDeclaration, rv );
@@ -555,7 +460,5 @@ public class Decoder {
 	private final Map<Integer, Integer> EPIC_HACK_mapGetterKeyToFieldKey = Maps.newHashMap();
 	private final Map<Integer, Integer> EPIC_HACK_mapSetterKeyToFieldKey = Maps.newHashMap();
 
-	private final Version srcVersion;
-	private final Version dstVersion;
 	private final DecodeIdPolicy policy;
 }

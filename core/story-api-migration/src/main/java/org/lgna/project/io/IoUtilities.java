@@ -209,7 +209,7 @@ public abstract class IoUtilities {
 		};
 
 		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName, migrationManagerDecodedVersionPairs );
-		org.lgna.project.ast.NamedUserType rv = (org.lgna.project.ast.NamedUserType) Decoder.decode( xmlDocument, decodedProjectVersion );
+		org.lgna.project.ast.NamedUserType rv = (org.lgna.project.ast.NamedUserType) Decoder.decode( xmlDocument );
 
 		org.lgna.project.Project projectIfApplicable = null;
 		org.lgna.project.migration.ast.AstMigrationUtilities.migrateNode( rv, projectIfApplicable, migrationManagerDecodedVersionPairs );

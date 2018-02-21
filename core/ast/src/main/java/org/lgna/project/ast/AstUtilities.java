@@ -65,10 +65,9 @@ public class AstUtilities {
 		} else {
 			abstractDeclarations = java.util.Collections.emptySet();
 		}
-		Map<Integer, AbstractDeclaration> map = Decoder.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
-		Document xmlDocument = Encoder.encode(( (AbstractNode)original ), abstractDeclarations);
+		Document xmlDocument = Encoder.encode( (AbstractNode) original , abstractDeclarations);
 		try {
-			AbstractNode dst = Decoder.copy( xmlDocument, map );
+			AbstractNode dst = Decoder.copy( xmlDocument, abstractDeclarations );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
 			return (N)dst;
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
