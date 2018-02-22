@@ -43,11 +43,9 @@
 
 package org.lgna.project.ast;
 
-import org.alice.serialization.xml.Decoder;
-import org.alice.serialization.xml.Encoder;
+import org.alice.serialization.xml.XmlEncoderDecoder;
 import org.w3c.dom.Document;
 
-import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -65,9 +63,10 @@ public class AstUtilities {
 		} else {
 			abstractDeclarations = java.util.Collections.emptySet();
 		}
-		Document xmlDocument = Encoder.encode( (AbstractNode) original , abstractDeclarations);
+		XmlEncoderDecoder coder = new XmlEncoderDecoder();
+		Document xmlDocument = coder.encode( (AbstractNode) original , abstractDeclarations);
 		try {
-			AbstractNode dst = Decoder.copy( xmlDocument, abstractDeclarations );
+			AbstractNode dst = coder.copy( xmlDocument, abstractDeclarations );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
 			return (N)dst;
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {

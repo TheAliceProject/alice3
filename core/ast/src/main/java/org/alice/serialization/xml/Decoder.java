@@ -65,7 +65,7 @@ import java.util.UUID;
 /**
  * @author Dennis Cosgrove
  */
-public class Decoder {
+class Decoder {
 
 	private Decoder( DecodeIdPolicy policy ) {
 		this.policy = policy;

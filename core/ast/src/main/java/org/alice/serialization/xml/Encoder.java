@@ -12,15 +12,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class Encoder {
+class Encoder {
 
-	public static Document encode( AbstractType<?, ?, ?> type ) {
-		return encode( type, new HashSet<>() );
+	public static Document encode( AbstractNode node ) {
+		return encode( node, new HashSet<>() );
 	}
 
-	public static Document encode( AbstractNode node, Set<AbstractDeclaration> set ) {
+	public static Document encode( AbstractNode node, Set<AbstractDeclaration> terminals ) {
 		Document document = XMLUtilities.createDocument();
-		Element xmlElement = encode( node, document, set );
+		Element xmlElement = encode( node, document, terminals );
 		xmlElement.setAttribute( "version", Double.toString( CodecConstants.CURRENT_VERSION ) );
 		document.appendChild( xmlElement );
 		return document;
