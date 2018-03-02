@@ -819,7 +819,7 @@ public class AliceResourceUtilties {
 		return null;
 	}
 
-	/*private*/protected static String getModelClassName( Class<?> modelResource, String resourceName, Locale locale ) {
+	public static String getModelClassName( Class<?> modelResource, String resourceName, Locale locale ) {
 		ModelResourceInfo info = getModelResourceInfo( modelResource, null );
 		String className;
 		String packageName = modelResource.getPackage().getName();

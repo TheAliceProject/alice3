@@ -42,6 +42,8 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,4 +54,8 @@ public abstract class InstanceCreatorKey extends ResourceKey {
 	public boolean isInstanceCreator() {
 		return true;
 	}
+
+	public abstract AxisAlignedBox getBoundingBox();
+
+	public abstract boolean getPlaceOnGround();
 }

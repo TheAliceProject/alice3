@@ -42,8 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
 /**
  * @author Dennis Cosgrove
@@ -97,17 +99,17 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String getInternalText() {
-		return IdeAliceResourceUtilities.getModelClassName( this, null );
+		return AliceResourceUtilties.getModelClassName( enumConstant.getDeclaringClass(), enumConstant.name(), null );
 	}
 
 	@Override
 	public String getSearchText() {
-		return IdeAliceResourceUtilities.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
+		return AliceResourceUtilties.getModelClassName( enumConstant.getDeclaringClass(), enumConstant.name(), javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String getLocalizedDisplayText() {
-		String simpleName = IdeAliceResourceUtilities.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
+		String simpleName = AliceResourceUtilties.getModelClassName( enumConstant.getDeclaringClass(), enumConstant.name(), javax.swing.JComponent.getDefaultLocale() );
 		String params = this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ? this.enumConstant.name() : "";
 
 		Formatter formatter = FormatterState.getInstance().getValue();
@@ -147,17 +149,25 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String[] getTags() {
-		return IdeAliceResourceUtilities.getTags( this, javax.swing.JComponent.getDefaultLocale() );
+		return AliceResourceUtilties.getTags( enumConstant.getDeclaringClass(), enumConstant.name(), javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String[] getGroupTags() {
-		return IdeAliceResourceUtilities.getGroupTags( this, javax.swing.JComponent.getDefaultLocale() );
+		return AliceResourceUtilties.getGroupTags( enumConstant.getDeclaringClass(), enumConstant.name(), javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String[] getThemeTags() {
-		return IdeAliceResourceUtilities.getThemeTags( this, javax.swing.JComponent.getDefaultLocale() );
+		return AliceResourceUtilties.getThemeTags( enumConstant.getDeclaringClass(), enumConstant.name(), javax.swing.JComponent.getDefaultLocale() );
+	}
+
+	@Override public AxisAlignedBox getBoundingBox() {
+		return AliceResourceUtilties.getBoundingBox( enumConstant.getDeclaringClass(), enumConstant.name() );
+	}
+
+	@Override public boolean getPlaceOnGround() {
+		return AliceResourceUtilties.getPlaceOnGround( enumConstant.getDeclaringClass(), enumConstant.name() );
 	}
 
 	@Override

@@ -115,7 +115,7 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 		if( ( this.resourceKey instanceof EnumConstantResourceKey ) ) {
 			EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
 			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
-			addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( this.resourceKey, true );
+			addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( enumConstantResourceKey, true );
 			return addResourceKeyManagedFieldComposite.getLaunchOperation();
 		} else if( NebulousIde.nonfree.isInstanceOfPersonResourceKey( this.resourceKey ) ) {
 			return NebulousIde.nonfree.getPersonResourceDropModel( this.resourceKey );
@@ -177,14 +177,20 @@ public abstract class ResourceNode extends ResourceGalleryDragModel implements C
 		return this.resourceKey.isInstanceCreator();
 	}
 
+	private InstanceCreatorKey getInstanceCreatorKey() {
+		return (resourceKey instanceof InstanceCreatorKey) ? (InstanceCreatorKey) resourceKey : null;
+	}
+
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		return IdeAliceResourceUtilities.getBoundingBox( this.resourceKey );
+		InstanceCreatorKey key = getInstanceCreatorKey();
+		return (key != null) ? key.getBoundingBox() : null;
 	}
 
 	@Override
 	public boolean placeOnGround() {
-		return IdeAliceResourceUtilities.getPlaceOnGround( this.resourceKey );
+		InstanceCreatorKey key = getInstanceCreatorKey();
+		return key != null && key.getPlaceOnGround();
 	}
 
 	@Override
