@@ -12,7 +12,8 @@ hs_*.log
 /.classpath
 /.project
 /.settings
-/target
+target
+src_gen
 
 # zanata
 .zanata-cache
