@@ -1,5 +1,8 @@
 package org.alice.tweedle;
 
+import org.alice.tweedle.run.Frame;
+import org.alice.tweedle.run.TweedleObject;
+
 // Analog to NamedUserConstructor?
 public class TweedleClass extends TweedleType {
 	final private String superclassName;

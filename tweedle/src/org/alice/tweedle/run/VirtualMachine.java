@@ -40,7 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.alice.tweedle;
+package org.alice.tweedle.run;
+
+import org.alice.tweedle.TweedleExpression;
+import org.alice.tweedle.TweedleField;
+import org.alice.tweedle.TweedleStatement;
+import org.alice.tweedle.TweedleArray;
+import org.alice.tweedle.TweedleClass;
+import org.alice.tweedle.TweedleMethod;
+import org.alice.tweedle.TweedleType;
+import org.alice.tweedle.TweedleValue;
 
 public abstract class VirtualMachine {
 /*	public abstract LgnaStackTraceElement[] getStackTrace( Thread thread );
@@ -73,7 +82,7 @@ public abstract class VirtualMachine {
 
 	protected abstract void popCurrentThread();*/
 
-	public Object[] ENTRY_POINT_evaluate( TweedleObject instance, Expression[] expressions ) {
+	public Object[] ENTRY_POINT_evaluate( TweedleObject instance, TweedleExpression[] expressions ) {
 		Frame frame = new Frame(instance); // was bogus frame - set this to be instance
 		Object[] values = new Object[ expressions.length ];
 		for( int i = 0; i < expressions.length; i++ ) {
@@ -82,7 +91,7 @@ public abstract class VirtualMachine {
 		return values;
 	}
 
-	public void ENTRY_POINT_invoke( TweedleObject instance, Invokable method, TweedleValue... arguments ) {
+	public void ENTRY_POINT_invoke( TweedleObject instance, TweedleMethod method, TweedleValue... arguments ) {
 		Frame frame = new Frame(instance);
 		invoke(frame, instance, method, arguments );
 	}
@@ -92,16 +101,16 @@ public abstract class VirtualMachine {
 		return entryPointType.instantiate(frame, arguments);
 	}
 
-	public TweedleValue createAndSetFieldInstance(Frame frame, TweedleObject instance, Field field ) {
+	public TweedleValue createAndSetFieldInstance(Frame frame, TweedleObject instance, TweedleField field ) {
 		return instance.initializeField(frame, field);
 	}
 
-	public Object ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( TweedleObject instance, Field field ) {
+	public Object ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( TweedleObject instance, TweedleField field ) {
 		Frame frame = new Frame(instance);
 		return createAndSetFieldInstance(frame, instance, field );
 	}
 
-	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( TweedleObject instance, Statement statement ) {
+	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( TweedleObject instance, TweedleStatement statement ) {
 		Frame frame = new Frame(instance);
 		execute(frame, statement);
 	}
@@ -202,16 +211,16 @@ public abstract class VirtualMachine {
 		}
 	}*/
 
-	protected TweedleValue get( Field field, TweedleObject instance ) {
+	protected TweedleValue get( TweedleField field, TweedleObject instance ) {
 		return instance.get(field);
 	}
 
-	protected void set( Field field, TweedleObject instance, TweedleValue value ) {
+	protected void set( TweedleField field, TweedleObject instance, TweedleValue value ) {
 		instance.set(field, value);
 	}
 
 
-	protected Object invoke( Frame frame, TweedleObject target, Invokable method, TweedleValue... arguments ) {
+	protected Object invoke( Frame frame, TweedleObject target, TweedleMethod method, TweedleValue... arguments ) {
 		return method.invoke(frame, target, arguments);
 		/*pushMethodFrame( target, method, arguments );
 		java.util.Map<AbstractParameter, Object> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
@@ -532,7 +541,7 @@ public abstract class VirtualMachine {
 		throw new RuntimeException( "todo" );
 	}*/
 
-	protected TweedleValue evaluate( Frame frame, Expression expression ) {
+	protected TweedleValue evaluate( Frame frame, TweedleExpression expression ) {
 //			if( expression instanceof AssignmentExpression ) {
 //				rv = this.evaluateAssignmentExpression( (AssignmentExpression)expression );
 //			} else if( expression instanceof BooleanLiteral ) {
@@ -893,7 +902,7 @@ public abstract class VirtualMachine {
 		//handle pop on exit of owning block statement
 	}*/
 
-	protected void execute( Frame frame, Statement statement ) {
+	protected void execute( Frame frame, TweedleStatement statement ) {
 		if( statement.isEnabled() ) {
 			statement.execute(frame);
 

@@ -1,6 +1,8 @@
 package org.alice.tweedle;
 
-public class Statement {
+import org.alice.tweedle.run.Frame;
+
+public class TweedleStatement {
 	public boolean isEnabled() {
 		return true;
 	}

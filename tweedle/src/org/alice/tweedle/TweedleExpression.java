@@ -1,6 +1,8 @@
 package org.alice.tweedle;
 
-public class Expression {
+import org.alice.tweedle.run.Frame;
+
+public class TweedleExpression {
 	public TweedleValue evaluate( Frame frame ) {
 		return null;
 	}

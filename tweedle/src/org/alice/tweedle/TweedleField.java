@@ -1,4 +1,4 @@
 package org.alice.tweedle;
 
-public class Field {
+public class TweedleField {
 }
