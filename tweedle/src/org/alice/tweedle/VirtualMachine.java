@@ -42,22 +42,20 @@
  *******************************************************************************/
 package org.alice.tweedle;
 
-import jdk.nashorn.internal.ir.BlockStatement;
-
 public abstract class VirtualMachine {
 /*	public abstract LgnaStackTraceElement[] getStackTrace( Thread thread );
 
-	protected abstract TweedleValue getThis();
+	protected abstract TweedleObject getThis();
 
-	protected abstract void pushBogusFrame( TweedleValue instance );
+	protected abstract void pushBogusFrame( TweedleObject instance );
 
-	protected abstract void pushConstructorFrame( TweedleType type, java.util.Map<AbstractParameter, Object> map );
+	protected abstract void pushConstructorFrame( TweedleClass type, java.util.Map<AbstractParameter, Object> map );
 
-	protected abstract void setConstructorFrameTweedleValue( TweedleValue instance );
+	protected abstract void setConstructorFrame( TweedleObject instance );
 
-	protected abstract void pushMethodFrame( TweedleValue instance, UserMethod method, java.util.Map<AbstractParameter, Object> map );
+	protected abstract void pushMethodFrame( TweedleObject instance, UserMethod method, java.util.Map<AbstractParameter, Object> map );
 
-	protected abstract void pushLambdaFrame( TweedleValue instance, UserLambda lambda, Invokable singleInvokable, java.util.Map<AbstractParameter, Object> map );
+	protected abstract void pushLambdaFrame(  XX instance XX, UserLambda lambda, Invokable singleInvokable, java.util.Map<AbstractParameter, Object> map );
 
 	protected abstract void popFrame();
 
@@ -75,8 +73,8 @@ public abstract class VirtualMachine {
 
 	protected abstract void popCurrentThread();*/
 
-	public Object[] ENTRY_POINT_evaluate( TweedleValue instance, Expression[] expressions ) {
-		Frame frame = new Frame();
+	public Object[] ENTRY_POINT_evaluate( TweedleObject instance, Expression[] expressions ) {
+		Frame frame = new Frame(instance); // was bogus frame - set this to be instance
 		Object[] values = new Object[ expressions.length ];
 		for( int i = 0; i < expressions.length; i++ ) {
 			values[ i ] = evaluate( frame, expressions[ i ] );
@@ -84,113 +82,35 @@ public abstract class VirtualMachine {
 		return values;
 	}
 
-	public void ENTRY_POINT_invoke( TweedleValue instance, Invokable method, Object... arguments ) {
-		this.invoke( instance, method, arguments );
+	public void ENTRY_POINT_invoke( TweedleObject instance, Invokable method, TweedleValue... arguments ) {
+		Frame frame = new Frame(instance);
+		invoke(frame, instance, method, arguments );
 	}
 
-	public TweedleValue ENTRY_POINT_createInstance( TweedleType entryPointType, Object... arguments ) {
-		Frame frame = new Frame();
+	public TweedleObject ENTRY_POINT_createInstance( TweedleClass entryPointType, TweedleValue... arguments ) {
+		Frame frame = new Frame(null);
 		return entryPointType.instantiate(frame, arguments);
 	}
 
-	public Object createAndSetFieldInstance(Frame frame, TweedleValue instance, Field field ) {
-		Expression expression = field.initializer.getValue();
-		Object val = evaluate( frame, expression );
-		instance.setField( field, val );
-		return val;
+	public TweedleValue createAndSetFieldInstance(Frame frame, TweedleObject instance, Field field ) {
+		return instance.initializeField(frame, field);
 	}
 
-	public Object ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( TweedleValue instance, Field field ) {
-		Frame frame = new Frame();
-		return createAndSetFieldInstance(frame,  instance, field );
+	public Object ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( TweedleObject instance, Field field ) {
+		Frame frame = new Frame(instance);
+		return createAndSetFieldInstance(frame, instance, field );
 	}
 
-	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( TweedleValue instance, Statement statement ) {
-		Frame frame = new Frame();
+	public void ACCEPTABLE_HACK_FOR_SCENE_EDITOR_executeStatement( TweedleObject instance, Statement statement ) {
+		Frame frame = new Frame(instance);
 		execute(frame, statement);
 	}
 
-	private final java.util.Map<Class<?>, Class<?>> mapAbstractClsToAdapterCls = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-	private final java.util.Map<java.lang.reflect.Method, java.lang.reflect.Method> mapProtectedMthdToAdapterMthd = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-
-	public void registerAbstractClassAdapter( Class<?> abstractCls, Class<?> adapterCls ) {
-		if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isAbstract( abstractCls ) ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( abstractCls );
-		}
-		this.mapAbstractClsToAdapterCls.put( abstractCls, adapterCls );
+	private <T extends TweedleType> TweedleArray<?> createArray( T[] values ) {
+		return new TweedleArray<T>(values);
 	}
 
-	public void registerProtectedMethodAdapter( java.lang.reflect.Method anonymousMthd, java.lang.reflect.Method adapterMthd ) {
-		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isPublic( adapterMthd ) : adapterMthd;
-		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isStatic( adapterMthd ) : adapterMthd;
-
-		Class<?>[] anonymousParameterTypes = anonymousMthd.getParameterTypes();
-		Class<?>[] adapterParameterTypes = adapterMthd.getParameterTypes();
-
-		assert anonymousParameterTypes.length == ( adapterParameterTypes.length - 1 ) : anonymousMthd;
-		assert adapterParameterTypes.length > 0 : anonymousMthd;
-		assert adapterParameterTypes[ 0 ] == anonymousMthd.getDeclaringClass();
-
-		if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isProtected( anonymousMthd ) ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( anonymousMthd );
-		}
-		this.mapProtectedMthdToAdapterMthd.put( anonymousMthd, adapterMthd );
-	}
-
-	/* package-private */Object createInstance( UserType<?> type, final TweedleValue TweedleValue, java.lang.reflect.Constructor<?> cnstrctr, Object... arguments ) {
-		Class<?> cls = cnstrctr.getDeclaringClass();
-		Class<?> adapterCls = this.mapAbstractClsToAdapterCls.get( cls );
-		if( adapterCls != null ) {
-			MethodContext context = new MethodContext() {
-				@Override
-				public void invokeEntryPoint( Invokable method, final Object... arguments ) {
-					VirtualMachine.this.ENTRY_POINT_invoke( TweedleValue, method, arguments );
-				}
-			};
-			Class<?>[] parameterTypes = { MethodContext.class, UserType.class, Object[].class };
-			Object[] args = { context, type, arguments };
-			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
-		} else {
-			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, arguments );
-		}
-	}
-
-	private UserArrayInstance createUserArrayInstance( UserArrayType type, int[] lengths, Object[] values ) {
-		return new UserArrayInstance( type, lengths, values );
-	}
-
-	private Object createJavaArrayInstance( JavaType type, int[] lengths, Object[] values ) {
-		Class<?> cls = type.getClassReflectionProxy().getReification();
-		assert cls != null;
-		Class<?> componentCls = cls.getComponentType();
-		assert componentCls != null;
-		Object rv = java.lang.reflect.Array.newInstance( componentCls, lengths );
-		for( int i = 0; i < values.length; i++ ) {
-			if( values[ i ] instanceof TweedleValue ) {
-				TweedleValue userValue = (TweedleValue)values[ i ];
-				values[ i ] = userValue.getJavaInstance();
-			}
-			java.lang.reflect.Array.set( rv, i, values[ i ] );
-		}
-		return rv;
-	}
-
-	protected Object createArrayInstance( AbstractType<?, ?, ?> type, int[] lengths, Object... values ) {
-		assert type != null;
-		if( type instanceof UserArrayType ) {
-			return this.createUserArrayInstance( (UserArrayType)type, lengths, values );
-		} else if( type instanceof JavaType ) {
-			return this.createJavaArrayInstance( (JavaType)type, lengths, values );
-		} else {
-			throw new RuntimeException();
-		}
-	}
-
-	private Object evaluateArgument( AbstractArgument argument ) {
+	/*private Object evaluateArgument( AbstractArgument argument ) {
 		assert argument != null;
 		Expression expression = argument.expression.getValue();
 		assert expression != null;
@@ -267,9 +187,9 @@ public abstract class VirtualMachine {
 			//			}
 		}
 		return rv;
-	}
+	}*/
 
-	protected Integer getArrayLength( Object array ) {
+	/*protected Integer getArrayLength( Object array ) {
 		if( array != null ) {
 			if( array instanceof UserArrayInstance ) {
 				UserArrayInstance userArrayInstance = (UserArrayInstance)array;
@@ -280,142 +200,31 @@ public abstract class VirtualMachine {
 		} else {
 			throw new NullPointerException();
 		}
-	}
+	}*/
 
-	protected TweedleValue get( Field field, TweedleValue instance ) {
+	protected TweedleValue get( Field field, TweedleObject instance ) {
 		return instance.get(field);
 	}
 
-	protected void set( Field field, TweedleValue instance, TweedleValue value ) {
+	protected void set( Field field, TweedleObject instance, TweedleValue value ) {
 		instance.set(field, value);
 	}
 
-	private void checkNotNull( Object value, String message ) {
-		if( value != null ) {
-			//pass
-		} else {
-			throw new LgnaVmNullPointerException( message, this );
-		}
-	}
 
-	protected Object invokeUserMethod( Object instance, UserMethod method, Object... arguments ) {
-		if( method.isStatic() ) {
-			assert instance == null;
-		} else {
-			assert instance != null : method;
-			assert instance instanceof TweedleValue : instance;
-		}
-		TweedleValue TweedleValue = (TweedleValue)instance;
+	protected Object invoke( Frame frame, TweedleObject target, Invokable method, TweedleValue... arguments ) {
+		return method.invoke(frame, target, arguments);
+		/*pushMethodFrame( target, method, arguments );
 		java.util.Map<AbstractParameter, Object> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 		for( int i = 0; i < arguments.length; i++ ) {
 			map.put( method.requiredParameters.get( i ), arguments[ i ] );
 		}
-		this.pushMethodFrame( TweedleValue, method, map );
 		try {
-			this.execute( method.body.getValue() );
-			if( method.isProcedure() ) {
-				return null;
-			} else {
-				throw new LgnaVmNoReturnException( this );
-			}
+			//method specific
 		} catch( ReturnException re ) {
 			return re.getValue();
 		} finally {
-			this.popFrame();
-		}
-	}
-
-	private static void checkArguments( Class<?>[] parameterTypes, Object[] arguments, IllegalArgumentException iae, String text ) {
-		if( parameterTypes.length != arguments.length ) {
-			throw new RuntimeException( "wrong number of arguments.  exprected: " + parameterTypes.length + "; received: " + arguments.length + ". " + text, iae );
-		}
-		int i = 0;
-		for( Class<?> parameterType : parameterTypes ) {
-			Object argument = arguments[ i ];
-			if( argument != null ) {
-				if( parameterType.isPrimitive() ) {
-					//todo
-				} else {
-					if( parameterType.isAssignableFrom( argument.getClass() ) ) {
-						//pass
-					} else {
-						throw new RuntimeException( "parameterType[" + i + "] " + parameterType.getName() + " is not assignable from argument[" + i + "]: " + argument + ". " + text, iae );
-					}
-				}
-			}
-			i++;
-		}
-	}
-
-	protected Object invokeMethodDeclaredInJava( Object instance, JavaMethod method, Object... arguments ) {
-		instance = TweedleValue.getJavaInstanceIfNecessary( instance );
-		TweedleValue.updateArrayWithInstancesInJavaIfNecessary( arguments );
-		java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
-
-		Class<?>[] parameterTypes = mthd.getParameterTypes();
-		int lastParameterIndex = parameterTypes.length - 1;
-		if( lastParameterIndex == arguments.length ) {
-			if( mthd.isVarArgs() ) {
-				Object[] fixedArguments = new Object[ parameterTypes.length ];
-				System.arraycopy( arguments, 0, fixedArguments, 0, arguments.length );
-				assert parameterTypes[ lastParameterIndex ].isArray() : parameterTypes[ lastParameterIndex ];
-				fixedArguments[ lastParameterIndex ] = java.lang.reflect.Array.newInstance( parameterTypes[ lastParameterIndex ].getComponentType(), 0 );
-				arguments = fixedArguments;
-			}
-		}
-
-		if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isProtected( mthd ) ) {
-			Class<?> adapterCls = mapAbstractClsToAdapterCls.get( mthd.getDeclaringClass() );
-			if( adapterCls != null ) {
-				mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( adapterCls, mthd.getName(), mthd.getParameterTypes() );
-			} else {
-				mthd = this.mapProtectedMthdToAdapterMthd.get( mthd );
-				assert mthd != null : method;
-				arguments = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.concat( Object.class, instance, arguments );
-			}
-		}
-		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isPublic( mthd ) : mthd;
-
-		try {
-			return mthd.invoke( instance, arguments );
-		} catch( IllegalArgumentException illegalArgumentException ) {
-			checkArguments( mthd.getParameterTypes(), arguments, illegalArgumentException, edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDetail( instance, mthd, arguments ) );
-			throw illegalArgumentException;
-		} catch( IllegalAccessException illegalAccessException ) {
-			throw new RuntimeException( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDetail( instance, mthd, arguments ), illegalAccessException );
-		} catch( java.lang.reflect.InvocationTargetException ite ) {
-			Throwable throwable = ite.getTargetException();
-			if( throwable instanceof RuntimeException ) {
-				RuntimeException re = (RuntimeException)throwable;
-				throw re;
-			} else {
-				throw new RuntimeException( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDetail( instance, mthd, arguments ), throwable );
-			}
-		}
-	}
-
-	protected Object invoke( Object instance, Invokable method, Object... arguments ) {
-		assert method != null;
-
-		if( method.isStatic() ) {
-			//pass
-		} else {
-			this.checkNotNull( instance, "caller is null" );
-		}
-		if( method instanceof UserMethod ) {
-			return this.invokeUserMethod( instance, (UserMethod)method, arguments );
-		} else if( method instanceof JavaMethod ) {
-			return this.invokeMethodDeclaredInJava( instance, (JavaMethod)method, arguments );
-		} else if( method instanceof Getter ) {
-			Getter getter = (Getter)method;
-			return this.get( getter.getField(), instance );
-		} else if( method instanceof Setter ) {
-			Setter setter = (Setter)method;
-			this.set( setter.getField(), instance, arguments[ 0 ] );
-			return null;
-		} else {
-			throw new RuntimeException();
-		}
+			popFrame();
+		}*/
 	}
 
 	/* These evaluations will be pushed on the Expression classes themselves as evaluate(Frame)
@@ -482,7 +291,7 @@ public abstract class VirtualMachine {
 	}
 
 	protected void setItemAtIndex( AbstractType<?, ?, ?> arrayType, Object array, Integer index, Object value ) {
-		value = TweedleValue.getJavaInstanceIfNecessary( value );
+		value = TweedleObject.getJavaInstanceIfNecessary( value );
 		assert arrayType != null;
 		assert arrayType.isArray() : arrayType;
 		if( array instanceof UserArrayInstance ) {
@@ -559,8 +368,8 @@ public abstract class VirtualMachine {
 	}
 
 	protected Boolean evaluateRelationalInfixExpression( RelationalInfixExpression relationalInfixExpression ) {
-		Object leftOperand = TweedleValue.getJavaInstanceIfNecessary( this.evaluate( frame, relationalInfixExpression.leftOperand.getValue() ) );
-		Object rightOperand = TweedleValue.getJavaInstanceIfNecessary( this.evaluate( frame, relationalInfixExpression.rightOperand.getValue() ) );
+		Object leftOperand = TweedleObject.getJavaInstanceIfNecessary( this.evaluate( frame, relationalInfixExpression.leftOperand.getValue() ) );
+		Object rightOperand = TweedleObject.getJavaInstanceIfNecessary( this.evaluate( frame, relationalInfixExpression.rightOperand.getValue() ) );
 		if( leftOperand != null ) {
 			if( rightOperand != null ) {
 				return relationalInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
@@ -668,13 +477,13 @@ public abstract class VirtualMachine {
 		return resourceExpression.resource.getValue();
 	}*/
 
-	protected Object EPIC_HACK_evaluateLambdaExpression( LambdaExpression lambdaExpression, AbstractArgument argument ) {
+	/*protected Object EPIC_HACK_evaluateLambdaExpression( LambdaExpression lambdaExpression, AbstractArgument argument ) {
 		Lambda lambda = lambdaExpression.value.getValue();
 
 		AbstractType<?, ?, ?> type = argument.parameter.getValue().getValueType();
 		if( type instanceof JavaType ) {
 
-			TweedleValue thisInstance = this.getThis();
+			TweedleObject thisInstance = this.getThis();
 			assert thisInstance != null;
 
 			JavaType javaType = (JavaType)type;
@@ -717,13 +526,13 @@ public abstract class VirtualMachine {
 		} else {
 			throw new RuntimeException( "todo" );
 		}
-	}
+	}*/
 
-	protected Object evaluateLambdaExpression( LambdaExpression lambdaExpression ) {
+	/*protected Object evaluateLambdaExpression( LambdaExpression lambdaExpression ) {
 		throw new RuntimeException( "todo" );
-	}
+	}*/
 
-	protected Object evaluate( Frame frame, Expression expression ) {
+	protected TweedleValue evaluate( Frame frame, Expression expression ) {
 //			if( expression instanceof AssignmentExpression ) {
 //				rv = this.evaluateAssignmentExpression( (AssignmentExpression)expression );
 //			} else if( expression instanceof BooleanLiteral ) {
@@ -783,16 +592,7 @@ public abstract class VirtualMachine {
 //			} else {
 //				throw new RuntimeException( expression.getClass().getName() );
 //			}
-		Object evaluation = expression.evaluate( frame );
-		synchronized( virtualMachineListeners ) {
-			if( virtualMachineListeners.size() > 0 ) {
-				ExpressionEvaluationEvent expressionEvaluationEvent = new ExpressionEvaluationEvent( this, expression, evaluation );
-				for( VirtualMachineListener virtualMachineListener : virtualMachineListeners ) {
-					virtualMachineListener.expressionEvaluated( expressionEvaluationEvent );
-				}
-			}
-		}
-		return evaluation;
+		return expression.evaluate( frame );
 	}
 
 	/* TODO push each to the statement being executed
@@ -1093,26 +893,9 @@ public abstract class VirtualMachine {
 		//handle pop on exit of owning block statement
 	}*/
 
-	protected void execute( Frame frame, Statement statement ) throws ReturnException {
+	protected void execute( Frame frame, Statement statement ) {
 		if( statement.isEnabled() ) {
-			StatementExecutionEvent statementEvent;
-			VirtualMachineListener[] listeners;
-			synchronized( this.virtualMachineListeners ) {
-				if( this.virtualMachineListeners.size() > 0 ) {
-					statementEvent = new StatementExecutionEvent( this, statement );
-					listeners = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.virtualMachineListeners, VirtualMachineListener.class );
-				} else {
-					statementEvent = null;
-					listeners = null;
-				}
-			}
-			if( ( statementEvent != null ) && ( listeners != null ) ) {
-				for( VirtualMachineListener virtualMachineListener : listeners ) {
-					virtualMachineListener.statementExecuting( statementEvent );
-				}
-			}
-
-			statement.execute(frame, listeners);
+			statement.execute(frame);
 
 /*			try {
 				if( statement instanceof AssertStatement ) {
@@ -1150,32 +933,7 @@ public abstract class VirtualMachine {
 					throw new RuntimeException();
 				}
 			} finally {*/
-				if( ( statementEvent != null ) && ( listeners != null ) ) {
-					for( VirtualMachineListener virtualMachineListener : listeners ) {
-						virtualMachineListener.statementExecuted( statementEvent );
-					}
-				}
 //			}
 		}
 	}
-
-	public void addVirtualMachineListener( VirtualMachineListener virtualMachineListener ) {
-		synchronized( this.virtualMachineListeners ) {
-			this.virtualMachineListeners.add( virtualMachineListener );
-		}
-	}
-
-	public void removeVirtualMachineListener( VirtualMachineListener virtualMachineListener ) {
-		synchronized( this.virtualMachineListeners ) {
-			this.virtualMachineListeners.remove( virtualMachineListener );
-		}
-	}
-
-	public java.util.List<VirtualMachineListener> getVirtualMachineListeners() {
-		synchronized( this.virtualMachineListeners ) {
-			return java.util.Collections.unmodifiableList( this.virtualMachineListeners );
-		}
-	}
-
-	private final java.util.List<VirtualMachineListener> virtualMachineListeners = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
 }
