@@ -1,5 +1,8 @@
 package org.alice.tweedle;
 
-public class TweedlePrimitiveType extends TweedleType{
-	// TODO consider subclassing this for each type
+// TODO consider subclassing this for each type
+abstract public class TweedlePrimitiveType extends TweedleType{
+	public TweedlePrimitiveType( String name ) {
+		super( name );
+	}
 }

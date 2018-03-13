@@ -1,6 +1,11 @@
 package org.alice.tweedle;
 
+import org.alice.tweedle.unlinked.UnlinkedClass;
+import org.alice.tweedle.unlinked.UnlinkedEnum;
+
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TweedleLibrary {
@@ -18,9 +23,13 @@ public class TweedleLibrary {
 	// Where it is on disk may be needed for resource access.
 	private File storageLocation;
 
-	private Map<String, String> prerequisites; // name -> version
-	private Map<String, TweedleClass> classes;
-	private Map<String, TweedleResource> resources;
+	private final Map<String, String> prerequisites = new HashMap<String,String>(); // name -> version
+	private final Map<String, TweedleClass> classes = new HashMap<String,TweedleClass>();
+	private final Map<String, TweedleResource> resources = new HashMap<String,TweedleResource>();
+
+	public TweedleLibrary( List<TweedleType> types ) {
+		// TODO store the types
+	}
 
 	public TweedleClass newClass(String name) {
 		if (classes.containsKey( name ) ){

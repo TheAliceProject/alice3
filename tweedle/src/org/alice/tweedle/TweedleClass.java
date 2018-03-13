@@ -2,8 +2,20 @@ package org.alice.tweedle;
 
 // Analog to NamedUserConstructor?
 public class TweedleClass extends TweedleType {
-	public TweedleClass( String name ) {
-		super();
+	final private String superclassName;
+
+	public TweedleClass( String className ) {
+		super( className );
+		superclassName = null;
+	}
+
+	public TweedleClass( String className, String superClassName ) {
+		super( className );
+		this.superclassName = superClassName;
+	}
+
+	public String getSuperclassName() {
+		return superclassName;
 	}
 
 	public TweedleObject instantiate( Frame frame, TweedleValue[] arguments ) {
