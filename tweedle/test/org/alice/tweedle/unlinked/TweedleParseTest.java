@@ -24,7 +24,7 @@ public class TweedleParseTest {
 	public void aRootClassShouldBeCreated() {
 		UnlinkedType tested = parseString( "class SThing {}" );
 
-		assertTrue("The parser should have returned a UnlinkedClass.", tested instanceof UnlinkedClass);
+		assertTrue("The parser should have returned an UnlinkedClass.", tested instanceof UnlinkedClass);
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class TweedleParseTest {
 	public void aSubclassShouldBeCreated() {
 		UnlinkedType tested = parseString( "class SScene extends SThing {}" );
 
-		assertTrue("The parser should have returned a UnlinkedClass.", tested instanceof UnlinkedClass);
+		assertTrue("The parser should have returned an UnlinkedClass.", tested instanceof UnlinkedClass);
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class TweedleParseTest {
 	public void anEnumShouldBeCreated() {
 		UnlinkedType tested = parseString( "enum Direction {UP, DOWN}" );
 
-		assertTrue("The parser should have returned a UnlinkedEnum.", tested instanceof UnlinkedEnum);
+		assertTrue("The parser should have returned an UnlinkedEnum.", tested instanceof UnlinkedEnum);
 	}
 
 	@Test
