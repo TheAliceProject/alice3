@@ -36,11 +36,11 @@ public class TweedleUnlinkedParser {
 			}
 /*
 			MethodVisitor methodVisitor = new MethodVisitor();
-			List<TweedleMethod> methods = ctx.method()
+			List<UnlinkedMethod> methods = ctx.method()
 							.stream()
 							.map(method -> method.accept(methodVisitor))
 							.collect(toList());
-			return new TweedleClass(typeName, methods);
+			return new UnlinkedClass(typeName, methods);
 }*/
 
 		}
@@ -54,25 +54,25 @@ public class TweedleUnlinkedParser {
 		}
 	}
 
-/*	private static class MethodVisitor extends TweedleParserBaseVisitor<TweedleMethod> {
+/*	private static class MethodVisitor extends TweedleParserBaseVisitor<UnlinkedMethod> {
 		@Override
-		public TweedleMethod visitMethod( TweedleParser.MethodContext ctx) {
+		public UnlinkedMethod visitMethod( TweedleParser.MethodContext ctx) {
 			String methodName = ctx.methodName().getText();
-			InstructionVisitor instructionVisitor = new InstructionVisitor();
-			List<Statement> instructions = ctx.instruction()
+			StatementVisitor statementVisitor = new StatementVisitor();
+			List<UnlinkedStatement> statements = ctx.statement()
 							.stream()
-							.map(instruction -> instruction.accept(instructionVisitor))
+							.map(statement -> statement.accept(statementVisitor))
 							.collect(toList());
-			return new TweedleMethod(methodName, instructions);
+			return new UnlinkedMethod(methodName, statements);
 		}
 	}
 
-	private static class InstructionVisitor extends TweedleParserBaseVisitor<Statement> {
+	private static class StatementVisitor extends TweedleParserBaseVisitor<UnlinkedStatement> {
 
 		@Override
-		public Statement visitInstruction(TweedleParser.InstructionContext ctx) {
-			String instructionName = ctx.getText();
-			return new Statement(instructionName);
+		public UnlinkedStatement visitStatement(TweedleParser.StatementContext ctx) {
+			String statementName = ctx.getText();
+			return new UnlinkedStatement(statementName);
 		}
 	}*/
 
