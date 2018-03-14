@@ -45,9 +45,9 @@ visibility
     ;
 
 visibilityLevel
-    : HIDE
+    : COMPLETELY_HIDDEN
     | TUCKED_AWAY
-    | PRIMETIME
+    | PRIME_TIME
     ;
 
 variableModifier
