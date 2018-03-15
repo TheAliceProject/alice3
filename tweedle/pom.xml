@@ -5,9 +5,9 @@
 
   <parent>
     <groupId>org.alice</groupId>
-    <artifactId>core</artifactId>
+    <artifactId>parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <relativePath>../core/</relativePath>
+    <relativePath>../</relativePath>
   </parent>
 
   <artifactId>tweedle</artifactId>
@@ -21,13 +21,22 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.antlr</groupId>
-      <artifactId>antlr4-runtime</artifactId>
-      <version>4.7.1</version>
-    </dependency>
-    <dependency>
       <groupId>org.alice</groupId>
       <artifactId>util</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr4-runtime</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

@@ -3,8 +3,6 @@ package org.alice.tweedle.file;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion.NON_NULL;
-
 public class Manifest {
 
 	public Description description;

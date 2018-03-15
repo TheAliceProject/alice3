@@ -93,6 +93,7 @@
 		<module>core/story-api-migration</module>
 		<module>core/story-api</module>
 		<module>core/util</module>
+		<module>tweedle</module>
 
 		<module>nonfree/core</module>
 		<module>nonfree/core/ide-nonfree</module>
@@ -171,6 +172,11 @@
 				<artifactId>alice-ide</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
+			<dependency>
+				<groupId>org.alice</groupId>
+				<artifactId>tweedle</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
 
 			<!-- Non-free libraries/models -->
 			<dependency>
@@ -237,6 +243,16 @@
 				<groupId>com.sun</groupId>
 				<artifactId>javamp3</artifactId>
 				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr4-runtime</artifactId>
+				<version>4.7.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>2.8.2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
