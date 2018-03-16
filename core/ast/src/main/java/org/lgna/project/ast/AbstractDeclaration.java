@@ -55,11 +55,6 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
 
 	@Override
-	public boolean isAppropriatelyIdenitifiedById() {
-		return this.isUserAuthored();
-	}
-
-	@Override
 	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
 		if( super.contentEquals( o, strictness, filter ) ) {
 			AbstractDeclaration other = (AbstractDeclaration)o;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2018, Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,69 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.project.ast;
+package org.lgna.project.io;
 
-import org.lgna.project.code.CodeAppender;
+import edu.cmu.cs.dennisc.java.util.zip.DataSource;
+import org.lgna.project.Project;
+import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.ast.AbstractType;
 
-/**
- * @author Dennis Cosgrove
- */
-public final class ConditionalInfixExpression extends InfixExpression<ConditionalInfixExpression.Operator> {
-	public static enum Operator implements CodeAppender {
-		AND() {
-			@Override
-			public Boolean operate( Boolean leftOperand, Boolean rightOperand ) {
-				return leftOperand && rightOperand;
-			}
+import java.io.IOException;
+import java.io.OutputStream;
 
-			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
-				generator.appendString( "&&" );
-			}
-		},
-		OR() {
-			@Override
-			public Boolean operate( Boolean leftOperand, Boolean rightOperand ) {
-				return leftOperand || rightOperand;
-			}
+public interface ProjectIo {
 
-			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
-				generator.appendString( "||" );
-			}
-		};
-		public abstract Boolean operate( Boolean leftOperand, Boolean rightOperand );
+	String METADATA_ENTRY_NAME = "metadata.json";
+	String VERSION_ENTRY_NAME = "version.txt";
+	String PROPERTIES_ENTRY_NAME = "properties.bin";
 
-		@Override
-		public abstract void appendJava( JavaCodeGenerator generator );
-	}
+	Project readProject( ZipEntryContainer container ) throws IOException, VersionNotSupportedException;
 
-	public ConditionalInfixExpression() {
-	}
+	TypeResourcesPair readType( ZipEntryContainer container ) throws IOException, VersionNotSupportedException;
 
-	public ConditionalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand ) {
-		super( leftOperand, operator, rightOperand );
-	}
+	void writeProject( OutputStream os, Project project, DataSource[] dataSources ) throws IOException;
 
-	@Override
-	protected AbstractType<?, ?, ?> getLeftOperandType() {
-		return JavaType.BOOLEAN_OBJECT_TYPE;
-	}
-
-	@Override
-	protected AbstractType<?, ?, ?> getRightOperandType() {
-		return JavaType.BOOLEAN_OBJECT_TYPE;
-	}
-
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.BOOLEAN_OBJECT_TYPE;
-	}
-
-	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendExpression( this.leftOperand.getValue() );
-		this.operator.getValue().appendJava( generator );
-		generator.appendExpression( this.rightOperand.getValue() );
-	}
+	void writeType( OutputStream os, AbstractType<?, ?, ?> type, DataSource[] dataSources ) throws IOException;
 }

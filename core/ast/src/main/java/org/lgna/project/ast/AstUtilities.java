@@ -43,6 +43,10 @@
 
 package org.lgna.project.ast;
 
+import org.alice.serialization.xml.XmlEncoderDecoder;
+import org.w3c.dom.Document;
+
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,7 +55,7 @@ public class AstUtilities {
 		throw new AssertionError();
 	}
 
-	public static <N extends Node> N createCopy( N original, NamedUserType root, DecodeIdPolicy policy ) {
+	public static <N extends Node> N createCopy( N original, NamedUserType root) {
 		java.util.Set<AbstractDeclaration> abstractDeclarations;
 		if( root != null ) {
 			abstractDeclarations = root.createDeclarationSet();
@@ -59,29 +63,15 @@ public class AstUtilities {
 		} else {
 			abstractDeclarations = java.util.Collections.emptySet();
 		}
-		java.util.Map<Integer, AbstractDeclaration> map = AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
-		org.w3c.dom.Document xmlDocument = ( (AbstractNode)original ).encode( abstractDeclarations );
+		XmlEncoderDecoder coder = new XmlEncoderDecoder();
+		Document xmlDocument = coder.encode( (AbstractNode) original , abstractDeclarations);
 		try {
-			AbstractNode dst = AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, policy );
+			AbstractNode dst = coder.copy( xmlDocument, abstractDeclarations );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
 			return (N)dst;
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
 			throw new AssertionError( vnse );
 		}
-	}
-
-	public static <N extends Node> N createCopy( N original, NamedUserType root ) {
-		return createCopy( original, root, DecodeIdPolicy.NEW_IDS );
-	}
-
-	public static <N extends Node> N createDeepCopy( N original, DecodeIdPolicy decodeIdPolicy ) {
-		return createCopy( original, null, decodeIdPolicy );
-	}
-
-	public static UserMethod createCopyWithoutBodyStatements( UserMethod original, NamedUserType root, DecodeIdPolicy policy ) {
-		UserMethod copy = createCopy( original, root, policy );
-		copy.body.getValue().statements.clear();
-		return copy;
 	}
 
 	public static boolean isKeywordExpression( Expression expression ) {

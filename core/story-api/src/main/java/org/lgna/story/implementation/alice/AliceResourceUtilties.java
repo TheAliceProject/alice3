@@ -54,6 +54,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import org.lgna.story.resources.BasicResource;
+import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
 import org.lgna.story.resourceutilities.StorytellingResources;
 import org.w3c.dom.Document;
@@ -74,7 +75,7 @@ public class AliceResourceUtilties {
 	public static final String MODEL_RESOURCE_EXTENSION = "a3r";
 	public static final String TEXTURE_RESOURCE_EXTENSION = "a3t";
 
-	private static final Map<URL, edu.cmu.cs.dennisc.scenegraph.SkeletonVisual> urlToVisualMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+	private static final Map<URL, SkeletonVisual> urlToVisualMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private static final Map<URL, TexturedAppearance[]> urlToTextureMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private static final Map<String, org.lgna.story.resourceutilities.ModelResourceInfo> classToInfoMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
 	private static final Map<ResourceIdentifier, ResourceNames> resourceIdentifierToResourceNamesMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
@@ -165,8 +166,9 @@ public class AliceResourceUtilties {
 		return TAGS_LOCALIZATION_BUNDLE;
 	}
 
-	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual decodeVisual( URL url ) {
+	public static SkeletonVisual decodeVisual( URL url ) {
 		try {
+			System.out.println("Decoding visual from url " + url);
 			java.io.InputStream is = url.openStream();
 			edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
 			return decoder.decodeReferenceableBinaryEncodableAndDecodable( new java.util.HashMap<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable>() );
@@ -178,6 +180,7 @@ public class AliceResourceUtilties {
 
 	public static TexturedAppearance[] decodeTexture( URL url ) {
 		try {
+			System.out.println("Decoding texture from url " + url);
 			java.io.InputStream is = url.openStream();
 			edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
 			TexturedAppearance[] rv = decoder.decodeReferenceableBinaryEncodableAndDecodableArray( TexturedAppearance.class, new java.util.HashMap<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable>() );
@@ -450,7 +453,7 @@ public class AliceResourceUtilties {
 		return getTextureNameFromClassAndResource( resource.getClass(), resource.toString() );
 	}
 
-	public static String getVisualResourceFileName( Object resource ) {
+	private static String getVisualResourceFileName( JointedModelResource resource ) {
 		return getVisualResourceFileName( resource.getClass(), resource.toString() );
 	}
 
@@ -517,20 +520,16 @@ public class AliceResourceUtilties {
 		return getAliceResource( resourceClass, ModelResourceIoUtilities.getResourceSubDirWithSeparator( resourceClass.getSimpleName() ) + visualResourceFileName );
 	}
 
-	public static URL getVisualURL( Object resource ) {
-		return getVisualURL( resource.getClass(), getVisualResourceFileName( resource ) );
-	}
-
 	public static URL getVisualURL( Class<?> resourceClass, String visualResourceFileName ) {
 		return getAliceResource( resourceClass, ModelResourceIoUtilities.getResourceSubDirWithSeparator( resourceClass.getSimpleName() ) + visualResourceFileName );
 	}
 
-	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getVisual( Object resource ) {
-		URL resourceURL = getVisualURL( resource );
+	private static SkeletonVisual getVisual( JointedModelResource resource ) {
+		URL resourceURL = getVisualURL( resource.getClass(), getVisualResourceFileName( resource ) );
 		if( urlToVisualMap.containsKey( resourceURL ) ) {
 			return urlToVisualMap.get( resourceURL );
 		} else {
-			edu.cmu.cs.dennisc.scenegraph.SkeletonVisual visual = decodeVisual( resourceURL );
+			SkeletonVisual visual = decodeVisual( resourceURL );
 			java.util.List<edu.cmu.cs.dennisc.scenegraph.qa.Problem> problems = edu.cmu.cs.dennisc.scenegraph.qa.QualityAssuranceUtilities.inspect( visual );
 			if( problems.size() > 0 ) {
 				Logger.errln( resourceURL );
@@ -543,8 +542,8 @@ public class AliceResourceUtilties {
 		}
 	}
 
-	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual getVisualCopy( Object resource ) {
-		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual original = getVisual( resource );
+	public static SkeletonVisual getVisualCopy( JointedModelResource resource ) {
+		SkeletonVisual original = getVisual( resource );
 		return createCopy( original );
 	}
 
@@ -559,7 +558,7 @@ public class AliceResourceUtilties {
 		}
 	}
 
-	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual createCopy( edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal ) {
+	public static SkeletonVisual createCopy( SkeletonVisual sgOriginal ) {
 		edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = sgOriginal.geometries.getValue();
 		edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgTextureAppearances = sgOriginal.textures.getValue();
 		edu.cmu.cs.dennisc.scenegraph.WeightedMesh[] sgWeightedMeshes = sgOriginal.weightedMeshes.getValue();
@@ -581,7 +580,7 @@ public class AliceResourceUtilties {
 			sgBackAppearanceCopy = null;
 		}
 
-		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual rv = new edu.cmu.cs.dennisc.scenegraph.SkeletonVisual();
+		SkeletonVisual rv = new SkeletonVisual();
 		final edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRootCopy;
 		if( sgSkeletonRoot != null ) {
 			sgSkeletonRootCopy = (edu.cmu.cs.dennisc.scenegraph.Joint)sgSkeletonRoot.newCopy();
@@ -603,8 +602,8 @@ public class AliceResourceUtilties {
 		return rv;
 	}
 
-	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual createReplaceVisualElements( edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal, Object resource ) {
-		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgToReplaceWith = getVisual( resource );
+	public static SkeletonVisual createReplaceVisualElements( SkeletonVisual sgOriginal, JointedModelResource resource ) {
+		SkeletonVisual sgToReplaceWith = getVisual( resource );
 		edu.cmu.cs.dennisc.scenegraph.Geometry[] sgGeometries = sgToReplaceWith.geometries.getValue();
 		edu.cmu.cs.dennisc.scenegraph.WeightedMesh[] sgWeightedMeshes = sgToReplaceWith.weightedMeshes.getValue();
 		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = sgToReplaceWith.baseBoundingBox.getValue();
@@ -632,14 +631,14 @@ public class AliceResourceUtilties {
 	}
 
 	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalJointTransformation( org.lgna.story.resources.JointedModelResource resource, org.lgna.story.resources.JointId jointId ) {
-		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal = getVisual( resource );
+		SkeletonVisual sgOriginal = getVisual( resource );
 		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
 		edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( jointId.toString() );
 		return sgJoint.getLocalTransformation();
 	}
 
 	public static edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalJointOrientation( org.lgna.story.resources.JointedModelResource resource, org.lgna.story.resources.JointId jointId ) {
-		edu.cmu.cs.dennisc.scenegraph.SkeletonVisual sgOriginal = getVisual( resource );
+		SkeletonVisual sgOriginal = getVisual( resource );
 		edu.cmu.cs.dennisc.scenegraph.Joint sgSkeletonRoot = sgOriginal.skeleton.getValue();
 		edu.cmu.cs.dennisc.scenegraph.Joint sgJoint = sgSkeletonRoot.getJoint( jointId.toString() );
 		return sgJoint.getLocalTransformation().orientation.createUnitQuaternion();

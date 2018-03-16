@@ -40,40 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.project;
+
+package org.alice.serialization.xml;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CopyUtilities {
-	public static Project createCopy( Project other, org.lgna.project.ast.DecodeIdPolicy policy ) {
-		org.w3c.dom.Document xmlDocument = other.getProgramType().encode();
-		try {
-			java.util.Map<Integer, org.lgna.project.ast.AbstractDeclaration> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-			org.lgna.project.ast.AbstractNode dst = org.lgna.project.ast.AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, policy );
-			org.lgna.project.ast.NamedUserType programType = (org.lgna.project.ast.NamedUserType)dst;
-
-			java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes = java.util.Collections.emptySet();
-			//todo?
-			//java.util.List<org.lgna.project.ast.NamedUserType> namedUserTypes = other.getNamedUserTypes();
-
-			java.util.Set<org.lgna.common.Resource> resources = other.getResources();
-			//todo: copy resources?
-
-			Project rv = new Project( programType, namedUserTypes, resources );
-
-			for( org.lgna.project.properties.PropertyKey<Object> propertyKey : other.getPropertyKeys() ) {
-				rv.putValueFor( propertyKey, other.getValueFor( propertyKey ) );
-			}
-
-			return rv;
-		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
-			throw new AssertionError( vnse );
-		}
-	}
-
-	@Deprecated
-	public static Project createCopy( Project other ) {
-		return createCopy( other, org.lgna.project.ast.DecodeIdPolicy.NEW_IDS );
-	}
+interface CodecConstants {
+	String UNIQUE_KEY_ATTRIBUTE = "key";
+	String TYPE_ATTRIBUTE = "type";
+	String ID_ATTRIBUTE = "uuid";
+	double CURRENT_VERSION = 3.10062;
+	double MINIMUM_ACCEPTABLE_VERSION = 3.1;
 }

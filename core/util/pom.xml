@@ -66,13 +66,6 @@
 
 		<!-- TODO: Move this out to another project -->
 		<dependency>
-			<groupId>groupid</groupId>
-			<artifactId>artifactId</artifactId>
-			<version>1.0</version>
-			<scope>system</scope>
-			<systemPath>${java.home}/lib/rt.jar</systemPath>
-		</dependency>
-		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mailapi</artifactId>
 			<version>1.4.3</version>

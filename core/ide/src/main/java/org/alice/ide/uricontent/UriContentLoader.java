@@ -176,8 +176,6 @@ public abstract class UriContentLoader<T> {
 		return worker;
 	}
 
-	protected abstract T createCopyIfNecessary( T value );
-
 	public static enum MutationPlan {
 		PROMISE_NOT_TO_MUTATE,
 		WILL_MUTATE
@@ -186,8 +184,7 @@ public abstract class UriContentLoader<T> {
 	public synchronized void getContentOnEventDispatchThread( MutationPlan intention, GetContentObserver<T> observer ) throws Exception {
 		Worker worker = this.getWorker( intention );
 		if( worker.isDone() ) {
-			T content = this.createCopyIfNecessary( worker.getContent() );
-			invokeOnEventDispatchThread( observer, content );
+			invokeOnEventDispatchThread( observer, worker.getContent());
 		} else {
 			worker.addObserver( observer );
 			worker.executeIfNecessary();
@@ -197,6 +194,6 @@ public abstract class UriContentLoader<T> {
 	public T getContentWaitingIfNecessary( MutationPlan intention ) throws InterruptedException, java.util.concurrent.ExecutionException {
 		Worker worker = this.getWorker( intention );
 		worker.executeIfNecessary();
-		return this.createCopyIfNecessary( worker.getContent() );
+		return worker.getContent();
 	}
 }

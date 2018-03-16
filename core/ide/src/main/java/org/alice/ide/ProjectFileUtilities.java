@@ -5,6 +5,7 @@ import edu.cmu.cs.dennisc.java.net.UriUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import org.lgna.project.Project;
+import org.lgna.project.io.IoUtilities;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 import static edu.cmu.cs.dennisc.java.io.FileUtilities.*;
 import static org.lgna.project.io.IoUtilities.BACKUP_EXTENSION;
 import static org.lgna.project.io.IoUtilities.PROJECT_EXTENSION;
-import static org.lgna.project.io.IoUtilities.writeProject;
 
 class ProjectFileUtilities {
 	private static final String BACKUP_AUTO = "auto";
@@ -57,7 +57,7 @@ class ProjectFileUtilities {
 
 	private void saveCopyOfProjectTo( File file ) throws IOException {
 		Project project = projectApp.getUpToDateProject();
-		writeProject( file, project, thumbnailDataSources() );
+		IoUtilities.writeProject( file, project, thumbnailDataSources() );
 	}
 
 	private DataSource[] thumbnailDataSources() {

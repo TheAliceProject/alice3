@@ -64,25 +64,6 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	}
 
 	@Override
-	protected Object convertPropertyValueIfNecessary( edu.cmu.cs.dennisc.property.InstanceProperty property, Object value ) {
-		value = super.convertPropertyValueIfNecessary( property, value );
-		if( property == this.body ) {
-			if( value instanceof BlockStatement ) {
-				if( value instanceof ConstructorBlockStatement ) {
-					//pass
-				} else {
-					BlockStatement prevBlockStatement = (BlockStatement)value;
-					Statement[] buffer = new Statement[ prevBlockStatement.statements.size() ];
-					ConstructorBlockStatement constructorBlockStatement = new ConstructorBlockStatement( new SuperConstructorInvocationStatement(), prevBlockStatement.statements.toArray( buffer ) );
-					constructorBlockStatement.isEnabled.setValue( prevBlockStatement.isEnabled.getValue() );
-					value = constructorBlockStatement;
-				}
-			}
-		}
-		return value;
-	}
-
-	@Override
 	public org.lgna.project.ast.ManagementLevel getManagementLevel() {
 		return this.managementLevel.getValue();
 	}
