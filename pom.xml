@@ -213,6 +213,7 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.11</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.jogamp.jogl</groupId>
@@ -254,6 +255,12 @@
 				<artifactId>gson</artifactId>
 				<version>2.8.2</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.21.0</version>
+				<scope>test</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -287,24 +294,13 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.6.2</version>
 					<configuration>
-						<compilerId>eclipse</compilerId>
 						<source>${java.version}</source>
 						<target>${java.version}</target>
 						<encoding>UTF-8</encoding>
-						<compilerArguments>
-							<properties>${project.basedir}/.settings/org.eclipse.jdt.core.prefs</properties>
-						</compilerArguments>
 						<includes>
 							<include>**/*.java</include>
 						</includes>
 					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>org.codehaus.plexus</groupId>
-							<artifactId>plexus-compiler-eclipse</artifactId>
-							<version>2.8.2</version>
-						</dependency>
-					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -330,6 +326,18 @@
 					<groupId>org.commonjava.maven.plugins</groupId>
 					<artifactId>directory-maven-plugin</artifactId>
 					<version>0.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.21.0</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.maven.surefire</groupId>
+							<artifactId>surefire-junit47</artifactId>
+							<version>2.21.0</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.zanata</groupId>
