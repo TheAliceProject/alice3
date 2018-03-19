@@ -45,6 +45,8 @@ package org.alice.ide;
 
 import org.lgna.project.ProjectVersion;
 
+import java.io.File;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -393,6 +395,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		//		System.out.println( "Save time: " + saveTime );
 
 		this.updateHistoryIndexFileSync();
+	}
+
+	public final void exportProjectTo( File file ) throws java.io.IOException {
+		projectFileUtilities.exportCopyOfProjectTo( file );
 	}
 
 	public java.io.File getMyProjectsDirectory() {
