@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import org.lgna.project.Project;
 import org.lgna.project.VersionNotSupportedException;
-import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.NamedUserType;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,7 +65,6 @@ public abstract class IoUtilities {
 		throw new AssertionError();
 	}
 
-	public static final String TWEEDLE_EXTENSION = "twe";
 	public static final String PROJECT_EXTENSION = "a3p";
 	public static final String TYPE_EXTENSION = "a3c";
 	public static final String BACKUP_EXTENSION = "bak";
@@ -116,7 +115,7 @@ public abstract class IoUtilities {
 		playerWriter().writeProject( new FileOutputStream( file ), project, dataSources );
 	}
 
-	public static void writeType( File file, AbstractType<?, ?, ?> type, DataSource... dataSources ) throws IOException {
+	public static void writeType( File file, NamedUserType type, DataSource... dataSources ) throws IOException {
 		FileUtilities.createParentDirectoriesIfNecessary( file );
 		latestReadbleWriter().writeType( new FileOutputStream( file ), type, dataSources );
 	}

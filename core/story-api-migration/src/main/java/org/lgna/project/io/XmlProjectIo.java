@@ -377,7 +377,7 @@ public class XmlProjectIo implements ProjectIo{
 	}
 
 	@Override
-	public void writeType( OutputStream os, AbstractType<?, ?, ?> type, DataSource... dataSources ) throws IOException {
+	public void writeType( OutputStream os, NamedUserType type, DataSource... dataSources ) throws IOException {
 		ZipOutputStream zos = new ZipOutputStream( os );
 		writeVersions( zos );
 		writeType( type, zos, TYPE_ENTRY_NAME );

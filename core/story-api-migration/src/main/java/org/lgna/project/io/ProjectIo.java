@@ -45,7 +45,7 @@ package org.lgna.project.io;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import org.lgna.project.Project;
 import org.lgna.project.VersionNotSupportedException;
-import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.NamedUserType;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -62,5 +62,5 @@ public interface ProjectIo {
 
 	void writeProject( OutputStream os, Project project, DataSource[] dataSources ) throws IOException;
 
-	void writeType( OutputStream os, AbstractType<?, ?, ?> type, DataSource[] dataSources ) throws IOException;
+	void writeType( OutputStream os, NamedUserType type, DataSource[] dataSources ) throws IOException;
 }

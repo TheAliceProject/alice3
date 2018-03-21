@@ -68,11 +68,6 @@ public class ExportProjectOperation extends AbstractSaveProjectOperation {
 	}
 
 	@Override
-	protected String getExtension() {
-		return org.lgna.project.io.IoUtilities.TWEEDLE_EXTENSION;
-	}
-
-	@Override
 	protected void localize() {
 		super.localize();
 		this.setButtonIcon( Icons.SAVE_DOCUMENT_SMALL );

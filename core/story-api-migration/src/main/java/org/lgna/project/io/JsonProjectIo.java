@@ -56,21 +56,25 @@ import org.lgna.project.ProjectVersion;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.CrawlPolicy;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.ResourceExpression;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.zip.ZipOutputStream;
 
 //TODO add migration on read - ProjectMigrationManager, MigrationManagerDecodedVersionPair, & AstMigrationUtilities
 public class JsonProjectIo implements ProjectIo{
 
 	private static final String MANIFEST_ENTRY_NAME = "manifest.json";
+	private static final String TWEEDLE_EXTENSION = "twe";
 
 
 	@Override
@@ -120,14 +124,13 @@ public class JsonProjectIo implements ProjectIo{
 		return null;
 	}
 
-
-
 	@Override
-	public void writeType( OutputStream os, AbstractType<?, ?, ?> type, DataSource... dataSources ) throws IOException {
+	public void writeType( OutputStream os, NamedUserType type, DataSource... dataSources ) throws IOException {
 		Manifest manifest = createTypeManifest( type );
 		Set<Resource> resources = getResources( type, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
 
 		List<DataSource> entries = collectEntries( manifest, resources, dataSources );
+		entries.add( dataSourceForType( type ) );
 		writeDataSources( os, entries );
 	}
 
@@ -147,7 +150,21 @@ public class JsonProjectIo implements ProjectIo{
 		compareResources( project.getResources(), resources );
 
 		List<DataSource> entries = collectEntries( manifest, resources, dataSources );
+		entries.addAll( createEntriesForTypes( project.getNamedUserTypes()) );
 		writeDataSources( os, entries );
+	}
+
+	private Collection<? extends DataSource> createEntriesForTypes( Set<NamedUserType> userTypes ) {
+		return userTypes.stream().map( this::dataSourceForType ).collect( Collectors.toList() );
+	}
+
+	private DataSource dataSourceForType( NamedUserType ut ) {
+		return createDataSource( ut.getName() + '.' + TWEEDLE_EXTENSION, serializedClass(ut) );
+	}
+
+	private String serializedClass( NamedUserType userType ) {
+		//TODO
+		return "class " + userType.getName() + " {}";
 	}
 
 	private Manifest createProjectManifest( Project project ) {
