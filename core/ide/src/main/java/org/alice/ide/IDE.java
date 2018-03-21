@@ -102,7 +102,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.lgna.croquet.event.ValueListener<java.util.Locale> localeListener = new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
 			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
-				org.lgna.croquet.Application.getActiveInstance().setLocale( e.getNextValue() );
+				setLocale( e.getNextValue() );
 			}
 		};
 		String forcedLocaleString = System.getProperty( "org.alice.ide.locale" );
