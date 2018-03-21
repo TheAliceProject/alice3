@@ -65,6 +65,7 @@ public abstract class IoUtilities {
 		throw new AssertionError();
 	}
 
+	public static final String TWEEDLE_EXTENSION = "twe";
 	public static final String PROJECT_EXTENSION = "a3p";
 	public static final String TYPE_EXTENSION = "a3c";
 	public static final String BACKUP_EXTENSION = "bak";
@@ -141,8 +142,7 @@ public abstract class IoUtilities {
 		return new XmlProjectIo();
 	}
 
-	private static IoUtilities playerWriter() {
-		//TODO create JSON export for Unity player
-		return null;
+	private static ProjectIo playerWriter() {
+		return new JsonProjectIo();
 	}
 }

@@ -64,7 +64,12 @@ public class ExportProjectOperation extends AbstractSaveProjectOperation {
 
 	@Override
 	protected boolean isPromptNecessary( File file ) {
-		return !((file != null) && file.canWrite());
+		return true;
+	}
+
+	@Override
+	protected String getExtension() {
+		return org.lgna.project.io.IoUtilities.TWEEDLE_EXTENSION;
 	}
 
 	@Override
