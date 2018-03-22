@@ -60,5 +60,9 @@
 			<groupId>org.alice</groupId>
 			<artifactId>util</artifactId>
 		</dependency>
-	</dependencies>
+    <dependency>
+      <groupId>org.alice</groupId>
+      <artifactId>tweedle</artifactId>
+    </dependency>
+  </dependencies>
 </project>

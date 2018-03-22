@@ -43,6 +43,7 @@
 
 package org.lgna.project.ast;
 
+import org.alice.serialization.DispatchingEncoder;
 import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
@@ -168,6 +169,11 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 		generator.appendString( "}" );
 
 		return generator.getText( true );
+	}
+
+
+	@Override public void encode( DispatchingEncoder encoder ) {
+		encoder.encodeNamedUserType(this);
 	}
 
 	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );

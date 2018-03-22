@@ -47,6 +47,7 @@ import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
+import org.alice.serialization.tweedle.TweedleEncoderDecoder;
 import org.alice.tweedle.file.Manifest;
 import org.alice.tweedle.file.ManifestEncoderDecoder;
 import org.alice.tweedle.file.ResourceReference;
@@ -76,6 +77,7 @@ public class JsonProjectIo implements ProjectIo{
 	private static final String MANIFEST_ENTRY_NAME = "manifest.json";
 	private static final String TWEEDLE_EXTENSION = "twe";
 
+	private TweedleEncoderDecoder coder = new TweedleEncoderDecoder();
 
 	@Override
 	public Project readProject( ZipEntryContainer container ) throws IOException, VersionNotSupportedException {
@@ -163,8 +165,7 @@ public class JsonProjectIo implements ProjectIo{
 	}
 
 	private String serializedClass( NamedUserType userType ) {
-		//TODO
-		return "class " + userType.getName() + " {}";
+		return coder.encode( userType );
 	}
 
 	private Manifest createProjectManifest( Project project ) {

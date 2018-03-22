@@ -47,6 +47,7 @@ package org.lgna.project.ast;
  */
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 import edu.cmu.cs.dennisc.property.InstancePropertyOwner;
+import org.alice.serialization.DispatchingEncoder;
 
 //todo: clean up
 public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable {
@@ -427,6 +428,10 @@ public abstract class Element implements InstancePropertyOwner, edu.cmu.cs.denni
 			}
 		}
 		binaryEncoder.encode( "" );
+	}
+
+	public void encode( DispatchingEncoder encoder ) {
+		// By default do nothing
 	}
 
 	public boolean isEquivalentTo( Object other ) {
