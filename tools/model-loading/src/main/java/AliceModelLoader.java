@@ -430,8 +430,8 @@ public class AliceModelLoader {
 	
 	public static void main( String[] args ) {
 			
-			File colladaFile  = new File( "C:/Users/dculyba/Documents/Alice/Collada/alien.dae" );
-			String modelName = "alien2";
+			File colladaFile  = new File( "C:/Users/dculyba/Documents/Alice/Collada/AliceColladaTestFiles/test cola/ColaBottle.dae" );
+			String modelName = "colaBottle";
 			SkeletonVisual sv = AliceModelLoader.loadAliceModelFromCollada( colladaFile, modelName);
 			
 			renameJoints(sv);
