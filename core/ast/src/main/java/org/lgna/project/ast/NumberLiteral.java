@@ -64,7 +64,7 @@ public final class NumberLiteral extends AbstractValueLiteral<Number> {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.todo( this );
 	}
 

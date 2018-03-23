@@ -109,7 +109,7 @@ public final class ArrayInstanceCreation extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendString( "new " );
 		generator.appendTypeName( this.arrayType.getValue().getComponentType() );
 

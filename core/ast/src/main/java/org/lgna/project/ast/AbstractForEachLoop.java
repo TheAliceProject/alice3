@@ -83,7 +83,7 @@ public abstract class AbstractForEachLoop extends AbstractLoop implements EachIn
 	}
 
 	@Override
-	protected void appendJavaLoopPrefix( JavaCodeGenerator generator ) {
+	protected void appendLoopPrefix( SourceCodeGenerator generator ) {
 		UserLocal itemValue = this.item.getValue();
 		generator.appendString( "for(" );
 		generator.appendTypeName( itemValue.getValueType() );

@@ -71,7 +71,7 @@ public final class StringLiteral extends AbstractValueLiteral<String> {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendChar( '"' );
 		generator.appendString( this.value.getValue() );
 		generator.appendChar( '"' );

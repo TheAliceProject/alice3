@@ -74,11 +74,11 @@ public final class LambdaExpression extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		Lambda lambda = this.value.getValue();
 		if( lambda instanceof UserLambda ) {
 			UserLambda userLambda = (UserLambda)lambda;
-			userLambda.appendJava( generator );
+			userLambda.appendCode( generator );
 		}
 	}
 

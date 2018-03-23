@@ -64,7 +64,7 @@ public class Comment extends Statement {
 	}
 
 	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
+	protected void appendCodeInternal( SourceCodeGenerator generator ) {
 		String[] lines = this.text.getValue().split( "\n" );
 		generator.appendChar( '\n' );
 		for( String line : lines ) {

@@ -68,7 +68,7 @@ public final class AssignmentExpression extends Expression {
 		}
 
 		@Override
-		public void appendJava( JavaCodeGenerator generator ) {
+		public void appendCode( SourceCodeGenerator generator ) {
 			generator.appendString( this.text );
 		}
 	}
@@ -104,9 +104,9 @@ public final class AssignmentExpression extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendExpression( this.leftHandSide.getValue() );
-		this.operator.getValue().appendJava( generator );
+		this.operator.getValue().appendCode( generator );
 		generator.appendExpression( this.rightHandSide.getValue() );
 	}
 

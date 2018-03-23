@@ -85,7 +85,7 @@ public final class JavaKeyedArgument extends AbstractArgument {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		Expression expressionValue = this.expression.getValue();
 		if( expressionValue instanceof MethodInvocation ) {
 			MethodInvocation methodInvocation = (MethodInvocation)expressionValue;

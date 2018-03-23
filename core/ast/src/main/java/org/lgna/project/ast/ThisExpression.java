@@ -94,7 +94,7 @@ public final class ThisExpression extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendString( "this" );
 	}
 

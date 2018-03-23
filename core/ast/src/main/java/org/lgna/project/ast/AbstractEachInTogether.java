@@ -77,7 +77,7 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 	}
 
 	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
+	protected void appendCodeInternal( SourceCodeGenerator generator ) {
 		JavaType threadUtilitiesType = JavaType.getInstance( org.lgna.common.ThreadUtilities.class );
 		JavaMethod eachInTogetherMethod = threadUtilitiesType.getDeclaredMethod( "eachInTogether", org.lgna.common.EachInTogetherRunnable.class, Object[].class );
 		TypeExpression callerExpression = new TypeExpression( threadUtilitiesType );
@@ -104,7 +104,7 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 			generator.appendString( itemValue.getName() );
 			generator.appendString( ")" );
 		}
-		this.body.getValue().appendJava( generator );
+		this.body.getValue().appendCode( generator );
 		if( generator.isLambdaSupported() ) {
 			//pass
 		} else {

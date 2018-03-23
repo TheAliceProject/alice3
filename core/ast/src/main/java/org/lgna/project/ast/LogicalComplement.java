@@ -80,7 +80,7 @@ public final class LogicalComplement extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendChar( '!' );
 		generator.appendExpression( this.operand.getValue() );
 	}

@@ -78,7 +78,7 @@ public final class TypeExpression extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendTypeName( this.value.getValue() );
 	}
 

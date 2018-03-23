@@ -115,7 +115,7 @@ public final class FieldAccess extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendExpression( this.expression.getValue() );
 		generator.appendChar( '.' );
 		generator.appendString( this.field.getValue().getName() );

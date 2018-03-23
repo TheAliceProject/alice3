@@ -74,7 +74,7 @@ public final class FloatLiteral extends AbstractValueLiteral<Float> {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendFloat( this.value.getValue() );
 	}
 

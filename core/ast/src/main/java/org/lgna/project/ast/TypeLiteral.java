@@ -85,7 +85,7 @@ public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendTypeName( this.value.getValue() );
 		generator.appendString( ".class" );
 	}

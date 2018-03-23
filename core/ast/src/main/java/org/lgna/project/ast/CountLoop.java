@@ -81,7 +81,7 @@ public class CountLoop extends AbstractLoop {
 	}
 
 	@Override
-	protected void appendJavaLoopPrefix( JavaCodeGenerator generator ) {
+	protected void appendLoopPrefix( SourceCodeGenerator generator ) {
 		String variableName = getVariableName();
 		generator.appendString( "for(Integer " );
 		generator.appendString( variableName );

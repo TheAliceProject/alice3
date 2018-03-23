@@ -74,7 +74,7 @@ public final class IntegerLiteral extends AbstractValueLiteral<Integer> {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		int n = this.value.getValue();
 		if( n == Integer.MAX_VALUE ) {
 			generator.appendString( "Integer.MAX_VALUE" );

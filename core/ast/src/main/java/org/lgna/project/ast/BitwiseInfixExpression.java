@@ -69,7 +69,7 @@ public final class BitwiseInfixExpression extends Expression {
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '&' );
 			}
 		},
@@ -93,7 +93,7 @@ public final class BitwiseInfixExpression extends Expression {
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '|' );
 			}
 		},
@@ -117,14 +117,14 @@ public final class BitwiseInfixExpression extends Expression {
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '^' );
 			}
 		};
 		public abstract Object operate( Object leftOperand, Object rightOperand );
 
 		@Override
-		public abstract void appendJava( JavaCodeGenerator generator );
+		public abstract void appendCode( SourceCodeGenerator generator );
 	}
 
 	public BitwiseInfixExpression() {
@@ -161,9 +161,9 @@ public final class BitwiseInfixExpression extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendExpression( this.leftOperand.getValue() );
-		this.operator.getValue().appendJava( generator );
+		this.operator.getValue().appendCode( generator );
 		generator.appendExpression( this.rightOperand.getValue() );
 	}
 

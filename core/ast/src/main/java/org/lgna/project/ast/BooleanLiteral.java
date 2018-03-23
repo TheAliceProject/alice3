@@ -69,7 +69,7 @@ public final class BooleanLiteral extends AbstractValueLiteral<Boolean> {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendBoolean( this.value.getValue() );
 	}
 

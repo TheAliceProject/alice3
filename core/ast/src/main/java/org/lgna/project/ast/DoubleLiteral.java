@@ -74,7 +74,7 @@ public final class DoubleLiteral extends AbstractValueLiteral<Double> {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendDouble( this.value.getValue() );
 	}
 

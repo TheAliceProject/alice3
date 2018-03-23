@@ -63,11 +63,11 @@ public final class DoInOrder extends AbstractStatementWithBody {
 	}
 
 	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
+	protected void appendCodeInternal( SourceCodeGenerator generator ) {
 		String statementName = ResourceBundleUtilities
 						.getStringFromSimpleNames( this.getClass(), "org.alice.ide.controlflow.Templates");
 		generator.appendString( "\n/*" + statementName + "*/ " );
 
-		this.body.getValue().appendJava( generator );
+		this.body.getValue().appendCode( generator );
 	}
 }

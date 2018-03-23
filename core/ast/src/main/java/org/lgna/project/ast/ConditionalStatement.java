@@ -68,18 +68,18 @@ public final class ConditionalStatement extends Statement {
 	}
 
 	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
+	protected void appendCodeInternal( SourceCodeGenerator generator ) {
 		String text = "if";
 		for( BooleanExpressionBodyPair booleanExpressionBodyPair : this.booleanExpressionBodyPairs ) {
 			generator.appendString( text );
 			generator.appendString( "(" );
 			generator.appendExpression( booleanExpressionBodyPair.expression.getValue() );
 			generator.appendString( ")" );
-			booleanExpressionBodyPair.body.getValue().appendJava( generator );
+			booleanExpressionBodyPair.body.getValue().appendCode( generator );
 			text = "else if";
 		}
 		generator.appendString( "else" );
-		this.elseBody.getValue().appendJava( generator );
+		this.elseBody.getValue().appendCode( generator );
 	}
 
 	public final NodeListProperty<BooleanExpressionBodyPair> booleanExpressionBodyPairs = new NodeListProperty<BooleanExpressionBodyPair>( this );

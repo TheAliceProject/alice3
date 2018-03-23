@@ -67,7 +67,7 @@ public final class LocalDeclarationStatement extends Statement {
 	}
 
 	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
+	protected void appendCodeInternal( SourceCodeGenerator generator ) {
 		UserLocal localValue = this.local.getValue();
 		if( localValue.isFinal.getValue() ) {
 			generator.appendString( "final " );

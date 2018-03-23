@@ -64,14 +64,14 @@ public class BlockStatement extends Statement {
 		return false;
 	}
 
-	/* package-private */void appendBody( JavaCodeGenerator generator ) {
-		for( Statement statement : this.statements ) {
-			statement.appendJava( generator );
+	void appendBody( SourceCodeGenerator generator ) {
+		for( Statement statement : statements ) {
+			statement.appendCode( generator );
 		}
 	}
 
 	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
+	protected void appendCodeInternal( SourceCodeGenerator generator ) {
 		generator.appendChar( '{' );
 		this.appendBody( generator );
 		generator.appendChar( '}' );

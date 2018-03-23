@@ -43,15 +43,17 @@
 
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.BooleanProperty;
+import edu.cmu.cs.dennisc.property.PropertyFilter;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Statement extends AbstractNode {
-	protected abstract void appendJavaInternal( JavaCodeGenerator generator );
+	protected abstract void appendCodeInternal( SourceCodeGenerator generator );
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, PropertyFilter filter ) {
 		if( super.contentEquals( o, strictness, filter ) ) {
 			Statement other = (Statement)o;
 			return this.isEnabled.valueEquals( other.isEnabled, filter );
@@ -59,13 +61,13 @@ public abstract class Statement extends AbstractNode {
 		return false;
 	}
 
-	/* package-private */final void appendJava( JavaCodeGenerator generator ) {
-		boolean isDisabled = this.isEnabled.getValue() == false;
+	final void appendCode( SourceCodeGenerator generator ) {
+		boolean isDisabled = !isEnabled.getValue();
 		if( isDisabled ) {
 			generator.pushStatementDisabled();
 		}
 		try {
-			this.appendJavaInternal( generator );
+			appendCodeInternal( generator );
 		} finally {
 			if( isDisabled ) {
 				generator.popStatementDisabled();
@@ -73,5 +75,5 @@ public abstract class Statement extends AbstractNode {
 		}
 	}
 
-	public final edu.cmu.cs.dennisc.property.BooleanProperty isEnabled = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
+	public final BooleanProperty isEnabled = new BooleanProperty( this, Boolean.TRUE );
 }

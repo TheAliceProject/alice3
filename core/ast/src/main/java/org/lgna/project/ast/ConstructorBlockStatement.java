@@ -67,8 +67,8 @@ public final class ConstructorBlockStatement extends BlockStatement {
 	}
 
 	@Override
-	/* package-private */void appendBody( org.lgna.project.ast.JavaCodeGenerator generator ) {
-		this.constructorInvocationStatement.getValue().appendJava( generator );
+	/* package-private */void appendBody( SourceCodeGenerator generator ) {
+		this.constructorInvocationStatement.getValue().appendCode( generator );
 		super.appendBody( generator );
 	}
 

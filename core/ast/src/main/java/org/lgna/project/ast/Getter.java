@@ -64,7 +64,7 @@ public class Getter extends AbstractMethodContainedByUserField implements CodeAp
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		UserField field = this.getField();
 		generator.appendMemberPrefix( this );
 

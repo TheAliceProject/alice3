@@ -71,7 +71,7 @@ public abstract class AbstractArgument extends AbstractNode implements CodeAppen
 	}
 
 	@Override
-	public abstract void appendJava( JavaCodeGenerator generator );
+	public abstract void appendCode( SourceCodeGenerator generator );
 
 	public final DeclarationProperty<AbstractParameter> parameter = DeclarationProperty.createReferenceInstance( this );
 	public final ExpressionProperty expression = new ExpressionProperty( this ) {

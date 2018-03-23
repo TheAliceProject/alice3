@@ -73,7 +73,7 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '+' );
 			}
 		},
@@ -101,7 +101,7 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '-' );
 			}
 		},
@@ -129,7 +129,7 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '*' );
 			}
 		},
@@ -157,7 +157,7 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '/' );
 			}
 		},
@@ -185,7 +185,7 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '/' );
 			}
 		},
@@ -213,7 +213,7 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '%' );
 			}
 		},
@@ -241,14 +241,14 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '%' );
 			}
 		};
 		public abstract Number operate( Number leftOperand, Number rightOperand );
 
 		@Override
-		public abstract void appendJava( JavaCodeGenerator generator );
+		public abstract void appendCode( SourceCodeGenerator generator );
 	}
 
 	public ArithmeticInfixExpression() {
@@ -294,9 +294,9 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendExpression( this.leftOperand.getValue() );
-		this.operator.getValue().appendJava( generator );
+		this.operator.getValue().appendCode( generator );
 		generator.appendExpression( this.rightOperand.getValue() );
 	}
 

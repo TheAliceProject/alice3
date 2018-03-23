@@ -117,7 +117,7 @@ public class AnonymousUserConstructor extends UserConstructor {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		//todo?
 	}
 

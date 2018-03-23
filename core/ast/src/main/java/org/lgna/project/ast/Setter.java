@@ -63,7 +63,7 @@ public class Setter extends AbstractMethodContainedByUserField implements CodeAp
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendMemberPrefix( this );
 
 		UserField field = this.getField();

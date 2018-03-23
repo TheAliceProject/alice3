@@ -71,11 +71,11 @@ public abstract class UserConstructor extends AbstractConstructor implements Cod
 	}
 
 	@Override
-	public abstract void appendJava( JavaCodeGenerator generator );
+	public abstract void appendCode( SourceCodeGenerator generator );
 
 	@Override
 	public String generateJavaCode( JavaCodeGenerator generator ) {
-		this.appendJava( generator );
+		this.appendCode( generator );
 		return generator.getText( false );
 	}
 }

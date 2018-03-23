@@ -78,7 +78,7 @@ public final class StringConcatenation extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendExpression( this.leftOperand.getValue() );
 		generator.appendChar( '+' );
 		generator.appendExpression( this.rightOperand.getValue() );

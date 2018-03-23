@@ -90,7 +90,7 @@ public final class LocalAccess extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendString( this.local.getValue().getValidName() );
 	}
 

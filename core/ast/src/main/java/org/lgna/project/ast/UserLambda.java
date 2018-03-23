@@ -81,7 +81,7 @@ public class UserLambda extends AbstractUserMethod implements Lambda, CodeAppend
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendMemberPrefix( this );
 
 		AbstractType<?, ?, ?> type = generator.peekTypeForLambda();
@@ -95,7 +95,7 @@ public class UserLambda extends AbstractUserMethod implements Lambda, CodeAppend
 			generator.appendString( "(){" );
 			generator.appendMethodHeader( singleAbstractMethod );
 		}
-		this.body.getValue().appendJava( generator );
+		this.body.getValue().appendCode( generator );
 		if( generator.isLambdaSupported() ) {
 			//pass
 		} else {

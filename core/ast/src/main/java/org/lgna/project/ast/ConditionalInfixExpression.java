@@ -56,7 +56,7 @@ public final class ConditionalInfixExpression extends InfixExpression<Conditiona
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendString( "&&" );
 			}
 		},
@@ -67,14 +67,14 @@ public final class ConditionalInfixExpression extends InfixExpression<Conditiona
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendString( "||" );
 			}
 		};
 		public abstract Boolean operate( Boolean leftOperand, Boolean rightOperand );
 
 		@Override
-		public abstract void appendJava( JavaCodeGenerator generator );
+		public abstract void appendCode( SourceCodeGenerator generator );
 	}
 
 	public ConditionalInfixExpression() {
@@ -100,9 +100,9 @@ public final class ConditionalInfixExpression extends InfixExpression<Conditiona
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendExpression( this.leftOperand.getValue() );
-		this.operator.getValue().appendJava( generator );
+		this.operator.getValue().appendCode( generator );
 		generator.appendExpression( this.rightOperand.getValue() );
 	}
 }

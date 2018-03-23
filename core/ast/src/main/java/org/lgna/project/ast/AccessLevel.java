@@ -69,7 +69,7 @@ public enum AccessLevel implements CodeAppender {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendString( this.javaCodeText );
 	}
 

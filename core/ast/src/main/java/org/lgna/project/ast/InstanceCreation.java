@@ -116,7 +116,7 @@ public final class InstanceCreation extends Expression implements ArgumentOwner 
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendString( "new " );
 		AbstractType<?, ?, ?> type = getType();
 		if (null == type)

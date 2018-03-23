@@ -97,7 +97,7 @@ public final class ArrayAccess extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendExpression( this.array.getValue() );
 		generator.appendChar( '[' );
 		generator.appendExpression( this.index.getValue() );
