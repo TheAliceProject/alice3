@@ -133,7 +133,11 @@ public abstract class SourceCodeGenerator {
 	@Deprecated
 	abstract void todo( Object o );
 
-	abstract String getText( boolean areImportsDesired );
+	public String getText() {
+		return String.valueOf( getCodeStringBuilder() );
+	}
+
+	abstract String getTextWithImports();
 
 	CodeOrganizer getNewCodeOrganizerForTypeName( String typeName ) {
 		return new CodeOrganizer( codeOrganizerDefinitions.getOrDefault( typeName, defaultCodeOrganizerDefn ) );

@@ -117,13 +117,13 @@ public class UserMethod extends AbstractUserMethod implements CodeGenerator, Cod
 
 	public String generateHeaderJavaCode( JavaCodeGenerator generator ) {
 		generator.appendMethodHeader( this );
-		return generator.getText( false );
+		return generator.getText();
 	}
 
 	@Override
 	public String generateJavaCode( JavaCodeGenerator generator ) {
 		this.appendCode( generator );
-		return generator.getText( false );
+		return generator.getText();
 	}
 
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );

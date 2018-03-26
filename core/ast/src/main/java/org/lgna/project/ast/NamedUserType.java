@@ -144,7 +144,7 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 
 		generator.appendString( "}" );
 
-		return generator.getText( true );
+		return generator.getTextWithImports();
 	}
 
 	private CodeOrganizer getCodeOrganizer( JavaCodeGenerator generator ) {

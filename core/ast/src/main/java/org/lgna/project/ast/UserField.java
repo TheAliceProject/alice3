@@ -166,7 +166,7 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 	@Override
 	public String generateJavaCode( JavaCodeGenerator generator ) {
 		this.appendCode( generator );
-		return generator.getText( false );
+		return generator.getText();
 	}
 
 	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );

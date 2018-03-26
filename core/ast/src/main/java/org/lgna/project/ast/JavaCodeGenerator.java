@@ -316,45 +316,46 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		return "";
 	}
 
-	@Override String getText( boolean areImportsDesired ) {
-		StringBuilder rvStringBuilder = new StringBuilder();
-		if( areImportsDesired ) {
-			rvStringBuilder.append( this.getImportsPrefix() );
+	@Override String getTextWithImports() {
+		StringBuilder importsBuilder = getImports();
+		importsBuilder.append( getCodeStringBuilder() );
+		return importsBuilder.toString();
+	}
+
+	private StringBuilder getImports() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getImportsPrefix() );
 			for( JavaPackage packageToImportOnDemand : this.packagesToImportOnDemand ) {
-				rvStringBuilder.append( "import " );
-				rvStringBuilder.append( packageToImportOnDemand.getName() );
-				rvStringBuilder.append( ".*;" );
+			sb.append( "import " );
+			sb.append( packageToImportOnDemand.getName() );
+			sb.append( ".*;" );
 			}
 			for( JavaType typeToImport : this.typesToImport ) {
 				JavaPackage pack = typeToImport.getPackage();
-				if( "java.lang".contentEquals( pack.getName() ) ) {
-					//pass
-				} else {
-					rvStringBuilder.append( "import " );
-					rvStringBuilder.append( typeToImport.getPackage().getName() );
-					rvStringBuilder.append( '.' );
+			if (!"java.lang".contentEquals( pack.getName() )) {
+				sb.append( "import " );
+				sb.append( typeToImport.getPackage().getName() );
+				sb.append( '.' );
 					JavaType enclosingType = typeToImport.getEnclosingType();
 					if( enclosingType != null ) {
-						rvStringBuilder.append( enclosingType.getName() );
-						rvStringBuilder.append( '.' );
+					sb.append( enclosingType.getName() );
+					sb.append( '.' );
 					}
-					rvStringBuilder.append( typeToImport.getName() );
-					rvStringBuilder.append( ';' );
+				sb.append( typeToImport.getName() );
+				sb.append( ';' );
 				}
 			}
 			for( JavaMethod methodToImportStatic : this.methodsToImportStatic ) {
-				rvStringBuilder.append( "import static " );
-				rvStringBuilder.append( methodToImportStatic.getDeclaringType().getPackage().getName() );
-				rvStringBuilder.append( '.' );
-				rvStringBuilder.append( methodToImportStatic.getDeclaringType().getName() );
-				rvStringBuilder.append( '.' );
-				rvStringBuilder.append( methodToImportStatic.getName() );
-				rvStringBuilder.append( ';' );
+			sb.append( "import static " );
+			sb.append( methodToImportStatic.getDeclaringType().getPackage().getName() );
+			sb.append( '.' );
+			sb.append( methodToImportStatic.getDeclaringType().getName() );
+			sb.append( '.' );
+			sb.append( methodToImportStatic.getName() );
+			sb.append( ';' );
 			}
-			rvStringBuilder.append( this.getImportsPostfix() );
-		}
-		rvStringBuilder.append( getCodeStringBuilder() );
-		return rvStringBuilder.toString();
+		sb.append( this.getImportsPostfix() );
+		return sb;
 	}
 
 	@Override protected String getMemberPrefix( AbstractMember member ) {
