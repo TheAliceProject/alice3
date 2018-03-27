@@ -1,17 +1,13 @@
 package org.alice.tweedle.file;
 
-import java.util.Collections;
-
 public class TypeReference extends ResourceReference {
-	private static final String TYPE = "type";
+	private static final String CLASS_CONTENT = "Class";
 
 	public TypeReference( String id, String fileName, String format ) {
-		this.id = id;
-		this.files = Collections.singletonList( fileName );
-		this.format = format;
+		super(id, fileName, format);
 	}
 
 	@Override public String getContentType() {
-		return TYPE;
+		return CLASS_CONTENT;
 	}
 }
