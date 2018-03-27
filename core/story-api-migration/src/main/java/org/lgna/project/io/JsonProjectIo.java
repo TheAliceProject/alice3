@@ -51,6 +51,7 @@ import org.alice.serialization.tweedle.TweedleEncoderDecoder;
 import org.alice.tweedle.file.Manifest;
 import org.alice.tweedle.file.ManifestEncoderDecoder;
 import org.alice.tweedle.file.ResourceReference;
+import org.alice.tweedle.file.TypeReference;
 import org.lgna.common.Resource;
 import org.lgna.project.Project;
 import org.lgna.project.ProjectVersion;
@@ -76,6 +77,7 @@ public class JsonProjectIo implements ProjectIo{
 
 	private static final String MANIFEST_ENTRY_NAME = "manifest.json";
 	private static final String TWEEDLE_EXTENSION = "twe";
+	private static final String TWEEDLE_FORMAT = "tweedle";
 
 	private TweedleEncoderDecoder coder = new TweedleEncoderDecoder();
 
@@ -131,8 +133,9 @@ public class JsonProjectIo implements ProjectIo{
 		Manifest manifest = createTypeManifest( type );
 		Set<Resource> resources = getResources( type, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
 
-		List<DataSource> entries = collectEntries( manifest, resources, dataSources );
-		entries.add( dataSourceForType( type ) );
+		List<DataSource> entries = collectEntries( resources, dataSources );
+		entries.add( dataSourceForType( manifest, type ) );
+		entries.add( manifestDataSource( manifest ) );
 		writeDataSources( os, entries );
 	}
 
@@ -151,17 +154,20 @@ public class JsonProjectIo implements ProjectIo{
 		Set<Resource> resources = getResources( project.getProgramType(), CrawlPolicy.COMPLETE);
 		compareResources( project.getResources(), resources );
 
-		List<DataSource> entries = collectEntries( manifest, resources, dataSources );
-		entries.addAll( createEntriesForTypes( project.getNamedUserTypes()) );
+		List<DataSource> entries = collectEntries( resources, dataSources );
+		entries.addAll( createEntriesForTypes( manifest, project.getNamedUserTypes()) );
+		entries.add( manifestDataSource( manifest ) );
 		writeDataSources( os, entries );
 	}
 
-	private Collection<? extends DataSource> createEntriesForTypes( Set<NamedUserType> userTypes ) {
-		return userTypes.stream().map( this::dataSourceForType ).collect( Collectors.toList() );
+	private Collection<? extends DataSource> createEntriesForTypes( Manifest manifest, Set<NamedUserType> userTypes ) {
+		return userTypes.stream().map( ut -> dataSourceForType( manifest, ut ) ).collect( Collectors.toList() );
 	}
 
-	private DataSource dataSourceForType( NamedUserType ut ) {
-		return createDataSource( ut.getName() + '.' + TWEEDLE_EXTENSION, serializedClass(ut) );
+	private DataSource dataSourceForType( Manifest manifest, NamedUserType ut ) {
+		final String fileName = "src/" + ut.getName() + '.' + TWEEDLE_EXTENSION;
+		manifest.resources.add( new TypeReference( ut.getName(), fileName, TWEEDLE_FORMAT ) );
+		return createDataSource( fileName, serializedClass( ut) );
 	}
 
 	private String serializedClass( NamedUserType userType ) {
@@ -185,12 +191,10 @@ public class JsonProjectIo implements ProjectIo{
 		}
 	}
 
-	private List<DataSource> collectEntries( Manifest manifest, Set<Resource> resources,
-					DataSource[] dataSources ){
+	private List<DataSource> collectEntries( Set<Resource> resources, DataSource[] dataSources ){
 		List<DataSource> entries = new ArrayList<>(  );
 		Collections.addAll( entries, dataSources );
 		entries.add( versionDataSource() );
-		entries.add( manifestDataSource( manifest ) );
 		addResources( entries, resources );
 		return entries;
 	}
