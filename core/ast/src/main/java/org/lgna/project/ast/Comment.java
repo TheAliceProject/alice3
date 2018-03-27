@@ -65,13 +65,7 @@ public class Comment extends Statement {
 
 	@Override
 	protected void appendCodeInternal( SourceCodeGenerator generator ) {
-		String[] lines = this.text.getValue().split( "\n" );
-		generator.appendChar( '\n' );
-		for( String line : lines ) {
-			generator.appendString( "//" );
-			generator.appendString( line );
-			generator.appendChar( '\n' );
-		}
+		generator.formatMultiLineComment(text.getValue());
 	}
 
 	public final edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );

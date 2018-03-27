@@ -42,13 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.code;
 
-import org.lgna.project.ast.JavaCodeGenerator;
+import org.lgna.project.ast.SourceCodeGenerator;
 
 /**
  * @author dculyba
  */
 public interface CodeGenerator {
 
-	public String generateJavaCode( JavaCodeGenerator generator );
+	public String generateCode( SourceCodeGenerator generator );
 
 }

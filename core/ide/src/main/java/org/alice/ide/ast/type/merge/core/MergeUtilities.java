@@ -94,8 +94,8 @@ public class MergeUtilities {
 	}
 
 	public static boolean isEquivalent( CodeGenerator a, CodeGenerator b ) {
-		String aText = a.generateJavaCode( createJavaCodeGeneratorForEquivalence() );
-		String bText = b.generateJavaCode( createJavaCodeGeneratorForEquivalence() );
+		String aText = a.generateCode( createJavaCodeGeneratorForEquivalence() );
+		String bText = b.generateCode( createJavaCodeGeneratorForEquivalence() );
 		return aText.contentEquals( bText );
 	}
 

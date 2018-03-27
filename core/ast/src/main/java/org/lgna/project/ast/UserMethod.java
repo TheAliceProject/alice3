@@ -121,7 +121,7 @@ public class UserMethod extends AbstractUserMethod implements CodeGenerator, Cod
 	}
 
 	@Override
-	public String generateJavaCode( JavaCodeGenerator generator ) {
+	public String generateCode( SourceCodeGenerator generator ) {
 		this.appendCode( generator );
 		return generator.getText();
 	}

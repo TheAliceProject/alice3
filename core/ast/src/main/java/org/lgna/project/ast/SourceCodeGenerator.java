@@ -42,9 +42,12 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeOrganizer;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
@@ -57,9 +60,31 @@ public abstract class SourceCodeGenerator {
 		defaultCodeOrganizerDefn = defaultCodeDefinitionOrganizer;
 	}
 
-	StringBuilder getCodeStringBuilder() {
+	protected StringBuilder getCodeStringBuilder() {
 		return codeStringBuilder;
 	}
+
+	protected void appendClass( CodeOrganizer codeOrganizer, NamedUserType userType ) {
+		appendClassHeader( userType );
+
+		LinkedHashMap<String, List<CodeAppender>> orderedCode = codeOrganizer.getOrderedSections();
+		for( Map.Entry<String, List<CodeAppender>> entry : orderedCode.entrySet() ) {
+			if( !entry.getValue().isEmpty() ) {
+				boolean shouldCollapseSection = codeOrganizer.shouldCollapseSection( entry.getKey() );
+				appendSectionPrefix( userType, entry.getKey(), shouldCollapseSection );
+				for( CodeAppender item : entry.getValue() ) {
+					item.appendCode( this );
+				}
+				appendSectionPostfix( userType, entry.getKey(), shouldCollapseSection );
+			}
+		}
+
+		appendClassFooter();
+	}
+
+  protected abstract void appendClassHeader( NamedUserType userType );
+
+  protected abstract void appendClassFooter();
 
 	int pushStatementDisabled() {
 		return statementDisabledCount++;
@@ -70,6 +95,10 @@ public abstract class SourceCodeGenerator {
 	}
 
 	boolean isLambdaSupported() {
+		return true;
+	}
+
+	boolean isPublicStaticFinalFieldGetterDesired() {
 		return true;
 	}
 
@@ -100,17 +129,17 @@ public abstract class SourceCodeGenerator {
 		accessLevel.appendCode( this );
 	}
 
-	abstract void appendInt( int n );
+	protected abstract void appendInt( int n );
 
-	abstract void appendFloat( float f );
+  protected abstract void appendFloat( float f );
 
-	abstract void appendDouble( double d );
+	protected abstract void appendDouble( double d );
 
-	abstract void appendResourceExpression( ResourceExpression resourceExpression );
+  protected abstract void appendResourceExpression( ResourceExpression resourceExpression );
 
-	abstract void appendTypeName( AbstractType<?, ?, ?> type );
+  protected abstract void appendTypeName( AbstractType<?, ?, ?> type );
 
-	abstract void appendCallerExpression( Expression callerExpression, AbstractMethod method );
+  protected abstract void appendCallerExpression( Expression callerExpression, AbstractMethod method );
 
 	AbstractType<?, ?, ?> peekTypeForLambda() {
 		return typeForLambdaStack.peek();
@@ -124,88 +153,54 @@ public abstract class SourceCodeGenerator {
 		return typeForLambdaStack.pop();
 	}
 
-	abstract void appendParameters( Code code );
+	public abstract void appendParameters( Code code );
 
-	abstract void appendMethodHeader( AbstractMethod method );
+	public abstract void appendMethodHeader( AbstractMethod method );
 
-	abstract void appendArguments( ArgumentOwner argumentOwner );
+	public abstract void appendArguments( ArgumentOwner argumentOwner );
 
 	@Deprecated
-	abstract void todo( Object o );
+  protected abstract void todo( Object o );
 
 	public String getText() {
 		return String.valueOf( getCodeStringBuilder() );
 	}
 
-	abstract String getTextWithImports();
+  protected abstract String getTextWithImports();
 
 	CodeOrganizer getNewCodeOrganizerForTypeName( String typeName ) {
 		return new CodeOrganizer( codeOrganizerDefinitions.getOrDefault( typeName, defaultCodeOrganizerDefn ) );
 	}
 
-	abstract protected String getMemberPrefix( AbstractMember member );
+	protected abstract void appendMemberPrefix( AbstractMember member );
 
-	abstract protected String getMemberPostfix( AbstractMember member );
+	protected abstract void appendMemberPostfix( AbstractMember member );
 
-	final void appendMemberPrefix( AbstractMember member ) {
-		codeStringBuilder.append( getMemberPrefix( member ) );
-	}
-
-	final void appendMemberPostfix( AbstractMember member ) {
-		codeStringBuilder.append( getMemberPostfix( member ) );
-	}
-
-	protected abstract String getSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName,
-																							boolean shouldCollapse );
-
-	protected abstract String getSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName,
+	protected abstract void appendSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName,
 																							 boolean shouldCollapse );
 
-	final void appendSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
-		codeStringBuilder.append( getSectionPrefix( declaringType, sectionName, shouldCollapse ) );
-	}
-
-	final void appendSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
-		codeStringBuilder.append( getSectionPostfix( declaringType, sectionName, shouldCollapse ) );
-	}
-
-	private String getMethodPrefix( UserMethod method ) {
-		return getMemberPrefix( method );
-	}
-
-	private String getMethodPostfix( UserMethod method ) {
-		return getMemberPostfix( method );
-	}
+	protected abstract void appendSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName,
+																								boolean shouldCollapse );
 
 	final void appendMethodPrefix( UserMethod method ) {
-		codeStringBuilder.append( getMethodPrefix( method ) );
+		appendMemberPrefix(method);
 	}
 
 	final void appendMethodPostfix( UserMethod method ) {
-		codeStringBuilder.append( getMethodPostfix( method ) );
-	}
-
-	private String getFieldPrefix( UserField field ) {
-		return getMemberPrefix( field );
-	}
-
-	private String getFieldPostfix( UserField field ) {
-		return getMemberPostfix( field );
+		appendMemberPostfix( method );
 	}
 
 	final void appendFieldPrefix( UserField field ) {
-		codeStringBuilder.append( getFieldPrefix( field ) );
+		appendMemberPrefix(field);
 	}
 
 	final void appendFieldPostfix( UserField field ) {
-		codeStringBuilder.append( getFieldPostfix( field ) );
+		appendMemberPostfix(field);
 	}
 
-	abstract String localizedComment( AbstractType<?, ?, ?> type, String itemName, Locale locale );
+	public abstract void formatMultiLineComment( String value );
 
-	public String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, Locale locale ) {
-		return localizedComment( type, itemName, locale );
-	}
+	abstract public String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, Locale locale );
 
 	private final StringBuilder codeStringBuilder = new StringBuilder();
 

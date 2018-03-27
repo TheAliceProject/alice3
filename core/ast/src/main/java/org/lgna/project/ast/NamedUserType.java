@@ -47,13 +47,10 @@ import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.EnumProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
 import org.alice.serialization.DispatchingEncoder;
-import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Dennis Cosgrove
@@ -120,34 +117,12 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 	}
 
 	@Override
-	public String generateJavaCode( JavaCodeGenerator generator ) {
-
-		generator.appendString( "class " );
-		generator.appendTypeName( this );
-		generator.appendString( " extends " );
-		generator.appendTypeName( this.superType.getValue() );
-		generator.appendString( "{" );
-
-		CodeOrganizer codeOrganizer = getCodeOrganizer( generator );
-
-		LinkedHashMap<String, List<CodeAppender>> orderedCode = codeOrganizer.getOrderedSections();
-		for( Map.Entry<String, List<CodeAppender>> entry : orderedCode.entrySet() ) {
-			if( !entry.getValue().isEmpty() ) {
-				boolean shouldCollapseSection = codeOrganizer.shouldCollapseSection( entry.getKey() );
-				generator.appendSectionPrefix( this, entry.getKey(), shouldCollapseSection );
-				for( CodeAppender item : entry.getValue() ) {
-					item.appendCode( generator );
-				}
-				generator.appendSectionPostfix( this, entry.getKey(), shouldCollapseSection );
-			}
-		}
-
-		generator.appendString( "}" );
-
+	public String generateCode( SourceCodeGenerator generator ) {
+		generator.appendClass( getCodeOrganizer( generator ), this );
 		return generator.getTextWithImports();
 	}
 
-	private CodeOrganizer getCodeOrganizer( JavaCodeGenerator generator ) {
+	private CodeOrganizer getCodeOrganizer( SourceCodeGenerator generator ) {
 		CodeOrganizer codeOrganizer = generator.getNewCodeOrganizerForTypeName( this.getName() );
 		for( NamedUserConstructor constructor : this.constructors ) {
 			codeOrganizer.addConstructor( constructor );
