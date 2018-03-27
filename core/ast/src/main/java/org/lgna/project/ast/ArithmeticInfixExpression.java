@@ -285,15 +285,6 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ArithmeticInfixExpression other = (ArithmeticInfixExpression)o;
-			return this.expressionType.valueContentEquals( other.expressionType, strictness, filter );
-		}
-		return false;
-	}
-
-	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendExpression( this.leftOperand.getValue() );
 		this.operator.getValue().appendCode( generator );

@@ -57,15 +57,6 @@ public final class ExpressionStatement extends Statement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ExpressionStatement other = (ExpressionStatement)o;
-			return this.expression.valueContentEquals( other.expression, strictness, filter );
-		}
-		return false;
-	}
-
-	@Override
 	protected void appendRepr( AstLocalizer localizer ) {
 		safeAppendRepr( localizer, this.expression.getValue() );
 	}

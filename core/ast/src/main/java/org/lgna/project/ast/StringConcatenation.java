@@ -55,17 +55,6 @@ public final class StringConcatenation extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			StringConcatenation other = (StringConcatenation)o;
-			if( this.leftOperand.valueContentEquals( other.leftOperand, strictness, filter ) ) {
-				return this.rightOperand.valueContentEquals( other.rightOperand, strictness, filter );
-			}
-		}
-		return false;
-	}
-
-	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return JavaType.STRING_TYPE;
 	}

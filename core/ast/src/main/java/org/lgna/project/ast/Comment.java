@@ -55,15 +55,6 @@ public class Comment extends Statement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			Comment other = (Comment)o;
-			return this.text.valueEquals( other.text, filter );
-		}
-		return false;
-	}
-
-	@Override
 	protected void appendCodeInternal( SourceCodeGenerator generator ) {
 		generator.formatMultiLineComment(text.getValue());
 	}

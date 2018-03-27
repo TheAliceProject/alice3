@@ -77,15 +77,6 @@ public final class ArrayLength extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ArrayLength other = (ArrayLength)o;
-			return this.array.valueContentEquals( other.array, strictness, filter );
-		}
-		return false;
-	}
-
-	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendExpression( this.array.getValue() );
 		generator.appendString( ".length" );

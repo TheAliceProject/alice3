@@ -65,17 +65,6 @@ public abstract class AbstractForEachLoop extends AbstractLoop implements EachIn
 	protected abstract ExpressionProperty getArrayOrIterableProperty();
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			AbstractForEachLoop other = (AbstractForEachLoop)o;
-			if( this.item.valueContentEquals( other.item, strictness, filter ) ) {
-				return this.getArrayOrIterableProperty().valueContentEquals( other.getArrayOrIterableProperty(), strictness, filter );
-			}
-		}
-		return false;
-	}
-
-	@Override
 	protected void appendRepr( org.lgna.project.ast.localizer.AstLocalizer localizer ) {
 		localizer.appendLocalizedText( AbstractForEachLoop.class, "for each in " );
 		safeAppendRepr( localizer, this.getArrayOrIterableProperty().getValue() );

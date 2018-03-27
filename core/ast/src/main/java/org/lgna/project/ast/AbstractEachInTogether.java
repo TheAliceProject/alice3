@@ -66,17 +66,6 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 	protected abstract ExpressionProperty getArrayOrIterableProperty();
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			AbstractEachInTogether other = (AbstractEachInTogether)o;
-			if( this.item.valueContentEquals( other.item, strictness, filter ) ) {
-				return this.getArrayOrIterableProperty().valueContentEquals( other.getArrayOrIterableProperty(), strictness, filter );
-			}
-		}
-		return false;
-	}
-
-	@Override
 	protected void appendCodeInternal( SourceCodeGenerator generator ) {
 		JavaType threadUtilitiesType = JavaType.getInstance( org.lgna.common.ThreadUtilities.class );
 		JavaMethod eachInTogetherMethod = threadUtilitiesType.getDeclaredMethod( "eachInTogether", org.lgna.common.EachInTogetherRunnable.class, Object[].class );

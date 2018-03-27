@@ -96,19 +96,6 @@ public final class ArrayInstanceCreation extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ArrayInstanceCreation other = (ArrayInstanceCreation)o;
-			if( this.arrayType.valueContentEquals( other.arrayType, strictness, filter ) ) {
-				if( this.lengths.valueEquals( other.lengths, filter ) ) {
-					return this.expressions.valueContentEquals( other.expressions, strictness, filter );
-				}
-			}
-		}
-		return false;
-	}
-
-	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendString( "new " );
 		generator.appendTypeName( this.arrayType.getValue().getComponentType() );

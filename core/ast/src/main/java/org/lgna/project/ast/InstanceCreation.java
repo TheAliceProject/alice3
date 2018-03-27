@@ -101,21 +101,6 @@ public final class InstanceCreation extends Expression implements ArgumentOwner 
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			InstanceCreation other = (InstanceCreation)o;
-			if( this.constructor.valueContentEquals( other.constructor, strictness, filter ) ) {
-				if( this.requiredArguments.valueContentEquals( other.requiredArguments, strictness, filter ) ) {
-					if( this.variableArguments.valueContentEquals( other.variableArguments, strictness, filter ) ) {
-						return this.keyedArguments.valueContentEquals( other.keyedArguments, strictness, filter );
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendString( "new " );
 		AbstractType<?, ?, ?> type = getType();

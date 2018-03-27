@@ -71,15 +71,6 @@ public final class LogicalComplement extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			LogicalComplement other = (LogicalComplement)o;
-			return this.operand.valueContentEquals( other.operand, strictness, filter );
-		}
-		return false;
-	}
-
-	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendChar( '!' );
 		generator.appendExpression( this.operand.getValue() );

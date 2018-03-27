@@ -57,17 +57,6 @@ public class AssertStatement extends Statement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			AssertStatement other = (AssertStatement)o;
-			if( this.expression.valueContentEquals( other.expression, strictness, filter ) ) {
-				return this.message.valueContentEquals( other.message, strictness, filter );
-			}
-		}
-		return false;
-	}
-
-	@Override
 	protected void appendCodeInternal( SourceCodeGenerator generator ) {
 		generator.appendString( "assert " );
 		generator.appendExpression( this.expression.getValue() );

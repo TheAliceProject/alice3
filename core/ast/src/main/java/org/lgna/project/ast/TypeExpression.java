@@ -69,15 +69,6 @@ public final class TypeExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			TypeExpression other = (TypeExpression)o;
-			return this.value.valueContentEquals( other.value, strictness, filter );
-		}
-		return false;
-	}
-
-	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendTypeName( this.value.getValue() );
 	}

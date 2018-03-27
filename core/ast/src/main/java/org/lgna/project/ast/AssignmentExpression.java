@@ -89,21 +89,6 @@ public final class AssignmentExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			AssignmentExpression other = (AssignmentExpression)o;
-			if( this.expressionType.valueContentEquals( other.expressionType, strictness, filter ) ) {
-				if( this.leftHandSide.valueContentEquals( other.leftHandSide, strictness, filter ) ) {
-					if( this.operator.valueEquals( other.operator, filter ) ) {
-						return this.rightHandSide.valueContentEquals( other.rightHandSide, strictness, filter );
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendExpression( this.leftHandSide.getValue() );
 		this.operator.getValue().appendCode( generator );

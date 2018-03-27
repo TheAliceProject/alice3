@@ -87,21 +87,6 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 		return this.keyedArguments;
 	}
 
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ConstructorInvocationStatement other = (ConstructorInvocationStatement)o;
-			if( this.constructor.valueContentEquals( other.constructor, strictness, filter ) ) {
-				if( this.requiredArguments.valueContentEquals( other.requiredArguments, strictness, filter ) ) {
-					if( this.variableArguments.valueContentEquals( other.variableArguments, strictness, filter ) ) {
-						return this.keyedArguments.valueContentEquals( other.keyedArguments, strictness, filter );
-					}
-				}
-			}
-		}
-		return false;
-	}
-
 	public final DeclarationProperty<AbstractConstructor> constructor = DeclarationProperty.createReferenceInstance( this );
 	public final SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
 	public final SimpleArgumentListProperty variableArguments = new SimpleArgumentListProperty( this );

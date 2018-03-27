@@ -44,22 +44,12 @@
 package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.property.BooleanProperty;
-import edu.cmu.cs.dennisc.property.PropertyFilter;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Statement extends AbstractNode {
 	protected abstract void appendCodeInternal( SourceCodeGenerator generator );
-
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			Statement other = (Statement)o;
-			return this.isEnabled.valueEquals( other.isEnabled, filter );
-		}
-		return false;
-	}
 
 	final void appendCode( SourceCodeGenerator generator ) {
 		boolean isDisabled = !isEnabled.getValue();
