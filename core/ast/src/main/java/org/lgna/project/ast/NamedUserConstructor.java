@@ -114,12 +114,7 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendMemberPrefix( this );
-		generator.appendAccessLevel( this.getAccessLevel() );
-		generator.appendTypeName( this.getDeclaringType() );
-		generator.appendParameters( this );
-		this.body.getValue().appendCode( generator );
-		generator.appendMemberPostfix( this );
+		generator.appendConstructor( this );
 	}
 
 	public final NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );

@@ -63,8 +63,7 @@ public final class ExpressionStatement extends Statement {
 
 	@Override
 	protected void appendCodeInternal( SourceCodeGenerator generator ) {
-		generator.appendExpression( this.expression.getValue() );
-		generator.appendSemicolon();
+		generator.appendExpressionStatement( this );
 	}
 
 	public final ExpressionProperty expression = new ExpressionProperty( this ) {

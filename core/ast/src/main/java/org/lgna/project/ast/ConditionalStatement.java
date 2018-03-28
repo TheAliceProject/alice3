@@ -58,17 +58,7 @@ public final class ConditionalStatement extends Statement {
 
 	@Override
 	protected void appendCodeInternal( SourceCodeGenerator generator ) {
-		String text = "if";
-		for( BooleanExpressionBodyPair booleanExpressionBodyPair : this.booleanExpressionBodyPairs ) {
-			generator.appendString( text );
-			generator.appendString( "(" );
-			generator.appendExpression( booleanExpressionBodyPair.expression.getValue() );
-			generator.appendString( ")" );
-			booleanExpressionBodyPair.body.getValue().appendCode( generator );
-			text = "else if";
-		}
-		generator.appendString( "else" );
-		this.elseBody.getValue().appendCode( generator );
+		generator.appendConditional(this);
 	}
 
 	public final NodeListProperty<BooleanExpressionBodyPair> booleanExpressionBodyPairs = new NodeListProperty<BooleanExpressionBodyPair>( this );

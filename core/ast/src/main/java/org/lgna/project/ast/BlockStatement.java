@@ -55,17 +55,9 @@ public class BlockStatement extends Statement {
 		this.statements.add( statements );
 	}
 
-	void appendBody( SourceCodeGenerator generator ) {
-		for( Statement statement : statements ) {
-			statement.appendCode( generator );
-		}
-	}
-
 	@Override
 	protected void appendCodeInternal( SourceCodeGenerator generator ) {
-		generator.appendChar( '{' );
-		this.appendBody( generator );
-		generator.appendChar( '}' );
+		generator.appendBlock(this);
 	}
 
 	public final StatementListProperty statements = new StatementListProperty( this );

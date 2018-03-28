@@ -152,7 +152,7 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
 		AbstractMethod method = this.method.getValue();
-		generator.appendCallerExpression( this.expression.getValue(), method );
+		generator.appendTargetExpression( this.expression.getValue(), method );
 		generator.appendString( method.getName() );
 		generator.appendChar( '(' );
 		generator.appendArguments( this );

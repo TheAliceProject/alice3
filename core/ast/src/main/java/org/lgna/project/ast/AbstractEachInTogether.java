@@ -70,7 +70,7 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 		JavaType threadUtilitiesType = JavaType.getInstance( org.lgna.common.ThreadUtilities.class );
 		JavaMethod eachInTogetherMethod = threadUtilitiesType.getDeclaredMethod( "eachInTogether", org.lgna.common.EachInTogetherRunnable.class, Object[].class );
 		TypeExpression callerExpression = new TypeExpression( threadUtilitiesType );
-		generator.appendCallerExpression( callerExpression, eachInTogetherMethod );
+		generator.appendTargetExpression( callerExpression, eachInTogetherMethod );
 		generator.appendString( eachInTogetherMethod.getName() );
 		generator.appendString( "(" );
 

@@ -68,17 +68,8 @@ public class CountLoop extends AbstractLoop {
 	}
 
 	@Override
-	protected void appendLoopPrefix( SourceCodeGenerator generator ) {
-		String variableName = getVariableName();
-		generator.appendString( "for(Integer " );
-		generator.appendString( variableName );
-		generator.appendString( "=0;" );
-		generator.appendString( variableName );
-		generator.appendString( "<" );
-		generator.appendExpression( count.getValue() );
-		generator.appendString( ";" );
-		generator.appendString( variableName );
-		generator.appendString( "++)" );
+	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+		generator.appendCountLoop(this);
 	}
 
 	public final DeclarationProperty<UserLocal> variable = new DeclarationProperty<UserLocal>( this ) {

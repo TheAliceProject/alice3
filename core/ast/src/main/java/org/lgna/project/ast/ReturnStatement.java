@@ -58,9 +58,7 @@ public final class ReturnStatement extends Statement {
 
 	@Override
 	protected void appendCodeInternal( SourceCodeGenerator generator ) {
-		generator.appendString( "return " );
-		generator.appendExpression( this.expression.getValue() );
-		generator.appendSemicolon();
+		generator.appendReturnStatement(this);
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );

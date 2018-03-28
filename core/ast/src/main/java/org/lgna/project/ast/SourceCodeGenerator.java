@@ -46,7 +46,6 @@ import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeOrganizer;
 
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -66,25 +65,26 @@ public abstract class SourceCodeGenerator {
 
 	protected void appendClass( CodeOrganizer codeOrganizer, NamedUserType userType ) {
 		appendClassHeader( userType );
-
-		LinkedHashMap<String, List<CodeAppender>> orderedCode = codeOrganizer.getOrderedSections();
-		for( Map.Entry<String, List<CodeAppender>> entry : orderedCode.entrySet() ) {
+		for( Map.Entry<String, List<CodeAppender>> entry : codeOrganizer.getOrderedSections().entrySet() ) {
 			if( !entry.getValue().isEmpty() ) {
-				boolean shouldCollapseSection = codeOrganizer.shouldCollapseSection( entry.getKey() );
-				appendSectionPrefix( userType, entry.getKey(), shouldCollapseSection );
-				for( CodeAppender item : entry.getValue() ) {
-					item.appendCode( this );
-				}
-				appendSectionPostfix( userType, entry.getKey(), shouldCollapseSection );
+				appendSection( codeOrganizer, userType, entry );
 			}
 		}
-
 		appendClassFooter();
 	}
 
-  protected abstract void appendClassHeader( NamedUserType userType );
+	protected void appendSection( CodeOrganizer codeOrganizer, NamedUserType userType,
+																Map.Entry<String, List<CodeAppender>> entry ) {
+		for( CodeAppender item : entry.getValue() ) {
+			item.appendCode( this );
+		}
+	}
+
+	protected abstract void appendClassHeader( NamedUserType userType );
 
   protected abstract void appendClassFooter();
+
+	public abstract void appendConstructor( NamedUserConstructor constructor );
 
 	int pushStatementDisabled() {
 		return statementDisabledCount++;
@@ -106,22 +106,23 @@ public abstract class SourceCodeGenerator {
 		codeStringBuilder.append( b );
 	}
 
-	void appendChar( char c ) {
+	protected void appendChar( char c ) {
 		codeStringBuilder.append( c );
 	}
 
-	void appendSpace() {
+	protected void appendSpace() {
 		appendChar( ' ' );
 	}
 
-	void appendSemicolon() {
+	protected void appendStatementCompletion() {
 		appendChar( ';' );
 	}
 
-	void appendString( String s ) {
+	protected void appendString( String s ) {
 		codeStringBuilder.append( s );
 	}
-	void appendExpression( Expression expression ) {
+
+	protected void appendExpression( Expression expression ) {
 		expression.appendCode( this );
 	}
 
@@ -129,35 +130,106 @@ public abstract class SourceCodeGenerator {
 		accessLevel.appendCode( this );
 	}
 
-	protected abstract void appendInt( int n );
+	protected void appendInt( int n ) {
+		if( n == Integer.MAX_VALUE ) {
+			appendString( "Integer.MAX_VALUE" );
+		} else if( n == Integer.MIN_VALUE ) {
+			appendString( "Integer.MIN_VALUE" );
+		} else {
+			getCodeStringBuilder().append( n );
+		}
+	}
 
-  protected abstract void appendFloat( float f );
+	protected void appendFloat( float f ) {
+		if( Float.isNaN( f ) ) {
+			appendString( "Float.NaN" );
+		} else if( f == Float.POSITIVE_INFINITY ) {
+			appendString( "Float.POSITIVE_INFINITY" );
+		} else if( f == Float.NEGATIVE_INFINITY ) {
+			appendString( "Float.NEGATIVE_INFINITY" );
+		} else {
+			getCodeStringBuilder().append( f );
+			appendChar( 'f' );
+		}
+	}
 
-	protected abstract void appendDouble( double d );
+	protected void appendDouble( double d ) {
+		if( Double.isNaN( d ) ) {
+			appendString( "Double.NaN" );
+		} else if( d == Double.POSITIVE_INFINITY ) {
+			appendString( "Double.POSITIVE_INFINITY" );
+		} else if( d == Double.NEGATIVE_INFINITY ) {
+			appendString( "Double.NEGATIVE_INFINITY" );
+		} else {
+			getCodeStringBuilder().append( d );
+		}
+	}
 
   protected abstract void appendResourceExpression( ResourceExpression resourceExpression );
 
   protected abstract void appendTypeName( AbstractType<?, ?, ?> type );
 
-  protected abstract void appendCallerExpression( Expression callerExpression, AbstractMethod method );
+  protected abstract void appendTargetExpression( Expression target, AbstractMethod method );
 
-	AbstractType<?, ?, ?> peekTypeForLambda() {
+	private AbstractType<?, ?, ?> peekTypeForLambda() {
 		return typeForLambdaStack.peek();
 	}
 
-	void pushTypeForLambda( AbstractType<?, ?, ?> type ) {
+	private void pushTypeForLambda( AbstractType<?, ?, ?> type ) {
 		typeForLambdaStack.push( type );
 	}
 
-	AbstractType<?, ?, ?> popTypeForLambda() {
+	private AbstractType<?, ?, ?> popTypeForLambda() {
 		return typeForLambdaStack.pop();
 	}
 
-	public abstract void appendParameters( Code code );
+	protected void appendParameters( Code code ) {
+		appendChar( '(' );
+		String prefix = "";
+		int i = 0;
+		for( AbstractParameter parameter : code.getRequiredParameters() ) {
+			appendString( prefix );
+			appendTypeName( parameter.getValueType() );
+			appendSpace();
+			String parameterName = parameter.getValidName();
+			appendString( parameterName != null ? parameterName : "p" + i );
+			prefix = ",";
+			i += 1;
+		}
+		appendChar( ')' );
+	}
 
 	public abstract void appendMethodHeader( AbstractMethod method );
 
-	public abstract void appendArguments( ArgumentOwner argumentOwner );
+	public void appendArguments( ArgumentOwner argumentOwner ) {
+		String prefix = "";
+		for( SimpleArgument argument : argumentOwner.getRequiredArgumentsProperty() ) {
+			appendString( prefix );
+			appendArgument( argument );
+			prefix = ",";
+		}
+		for( SimpleArgument argument : argumentOwner.getVariableArgumentsProperty() ) {
+			appendString( prefix );
+			appendArgument( argument );
+			prefix = ",";
+		}
+		for( JavaKeyedArgument argument : argumentOwner.getKeyedArgumentsProperty() ) {
+			appendString( prefix );
+			appendArgument( argument );
+			prefix = ",";
+		}
+	}
+
+	private void appendArgument( AbstractArgument argument ) {
+		AbstractParameter parameter = argument.parameter.getValue();
+		AbstractType<?, ?, ?> type = argument.getExpressionTypeForParameterType( parameter.getValueType() );
+		pushTypeForLambda( type );
+		try {
+			argument.appendCode( this );
+		} finally {
+			assert popTypeForLambda() == type;
+		}
+	}
 
 	@Deprecated
   protected abstract void todo( Object o );
@@ -172,30 +244,176 @@ public abstract class SourceCodeGenerator {
 		return new CodeOrganizer( codeOrganizerDefinitions.getOrDefault( typeName, defaultCodeOrganizerDefn ) );
 	}
 
-	protected abstract void appendMemberPrefix( AbstractMember member );
-
-	protected abstract void appendMemberPostfix( AbstractMember member );
-
-	protected abstract void appendSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName,
-																							 boolean shouldCollapse );
-
-	protected abstract void appendSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName,
-																								boolean shouldCollapse );
-
-	final void appendMethodPrefix( UserMethod method ) {
-		appendMemberPrefix(method);
+	public void appendBlock( BlockStatement blockStatement ) {
+		openBlock();
+		appendBody( blockStatement );
+		closeBlock();
 	}
 
-	final void appendMethodPostfix( UserMethod method ) {
-		appendMemberPostfix( method );
+	public void appendConstructorBlock( ConstructorBlockStatement constructor ) {
+		openBlock();
+		constructor.constructorInvocationStatement.getValue().appendCode( this );
+		appendBody( constructor );
+		closeBlock();
 	}
 
-	final void appendFieldPrefix( UserField field ) {
-		appendMemberPrefix(field);
+	protected void openBlock() {
+		appendChar( '{' );
 	}
 
-	final void appendFieldPostfix( UserField field ) {
-		appendMemberPostfix(field);
+	protected void closeBlock() {
+		appendChar( '}' );
+	}
+
+	private void appendBody( BlockStatement block ) {
+		for( Statement statement : block.statements ) {
+			statement.appendCode( this );
+		}
+	}
+
+	public void appendExpressionStatement( ExpressionStatement expressionStatement ) {
+		appendSingleStatement( () -> appendExpression( expressionStatement.expression.getValue() ) );
+	}
+
+	public void appendSuperConstructor( SuperConstructorInvocationStatement supCon ) {
+		appendSingleStatement( () -> {
+			appendString( "super(" );
+			appendArguments( supCon );
+			appendString( ")" );
+		} );
+	}
+
+	protected void appendSingleStatement( Runnable appender ) {
+		appender.run();
+		appendStatementCompletion();
+	}
+
+	public void appendMethod( UserMethod method ) {
+		appendMethodHeader( method );
+		method.body.getValue().appendCode( this);
+	}
+
+	public void appendLocalDeclaration( LocalDeclarationStatement stmt ) {
+		appendSingleStatement( () -> {
+			UserLocal localVar = stmt.local.getValue();
+			if (localVar.isFinal.getValue()) {
+				appendString( "final " );
+			}
+			appendTypeName( localVar.getValueType() );
+			appendSpace();
+			appendString( localVar.getValidName() );
+			appendAssignment();
+			appendExpression( stmt.initializer.getValue() );
+		} );
+	}
+
+	abstract protected void appendAssignment();
+
+	public void appendConditional( ConditionalStatement stmt ) {
+		String text = "if";
+		for( BooleanExpressionBodyPair booleanExpressionBodyPair : stmt.booleanExpressionBodyPairs ) {
+			appendString( text );
+			appendString( "(" );
+			appendExpression( booleanExpressionBodyPair.expression.getValue() );
+			appendString( ")" );
+			booleanExpressionBodyPair.body.getValue().appendCode( this );
+			text = " else if";
+		}
+		appendString( " else" );
+		stmt.elseBody.getValue().appendCode( this );
+	}
+
+	public void appendCountLoop( CountLoop loop ) {
+		String variableName = loop.getVariableName();
+		appendString( "for(Integer " );
+		appendString( variableName );
+		appendString( "=0;" );
+		appendString( variableName );
+		appendString( "<" );
+		appendExpression( loop.count.getValue() );
+		appendString( ";" );
+		appendString( variableName );
+		appendString( "++)" );
+		loop.body.getValue().appendCode( this );
+	}
+
+	public void appendForEach( AbstractForEachLoop loop ) {
+		UserLocal itemValue = loop.item.getValue();
+		appendString( "for(" );
+		appendTypeName( itemValue.getValueType() );
+		appendSpace();
+		appendString( itemValue.getValidName() );
+		appendString( " : " );
+		appendExpression( loop.getArrayOrIterableProperty().getValue() );
+		appendChar( ')' );
+		loop.body.getValue().appendCode( this );
+	}
+
+	public void appendWhileLoop( WhileLoop loop ) {
+		appendString( "while (" );
+		appendExpression( loop.conditional.getValue() );
+		appendString( ")" );
+		loop.body.getValue().appendCode( this );
+	}
+
+	public void appendField( UserField field ) {
+		appendSingleStatement( () -> {
+		  appendTypeName( field.valueType.getValue() );
+		  appendSpace();
+		  appendString( field.name.getValue() );
+		  appendAssignment();
+		  appendExpression( field.initializer.getValue() );
+	  });
+	}
+
+	public void appendReturnStatement( ReturnStatement stmt ) {
+		appendSingleStatement( () -> {
+			appendString( "return " );
+			appendExpression( stmt.expression.getValue() );
+		});
+	}
+
+	public void appendGetter( Getter getter ) {
+		UserField field = getter.getField();
+		appendMethodHeader( getter );
+		openBlock();
+		appendSingleStatement( () -> {
+			appendString( "return this." );
+			appendString( field.name.getValue() );
+		} );
+		closeBlock();
+	}
+
+	public void appendSetter( Setter setter ) {
+		UserField field = setter.getField();
+		appendMethodHeader( setter );
+		openBlock();
+		appendSingleStatement( () -> {
+			appendString( "this." );
+			appendString( field.name.getValue() );
+			appendChar( '=' );
+			appendString( field.name.getValue() );
+		} );
+		closeBlock();
+	}
+
+	public void appendLambda( UserLambda lambda ) {
+		AbstractType<?, ?, ?> type = peekTypeForLambda();
+		AbstractMethod singleAbstractMethod = AstUtilities.getSingleAbstractMethod( type );
+		if( isLambdaSupported() ) {
+			appendParameters( lambda );
+			appendString( "->" );
+		} else {
+			appendString( "new " );
+			appendTypeName( type );
+			appendString( "()" );
+			openBlock();
+			appendMethodHeader( singleAbstractMethod );
+		}
+		lambda.body.getValue().appendCode( this );
+		if (!isLambdaSupported()) {
+			closeBlock();
+		}
 	}
 
 	public abstract void formatMultiLineComment( String value );

@@ -66,10 +66,8 @@ public class WhileLoop extends AbstractLoop {
 	}
 
 	@Override
-	protected void appendLoopPrefix( SourceCodeGenerator generator ) {
-		generator.appendString( "while (" );
-		generator.appendExpression( this.conditional.getValue() );
-		generator.appendString( ")" );
+	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+		generator.appendWhileLoop(this);
 	}
 
 	public final ExpressionProperty conditional = new ExpressionProperty( this ) {

@@ -109,10 +109,7 @@ public class UserMethod extends AbstractUserMethod implements CodeGenerator, Cod
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendMethodPrefix( this );
-		generator.appendMethodHeader( this );
-		this.body.getValue().appendCode( generator );
-		generator.appendMethodPostfix( this );
+		generator.appendMethod(this);
 	}
 
 	public String generateHeaderJavaCode( JavaCodeGenerator generator ) {

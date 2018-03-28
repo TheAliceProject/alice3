@@ -56,14 +56,6 @@ public abstract class AbstractLoop extends AbstractStatementWithBody {
 		super( body );
 	}
 
-	protected abstract void appendLoopPrefix( SourceCodeGenerator generator );
-
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
-		this.appendLoopPrefix( generator );
-		this.body.getValue().appendCode( generator );
-	}
-
 	@Override
 	public String generateLocalName( UserLocal local ) {
 		return local.isFinal.getValue() ? getConstantName() : getVariableName();

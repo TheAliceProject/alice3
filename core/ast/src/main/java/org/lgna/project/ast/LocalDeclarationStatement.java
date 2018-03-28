@@ -57,16 +57,7 @@ public final class LocalDeclarationStatement extends Statement {
 
 	@Override
 	protected void appendCodeInternal( SourceCodeGenerator generator ) {
-		UserLocal localValue = this.local.getValue();
-		if( localValue.isFinal.getValue() ) {
-			generator.appendString( "final " );
-		}
-		generator.appendTypeName( localValue.getValueType() );
-		generator.appendSpace();
-		generator.appendString( localValue.getValidName() );
-		generator.appendChar( '=' );
-		generator.appendExpression( this.initializer.getValue() );
-		generator.appendSemicolon();
+		generator.appendLocalDeclaration(this);
 	}
 
 	public final DeclarationProperty<UserLocal> local = new DeclarationProperty<UserLocal>( this ) {

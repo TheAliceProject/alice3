@@ -58,9 +58,8 @@ public final class ConstructorBlockStatement extends BlockStatement {
 	}
 
 	@Override
-	/* package-private */void appendBody( SourceCodeGenerator generator ) {
-		this.constructorInvocationStatement.getValue().appendCode( generator );
-		super.appendBody( generator );
+	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+		generator.appendConstructorBlock(this);
 	}
 
 	public final NodeProperty<ConstructorInvocationStatement> constructorInvocationStatement = new NodeProperty<ConstructorInvocationStatement>( this );

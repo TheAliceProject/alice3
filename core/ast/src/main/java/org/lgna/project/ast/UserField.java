@@ -146,21 +146,7 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendFieldPrefix( this );
-		generator.appendAccessLevel( this.getAccessLevel() );
-		if( this.isStatic() ) {
-			generator.appendString( "static " );
-		}
-		if( this.isFinal() ) {
-			generator.appendString( "final " );
-		}
-		generator.appendTypeName( this.valueType.getValue() );
-		generator.appendSpace();
-		generator.appendString( this.name.getValue() );
-		generator.appendChar( '=' );
-		generator.appendExpression( this.initializer.getValue() );
-		generator.appendSemicolon();
-		generator.appendFieldPostfix( this );
+		generator.appendField(this);
 	}
 
 	@Override

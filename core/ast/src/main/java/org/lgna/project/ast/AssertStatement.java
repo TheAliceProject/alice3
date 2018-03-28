@@ -65,7 +65,7 @@ public class AssertStatement extends Statement {
 			generator.appendChar( ':' );
 			generator.appendExpression( messageValue );
 		}
-		generator.appendSemicolon();
+		generator.appendStatementCompletion();
 	}
 
 	public final ExpressionProperty expression = new ExpressionProperty( this ) {

@@ -47,6 +47,7 @@ import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.java.util.Sets;
 import org.lgna.common.Resource;
+import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeOrganizer;
 import org.lgna.project.resource.ResourcesTypeWrapper;
 
@@ -123,7 +124,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		private String commentsLocalizationBundleName;
 	}
 
-	protected JavaCodeGenerator( Builder builder ) {
+	JavaCodeGenerator( Builder builder ) {
 		super( builder.codeOrganizerDefinitionMap, builder.defaultCodeDefinitionOrganizer );
 		this.isLambdaSupported = builder.isLambdaSupported;
 		this.isPublicStaticFinalFieldGetterDesired = builder.isPublicStaticFinalFieldGetterDesired;
@@ -157,39 +158,8 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		return isPublicStaticFinalFieldGetterDesired;
 	}
 
-	@Override protected void appendInt( int n ) {
-		if( n == Integer.MAX_VALUE ) {
-			appendString( "Integer.MAX_VALUE" );
-		} else if( n == Integer.MIN_VALUE ) {
-			appendString( "Integer.MIN_VALUE" );
-		} else {
-			getCodeStringBuilder().append( n );
-		}
-	}
-
-	@Override protected void appendFloat( float f ) {
-		if( Float.isNaN( f ) ) {
-			appendString( "Float.NaN" );
-		} else if( f == Float.POSITIVE_INFINITY ) {
-			appendString( "Float.POSITIVE_INFINITY" );
-		} else if( f == Float.NEGATIVE_INFINITY ) {
-			appendString( "Float.NEGATIVE_INFINITY" );
-		} else {
-			getCodeStringBuilder().append( f );
-			appendChar( 'f' );
-		}
-	}
-
-	@Override protected void appendDouble( double d ) {
-		if( Double.isNaN( d ) ) {
-			appendString( "Double.NaN" );
-		} else if( d == Double.POSITIVE_INFINITY ) {
-			appendString( "Double.POSITIVE_INFINITY" );
-		} else if( d == Double.NEGATIVE_INFINITY ) {
-			appendString( "Double.NEGATIVE_INFINITY" );
-		} else {
-			getCodeStringBuilder().append( d );
-		}
+	@Override protected void appendAssignment() {
+		appendChar( '=' );
 	}
 
 	private void appendResource( Resource resource ) {
@@ -230,6 +200,39 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		appendString( "}" );
 	}
 
+	@Override protected void appendSection( CodeOrganizer codeOrganizer, NamedUserType userType,
+																					Map.Entry<String, List<CodeAppender>> entry ) {
+		boolean shouldCollapseSection = codeOrganizer.shouldCollapseSection( entry.getKey() );
+		appendSectionPrefix( userType, entry.getKey(), shouldCollapseSection );
+		super.appendSection( codeOrganizer, userType, entry );
+		appendSectionPostfix( userType, entry.getKey(), shouldCollapseSection );
+	}
+
+	private void appendSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName,
+																							boolean shouldCollapse ) {
+		String sectionComment = getLocalizedMultiLineComment( declaringType, sectionName );
+		if( sectionComment != null ) {
+			getCodeStringBuilder().append( "\n\n" ).append( sectionComment ).append( "\n" );
+		}
+	}
+
+	private void appendSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
+		String sectionComment = getLocalizedMultiLineComment( declaringType, sectionName + ".end" );
+		if( sectionComment != null ) {
+			getCodeStringBuilder().append( "\n" ).append( sectionComment ).append( "\n" );
+		}
+	}
+
+	@Override
+	public void appendConstructor( NamedUserConstructor constructor ) {
+		appendMemberPrefix( constructor );
+		appendAccessLevel( constructor.getAccessLevel() );
+		appendTypeName( constructor.getDeclaringType() );
+		appendParameters( constructor );
+		constructor.body.getValue().appendCode( this );
+		appendMemberPostfix( constructor );
+	}
+
 	@Override protected void appendTypeName( AbstractType<?, ?, ?> type ) {
 		if( type instanceof JavaType ) {
 			JavaType javaType = (JavaType)type;
@@ -251,7 +254,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		appendString( type.getName() );
 	}
 
-	@Override protected void appendCallerExpression( Expression callerExpression, AbstractMethod method ) {
+	@Override protected void appendTargetExpression( Expression target, AbstractMethod method ) {
 		boolean isImportStatic = false;
 		if( method instanceof JavaMethod ) {
 			if( method.isStatic() ) {
@@ -263,25 +266,15 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		if( isImportStatic ) {
 			methodsToImportStatic.add( (JavaMethod)method );
 		} else {
-			appendExpression( callerExpression );
+			appendExpression( target );
 			appendChar( '.' );
 		}
 	}
 
-	@Override public void appendParameters( Code code ) {
-		appendChar( '(' );
-		String prefix = "";
-		int i = 0;
-		for( AbstractParameter parameter : code.getRequiredParameters() ) {
-			appendString( prefix );
-			appendTypeName( parameter.getValueType() );
-			appendSpace();
-			String parameterName = parameter.getValidName();
-			appendString( parameterName != null ? parameterName : "p" + i );
-			prefix = ",";
-			i += 1;
-		}
-		appendChar( ')' );
+	@Override public void appendMethod( UserMethod method ) {
+		appendMemberPrefix( method );
+		super.appendMethod( method );
+		appendMemberPostfix( method );
 	}
 
 	@Override public void appendMethodHeader( AbstractMethod method ) {
@@ -297,36 +290,6 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		appendSpace();
 		appendString( method.getName() );
 		appendParameters( method );
-	}
-
-	private void appendArgument( AbstractArgument argument ) {
-		AbstractParameter parameter = argument.parameter.getValue();
-		AbstractType<?, ?, ?> type = argument.getExpressionTypeForParameterType( parameter.getValueType() );
-		pushTypeForLambda( type );
-		try {
-			argument.appendCode( this );
-		} finally {
-			assert popTypeForLambda() == type;
-		}
-	}
-
-	@Override public void appendArguments( ArgumentOwner argumentOwner ) {
-		String prefix = "";
-		for( SimpleArgument argument : argumentOwner.getRequiredArgumentsProperty() ) {
-			appendString( prefix );
-			appendArgument( argument );
-			prefix = ",";
-		}
-		for( SimpleArgument argument : argumentOwner.getVariableArgumentsProperty() ) {
-			appendString( prefix );
-			appendArgument( argument );
-			prefix = ",";
-		}
-		for( JavaKeyedArgument argument : argumentOwner.getKeyedArgumentsProperty() ) {
-			appendString( prefix );
-			appendArgument( argument );
-			prefix = ",";
-		}
 	}
 
 	@Override @Deprecated protected void todo( Object o ) {
@@ -374,31 +337,17 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		return sb;
 	}
 
-	@Override protected void appendMemberPrefix( AbstractMember member ) {
+	private void appendMemberPrefix( AbstractMember member ) {
 		String memberComment = getLocalizedMultiLineComment( member.getDeclaringType(), member.getName() );
 		if( memberComment != null ) {
 			getCodeStringBuilder().append( "\n" ).append( memberComment ).append( "\n" );
 		}
 	}
 
-	@Override protected void appendMemberPostfix( AbstractMember member ) {
+	private void appendMemberPostfix( AbstractMember member ) {
 		String memberComment = getLocalizedMultiLineComment( member.getDeclaringType(), member.getName() + ".end" );
 		if( memberComment != null ) {
 			getCodeStringBuilder().append( "\n" ).append( memberComment ).append( "\n" );
-		}
-	}
-
-	@Override protected void appendSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
-		String sectionComment = getLocalizedMultiLineComment( declaringType, sectionName );
-	if( sectionComment != null ) {
-			getCodeStringBuilder().append( "\n\n" ).append( sectionComment ).append( "\n" );
-		}
-	}
-
-	@Override protected void appendSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
-		String sectionComment = getLocalizedMultiLineComment( declaringType, sectionName + ".end" );
-		if( sectionComment != null ) {
-			getCodeStringBuilder().append( "\n" ).append( sectionComment ).append( "\n" );
 		}
 	}
 
@@ -467,6 +416,37 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 			return returnVal;
 		}
 		return null;
+	}
+
+	@Override public void appendField( UserField field ) {
+		appendMemberPrefix(field);
+		appendAccessLevel( field.getAccessLevel() );
+		if( field.isStatic() ) {
+			appendString( "static " );
+		}
+		if( field.isFinal() ) {
+			appendString( "final " );
+		}
+		super.appendField( field );
+		appendMemberPostfix(field);
+	}
+
+	@Override public void appendGetter( Getter getter ) {
+		appendMemberPrefix( getter );
+		super.appendGetter( getter );
+		appendMemberPostfix( getter );
+	}
+
+	@Override public void appendSetter( Setter setter ) {
+		appendMemberPrefix( setter );
+		super.appendSetter( setter );
+		appendMemberPostfix( setter );
+	}
+
+	@Override public void appendLambda( UserLambda lambda ) {
+		appendMemberPrefix( lambda );
+		super.appendLambda( lambda );
+		appendMemberPostfix( lambda );
 	}
 
 	private final boolean isLambdaSupported;

@@ -60,8 +60,6 @@ public final class SuperConstructorInvocationStatement extends ConstructorInvoca
 
 	@Override
 	protected void appendCodeInternal( SourceCodeGenerator generator ) {
-		generator.appendString( "super(" );
-		generator.appendArguments( this );
-		generator.appendString( ");" );
+		generator.appendSuperConstructor( this);
 	}
 }

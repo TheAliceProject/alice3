@@ -51,7 +51,7 @@ import edu.cmu.cs.dennisc.property.BooleanProperty;
 public abstract class Statement extends AbstractNode {
 	protected abstract void appendCodeInternal( SourceCodeGenerator generator );
 
-	final void appendCode( SourceCodeGenerator generator ) {
+	public final void appendCode( SourceCodeGenerator generator ) {
 		boolean isDisabled = !isEnabled.getValue();
 		if( isDisabled ) {
 			generator.pushStatementDisabled();
