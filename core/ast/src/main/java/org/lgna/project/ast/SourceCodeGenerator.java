@@ -339,14 +339,20 @@ public abstract class SourceCodeGenerator {
 
 	public void appendForEach( AbstractForEachLoop loop ) {
 		UserLocal itemValue = loop.item.getValue();
-		appendString( "for(" );
+		final Expression items = loop.getArrayOrIterableProperty().getValue();
+		appendString( "for");
+		appendEachItemsClause( itemValue, items );
+		loop.body.getValue().appendCode( this );
+	}
+
+	protected void appendEachItemsClause( UserLocal itemValue, Expression items ) {
+		appendChar( '(');
 		appendTypeName( itemValue.getValueType() );
 		appendSpace();
 		appendString( itemValue.getValidName() );
 		appendString( " : " );
-		appendExpression( loop.getArrayOrIterableProperty().getValue() );
+		appendExpression( items );
 		appendChar( ')' );
-		loop.body.getValue().appendCode( this );
 	}
 
 	public void appendWhileLoop( WhileLoop loop ) {
@@ -428,4 +434,12 @@ public abstract class SourceCodeGenerator {
 
 	private final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitions;
 	private final CodeOrganizer.CodeOrganizerDefinition defaultCodeOrganizerDefn;
+
+	public void appendDoInOrder( DoInOrder doInOrder ) {
+		doInOrder.body.getValue().appendCode( this );
+	}
+
+	public abstract void appendDoTogether( DoTogether doTogether );
+
+	public abstract void appendEachInTogether( AbstractEachInTogether eachInTogether );
 }

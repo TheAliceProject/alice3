@@ -46,7 +46,9 @@ import edu.cmu.cs.dennisc.java.util.Lists;
 import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
 import edu.cmu.cs.dennisc.java.util.Sets;
+import org.lgna.common.EachInTogetherRunnable;
 import org.lgna.common.Resource;
+import org.lgna.common.ThreadUtilities;
 import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeOrganizer;
 import org.lgna.project.resource.ResourcesTypeWrapper;
@@ -335,6 +337,93 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 			sb.append( ';' );
 		}
 		return sb;
+	}
+
+	@Override public void appendDoInOrder( DoInOrder doInOrder ) {
+		appendString( "\n/*" );
+		appendString( ResourceBundleUtilities
+						.getStringFromSimpleNames( doInOrder.getClass(), "org.alice.ide.controlflow.Templates" ) );
+		appendString( "*/ " );
+		super.appendDoInOrder( doInOrder );
+	}
+
+	@Override public void appendDoTogether( DoTogether doTogether ) {
+		JavaType threadUtilitiesType = JavaType.getInstance( ThreadUtilities.class );
+		JavaMethod doTogetherMethod = threadUtilitiesType.getDeclaredMethod( "doTogether", Runnable[].class );
+		TypeExpression callerExpression = new TypeExpression( threadUtilitiesType );
+		appendTargetExpression( callerExpression, doTogetherMethod );
+		appendString( doTogetherMethod.getName() );
+		appendString( "(" );
+		String prefix = "";
+		for( Statement statement : doTogether.body.getValue().statements ) {
+			appendString( prefix );
+			if( isLambdaSupported() ) {
+				appendString( "()->{" );
+			} else {
+				appendString( "new Runnable(){public void run(){" );
+			}
+			if( statement instanceof DoInOrder ) {
+				DoInOrder doInOrder = (DoInOrder)statement;
+				BlockStatement blockStatement = doInOrder.body.getValue();
+				for( Statement subStatement : blockStatement.statements ) {
+					subStatement.appendCode( this );
+				}
+			} else {
+				statement.appendCode( this );
+			}
+			if( isLambdaSupported() ) {
+				appendString( "}" );
+			} else {
+				appendString( "}}" );
+			}
+			prefix = ",";
+		}
+		appendString( ");" );
+	}
+
+	@Override public void appendEachInTogether( AbstractEachInTogether eachInTogether ) {
+		JavaType threadUtilitiesType = JavaType.getInstance( ThreadUtilities.class );
+		JavaMethod eachInTogetherMethod = threadUtilitiesType.getDeclaredMethod( "eachInTogether", EachInTogetherRunnable.class, Object[].class );
+		TypeExpression callerExpression = new TypeExpression( threadUtilitiesType );
+		appendTargetExpression( callerExpression, eachInTogetherMethod );
+		appendString( eachInTogetherMethod.getName() );
+		appendString( "(" );
+
+		UserLocal itemValue = eachInTogether.item.getValue();
+		AbstractType<?, ?, ?> itemType = itemValue.getValueType();
+		if( isLambdaSupported() ) {
+			appendString( "(" );
+			appendTypeName( itemType );
+			appendSpace();
+			appendString( itemValue.getName() );
+			appendString( ")->" );
+		} else {
+			appendString( "new " );
+			appendTypeName( JavaType.getInstance( EachInTogetherRunnable.class ) );
+			appendString( "<" );
+			appendTypeName( itemType );
+			appendString( ">() { public void run(" );
+			appendTypeName( itemType );
+			appendSpace();
+			appendString( itemValue.getName() );
+			appendString( ")" );
+		}
+		eachInTogether.body.getValue().appendCode( this );
+		if (!isLambdaSupported()) {
+			appendString( "}" );
+		}
+		Expression arrayOrIterableExpression = eachInTogether.getArrayOrIterableProperty().getValue();
+		if( arrayOrIterableExpression instanceof ArrayInstanceCreation ) {
+			ArrayInstanceCreation arrayInstanceCreation = (ArrayInstanceCreation)arrayOrIterableExpression;
+			for( Expression variableLengthExpression : arrayInstanceCreation.expressions ) {
+				appendString( "," );
+				appendExpression( variableLengthExpression );
+			}
+		} else {
+			appendString( "," );
+			appendExpression( arrayOrIterableExpression );
+		}
+		appendString( ");" );
 	}
 
 	private void appendMemberPrefix( AbstractMember member ) {

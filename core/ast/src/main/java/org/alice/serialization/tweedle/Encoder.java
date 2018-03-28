@@ -187,4 +187,28 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 		super.appendSetter( setter );
 		appendNewLine();
 	}
+
+	@Override public void appendDoInOrder( DoInOrder doInOrder ) {
+		appendIndent();
+		appendString( "doInOrder" );
+		super.appendDoInOrder( doInOrder );
+		appendNewLine();
+	}
+
+	@Override public void appendDoTogether( DoTogether doTogether ) {
+		appendIndent();
+		appendString( "doTogether" );
+		doTogether.body.getValue().appendCode( this );
+		appendNewLine();
+	}
+
+	@Override public void appendEachInTogether( AbstractEachInTogether eachInTogether ) {
+		appendIndent();
+		appendString( "eachTogether" );
+		UserLocal itemValue = eachInTogether.item.getValue();
+		Expression items = eachInTogether.getArrayOrIterableProperty().getValue();
+		appendEachItemsClause( itemValue, items );
+		eachInTogether.body.getValue().appendCode( this );
+		appendNewLine();
+	}
 }

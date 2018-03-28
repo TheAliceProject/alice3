@@ -63,54 +63,11 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 		return this.item;
 	}
 
-	protected abstract ExpressionProperty getArrayOrIterableProperty();
+	public abstract ExpressionProperty getArrayOrIterableProperty();
 
 	@Override
 	protected void appendCodeInternal( SourceCodeGenerator generator ) {
-		JavaType threadUtilitiesType = JavaType.getInstance( org.lgna.common.ThreadUtilities.class );
-		JavaMethod eachInTogetherMethod = threadUtilitiesType.getDeclaredMethod( "eachInTogether", org.lgna.common.EachInTogetherRunnable.class, Object[].class );
-		TypeExpression callerExpression = new TypeExpression( threadUtilitiesType );
-		generator.appendTargetExpression( callerExpression, eachInTogetherMethod );
-		generator.appendString( eachInTogetherMethod.getName() );
-		generator.appendString( "(" );
-
-		UserLocal itemValue = this.item.getValue();
-		AbstractType<?, ?, ?> itemType = itemValue.getValueType();
-		if( generator.isLambdaSupported() ) {
-			generator.appendString( "(" );
-			generator.appendTypeName( itemType );
-			generator.appendSpace();
-			generator.appendString( itemValue.getName() );
-			generator.appendString( ")->" );
-		} else {
-			generator.appendString( "new " );
-			generator.appendTypeName( JavaType.getInstance( org.lgna.common.EachInTogetherRunnable.class ) );
-			generator.appendString( "<" );
-			generator.appendTypeName( itemType );
-			generator.appendString( ">() { public void run(" );
-			generator.appendTypeName( itemType );
-			generator.appendSpace();
-			generator.appendString( itemValue.getName() );
-			generator.appendString( ")" );
-		}
-		this.body.getValue().appendCode( generator );
-		if( generator.isLambdaSupported() ) {
-			//pass
-		} else {
-			generator.appendString( "}" );
-		}
-		Expression arrayOrIterableExpression = this.getArrayOrIterableProperty().getValue();
-		if( arrayOrIterableExpression instanceof ArrayInstanceCreation ) {
-			ArrayInstanceCreation arrayInstanceCreation = (ArrayInstanceCreation)arrayOrIterableExpression;
-			for( Expression variableLengthExpression : arrayInstanceCreation.expressions ) {
-				generator.appendString( "," );
-				generator.appendExpression( variableLengthExpression );
-			}
-		} else {
-			generator.appendString( "," );
-			generator.appendExpression( arrayOrIterableExpression );
-		}
-		generator.appendString( ");" );
+		generator.appendEachInTogether(this);
 	}
 
 	public final DeclarationProperty<UserLocal> item = new DeclarationProperty<UserLocal>( this ) {
