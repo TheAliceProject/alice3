@@ -56,8 +56,7 @@ public final class ReturnStatement extends Statement {
 		this.expression.setValue( expression );
 	}
 
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendReturnStatement(this);
 	}
 

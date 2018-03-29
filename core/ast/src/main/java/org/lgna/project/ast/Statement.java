@@ -44,26 +44,14 @@
 package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.property.BooleanProperty;
+import org.lgna.project.code.CodeAppender;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Statement extends AbstractNode {
-	protected abstract void appendCodeInternal( SourceCodeGenerator generator );
-
-	public final void appendCode( SourceCodeGenerator generator ) {
-		boolean isDisabled = !isEnabled.getValue();
-		if( isDisabled ) {
-			generator.pushStatementDisabled();
-		}
-		try {
-			appendCodeInternal( generator );
-		} finally {
-			if( isDisabled ) {
-				generator.popStatementDisabled();
-			}
-		}
-	}
+public abstract class Statement extends AbstractNode implements CodeAppender{
+	@Override
+	public abstract void appendCode( SourceCodeGenerator generator );
 
 	public final BooleanProperty isEnabled = new BooleanProperty( this, Boolean.TRUE );
 }

@@ -57,8 +57,7 @@ public final class ConstructorBlockStatement extends BlockStatement {
 		this.constructorInvocationStatement.setValue( constructorInvocationStatement );
 	}
 
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendConstructorBlock(this);
 	}
 

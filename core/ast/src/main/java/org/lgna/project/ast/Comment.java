@@ -54,8 +54,7 @@ public class Comment extends Statement {
 		this.text.setValue( text );
 	}
 
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.formatMultiLineComment(text.getValue());
 	}
 

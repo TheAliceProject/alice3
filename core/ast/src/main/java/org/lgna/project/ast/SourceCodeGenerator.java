@@ -86,12 +86,26 @@ public abstract class SourceCodeGenerator {
 
 	public abstract void appendConstructor( NamedUserConstructor constructor );
 
-	int pushStatementDisabled() {
-		return statementDisabledCount++;
+	protected final void appendStatement( Statement stmt ) {
+		boolean isDisabled = !stmt.isEnabled.getValue();
+		if( isDisabled ) {
+			pushStatementDisabled();
+		}
+		try {
+			stmt.appendCode( this );
+		} finally {
+			if( isDisabled ) {
+				popStatementDisabled();
+			}
+		}
 	}
 
-	int popStatementDisabled() {
-		return statementDisabledCount--;
+	protected int pushStatementDisabled() {
+		return ++statementDisabledCount;
+	}
+
+	protected int popStatementDisabled() {
+		return --statementDisabledCount;
 	}
 
 	boolean isLambdaSupported() {
@@ -252,7 +266,7 @@ public abstract class SourceCodeGenerator {
 
 	public void appendConstructorBlock( ConstructorBlockStatement constructor ) {
 		openBlock();
-		constructor.constructorInvocationStatement.getValue().appendCode( this );
+		appendStatement( constructor.constructorInvocationStatement.getValue() );
 		appendBody( constructor );
 		closeBlock();
 	}
@@ -267,7 +281,7 @@ public abstract class SourceCodeGenerator {
 
 	private void appendBody( BlockStatement block ) {
 		for( Statement statement : block.statements ) {
-			statement.appendCode( this );
+			appendStatement( statement );
 		}
 	}
 
@@ -283,6 +297,14 @@ public abstract class SourceCodeGenerator {
 		} );
 	}
 
+	public void appendThisConstructor( ThisConstructorInvocationStatement thisCon ) {
+		appendSingleStatement( () -> {
+			appendString( "this(" );
+			appendArguments( thisCon );
+			appendString( ");" );
+		} );
+	}
+
 	protected void appendSingleStatement( Runnable appender ) {
 		appender.run();
 		appendStatementCompletion();
@@ -290,7 +312,7 @@ public abstract class SourceCodeGenerator {
 
 	public void appendMethod( UserMethod method ) {
 		appendMethodHeader( method );
-		method.body.getValue().appendCode( this);
+		appendStatement( method.body.getValue() );
 	}
 
 	public void appendLocalDeclaration( LocalDeclarationStatement stmt ) {
@@ -316,11 +338,11 @@ public abstract class SourceCodeGenerator {
 			appendString( "(" );
 			appendExpression( booleanExpressionBodyPair.expression.getValue() );
 			appendString( ")" );
-			booleanExpressionBodyPair.body.getValue().appendCode( this );
+			appendStatement( booleanExpressionBodyPair.body.getValue() );
 			text = " else if";
 		}
 		appendString( " else" );
-		stmt.elseBody.getValue().appendCode( this );
+		appendStatement( stmt.elseBody.getValue() );
 	}
 
 	public void appendCountLoop( CountLoop loop ) {
@@ -334,7 +356,7 @@ public abstract class SourceCodeGenerator {
 		appendString( ";" );
 		appendString( variableName );
 		appendString( "++)" );
-		loop.body.getValue().appendCode( this );
+		appendStatement( loop.body.getValue() );
 	}
 
 	public void appendForEach( AbstractForEachLoop loop ) {
@@ -342,7 +364,7 @@ public abstract class SourceCodeGenerator {
 		final Expression items = loop.getArrayOrIterableProperty().getValue();
 		appendString( "for");
 		appendEachItemsClause( itemValue, items );
-		loop.body.getValue().appendCode( this );
+		appendStatement( loop.body.getValue() );
 	}
 
 	protected void appendEachItemsClause( UserLocal itemValue, Expression items ) {
@@ -359,7 +381,7 @@ public abstract class SourceCodeGenerator {
 		appendString( "while (" );
 		appendExpression( loop.conditional.getValue() );
 		appendString( ")" );
-		loop.body.getValue().appendCode( this );
+		appendStatement( loop.body.getValue() );
 	}
 
 	public void appendField( UserField field ) {
@@ -416,7 +438,7 @@ public abstract class SourceCodeGenerator {
 			openBlock();
 			appendMethodHeader( singleAbstractMethod );
 		}
-		lambda.body.getValue().appendCode( this );
+		appendStatement( lambda.body.getValue() );
 		if (!isLambdaSupported()) {
 			closeBlock();
 		}
@@ -430,13 +452,13 @@ public abstract class SourceCodeGenerator {
 
 	private final Stack<AbstractType<?, ?, ?>> typeForLambdaStack = new Stack<>();
 
-	private int statementDisabledCount;
+	private int statementDisabledCount = 0;
 
 	private final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitions;
 	private final CodeOrganizer.CodeOrganizerDefinition defaultCodeOrganizerDefn;
 
 	public void appendDoInOrder( DoInOrder doInOrder ) {
-		doInOrder.body.getValue().appendCode( this );
+		appendStatement( doInOrder.body.getValue() );
 	}
 
 	public abstract void appendDoTogether( DoTogether doTogether );

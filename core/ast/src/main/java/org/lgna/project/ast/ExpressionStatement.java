@@ -61,8 +61,7 @@ public final class ExpressionStatement extends Statement {
 		safeAppendRepr( localizer, this.expression.getValue() );
 	}
 
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendExpressionStatement( this );
 	}
 

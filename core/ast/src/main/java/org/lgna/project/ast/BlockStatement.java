@@ -55,8 +55,7 @@ public class BlockStatement extends Statement {
 		this.statements.add( statements );
 	}
 
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendBlock(this);
 	}
 

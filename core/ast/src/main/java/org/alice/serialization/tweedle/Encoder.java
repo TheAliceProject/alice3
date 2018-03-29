@@ -63,7 +63,7 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 		appendIndent();
 		appendTypeName( constructor.getDeclaringType() );
 		appendParameters( constructor );
-		constructor.body.getValue().appendCode( this );
+		appendStatement( constructor.body.getValue() );
 		appendNewLine();
 	}
 
@@ -113,6 +113,12 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 
 	private void appendIndent() {
 		appendString( StringUtils.repeat( INDENTION, indent ) );
+	}
+
+
+	@Override protected int pushStatementDisabled() {
+		appendString( "**" );
+		return super.pushStatementDisabled();
 	}
 
 	@Override protected void appendStatementCompletion() {
@@ -198,7 +204,7 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 	@Override public void appendDoTogether( DoTogether doTogether ) {
 		appendIndent();
 		appendString( "doTogether" );
-		doTogether.body.getValue().appendCode( this );
+		appendStatement( doTogether.body.getValue() );
 		appendNewLine();
 	}
 
@@ -208,7 +214,7 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 		UserLocal itemValue = eachInTogether.item.getValue();
 		Expression items = eachInTogether.getArrayOrIterableProperty().getValue();
 		appendEachItemsClause( itemValue, items );
-		eachInTogether.body.getValue().appendCode( this );
+		appendStatement( eachInTogether.body.getValue() );
 		appendNewLine();
 	}
 }

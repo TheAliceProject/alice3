@@ -56,8 +56,7 @@ public final class ConditionalStatement extends Statement {
 		this.elseBody.setValue( elseBody );
 	}
 
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendConditional(this);
 	}
 

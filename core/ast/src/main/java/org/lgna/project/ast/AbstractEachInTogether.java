@@ -65,8 +65,7 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 
 	public abstract ExpressionProperty getArrayOrIterableProperty();
 
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendEachInTogether(this);
 	}
 

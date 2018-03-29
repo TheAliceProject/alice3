@@ -60,8 +60,7 @@ public final class DoTogether extends AbstractStatementWithBody {
 		super.appendRepr( localizer );
 	}
 
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendDoTogether(this);
 	}
 }

@@ -67,8 +67,7 @@ public class CountLoop extends AbstractLoop {
 		super.appendRepr( localizer );
 	}
 
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendCountLoop(this);
 	}
 

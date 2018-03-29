@@ -136,7 +136,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		this.commentsLocalizationBundleName = builder.commentsLocalizationBundleName;
 	}
 
-	@Override int pushStatementDisabled() {
+	@Override protected int pushStatementDisabled() {
 		int count = super.pushStatementDisabled();
 		if( count == 1 ) {
 			appendString( "\n/* disabled\n" );
@@ -144,7 +144,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		return count;
 	}
 
-	@Override int popStatementDisabled() {
+	@Override protected int popStatementDisabled() {
 		int count = super.popStatementDisabled();
 		if( count == 0 ) {
 			appendString( "\n*/\n" );
@@ -231,7 +231,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		appendAccessLevel( constructor.getAccessLevel() );
 		appendTypeName( constructor.getDeclaringType() );
 		appendParameters( constructor );
-		constructor.body.getValue().appendCode( this );
+		appendStatement( constructor.body.getValue() );
 		appendMemberPostfix( constructor );
 	}
 
@@ -366,10 +366,10 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 				DoInOrder doInOrder = (DoInOrder)statement;
 				BlockStatement blockStatement = doInOrder.body.getValue();
 				for( Statement subStatement : blockStatement.statements ) {
-					subStatement.appendCode( this );
+					appendStatement( subStatement );
 				}
 			} else {
-				statement.appendCode( this );
+				appendStatement( statement );
 			}
 			if( isLambdaSupported() ) {
 				appendString( "}" );
@@ -408,7 +408,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 			appendString( itemValue.getName() );
 			appendString( ")" );
 		}
-		eachInTogether.body.getValue().appendCode( this );
+		appendStatement( eachInTogether.body.getValue() );
 		if (!isLambdaSupported()) {
 			appendString( "}" );
 		}

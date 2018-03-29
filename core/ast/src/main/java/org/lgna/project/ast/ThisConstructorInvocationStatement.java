@@ -58,10 +58,7 @@ public final class ThisConstructorInvocationStatement extends ConstructorInvocat
 		super( constructor, requiredArguments, variableArguments, keyedArguments );
 	}
 
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
-		generator.appendString( "this(" );
-		generator.appendArguments( this );
-		generator.appendString( ");" );
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendThisConstructor( this );
 	}
 }

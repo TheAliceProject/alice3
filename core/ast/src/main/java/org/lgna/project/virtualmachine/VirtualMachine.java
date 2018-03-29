@@ -933,10 +933,6 @@ public abstract class VirtualMachine {
 		}
 	}
 
-	protected void executeAssertStatement( org.lgna.project.ast.AssertStatement assertStatement, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) {
-		assert this.evaluateBoolean( assertStatement.expression.getValue(), "assert condition is null" ) : this.evaluate( assertStatement.message.getValue() );
-	}
-
 	protected void executeBlockStatement( org.lgna.project.ast.BlockStatement blockStatement, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
 		//todo?
 		org.lgna.project.ast.Statement[] array = new org.lgna.project.ast.Statement[ blockStatement.statements.size() ];
@@ -1211,9 +1207,7 @@ public abstract class VirtualMachine {
 			}
 
 			try {
-				if( statement instanceof org.lgna.project.ast.AssertStatement ) {
-					this.executeAssertStatement( (org.lgna.project.ast.AssertStatement)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.BlockStatement ) {
+				if( statement instanceof org.lgna.project.ast.BlockStatement ) {
 					this.executeBlockStatement( (org.lgna.project.ast.BlockStatement)statement, listeners );
 				} else if( statement instanceof org.lgna.project.ast.ConditionalStatement ) {
 					this.executeConditionalStatement( (org.lgna.project.ast.ConditionalStatement)statement, listeners );

@@ -43,8 +43,6 @@
 
 package org.lgna.project.ast;
 
-import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -62,8 +60,7 @@ public final class DoInOrder extends AbstractStatementWithBody {
 		super.appendRepr( localizer );
 	}
 
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendDoInOrder(this);
 	}
 }

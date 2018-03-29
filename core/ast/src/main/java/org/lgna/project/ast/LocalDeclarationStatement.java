@@ -55,8 +55,7 @@ public final class LocalDeclarationStatement extends Statement {
 		this.initializer.setValue( initializer );
 	}
 
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendLocalDeclaration(this);
 	}
 

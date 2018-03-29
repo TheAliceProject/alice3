@@ -71,8 +71,7 @@ public abstract class AbstractForEachLoop extends AbstractLoop implements EachIn
 		super.appendRepr( localizer );
 	}
 
-	@Override
-	protected void appendCodeInternal( SourceCodeGenerator generator ) {
+	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendForEach(this);
 	}
 
