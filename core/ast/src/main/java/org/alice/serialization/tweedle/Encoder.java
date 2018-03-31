@@ -176,6 +176,14 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 		appendNewLine();
 	}
 
+	@Override protected void appendForEachToken() {
+		appendString( "forEach");
+	}
+
+	@Override protected void appendInEachToken() {
+		appendString( " in " );
+	}
+
 	@Override public void appendWhileLoop( WhileLoop loop ) {
 		appendIndent();
 		super.appendWhileLoop( loop );

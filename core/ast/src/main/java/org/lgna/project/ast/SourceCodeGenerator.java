@@ -362,20 +362,24 @@ public abstract class SourceCodeGenerator {
 	public void appendForEach( AbstractForEachLoop loop ) {
 		UserLocal itemValue = loop.item.getValue();
 		final Expression items = loop.getArrayOrIterableProperty().getValue();
-		appendString( "for");
+		appendForEachToken();
 		appendEachItemsClause( itemValue, items );
 		appendStatement( loop.body.getValue() );
 	}
+
+	abstract protected void appendForEachToken();
 
 	protected void appendEachItemsClause( UserLocal itemValue, Expression items ) {
 		appendChar( '(');
 		appendTypeName( itemValue.getValueType() );
 		appendSpace();
 		appendString( itemValue.getValidName() );
-		appendString( " : " );
+		appendInEachToken();
 		appendExpression( items );
 		appendChar( ')' );
 	}
+
+	abstract protected void appendInEachToken();
 
 	public void appendWhileLoop( WhileLoop loop ) {
 		appendString( "while (" );

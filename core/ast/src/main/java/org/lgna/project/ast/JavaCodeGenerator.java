@@ -339,6 +339,14 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		return sb;
 	}
 
+	@Override protected void appendForEachToken() {
+		appendString( "for");
+	}
+
+	@Override protected void appendInEachToken() {
+		appendString( " : " );
+	}
+
 	@Override public void appendDoInOrder( DoInOrder doInOrder ) {
 		appendString( "\n/*" );
 		appendString( ResourceBundleUtilities
