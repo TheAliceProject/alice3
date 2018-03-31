@@ -315,19 +315,7 @@ public abstract class SourceCodeGenerator {
 		appendStatement( method.body.getValue() );
 	}
 
-	public void appendLocalDeclaration( LocalDeclarationStatement stmt ) {
-		appendSingleStatement( () -> {
-			UserLocal localVar = stmt.local.getValue();
-			if (localVar.isFinal.getValue()) {
-				appendString( "final " );
-			}
-			appendTypeName( localVar.getValueType() );
-			appendSpace();
-			appendString( localVar.getValidName() );
-			appendAssignment();
-			appendExpression( stmt.initializer.getValue() );
-		} );
-	}
+	abstract public void appendLocalDeclaration( LocalDeclarationStatement stmt );
 
 	abstract protected void appendAssignment();
 

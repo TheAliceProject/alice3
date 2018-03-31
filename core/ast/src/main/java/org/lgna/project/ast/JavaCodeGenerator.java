@@ -294,6 +294,20 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		appendParameters( method );
 	}
 
+	@Override public void appendLocalDeclaration( LocalDeclarationStatement stmt ) {
+		appendSingleStatement( () -> {
+			UserLocal localVar = stmt.local.getValue();
+			if (localVar.isFinal.getValue()) {
+				appendString( "final " );
+			}
+			appendTypeName( localVar.getValueType() );
+			appendSpace();
+			appendString( localVar.getValidName() );
+			appendAssignment();
+			appendExpression( stmt.initializer.getValue() );
+		} );
+	}
+
 	@Override @Deprecated protected void todo( Object o ) {
 		getCodeStringBuilder().append( "todo_" );
 		getCodeStringBuilder().append( o );

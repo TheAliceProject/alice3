@@ -115,6 +115,17 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 		appendString( StringUtils.repeat( INDENTION, indent ) );
 	}
 
+	@Override public void appendLocalDeclaration( LocalDeclarationStatement stmt ) {
+		appendSingleStatement( () -> {
+			UserLocal localVar = stmt.local.getValue();
+			appendTypeName( localVar.getValueType() );
+			appendSpace();
+			appendString( localVar.getValidName() );
+			appendAssignment();
+			appendExpression( stmt.initializer.getValue() );
+		} );
+	}
+
 
 	@Override protected int pushStatementDisabled() {
 		appendString( "**" );
