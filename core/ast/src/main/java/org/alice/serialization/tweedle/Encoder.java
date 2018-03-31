@@ -126,6 +126,17 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 		} );
 	}
 
+	@Override protected void appendArgument( AbstractParameter parameter, AbstractArgument argument ) {
+		String label = parameter.getName();
+		// TODO Better handle missing names when parameter.getValueType().isEnum()
+		if (null == label) {
+			label ="unknown";
+		}
+		appendString( label );
+		appendString( ": " );
+		argument.appendCode( this );
+	}
+
 
 	@Override protected int pushStatementDisabled() {
 		appendString( "**" );

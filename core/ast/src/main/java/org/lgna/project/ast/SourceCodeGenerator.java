@@ -239,11 +239,13 @@ public abstract class SourceCodeGenerator {
 		AbstractType<?, ?, ?> type = argument.getExpressionTypeForParameterType( parameter.getValueType() );
 		pushTypeForLambda( type );
 		try {
-			argument.appendCode( this );
+			appendArgument( parameter, argument );
 		} finally {
 			assert popTypeForLambda() == type;
 		}
 	}
+
+	protected abstract void appendArgument( AbstractParameter parameter, AbstractArgument argument );
 
 	@Deprecated
   protected abstract void todo( Object o );

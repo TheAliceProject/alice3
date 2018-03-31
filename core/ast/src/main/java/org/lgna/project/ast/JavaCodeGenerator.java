@@ -308,6 +308,10 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		} );
 	}
 
+	@Override protected void appendArgument( AbstractParameter parameter, AbstractArgument argument ) {
+		argument.appendCode( this );
+	}
+
 	@Override @Deprecated protected void todo( Object o ) {
 		getCodeStringBuilder().append( "todo_" );
 		getCodeStringBuilder().append( o );
