@@ -4,7 +4,6 @@ import org.alice.tweedle.TweedleLexer;
 import org.alice.tweedle.TweedleParser;
 import org.alice.tweedle.TweedleParserBaseVisitor;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,6 @@ public class TweedleUnlinkedParser {
 		TweedleLexer lexer = new TweedleLexer(charStream);
 		TokenStream tokens = new CommonTokenStream(lexer);
 		TweedleParser parser = new TweedleParser(tokens);
-		parser.setErrorHandler( new ThrowOnParseErrorStrategy());
 
 		TypeVisitor typeVisitor = new TypeVisitor();
 		return typeVisitor.visit(parser.typeDeclaration());
@@ -75,29 +73,4 @@ public class TweedleUnlinkedParser {
 			return new UnlinkedStatement(statementName);
 		}
 	}*/
-
-	class ThrowOnParseErrorStrategy extends DefaultErrorStrategy
-	{
-		// Wrap and rethrow so it is not caught by the rule function catches.
-		@Override
-		public void recover(Parser recognizer, RecognitionException e) {
-			addExceptionToAllContexts( recognizer, e );
-			throw new ParseCancellationException(e);
-		}
-
-		// Don't try to recover inline; if the parser recovers, it won't throw an exception.
-		@Override
-		public Token recoverInline(Parser recognizer) throws RecognitionException
-		{
-			InputMismatchException e = new InputMismatchException(recognizer);
-			addExceptionToAllContexts( recognizer, e );
-			throw new ParseCancellationException(e);
-		}
-
-		private void addExceptionToAllContexts( Parser recognizer, RecognitionException e ) {
-			for (ParserRuleContext context = recognizer.getContext(); context != null; context = context.getParent()) {
-				context.exception = e;
-			}
-		}
-	}
 }
