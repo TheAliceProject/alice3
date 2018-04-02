@@ -355,6 +355,22 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		return sb;
 	}
 
+	@Override public void appendCountLoop( CountLoop loop ) {
+		appendCodeFlowStatement(loop, () -> {
+			String variableName = loop.getVariableName();
+			appendString( "for(Integer " );
+			appendString( variableName );
+			appendString( "=0;" );
+			appendString( variableName );
+			appendString( "<" );
+			appendExpression( loop.count.getValue() );
+			appendString( ";" );
+			appendString( variableName );
+			appendString( "++)" );
+			appendStatement( loop.body.getValue() );
+		});
+	}
+
 	@Override protected void appendForEachToken() {
 		appendString( "for");
 	}

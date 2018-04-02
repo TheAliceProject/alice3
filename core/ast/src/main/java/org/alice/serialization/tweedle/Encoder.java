@@ -167,6 +167,17 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 		appendStatementEnd( stmt );
 	}
 
+	@Override public void appendCountLoop( CountLoop loop ) {
+		appendCodeFlowStatement(loop, () -> {
+			appendString( "countUpTo( " );
+			appendString( loop.getVariableName() );
+			appendString( " < " );
+			appendExpression( loop.count.getValue() );
+			appendString( " )" );
+			appendStatement( loop.body.getValue() );
+		});
+	}
+
 	@Override protected void appendForEachToken() {
 		appendString( "forEach");
 	}

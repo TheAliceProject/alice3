@@ -309,21 +309,7 @@ public abstract class SourceCodeGenerator {
 		});
 	}
 
-	public void appendCountLoop( CountLoop loop ) {
-		appendCodeFlowStatement(loop, () -> {
-			String variableName = loop.getVariableName();
-			appendString( "for(Integer " );
-			appendString( variableName );
-			appendString( "=0;" );
-			appendString( variableName );
-			appendString( "<" );
-			appendExpression( loop.count.getValue() );
-			appendString( ";" );
-			appendString( variableName );
-			appendString( "++)" );
-			appendStatement( loop.body.getValue() );
-		});
-	}
+	abstract public void appendCountLoop( CountLoop loop );
 
 	public void appendForEach( AbstractForEachLoop loop ) {
 		appendCodeFlowStatement(loop, () -> {

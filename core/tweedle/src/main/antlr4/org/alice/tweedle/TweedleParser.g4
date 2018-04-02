@@ -221,7 +221,7 @@ localVariableDeclaration
 
 statement
     : blockLabel=block
-    | COUNT_UP_TO (expression) statement
+    | COUNT_UP_TO '(' IDENTIFIER '<' expression ')' statement
     | IF parExpression statement (ELSE statement)?
     | FOR_EACH '(' forControl ')' statement
     | EACH_TOGETHER '(' forControl ')' statement

@@ -61,7 +61,7 @@ public abstract class AbstractLoop extends AbstractStatementWithBody {
 		return local.isFinal.getValue() ? getConstantName() : getVariableName();
 	}
 
-	String getVariableName() {
+	public String getVariableName() {
 		return "index" + getDepthSuffix();
 	}
 
