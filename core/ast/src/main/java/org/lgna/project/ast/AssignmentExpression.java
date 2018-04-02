@@ -90,9 +90,7 @@ public final class AssignmentExpression extends Expression {
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendExpression( this.leftHandSide.getValue() );
-		this.operator.getValue().appendCode( generator );
-		generator.appendExpression( this.rightHandSide.getValue() );
+		generator.appendAssignmentExpression(this);
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );

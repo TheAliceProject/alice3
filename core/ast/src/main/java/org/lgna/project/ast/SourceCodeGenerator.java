@@ -141,7 +141,7 @@ public abstract class SourceCodeGenerator {
 		appendSingleCodeLine( () -> {
 			appendString( "this." );
 			appendString( field.name.getValue() );
-			appendChar( '=' );
+			appendAssignmentOperator();
 			appendString( field.name.getValue() );
 		} );
 		closeBlock();
@@ -408,6 +408,20 @@ public abstract class SourceCodeGenerator {
 	protected abstract void appendTargetExpression( Expression target, AbstractMethod method );
 
 	protected abstract void appendResourceExpression( ResourceExpression resourceExpression );
+
+	public void appendAssignmentExpression( AssignmentExpression assignment ) {
+		appendExpression( assignment.leftHandSide.getValue() );
+		final AssignmentExpression.Operator assignmentOp = assignment.operator.getValue();
+		if ( AssignmentExpression.Operator.ASSIGN.equals( assignmentOp )) {
+			appendAssignmentOperator();
+		}
+		else {
+			// Only basic assignment is used in existing Alice code.
+			System.out.println("Unexpected use of assignent operator " + assignmentOp + " in " + assignment);
+			assignmentOp.appendCode( this );
+		}
+		appendExpression( assignment.rightHandSide.getValue() );
+	}
 
 	/** Comments **/
 

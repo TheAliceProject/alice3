@@ -212,11 +212,11 @@ block
 blockStatement
     : localVariableDeclaration ';'
     | statement
+    | NODE_COMMENT blockStatement NODE_COMMENT
     ;
 
 localVariableDeclaration
     : variableModifier* typeType variableDeclarators
-    | NODE_COMMENT localVariableDeclaration NODE_COMMENT
     ;
 
 statement
@@ -231,7 +231,6 @@ statement
     | RETURN expression? ';'
     | statementExpression=expression ';'
     | identifierLabel=IDENTIFIER ':' statement
-    | NODE_COMMENT statement NODE_COMMENT
     ;
 
 
