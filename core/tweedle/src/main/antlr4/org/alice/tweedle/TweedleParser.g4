@@ -212,7 +212,7 @@ block
 blockStatement
     : localVariableDeclaration ';'
     | statement
-    | NODE_COMMENT blockStatement NODE_COMMENT
+    | NODE_DISABLE blockStatement NODE_ENABLE
     ;
 
 localVariableDeclaration

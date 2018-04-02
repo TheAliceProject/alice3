@@ -12,6 +12,8 @@ import java.util.Set;
 
 public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 	private final String INDENTION = "  ";
+	private final String NODE_DISABLE = "*<";
+	private final String NODE_ENABLE = ">*";
 	private int indent = 0;
 	private static final HashMap<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = new HashMap<>();
 	static {
@@ -125,13 +127,14 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 
 	private void appendStatementEnd( Statement stmt ) {
 		if (!stmt.isEnabled.getValue()) {
-			appendString( " **" );
+			appendSpace();
+			appendString( NODE_ENABLE);
 		}
 		appendNewLine();
 	}
 
 	@Override protected void pushStatementDisabled() {
-		appendString( "**" );
+		appendString( NODE_DISABLE );
 		super.pushStatementDisabled();
 	}
 
