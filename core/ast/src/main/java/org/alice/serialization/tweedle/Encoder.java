@@ -225,18 +225,16 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 
 	/** Comments **/
 
-	@Override public void formatMultiLineComment( String value ) {
+	@Override protected void appendSingleLineComment( String line ) {
+		appendIndent();
+		super.appendSingleLineComment( line );
 	}
 
-	@Override public String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, Locale locale ) {
+		@Override public String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, Locale locale ) {
 		return "//";
 	}
 
 	/** Primitives and syntax **/
-
-	private void appendNewLine() {
-		appendChar( '\n' );
-	}
 
 	@Override protected void openBlock() {
 		appendString( " {\n" );

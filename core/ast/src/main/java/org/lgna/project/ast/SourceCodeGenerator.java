@@ -411,7 +411,21 @@ public abstract class SourceCodeGenerator {
 
 	/** Comments **/
 
-	public abstract void formatMultiLineComment( String value );
+	public void formatMultiLineComment( String comment ) {
+		for( String line : splitIntoLines(comment) ) {
+			appendSingleLineComment( line );
+		}
+	}
+
+	protected void appendSingleLineComment( String line ) {
+		appendString( "// " );
+		appendString( line );
+		appendNewLine();
+	}
+
+	protected static String[] splitIntoLines( String src ) {
+		return src.split( "\n" );
+	}
 
 	public abstract String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, Locale locale );
 
@@ -466,6 +480,10 @@ public abstract class SourceCodeGenerator {
 
 	protected void appendString( String s ) {
 		codeStringBuilder.append( s );
+	}
+
+	protected void appendNewLine() {
+		appendChar( '\n' );
 	}
 
 	protected void openBlock() {

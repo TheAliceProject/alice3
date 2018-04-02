@@ -380,11 +380,16 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 	}
 
 	@Override public void appendDoInOrder( DoInOrder doInOrder ) {
-		appendString( "\n/*" );
-		appendString( ResourceBundleUtilities
-						.getStringFromSimpleNames( doInOrder.getClass(), "org.alice.ide.controlflow.Templates" ) );
-		appendString( "*/ " );
-		appendStatement( doInOrder.body.getValue() );
+		final String doInOrderName = ResourceBundleUtilities
+						.getStringFromSimpleNames( doInOrder.getClass(), "org.alice.ide.controlflow.Templates" );
+		openBlock();
+		// TODO adjust CodeFormatter to not insert linefeed before this comment
+		appendSingleLineComment( doInOrderName );
+		BlockStatement blockStatement = doInOrder.body.getValue();
+		for( Statement subStatement : blockStatement.statements ) {
+			appendStatement( subStatement );
+		}
+		closeBlock();
 	}
 
 	@Override public void appendDoTogether( DoTogether doTogether ) {
@@ -479,18 +484,9 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 			getCodeStringBuilder().append( "\n" ).append( memberComment ).append( "\n" );
 		}
 	}
-
 	@Override public void formatMultiLineComment( String comment ) {
-		appendChar( '\n' );
-		for( String line : splitIntoLines(comment) ) {
-			appendString( "// " );
-			appendString( line );
-			appendChar( '\n' );
-		}
-	}
-
-	private static String[] splitIntoLines( String src ) {
-		return src.split( "\n" );
+		appendNewLine();
+		super.formatMultiLineComment( comment );
 	}
 
 	private String formatBlockComment( String commentText ) {
