@@ -136,20 +136,18 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		this.commentsLocalizationBundleName = builder.commentsLocalizationBundleName;
 	}
 
-	@Override protected int pushStatementDisabled() {
-		int count = super.pushStatementDisabled();
-		if( count == 1 ) {
+	@Override protected void pushStatementDisabled() {
+		super.pushStatementDisabled();
+		if( isCodeNowDisabled() ) {
 			appendString( "\n/* disabled\n" );
 		}
-		return count;
 	}
 
-	@Override protected int popStatementDisabled() {
-		int count = super.popStatementDisabled();
-		if( count == 0 ) {
+	@Override protected void popStatementDisabled() {
+		super.popStatementDisabled();
+		if(isCodeNowEnabled()) {
 			appendString( "\n*/\n" );
 		}
-		return count;
 	}
 
 	@Override boolean isLambdaSupported() {
@@ -160,7 +158,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		return isPublicStaticFinalFieldGetterDesired;
 	}
 
-	@Override protected void appendAssignment() {
+	@Override protected void appendAssignmentOperator() {
 		appendChar( '=' );
 	}
 
@@ -295,7 +293,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 	}
 
 	@Override public void appendLocalDeclaration( LocalDeclarationStatement stmt ) {
-		appendSingleStatement( () -> {
+		appendSingleStatement( stmt, () -> {
 			UserLocal localVar = stmt.local.getValue();
 			if (localVar.isFinal.getValue()) {
 				appendString( "final " );
@@ -303,7 +301,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 			appendTypeName( localVar.getValueType() );
 			appendSpace();
 			appendString( localVar.getValidName() );
-			appendAssignment();
+			appendAssignmentOperator();
 			appendExpression( stmt.initializer.getValue() );
 		} );
 	}
@@ -370,7 +368,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		appendString( ResourceBundleUtilities
 						.getStringFromSimpleNames( doInOrder.getClass(), "org.alice.ide.controlflow.Templates" ) );
 		appendString( "*/ " );
-		super.appendDoInOrder( doInOrder );
+		appendStatement( doInOrder.body.getValue() );
 	}
 
 	@Override public void appendDoTogether( DoTogether doTogether ) {

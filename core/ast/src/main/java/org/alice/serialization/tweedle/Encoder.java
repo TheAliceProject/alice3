@@ -41,9 +41,11 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 		userType.generateCode( this );
 	}
 
-	private void appendNewLine() {
-		appendChar( '\n' );
+	@Override protected String getTextWithImports() {
+		return getText();
 	}
+
+	/** Class structure **/
 
 	@Override protected void appendClassHeader( NamedUserType userType ) {
 		getCodeStringBuilder().append( "class " ).append( userType.getName() )
@@ -58,93 +60,14 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 		closeBlock();
 	}
 
+	/** Methods and Fields **/
+
 	@Override
 	public void appendConstructor( NamedUserConstructor constructor ) {
 		appendIndent();
 		appendTypeName( constructor.getDeclaringType() );
 		appendParameters( constructor );
 		appendStatement( constructor.body.getValue() );
-		appendNewLine();
-	}
-
-	@Override protected void appendResourceExpression( ResourceExpression resourceExpression ) {
-		appendString( "//TODO append resources" );
-		appendString( resourceExpression.toString() );
-	}
-
-	@Override protected void appendTypeName( AbstractType<?, ?, ?> type ) {
-		appendString( type.getName() );
-	}
-
-	@Override protected void appendTargetExpression( Expression target, AbstractMethod method ) {
-		appendExpression( target );
-		appendChar( '.' );
-	}
-
-	@Override public void appendMethodHeader( AbstractMethod method ) {
-		if( method.isStatic() ) {
-			appendString( "static " );
-		}
-		appendTypeName( method.getReturnType() );
-		appendSpace();
-		appendString( method.getName() );
-		appendParameters( method );
-	}
-
-
-	@Override protected void openBlock() {
-		appendString( " {\n" );
-		pushIndent();
-	}
-
-	private void pushIndent() {
-		indent++;
-	}
-
-	@Override protected void closeBlock() {
-		popIndent();
-		appendIndent();
-		super.closeBlock();
-	}
-
-	private void popIndent() {
-		indent--;
-	}
-
-	private void appendIndent() {
-		appendString( StringUtils.repeat( INDENTION, indent ) );
-	}
-
-	@Override public void appendLocalDeclaration( LocalDeclarationStatement stmt ) {
-		appendSingleStatement( () -> {
-			UserLocal localVar = stmt.local.getValue();
-			appendTypeName( localVar.getValueType() );
-			appendSpace();
-			appendString( localVar.getValidName() );
-			appendAssignment();
-			appendExpression( stmt.initializer.getValue() );
-		} );
-	}
-
-	@Override protected void appendArgument( AbstractParameter parameter, AbstractArgument argument ) {
-		String label = parameter.getName();
-		// TODO Better handle missing names when parameter.getValueType().isEnum()
-		if (null == label) {
-			label ="unknown";
-		}
-		appendString( label );
-		appendString( ": " );
-		argument.appendCode( this );
-	}
-
-
-	@Override protected int pushStatementDisabled() {
-		appendString( "**" );
-		return super.pushStatementDisabled();
-	}
-
-	@Override protected void appendStatementCompletion() {
-		super.appendStatementCompletion();
 		appendNewLine();
 	}
 
@@ -155,61 +78,14 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 		appendNewLine();
 	}
 
-	@Override protected void appendSingleStatement( Runnable appender ) {
-		appendIndent();
-		super.appendSingleStatement( appender );
-	}
-
-	@Override protected void todo( Object o ) {
-		appendString( "todo_" );
-		getCodeStringBuilder().append( o );
-	}
-
-	@Override protected String getTextWithImports() {
-		return getText();
-	}
-
-	@Override public void formatMultiLineComment( String value ) {
-	}
-
-	@Override public String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, Locale locale ) {
-		return "//";
-	}
-
-	@Override protected void appendAssignment() {
-		appendString( " <- " );
-	}
-
-	@Override public void appendConditional( ConditionalStatement stmt ) {
-		appendIndent();
-		super.appendConditional( stmt );
-		appendNewLine();
-	}
-
-	@Override public void appendCountLoop( CountLoop loop ) {
-		appendIndent();
-		super.appendCountLoop( loop );
-		appendNewLine();
-	}
-
-	@Override public void appendForEach( AbstractForEachLoop loop ) {
-		appendIndent();
-		super.appendForEach( loop );
-		appendNewLine();
-	}
-
-	@Override protected void appendForEachToken() {
-		appendString( "forEach");
-	}
-
-	@Override protected void appendInEachToken() {
-		appendString( " in " );
-	}
-
-	@Override public void appendWhileLoop( WhileLoop loop ) {
-		appendIndent();
-		super.appendWhileLoop( loop );
-		appendNewLine();
+	@Override public void appendMethodHeader( AbstractMethod method ) {
+		if( method.isStatic() ) {
+			appendString( "static " );
+		}
+		appendTypeName( method.getReturnType() );
+		appendSpace();
+		appendString( method.getName() );
+		appendParameters( method );
 	}
 
 	@Override public void appendGetter( Getter getter ) {
@@ -224,27 +100,172 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 		appendNewLine();
 	}
 
-	@Override public void appendDoInOrder( DoInOrder doInOrder ) {
-		appendIndent();
-		appendString( "doInOrder" );
-		super.appendDoInOrder( doInOrder );
+	/** Statements **/
+
+	@Override public void appendLocalDeclaration( LocalDeclarationStatement stmt ) {
+		appendSingleStatement( stmt, () -> {
+			UserLocal localVar = stmt.local.getValue();
+			appendTypeName( localVar.getValueType() );
+			appendSpace();
+			appendString( localVar.getValidName() );
+			appendAssignmentOperator();
+			appendExpression( stmt.initializer.getValue() );
+		} );
+	}
+
+	@Override protected void appendStatementCompletion( Statement stmt ) {
+		super.appendStatementCompletion( stmt );
+		appendStatementEnd( stmt );
+	}
+
+	@Override protected void appendStatementCompletion() {
+		super.appendStatementCompletion();
 		appendNewLine();
+	}
+
+	private void appendStatementEnd( Statement stmt ) {
+		if (!stmt.isEnabled.getValue()) {
+			appendString( " **" );
+		}
+		appendNewLine();
+	}
+
+	@Override protected void pushStatementDisabled() {
+		appendString( "**" );
+		super.pushStatementDisabled();
+	}
+
+	@Override protected void appendArgument( AbstractParameter parameter, AbstractArgument argument ) {
+		String label = parameter.getName();
+		// TODO Better handle missing names when parameter.getValueType().isEnum()
+		if (null == label) {
+			label ="unknown";
+		}
+		appendString( label );
+		appendString( ": " );
+		argument.appendCode( this );
+	}
+
+	@Override protected void appendSingleStatement( Statement stmt, Runnable appender ) {
+		appendIndent( stmt );
+		super.appendSingleStatement( stmt, appender );
+	}
+
+	@Override protected void appendSingleCodeLine( Runnable appender ) {
+		appendIndent();
+		super.appendSingleCodeLine( appender );
+	}
+
+	/** Code Flow **/
+
+	@Override protected void appendCodeFlowStatement( Statement stmt, Runnable appender ) {
+		appendIndent( stmt );
+		appender.run();
+		appendStatementEnd( stmt );
+	}
+
+	@Override protected void appendForEachToken() {
+		appendString( "forEach");
+	}
+
+	@Override protected void appendInEachToken() {
+		appendString( " in " );
+	}
+
+	@Override public void appendDoInOrder( DoInOrder doInOrder ) {
+		appendLabeledCodeFlow( doInOrder, "doInOrder" );
 	}
 
 	@Override public void appendDoTogether( DoTogether doTogether ) {
-		appendIndent();
-		appendString( "doTogether" );
-		appendStatement( doTogether.body.getValue() );
-		appendNewLine();
+		appendLabeledCodeFlow( doTogether, "doTogether" );
+	}
+
+	private void appendLabeledCodeFlow( AbstractStatementWithBody stmt, String label ) {
+		appendCodeFlowStatement(stmt, () -> {
+			appendString( label );
+			appendStatement( stmt.body.getValue() );
+		});
 	}
 
 	@Override public void appendEachInTogether( AbstractEachInTogether eachInTogether ) {
+		appendCodeFlowStatement(eachInTogether, () -> {
+			appendString( "eachTogether" );
+			UserLocal itemValue = eachInTogether.item.getValue();
+			Expression items = eachInTogether.getArrayOrIterableProperty().getValue();
+			appendEachItemsClause( itemValue, items );
+			appendStatement( eachInTogether.body.getValue() );
+		});
+	}
+
+	/** Expressions **/
+
+	@Override protected void appendTargetExpression( Expression target, AbstractMethod method ) {
+		appendExpression( target );
+		appendChar( '.' );
+	}
+
+	@Override protected void appendResourceExpression( ResourceExpression resourceExpression ) {
+		appendString( "//TODO append resources" );
+		appendString( resourceExpression.toString() );
+	}
+
+	/** Comments **/
+
+	@Override public void formatMultiLineComment( String value ) {
+	}
+
+	@Override public String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, Locale locale ) {
+		return "//";
+	}
+
+	/** Primitives and syntax **/
+
+	private void appendNewLine() {
+		appendChar( '\n' );
+	}
+
+	@Override protected void openBlock() {
+		appendString( " {\n" );
+		pushIndent();
+	}
+
+	@Override protected void closeBlock() {
+		popIndent();
 		appendIndent();
-		appendString( "eachTogether" );
-		UserLocal itemValue = eachInTogether.item.getValue();
-		Expression items = eachInTogether.getArrayOrIterableProperty().getValue();
-		appendEachItemsClause( itemValue, items );
-		appendStatement( eachInTogether.body.getValue() );
-		appendNewLine();
+		super.closeBlock();
+	}
+
+	@Override protected void appendAssignmentOperator() {
+		appendString( " <- " );
+	}
+
+	@Override protected void appendTypeName( AbstractType<?, ?, ?> type ) {
+		appendString( type.getName() );
+	}
+
+	/** Formatting **/
+
+	private void pushIndent() {
+		indent++;
+	}
+
+	private void popIndent() {
+		indent--;
+	}
+
+	private void appendIndent() {
+		appendString( StringUtils.repeat( INDENTION, indent ) );
+	}
+
+	private void appendIndent( Statement stmt ) {
+		final int indent = stmt.isEnabled.getValue() ? this.indent : this.indent - 1;
+		appendString( StringUtils.repeat( INDENTION, indent ) );
+	}
+
+	/** **/
+
+	@Override protected void todo( Object o ) {
+		appendString( "todo_" );
+		getCodeStringBuilder().append( o );
 	}
 }
