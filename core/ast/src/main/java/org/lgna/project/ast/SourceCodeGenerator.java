@@ -43,6 +43,7 @@
 package org.lgna.project.ast;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.apache.commons.text.StringEscapeUtils;
 import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeOrganizer;
 import org.lgna.project.code.PrecedentedAppender;
@@ -209,21 +210,20 @@ public abstract class SourceCodeGenerator {
 
 	void appendSuperConstructor( SuperConstructorInvocationStatement supCon ) {
 		appendSingleStatement( supCon, () -> {
-			appendString( "super(" );
+			appendSuperReference();
 			appendArguments( supCon );
-			appendString( ")" );
 		} );
 	}
 
 	void appendThisConstructor( ThisConstructorInvocationStatement thisCon ) {
 		appendSingleStatement( thisCon, () -> {
-			appendString( "this(" );
+			appendThisReference();
 			appendArguments( thisCon );
-			appendString( ");" );
 		} );
 	}
 
-	void appendArguments( ArgumentOwner argumentOwner ) {
+	private void appendArguments( ArgumentOwner argumentOwner ) {
+		openParen();
 		String prefix = "";
 		for( SimpleArgument argument : argumentOwner.getRequiredArgumentsProperty() ) {
 			appendString( prefix );
@@ -240,6 +240,7 @@ public abstract class SourceCodeGenerator {
 			appendArgument( argument );
 			prefix = ",";
 		}
+		closeParen();
 	}
 
 	private void appendArgument( AbstractArgument argument ) {
@@ -254,6 +255,25 @@ public abstract class SourceCodeGenerator {
 	}
 
 	protected abstract void appendArgument( AbstractParameter parameter, AbstractArgument argument );
+
+	void appendKeyedArgument( JavaKeyedArgument arg ) {
+		Expression expressionValue = arg.expression.getValue();
+		if( expressionValue instanceof MethodInvocation ) {
+			MethodInvocation methodInvocation = (MethodInvocation)expressionValue;
+			AbstractMethod method = methodInvocation.method.getValue();
+			AbstractType<?, ?, ?> factoryType = AstUtilities.getKeywordFactoryType( arg );
+			if( factoryType != null ) {
+				appendTypeName( factoryType );
+				appendChar( '.' );
+				appendString( method.getName() );
+				appendArguments( methodInvocation );
+			} else {
+				appendExpression( expressionValue );
+			}
+		} else {
+			appendExpression( expressionValue );
+		}
+	}
 
 	protected void appendSingleStatement( Statement stmt, Runnable appender ) {
 		appender.run();
@@ -302,7 +322,7 @@ public abstract class SourceCodeGenerator {
 				appendString( text );
 				appendString( "(" );
 				appendExpression( booleanExpressionBodyPair.expression.getValue() );
-				appendString( ")" );
+				closeParen();
 				appendStatement( booleanExpressionBodyPair.body.getValue() );
 				text = " else if";
 			}
@@ -341,7 +361,7 @@ public abstract class SourceCodeGenerator {
 		appendCodeFlowStatement(loop, () -> {
 			appendString( "while (" );
 			appendExpression( loop.conditional.getValue() );
-			appendString( ")" );
+			closeParen();
 			appendStatement( loop.body.getValue() );
 		});
 	}
@@ -393,7 +413,16 @@ public abstract class SourceCodeGenerator {
 		expression.appendCode( this );
 	}
 
-	protected abstract void appendTargetExpression( Expression target, AbstractMethod method );
+	void appendMethodCall( MethodInvocation invocation ) {
+		appendTargetAndMethodName( invocation.expression.getValue(), invocation.method.getValue() );
+		appendArguments( invocation);
+	}
+
+	protected void appendTargetAndMethodName( Expression target, AbstractMethod method ) {
+		appendExpression( target );
+		appendChar( '.' );
+		appendString( method.getName() );
+	}
 
 	protected abstract void appendResourceExpression( ResourceExpression resourceExpression );
 
@@ -409,6 +438,21 @@ public abstract class SourceCodeGenerator {
 				assignmentOp.appendCode( this );
 			}
 			appendExpression( assignment.rightHandSide.getValue() );
+		});
+	}
+
+	void appendConcatenation( StringConcatenation concat ) {
+		appendPrecedented(concat, () -> {
+			appendExpression( concat.leftOperand.getValue() );
+			appendChar( '+' );
+			appendExpression( concat.rightOperand.getValue() );
+		});
+	}
+
+	void appendLogicalComplement( LogicalComplement complement ) {
+		appendPrecedented(complement, () -> {
+			appendChar( '!' );
+			appendExpression( complement.operand.getValue() );
 		});
 	}
 
@@ -428,9 +472,7 @@ public abstract class SourceCodeGenerator {
 				type = ((UserField) creation.getParent()).valueType.getValue();
 			}
 			appendTypeName( type );
-			openParen();
 			appendArguments( creation );
-			closeParen();
 		});
 	}
 
@@ -462,6 +504,11 @@ public abstract class SourceCodeGenerator {
 			appendExpression( access.index.getValue() );
 			appendChar( ']' );
 		});
+	}
+
+	void appendArrayLength( ArrayLength arrayLength ) {
+		appendExpression( arrayLength.array.getValue() );
+		appendString( ".length" );
 	}
 
 	void appendFieldAccess( FieldAccess access ) {
@@ -524,6 +571,18 @@ public abstract class SourceCodeGenerator {
 
 	/** Primitives and syntax **/
 
+	void appendNull() {
+		appendString( "null" );
+	}
+
+	void appendThisReference() {
+		appendString( "this" );
+	}
+
+	void appendSuperReference() {
+		appendString( "super" );
+	}
+
 	void appendBoolean( boolean b ) {
 		codeStringBuilder.append( b );
 	}
@@ -563,7 +622,14 @@ public abstract class SourceCodeGenerator {
 		}
 	}
 
-	protected void appendChar( char c ) {
+	void appendEscapedStringLiteral( StringLiteral literal ) {
+		appendChar( '"' );
+		String escaped = StringEscapeUtils.escapeJava(literal.value.getValue());
+		appendString( escaped );
+		appendChar( '"' );
+	}
+
+	void appendChar( char c ) {
 		codeStringBuilder.append( c );
 	}
 
@@ -599,14 +665,12 @@ public abstract class SourceCodeGenerator {
 
 	protected abstract void appendTypeName( AbstractType<?, ?, ?> type );
 
-	void appendAccessLevel( AccessLevel accessLevel ) {
-		accessLevel.appendCode( this );
+	void appendTypeLiteral( TypeLiteral typeLiteral ) {
+		appendTypeName( typeLiteral.value.getValue() );
+		appendString( ".class" );
 	}
 
 	/** **/
-
-	@Deprecated
-  protected abstract void todo( Object o );
 
 	// TODO move in use by NamedUserType and push down to JavaCodeGenerator
 	boolean isPublicStaticFinalFieldGetterDesired() {

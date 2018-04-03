@@ -42,10 +42,12 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import org.lgna.project.code.PrecedentedAppender;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class StringConcatenation extends Expression {
+public final class StringConcatenation extends Expression implements PrecedentedAppender {
 	public StringConcatenation() {
 	}
 
@@ -68,9 +70,11 @@ public final class StringConcatenation extends Expression {
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendExpression( this.leftOperand.getValue() );
-		generator.appendChar( '+' );
-		generator.appendExpression( this.rightOperand.getValue() );
+		generator.appendConcatenation(this);
+	}
+
+	@Override public int getLevelOfPrecedence() {
+		return 11;
 	}
 
 	public final ExpressionProperty leftOperand = new ExpressionProperty( this ) {

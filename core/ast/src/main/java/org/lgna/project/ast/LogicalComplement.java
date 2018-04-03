@@ -43,10 +43,12 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.code.PrecedentedAppender;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class LogicalComplement extends Expression {
+public final class LogicalComplement extends Expression implements PrecedentedAppender {
 	public LogicalComplement() {
 	}
 
@@ -72,8 +74,11 @@ public final class LogicalComplement extends Expression {
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendChar( '!' );
-		generator.appendExpression( this.operand.getValue() );
+		generator.appendLogicalComplement(this);
+	}
+
+	@Override public int getLevelOfPrecedence() {
+		return 14;
 	}
 
 	public final ExpressionProperty operand = new ExpressionProperty( this ) {

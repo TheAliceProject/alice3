@@ -213,11 +213,6 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 
 	/** Expressions **/
 
-	@Override protected void appendTargetExpression( Expression target, AbstractMethod method ) {
-		appendExpression( target );
-		appendChar( '.' );
-	}
-
 	@Override protected void appendResourceExpression( ResourceExpression resourceExpression ) {
 		appendString( "//TODO append resources" );
 		appendString( resourceExpression.toString() );
@@ -272,12 +267,5 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 	private void appendIndent( Statement stmt ) {
 		final int indent = stmt.isEnabled.getValue() ? this.indent : this.indent - 1;
 		appendString( StringUtils.repeat( INDENTION, indent ) );
-	}
-
-	/** **/
-
-	@Override protected void todo( Object o ) {
-		appendString( "todo_" );
-		getCodeStringBuilder().append( o );
 	}
 }

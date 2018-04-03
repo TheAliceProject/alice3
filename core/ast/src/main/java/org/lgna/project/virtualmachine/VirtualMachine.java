@@ -722,10 +722,6 @@ public abstract class VirtualMachine {
 		return null;
 	}
 
-	protected Object evaluateNumberLiteral( org.lgna.project.ast.NumberLiteral numberLiteral ) {
-		return numberLiteral.value.getValue();
-	}
-
 	protected Object evaluateDoubleLiteral( org.lgna.project.ast.DoubleLiteral doubleLiteral ) {
 		return doubleLiteral.value.getValue();
 	}
@@ -856,8 +852,6 @@ public abstract class VirtualMachine {
 				rv = this.evaluateNullLiteral( (org.lgna.project.ast.NullLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.StringConcatenation ) {
 				rv = this.evaluateStringConcatenation( (org.lgna.project.ast.StringConcatenation)expression );
-			} else if( expression instanceof org.lgna.project.ast.NumberLiteral ) {
-				rv = this.evaluateNumberLiteral( (org.lgna.project.ast.NumberLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
 				rv = this.evaluateDoubleLiteral( (org.lgna.project.ast.DoubleLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.FloatLiteral ) {

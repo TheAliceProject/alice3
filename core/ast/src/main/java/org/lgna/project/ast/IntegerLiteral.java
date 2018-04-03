@@ -75,14 +75,7 @@ public final class IntegerLiteral extends AbstractValueLiteral<Integer> {
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		int n = this.value.getValue();
-		if( n == Integer.MAX_VALUE ) {
-			generator.appendString( "Integer.MAX_VALUE" );
-		} else if( n == Integer.MIN_VALUE ) {
-			generator.appendString( "Integer.MIN_VALUE" );
-		} else {
-			generator.appendInt( n );
-		}
+		generator.appendInt( value.getValue() );
 	}
 
 	public final edu.cmu.cs.dennisc.property.IntegerProperty value = new edu.cmu.cs.dennisc.property.IntegerProperty( this, 0 );

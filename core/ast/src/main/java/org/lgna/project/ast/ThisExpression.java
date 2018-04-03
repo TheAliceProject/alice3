@@ -85,7 +85,7 @@ public final class ThisExpression extends Expression {
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendString( "this" );
+		generator.appendThisReference();
 	}
 
 	private final AbstractType<?, ?, ?> typeForNoAncestorTypeCondition;

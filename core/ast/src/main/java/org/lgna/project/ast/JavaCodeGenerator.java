@@ -226,7 +226,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 	@Override
 	public void appendConstructor( NamedUserConstructor constructor ) {
 		appendMemberPrefix( constructor );
-		appendAccessLevel( constructor.getAccessLevel() );
+		constructor.getAccessLevel().appendCode( this );
 		appendTypeName( constructor.getDeclaringType() );
 		appendParameters( constructor );
 		appendStatement( constructor.body.getValue() );
@@ -254,20 +254,12 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		appendString( type.getName() );
 	}
 
-	@Override protected void appendTargetExpression( Expression target, AbstractMethod method ) {
-		boolean isImportStatic = false;
-		if( method instanceof JavaMethod ) {
-			if( method.isStatic() ) {
-				if( staticMethodsMarkedForImport.contains( method ) ) {
-					isImportStatic = true;
-				}
-			}
-		}
-		if( isImportStatic ) {
-			methodsToImportStatic.add( (JavaMethod)method );
+	@Override protected void appendTargetAndMethodName( Expression target, AbstractMethod method ) {
+		if (method instanceof JavaMethod && method.isStatic() && staticMethodsMarkedForImport.contains( method )) {
+			methodsToImportStatic.add( (JavaMethod) method );
+			appendString( method.getName() );
 		} else {
-			appendExpression( target );
-			appendChar( '.' );
+			super.appendTargetAndMethodName( target, method );
 		}
 	}
 
@@ -308,11 +300,6 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 
 	@Override protected void appendArgument( AbstractParameter parameter, AbstractArgument argument ) {
 		argument.appendCode( this );
-	}
-
-	@Override @Deprecated protected void todo( Object o ) {
-		getCodeStringBuilder().append( "todo_" );
-		getCodeStringBuilder().append( o );
 	}
 
 	@Override protected String getTextWithImports() {
@@ -395,9 +382,8 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 	@Override public void appendDoTogether( DoTogether doTogether ) {
 		JavaType threadUtilitiesType = JavaType.getInstance( ThreadUtilities.class );
 		JavaMethod doTogetherMethod = threadUtilitiesType.getDeclaredMethod( "doTogether", Runnable[].class );
-		TypeExpression callerExpression = new TypeExpression( threadUtilitiesType );
-		appendTargetExpression( callerExpression, doTogetherMethod );
-		appendString( doTogetherMethod.getName() );
+		TypeExpression target = new TypeExpression( threadUtilitiesType );
+		appendTargetAndMethodName( target, doTogetherMethod );
 		appendString( "(" );
 		String prefix = "";
 		for( Statement statement : doTogether.body.getValue().statements ) {
@@ -429,9 +415,8 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 	@Override public void appendEachInTogether( AbstractEachInTogether eachInTogether ) {
 		JavaType threadUtilitiesType = JavaType.getInstance( ThreadUtilities.class );
 		JavaMethod eachInTogetherMethod = threadUtilitiesType.getDeclaredMethod( "eachInTogether", EachInTogetherRunnable.class, Object[].class );
-		TypeExpression callerExpression = new TypeExpression( threadUtilitiesType );
-		appendTargetExpression( callerExpression, eachInTogetherMethod );
-		appendString( eachInTogetherMethod.getName() );
+		TypeExpression target = new TypeExpression( threadUtilitiesType );
+		appendTargetAndMethodName( target, eachInTogetherMethod );
 		appendString( "(" );
 
 		UserLocal itemValue = eachInTogether.item.getValue();
@@ -545,7 +530,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 
 	@Override public void appendField( UserField field ) {
 		appendMemberPrefix(field);
-		appendAccessLevel( field.getAccessLevel() );
+		field.getAccessLevel().appendCode( this );
 		if( field.isStatic() ) {
 			appendString( "static " );
 		}

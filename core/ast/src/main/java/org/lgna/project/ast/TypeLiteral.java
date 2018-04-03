@@ -80,8 +80,7 @@ public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendTypeName( this.value.getValue() );
-		generator.appendString( ".class" );
+		generator.appendTypeLiteral( this );
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> value = DeclarationProperty.createReferenceInstance( this );

@@ -78,8 +78,7 @@ public final class ArrayLength extends Expression {
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendExpression( this.array.getValue() );
-		generator.appendString( ".length" );
+		generator.appendArrayLength( this );
 	}
 
 	public final ExpressionProperty array = new ExpressionProperty( this ) {

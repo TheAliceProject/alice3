@@ -66,6 +66,6 @@ public final class NullLiteral extends AbstractLiteral {
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendString( "null" );
+		generator.appendNull();
 	}
 }
