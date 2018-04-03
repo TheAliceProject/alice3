@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2018 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,73 +40,9 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.project.ast;
+package org.lgna.project.code;
 
-import org.lgna.project.code.PrecedentedAppender;
 
-/**
- * @author Dennis Cosgrove
- */
-public final class ArrayInstanceCreation extends Expression implements PrecedentedAppender {
-	public ArrayInstanceCreation() {
-	}
-
-	public ArrayInstanceCreation( AbstractType<?, ?, ?> arrayType, Integer[] lengths, Expression... expressions ) {
-		this.arrayType.setValue( arrayType );
-		this.lengths.add( lengths );
-		this.expressions.add( expressions );
-	}
-
-	public ArrayInstanceCreation( Class<?> arrayCls, Integer[] lengths, Expression... expressions ) {
-		this( JavaType.getInstance( arrayCls ), lengths, expressions );
-	}
-
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return this.arrayType.getValue();
-	}
-
-	@Override
-	public boolean isValid() {
-		AbstractType<?, ?, ?> type = this.getType();
-		if( type != null ) {
-			if( type.isArray() ) {
-				//todo: check lengths
-				for( Expression expression : this.expressions ) {
-					if( expression != null ) {
-						if( type.getComponentType().isAssignableFrom( expression.getType() ) ) {
-							if( expression.isValid() ) {
-								//pass
-							} else {
-								return false;
-							}
-						} else {
-							return false;
-						}
-					} else {
-						//todo?
-						return false;
-					}
-				}
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendArrayInstantiation( this );
-	}
-
-	@Override public int getLevelOfPrecedence() {
-		return 13;
-	}
-
-	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = DeclarationProperty.createReferenceInstance( this );;
-	public final edu.cmu.cs.dennisc.property.ListProperty<Integer> lengths = new edu.cmu.cs.dennisc.property.ListProperty<Integer>( this );
-	public final ExpressionListProperty expressions = new ExpressionListProperty( this );
+public interface PrecedentedAppender extends CodeAppender {
+	int getLevelOfPrecedence();
 }

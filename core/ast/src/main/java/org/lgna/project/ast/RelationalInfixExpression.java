@@ -42,7 +42,7 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.PrecedentedAppender;
 
 /**
  * @author Dennis Cosgrove
@@ -110,7 +110,7 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
 		return ( (Number)o ).byteValue();
 	}
 
-	public static enum Operator implements CodeAppender {
+	public static enum Operator implements PrecedentedAppender {
 		LESS() {
 			@Override
 			public Boolean operate( Object leftOperand, Object rightOperand ) {
@@ -142,6 +142,10 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
 			@Override
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '<' );
+			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 9;
 			}
 		},
 		LESS_EQUALS() {
@@ -176,6 +180,10 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendString( "<=" );
 			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 9;
+			}
 		},
 		GREATER() {
 			@Override
@@ -208,6 +216,10 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
 			@Override
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '>' );
+			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 9;
 			}
 		},
 		GREATER_EQUALS() {
@@ -242,6 +254,10 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendString( ">=" );
 			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 9;
+			}
 		},
 		EQUALS() {
 			@Override
@@ -274,6 +290,10 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
 			@Override
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendString( "==" );
+			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 8;
 			}
 		},
 		NOT_EQUALS() {
@@ -308,6 +328,10 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendString( "!=" );
 			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 8;
+			}
 		};
 		public abstract Boolean operate( Object leftOperand, Object rightOperand );
 
@@ -341,13 +365,6 @@ public final class RelationalInfixExpression extends InfixExpression<RelationalI
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return JavaType.BOOLEAN_OBJECT_TYPE;
-	}
-
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendExpression( this.leftOperand.getValue() );
-		this.operator.getValue().appendCode( generator );
-		generator.appendExpression( this.rightOperand.getValue() );
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> leftOperandType = DeclarationProperty.createReferenceInstance( this );

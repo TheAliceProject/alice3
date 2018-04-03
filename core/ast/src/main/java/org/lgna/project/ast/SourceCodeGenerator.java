@@ -42,8 +42,10 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeOrganizer;
+import org.lgna.project.code.PrecedentedAppender;
 
 import java.util.Collections;
 import java.util.List;
@@ -75,7 +77,7 @@ public abstract class SourceCodeGenerator {
 		return new CodeOrganizer( codeOrganizerDefinitions.getOrDefault( typeName, defaultCodeOrganizerDefn ) );
 	}
 
-	protected void appendClass( CodeOrganizer codeOrganizer, NamedUserType userType ) {
+	void appendClass( CodeOrganizer codeOrganizer, NamedUserType userType ) {
 		appendClassHeader( userType );
 		for( Map.Entry<String, List<CodeAppender>> entry : codeOrganizer.getOrderedSections().entrySet() ) {
 			if( !entry.getValue().isEmpty() ) {
@@ -108,7 +110,7 @@ public abstract class SourceCodeGenerator {
 	public abstract void appendMethodHeader( AbstractMethod method );
 
 	protected void appendParameters( Code code ) {
-		appendChar( '(' );
+		openParen();
 		String prefix = "";
 		int i = 0;
 		for( AbstractParameter parameter : code.getRequiredParameters() ) {
@@ -120,7 +122,7 @@ public abstract class SourceCodeGenerator {
 			prefix = ",";
 			i += 1;
 		}
-		appendChar( ')' );
+		closeParen();
 	}
 
 	public void appendGetter( Getter getter ) {
@@ -175,24 +177,24 @@ public abstract class SourceCodeGenerator {
 
 	public abstract void appendLocalDeclaration( LocalDeclarationStatement stmt );
 
-	public void appendExpressionStatement( ExpressionStatement stmt ) {
+	void appendExpressionStatement( ExpressionStatement stmt ) {
 		appendSingleStatement( stmt, () -> appendExpression( stmt.expression.getValue() ) );
 	}
 
-	public void appendReturnStatement( ReturnStatement stmt ) {
+	void appendReturnStatement( ReturnStatement stmt ) {
 		appendSingleStatement( stmt, () -> {
 			appendString( "return " );
 			appendExpression( stmt.expression.getValue() );
 		});
 	}
 
-	public void appendBlock( BlockStatement blockStatement ) {
+	void appendBlock( BlockStatement blockStatement ) {
 		openBlock();
 		appendBody( blockStatement );
 		closeBlock();
 	}
 
-	public void appendConstructorBlock( ConstructorBlockStatement constructor ) {
+	void appendConstructorBlock( ConstructorBlockStatement constructor ) {
 		openBlock();
 		appendStatement( constructor.constructorInvocationStatement.getValue() );
 		appendBody( constructor );
@@ -205,7 +207,7 @@ public abstract class SourceCodeGenerator {
 		}
 	}
 
-	public void appendSuperConstructor( SuperConstructorInvocationStatement supCon ) {
+	void appendSuperConstructor( SuperConstructorInvocationStatement supCon ) {
 		appendSingleStatement( supCon, () -> {
 			appendString( "super(" );
 			appendArguments( supCon );
@@ -213,7 +215,7 @@ public abstract class SourceCodeGenerator {
 		} );
 	}
 
-	public void appendThisConstructor( ThisConstructorInvocationStatement thisCon ) {
+	void appendThisConstructor( ThisConstructorInvocationStatement thisCon ) {
 		appendSingleStatement( thisCon, () -> {
 			appendString( "this(" );
 			appendArguments( thisCon );
@@ -221,7 +223,7 @@ public abstract class SourceCodeGenerator {
 		} );
 	}
 
-	public void appendArguments( ArgumentOwner argumentOwner ) {
+	void appendArguments( ArgumentOwner argumentOwner ) {
 		String prefix = "";
 		for( SimpleArgument argument : argumentOwner.getRequiredArgumentsProperty() ) {
 			appendString( prefix );
@@ -293,7 +295,7 @@ public abstract class SourceCodeGenerator {
 		appender.run();
 	}
 
-	public void appendConditional( ConditionalStatement stmt ) {
+	void appendConditional( ConditionalStatement stmt ) {
 		appendCodeFlowStatement(stmt, () -> {
 			String text = "if";
 			for (BooleanExpressionBodyPair booleanExpressionBodyPair : stmt.booleanExpressionBodyPairs) {
@@ -311,7 +313,7 @@ public abstract class SourceCodeGenerator {
 
 	abstract public void appendCountLoop( CountLoop loop );
 
-	public void appendForEach( AbstractForEachLoop loop ) {
+	void appendForEach( AbstractForEachLoop loop ) {
 		appendCodeFlowStatement(loop, () -> {
 			UserLocal itemValue = loop.item.getValue();
 			final Expression items = loop.getArrayOrIterableProperty().getValue();
@@ -324,18 +326,18 @@ public abstract class SourceCodeGenerator {
 	protected abstract void appendForEachToken();
 
 	protected void appendEachItemsClause( UserLocal itemValue, Expression items ) {
-		appendChar( '(');
+		openParen();
 		appendTypeName( itemValue.getValueType() );
 		appendSpace();
 		appendString( itemValue.getValidName() );
 		appendInEachToken();
 		appendExpression( items );
-		appendChar( ')' );
+		closeParen();
 	}
 
 	protected abstract void appendInEachToken();
 
-	public void appendWhileLoop( WhileLoop loop ) {
+	void appendWhileLoop( WhileLoop loop ) {
 		appendCodeFlowStatement(loop, () -> {
 			appendString( "while (" );
 			appendExpression( loop.conditional.getValue() );
@@ -395,18 +397,109 @@ public abstract class SourceCodeGenerator {
 
 	protected abstract void appendResourceExpression( ResourceExpression resourceExpression );
 
-	public void appendAssignmentExpression( AssignmentExpression assignment ) {
-		appendExpression( assignment.leftHandSide.getValue() );
-		final AssignmentExpression.Operator assignmentOp = assignment.operator.getValue();
-		if ( AssignmentExpression.Operator.ASSIGN.equals( assignmentOp )) {
-			appendAssignmentOperator();
+	void appendAssignmentExpression( AssignmentExpression assignment ) {
+		appendPrecedented(assignment, () -> {
+			appendExpression( assignment.leftHandSide.getValue() );
+			final AssignmentExpression.Operator assignmentOp = assignment.operator.getValue();
+			if (AssignmentExpression.Operator.ASSIGN.equals( assignmentOp )) {
+				appendAssignmentOperator();
+			} else {
+				// Only basic assignment is used in existing Alice code.
+				Logger.errln("Use of unexpected assignent operator " + assignmentOp + " in " + assignment );
+				assignmentOp.appendCode( this );
+			}
+			appendExpression( assignment.rightHandSide.getValue() );
+		});
+	}
+
+	void appendInfixExpression( InfixExpression infixExpression ) {
+		appendPrecedented(infixExpression, () -> {
+			appendExpression( infixExpression.leftOperand.getValue() );
+			infixExpression.getOperatorValue().appendCode( this );
+			appendExpression( infixExpression.rightOperand.getValue() );
+		});
+	}
+
+	void appendInstantiation( InstanceCreation creation ) {
+		appendPrecedented(creation, () -> {
+			appendString( "new " );
+			AbstractType<?, ?, ?> type = creation.getType();
+			if (null == type) {
+				type = ((UserField) creation.getParent()).valueType.getValue();
+			}
+			appendTypeName( type );
+			openParen();
+			appendArguments( creation );
+			closeParen();
+		});
+	}
+
+	void appendArrayInstantiation( ArrayInstanceCreation creation ) {
+		appendPrecedented(creation, () -> {
+			appendString( "new " );
+			appendTypeName( creation.arrayType.getValue().getComponentType() );
+
+			//todo: lengths
+			appendChar( '[' );
+			appendChar( ']' );
+
+			appendChar( '{' );
+			String prefix = "";
+			for( Expression expression : creation.expressions ) {
+				appendString( prefix );
+				appendExpression( expression );
+				prefix = ", ";
+			}
+			appendChar( '}' );
+		});
+	}
+
+	void appendArrayAccess( ArrayAccess access ) {
+		// Array access has the highest level of precedence, 16, so it will never need parentheses
+		pushPrecedented(access, () -> {
+			appendExpression( access.array.getValue() );
+			appendChar( '[' );
+			appendExpression( access.index.getValue() );
+			appendChar( ']' );
+		});
+	}
+
+	void appendFieldAccess( FieldAccess access ) {
+		// Field access has the highest level of precedence, 16, so it will never need parentheses
+		pushPrecedented(access, () -> {
+			appendExpression( access.expression.getValue() );
+			appendChar( '.' );
+			appendString( access.field.getValue().getName() );
+		});
+	}
+
+	private void appendPrecedented( PrecedentedAppender expr, Runnable appender ) {
+		boolean shouldParenthesize = areParenthesesNeeded( expr );
+		if (shouldParenthesize) {
+			openParen();
 		}
-		else {
-			// Only basic assignment is used in existing Alice code.
-			System.out.println("Unexpected use of assignent operator " + assignmentOp + " in " + assignment);
-			assignmentOp.appendCode( this );
+
+		pushPrecedented( expr, appender );
+
+		if (shouldParenthesize) {
+			closeParen();
 		}
-		appendExpression( assignment.rightHandSide.getValue() );
+	}
+
+	private void pushPrecedented( PrecedentedAppender expr, Runnable appender ) {
+		operatorStack.push( expr );
+
+		appender.run();
+
+		PrecedentedAppender popped = operatorStack.pop();
+		if (popped != expr) {
+			Logger.errln( "Unexpected expression on stack. These two should have been the same:", expr, popped );
+		}
+	}
+
+	private boolean areParenthesesNeeded( PrecedentedAppender expr ) {
+		return !operatorStack.empty() &&
+						expr.getLevelOfPrecedence() < operatorStack.peek().getLevelOfPrecedence();
 	}
 
 	/** Comments **/
@@ -423,7 +516,7 @@ public abstract class SourceCodeGenerator {
 		appendNewLine();
 	}
 
-	protected static String[] splitIntoLines( String src ) {
+	static String[] splitIntoLines( String src ) {
 		return src.split( "\n" );
 	}
 
@@ -435,7 +528,7 @@ public abstract class SourceCodeGenerator {
 		codeStringBuilder.append( b );
 	}
 
-	protected void appendInt( int n ) {
+	void appendInt( int n ) {
 		if( n == Integer.MAX_VALUE ) {
 			appendString( "Integer.MAX_VALUE" );
 		} else if( n == Integer.MIN_VALUE ) {
@@ -445,7 +538,7 @@ public abstract class SourceCodeGenerator {
 		}
 	}
 
-	protected void appendFloat( float f ) {
+	void appendFloat( float f ) {
 		if( Float.isNaN( f ) ) {
 			appendString( "Float.NaN" );
 		} else if( f == Float.POSITIVE_INFINITY ) {
@@ -458,7 +551,7 @@ public abstract class SourceCodeGenerator {
 		}
 	}
 
-	protected void appendDouble( double d ) {
+	void appendDouble( double d ) {
 		if( Double.isNaN( d ) ) {
 			appendString( "Double.NaN" );
 		} else if( d == Double.POSITIVE_INFINITY ) {
@@ -484,6 +577,14 @@ public abstract class SourceCodeGenerator {
 
 	protected void appendNewLine() {
 		appendChar( '\n' );
+	}
+
+	private void openParen() {
+		appendChar( '(' );
+	}
+
+	private void closeParen() {
+		appendChar( ')' );
 	}
 
 	protected void openBlock() {
@@ -512,6 +613,7 @@ public abstract class SourceCodeGenerator {
 		return true;
 	}
 
+	private final Stack<PrecedentedAppender> operatorStack = new Stack<>();
 	private final StringBuilder codeStringBuilder = new StringBuilder();
 	private final Stack<AbstractType<?, ?, ?>> typeForLambdaStack = new Stack<>();
 	private int statementDisabledCount = 0;

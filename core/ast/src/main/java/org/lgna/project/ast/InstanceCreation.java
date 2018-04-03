@@ -42,11 +42,12 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import org.lgna.project.code.PrecedentedAppender;
 import org.lgna.project.virtualmachine.VirtualMachine;
 /**
  * @author Dennis Cosgrove
  */
-public final class InstanceCreation extends Expression implements ArgumentOwner {
+public final class InstanceCreation extends Expression implements ArgumentOwner, PrecedentedAppender {
 	public InstanceCreation() {
 	}
 
@@ -102,14 +103,11 @@ public final class InstanceCreation extends Expression implements ArgumentOwner 
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendString( "new " );
-		AbstractType<?, ?, ?> type = getType();
-		if (null == type)
-			type = ((UserField) getParent()).valueType.getValue();
-		generator.appendTypeName( type );
-		generator.appendChar( '(' );
-		generator.appendArguments( this );
-		generator.appendChar( ')' );
+		generator.appendInstantiation(this);
+	}
+
+	@Override public int getLevelOfPrecedence() {
+		return 13;
 	}
 
 	//todo: AbstractConstructor -> Expression<AbstractConstructor>

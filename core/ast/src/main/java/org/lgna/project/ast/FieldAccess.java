@@ -44,11 +44,12 @@
 package org.lgna.project.ast;
 
 import org.lgna.project.ast.localizer.AstLocalizer;
+import org.lgna.project.code.PrecedentedAppender;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldAccess extends Expression {
+public final class FieldAccess extends Expression implements PrecedentedAppender {
 	public FieldAccess() {
 	}
 
@@ -105,9 +106,11 @@ public final class FieldAccess extends Expression {
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendExpression( this.expression.getValue() );
-		generator.appendChar( '.' );
-		generator.appendString( this.field.getValue().getName() );
+		generator.appendFieldAccess( this );
+	}
+
+	@Override public int getLevelOfPrecedence() {
+		return 16;
 	}
 
 	public final ExpressionProperty expression = new ExpressionProperty( this ) {

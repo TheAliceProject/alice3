@@ -42,13 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.PrecedentedAppender;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixExpression.Operator> {
-	public static enum Operator implements CodeAppender {
+	public enum Operator implements PrecedentedAppender {
 		PLUS() {
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
@@ -75,6 +75,10 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			@Override
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '+' );
+			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 11;
 			}
 		},
 		MINUS() {
@@ -104,7 +108,10 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '-' );
 			}
-		},
+
+			@Override public int getLevelOfPrecedence() {
+				return 11;
+			}		},
 		TIMES() {
 			@Override
 			public Number operate( Number leftOperand, Number rightOperand ) {
@@ -131,6 +138,10 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			@Override
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '*' );
+			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 12;
 			}
 		},
 		REAL_DIVIDE() {
@@ -160,6 +171,10 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '/' );
 			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 12;
+			}
 		},
 		INTEGER_DIVIDE() {
 			@Override
@@ -187,6 +202,10 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			@Override
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '/' );
+			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 12;
 			}
 		},
 		REAL_REMAINDER() {
@@ -216,6 +235,10 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '%' );
 			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 12;
+			}
 		},
 		INTEGER_REMAINDER() {
 			@Override
@@ -243,6 +266,10 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 			@Override
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '%' );
+			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 12;
 			}
 		};
 		public abstract Number operate( Number leftOperand, Number rightOperand );
@@ -282,13 +309,6 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return this.expressionType.getValue();
-	}
-
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendExpression( this.leftOperand.getValue() );
-		this.operator.getValue().appendCode( generator );
-		generator.appendExpression( this.rightOperand.getValue() );
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );

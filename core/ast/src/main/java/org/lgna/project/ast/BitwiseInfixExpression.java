@@ -42,13 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.PrecedentedAppender;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class BitwiseInfixExpression extends Expression {
-	public static enum Operator implements CodeAppender {
+public final class BitwiseInfixExpression extends InfixExpression<BitwiseInfixExpression.Operator> {
+	public static enum Operator implements PrecedentedAppender {
 		AND() {
 			@Override
 			public Object operate( Object leftOperand, Object rightOperand ) {
@@ -71,6 +71,10 @@ public final class BitwiseInfixExpression extends Expression {
 			@Override
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '&' );
+			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 7;
 			}
 		},
 		OR() {
@@ -96,6 +100,10 @@ public final class BitwiseInfixExpression extends Expression {
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '|' );
 			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 5;
+			}
 		},
 		XOR() {
 			@Override
@@ -120,6 +128,10 @@ public final class BitwiseInfixExpression extends Expression {
 			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendChar( '^' );
 			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 6;
+			}
 		};
 		public abstract Object operate( Object leftOperand, Object rightOperand );
 
@@ -142,30 +154,24 @@ public final class BitwiseInfixExpression extends Expression {
 		this.rightOperand.setValue( rightOperand );
 	}
 
+	@Override public int getLevelOfPrecedence() {
+		return operator.getValue().getLevelOfPrecedence();
+	}
+
+	@Override
+	protected AbstractType<?, ?, ?> getLeftOperandType() {
+		return this.expressionType.getValue();
+	}
+
+	@Override
+	protected AbstractType<?, ?, ?> getRightOperandType() {
+		return this.expressionType.getValue();
+	}
+
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return this.expressionType.getValue();
 	}
 
-	@Override
-	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendExpression( this.leftOperand.getValue() );
-		this.operator.getValue().appendCode( generator );
-		generator.appendExpression( this.rightOperand.getValue() );
-	}
-
 	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );
-	public final ExpressionProperty leftOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return BitwiseInfixExpression.this.expressionType.getValue();
-		}
-	};
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Operator> operator = new edu.cmu.cs.dennisc.property.InstanceProperty<Operator>( this, null );
-	public final ExpressionProperty rightOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType<?, ?, ?> getExpressionType() {
-			return BitwiseInfixExpression.this.expressionType.getValue();
-		}
-	};
 }

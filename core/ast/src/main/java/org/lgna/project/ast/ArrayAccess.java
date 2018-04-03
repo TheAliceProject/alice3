@@ -43,10 +43,12 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.code.PrecedentedAppender;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ArrayAccess extends Expression {
+public final class ArrayAccess extends Expression implements PrecedentedAppender {
 	public ArrayAccess() {
 	}
 
@@ -85,10 +87,11 @@ public final class ArrayAccess extends Expression {
 
 	@Override
 	public void appendCode( SourceCodeGenerator generator ) {
-		generator.appendExpression( this.array.getValue() );
-		generator.appendChar( '[' );
-		generator.appendExpression( this.index.getValue() );
-		generator.appendChar( ']' );
+		generator.appendArrayAccess(this);
+	}
+
+	@Override public int getLevelOfPrecedence() {
+		return 16;
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> arrayType = DeclarationProperty.createReferenceInstance( this );;
