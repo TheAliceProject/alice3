@@ -1,6 +1,5 @@
 package org.alice.tweedle.unlinked;
 
-import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -59,14 +58,18 @@ public class TweedleParseTest {
 		parseString( "class SScene extends String {}" );
 	}
 
-	@Test(expected=ParseCancellationException.class)
-	public void enumNamedSameAsBooleanPrimitiveShouldFail() {
-		parseString( "enum Boolean {TRUE, FALSE}" );
+	@Test
+	public void enumNamedSameAsBooleanPrimitiveShouldCreateSomething() {
+		UnlinkedType tested = parseString( "enum Boolean {TRUE, FALSE}" );
+
+		assertNotNull("The parser should have returned something.", tested );
 	}
 
-	@Test(expected=ParseCancellationException.class)
-	public void classNamedSameAsBooleanPrimitiveShouldFail() {
-		parseString( "class Boolean {}" );
+	@Test
+	public void classNamedSameAsBooleanPrimitiveShouldCreateSomething() {
+		UnlinkedType tested = parseString( "class Boolean {}" );
+
+		assertNotNull("The parser should have returned something.", tested );
 	}
 
 	@Test
@@ -157,4 +160,118 @@ public class TweedleParseTest {
 						directionEnum.getValues().contains( "LEFT" ) );
 	}
 
+	@Test
+	public void somethingShouldBeCreatedForClassWithConstuctor() {
+		String scene = "class Scene extends SScene models Scene {\n"
+						+ "  Scene() {\n"
+						+ "    super();\n"
+						+ "  }\n"
+						+ "}";
+		UnlinkedType tested = parseString( scene);
+
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void somethingShouldBeCreatedForClassWithListener() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  Scene() {\n"
+						+ "    super();\n"
+						+ "  }\n"
+						+ "  void initializeEventListeners() {\n"
+						+ "    this.addSceneActivationListener(listener: (SceneActivationEvent event) -> {\n"
+						+ "      this.myFirstMethod();\n"
+						+ "    });\n"
+						+ "  }\n"
+						+ "}";
+		UnlinkedType tested = parseString( scene);
+
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void somethingShouldBeCreatedForGeneratedScene() {
+		String generatedScene = "class Scene extends SScene models Scene {\n" + "  Scene() {\n" + "    super();\n" + "  }\n"
+						+ "\n" + "  void initializeEventListeners() {\n"
+						+ "    this.addSceneActivationListener(listener: (SceneActivationEvent event)-> {\n"
+						+ "      this.myFirstMethod();\n" + "    });\n" + "  }\n" + "\n" + "  void myFirstMethod() {\n"
+						+ "    this.sphere.jump();\n" + "    this.sphere.jump();\n" + "    doTogether {\n"
+						+ "      this.walrus.moveToward(target: this.sphere,amount: 2.0);\n"
+						+ "      this.walrus.moveToward(target: this.cylinder,amount: 2.0);\n" + "    }\n" + "    doTogether {\n"
+						+ "      this.sphere.setPaint(paint: Color.GREEN);\n" + "      this.sphere.setPaint(paint: Color.RED);\n"
+						+ "    }\n" + "    this.walrus.say(text: \"hello \\\"Ralph\\\" How are you? \\\\\\\"/\\\" today?\");\n"
+						+ "    doTogether {\n" + "      this.walrus.turn(direction: TurnDirection.LEFT,amount: 1.0);\n" + "    }\n"
+						+ "*<  this.walrus.roll(direction: RollDirection.RIGHT,amount: 1.0); >*\n"
+						+ "    this.walrus.turn(direction: TurnDirection.LEFT,amount: 1.0);\n" + "    doInOrder {\n"
+						+ "      doInOrder {\n" + "      }\n" + "      // So much to say\n"
+						+ "      // And I can use multiple lines\n"
+						+ "      // Nicer if the other side updated as I typed, but what can you do?\n" + "*<    doInOrder {\n"
+						+ "*<      this.walrus.turnToFace(target: this.cylinder,details: TurnToFace.duration(unknown: 2.0)); >*\n"
+						+ "        this.walrus.turnToFace(target: this.sphere,details: TurnToFace.duration(unknown: 2.0));\n"
+						+ "      } >*\n" + "    }\n" + "    doInOrder {\n" + "      doTogether {\n"
+						+ "        forEach(SModel x in new SModel[]{this.sphere, this.walrus}) {\n" + "          doTogether {\n"
+						+ "          }\n" + "        }\n" + "      }\n" + "      SModel[] muddles <- new SModel[]{};\n"
+						+ "      doInOrder {\n" + "        doTogether {\n"
+						+ "          this.walrus.turnToFace(target: this.cylinder,details: TurnToFace.duration(unknown: 2.0));\n"
+						+ "          this.walrus.turnToFace(target: this.sphere,details: TurnToFace.duration(unknown: 2.0));\n"
+						+ "        }\n" + "      }\n" + "    }\n" + "*<  countUpTo( indexA < 2 ) {\n" + "    } >*\n"
+						+ "    countUpTo( indexB < 2 ) {\n" + "    }\n" + "*<  while (false) {\n" + "    } >*\n"
+						+ "    while (false) {\n" + "    }\n"
+						+ "*<  forEach(SModel x in new SModel[]{this.sphere, this.walrus}) {\n" + "      doTogether {\n"
+						+ "      }\n" + "    } >*\n" + "    forEach(SModel x in new SModel[]{this.sphere, this.walrus}) {\n"
+						+ "      doTogether {\n" + "      }\n" + "    }\n" + "*<  if(true) {\n" + "    } else {\n" + "    } >*\n"
+						+ "    if(true) {\n" + "    } else {\n" + "    }\n" + "*<  doTogether {\n" + "    } >*\n"
+						+ "    doTogether {\n" + "    }\n"
+						+ "*<  eachTogether(String msg in new String[]{\"hello\", \"hello\"}) {\n"
+						+ "      this.walrus.say(text: msg);\n" + "    } >*\n"
+						+ "    eachTogether(String msg in new String[]{\"hello\", \"hello\"}) {\n"
+						+ "      this.walrus.say(text: msg);\n" + "    }\n" + "*<  Integer a <- 2; >*\n" + "    Integer a <- 2;\n"
+						+ "*<  a <- 2; >*\n" + "    a <- 2;\n" + "  }\n" + "\n" + "  void doInfix() {\n"
+						+ "    Integer v <- 1+2+(2-1)*3;\n" + "    if((true||false)&&false) {\n" + "    } else {\n" + "    }\n"
+						+ "    if(false&&false||0.5<=1.0) {\n" + "    } else {\n" + "    }\n"
+						+ "    if((false||false)&&(true||true)) {\n" + "    } else {\n" + "    }\n"
+						+ "    if(false&&false||true&&true) {\n" + "    } else {\n" + "    }\n" + "  }\n"
+						+ "  SGround ground <- new SGround();\n" + "  SCamera camera <- new SCamera();\n"
+						+ "  Walrus walrus <- new Walrus();\n" + "  Sphere sphere <- new Sphere();\n"
+						+ "  Cylinder cylinder <- new Cylinder();\n" + "\n" + "  void performCustomSetup() {\n"
+						+ "    // Make adjustments to the starting scene, in a way not available in the Scene editor\n" + "  }\n"
+						+ "\n" + "  void performGeneratedSetUp() {\n" + "    // DO NOT EDIT\n"
+						+ "    // This code is automatically generated.  Any work you perform in this method will be overwritten.\n"
+						+ "    // DO NOT EDIT\n"
+						+ "    this.setAtmosphereColor(color: new Color(red: 0.588,green: 0.886,blue: 0.988));\n"
+						+ "    this.setFromAboveLightColor(color: Color.WHITE);\n"
+						+ "    this.setFromBelowLightColor(color: Color.BLACK);\n" + "    this.setFogDensity(density: 0.0);\n"
+						+ "    this.setName(name: \"myScene\");\n" + "    this.ground.setPaint(paint: SurfaceAppearance.GRASS);\n"
+						+ "    this.ground.setOpacity(opacity: 1.0);\n" + "    this.ground.setName(name: \"ground\");\n"
+						+ "    this.ground.setVehicle(vehicle: this);\n" + "    this.camera.setName(name: \"camera\");\n"
+						+ "    this.camera.setVehicle(vehicle: this);\n"
+						+ "    this.camera.setOrientationRelativeToVehicle(orientation: new Orientation(x: 0.0,y: 0.995185,z: 0.0980144,w: 6.12323E-17));\n"
+						+ "    this.camera.setPositionRelativeToVehicle(position: new Position(right: 9.61E-16,up: 1.56,backward: -7.85));\n"
+						+ "    this.walrus.setPaint(paint: Color.WHITE);\n" + "    this.walrus.setOpacity(opacity: 1.0);\n"
+						+ "    this.walrus.setName(name: \"walrus\");\n" + "    this.walrus.setVehicle(vehicle: this);\n"
+						+ "    this.walrus.setOrientationRelativeToVehicle(orientation: new Orientation(x: 0.0,y: 0.0,z: 0.0,w: 1.0));\n"
+						+ "    this.walrus.setPositionRelativeToVehicle(position: new Position(right: 0.618,up: 0.0111,backward: -0.877));\n"
+						+ "    this.sphere.setRadius(radius: 0.5);\n" + "    this.sphere.setPaint(paint: Color.WHITE);\n"
+						+ "    this.sphere.setOpacity(opacity: 1.0);\n" + "    this.sphere.setName(name: \"sphere\");\n"
+						+ "    this.sphere.setVehicle(vehicle: this);\n"
+						+ "    this.sphere.setOrientationRelativeToVehicle(orientation: new Orientation(x: 0.0,y: 0.0,z: 0.0,w: 1.0));\n"
+						+ "    this.sphere.setPositionRelativeToVehicle(position: new Position(right: -7.34,up: 0.5,backward: 18.9));\n"
+						+ "    this.cylinder.setRadius(radius: 0.5);\n" + "    this.cylinder.setLength(length: 1.0);\n"
+						+ "    this.cylinder.setPaint(paint: Color.WHITE);\n" + "    this.cylinder.setOpacity(opacity: 1.0);\n"
+						+ "    this.cylinder.setName(name: \"cylinder\");\n" + "    this.cylinder.setVehicle(vehicle: this);\n"
+						+ "    this.cylinder.setOrientationRelativeToVehicle(orientation: new Orientation(x: 0.0,y: 0.0,z: 0.0,w: 1.0));\n"
+						+ "    this.cylinder.setPositionRelativeToVehicle(position: new Position(right: 7.63,up: 0.0,backward: 19.7));\n"
+						+ "  }\n" + "\n" + "  void handleActiveChanged(Boolean isActive,Integer activationCount) {\n"
+						+ "    if(isActive) {\n" + "      if(activationCount==1) {\n" + "        this.performGeneratedSetUp();\n"
+						+ "        this.performCustomSetup();\n" + "        this.initializeEventListeners();\n" + "      } else {\n"
+						+ "        this.restoreStateAndEventListeners();\n" + "      }\n" + "    } else {\n"
+						+ "      this.preserveStateAndEventListeners();\n" + "    }\n" + "  }\n" + "  SGround getGround() {\n"
+						+ "    return this.ground;\n" + "  }\n" + "  SCamera getCamera() {\n" + "    return this.camera;\n"
+						+ "  }\n" + "  Walrus getWalrus() {\n" + "    return this.walrus;\n" + "  }\n" + "  Sphere getSphere() {\n"
+						+ "    return this.sphere;\n" + "  }\n" + "  Cylinder getCylinder() {\n" + "    return this.cylinder;\n"
+						+ "  }\n" + "}";
+		UnlinkedType tested = parseString( generatedScene);
+
+		assertNotNull("The parser should have returned something.", tested );
+	}
 }
