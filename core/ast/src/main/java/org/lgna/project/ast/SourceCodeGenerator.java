@@ -120,10 +120,14 @@ public abstract class SourceCodeGenerator {
 			appendSpace();
 			String parameterName = parameter.getValidName();
 			appendString( parameterName != null ? parameterName : "p" + i );
-			prefix = ",";
+			prefix = getListSeparator();
 			i += 1;
 		}
 		closeParen();
+	}
+
+	protected String getListSeparator() {
+		return ",";
 	}
 
 	public void appendGetter( Getter getter ) {
@@ -222,28 +226,38 @@ public abstract class SourceCodeGenerator {
 		} );
 	}
 
-	private void appendArguments( ArgumentOwner argumentOwner ) {
+	void appendArguments( ArgumentOwner argumentOwner ) {
 		openParen();
 		String prefix = "";
 		for( SimpleArgument argument : argumentOwner.getRequiredArgumentsProperty() ) {
 			appendString( prefix );
 			appendArgument( argument );
-			prefix = ",";
+			prefix = getListSeparator();
 		}
 		for( SimpleArgument argument : argumentOwner.getVariableArgumentsProperty() ) {
 			appendString( prefix );
 			appendArgument( argument );
-			prefix = ",";
+			prefix = getListSeparator();
 		}
 		for( JavaKeyedArgument argument : argumentOwner.getKeyedArgumentsProperty() ) {
 			appendString( prefix );
 			appendArgument( argument );
-			prefix = ",";
+			prefix = getListSeparator();
 		}
 		closeParen();
 	}
 
-	private void appendArgument( AbstractArgument argument ) {
+	private void appendArgument( SimpleArgument arg )
+	{
+		pushAndAppendArgument( arg );
+	}
+
+	protected void appendArgument( JavaKeyedArgument arg )
+	{
+		pushAndAppendArgument( arg );
+	}
+
+	private void pushAndAppendArgument( AbstractArgument argument ) {
 		AbstractParameter parameter = argument.parameter.getValue();
 		AbstractType<?, ?, ?> type = argument.getExpressionTypeForParameterType( parameter.getValueType() );
 		pushTypeForLambda( type );
@@ -256,24 +270,7 @@ public abstract class SourceCodeGenerator {
 
 	protected abstract void appendArgument( AbstractParameter parameter, AbstractArgument argument );
 
-	void appendKeyedArgument( JavaKeyedArgument arg ) {
-		Expression expressionValue = arg.expression.getValue();
-		if( expressionValue instanceof MethodInvocation ) {
-			MethodInvocation methodInvocation = (MethodInvocation)expressionValue;
-			AbstractMethod method = methodInvocation.method.getValue();
-			AbstractType<?, ?, ?> factoryType = AstUtilities.getKeywordFactoryType( arg );
-			if( factoryType != null ) {
-				appendTypeName( factoryType );
-				appendChar( '.' );
-				appendString( method.getName() );
-				appendArguments( methodInvocation );
-			} else {
-				appendExpression( expressionValue );
-			}
-		} else {
-			appendExpression( expressionValue );
-		}
-	}
+	protected abstract void appendKeyedArgument( JavaKeyedArgument arg );
 
 	protected void appendSingleStatement( Statement stmt, Runnable appender ) {
 		appender.run();

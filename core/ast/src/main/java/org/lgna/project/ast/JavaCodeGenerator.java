@@ -302,6 +302,25 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		argument.appendCode( this );
 	}
 
+	@Override protected void appendKeyedArgument( JavaKeyedArgument arg ) {
+		Expression expressionValue = arg.expression.getValue();
+		if( expressionValue instanceof MethodInvocation ) {
+			MethodInvocation methodInvocation = (MethodInvocation)expressionValue;
+			AbstractMethod method = methodInvocation.method.getValue();
+			AbstractType<?, ?, ?> factoryType = AstUtilities.getKeywordFactoryType( arg );
+			if( factoryType != null ) {
+				appendTypeName( factoryType );
+				appendChar( '.' );
+				appendString( method.getName() );
+				appendArguments( methodInvocation );
+			} else {
+				appendExpression( expressionValue );
+			}
+		} else {
+			appendExpression( expressionValue );
+		}
+	}
+
 	@Override protected String getTextWithImports() {
 		StringBuilder importsBuilder = getImports();
 		importsBuilder.append( getCodeStringBuilder() );

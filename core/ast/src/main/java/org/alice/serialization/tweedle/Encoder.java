@@ -1,5 +1,6 @@
 package org.alice.serialization.tweedle;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.serialization.DispatchingEncoder;
 import org.apache.commons.lang.StringUtils;
 import org.lgna.project.ast.*;
@@ -138,10 +139,42 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 		super.pushStatementDisabled();
 	}
 
+	@Override protected void appendArgument( JavaKeyedArgument arg )
+	{
+		appendKeyedArgument(arg);
+	}
+
+	@Override protected void appendKeyedArgument( JavaKeyedArgument arg ) {
+		Expression expressionValue = arg.expression.getValue();
+		if( expressionValue instanceof MethodInvocation ) {
+			MethodInvocation methodInvocation = (MethodInvocation) expressionValue;
+			AbstractMethod method = methodInvocation.method.getValue();
+			AbstractType<?, ?, ?> factoryType = AstUtilities.getKeywordFactoryType( arg );
+			if( factoryType != null ) {
+				appendString( method.getName() );
+				appendString(": ");
+				appendOneRequiredArgument( methodInvocation );
+				return;
+			}
+		}
+		appendExpression( expressionValue );
+	}
+
+	private void appendOneRequiredArgument( ArgumentOwner argumentOwner ) {
+		if (!argumentOwner.getVariableArgumentsProperty().isEmpty() ||
+						!argumentOwner.getKeyedArgumentsProperty().isEmpty() ||
+						argumentOwner.getRequiredArgumentsProperty().size() != 1) {
+			Logger.errln("Expected a single required argument.", argumentOwner);
+		}
+		if (argumentOwner.getRequiredArgumentsProperty().size() > 0) {
+			argumentOwner.getRequiredArgumentsProperty().get( 0 ).appendCode( this );
+		}
+	}
+
 	@Override protected void appendArgument( AbstractParameter parameter, AbstractArgument argument ) {
 		String label = parameter.getName();
-		// TODO Better handle missing names when parameter.getValueType().isEnum()
 		if (null == label) {
+			Logger.errln("Unable to name argument from parameter. Using 'unknown'. Generated code may contain errors.", argument, parameter);
 			label ="unknown";
 		}
 		appendString( label );
@@ -248,6 +281,10 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 
 	@Override protected void appendTypeName( AbstractType<?, ?, ?> type ) {
 		appendString( type.getName() );
+	}
+
+	@Override protected String getListSeparator() {
+		return ", ";
 	}
 
 	/** Formatting **/
