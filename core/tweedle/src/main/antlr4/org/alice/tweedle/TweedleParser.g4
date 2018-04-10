@@ -55,25 +55,13 @@ variableModifier
     ;
 
 classDeclaration
-    : CLASS identifier typeParameters?
+    : CLASS identifier
       (EXTENDS typeType)?
       (MODELS IDENTIFIER)?
       classBody
     ;
 
 identifier : IDENTIFIER ;
-
-typeParameters
-    : '<' typeParameter (',' typeParameter)* '>'
-    ;
-
-typeParameter
-    : IDENTIFIER (EXTENDS typeBound)?
-    ;
-
-typeBound
-    : typeType ('&' typeType)*
-    ;
 
 enumDeclaration
     : ENUM identifier '{' enumConstants? '}'
@@ -93,16 +81,13 @@ classBody
 
 classBodyDeclaration
     : ';'
-    | STATIC? block
     | classModifier* memberDeclaration
     ;
 
 memberDeclaration
     : methodDeclaration
-    | genericMethodDeclaration
     | fieldDeclaration
     | constructorDeclaration
-    | genericConstructorDeclaration
     | classDeclaration
     | enumDeclaration
     ;
@@ -125,14 +110,6 @@ methodBody
 typeTypeOrVoid
     : typeType
     | VOID
-    ;
-
-genericMethodDeclaration
-    : typeParameters methodDeclaration
-    ;
-
-genericConstructorDeclaration
-    : typeParameters constructorDeclaration
     ;
 
 constructorDeclaration
@@ -165,12 +142,7 @@ arrayInitializer
     ;
 
 classOrInterfaceType
-    : IDENTIFIER //typeArguments? ('.' IDENTIFIER typeArguments?)*
-    ;
-
-typeArgument
-    : typeType
-    | '?' ((EXTENDS | SUPER) typeType)?
+    : IDENTIFIER
     ;
 
 formalParameters
@@ -220,17 +192,15 @@ localVariableDeclaration
     ;
 
 statement
-    : blockLabel=block
-    | COUNT_UP_TO '(' IDENTIFIER '<' expression ')' statement
-    | IF parExpression statement (ELSE statement)?
-    | FOR_EACH '(' forControl ')' statement
-    | EACH_TOGETHER '(' forControl ')' statement
-    | WHILE parExpression statement
+    : COUNT_UP_TO '(' IDENTIFIER '<' expression ')' block
+    | IF parExpression block (ELSE block)?
+    | FOR_EACH '(' forControl ')' block
+    | EACH_TOGETHER '(' forControl ')' block
+    | WHILE parExpression block
     | DO_IN_ORDER block
     | DO_TOGETHER block
     | RETURN expression? ';'
     | statementExpression=expression ';'
-    | identifierLabel=IDENTIFIER ':' statement
     ;
 
 
@@ -252,10 +222,6 @@ labeledExpression
     : expressionLabel=IDENTIFIER ':' expression
     ;
 
-expressionList
-    : expression (',' expression)*
-    ;
-
 methodCall
     : IDENTIFIER '(' labeledExpressionList? ')'
     ;
@@ -266,9 +232,8 @@ expression
       (IDENTIFIER
       | methodCall
       | THIS
-      | NEW nonWildcardTypeArguments? innerCreator
+      | NEW innerCreator
       | SUPER superSuffix
-      | explicitGenericInvocation
       )
     | expression '[' expression ']'
     | methodCall
@@ -289,14 +254,7 @@ expression
     | expression bop='||' expression
     | expression bop='?' expression ':' expression
     | <assoc=right> expression LARROW expression
-//      bop=('=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '>>=' | '>>>=' | '<<=' | '%=')
-//      expression
     | lambdaExpression // Java8
-
-    // Java 8 methodReference
-    | expression '::' typeArguments? IDENTIFIER
-    | typeType '::' (typeArguments? IDENTIFIER | NEW)
-    | classType '::' typeArguments? NEW
     ;
 
 // Java8
@@ -324,25 +282,19 @@ primary
     | literal
     | IDENTIFIER
     | typeTypeOrVoid '.' CLASS
-    | nonWildcardTypeArguments (explicitGenericInvocationSuffix | THIS arguments)
-    ;
-
-classType
-    : (classOrInterfaceType '.')? IDENTIFIER typeArguments?
     ;
 
 creator
-    : nonWildcardTypeArguments createdName classCreatorRest
-    | createdName (arrayCreatorRest | classCreatorRest)
+    : createdName (arrayCreatorRest | classCreatorRest)
     ;
 
 createdName
-    : IDENTIFIER typeArgumentsOrDiamond? ('.' IDENTIFIER typeArgumentsOrDiamond?)*
+    : IDENTIFIER
     | primitiveType
     ;
 
 innerCreator
-    : IDENTIFIER nonWildcardTypeArgumentsOrDiamond? classCreatorRest
+    : IDENTIFIER classCreatorRest
     ;
 
 arrayCreatorRest
@@ -351,28 +303,6 @@ arrayCreatorRest
 
 classCreatorRest
     : arguments classBody?
-    ;
-
-explicitGenericInvocation
-    : nonWildcardTypeArguments explicitGenericInvocationSuffix
-    ;
-
-typeArgumentsOrDiamond
-    : '<' '>'
-    | typeArguments
-    ;
-
-nonWildcardTypeArgumentsOrDiamond
-    : '<' '>'
-    | nonWildcardTypeArguments
-    ;
-
-nonWildcardTypeArguments
-    : '<' typeList '>'
-    ;
-
-typeList
-    : typeType (',' typeType)*
     ;
 
 typeType
@@ -387,18 +317,9 @@ primitiveType
     | STRING
     ;
 
-typeArguments
-    : '<' typeArgument (',' typeArgument)* '>'
-    ;
-
 superSuffix
     : arguments
     | '.' IDENTIFIER arguments?
-    ;
-
-explicitGenericInvocationSuffix
-    : SUPER superSuffix
-    | IDENTIFIER arguments
     ;
 
 arguments
