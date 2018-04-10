@@ -48,11 +48,15 @@ import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
 import edu.cmu.cs.dennisc.pattern.IsInstanceCrawler;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import org.alice.serialization.tweedle.TweedleEncoderDecoder;
+import org.alice.tweedle.file.AudioReference;
+import org.alice.tweedle.file.ImageReference;
 import org.alice.tweedle.file.Manifest;
 import org.alice.tweedle.file.ManifestEncoderDecoder;
 import org.alice.tweedle.file.ResourceReference;
 import org.alice.tweedle.file.TypeReference;
 import org.lgna.common.Resource;
+import org.lgna.common.resources.AudioResource;
+import org.lgna.common.resources.ImageResource;
 import org.lgna.project.Project;
 import org.lgna.project.ProjectVersion;
 import org.lgna.project.VersionNotSupportedException;
@@ -133,7 +137,7 @@ public class JsonProjectIo implements ProjectIo{
 		Manifest manifest = createTypeManifest( type );
 		Set<Resource> resources = getResources( type, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
 
-		List<DataSource> entries = collectEntries( resources, dataSources );
+		List<DataSource> entries = collectEntries( manifest, resources, dataSources );
 		entries.add( dataSourceForType( manifest, type ) );
 		entries.add( manifestDataSource( manifest ) );
 		writeDataSources( os, entries );
@@ -154,7 +158,7 @@ public class JsonProjectIo implements ProjectIo{
 		Set<Resource> resources = getResources( project.getProgramType(), CrawlPolicy.COMPLETE);
 		compareResources( project.getResources(), resources );
 
-		List<DataSource> entries = collectEntries( resources, dataSources );
+		List<DataSource> entries = collectEntries( manifest, resources, dataSources );
 		entries.addAll( createEntriesForTypes( manifest, project.getNamedUserTypes()) );
 		entries.add( manifestDataSource( manifest ) );
 		writeDataSources( os, entries );
@@ -191,11 +195,11 @@ public class JsonProjectIo implements ProjectIo{
 		}
 	}
 
-	private List<DataSource> collectEntries( Set<Resource> resources, DataSource[] dataSources ){
+	private List<DataSource> collectEntries( Manifest manifest, Set<Resource> resources, DataSource[] dataSources ){
 		List<DataSource> entries = new ArrayList<>(  );
 		Collections.addAll( entries, dataSources );
 		entries.add( versionDataSource() );
-		addResources( entries, resources );
+		addResources( manifest, entries, resources );
 		return entries;
 	}
 
@@ -241,14 +245,24 @@ public class JsonProjectIo implements ProjectIo{
 		zos.close();
 	}
 
-	private static void addResources( List<DataSource> dataSources, Set<Resource> resources ) {
+	private static void addResources( Manifest manifest, List<DataSource> dataSources, Set<Resource> resources ) {
 		Set<String> usedEntryNames = new HashSet<>();
 		for( Resource resource : resources ) {
 			// TODO add entries to manifest avoiding duplicating names
 			String entryName = generateEntryName( resource, usedEntryNames );
 			usedEntryNames.add( entryName );
+			addResourceReference( manifest, resource );
 			// TODO Expand to cover arbitrary data files
 			dataSources.add( new ByteArrayDataSource( entryName, resource.getData() ) );
+		}
+	}
+
+	private static void addResourceReference( Manifest manifest, Resource resource ) {
+		if (resource instanceof AudioResource) {
+			manifest.resources.add(  new AudioReference( (AudioResource) resource ) );
+		}
+		if (resource instanceof ImageResource) {
+			manifest.resources.add(  new ImageReference( (ImageResource) resource) );
 		}
 	}
 

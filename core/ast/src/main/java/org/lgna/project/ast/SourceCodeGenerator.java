@@ -618,8 +618,12 @@ public abstract class SourceCodeGenerator {
 	}
 
 	void appendEscapedStringLiteral( StringLiteral literal ) {
+		appendEscapedString( literal.value.getValue() );
+	}
+
+	protected void appendEscapedString( String value ) {
 		appendChar( '"' );
-		String escaped = StringEscapeUtils.escapeJava(literal.value.getValue());
+		String escaped = StringEscapeUtils.escapeJava( value );
 		appendString( escaped );
 		appendChar( '"' );
 	}

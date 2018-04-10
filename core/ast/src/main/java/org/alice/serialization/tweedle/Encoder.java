@@ -165,8 +165,8 @@ public class Encoder extends SourceCodeGenerator {
 	@Override protected void appendArgument( AbstractParameter parameter, AbstractArgument argument ) {
 		String label = parameter.getName();
 		if (null == label) {
-			Logger.errln("Unable to name argument from parameter. Using 'unknown'. Generated code may contain errors.", argument, parameter);
-			label ="unknown";
+			Logger.errln("Unable to read argument name from parameter. Using the type. Generated code may contain errors.", argument, parameter);
+			label = parameter.getValueType().getName().toLowerCase();
 		}
 		appendString( label );
 		appendString( ": " );
@@ -238,8 +238,7 @@ public class Encoder extends SourceCodeGenerator {
 	/** Expressions **/
 
 	@Override protected void appendResourceExpression( ResourceExpression resourceExpression ) {
-		appendString( "//TODO append resources" );
-		appendString( resourceExpression.toString() );
+		appendEscapedString( resourceExpression.resource.getValue().getName() );
 	}
 
 	/** Comments **/
