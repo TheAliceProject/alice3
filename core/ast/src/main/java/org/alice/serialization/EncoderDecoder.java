@@ -46,13 +46,15 @@ package org.alice.serialization;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractNode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.code.CodeAppender;
 
 import java.util.Set;
 
 public interface EncoderDecoder<DOC> {
-	DOC encode( AbstractNode node );
+	<N extends AbstractNode & CodeAppender> DOC encode( N node );
 
-	DOC encode( AbstractNode node, Set<AbstractDeclaration> terminals );
+	<N extends AbstractNode & CodeAppender> DOC encode( N node, Set<AbstractDeclaration> terminals );
 
 	AbstractNode decode( DOC document ) throws VersionNotSupportedException;
 

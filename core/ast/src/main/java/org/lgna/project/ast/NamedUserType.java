@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.EnumProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
-import org.alice.serialization.DispatchingEncoder;
+import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
 
@@ -55,7 +55,7 @@ import java.util.List;
 /**
  * @author Dennis Cosgrove
  */
-public class NamedUserType extends UserType<NamedUserConstructor> implements CodeGenerator {
+public class NamedUserType extends UserType<NamedUserConstructor> implements CodeGenerator, CodeAppender {
 	public NamedUserType() {
 	}
 
@@ -116,10 +116,14 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 		return this.isStrictFloatingPoint.getValue();
 	}
 
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendClass( getCodeOrganizer( generator ), this );
+	}
+
 	@Override
 	public String generateCode( SourceCodeGenerator generator ) {
-		generator.appendClass( getCodeOrganizer( generator ), this );
-		return generator.getTextWithImports();
+		appendCode( generator );
+		return generator.getText();
 	}
 
 	private CodeOrganizer getCodeOrganizer( SourceCodeGenerator generator ) {
@@ -149,10 +153,6 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 		}
 
 		return codeOrganizer;
-	}
-
-	@Override public void encode( DispatchingEncoder encoder ) {
-		encoder.encodeNamedUserType(this);
 	}
 
 	public final StringProperty name = new StringProperty( this, null );

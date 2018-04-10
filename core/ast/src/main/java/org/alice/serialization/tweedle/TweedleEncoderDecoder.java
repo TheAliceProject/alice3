@@ -4,16 +4,18 @@ import org.alice.serialization.EncoderDecoder;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractNode;
+import org.lgna.project.ast.AbstractType;
+import org.lgna.project.code.CodeAppender;
 
 import java.util.Set;
 
 public class TweedleEncoderDecoder implements EncoderDecoder<String> {
 
-	@Override public String encode( AbstractNode node ) {
+	@Override public <N extends AbstractNode & CodeAppender> String encode( N node ) {
 		return new Encoder().encode( node );
 	}
 
-	@Override public String encode( AbstractNode node, Set<AbstractDeclaration> terminals ) {
+	@Override public <N extends AbstractNode & CodeAppender> String encode( N node, Set<AbstractDeclaration> terminals ) {
 		return new Encoder(terminals).encode( node );
 	}
 

@@ -256,7 +256,7 @@ public class XmlProjectIo implements ProjectIo{
 		} );
 	}
 
-	private static void writeType( AbstractType<?, ?, ?> type, ZipOutputStream zos, String entryName ) throws IOException {
+	private static void writeType( NamedUserType type, ZipOutputStream zos, String entryName ) throws IOException {
 		writeXML( (new XmlEncoderDecoder()).encode(type), zos, entryName );
 	}
 
@@ -330,7 +330,7 @@ public class XmlProjectIo implements ProjectIo{
 	public void writeProject( OutputStream os, final Project project, DataSource... dataSources ) throws IOException {
 		ZipOutputStream zos = new ZipOutputStream( os );
 		writeVersions( zos );
-		AbstractType<?, ?, ?> programType = project.getProgramType();
+		NamedUserType programType = project.getProgramType();
 		writeType( programType, zos, PROGRAM_TYPE_ENTRY_NAME );
 		final Set<PropertyKey<Object>> propertyKeys = project.getPropertyKeys();
 		if (!propertyKeys.isEmpty()) {

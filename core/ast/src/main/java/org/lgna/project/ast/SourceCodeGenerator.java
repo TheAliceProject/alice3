@@ -66,8 +66,6 @@ public abstract class SourceCodeGenerator {
 		return String.valueOf( getCodeStringBuilder() );
 	}
 
-	protected abstract String getTextWithImports();
-
 	protected StringBuilder getCodeStringBuilder() {
 		return codeStringBuilder;
 	}

@@ -1,9 +1,9 @@
 package org.alice.serialization.tweedle;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import org.alice.serialization.DispatchingEncoder;
 import org.apache.commons.lang.StringUtils;
 import org.lgna.project.ast.*;
+import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeOrganizer;
 
 import java.util.HashMap;
@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
+public class Encoder extends SourceCodeGenerator {
 	private final String INDENTION = "  ";
 	private final String NODE_DISABLE = "*<";
 	private final String NODE_ENABLE = ">*";
@@ -34,18 +34,9 @@ public class Encoder extends SourceCodeGenerator implements DispatchingEncoder {
 		terminalNodes = new HashSet<>();
 	}
 
-	public String encode( AbstractNode node ) {
-		node.encode( this );
+	public String encode( CodeAppender node ) {
+		node.appendCode( this );
 		return getCodeStringBuilder().toString();
-	}
-
-	@Override
-	public void encodeNamedUserType( NamedUserType userType ) {
-		userType.generateCode( this );
-	}
-
-	@Override protected String getTextWithImports() {
-		return getText();
 	}
 
 	/** Class structure **/

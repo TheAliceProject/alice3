@@ -188,6 +188,12 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		}
 	}
 
+	@Override void appendClass( CodeOrganizer codeOrganizer, NamedUserType userType ) {
+		super.appendClass( codeOrganizer, userType );
+		// Prepend Imports
+		getCodeStringBuilder().insert( 0, getImports() );
+	}
+
 	@Override protected void appendClassHeader( NamedUserType userType ) {
 		appendString( "class " );
 		appendTypeName( userType );
@@ -199,6 +205,7 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 	@Override protected void appendClassFooter() {
 		appendString( "}" );
 	}
+
 
 	@Override protected void appendSection( CodeOrganizer codeOrganizer, NamedUserType userType,
 																					Map.Entry<String, List<CodeAppender>> entry ) {
@@ -319,12 +326,6 @@ public class JavaCodeGenerator extends SourceCodeGenerator{
 		} else {
 			appendExpression( expressionValue );
 		}
-	}
-
-	@Override protected String getTextWithImports() {
-		StringBuilder importsBuilder = getImports();
-		importsBuilder.append( getCodeStringBuilder() );
-		return importsBuilder.toString();
 	}
 
 	private StringBuilder getImports() {
