@@ -49,7 +49,7 @@ import org.lgna.project.code.CodeGenerator;
 /**
  * @author Dennis Cosgrove
  */
-public class UserMethod extends AbstractUserMethod implements CodeGenerator, CodeAppender {
+public class UserMethod extends AbstractUserMethod implements CodeGenerator {
 	public UserMethod() {
 	}
 
@@ -114,12 +114,6 @@ public class UserMethod extends AbstractUserMethod implements CodeGenerator, Cod
 
 	public String generateHeaderJavaCode( JavaCodeGenerator generator ) {
 		generator.appendMethodHeader( this );
-		return generator.getText();
-	}
-
-	@Override
-	public String generateCode( SourceCodeGenerator generator ) {
-		this.appendCode( generator );
 		return generator.getText();
 	}
 

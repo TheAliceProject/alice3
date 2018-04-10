@@ -46,7 +46,6 @@ package org.lgna.project.ast;
 import edu.cmu.cs.dennisc.property.BooleanProperty;
 import edu.cmu.cs.dennisc.property.EnumProperty;
 import edu.cmu.cs.dennisc.property.StringProperty;
-import org.lgna.project.code.CodeAppender;
 import org.lgna.project.code.CodeGenerator;
 import org.lgna.project.code.CodeOrganizer;
 
@@ -55,7 +54,7 @@ import java.util.List;
 /**
  * @author Dennis Cosgrove
  */
-public class NamedUserType extends UserType<NamedUserConstructor> implements CodeGenerator, CodeAppender {
+public class NamedUserType extends UserType<NamedUserConstructor> implements CodeGenerator {
 	public NamedUserType() {
 	}
 
@@ -118,12 +117,6 @@ public class NamedUserType extends UserType<NamedUserConstructor> implements Cod
 
 	@Override public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendClass( getCodeOrganizer( generator ), this );
-	}
-
-	@Override
-	public String generateCode( SourceCodeGenerator generator ) {
-		appendCode( generator );
-		return generator.getText();
 	}
 
 	private CodeOrganizer getCodeOrganizer( SourceCodeGenerator generator ) {

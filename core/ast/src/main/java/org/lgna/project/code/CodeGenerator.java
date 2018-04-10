@@ -47,8 +47,11 @@ import org.lgna.project.ast.SourceCodeGenerator;
 /**
  * @author dculyba
  */
-public interface CodeGenerator {
+public interface CodeGenerator extends CodeAppender{
 
-	public String generateCode( SourceCodeGenerator generator );
+	default String generateCode( SourceCodeGenerator generator ) {
+		appendCode( generator );
+		return generator.getText();
+	}
 
 }
