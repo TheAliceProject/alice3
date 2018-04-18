@@ -81,7 +81,7 @@ public class TweedleUnlinkedParser {
 
 		@Override public Void visitFieldDeclaration( TweedleParser.FieldDeclarationContext context )
 		{
-			TweedleTypeReference type = new TweedleTypeReference( context.typeType().getText());
+			TweedleType type = getTypeForName( context.typeType().getText() );
 			VariableListVisitor variableVisitor = new VariableListVisitor(modifiers, type);
 			List<TweedleField> properties = context.variableDeclarators().accept( variableVisitor );
 			tweedleClass.properties.addAll(properties);
@@ -96,7 +96,7 @@ public class TweedleUnlinkedParser {
 							.map( stmt -> stmt.accept( statementVisitor ) ).collect(toList());
 			TweedleMethod method = new TweedleMethod(
 							modifiers,
-							new TweedleTypeReference(context.typeTypeOrVoid().getText()),
+							getTypeForName( context.typeTypeOrVoid().getText() ),
 							context.IDENTIFIER().getText(),
 							requiredParameters(context.formalParameters()),
 							optionalParameters(context.formalParameters()),
@@ -111,8 +111,7 @@ public class TweedleUnlinkedParser {
 			List<TweedleStatement> body =
 							context.constructorBody.blockStatement().stream()
 										 .map( stmt -> stmt.accept( statementVisitor ) ).collect(toList());
-			TweedleConstructor constructor = new TweedleConstructor(
-							new TweedleTypeReference(context.IDENTIFIER().getText()),
+			TweedleConstructor constructor = new TweedleConstructor( getTypeForName( context.IDENTIFIER().getText() ),
 							context.IDENTIFIER().getText(),
 							requiredParameters(context.formalParameters()),
 							optionalParameters(context.formalParameters()),
@@ -128,8 +127,7 @@ public class TweedleUnlinkedParser {
 				return new ArrayList<>();
 			}
 			return context.formalParameterList().requiredParameter()
-										.stream().map(field -> new TweedleRequiredParameter(
-							new TweedleTypeReference(field.typeType().getText()),
+										.stream().map(field -> new TweedleRequiredParameter( getTypeForName( field.typeType().getText() ),
 							field.variableDeclaratorId().IDENTIFIER().getText()
 			)).collect(toList());
 		}
@@ -141,11 +139,20 @@ public class TweedleUnlinkedParser {
 				return new ArrayList<>();
 			}
 			return context.formalParameterList().optionalParameter().stream().map( field -> {
-				final TweedleTypeReference type = new TweedleTypeReference( field.typeType().getText() );
+				final TweedleType type = getTypeForName( field.typeType().getText() );
 				final String varName = field.variableDeclaratorId().IDENTIFIER().getText();
 				return new TweedleOptionalParameter( type, varName, field.accept( new ExpressionVisitor(type) ) );
 			} ).collect( toList());
 		}
+	}
+
+	private TweedleType getTypeForName( String typeName ) {
+		for (TweedlePrimitiveType prim : TweedleTypes.PRIMITIVE_TYPES) {
+			if (prim.getName().equals( typeName )) {
+				return prim;
+			}
+		}
+		return new TweedleTypeReference( typeName );
 	}
 
 	private class VariableListVisitor extends TweedleParserBaseVisitor<List<TweedleField>> {
@@ -297,7 +304,7 @@ public class TweedleUnlinkedParser {
 		@Override public TweedleStatement visitLocalVariableDeclaration( TweedleParser.LocalVariableDeclarationContext context)
 		{
 			List<String> modifiers = context.variableModifier().stream().map(modifier -> modifier.getText()).collect(toList());
-			TweedleTypeReference type = new TweedleTypeReference(context.typeType().getText());
+			TweedleType type = getTypeForName( context.typeType().getText() );
 			VariableListVisitor variableVisitor = new VariableListVisitor(modifiers, type);
 			List<TweedleField> variables = context.variableDeclarators().accept(variableVisitor);
 			return null;
