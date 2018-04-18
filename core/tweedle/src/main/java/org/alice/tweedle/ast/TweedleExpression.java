@@ -5,15 +5,15 @@ import org.alice.tweedle.TweedleValue;
 import org.alice.tweedle.run.Frame;
 
 abstract public class TweedleExpression {
-	private TweedleType resultType;
+	private TweedleType type;
 
-	protected TweedleExpression( TweedleType resultType ) {
-		this.resultType = resultType;
+	protected TweedleExpression( TweedleType type ) {
+		this.type = type;
+	}
+
+	public TweedleType getType() {
+		return type;
 	}
 
 	abstract public TweedleValue evaluate( Frame frame );
-
-	public TweedleType getResultType() {
-		return resultType;
-	}
 }

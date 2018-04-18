@@ -35,7 +35,7 @@ public class TweedleArrayInitializer extends TweedleExpression {
 
 	@Override public TweedleValue evaluate( Frame frame ) {
 		return new TweedleArray(
-						(TweedleArrayType) this.getResultType(),
+						(TweedleArrayType) this.getType(),
 						elements.stream().map( el -> el.evaluate( frame ) ).collect( toList() ) );
 	}
 }

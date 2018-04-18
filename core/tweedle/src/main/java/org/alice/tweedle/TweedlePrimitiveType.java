@@ -6,6 +6,10 @@ public class TweedlePrimitiveType<T> extends TweedleType {
 		super( name, impliedType );
 	}
 
+	@Override public String toString() {
+		return getName();
+	}
+
 	public TweedlePrimitiveValue<T> createValue( T value ) {
 		return new TweedlePrimitiveValue<T>( value, this );
 	}

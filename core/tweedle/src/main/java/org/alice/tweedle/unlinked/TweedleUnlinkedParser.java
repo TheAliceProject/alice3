@@ -3,6 +3,7 @@ package org.alice.tweedle.unlinked;
 import org.alice.tweedle.*;
 import org.alice.tweedle.ast.*;
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +12,19 @@ import static java.util.stream.Collectors.toList;
 
 public class TweedleUnlinkedParser {
 
-	public TweedleType parse( String someLangSourceCode ) {
-		CharStream charStream = new ANTLRInputStream( someLangSourceCode );
+	TweedleType parseType( String sourceForType ) {
+		return new TypeVisitor().visit( tweedleParserForSource( sourceForType ).typeDeclaration() );
+	}
+
+	TweedleExpression parseExpression( String sourceForExpression ) {
+		return new ExpressionVisitor(null ).visit( tweedleParserForSource( sourceForExpression ).expression() );
+	}
+
+	private TweedleParser tweedleParserForSource( String source ) {
+		CharStream charStream = new ANTLRInputStream( source );
 		TweedleLexer lexer = new TweedleLexer( charStream );
 		TokenStream tokens = new CommonTokenStream( lexer );
-		TweedleParser parser = new TweedleParser( tokens );
-
-		TypeVisitor typeVisitor = new TypeVisitor();
-		return typeVisitor.visit( parser.typeDeclaration() );
+		return new TweedleParser( tokens );
 	}
 
 	private class TypeVisitor extends TweedleParserBaseVisitor<TweedleType> {
@@ -185,11 +191,52 @@ public class TweedleUnlinkedParser {
 			this.expectedType = expectedType;
 		}
 
+		@Override public TweedleExpression visitPrimary( TweedleParser.PrimaryContext context ) {
+			if ( context.THIS() != null ) {
+				return new ThisExpression(null);
+			}
+			//TweedleParser.LiteralContext x = context.literal();
+			return super.visitPrimary( context );
+		}
+
+		@Override public TweedleExpression visitLiteral( TweedleParser.LiteralContext context ) {
+			TerminalNode wholeNumber = context.DECIMAL_LITERAL();
+			if (wholeNumber != null) {
+				int value = Integer.parseInt( wholeNumber.getSymbol().getText() );
+				return TweedleTypes.WHOLE_NUMBER.createValue( value );
+			}
+
+			TerminalNode flt = context.FLOAT_LITERAL();
+			if (flt != null) {
+				double value = Double.parseDouble( flt.getSymbol().getText() );
+				return TweedleTypes.DECIMAL_NUMBER.createValue( value );
+			}
+
+			TerminalNode nul = context.NULL_LITERAL();
+			if (nul != null) {
+				return TweedleNull.NULL;
+			}
+
+			TerminalNode bool = context.BOOL_LITERAL();
+			if (bool != null) {
+				boolean value = Boolean.parseBoolean( bool.getSymbol().getText() );
+				return TweedleTypes.BOOLEAN.createValue( value );
+			}
+
+			TerminalNode str = context.STRING_LITERAL();
+			if (str != null) {
+				final String quotedString = str.getSymbol().getText();
+				return TweedleTypes.STRING.createValue( quotedString.substring( 1, quotedString.length()-1 ) );
+			}
+
+			return super.visitLiteral( context );
+		}
+
 		@Override public TweedleExpression visitExpression( TweedleParser.ExpressionContext context )
 		{
 			TweedleExpression expression = buildExpression( context );
 			if (expectedType == null || expression == null ||
-							expectedType.willAcceptValueOfType( expression.getResultType()) ) {
+							expectedType.willAcceptValueOfType( expression.getType()) ) {
 				return expression;
 			}
 			return null;
@@ -215,7 +262,7 @@ public class TweedleUnlinkedParser {
 						return getFirstExpression( TweedleTypes.NUMBER, context );
 					case "-":
 						// A negative number, or a sign flip. Send along negated child.
-						return new NegativeExpression( getFirstExpression( TweedleTypes.NUMBER, context ) );
+						return getNegativeOfExpression( getFirstExpression( TweedleTypes.NUMBER, context ) );
 					case "!":
 						return new LogicalNotExpression( getFirstExpression( TweedleTypes.BOOLEAN, context ) );
 					default:
@@ -256,7 +303,15 @@ public class TweedleUnlinkedParser {
 					throw new RuntimeException( "No such operation as " + operation.getText());
 				}
 			}
-			return null;
+			return super.visitExpression( context );
+		}
+
+		private TweedleExpression getNegativeOfExpression( TweedleExpression exp ) {
+			final NegativeExpression negativeExpression = new NegativeExpression( exp );
+			if (exp instanceof TweedlePrimitiveValue) {
+				return negativeExpression.evaluate( null );
+			}
+			return negativeExpression;
 		}
 
 		private TweedleExpression getFirstExpression( TweedlePrimitiveType type, TweedleParser.ExpressionContext context ) {

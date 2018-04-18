@@ -10,6 +10,7 @@ public class TweedleObject extends TweedleValue {
 	private final TweedleClass clazz;
 
 	public TweedleObject( TweedleClass aClass ) {
+		super(aClass);
 		clazz = aClass;
 	}
 
@@ -27,9 +28,5 @@ public class TweedleObject extends TweedleValue {
 		TweedleValue value = null; //clazz.initialValueForField(frame, this, field);
 		set( field, value );
 		return value;
-	}
-
-	@Override public TweedleType getType() {
-		return clazz;
 	}
 }

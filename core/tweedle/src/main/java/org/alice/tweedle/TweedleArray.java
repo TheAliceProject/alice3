@@ -7,6 +7,7 @@ public class TweedleArray extends TweedleValue {
 	private final TweedleArrayType arrayType;
 
 	public TweedleArray( TweedleArrayType arrayType, List<TweedleValue> initialValues ) {
+		super(arrayType);
 		//TODO capture values type and verify values they match
 		values = initialValues ;
 		this.arrayType = arrayType;
@@ -18,10 +19,6 @@ public class TweedleArray extends TweedleValue {
 
 	public int length() {
 		return values.size();
-	}
-
-	@Override public TweedleType getType() {
-		return arrayType;
 	}
 
 	@Override public boolean equals( Object obj ) {

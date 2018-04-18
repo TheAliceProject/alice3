@@ -9,89 +9,87 @@ import static org.junit.Assert.*;
 
 public class TweedleParseTest {
 
-	private TweedleType parseString( String source) {
-		TweedleUnlinkedParser t = new TweedleUnlinkedParser();
-		return t.parse( source );
+	private TweedleType parseType( String source) {
+		return new TweedleUnlinkedParser().parseType( source );
 	}
-
 
 	@Test
 	public void somethingShouldBeCreatedForARootClass() {
-		TweedleType tested = parseString( "class SThing {}" );
+		TweedleType tested = parseType( "class SThing {}" );
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
 
 	@Test
 	public void aRootClassShouldBeCreated() {
-		TweedleType tested = parseString( "class SThing {}" );
+		TweedleType tested = parseType( "class SThing {}" );
 
 		assertTrue("The parser should have returned a TweedleClass.", tested instanceof TweedleClass );
 	}
 
 	@Test
 	public void classShouldKnowItsName() {
-		TweedleType tested = parseString( "class SThing {}" );
+		TweedleType tested = parseType( "class SThing {}" );
 
 		assertEquals( "The name should be 'SThing'", "SThing", tested.getName() );
 	}
 
 	@Test(expected=NullPointerException.class)
 	public void subclassOfBooleanPrimitiveShouldFail() {
-		parseString( "class SScene extends Boolean {}" );
+		parseType( "class SScene extends Boolean {}" );
 	}
 
 	@Test(expected=NullPointerException.class)
 	public void subclassOfDecimalPrimitiveShouldFail() {
-		parseString( "class SScene extends DecimalNumber {}" );
+		parseType( "class SScene extends DecimalNumber {}" );
 	}
 
 	@Test(expected=NullPointerException.class)
 	public void subclassOfWholePrimitiveShouldFail() {
-		parseString( "class SScene extends WholeNumber {}" );
+		parseType( "class SScene extends WholeNumber {}" );
 	}
 
 	@Test(expected=NullPointerException.class)
 	public void subclassOfNumberPrimitiveShouldFail() {
-		parseString( "class SScene extends Number {}" );
+		parseType( "class SScene extends Number {}" );
 	}
 
 	@Test(expected=NullPointerException.class)
 	public void subclassOfStringPrimitiveShouldFail() {
-		parseString( "class SScene extends String {}" );
+		parseType( "class SScene extends String {}" );
 	}
 
 	@Test
 	public void enumNamedSameAsBooleanPrimitiveShouldCreateSomething() {
-		TweedleType tested = parseString( "enum Boolean {TRUE, FALSE}" );
+		TweedleType tested = parseType( "enum Boolean {TRUE, FALSE}" );
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
 
 	@Test
 	public void classNamedSameAsBooleanPrimitiveShouldCreateSomething() {
-		TweedleType tested = parseString( "class Boolean {}" );
+		TweedleType tested = parseType( "class Boolean {}" );
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
 
 	@Test
 	public void somethingShouldBeCreatedForASubclass() {
-		TweedleType tested = parseString( "class SScene extends SThing {}" );
+		TweedleType tested = parseType( "class SScene extends SThing {}" );
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
 
 	@Test
 	public void aSubclassShouldBeCreated() {
-		TweedleType tested = parseString( "class SScene extends SThing {}" );
+		TweedleType tested = parseType( "class SScene extends SThing {}" );
 
 		assertTrue("The parser should have returned a TweedleClass.", tested instanceof TweedleClass);
 	}
 
 	@Test
 	public void classNameShouldBeReturnedOnSubclass() {
-		TweedleType tested = parseString( "class SScene extends SThing {}" );
+		TweedleType tested = parseType( "class SScene extends SThing {}" );
 
 		assertEquals("The class name should have been SScene.",
 								 "SScene",
@@ -100,7 +98,7 @@ public class TweedleParseTest {
 
 	@Test
 	public void superclassNameShouldBeReturnedOnSubclass() {
-		TweedleClass sScene = (TweedleClass) parseString( "class SScene extends SThing {}" );
+		TweedleClass sScene = (TweedleClass) parseType( "class SScene extends SThing {}" );
 
 		assertEquals("The class SScene should have a superclass name SThing.",
 						     "SThing",
@@ -109,21 +107,21 @@ public class TweedleParseTest {
 
 	@Test
 	public void somethingShouldBeCreatedForAnEnum() {
-		TweedleType tested = parseString( "enum Direction {UP, DOWN}" );
+		TweedleType tested = parseType( "enum Direction {UP, DOWN}" );
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
 
 	@Test
 	public void anEnumShouldBeCreated() {
-		TweedleType tested = parseString( "enum Direction {UP, DOWN}" );
+		TweedleType tested = parseType( "enum Direction {UP, DOWN}" );
 
 		assertTrue("The parser should have returned an TweedleEnum.", tested instanceof TweedleEnum );
 	}
 
 	@Test
 	public void nameShouldBeReturnedOnEnum() {
-		TweedleType tested = parseString( "enum Direction {UP, DOWN}" );
+		TweedleType tested = parseType( "enum Direction {UP, DOWN}" );
 
 		assertEquals("The enum name should have been Direction.",
 						"Direction",
@@ -132,7 +130,7 @@ public class TweedleParseTest {
 
 	@Test
 	public void enumShouldIncludeTwoValues() {
-		TweedleEnum directionEnum = (TweedleEnum) parseString( "enum Direction {UP, DOWN}" );
+		TweedleEnum directionEnum = (TweedleEnum) parseType( "enum Direction {UP, DOWN}" );
 
 		assertEquals("The enum Direction should have two values.",
 						2,
@@ -141,7 +139,7 @@ public class TweedleParseTest {
 
 	@Test
 	public void enumShouldIncludeUpValue() {
-		TweedleEnum directionEnum = (TweedleEnum) parseString( "enum Direction {UP, DOWN}" );
+		TweedleEnum directionEnum = (TweedleEnum) parseType( "enum Direction {UP, DOWN}" );
 
 		assertTrue("The enum Direction should include UP.",
 						directionEnum.getValues().contains( "UP" ) );
@@ -149,7 +147,7 @@ public class TweedleParseTest {
 
 	@Test
 	public void enumShouldIncludeDownValue() {
-		TweedleEnum directionEnum = (TweedleEnum) parseString( "enum Direction {UP, DOWN}" );
+		TweedleEnum directionEnum = (TweedleEnum) parseType( "enum Direction {UP, DOWN}" );
 
 		assertTrue("The enum Direction should include DOWN.",
 						directionEnum.getValues().contains( "DOWN" ) );
@@ -157,7 +155,7 @@ public class TweedleParseTest {
 
 	@Test
 	public void enumShouldNotIncludeLeftValue() {
-		TweedleEnum directionEnum = (TweedleEnum) parseString( "enum Direction {UP, DOWN}" );
+		TweedleEnum directionEnum = (TweedleEnum) parseType( "enum Direction {UP, DOWN}" );
 
 		assertFalse("The enum Direction should not include LEFT.",
 						directionEnum.getValues().contains( "LEFT" ) );
@@ -170,7 +168,7 @@ public class TweedleParseTest {
 						+ "    super();\n"
 						+ "  }\n"
 						+ "}";
-		TweedleType tested = parseString( scene);
+		TweedleType tested = parseType( scene);
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
@@ -187,7 +185,7 @@ public class TweedleParseTest {
 						+ "    });\n"
 						+ "  }\n"
 						+ "}";
-		TweedleType tested = parseString( scene);
+		TweedleType tested = parseType( scene);
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
@@ -273,7 +271,7 @@ public class TweedleParseTest {
 						+ "  }\n" + "  Walrus getWalrus() {\n" + "    return this.walrus;\n" + "  }\n" + "  Sphere getSphere() {\n"
 						+ "    return this.sphere;\n" + "  }\n" + "  Cylinder getCylinder() {\n" + "    return this.cylinder;\n"
 						+ "  }\n" + "}";
-		TweedleType tested = parseString( generatedScene);
+		TweedleType tested = parseType( generatedScene);
 
 		assertNotNull("The parser should have returned something.", tested );
 	}

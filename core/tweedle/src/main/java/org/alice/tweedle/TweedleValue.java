@@ -1,6 +1,15 @@
 package org.alice.tweedle;
 
-public abstract class TweedleValue {
+import org.alice.tweedle.ast.TweedleExpression;
+import org.alice.tweedle.run.Frame;
 
-	public abstract TweedleType getType();
+public abstract class TweedleValue extends TweedleExpression {
+
+	protected TweedleValue( TweedleType type ) {
+		super( type );
+	}
+
+	@Override public TweedleValue evaluate( Frame frame ) {
+		return this;
+	}
 }

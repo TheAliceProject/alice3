@@ -9,16 +9,13 @@ public class TweedlePrimitiveValue<T> extends TweedleValue {
 	private final TweedlePrimitiveType<T> type;
 
 	TweedlePrimitiveValue( T value, TweedlePrimitiveType<T> type ) {
+		super(type);
 		this.value = value;
 		this.type = type;
 	}
 
 	public T getPrimitiveValue() {
 		return value;
-	}
-
-	@Override public TweedleType getType() {
-		return type;
 	}
 
 	@Override public boolean equals( Object obj ) {
