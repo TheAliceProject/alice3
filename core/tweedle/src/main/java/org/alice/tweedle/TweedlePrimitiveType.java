@@ -1,8 +1,12 @@
 package org.alice.tweedle;
 
-// TODO consider subclassing this for each type
-abstract public class TweedlePrimitiveType extends TweedleType{
-	public TweedlePrimitiveType( String name ) {
-		super( name );
+public class TweedlePrimitiveType<T> extends TweedleType {
+
+	TweedlePrimitiveType( String name, TweedleType impliedType ) {
+		super( name, impliedType );
+	}
+
+	public TweedlePrimitiveValue<T> createValue( T value ) {
+		return new TweedlePrimitiveValue<T>( value, this );
 	}
 }

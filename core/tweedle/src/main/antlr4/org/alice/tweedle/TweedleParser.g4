@@ -88,8 +88,6 @@ memberDeclaration
     : methodDeclaration
     | fieldDeclaration
     | constructorDeclaration
-    | classDeclaration
-    | enumDeclaration
     ;
 
 /* We use rule this even for void methods which cannot have [] after parameters.
@@ -231,29 +229,20 @@ expression
     | expression bop='.'
       (IDENTIFIER
       | methodCall
-      | THIS
       | NEW innerCreator
       | SUPER superSuffix
       )
     | expression '[' expression ']'
-    | methodCall
     | NEW creator
-    | '(' typeType ')' expression
-    | expression postfix=('++' | '--')
-    | prefix=('+'|'-'|'++'|'--') expression
-    | prefix=('~'|'!') expression
+    | prefix=('+'|'-') expression
+    | prefix='!' expression
     | expression bop=('*'|'/'|'%') expression
     | expression bop=('+'|'-') expression
-    | expression ('<' '<' | '>' '>' '>' | '>' '>') expression
     | expression bop=('<=' | '>=' | '>' | '<') expression
     | expression bop=('==' | '!=') expression
-    | expression bop='&' expression
-    | expression bop='^' expression
-    | expression bop='|' expression
     | expression bop='&&' expression
     | expression bop='||' expression
-    | expression bop='?' expression ':' expression
-    | <assoc=right> expression LARROW expression
+    | <assoc=right> expression bop=LARROW expression
     | lambdaExpression // Java8
     ;
 

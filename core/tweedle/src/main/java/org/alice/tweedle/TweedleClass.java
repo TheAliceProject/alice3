@@ -3,22 +3,48 @@ package org.alice.tweedle;
 import org.alice.tweedle.run.Frame;
 import org.alice.tweedle.run.TweedleObject;
 
-// Analog to NamedUserConstructor?
-public class TweedleClass extends TweedleType {
-	final private String superclassName;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TweedleClass extends TweedleType implements InvocableMethodHolder {
+	private InvocableMethodHolder superclass;
+
+	public List<TweedleField> properties;
+	public List<TweedleMethod> methods;
+	public List<TweedleConstructor> constructors;
 
 	public TweedleClass( String className ) {
 		super( className );
-		superclassName = null;
+		superclass = null;
+		this.properties = new ArrayList<>();
+		this.methods = new ArrayList<>();
+		this.constructors = new ArrayList<>();
+	}
+
+	private TweedleClass( String className, TweedleTypeReference superClass ) {
+		super( className, superClass );
+		this.superclass = superClass;
+		this.properties = new ArrayList<>();
+		this.methods = new ArrayList<>();
+		this.constructors = new ArrayList<>();
 	}
 
 	public TweedleClass( String className, String superClassName ) {
-		super( className );
-		this.superclassName = superClassName;
+		this( className, new TweedleTypeReference( superClassName ));
 	}
 
 	public String getSuperclassName() {
-		return superclassName;
+		return superclass == null ? null : superclass.getName();
+	}
+
+	@Override public void invoke( Frame frame, TweedleObject target, TweedleMethod method, TweedleValue[] arguments ) {
+	  if (methods.contains( method ))
+		{
+			method.invoke(frame, target, arguments);
+		} else {
+	  	//TODO
+	  	superclass.invoke(frame, target, method, arguments);
+		}
 	}
 
 	public TweedleObject instantiate( Frame frame, TweedleValue[] arguments ) {

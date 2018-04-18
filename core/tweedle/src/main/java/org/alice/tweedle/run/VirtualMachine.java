@@ -42,13 +42,12 @@
  *******************************************************************************/
 package org.alice.tweedle.run;
 
-import org.alice.tweedle.TweedleExpression;
+import org.alice.tweedle.ast.TweedleExpression;
 import org.alice.tweedle.TweedleField;
 import org.alice.tweedle.TweedleStatement;
 import org.alice.tweedle.TweedleArray;
 import org.alice.tweedle.TweedleClass;
 import org.alice.tweedle.TweedleMethod;
-import org.alice.tweedle.TweedleType;
 import org.alice.tweedle.TweedleValue;
 
 public abstract class VirtualMachine {
@@ -115,13 +114,13 @@ public abstract class VirtualMachine {
 		execute(frame, statement);
 	}
 
-	private <T extends TweedleType> TweedleArray<?> createArray( T[] values ) {
-		return new TweedleArray<T>(values);
-	}
+/*	private <T extends TweedleValue> TweedleArray createArray( T[] values ) {
+		return new TweedleArray( values );
+	}*/
 
 	/*private Object evaluateArgument( AbstractArgument argument ) {
 		assert argument != null;
-		Expression expression = argument.expression.getValue();
+		Expression expression = argument.expression.getPrimitiveValue();
 		assert expression != null;
 		if( expression instanceof LambdaExpression ) {
 			return this.EPIC_HACK_evaluateLambdaExpression( (LambdaExpression)expression, argument );
@@ -230,7 +229,7 @@ public abstract class VirtualMachine {
 		try {
 			//method specific
 		} catch( ReturnException re ) {
-			return re.getValue();
+			return re.getPrimitiveValue();
 		} finally {
 			popFrame();
 		}*/
@@ -240,21 +239,21 @@ public abstract class VirtualMachine {
 
 
 	protected Object evaluateAssignmentExpression( AssignmentExpression assignmentExpression ) {
-		Expression leftHandExpression = assignmentExpression.leftHandSide.getValue();
-		Expression rightHandExpression = assignmentExpression.rightHandSide.getValue();
+		Expression leftHandExpression = assignmentExpression.leftHandSide.getPrimitiveValue();
+		Expression rightHandExpression = assignmentExpression.rightHandSide.getPrimitiveValue();
 		Object rightHandValue = this.evaluate( frame, rightHandExpression );
-		if( assignmentExpression.operator.getValue() == AssignmentExpression.Operator.ASSIGN ) {
+		if( assignmentExpression.operator.getPrimitiveValue() == AssignmentExpression.Operator.ASSIGN ) {
 			if( leftHandExpression instanceof FieldAccess ) {
 				FieldAccess fieldAccess = (FieldAccess)leftHandExpression;
-				this.set( fieldAccess.field.getValue(), this.evaluate( frame, fieldAccess.expression.getValue() ), rightHandValue );
+				this.set( fieldAccess.field.getPrimitiveValue(), this.evaluate( frame, fieldAccess.expression.getPrimitiveValue() ), rightHandValue );
 			} else if( leftHandExpression instanceof LocalAccess ) {
 				LocalAccess localAccess = (LocalAccess)leftHandExpression;
-				this.setLocal( localAccess.local.getValue(), rightHandValue );
+				this.setLocal( localAccess.local.getPrimitiveValue(), rightHandValue );
 			} else if( leftHandExpression instanceof ArrayAccess ) {
 				ArrayAccess arrayAccess = (ArrayAccess)leftHandExpression;
-				this.setItemAtIndex( arrayAccess.arrayType.getValue(), this.evaluate( frame, arrayAccess.array.getValue() ), this.evaluateInt( arrayAccess.index.getValue(), "array index is null" ), rightHandValue );
+				this.setItemAtIndex( arrayAccess.arrayType.getPrimitiveValue(), this.evaluate( frame, arrayAccess.array.getPrimitiveValue() ), this.evaluateInt( arrayAccess.index.getPrimitiveValue(), "array index is null" ), rightHandValue );
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: evaluateActual", assignmentExpression.leftHandSide.getValue(), rightHandValue );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: evaluateActual", assignmentExpression.leftHandSide.getPrimitiveValue(), rightHandValue );
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: evaluateActual", assignmentExpression );
@@ -263,7 +262,7 @@ public abstract class VirtualMachine {
 	}
 
 	protected Object evaluateBooleanLiteral( BooleanLiteral booleanLiteral ) {
-		return booleanLiteral.value.getValue();
+		return booleanLiteral.value.getPrimitiveValue();
 	}
 
 	protected Object evaluateArrayInstanceCreation( ArrayInstanceCreation arrayInstanceCreation ) {
@@ -275,7 +274,7 @@ public abstract class VirtualMachine {
 		for( int i = 0; i < lengths.length; i++ ) {
 			lengths[ i ] = arrayInstanceCreation.lengths.get( i );
 		}
-		return this.createArrayInstance( arrayInstanceCreation.arrayType.getValue(), lengths, values );
+		return this.createArrayInstance( arrayInstanceCreation.arrayType.getPrimitiveValue(), lengths, values );
 	}
 
 	private void checkIndex( int index, int length ) {
@@ -314,18 +313,18 @@ public abstract class VirtualMachine {
 	}
 
 	protected Object evaluateArrayAccess( ArrayAccess arrayAccess ) {
-		return this.getItemAtIndex( arrayAccess.arrayType.getValue(), this.evaluate( frame, arrayAccess.array.getValue() ), this.evaluateInt( arrayAccess.index.getValue(), "array index is null" ) );
+		return this.getItemAtIndex( arrayAccess.arrayType.getPrimitiveValue(), this.evaluate( frame, arrayAccess.array.getPrimitiveValue() ), this.evaluateInt( arrayAccess.index.getPrimitiveValue(), "array index is null" ) );
 	}
 
 	protected Integer evaluateArrayLength( ArrayLength arrayLength ) {
-		return this.getArrayLength( this.evaluate( frame, arrayLength.array.getValue() ) );
+		return this.getArrayLength( this.evaluate( frame, arrayLength.array.getPrimitiveValue() ) );
 	}
 
 	protected Object evaluateFieldAccess( FieldAccess fieldAccess ) {
-		Object o = fieldAccess.field.getValue();
+		Object o = fieldAccess.field.getPrimitiveValue();
 		if( o instanceof Field ) {
-			Field field = fieldAccess.field.getValue();
-			Expression expression = fieldAccess.expression.getValue();
+			Field field = fieldAccess.field.getPrimitiveValue();
+			Expression expression = fieldAccess.expression.getPrimitiveValue();
 			Object value = this.evaluate( frame, expression );
 			return this.get( field, value );
 		} else {
@@ -340,27 +339,27 @@ public abstract class VirtualMachine {
 	}
 
 	protected Object evaluateLocalAccess( LocalAccess localAccess ) {
-		return this.getLocal( localAccess.local.getValue() );
+		return this.getLocal( localAccess.local.getPrimitiveValue() );
 	}
 
 	protected Object evaluateArithmeticInfixExpression( ArithmeticInfixExpression arithmeticInfixExpression ) {
-		Number leftOperand = (Number)this.evaluate( frame, arithmeticInfixExpression.leftOperand.getValue() );
-		Number rightOperand = (Number)this.evaluate( frame, arithmeticInfixExpression.rightOperand.getValue() );
-		return arithmeticInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
+		Number leftOperand = (Number)this.evaluate( frame, arithmeticInfixExpression.leftOperand.getPrimitiveValue() );
+		Number rightOperand = (Number)this.evaluate( frame, arithmeticInfixExpression.rightOperand.getPrimitiveValue() );
+		return arithmeticInfixExpression.operator.getPrimitiveValue().operate( leftOperand, rightOperand );
 	}
 
 	protected Object evaluateBitwiseInfixExpression( BitwiseInfixExpression bitwiseInfixExpression ) {
-		Object leftOperand = this.evaluate( frame, bitwiseInfixExpression.leftOperand.getValue() );
-		Object rightOperand = this.evaluate( frame, bitwiseInfixExpression.rightOperand.getValue() );
-		return bitwiseInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
+		Object leftOperand = this.evaluate( frame, bitwiseInfixExpression.leftOperand.getPrimitiveValue() );
+		Object rightOperand = this.evaluate( frame, bitwiseInfixExpression.rightOperand.getPrimitiveValue() );
+		return bitwiseInfixExpression.operator.getPrimitiveValue().operate( leftOperand, rightOperand );
 	}
 
 	protected Boolean evaluateConditionalInfixExpression( ConditionalInfixExpression conditionalInfixExpression ) {
-		ConditionalInfixExpression.Operator operator = conditionalInfixExpression.operator.getValue();
-		Boolean leftOperand = (Boolean)this.evaluate( frame, conditionalInfixExpression.leftOperand.getValue() );
+		ConditionalInfixExpression.Operator operator = conditionalInfixExpression.operator.getPrimitiveValue();
+		Boolean leftOperand = (Boolean)this.evaluate( frame, conditionalInfixExpression.leftOperand.getPrimitiveValue() );
 		if( operator == ConditionalInfixExpression.Operator.AND ) {
 			if( leftOperand ) {
-				return (Boolean)this.evaluate( frame, conditionalInfixExpression.rightOperand.getValue() );
+				return (Boolean)this.evaluate( frame, conditionalInfixExpression.rightOperand.getPrimitiveValue() );
 			} else {
 				return false;
 			}
@@ -368,7 +367,7 @@ public abstract class VirtualMachine {
 			if( leftOperand ) {
 				return true;
 			} else {
-				return (Boolean)this.evaluate( frame, conditionalInfixExpression.rightOperand.getValue() );
+				return (Boolean)this.evaluate( frame, conditionalInfixExpression.rightOperand.getPrimitiveValue() );
 			}
 		} else {
 
@@ -377,11 +376,11 @@ public abstract class VirtualMachine {
 	}
 
 	protected Boolean evaluateRelationalInfixExpression( RelationalInfixExpression relationalInfixExpression ) {
-		Object leftOperand = TweedleObject.getJavaInstanceIfNecessary( this.evaluate( frame, relationalInfixExpression.leftOperand.getValue() ) );
-		Object rightOperand = TweedleObject.getJavaInstanceIfNecessary( this.evaluate( frame, relationalInfixExpression.rightOperand.getValue() ) );
+		Object leftOperand = TweedleObject.getJavaInstanceIfNecessary( this.evaluate( frame, relationalInfixExpression.leftOperand.getPrimitiveValue() ) );
+		Object rightOperand = TweedleObject.getJavaInstanceIfNecessary( this.evaluate( frame, relationalInfixExpression.rightOperand.getPrimitiveValue() ) );
 		if( leftOperand != null ) {
 			if( rightOperand != null ) {
-				return relationalInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
+				return relationalInfixExpression.operator.getPrimitiveValue().operate( leftOperand, rightOperand );
 			} else {
 				throw new LgnaVmNullPointerException( "right operand is null.", this );
 			}
@@ -395,20 +394,20 @@ public abstract class VirtualMachine {
 	}
 
 	protected Object evaluateShiftInfixExpression( ShiftInfixExpression shiftInfixExpression ) {
-		Object leftOperand = this.evaluate( frame, shiftInfixExpression.leftOperand.getValue() );
-		Object rightOperand = this.evaluate( frame, shiftInfixExpression.rightOperand.getValue() );
-		return shiftInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
+		Object leftOperand = this.evaluate( frame, shiftInfixExpression.leftOperand.getPrimitiveValue() );
+		Object rightOperand = this.evaluate( frame, shiftInfixExpression.rightOperand.getPrimitiveValue() );
+		return shiftInfixExpression.operator.getPrimitiveValue().operate( leftOperand, rightOperand );
 	}
 
 	protected Object evaluateLogicalComplement( LogicalComplement logicalComplement ) {
-		Boolean operand = this.evaluateBoolean( logicalComplement.operand.getValue(), "logical complement expression is null" );
+		Boolean operand = this.evaluateBoolean( logicalComplement.operand.getPrimitiveValue(), "logical complement expression is null" );
 		return !operand;
 	}
 
 	protected String evaluateStringConcatenation( StringConcatenation stringConcatenation ) {
 		StringBuffer sb = new StringBuffer();
-		Object leftOperand = this.evaluate( frame, stringConcatenation.leftOperand.getValue() );
-		Object rightOperand = this.evaluate( frame, stringConcatenation.rightOperand.getValue() );
+		Object leftOperand = this.evaluate( frame, stringConcatenation.leftOperand.getPrimitiveValue() );
+		Object rightOperand = this.evaluate( frame, stringConcatenation.rightOperand.getPrimitiveValue() );
 		sb.append( leftOperand );
 		sb.append( rightOperand );
 		return sb.toString();
@@ -416,18 +415,18 @@ public abstract class VirtualMachine {
 
 	protected Object evaluateMethodInvocation( MethodInvocation methodInvocation ) {
 		if( methodInvocation.isValid() ) {
-			Object[] allArguments = this.evaluateArguments( methodInvocation.method.getValue(), methodInvocation.requiredArguments, methodInvocation.variableArguments, methodInvocation.keyedArguments );
-			int parameterCount = methodInvocation.method.getValue().getRequiredParameters().size();
-			if( methodInvocation.method.getValue().getVariableLengthParameter() != null ) {
+			Object[] allArguments = this.evaluateArguments( methodInvocation.method.getPrimitiveValue(), methodInvocation.requiredArguments, methodInvocation.variableArguments, methodInvocation.keyedArguments );
+			int parameterCount = methodInvocation.method.getPrimitiveValue().getRequiredParameters().size();
+			if( methodInvocation.method.getPrimitiveValue().getVariableLengthParameter() != null ) {
 				parameterCount += 1;
 			}
-			if( methodInvocation.method.getValue().getKeyedParameter() != null ) {
+			if( methodInvocation.method.getPrimitiveValue().getKeyedParameter() != null ) {
 				parameterCount += 1;
 			}
-			assert parameterCount == allArguments.length : methodInvocation.method.getValue().getName();
-			Expression callerExpression = methodInvocation.expression.getValue();
+			assert parameterCount == allArguments.length : methodInvocation.method.getPrimitiveValue().getName();
+			Expression callerExpression = methodInvocation.expression.getPrimitiveValue();
 			Object caller = this.evaluate( frame, callerExpression );
-			Invokable method = methodInvocation.method.getValue();
+			Invokable method = methodInvocation.method.getPrimitiveValue();
 			if( method.isStatic() ) {
 				//pass
 			} else {
@@ -435,7 +434,7 @@ public abstract class VirtualMachine {
 			}
 			return this.invoke( caller, method, allArguments );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( methodInvocation.method.getValue() );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( methodInvocation.method.getPrimitiveValue() );
 			return null;
 		}
 	}
@@ -445,27 +444,27 @@ public abstract class VirtualMachine {
 	}
 
 	protected Object evaluateNumberLiteral( NumberLiteral numberLiteral ) {
-		return numberLiteral.value.getValue();
+		return numberLiteral.value.getPrimitiveValue();
 	}
 
 	protected Object evaluateDoubleLiteral( DoubleLiteral doubleLiteral ) {
-		return doubleLiteral.value.getValue();
+		return doubleLiteral.value.getPrimitiveValue();
 	}
 
 	protected Object evaluateFloatLiteral( FloatLiteral floatLiteral ) {
-		return floatLiteral.value.getValue();
+		return floatLiteral.value.getPrimitiveValue();
 	}
 
 	protected Object evaluateIntegerLiteral( IntegerLiteral integerLiteral ) {
-		return integerLiteral.value.getValue();
+		return integerLiteral.value.getPrimitiveValue();
 	}
 
 	protected Object evaluateParameterAccess( ParameterAccess parameterAccess ) {
-		return this.lookup( parameterAccess.parameter.getValue() );
+		return this.lookup( parameterAccess.parameter.getPrimitiveValue() );
 	}
 
 	protected Object evaluateStringLiteral( StringLiteral stringLiteral ) {
-		return stringLiteral.value.getValue();
+		return stringLiteral.value.getPrimitiveValue();
 	}
 
 	protected Object evaluateThisExpression( ThisExpression thisExpression ) {
@@ -475,21 +474,21 @@ public abstract class VirtualMachine {
 	}
 
 	protected Object evaluateTypeExpression( TypeExpression typeExpression ) {
-		return typeExpression.value.getValue();
+		return typeExpression.value.getPrimitiveValue();
 	}
 
 	protected Object evaluateTypeLiteral( TypeLiteral typeLiteral ) {
-		return typeLiteral.value.getValue();
+		return typeLiteral.value.getPrimitiveValue();
 	}
 
 	protected Object evaluateResourceExpression( ResourceExpression resourceExpression ) {
-		return resourceExpression.resource.getValue();
+		return resourceExpression.resource.getPrimitiveValue();
 	}*/
 
 	/*protected Object EPIC_HACK_evaluateLambdaExpression( LambdaExpression lambdaExpression, AbstractArgument argument ) {
-		Lambda lambda = lambdaExpression.value.getValue();
+		Lambda lambda = lambdaExpression.value.getPrimitiveValue();
 
-		AbstractType<?, ?, ?> type = argument.parameter.getValue().getValueType();
+		AbstractType<?, ?, ?> type = argument.parameter.getPrimitiveValue().getValueType();
 		if( type instanceof JavaType ) {
 
 			TweedleObject thisInstance = this.getThis();
@@ -513,7 +512,7 @@ public abstract class VirtualMachine {
 										}
 										pushLambdaFrame( thisInstance, userLambda, singleInvokable, map );
 										try {
-											execute( userLambda.body.getValue() );
+											execute( userLambda.body.getPrimitiveValue() );
 										} catch( ReturnException re ) {
 											edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle return" );
 											assert false : re;
@@ -645,8 +644,8 @@ public abstract class VirtualMachine {
 	}
 
 	protected void executeAssertStatement( AssertStatement assertStatement, VirtualMachineListener[] listeners ) {
-		assert this.evaluateBoolean( assertStatement.expression.getValue(), "assert condition is null" ) : this.evaluate(
-						frame, assertStatement.message.getValue() );
+		assert this.evaluateBoolean( assertStatement.expression.getPrimitiveValue(), "assert condition is null" ) : this.evaluate(
+						frame, assertStatement.message.getPrimitiveValue() );
 	}
 
 	protected void executeBlockStatement( BlockStatement blockStatement, VirtualMachineListener[] listeners ) throws ReturnException {
@@ -660,23 +659,23 @@ public abstract class VirtualMachine {
 
 	protected void executeConditionalStatement( ConditionalStatement conditionalStatement, VirtualMachineListener[] listeners ) throws ReturnException {
 		for( BooleanExpressionBodyPair booleanExpressionBodyPair : conditionalStatement.booleanExpressionBodyPairs ) {
-			if( this.evaluateBoolean( booleanExpressionBodyPair.expression.getValue(), "if condition is null" ) ) {
-				this.execute( booleanExpressionBodyPair.body.getValue() );
+			if( this.evaluateBoolean( booleanExpressionBodyPair.expression.getPrimitiveValue(), "if condition is null" ) ) {
+				this.execute( booleanExpressionBodyPair.body.getPrimitiveValue() );
 				return;
 			}
 		}
-		this.execute( conditionalStatement.elseBody.getValue() );
+		this.execute( conditionalStatement.elseBody.getPrimitiveValue() );
 	}
 
 	protected void executeComment( Comment comment, VirtualMachineListener[] listeners ) {
 	}
 
 	protected void executeCountLoop( CountLoop countLoop, VirtualMachineListener[] listeners ) throws ReturnException {
-		UserLocal variable = countLoop.variable.getValue();
-		UserLocal constant = countLoop.constant.getValue();
+		UserLocal variable = countLoop.variable.getPrimitiveValue();
+		UserLocal constant = countLoop.constant.getPrimitiveValue();
 		this.pushLocal( variable, -1 );
 		try {
-			final int n = this.evaluateInt( countLoop.count.getValue(), "count expression is null" );
+			final int n = this.evaluateInt( countLoop.count.getPrimitiveValue(), "count expression is null" );
 			this.pushLocal( constant, n );
 			try {
 				for( int i = 0; i < n; i++ ) {
@@ -690,7 +689,7 @@ public abstract class VirtualMachine {
 						countLoopIterationEvent = null;
 					}
 					this.setLocal( variable, i );
-					this.execute( countLoop.body.getValue() );
+					this.execute( countLoop.body.getPrimitiveValue() );
 					if( listeners != null ) {
 						for( VirtualMachineListener virtualMachineListener : listeners ) {
 							virtualMachineListener.countLoopIterated( countLoopIterationEvent );
@@ -706,11 +705,11 @@ public abstract class VirtualMachine {
 	}
 
 	protected void executeDoInOrder( DoInOrder doInOrder, VirtualMachineListener[] listeners ) throws ReturnException {
-		execute( doInOrder.body.getValue() );
+		execute( doInOrder.body.getPrimitiveValue() );
 	}
 
 	protected void executeDoTogether( DoTogether doTogether, VirtualMachineListener[] listeners ) throws ReturnException {
-		BlockStatement blockStatement = doTogether.body.getValue();
+		BlockStatement blockStatement = doTogether.body.getPrimitiveValue();
 		//todo?
 		switch( blockStatement.statements.size() ) {
 		case 0:
@@ -744,12 +743,12 @@ public abstract class VirtualMachine {
 	}
 
 	protected void executeExpressionStatement( ExpressionStatement expressionStatement, VirtualMachineListener[] listeners ) {
-		@SuppressWarnings( "unused" ) Object unused = this.evaluate( frame, expressionStatement.expression.getValue() );
+		@SuppressWarnings( "unused" ) Object unused = this.evaluate( frame, expressionStatement.expression.getPrimitiveValue() );
 	}
 
 	protected void excecuteForEachLoop( AbstractForEachLoop forEachInLoop, Object[] array, VirtualMachineListener[] listeners ) throws ReturnException {
-		UserLocal item = forEachInLoop.item.getValue();
-		BlockStatement blockStatement = forEachInLoop.body.getValue();
+		UserLocal item = forEachInLoop.item.getPrimitiveValue();
+		BlockStatement blockStatement = forEachInLoop.body.getPrimitiveValue();
 		this.pushLocal( item, -1 );
 		try {
 			int index = 0;
@@ -779,20 +778,20 @@ public abstract class VirtualMachine {
 	}
 
 	protected final void executeForEachInArrayLoop( ForEachInArrayLoop forEachInArrayLoop, VirtualMachineListener[] listeners ) throws ReturnException {
-		Object[] array = this.evaluate( forEachInArrayLoop.array.getValue(), Object[].class );
+		Object[] array = this.evaluate( forEachInArrayLoop.array.getPrimitiveValue(), Object[].class );
 		this.checkNotNull( array, "for each array is null" );
 		excecuteForEachLoop( forEachInArrayLoop, array, listeners );
 	}
 
 	protected final void executeForEachInIterableLoop( ForEachInIterableLoop forEachInIterableLoop, VirtualMachineListener[] listeners ) throws ReturnException {
-		Iterable<?> iterable = this.evaluate( forEachInIterableLoop.iterable.getValue(), Iterable.class );
+		Iterable<?> iterable = this.evaluate( forEachInIterableLoop.iterable.getPrimitiveValue(), Iterable.class );
 		this.checkNotNull( iterable, "for each iterable is null" );
 		excecuteForEachLoop( forEachInIterableLoop, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ), listeners );
 	}
 
 	protected void excecuteEachInTogether( final AbstractEachInTogether eachInTogether, final Object[] array, final VirtualMachineListener[] listeners ) throws ReturnException {
-		final UserLocal item = eachInTogether.item.getValue();
-		final BlockStatement blockStatement = eachInTogether.body.getValue();
+		final UserLocal item = eachInTogether.item.getPrimitiveValue();
+		final BlockStatement blockStatement = eachInTogether.body.getPrimitiveValue();
 
 		switch( array.length ) {
 		case 0:
@@ -858,26 +857,26 @@ public abstract class VirtualMachine {
 	}
 
 	protected final void executeEachInArrayTogether( EachInArrayTogether eachInArrayTogether, VirtualMachineListener[] listeners ) throws ReturnException {
-		Object[] array = this.evaluate( eachInArrayTogether.array.getValue(), Object[].class );
+		Object[] array = this.evaluate( eachInArrayTogether.array.getPrimitiveValue(), Object[].class );
 		this.checkNotNull( array, "each in together array is null" );
 		excecuteEachInTogether( eachInArrayTogether, array, listeners );
 	}
 
 	protected final void executeEachInIterableTogether( EachInIterableTogether eachInIterableTogether, VirtualMachineListener[] listeners ) throws ReturnException {
-		Iterable<?> iterable = this.evaluate( eachInIterableTogether.iterable.getValue(), Iterable.class );
+		Iterable<?> iterable = this.evaluate( eachInIterableTogether.iterable.getPrimitiveValue(), Iterable.class );
 		this.checkNotNull( iterable, "each in together iterable is null" );
 		excecuteEachInTogether( eachInIterableTogether, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ), listeners );
 	}
 
 	protected void executeReturnStatement( ReturnStatement returnStatement, VirtualMachineListener[] listeners ) throws ReturnException {
-		Object returnValue = this.evaluate( frame, returnStatement.expression.getValue() );
+		Object returnValue = this.evaluate( frame, returnStatement.expression.getPrimitiveValue() );
 		//setReturnValue( returnValue );
 		throw new ReturnException( returnValue );
 	}
 
 	protected void executeWhileLoop( WhileLoop whileLoop, VirtualMachineListener[] listeners ) throws ReturnException {
 		int i = 0;
-		while( this.evaluateBoolean( whileLoop.conditional.getValue(), "while condition is null" ) ) {
+		while( this.evaluateBoolean( whileLoop.conditional.getPrimitiveValue(), "while condition is null" ) ) {
 			WhileLoopIterationEvent whileLoopIterationEvent;
 			if( listeners != null ) {
 				whileLoopIterationEvent = new WhileLoopIterationEvent( this, whileLoop, i );
@@ -887,7 +886,7 @@ public abstract class VirtualMachine {
 			} else {
 				whileLoopIterationEvent = null;
 			}
-			this.execute( whileLoop.body.getValue() );
+			this.execute( whileLoop.body.getPrimitiveValue() );
 			if( listeners != null ) {
 				for( VirtualMachineListener virtualMachineListener : listeners ) {
 					virtualMachineListener.whileLoopIterated( whileLoopIterationEvent );
@@ -898,7 +897,7 @@ public abstract class VirtualMachine {
 	}
 
 	protected void executeLocalDeclarationStatement( LocalDeclarationStatement localDeclarationStatement, VirtualMachineListener[] listeners ) {
-		this.pushLocal( localDeclarationStatement.local.getValue(), this.evaluate( frame, localDeclarationStatement.initializer.getValue() ) );
+		this.pushLocal( localDeclarationStatement.local.getPrimitiveValue(), this.evaluate( frame, localDeclarationStatement.initializer.getPrimitiveValue() ) );
 		//handle pop on exit of owning block statement
 	}*/
 

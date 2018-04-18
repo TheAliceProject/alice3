@@ -1,8 +1,5 @@
 package org.alice.tweedle;
 
-import org.alice.tweedle.unlinked.UnlinkedClass;
-import org.alice.tweedle.unlinked.UnlinkedEnum;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;

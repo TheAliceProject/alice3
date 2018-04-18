@@ -1,12 +1,15 @@
 package org.alice.tweedle.unlinked;
 
+import org.alice.tweedle.TweedleClass;
+import org.alice.tweedle.TweedleEnum;
+import org.alice.tweedle.TweedleType;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class TweedleParseTest {
 
-	private UnlinkedType parseString(String source) {
+	private TweedleType parseString( String source) {
 		TweedleUnlinkedParser t = new TweedleUnlinkedParser();
 		return t.parse( source );
 	}
@@ -14,21 +17,21 @@ public class TweedleParseTest {
 
 	@Test
 	public void somethingShouldBeCreatedForARootClass() {
-		UnlinkedType tested = parseString( "class SThing {}" );
+		TweedleType tested = parseString( "class SThing {}" );
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
 
 	@Test
 	public void aRootClassShouldBeCreated() {
-		UnlinkedType tested = parseString( "class SThing {}" );
+		TweedleType tested = parseString( "class SThing {}" );
 
-		assertTrue("The parser should have returned an UnlinkedClass.", tested instanceof UnlinkedClass);
+		assertTrue("The parser should have returned a TweedleClass.", tested instanceof TweedleClass );
 	}
 
 	@Test
 	public void classShouldKnowItsName() {
-		UnlinkedType tested = parseString( "class SThing {}" );
+		TweedleType tested = parseString( "class SThing {}" );
 
 		assertEquals( "The name should be 'SThing'", "SThing", tested.getName() );
 	}
@@ -60,35 +63,35 @@ public class TweedleParseTest {
 
 	@Test
 	public void enumNamedSameAsBooleanPrimitiveShouldCreateSomething() {
-		UnlinkedType tested = parseString( "enum Boolean {TRUE, FALSE}" );
+		TweedleType tested = parseString( "enum Boolean {TRUE, FALSE}" );
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
 
 	@Test
 	public void classNamedSameAsBooleanPrimitiveShouldCreateSomething() {
-		UnlinkedType tested = parseString( "class Boolean {}" );
+		TweedleType tested = parseString( "class Boolean {}" );
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
 
 	@Test
 	public void somethingShouldBeCreatedForASubclass() {
-		UnlinkedType tested = parseString( "class SScene extends SThing {}" );
+		TweedleType tested = parseString( "class SScene extends SThing {}" );
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
 
 	@Test
 	public void aSubclassShouldBeCreated() {
-		UnlinkedType tested = parseString( "class SScene extends SThing {}" );
+		TweedleType tested = parseString( "class SScene extends SThing {}" );
 
-		assertTrue("The parser should have returned an UnlinkedClass.", tested instanceof UnlinkedClass);
+		assertTrue("The parser should have returned a TweedleClass.", tested instanceof TweedleClass);
 	}
 
 	@Test
 	public void classNameShouldBeReturnedOnSubclass() {
-		UnlinkedType tested = parseString( "class SScene extends SThing {}" );
+		TweedleType tested = parseString( "class SScene extends SThing {}" );
 
 		assertEquals("The class name should have been SScene.",
 								 "SScene",
@@ -97,30 +100,30 @@ public class TweedleParseTest {
 
 	@Test
 	public void superclassNameShouldBeReturnedOnSubclass() {
-		UnlinkedClass sScene = (UnlinkedClass) parseString( "class SScene extends SThing {}" );
+		TweedleClass sScene = (TweedleClass) parseString( "class SScene extends SThing {}" );
 
-		assertEquals("The class SScene should have a superclass SThing.",
+		assertEquals("The class SScene should have a superclass name SThing.",
 						     "SThing",
 						      sScene.getSuperclassName() );
 	}
 
 	@Test
 	public void somethingShouldBeCreatedForAnEnum() {
-		UnlinkedType tested = parseString( "enum Direction {UP, DOWN}" );
+		TweedleType tested = parseString( "enum Direction {UP, DOWN}" );
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
 
 	@Test
 	public void anEnumShouldBeCreated() {
-		UnlinkedType tested = parseString( "enum Direction {UP, DOWN}" );
+		TweedleType tested = parseString( "enum Direction {UP, DOWN}" );
 
-		assertTrue("The parser should have returned an UnlinkedEnum.", tested instanceof UnlinkedEnum);
+		assertTrue("The parser should have returned an TweedleEnum.", tested instanceof TweedleEnum );
 	}
 
 	@Test
 	public void nameShouldBeReturnedOnEnum() {
-		UnlinkedType tested = parseString( "enum Direction {UP, DOWN}" );
+		TweedleType tested = parseString( "enum Direction {UP, DOWN}" );
 
 		assertEquals("The enum name should have been Direction.",
 						"Direction",
@@ -129,7 +132,7 @@ public class TweedleParseTest {
 
 	@Test
 	public void enumShouldIncludeTwoValues() {
-		UnlinkedEnum directionEnum = (UnlinkedEnum) parseString( "enum Direction {UP, DOWN}" );
+		TweedleEnum directionEnum = (TweedleEnum) parseString( "enum Direction {UP, DOWN}" );
 
 		assertEquals("The enum Direction should have two values.",
 						2,
@@ -138,7 +141,7 @@ public class TweedleParseTest {
 
 	@Test
 	public void enumShouldIncludeUpValue() {
-		UnlinkedEnum directionEnum = (UnlinkedEnum) parseString( "enum Direction {UP, DOWN}" );
+		TweedleEnum directionEnum = (TweedleEnum) parseString( "enum Direction {UP, DOWN}" );
 
 		assertTrue("The enum Direction should include UP.",
 						directionEnum.getValues().contains( "UP" ) );
@@ -146,7 +149,7 @@ public class TweedleParseTest {
 
 	@Test
 	public void enumShouldIncludeDownValue() {
-		UnlinkedEnum directionEnum = (UnlinkedEnum) parseString( "enum Direction {UP, DOWN}" );
+		TweedleEnum directionEnum = (TweedleEnum) parseString( "enum Direction {UP, DOWN}" );
 
 		assertTrue("The enum Direction should include DOWN.",
 						directionEnum.getValues().contains( "DOWN" ) );
@@ -154,7 +157,7 @@ public class TweedleParseTest {
 
 	@Test
 	public void enumShouldNotIncludeLeftValue() {
-		UnlinkedEnum directionEnum = (UnlinkedEnum) parseString( "enum Direction {UP, DOWN}" );
+		TweedleEnum directionEnum = (TweedleEnum) parseString( "enum Direction {UP, DOWN}" );
 
 		assertFalse("The enum Direction should not include LEFT.",
 						directionEnum.getValues().contains( "LEFT" ) );
@@ -167,7 +170,7 @@ public class TweedleParseTest {
 						+ "    super();\n"
 						+ "  }\n"
 						+ "}";
-		UnlinkedType tested = parseString( scene);
+		TweedleType tested = parseString( scene);
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
@@ -184,7 +187,7 @@ public class TweedleParseTest {
 						+ "    });\n"
 						+ "  }\n"
 						+ "}";
-		UnlinkedType tested = parseString( scene);
+		TweedleType tested = parseString( scene);
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
@@ -225,9 +228,9 @@ public class TweedleParseTest {
 						+ "*<  eachTogether(String msg in new String[]{\"hello\", \"hello\"}) {\n"
 						+ "      this.walrus.say(text: msg);\n" + "    } >*\n"
 						+ "    eachTogether(String msg in new String[]{\"hello\", \"hello\"}) {\n"
-						+ "      this.walrus.say(text: msg);\n" + "    }\n" + "*<  Integer a <- 2; >*\n" + "    Integer a <- 2;\n"
+						+ "      this.walrus.say(text: msg);\n" + "    }\n" + "*<  WholeNumber a <- 2; >*\n" + "    WholeNumber a <- 2;\n"
 						+ "*<  a <- 2; >*\n" + "    a <- 2;\n" + "  }\n" + "\n" + "  void doInfix() {\n"
-						+ "    Integer v <- 1+2+(2-1)*3;\n" + "    if((true||false)&&false) {\n" + "    } else {\n" + "    }\n"
+						+ "    WholeNumber v <- 1+2+(2-1)*3;\n" + "    if((true||false)&&false) {\n" + "    } else {\n" + "    }\n"
 						+ "    if(false&&false||0.5<=1.0) {\n" + "    } else {\n" + "    }\n"
 						+ "    if((false||false)&&(true||true)) {\n" + "    } else {\n" + "    }\n"
 						+ "    if(false&&false||true&&true) {\n" + "    } else {\n" + "    }\n" + "  }\n"
@@ -261,7 +264,7 @@ public class TweedleParseTest {
 						+ "    this.cylinder.setName(name: \"cylinder\");\n" + "    this.cylinder.setVehicle(vehicle: this);\n"
 						+ "    this.cylinder.setOrientationRelativeToVehicle(orientation: new Orientation(x: 0.0,y: 0.0,z: 0.0,w: 1.0));\n"
 						+ "    this.cylinder.setPositionRelativeToVehicle(position: new Position(right: 7.63,up: 0.0,backward: 19.7));\n"
-						+ "  }\n" + "\n" + "  void handleActiveChanged(Boolean isActive,Integer activationCount) {\n"
+						+ "  }\n" + "\n" + "  void handleActiveChanged(Boolean isActive,WholeNumber activationCount) {\n"
 						+ "    if(isActive) {\n" + "      if(activationCount==1) {\n" + "        this.performGeneratedSetUp();\n"
 						+ "        this.performCustomSetup();\n" + "        this.initializeEventListeners();\n" + "      } else {\n"
 						+ "        this.restoreStateAndEventListeners();\n" + "      }\n" + "    } else {\n"
@@ -270,7 +273,7 @@ public class TweedleParseTest {
 						+ "  }\n" + "  Walrus getWalrus() {\n" + "    return this.walrus;\n" + "  }\n" + "  Sphere getSphere() {\n"
 						+ "    return this.sphere;\n" + "  }\n" + "  Cylinder getCylinder() {\n" + "    return this.cylinder;\n"
 						+ "  }\n" + "}";
-		UnlinkedType tested = parseString( generatedScene);
+		TweedleType tested = parseString( generatedScene);
 
 		assertNotNull("The parser should have returned something.", tested );
 	}

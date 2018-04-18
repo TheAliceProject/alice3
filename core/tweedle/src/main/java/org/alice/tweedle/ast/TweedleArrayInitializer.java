@@ -1,0 +1,41 @@
+package org.alice.tweedle.ast;
+
+import org.alice.tweedle.TweedleArray;
+import org.alice.tweedle.TweedleArrayType;
+import org.alice.tweedle.TweedleType;
+import org.alice.tweedle.TweedleValue;
+import org.alice.tweedle.run.Frame;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+
+public class TweedleArrayInitializer extends TweedleExpression {
+	private List<TweedleExpression> elements;
+
+	public TweedleArrayInitializer( TweedleArrayType arrayType, List<TweedleExpression> elements ) {
+		super(arrayType);
+		this.elements = elements;
+	}
+
+	public TweedleArrayInitializer( TweedleType elementType, List<TweedleExpression> elements ) {
+		super(new TweedleArrayType( elementType ));
+		this.elements = elements;
+	}
+
+	public TweedleArrayInitializer( List<TweedleExpression> elements) {
+		super(new TweedleArrayType( findCommonType(elements) ) );
+		this.elements = elements;
+	}
+
+	private static TweedleType findCommonType( List<TweedleExpression> elements ) {
+		// TODO
+		return null;
+	}
+
+	@Override public TweedleValue evaluate( Frame frame ) {
+		return new TweedleArray(
+						(TweedleArrayType) this.getResultType(),
+						elements.stream().map( el -> el.evaluate( frame ) ).collect( toList() ) );
+	}
+}

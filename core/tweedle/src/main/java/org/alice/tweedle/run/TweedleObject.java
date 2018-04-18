@@ -2,9 +2,10 @@ package org.alice.tweedle.run;
 
 import org.alice.tweedle.TweedleField;
 import org.alice.tweedle.TweedleClass;
+import org.alice.tweedle.TweedleType;
 import org.alice.tweedle.TweedleValue;
 
-public class TweedleObject extends TweedleValue<TweedleClass> {
+public class TweedleObject extends TweedleValue {
 
 	private final TweedleClass clazz;
 
@@ -26,5 +27,9 @@ public class TweedleObject extends TweedleValue<TweedleClass> {
 		TweedleValue value = null; //clazz.initialValueForField(frame, this, field);
 		set( field, value );
 		return value;
+	}
+
+	@Override public TweedleType getType() {
+		return clazz;
 	}
 }

@@ -1,4 +1,6 @@
 package org.alice.tweedle;
 
-public class TweedleValue<T extends TweedleType> {
+public abstract class TweedleValue {
+
+	public abstract TweedleType getType();
 }
