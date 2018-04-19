@@ -303,7 +303,7 @@ primitiveType
     | DECIMAL_NUMBER
     | WHOLE_NUMBER
     | NUMBER
-    | STRING
+    | TEXT_STRING
     ;
 
 superSuffix

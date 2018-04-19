@@ -1,13 +1,16 @@
 package org.alice.tweedle;
 
 public class TweedleArrayType extends TweedleType{
-	private TweedleType memberType;
+	private TweedleType valueType;
 
-	public TweedleArrayType( TweedleType type) {
-		super( type.getName() + "[]");
+	public TweedleArrayType( TweedleType valueType) {
+		super( valueType.getName() + "[]");
+		this.valueType = valueType;
 	}
 
 	@Override public boolean willAcceptValueOfType( TweedleType type) {
-		return (type instanceof TweedleArrayType) && memberType.willAcceptValueOfType( ((TweedleArrayType) type).memberType );
+		return this == type ||
+						( (type instanceof TweedleArrayType) &&
+							valueType.willAcceptValueOfType( ((TweedleArrayType) type).valueType ) );
 	}
 }

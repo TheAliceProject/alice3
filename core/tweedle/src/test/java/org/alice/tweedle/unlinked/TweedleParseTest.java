@@ -55,8 +55,15 @@ public class TweedleParseTest {
 	}
 
 	@Test(expected=NullPointerException.class)
-	public void subclassOfStringPrimitiveShouldFail() {
-		parseType( "class SScene extends String {}" );
+	public void subclassOfTextStringPrimitiveShouldFail() {
+		parseType( "class SScene extends TextString {}" );
+	}
+
+	@Test
+	public void subclassOfStringShouldNotFail() {
+		TweedleType tested = parseType( "class SScene extends String {}" );
+
+		assertNotNull("The parser should have returned something.", tested );
 	}
 
 	@Test
@@ -223,9 +230,9 @@ public class TweedleParseTest {
 						+ "      doTogether {\n" + "      }\n" + "    }\n" + "*<  if(true) {\n" + "    } else {\n" + "    } >*\n"
 						+ "    if(true) {\n" + "    } else {\n" + "    }\n" + "*<  doTogether {\n" + "    } >*\n"
 						+ "    doTogether {\n" + "    }\n"
-						+ "*<  eachTogether(String msg in new String[]{\"hello\", \"hello\"}) {\n"
+						+ "*<  eachTogether(TextString msg in new TextString[]{\"hello\", \"hello\"}) {\n"
 						+ "      this.walrus.say(text: msg);\n" + "    } >*\n"
-						+ "    eachTogether(String msg in new String[]{\"hello\", \"hello\"}) {\n"
+						+ "    eachTogether(TextString msg in new TextString[]{\"hello\", \"hello\"}) {\n"
 						+ "      this.walrus.say(text: msg);\n" + "    }\n" + "*<  WholeNumber a <- 2; >*\n" + "    WholeNumber a <- 2;\n"
 						+ "*<  a <- 2; >*\n" + "    a <- 2;\n" + "  }\n" + "\n" + "  void doInfix() {\n"
 						+ "    WholeNumber v <- 1+2+(2-1)*3;\n" + "    if((true||false)&&false) {\n" + "    } else {\n" + "    }\n"

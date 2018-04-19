@@ -270,7 +270,20 @@ public class Encoder extends SourceCodeGenerator {
 	}
 
 	@Override protected void appendTypeName( AbstractType<?, ?, ?> type ) {
-		appendString( type.getName() );
+		final String typeName = type.getName();
+		switch (typeName) {
+			case "Double":
+				appendString( "DecimalNumber" );
+				break;
+			case "Integer":
+				appendString( "WholeNumber" );
+				break;
+			case "String":
+				appendString( "TextString" );
+				break;
+			default:
+				appendString( typeName );
+		}
 	}
 
 	@Override protected String getListSeparator() {
