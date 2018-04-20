@@ -225,6 +225,9 @@ public class TweedleUnlinkedParser {
 			if ( context.THIS() != null ) {
 				return new ThisExpression(null);
 			}
+			if ( context.IDENTIFIER() != null ) {
+				return new IdentifierReference( context.IDENTIFIER().getText());
+			}
 			// Visit children to handle literals
 			return super.visitPrimary( context );
 		}
@@ -328,6 +331,9 @@ public class TweedleUnlinkedParser {
 					return binaryExpression( LogicalAndExpression::new, TweedleTypes.BOOLEAN, context );
 				case "||":
 					return binaryExpression( LogicalOrExpression::new, TweedleTypes.BOOLEAN, context );
+				case "<-":
+					List<TweedleExpression> expressions = getTypedExpressions( context, null );
+					return new AssignmentExpression( expressions.get( 0 ), expressions.get( 1 ) );
 				default:
 					throw new RuntimeException( "No such operation as " + operation.getText());
 				}

@@ -3,6 +3,8 @@ package org.alice.tweedle.unlinked;
 import org.alice.tweedle.TweedlePrimitiveValue;
 import org.alice.tweedle.TweedleTypes;
 import org.alice.tweedle.ast.AdditionExpression;
+import org.alice.tweedle.ast.AssignmentExpression;
+import org.alice.tweedle.ast.IdentifierReference;
 import org.alice.tweedle.ast.ThisExpression;
 import org.alice.tweedle.ast.TweedleExpression;
 import org.junit.Test;
@@ -87,5 +89,35 @@ public class TweedleExpressionParseTest {
 	public void decimalNumberMultiplicationShouldKnowItsType() {
 		TweedleExpression tested = parseExpression( "3.4 + 4.1" );
 		assertEquals( "The type should be WholeNumber", TweedleTypes.DECIMAL_NUMBER, tested.getType() );
+	}
+
+	@Test
+	public void somethingShouldBeCreatedForIdentifier() {
+		TweedleExpression tested = parseExpression( "x" );
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void anIdentifierExpressionShouldBeCreated() {
+		TweedleExpression tested = parseExpression( "x" );
+		assertTrue("The parser should have returned an IdentifierReference.", tested instanceof IdentifierReference );
+	}
+
+	@Test
+	public void anIdentifierExpressionShouldBeCreatedNamedX() {
+		IdentifierReference tested = (IdentifierReference) parseExpression( "x" );
+		assertEquals("The IdentifierReference should be named 'x'.", "x", tested.getName() );
+	}
+
+	@Test
+	public void somethingShouldBeCreatedForAssignment() {
+		TweedleExpression tested = parseExpression( "x <- 3" );
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void aAssignmentExpressionShouldBeCreated() {
+		TweedleExpression tested = parseExpression( "x <- 3" );
+		assertTrue("The parser should have returned an AssignmentExpression.", tested instanceof AssignmentExpression );
 	}
 }
