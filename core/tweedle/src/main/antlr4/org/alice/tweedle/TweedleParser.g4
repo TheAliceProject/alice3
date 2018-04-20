@@ -226,12 +226,7 @@ methodCall
 
 expression
     : primary
-    | expression bop='.'
-      (IDENTIFIER
-      | methodCall
-      | NEW innerCreator
-      | SUPER superSuffix
-      )
+    | expression bop='.' (IDENTIFIER | methodCall)
     | expression '[' expression ']'
     | NEW creator
     | prefix=('+'|'-') expression
@@ -270,7 +265,6 @@ primary
     | SUPER superSuffix
     | literal
     | IDENTIFIER
-    | typeTypeOrVoid '.' CLASS
     ;
 
 creator
@@ -280,10 +274,6 @@ creator
 createdName
     : IDENTIFIER
     | primitiveType
-    ;
-
-innerCreator
-    : IDENTIFIER classCreatorRest
     ;
 
 arrayCreatorRest

@@ -4,7 +4,9 @@ import org.alice.tweedle.TweedlePrimitiveValue;
 import org.alice.tweedle.TweedleTypes;
 import org.alice.tweedle.ast.AdditionExpression;
 import org.alice.tweedle.ast.AssignmentExpression;
+import org.alice.tweedle.ast.FieldAccess;
 import org.alice.tweedle.ast.IdentifierReference;
+import org.alice.tweedle.ast.MethodCallExpression;
 import org.alice.tweedle.ast.ThisExpression;
 import org.alice.tweedle.ast.TweedleExpression;
 import org.junit.Test;
@@ -119,5 +121,67 @@ public class TweedleExpressionParseTest {
 	public void aAssignmentExpressionShouldBeCreated() {
 		TweedleExpression tested = parseExpression( "x <- 3" );
 		assertTrue("The parser should have returned an AssignmentExpression.", tested instanceof AssignmentExpression );
+	}
+
+	@Test
+	public void somethingShouldBeCreatedForFieldRead() {
+		TweedleExpression tested = parseExpression( "x.myField" );
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void aFieldAccessExpressionShouldBeCreated() {
+		TweedleExpression tested = parseExpression( "x.myField" );
+		assertTrue("The parser should have returned a FieldAccesss.", tested instanceof FieldAccess );
+	}
+
+	@Test
+	public void aFieldAccessShouldHaveMyField() {
+		FieldAccess tested = (FieldAccess) parseExpression( "x.myField" );
+		assertEquals("The field name should have been \"myField\".", "myField", tested.getFieldName() );
+	}
+
+	@Test
+	public void aFieldAccessShouldTargetByIdentifier() {
+		FieldAccess tested = (FieldAccess) parseExpression( "x.myField" );
+		assertTrue("The target should have been an IdentifierReference.", tested.getTarget() instanceof IdentifierReference);
+	}
+
+	@Test
+	public void aFieldAccessTargetShouldBeCreatedNamedX() {
+		FieldAccess fa = (FieldAccess) parseExpression( "x.myField" );
+		IdentifierReference tested = (IdentifierReference) fa.getTarget();
+		assertEquals( "The IdentifierReference should be named 'x'.", "x", tested.getName() );
+	}
+
+	@Test
+	public void somethingShouldBeCreatedForMethodCall() {
+		TweedleExpression tested = parseExpression( "x.myMethod()" );
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void aMethodCallExpressionShouldBeCreated() {
+		TweedleExpression tested = parseExpression( "x.myMethod()" );
+		assertTrue("The parser should have returned a MethodCallExpression.", tested instanceof MethodCallExpression );
+	}
+
+	@Test
+	public void aMethodCallExpressionShouldHaveMyMethod() {
+		MethodCallExpression tested = (MethodCallExpression) parseExpression( "x.myMethod()" );
+		assertEquals("The method name should have been \"myMethod\".", "myMethod", tested.getMethodName() );
+	}
+
+	@Test
+	public void aMethodCallShouldTargetByIdentifier() {
+		MethodCallExpression tested = (MethodCallExpression) parseExpression( "x.myMethod()" );
+		assertTrue("The target should have been an IdentifierReference.", tested.getTarget() instanceof IdentifierReference);
+	}
+
+	@Test
+	public void aMethodCallTargetShouldBeCreatedNamedX() {
+		MethodCallExpression fa = (MethodCallExpression) parseExpression( "x.myMethod()" );
+		IdentifierReference tested = (IdentifierReference) fa.getTarget();
+		assertEquals( "The IdentifierReference should be named 'x'.", "x", tested.getName() );
 	}
 }

@@ -213,13 +213,17 @@ public class TweedleUnlinkedParser {
 	{
 		private TweedleType expectedType;
 
+		ExpressionVisitor() {
+			this.expectedType = null;
+		}
+
 		ExpressionVisitor( TweedleType expectedType ) {
 			this.expectedType = expectedType;
 		}
 
 		@Override public TweedleExpression visitPrimary( TweedleParser.PrimaryContext context ) {
-			// Parenthesized child expression
 			if ( context.expression() != null ) {
+				// Parenthesized child expression
 				return this.visitExpression( context.expression() );
 			}
 			if ( context.THIS() != null ) {
@@ -228,6 +232,8 @@ public class TweedleUnlinkedParser {
 			if ( context.IDENTIFIER() != null ) {
 				return new IdentifierReference( context.IDENTIFIER().getText());
 			}
+			// TODO parse super superSuffix
+
 			// Visit children to handle literals
 			return super.visitPrimary( context );
 		}
@@ -276,12 +282,6 @@ public class TweedleUnlinkedParser {
 
 		private TweedleExpression buildExpression( TweedleParser.ExpressionContext context )
 		{
-			TweedleExpression expression = context.accept( new ExpressionChildVisitor());
-			if (expression != null)
-			{
-				return expression;
-			}
-
 			Token prefix = context.prefix;
 			Token operation = context.bop;
 
@@ -304,7 +304,7 @@ public class TweedleUnlinkedParser {
 			else if (operation != null) {
 				switch (operation.getText()) {
 				case ".":
-					//					return new MethodInvocation(); //Object x [otherstuff]=>Y
+					return fieldOrMethodRef(context);
 				case "==":
 					return binaryExpression( EqualToExpression::new, null, context ); //XxY=>B
 				case "!=":
@@ -338,7 +338,24 @@ public class TweedleUnlinkedParser {
 					throw new RuntimeException( "No such operation as " + operation.getText());
 				}
 			}
+			// TODO parse array value reading
+			// TODO parse instantiation
+			// TODO parse lambda
+
+			// This will handle primary
 			return visitChildren(context);
+		}
+
+		private TweedleExpression fieldOrMethodRef( TweedleParser.ExpressionContext context ) {
+			TweedleExpression target = context.expression().stream().map( exp -> exp.accept( this ) ).collect( toList() ).get( 0 );
+			if (context.IDENTIFIER() != null) {
+				return new FieldAccess( target, context.IDENTIFIER().getText());
+			}
+			if( context.methodCall() != null ) {
+				// TODO read labeledExpressionList
+				return new MethodCallExpression(target, context.methodCall().IDENTIFIER().getText());
+			}
+			throw new RuntimeException( "Unexpected details on context " + context);
 		}
 
 		private TweedleExpression getNegativeOfExpression( TweedleExpression exp ) {
@@ -373,20 +390,6 @@ public class TweedleUnlinkedParser {
 
 	public interface BinaryConstructor {
 		BinaryExpression newBinExp( TweedleExpression lhs, TweedleExpression rhs );
-	}
-
-
-	private class ExpressionChildVisitor extends TweedleParserBaseVisitor<TweedleExpression>
-	{
-		@Override public TweedleExpression visitMethodCall( TweedleParser.MethodCallContext context)
-		{
-			return super.visitMethodCall(context);
-		}
-
-		@Override public TweedleExpression visitCreator( TweedleParser.CreatorContext context)
-		{
-			return super.visitCreator(context);
-		}
 	}
 
 	private class StatementVisitor extends TweedleParserBaseVisitor<TweedleStatement> {

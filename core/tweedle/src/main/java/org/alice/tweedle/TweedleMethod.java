@@ -8,7 +8,7 @@ import java.util.List;
 public class TweedleMethod {
 
 	private List<String> modifiers;
-	private TweedleType returnType;
+	private TweedleType type;
 	private String name;
 	private List<TweedleRequiredParameter> requiredParameters;
 	private List<TweedleOptionalParameter> optionalParameters;
@@ -16,7 +16,7 @@ public class TweedleMethod {
 
 	public TweedleMethod(TweedleType type, String name, List<TweedleRequiredParameter> required, List<TweedleOptionalParameter> optional, List<TweedleStatement> body)
 	{
-		this.returnType = type;
+		this.type = type;
 		this.name = name;
 		this.requiredParameters = required;
 		this.optionalParameters = optional;
@@ -35,5 +35,21 @@ public class TweedleMethod {
 
 	public String getName() {
 		return name;
+	}
+
+	public TweedleType getType() {
+		return type;
+	}
+
+	public List<TweedleRequiredParameter> getRequiredParameters() {
+		return requiredParameters;
+	}
+
+	public List<TweedleOptionalParameter> getOptionalParameters() {
+		return optionalParameters;
+	}
+
+	public List<TweedleStatement> getBody() {
+		return body;
 	}
 }

@@ -2,7 +2,13 @@ package org.alice.tweedle.unlinked;
 
 import org.alice.tweedle.TweedleClass;
 import org.alice.tweedle.TweedleEnum;
+import org.alice.tweedle.TweedleMethod;
+import org.alice.tweedle.TweedleNull;
+import org.alice.tweedle.TweedleStatement;
 import org.alice.tweedle.TweedleType;
+import org.alice.tweedle.TweedleTypes;
+import org.alice.tweedle.ast.AdditionExpression;
+import org.alice.tweedle.ast.ReturnStatement;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -178,6 +184,195 @@ public class TweedleParseTest {
 		TweedleType tested = parseType( scene);
 
 		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void classWithMethodShouldHaveMethod() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return 3 + 4;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+
+		assertFalse("The class should have a method.", tested.methods.isEmpty() );
+	}
+
+	@Test
+	public void classMethodShouldHaveReturnType() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return 3 + 4;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+		TweedleMethod sumThing = tested.methods.get( 0 );
+
+		assertEquals( "The method should return a WholeNumber.", TweedleTypes.WHOLE_NUMBER, sumThing.getType() );
+	}
+
+	@Test
+	public void classMethodShouldBeNamed() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return 3 + 4;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+		TweedleMethod sumThing = tested.methods.get( 0 );
+
+		assertEquals( "The method should be named.", "sumThing", sumThing.getName() );
+	}
+
+	@Test
+	public void classMethodShouldHaveNoRequiredParams() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return 3 + 4;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+		TweedleMethod sumThing = tested.methods.get( 0 );
+
+		assertTrue( "The method should have no params.", sumThing.getRequiredParameters().isEmpty() );
+	}
+
+	@Test
+	public void classMethodShouldHaveNoOptionalParams() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return 3 + 4;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+		TweedleMethod sumThing = tested.methods.get( 0 );
+
+		assertTrue( "The method should have no params.", sumThing.getOptionalParameters().isEmpty() );
+	}
+
+	@Test
+	public void classMethodShouldHaveAStatement() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return 3 + 4;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+		TweedleMethod sumThing = tested.methods.get( 0 );
+
+		assertEquals( "The method should have one statement.", 1, sumThing.getBody().size() );
+	}
+
+	@Test
+	public void classMethodWithEmtpyReturnShouldHaveANonNullStatement() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleStatement stmt = sumThing.getBody().get( 0 );
+
+		assertNotNull( "The method statement should not be null.", stmt );
+	}
+
+	@Test
+	public void classMethodWithEmtpyReturnShouldHaveReturnStatement() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleStatement stmt = sumThing.getBody().get( 0 );
+
+		assertTrue( "The method statement should be a return.", stmt instanceof ReturnStatement );
+	}
+
+	@Test
+	public void classMethodWithEmtpyReturnReturnStatementShouldHaveAnExpression() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+		TweedleMethod sumThing = tested.methods.get( 0 );
+		ReturnStatement stmt = (ReturnStatement) sumThing.getBody().get( 0 );
+
+		assertNotNull( "The return statement should hold an expression.", stmt.getExpression() );
+	}
+
+	@Test
+	public void classMethodWithEmtpyReturnReturnStatementShouldHaveTweedleNull() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+		TweedleMethod sumThing = tested.methods.get( 0 );
+		ReturnStatement stmt = (ReturnStatement) sumThing.getBody().get( 0 );
+
+		assertEquals( "The return statement should hold NULL.", TweedleNull.NULL, stmt.getExpression() );
+	}
+
+	@Test
+	public void classMethodShouldHaveANonNullStatement() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return 3 + 4;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleStatement stmt = sumThing.getBody().get( 0 );
+
+		assertNotNull( "The method statement should not be null.", stmt );
+	}
+
+	@Test
+	public void classMethodShouldHaveReturnStatement() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return 3 + 4;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleStatement stmt = sumThing.getBody().get( 0 );
+
+		assertTrue( "The method statement should be a return.", stmt instanceof ReturnStatement );
+	}
+
+	@Test
+	public void classMethodReturnStatementShouldHaveAnExpression() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return 3 + 4;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+		TweedleMethod sumThing = tested.methods.get( 0 );
+		ReturnStatement stmt = (ReturnStatement) sumThing.getBody().get( 0 );
+
+		assertNotNull( "The method statement should hold an expression.", stmt.getExpression() );
+	}
+
+	@Test
+	public void classMethodReturnStatementShouldHaveAnAdditionExpression() {
+		String scene = "class Scene extends SScene {\n"
+						+ "  WholeNumber sumThing() {\n"
+						+ "    return 3 + 4;\n"
+						+ "  }\n"
+						+ "}";
+		TweedleClass tested = (TweedleClass) parseType( scene);
+		TweedleMethod sumThing = tested.methods.get( 0 );
+		ReturnStatement stmt = (ReturnStatement) sumThing.getBody().get( 0 );
+
+		assertTrue( "The method statement should hold an addition expression.", stmt.getExpression() instanceof AdditionExpression );
 	}
 
 	@Test
