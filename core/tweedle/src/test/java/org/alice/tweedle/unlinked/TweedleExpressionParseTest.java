@@ -16,6 +16,24 @@ public class TweedleExpressionParseTest {
 	}
 
 	@Test
+	public void somethingShouldBeCreatedForParenthesizedNumber() {
+		TweedleExpression tested = parseExpression( "(3)" );
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void aNumberShouldBeCreatedForParenthesizedNumber() {
+		TweedleExpression tested = parseExpression( "(3)" );
+		assertTrue("The parser should have returned a TweedlePrimitiveValue.", tested instanceof TweedlePrimitiveValue);
+	}
+
+	@Test
+	public void aNumberShouldBeCreatedForMultiplyParenthesizedNumber() {
+		TweedleExpression tested = parseExpression( "(((3)))" );
+		assertTrue("The parser should have returned aTweedlePrimitiveValue.", tested instanceof TweedlePrimitiveValue);
+	}
+
+	@Test
 	public void somethingShouldBeCreatedForThis() {
 		TweedleExpression tested = parseExpression( "this" );
 		assertNotNull("The parser should have returned something.", tested );
@@ -39,12 +57,6 @@ public class TweedleExpressionParseTest {
 		assertTrue("The parser should have returned an AdditionExpression.", tested instanceof AdditionExpression );
 	}
 
-/*	@Test
-	public void additionExpressionShouldHaveLeft() {
-		AdditionExpression tested = (AdditionExpression) parseExpression( "3 + 4" );
-		assertTrue("The AdditionExpression should have a left hand side.", tested. );
-	}*/
-
 	@Test
 	public void createdAdditionExpressionShouldEvaluate() {
 		AdditionExpression tested = (AdditionExpression) parseExpression( "3 + 4" );
@@ -62,12 +74,18 @@ public class TweedleExpressionParseTest {
 		AdditionExpression tested = (AdditionExpression) parseExpression( "3 + 4" );
 		assertEquals("The AdditionExpression should evaluate correctly.",
 								 7,
-								 ( (TweedlePrimitiveValue<Number>) tested.evaluate( null ) ).getPrimitiveValue() );
+								 ( (TweedlePrimitiveValue) tested.evaluate( null ) ).getPrimitiveValue() );
 	}
 
 	@Test
 	public void wholeNumberAdditionShouldKnowItsType() {
 		TweedleExpression tested = parseExpression( "3 + 4" );
 		assertEquals( "The type should be WholeNumber", TweedleTypes.WHOLE_NUMBER, tested.getType() );
+	}
+
+	@Test
+	public void decimalNumberMultiplicationShouldKnowItsType() {
+		TweedleExpression tested = parseExpression( "3.4 + 4.1" );
+		assertEquals( "The type should be WholeNumber", TweedleTypes.DECIMAL_NUMBER, tested.getType() );
 	}
 }

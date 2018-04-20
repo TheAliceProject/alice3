@@ -79,7 +79,7 @@ public class TweedleUnlinkedParser {
 		private TweedleClass tweedleClass;
 		private List<String> modifiers;
 
-			MemberDeclarationVisitor( TweedleClass tweedleClass, List<String> modifiers )
+		MemberDeclarationVisitor( TweedleClass tweedleClass, List<String> modifiers )
 		{
 			this.tweedleClass = tweedleClass;
 			this.modifiers = modifiers;
@@ -99,7 +99,7 @@ public class TweedleUnlinkedParser {
 			StatementVisitor statementVisitor = new StatementVisitor();
 			List<TweedleStatement> body =
 							context.methodBody().block().blockStatement().stream()
-							.map( stmt -> stmt.accept( statementVisitor ) ).collect(toList());
+										 .map( stmt -> stmt.accept( statementVisitor ) ).collect(toList());
 			TweedleMethod method = new TweedleMethod(
 							modifiers,
 							getTypeOrVoid( context.typeTypeOrVoid() ),
@@ -116,7 +116,7 @@ public class TweedleUnlinkedParser {
 			StatementVisitor statementVisitor = new StatementVisitor();
 			List<TweedleStatement> body =
 							context.constructorBody.blockStatement().stream()
-										 .map( stmt -> stmt.accept( statementVisitor ) ).collect(toList());
+																		 .map( stmt -> stmt.accept( statementVisitor ) ).collect(toList());
 			TweedleConstructor constructor = new TweedleConstructor( getTypeReference( context.IDENTIFIER().getText() ),
 																															 context.IDENTIFIER().getText(),
 																															 requiredParameters(context.formalParameters()),
@@ -134,8 +134,8 @@ public class TweedleUnlinkedParser {
 			}
 			return context.formalParameterList().requiredParameter()
 										.stream().map(field -> new TweedleRequiredParameter( getType( field.typeType() ),
-							field.variableDeclaratorId().IDENTIFIER().getText()
-			)).collect(toList());
+																																				 field.variableDeclaratorId().IDENTIFIER().getText()
+							)).collect(toList());
 		}
 
 		private List<TweedleOptionalParameter> optionalParameters(TweedleParser.FormalParametersContext context)
@@ -200,12 +200,12 @@ public class TweedleUnlinkedParser {
 		{
 			ExpressionVisitor expressionVisitor = new ExpressionVisitor(type);
 			return context.variableDeclarator()
-						.stream().map(field -> new TweedleField(
-							modifiers,
-							type,
-							field.variableDeclaratorId().IDENTIFIER().getText(),
-							expressionVisitor.visit(field)
-			)).collect(toList());
+										.stream().map(field -> new TweedleField(
+											modifiers,
+											type,
+											field.variableDeclaratorId().IDENTIFIER().getText(),
+											expressionVisitor.visit(field)
+							)).collect(toList());
 		}
 	}
 
@@ -218,10 +218,14 @@ public class TweedleUnlinkedParser {
 		}
 
 		@Override public TweedleExpression visitPrimary( TweedleParser.PrimaryContext context ) {
+			// Parenthesized child expression
+			if ( context.expression() != null ) {
+				return this.visitExpression( context.expression() );
+			}
 			if ( context.THIS() != null ) {
 				return new ThisExpression(null);
 			}
-			//TweedleParser.LiteralContext x = context.literal();
+			// Visit children to handle literals
 			return super.visitPrimary( context );
 		}
 
@@ -238,8 +242,7 @@ public class TweedleUnlinkedParser {
 				return TweedleTypes.DECIMAL_NUMBER.createValue( value );
 			}
 
-			TerminalNode nul = context.NULL_LITERAL();
-			if (nul != null) {
+			if (context.NULL_LITERAL() != null) {
 				return TweedleNull.NULL;
 			}
 
@@ -283,22 +286,22 @@ public class TweedleUnlinkedParser {
 			{
 				switch (prefix.getText())
 				{
-					case "+":
-						// A positive number, or at least not changing the sign. Send along child.
-						return getFirstExpression( TweedleTypes.NUMBER, context );
-					case "-":
-						// A negative number, or a sign flip. Send along negated child.
-						return getNegativeOfExpression( getFirstExpression( TweedleTypes.NUMBER, context ) );
-					case "!":
-						return new LogicalNotExpression( getFirstExpression( TweedleTypes.BOOLEAN, context ) );
-					default:
-						throw new RuntimeException( "Unrecognized prefix operation: " + prefix.getText() );
+				case "+":
+					// A positive number, or at least not changing the sign. Send along child.
+					return getFirstExpression( TweedleTypes.NUMBER, context );
+				case "-":
+					// A negative number, or a sign flip. Send along negated child.
+					return getNegativeOfExpression( getFirstExpression( TweedleTypes.NUMBER, context ) );
+				case "!":
+					return new LogicalNotExpression( getFirstExpression( TweedleTypes.BOOLEAN, context ) );
+				default:
+					throw new RuntimeException( "Unrecognized prefix operation: " + prefix.getText() );
 				}
 			}
 			else if (operation != null) {
 				switch (operation.getText()) {
 				case ".":
-//					return new MethodInvocation(); //Object x [otherstuff]=>Y
+					//					return new MethodInvocation(); //Object x [otherstuff]=>Y
 				case "==":
 					return binaryExpression( EqualToExpression::new, null, context ); //XxY=>B
 				case "!=":
@@ -329,7 +332,7 @@ public class TweedleUnlinkedParser {
 					throw new RuntimeException( "No such operation as " + operation.getText());
 				}
 			}
-			return super.visitExpression( context );
+			return visitChildren(context);
 		}
 
 		private TweedleExpression getNegativeOfExpression( TweedleExpression exp ) {
@@ -379,7 +382,7 @@ public class TweedleUnlinkedParser {
 			return super.visitCreator(context);
 		}
 	}
-	
+
 	private class StatementVisitor extends TweedleParserBaseVisitor<TweedleStatement> {
 
 		@Override public TweedleStatement visitLocalVariableDeclaration( TweedleParser.LocalVariableDeclarationContext context)
@@ -389,7 +392,7 @@ public class TweedleUnlinkedParser {
 			VariableListVisitor variableVisitor = new VariableListVisitor(modifiers, type);
 			List<TweedleField> variables = context.variableDeclarators().accept(variableVisitor);
 			return null;
-//			return new TweedleLocalVariableDeclaration(variables);
+			//			return new TweedleLocalVariableDeclaration(variables);
 		}
 
 		@Override public TweedleStatement visitBlockStatement( TweedleParser.BlockStatementContext context)

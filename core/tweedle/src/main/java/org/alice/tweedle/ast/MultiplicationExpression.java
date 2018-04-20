@@ -5,7 +5,7 @@ import org.alice.tweedle.TweedleTypes;
 public class MultiplicationExpression extends BinaryNumericExpression<Number> {
 
 	public MultiplicationExpression( TweedleExpression lhs, TweedleExpression rhs ) {
-		super( lhs, rhs, TweedleTypes.NUMBER );
+		super( lhs, rhs, TweedleTypes.commonNumberType(lhs, rhs) );
 	}
 
 	@Override protected Number evaluate( double left, double right ) {
