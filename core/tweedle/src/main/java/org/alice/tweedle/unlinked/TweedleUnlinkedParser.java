@@ -16,8 +16,12 @@ public class TweedleUnlinkedParser {
 		return new TypeVisitor().visit( tweedleParserForSource( sourceForType ).typeDeclaration() );
 	}
 
+	TweedleStatement parseStatement( String sourceForExpression ) {
+		return new StatementVisitor().visit( tweedleParserForSource( sourceForExpression ).statement() );
+	}
+
 	TweedleExpression parseExpression( String sourceForExpression ) {
-		return new ExpressionVisitor(null ).visit( tweedleParserForSource( sourceForExpression ).expression() );
+		return new ExpressionVisitor().visit( tweedleParserForSource( sourceForExpression ).expression() );
 	}
 
 	private TweedleParser tweedleParserForSource( String source ) {
@@ -96,32 +100,25 @@ public class TweedleUnlinkedParser {
 
 		@Override public Void visitMethodDeclaration( TweedleParser.MethodDeclarationContext context)
 		{
-			StatementVisitor statementVisitor = new StatementVisitor();
-			List<TweedleStatement> body =
-							context.methodBody().block().blockStatement().stream()
-										 .map( stmt -> stmt.accept( statementVisitor ) ).collect(toList());
 			TweedleMethod method = new TweedleMethod(
 							modifiers,
 							getTypeOrVoid( context.typeTypeOrVoid() ),
 							context.IDENTIFIER().getText(),
 							requiredParameters(context.formalParameters()),
 							optionalParameters(context.formalParameters()),
-							body );
+							collectBlockStatements( context.methodBody().block().blockStatement() ) );
 			tweedleClass.methods.add(method);
 			return super.visitMethodDeclaration(context);
 		}
 
 		@Override public Void visitConstructorDeclaration( TweedleParser.ConstructorDeclarationContext context)
 		{
-			StatementVisitor statementVisitor = new StatementVisitor();
-			List<TweedleStatement> body =
-							context.constructorBody.blockStatement().stream()
-																		 .map( stmt -> stmt.accept( statementVisitor ) ).collect(toList());
-			TweedleConstructor constructor = new TweedleConstructor( getTypeReference( context.IDENTIFIER().getText() ),
-																															 context.IDENTIFIER().getText(),
-																															 requiredParameters(context.formalParameters()),
-																															 optionalParameters(context.formalParameters()),
-																															 body );
+			TweedleConstructor constructor = new TweedleConstructor(
+							getTypeReference( context.IDENTIFIER().getText() ),
+							context.IDENTIFIER().getText(),
+							requiredParameters(context.formalParameters()),
+							optionalParameters(context.formalParameters()),
+							collectBlockStatements( context.constructorBody.blockStatement() ) );
 			tweedleClass.constructors.add(constructor);
 			return super.visitConstructorDeclaration(context);
 		}
@@ -152,6 +149,11 @@ public class TweedleUnlinkedParser {
 		}
 	}
 
+	private List<TweedleStatement> collectBlockStatements( List<TweedleParser.BlockStatementContext> contexts ) {
+		StatementVisitor statementVisitor = new StatementVisitor();
+		return contexts.stream().map( stmt -> stmt.accept( statementVisitor ) ).collect(toList());
+	}
+
 	private TweedleType getTypeOrVoid( TweedleParser.TypeTypeOrVoidContext context ) {
 		if (context.VOID() != null) {
 			return TweedleVoidType.VOID;
@@ -160,16 +162,11 @@ public class TweedleUnlinkedParser {
 	}
 
 	private TweedleType getType( TweedleParser.TypeTypeContext context ) {
-		int bracketCount = (context.getChildCount() - 1);
-		TweedleType baseType;
-		if (context.classOrInterfaceType() != null) {
-			baseType = getTypeReference( context.classOrInterfaceType().getText() );
-		} else {
-			baseType = getPrimitiveType( context.primitiveType().getText() );
-		}
-		while (bracketCount > 0 && baseType != null) {
-			baseType = new TweedleArrayType( baseType );
-			bracketCount -= 2;
+		TweedleType baseType = context.classOrInterfaceType() != null ?
+						getTypeReference( context.classOrInterfaceType().getText() ) :
+						getPrimitiveType( context.primitiveType().getText() );
+		if ( context.getChildCount() > 1 && baseType != null) {
+			return new TweedleArrayType( baseType );
 		}
 		return baseType;
 	}
@@ -273,15 +270,19 @@ public class TweedleUnlinkedParser {
 		@Override public TweedleExpression visitExpression( TweedleParser.ExpressionContext context )
 		{
 			TweedleExpression expression = buildExpression( context );
-			if (expectedType == null || expression == null ||
-							expectedType.willAcceptValueOfType( expression.getType()) ) {
-				return expression;
+			if (expectedType != null && expression != null && expression.getType() != null
+							&& !expectedType.willAcceptValueOfType( expression.getType() )) {
+				System.out.println(
+								"Had been expecting expression of type " + expectedType + ", but it is typed as " + expression.getType() );
 			}
-			return null;
+			return expression;
 		}
 
 		private TweedleExpression buildExpression( TweedleParser.ExpressionContext context )
 		{
+			if (context.NEW() != null) {
+				return instantiationExpression( context );
+			}
 			Token prefix = context.prefix;
 			Token operation = context.bop;
 
@@ -339,15 +340,34 @@ public class TweedleUnlinkedParser {
 				}
 			}
 			// TODO parse array value reading
-			// TODO parse instantiation
 			// TODO parse lambda
 
 			// This will handle primary
 			return visitChildren(context);
 		}
 
+		private TweedleExpression instantiationExpression( TweedleParser.ExpressionContext context ) {
+			String typeName = context.creator().createdName().getText();
+			final TweedleParser.ArrayCreatorRestContext arrayDetails = context.creator().arrayCreatorRest();
+			if (arrayDetails != null) {
+				TweedlePrimitiveType prim = getPrimitiveType( typeName );
+				TweedleType memberType = prim == null ? getTypeReference( typeName ) : prim;
+				if (arrayDetails.arrayInitializer() != null) {
+					return new TweedleArrayInitializer(
+									new TweedleArrayType( memberType ),
+									arrayDetails.arrayInitializer().expression().stream().map( a -> a.accept( new ExpressionVisitor( memberType ) ) )
+												 .collect( toList() ) );
+				}
+				// TODO return sized array
+			} else {
+				//TODO Object instantiation
+			}
+			return null;
+		}
+
 		private TweedleExpression fieldOrMethodRef( TweedleParser.ExpressionContext context ) {
-			TweedleExpression target = context.expression().stream().map( exp -> exp.accept( this ) ).collect( toList() ).get( 0 );
+			// Use untyped expression visitor for target
+			TweedleExpression target = context.expression(0).accept( new ExpressionVisitor() );
 			if (context.IDENTIFIER() != null) {
 				return new FieldAccess( target, context.IDENTIFIER().getText());
 			}
@@ -381,11 +401,6 @@ public class TweedleUnlinkedParser {
 			final ExpressionVisitor visitor = new ExpressionVisitor( type );
 			return context.expression().stream().map( exp -> exp.accept( visitor ) ).collect( toList() );
 		}
-
-		@Override public TweedleExpression visitArrayInitializer( TweedleParser.ArrayInitializerContext context)
-		{
-			return new TweedleArrayInitializer( (TweedleArrayType) expectedType, context.variableInitializer().stream().map( a -> a.accept( this)).collect( toList()));
-		}
 	}
 
 	public interface BinaryConstructor {
@@ -406,8 +421,64 @@ public class TweedleUnlinkedParser {
 
 		@Override public TweedleStatement visitBlockStatement( TweedleParser.BlockStatementContext context)
 		{
+			// TODO Create local variable declarations
+			// TODO Catch disabled statements
 			return super.visitBlockStatement(context);
 		}
+
+		@Override public TweedleStatement visitStatement( TweedleParser.StatementContext context)
+		{
+			if (context.COUNT_UP_TO() != null) {
+				return new CountUpLoop( context.IDENTIFIER().getText(),
+																context.expression().accept( new ExpressionVisitor(TweedleTypes.WHOLE_NUMBER) ),
+																collectBlockStatements( context.block(0).blockStatement() ) );
+			}
+			if (context.IF()!= null) {
+				TweedleExpression condition = context.parExpression().expression().accept( new ExpressionVisitor( TweedleTypes.BOOLEAN ) );
+				List<TweedleStatement> thenBlock = collectBlockStatements( context.block( 0).blockStatement() );
+				List<TweedleStatement> elseBlock = context.ELSE() != null ?
+								collectBlockStatements( context.block( 1 ).blockStatement() ) : new ArrayList<>();
+				return new ConditionalStatement(condition, thenBlock, elseBlock);
+			}
+			if (context.forControl() != null) {
+				final TweedleType valueType = getType( context.forControl().typeType() );
+				final TweedleArrayType arrayType = new TweedleArrayType( valueType );
+				final VariableDeclaration loopVar =
+								new VariableDeclaration( valueType, context.forControl().variableDeclaratorId().getText() );
+				final TweedleExpression loopValues = context.forControl().expression().accept( new ExpressionVisitor( arrayType ) );
+				final List<TweedleStatement> statements = collectBlockStatements( context.block( 0 ).blockStatement() );
+				if (context.FOR_EACH() != null) {
+					return new ForEachLoop( loopVar, loopValues, statements );
+				}
+				if (context.EACH_TOGETHER() != null) {
+					return new ForEachTogether( loopVar, loopValues, statements );
+				}
+				throw new RuntimeException( "Found a forControl in a statement where it was not expected: " + context);
+			}
+			if (context.WHILE() != null) {
+				return new WhileLoop(context.parExpression().expression().accept( new ExpressionVisitor(TweedleTypes.BOOLEAN) ),
+														 collectBlockStatements( context.block(0).blockStatement() ) );
+			}
+			if (context.DO_IN_ORDER() != null) {
+				return new DoInOrder( collectBlockStatements( context.block(0).blockStatement() ) );
+			}
+			if (context.DO_TOGETHER() != null) {
+				return new DoTogether( collectBlockStatements( context.block(0).blockStatement() ) );
+			}
+			if (context.RETURN() != null) {
+				if (context.expression() != null) {
+					return new ReturnStatement( context.expression().accept( new ExpressionVisitor() ) );
+				} else {
+					return new ReturnStatement();
+				}
+			}
+			TweedleParser.ExpressionContext expContext = context.statementExpression;
+			if (expContext != null) {
+				return new ExpressionStatement( context.expression().accept( new ExpressionVisitor() ) );
+			}
+			throw new RuntimeException( "Found a statement that was not expected: " + context);
+		}
+
 	}
 }
 

@@ -12,6 +12,10 @@ public class TweedleTypes {
 	public static final TweedlePrimitiveType[] PRIMITIVE_TYPES =
 					{NUMBER, DECIMAL_NUMBER, WHOLE_NUMBER, BOOLEAN, TEXT_STRING };
 
+	//TODO Move these off the types class?
+	public static final TweedlePrimitiveValue<Boolean> TRUE = new TweedlePrimitiveValue<>( true, BOOLEAN );
+	public static final TweedlePrimitiveValue<Boolean> FALSE = new TweedlePrimitiveValue<>( false, BOOLEAN );
+
 	public static TweedlePrimitiveType commonNumberType( TweedleExpression lhs, TweedleExpression rhs ) {
 		return TweedleTypes.WHOLE_NUMBER.equals(lhs.getType()) && TweedleTypes.WHOLE_NUMBER.equals(rhs.getType()) ? TweedleTypes.WHOLE_NUMBER : TweedleTypes.DECIMAL_NUMBER;
 	}

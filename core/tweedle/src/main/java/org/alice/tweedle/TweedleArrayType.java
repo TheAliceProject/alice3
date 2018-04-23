@@ -13,4 +13,8 @@ public class TweedleArrayType extends TweedleType{
 						( (type instanceof TweedleArrayType) &&
 							valueType.willAcceptValueOfType( ((TweedleArrayType) type).valueType ) );
 	}
+
+	public TweedleType getValueType() {
+		return valueType;
+	}
 }

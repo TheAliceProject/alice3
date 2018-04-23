@@ -7,6 +7,7 @@ import org.alice.tweedle.TweedleValue;
 import org.alice.tweedle.run.Frame;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -37,5 +38,10 @@ public class TweedleArrayInitializer extends TweedleExpression {
 		return new TweedleArray(
 						(TweedleArrayType) this.getType(),
 						elements.stream().map( el -> el.evaluate( frame ) ).collect( toList() ) );
+	}
+
+	@Override public String toString() {
+		return getType().getName() + " {" +
+						elements.stream().map( Object::toString ).collect( Collectors.joining( "," ) ) + "}";
 	}
 }

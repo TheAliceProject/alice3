@@ -136,7 +136,7 @@ variableInitializer
     ;
 
 arrayInitializer
-    : '{' (variableInitializer (',' variableInitializer)* (',')? )? '}'
+    : '{' (expression (',' expression)* (',')? )? '}'
     ;
 
 classOrInterfaceType
@@ -277,7 +277,7 @@ createdName
     ;
 
 arrayCreatorRest
-    : '[' (']' ('[' ']')* arrayInitializer | expression ']' ('[' expression ']')* ('[' ']')*)
+    : '[' (']' arrayInitializer | expression ']' )
     ;
 
 classCreatorRest
@@ -285,7 +285,7 @@ classCreatorRest
     ;
 
 typeType
-    : (classOrInterfaceType | primitiveType) ('[' ']')*
+    : (classOrInterfaceType | primitiveType) ('[' ']')?
     ;
 
 primitiveType

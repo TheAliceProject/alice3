@@ -28,4 +28,8 @@ public class TweedlePrimitiveValue<T> extends TweedleValue {
 	@Override public int hashCode() {
 		return 17 * value.hashCode() + type.hashCode();
 	}
+
+	@Override public String toString() {
+		return "Value(" + value + " : " + type + ")";
+	}
 }

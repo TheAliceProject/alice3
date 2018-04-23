@@ -8,6 +8,7 @@ import org.alice.tweedle.ast.FieldAccess;
 import org.alice.tweedle.ast.IdentifierReference;
 import org.alice.tweedle.ast.MethodCallExpression;
 import org.alice.tweedle.ast.ThisExpression;
+import org.alice.tweedle.ast.TweedleArrayInitializer;
 import org.alice.tweedle.ast.TweedleExpression;
 import org.junit.Test;
 
@@ -124,6 +125,30 @@ public class TweedleExpressionParseTest {
 	}
 
 	@Test
+	public void somethingShouldBeCreatedForFieldReadOnThis() {
+		TweedleExpression tested = parseExpression( "this.myField" );
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void aFieldAccessExpressionOnThisShouldBeCreated() {
+		TweedleExpression tested = parseExpression( "this.myField" );
+		assertTrue("The parser should have returned a FieldAccesss.", tested instanceof FieldAccess );
+	}
+
+	@Test
+	public void aFieldAccessOnThisShouldHaveMyField() {
+		FieldAccess tested = (FieldAccess) parseExpression( "this.myField" );
+		assertEquals("The field name should have been \"myField\".", "myField", tested.getFieldName() );
+	}
+
+	@Test
+	public void aFieldAccessOnThisShouldTargetByThisExpression() {
+		FieldAccess tested = (FieldAccess) parseExpression( "this.myField" );
+		assertTrue("The target should have been a ThisExpression.", tested.getTarget() instanceof ThisExpression);
+	}
+
+	@Test
 	public void somethingShouldBeCreatedForFieldRead() {
 		TweedleExpression tested = parseExpression( "x.myField" );
 		assertNotNull("The parser should have returned something.", tested );
@@ -183,5 +208,53 @@ public class TweedleExpressionParseTest {
 		MethodCallExpression fa = (MethodCallExpression) parseExpression( "x.myMethod()" );
 		IdentifierReference tested = (IdentifierReference) fa.getTarget();
 		assertEquals( "The IdentifierReference should be named 'x'.", "x", tested.getName() );
+	}
+
+	@Test
+	public void somethingShouldBeCreatedForMethodCallOnThis() {
+		TweedleExpression tested = parseExpression( "this.myMethod()" );
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void aMethodCallExpressionOnThisShouldBeCreated() {
+		TweedleExpression tested = parseExpression( "this.myMethod()" );
+		assertTrue("The parser should have returned a MethodCallExpression.", tested instanceof MethodCallExpression );
+	}
+
+	@Test
+	public void aMethodCallExpressionOnThisShouldHaveMyMethod() {
+		MethodCallExpression tested = (MethodCallExpression) parseExpression( "this.myMethod()" );
+		assertEquals("The method name should have been \"myMethod\".", "myMethod", tested.getMethodName() );
+	}
+
+	@Test
+	public void aMethodCallShouldTargetThisExpression() {
+		MethodCallExpression tested = (MethodCallExpression) parseExpression( "this.myMethod()" );
+		assertTrue("The target should have been a ThisExpression.", tested.getTarget() instanceof ThisExpression);
+	}
+
+	@Test
+	public void somethingShouldBeCreatedForPrimitiveArray() {
+		TweedleExpression tested = parseExpression( "new WholeNumber[] {3, 4, 5}" );
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void aPrimitiveArrayInitializerShouldBeCreated() {
+		TweedleExpression tested = parseExpression( "new WholeNumber[] {3, 4, 5}" );
+		assertTrue("The parser should have returned a TweedleArrayInitializer.", tested instanceof TweedleArrayInitializer );
+	}
+
+	@Test
+	public void somethingShouldBeCreatedForObjectArray() {
+		TweedleExpression tested = parseExpression( "new SModel[] {this.sphere, this.walrus}" );
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void anObjectArrayInitializerShouldBeCreated() {
+		TweedleExpression tested = parseExpression( "new SModel[] {this.sphere, this.walrus}" );
+		assertTrue("The parser should have returned a TweedleArrayInitializer.", tested instanceof TweedleArrayInitializer );
 	}
 }
