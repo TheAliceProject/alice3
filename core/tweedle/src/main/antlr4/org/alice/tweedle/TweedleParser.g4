@@ -115,11 +115,7 @@ constructorDeclaration
     ;
 
 fieldDeclaration
-    : typeType variableDeclarators ';'
-    ;
-
-variableDeclarators
-    : variableDeclarator (',' variableDeclarator)*
+    : typeType variableDeclarator ';'
     ;
 
 variableDeclarator
@@ -154,15 +150,15 @@ formalParameterList
     ;
 
 requiredParameter
-    : variableModifier* typeType variableDeclaratorId
+    : typeType variableDeclaratorId
     ;
 
 optionalParameter
-    : variableModifier* typeType variableDeclaratorId LARROW expression
+    : typeType variableDeclaratorId LARROW expression
     ;
 
 lastFormalParameter
-    : variableModifier* typeType '...' variableDeclaratorId
+    : typeType '...' variableDeclaratorId
     ;
 
 literal
@@ -186,7 +182,7 @@ blockStatement
     ;
 
 localVariableDeclaration
-    : variableModifier* typeType variableDeclarators
+    : CONSTANT? typeType variableDeclarator
     ;
 
 statement

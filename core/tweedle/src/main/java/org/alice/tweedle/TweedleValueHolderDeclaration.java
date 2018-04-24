@@ -1,6 +1,6 @@
 package org.alice.tweedle;
 
-abstract class TweedleValueHolderDeclaration {
+abstract public class TweedleValueHolderDeclaration {
 
 	private String name;
 	private TweedleType type;
@@ -9,5 +9,13 @@ abstract class TweedleValueHolderDeclaration {
 	{
 		this.type = type;
 		this.name = name;
+	}
+
+	public TweedleType getType() {
+		return type;
+	}
+
+	public String getName() {
+		return name;
 	}
 }

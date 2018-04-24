@@ -6,12 +6,12 @@ import org.alice.tweedle.TweedleTypes;
 import java.util.List;
 
 public class CountUpLoop extends TweedleStatement {
-	private final VariableDeclaration loopVariable;
+	private final TweedleLocalVariable loopVariable;
 	private final TweedleExpression limitExpression;
 	private final List<TweedleStatement> statements;
 
 	public CountUpLoop( String variableName, TweedleExpression limitExpression, List<TweedleStatement> statements ) {
-		this.loopVariable = new VariableDeclaration( TweedleTypes.WHOLE_NUMBER, variableName);
+		this.loopVariable = new TweedleLocalVariable( TweedleTypes.WHOLE_NUMBER, variableName);
 		this.limitExpression = limitExpression;
 		this.statements = statements;
 	}
@@ -24,7 +24,7 @@ public class CountUpLoop extends TweedleStatement {
 		return limitExpression;
 	}
 
-	public VariableDeclaration getLoopVariable() {
+	public TweedleLocalVariable getLoopVariable() {
 		return loopVariable;
 	}
 }

@@ -2,6 +2,7 @@ package org.alice.tweedle.unlinked;
 
 import org.alice.tweedle.TweedleArrayType;
 import org.alice.tweedle.TweedleNull;
+import org.alice.tweedle.TweedlePrimitiveValue;
 import org.alice.tweedle.TweedleStatement;
 import org.alice.tweedle.TweedleTypes;
 import org.alice.tweedle.TweedleVoidType;
@@ -349,8 +350,88 @@ public class TweedleStatementParseTest {
 	}
 
 	@Test
-	public void aAssignmentExpressionShouldBeCreated() {
+	public void anAssignmentExpressionShouldBeCreated() {
 		ExpressionStatement tested = (ExpressionStatement) parseStatement( "x <- 3;" );
 		assertTrue("The Statement should have contained an AssignmentExpression.", tested.getExpression() instanceof AssignmentExpression );
+	}
+
+	@Test
+	public void somethingShouldBeCreatedForVariableDeclaration() {
+		TweedleStatement tested = parseStatement("WholeNumber a <- 2;" );
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void aVariableDeclarationShouldBeCreatedForVariableDeclaration() {
+		TweedleStatement tested = parseStatement("WholeNumber a <- 2;" );
+		assertTrue("The parser should have returned a LocalVariableDeclaration.", tested instanceof LocalVariableDeclaration );
+	}
+
+	@Test
+	public void aVariableDeclarationShouldBeConstant() {
+		LocalVariableDeclaration tested = (LocalVariableDeclaration) parseStatement( "constant WholeNumber a <- 2;" );
+		assertTrue("The LocalVariableDeclaration .", tested.isConstant() );
+	}
+
+	@Test
+	public void aVariableDeclarationShouldNotBeConstant() {
+		LocalVariableDeclaration tested = (LocalVariableDeclaration) parseStatement( "WholeNumber a <- 2;" );
+		assertFalse("The LocalVariableDeclaration should not be constant.", tested.isConstant() );
+	}
+
+	@Test
+	public void aVariableDeclarationShouldHaveAnInitializer() {
+		LocalVariableDeclaration tested = (LocalVariableDeclaration) parseStatement( "WholeNumber a <- 2;" );
+		assertNotNull("The LocalVariableDeclaration should be constant.", tested.getDeclaration().getInitializer() );
+	}
+
+	@Test
+	public void aVariableDeclarationShouldHaveAnInitializerValue() {
+		TweedleExpression tested = ((LocalVariableDeclaration) parseStatement( "WholeNumber a <- 2;" ))
+						.getDeclaration().getInitializer();
+		assertTrue("The LocalVariableDeclaration should hold a primitive value.", tested instanceof TweedlePrimitiveValue );
+	}
+
+	@Test
+	public void aVariableDeclarationShouldHaveAnInitializerOfTwo() {
+		TweedlePrimitiveValue tested = (TweedlePrimitiveValue) ((LocalVariableDeclaration) parseStatement( "WholeNumber a <- 2;" ))
+						.getDeclaration().getInitializer();
+		assertEquals("The LocalVariableDeclaration should hold 2.", 2, tested.getPrimitiveValue() );
+	}
+
+	@Test
+	public void nestedDoInOrdersOuterOneShouldBeEnabled() {
+		DoInOrder tested = (DoInOrder) parseStatement( "doInOrder { doInOrder {} }" );
+		assertTrue("The outer doInOrder should be enabled.", tested.isEnabled());
+	}
+
+	@Test
+	public void nestedDoInOrdersInnerOneShouldBeEnabled() {
+		DoInOrder tested = (DoInOrder) parseStatement( "doInOrder { doInOrder {} }" );
+		assertTrue("The inner doInOrder should be enabled.", tested.getStatements().get( 0 ).isEnabled());
+	}
+
+	@Test
+	public void disabledNestedDoInOrdersOuterOneShouldBeDisabled() {
+		DoInOrder tested = (DoInOrder) parseStatement( "*< doInOrder { doInOrder {} } >*" );
+		assertFalse("The outer doInOrder should be disabled.", tested.isEnabled());
+	}
+
+	@Test
+	public void disabledNestedDoInOrdersInnerOneShouldBeEnabled() {
+		DoInOrder tested = (DoInOrder) parseStatement( "*< doInOrder { doInOrder {} } >*" );
+		assertTrue("The inner doInOrder should be enabled.", tested.getStatements().get( 0 ).isEnabled());
+	}
+
+	@Test
+	public void disabledInnerDoInOrdersOuterOneShouldBeEnabled() {
+		DoInOrder tested = (DoInOrder) parseStatement( "doInOrder { *< doInOrder {} >* }" );
+		assertTrue("The outer doInOrder should be enabled.", tested.isEnabled());
+	}
+
+	@Test
+	public void disabledInnerDoInOrdersInnerOneShouldBeDisabled() {
+		DoInOrder tested = (DoInOrder) parseStatement( "doInOrder { *< doInOrder {} >* }" );
+		assertFalse("The inner doInOrder should be disabled.", tested.getStatements().get( 0 ).isEnabled());
 	}
 }

@@ -17,7 +17,7 @@ public class TweedleUnlinkedParser {
 	}
 
 	TweedleStatement parseStatement( String sourceForExpression ) {
-		return new StatementVisitor().visit( tweedleParserForSource( sourceForExpression ).statement() );
+		return new StatementVisitor().visit( tweedleParserForSource( sourceForExpression ).blockStatement() );
 	}
 
 	TweedleExpression parseExpression( String sourceForExpression ) {
@@ -92,10 +92,18 @@ public class TweedleUnlinkedParser {
 		@Override public Void visitFieldDeclaration( TweedleParser.FieldDeclarationContext context )
 		{
 			TweedleType type = getType( context.typeType() );
-			VariableListVisitor variableVisitor = new VariableListVisitor(modifiers, type);
-			List<TweedleField> properties = context.variableDeclarators().accept( variableVisitor );
-			tweedleClass.properties.addAll(properties);
-			return super.visitFieldDeclaration(context);
+			final String name = context.variableDeclarator().variableDeclaratorId().IDENTIFIER().getText();
+			TweedleField property;
+			if (context.variableDeclarator().variableInitializer() != null) {
+				ExpressionVisitor initVisitor = new ExpressionVisitor( type );
+				TweedleExpression init =
+								context.variableDeclarator().variableInitializer().accept( initVisitor );
+				property = new TweedleField( modifiers, type, name, init);
+			} else {
+				property = new TweedleField( modifiers, type, name );
+			}
+			tweedleClass.properties.add(property);
+			return null;
 		}
 
 		@Override public Void visitMethodDeclaration( TweedleParser.MethodDeclarationContext context)
@@ -182,28 +190,6 @@ public class TweedleUnlinkedParser {
 			}
 		}
 		return null;
-	}
-
-	private class VariableListVisitor extends TweedleParserBaseVisitor<List<TweedleField>> {
-		private List<String> modifiers;
-		private TweedleType type;
-
-		VariableListVisitor( List<String> modifiers, TweedleType type ) {
-			this.modifiers = modifiers;
-			this.type = type;
-		}
-
-		@Override public List<TweedleField> visitVariableDeclarators( TweedleParser.VariableDeclaratorsContext context )
-		{
-			ExpressionVisitor expressionVisitor = new ExpressionVisitor(type);
-			return context.variableDeclarator()
-										.stream().map(field -> new TweedleField(
-											modifiers,
-											type,
-											field.variableDeclaratorId().IDENTIFIER().getText(),
-											expressionVisitor.visit(field)
-							)).collect(toList());
-		}
 	}
 
 	private class ExpressionVisitor extends TweedleParserBaseVisitor<TweedleExpression>
@@ -411,18 +397,30 @@ public class TweedleUnlinkedParser {
 
 		@Override public TweedleStatement visitLocalVariableDeclaration( TweedleParser.LocalVariableDeclarationContext context)
 		{
-			List<String> modifiers = context.variableModifier().stream().map(modifier -> modifier.getText()).collect(toList());
 			TweedleType type = getType( context.typeType() );
-			VariableListVisitor variableVisitor = new VariableListVisitor(modifiers, type);
-			List<TweedleField> variables = context.variableDeclarators().accept(variableVisitor);
-			return null;
-			//			return new TweedleLocalVariableDeclaration(variables);
+			final String name = context.variableDeclarator().variableDeclaratorId().IDENTIFIER().getText();
+			TweedleLocalVariable decl;
+			if (context.variableDeclarator().variableInitializer() != null) {
+				ExpressionVisitor initVisitor = new ExpressionVisitor( type );
+				TweedleExpression init =
+								context.variableDeclarator().variableInitializer().accept( initVisitor );
+				decl = new TweedleLocalVariable( type, name, init);
+			} else {
+				decl = new TweedleLocalVariable( type, name);
+			}
+			return new LocalVariableDeclaration( context.CONSTANT() != null, decl );
 		}
 
 		@Override public TweedleStatement visitBlockStatement( TweedleParser.BlockStatementContext context)
 		{
-			// TODO Create local variable declarations
-			// TODO Catch disabled statements
+			if (context.NODE_DISABLE() != null) {
+				TweedleStatement stmt = context.blockStatement().accept( this );
+				stmt.disable();
+				return stmt;
+			}
+			if (context.localVariableDeclaration() != null) {
+				return context.localVariableDeclaration().accept( this );
+			}
 			return super.visitBlockStatement(context);
 		}
 
@@ -443,8 +441,8 @@ public class TweedleUnlinkedParser {
 			if (context.forControl() != null) {
 				final TweedleType valueType = getType( context.forControl().typeType() );
 				final TweedleArrayType arrayType = new TweedleArrayType( valueType );
-				final VariableDeclaration loopVar =
-								new VariableDeclaration( valueType, context.forControl().variableDeclaratorId().getText() );
+				final TweedleLocalVariable loopVar =
+								new TweedleLocalVariable( valueType, context.forControl().variableDeclaratorId().getText());
 				final TweedleExpression loopValues = context.forControl().expression().accept( new ExpressionVisitor( arrayType ) );
 				final List<TweedleStatement> statements = collectBlockStatements( context.block( 0 ).blockStatement() );
 				if (context.FOR_EACH() != null) {
@@ -481,21 +479,3 @@ public class TweedleUnlinkedParser {
 
 	}
 }
-
-	
-/*			String methodName = ctx.methodName().getText();
-			StatementVisitor statementVisitor = new StatementVisitor();
-			List<TweedleStatement> statements = ctx.statement()
-							.stream()
-							.map(statement -> statement.accept(statementVisitor))
-							.collect(toList());
-			return new TweedleMethod(methodName, statements);*/
-
-/*	private static class StatementVisitor extends TweedleParserBaseVisitor<TweedleStatement> {
-
-		@Override
-		public TweedleStatement visitStatement(TweedleParser.StatementContext ctx) {
-			String statementName = ctx.getText();
-			return new TweedleStatement(statementName);
-		}
-	}*/

@@ -5,17 +5,17 @@ import org.alice.tweedle.TweedleStatement;
 import java.util.List;
 
 public class ForEachLoop extends TweedleStatement {
-	private final VariableDeclaration loopVar;
+	private final TweedleLocalVariable loopVar;
 	private final TweedleExpression loopValues;
 	private final List<TweedleStatement> statements;
 
-	public ForEachLoop( VariableDeclaration loopVar, TweedleExpression loopValues, List<TweedleStatement> statements ) {
+	public ForEachLoop( TweedleLocalVariable loopVar, TweedleExpression loopValues, List<TweedleStatement> statements ) {
 		this.loopVar = loopVar;
 		this.loopValues = loopValues;
 		this.statements = statements;
 	}
 
-	public VariableDeclaration getLoopVar() {
+	public TweedleLocalVariable getLoopVar() {
 		return loopVar;
 	}
 
