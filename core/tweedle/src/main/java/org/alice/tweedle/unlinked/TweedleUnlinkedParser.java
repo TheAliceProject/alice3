@@ -326,10 +326,24 @@ public class TweedleUnlinkedParser {
 				}
 			}
 			// TODO parse array value reading
-			// TODO parse lambda
 
-			// This will handle primary
+			// This will handle primary & lambda
 			return visitChildren(context);
+		}
+
+		@Override public TweedleExpression visitLambdaExpression( TweedleParser.LambdaExpressionContext ctx ) {
+			List<TweedleRequiredParameter> parameters = lambdaParameters( ctx.lambdaParameters() );
+			List<TweedleStatement> stmts = collectBlockStatements( ctx.block().blockStatement() );
+			return new LambdaExpression(parameters, stmts);
+		}
+
+
+		private List<TweedleRequiredParameter> lambdaParameters( TweedleParser.LambdaParametersContext context)
+		{
+			return context.requiredParameter().stream().map(
+							field -> new TweedleRequiredParameter( getType( field.typeType() ),
+																										 field.variableDeclaratorId().IDENTIFIER().getText()
+							)).collect(toList());
 		}
 
 		private TweedleExpression instantiationExpression( TweedleParser.ExpressionContext context ) {
@@ -358,8 +372,16 @@ public class TweedleUnlinkedParser {
 				return new FieldAccess( target, context.IDENTIFIER().getText());
 			}
 			if( context.methodCall() != null ) {
-				// TODO read labeledExpressionList
-				return new MethodCallExpression(target, context.methodCall().IDENTIFIER().getText());
+				final MethodCallExpression methodCall =
+								new MethodCallExpression( target, context.methodCall().IDENTIFIER() .getText() );
+				TweedleParser.LabeledExpressionListContext argsContext = context.methodCall().labeledExpressionList();
+				if (argsContext != null) {
+					argsContext.labeledExpression().forEach( arg -> {
+						final TweedleExpression argValue = arg.expression().accept( new ExpressionVisitor() );
+						methodCall.addArgument( arg.IDENTIFIER().getText(), argValue );
+					});
+				}
+				return methodCall;
 			}
 			throw new RuntimeException( "Unexpected details on context " + context);
 		}

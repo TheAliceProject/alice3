@@ -237,22 +237,12 @@ expression
     | lambdaExpression // Java8
     ;
 
-// Java8
 lambdaExpression
-    : lambdaParameters '->' lambdaBody
+    : lambdaParameters '->' block
     ;
 
-// Java8
 lambdaParameters
-    : IDENTIFIER
-    | '(' formalParameterList? ')'
-    | '(' IDENTIFIER (',' IDENTIFIER)* ')'
-    ;
-
-// Java8
-lambdaBody
-    : expression
-    | block
+    : '('(requiredParameter (',' requiredParameter)*)?')'
     ;
 
 primary

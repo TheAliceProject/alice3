@@ -175,7 +175,7 @@ public class TweedleParseTest {
 	}
 
 	@Test
-	public void somethingShouldBeCreatedForClassWithConstuctor() {
+	public void somethingShouldBeCreatedForClassWithConstructor() {
 		String scene = "class Scene extends SScene models Scene {\n"
 						+ "  Scene() {\n"
 						+ "    super();\n"
@@ -264,7 +264,7 @@ public class TweedleParseTest {
 	}
 
 	@Test
-	public void classMethodWithEmtpyReturnShouldHaveANonNullStatement() {
+	public void classMethodWithEmptyReturnShouldHaveANonNullStatement() {
 		String scene = "class Scene extends SScene {\n"
 						+ "  WholeNumber sumThing() {\n"
 						+ "    return;\n"
@@ -278,7 +278,7 @@ public class TweedleParseTest {
 	}
 
 	@Test
-	public void classMethodWithEmtpyReturnShouldHaveReturnStatement() {
+	public void classMethodWithEmptyReturnShouldHaveReturnStatement() {
 		String scene = "class Scene extends SScene {\n"
 						+ "  WholeNumber sumThing() {\n"
 						+ "    return;\n"
@@ -292,7 +292,7 @@ public class TweedleParseTest {
 	}
 
 	@Test
-	public void classMethodWithEmtpyReturnReturnStatementShouldHaveAnExpression() {
+	public void classMethodWithEmptyReturnReturnStatementShouldHaveAnExpression() {
 		String scene = "class Scene extends SScene {\n"
 						+ "  WholeNumber sumThing() {\n"
 						+ "    return;\n"
@@ -306,7 +306,7 @@ public class TweedleParseTest {
 	}
 
 	@Test
-	public void classMethodWithEmtpyReturnReturnStatementShouldHaveTweedleNull() {
+	public void classMethodWithEmptyReturnReturnStatementShouldHaveTweedleNull() {
 		String scene = "class Scene extends SScene {\n"
 						+ "  WholeNumber sumThing() {\n"
 						+ "    return;\n"
