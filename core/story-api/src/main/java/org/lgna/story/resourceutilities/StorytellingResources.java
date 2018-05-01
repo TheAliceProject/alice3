@@ -456,6 +456,14 @@ public enum StorytellingResources {
 
 	}
 
+	public static boolean initializeModelClassPath() {
+		List<Class<? extends org.lgna.story.resources.ModelResource>> classesLoaded = StorytellingResources.INSTANCE.findAndLoadAliceResourcesIfNecessary();
+		if( classesLoaded != null ) {
+			return true;
+		}
+		return false;
+	}
+
 	/*package-private*/List<Class<? extends org.lgna.story.resources.ModelResource>> findAndLoadAliceResourcesIfNecessary() {
 		if( this.aliceClassesLoaded == null ) {
 			List<File> resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );

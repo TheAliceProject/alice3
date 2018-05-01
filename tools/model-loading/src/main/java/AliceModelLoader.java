@@ -4,7 +4,6 @@ import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.nebulous.javabased.Utilities;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Component;
@@ -389,8 +388,8 @@ public class AliceModelLoader {
 	
 	public static void main( String[] args ) {
 			
-			File colladaFile  = new File( "C:/Users/dculyba/Documents/Alice/Collada/alien.dae" );
-			String modelName = "alien2";
+			File colladaFile  = new File( "C:/Users/dculyba/Documents/Alice/Collada/AliceColladaTestFiles/test cola/ColaBottle.dae" );
+			String modelName = "colaBottle";
 			SkeletonVisual sv = AliceModelLoader.loadAliceModelFromCollada( colladaFile, modelName);
 			
 			renameJoints(sv);

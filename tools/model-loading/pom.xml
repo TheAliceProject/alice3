@@ -33,10 +33,5 @@
       <groupId>org.alice</groupId>
       <artifactId>alice-ide</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.alice</groupId>
-      <artifactId>collada</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
   </dependencies>
 </project>

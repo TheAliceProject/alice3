@@ -390,6 +390,7 @@ public class JointedModelColladaExporter {
 		for( int i = 0; i < N; i++ ) {
 			triangleList.add( BigInteger.valueOf( ib.get( i ) ) );
 		}
+		triangles.setCount( BigInteger.valueOf( N / 3 ) );
 		mesh.getLinesOrLinestripsOrPolygons().add( triangles );
 
 		geometry.setMesh( mesh );
@@ -426,55 +427,6 @@ public class JointedModelColladaExporter {
 		public final List<Integer> weightIndices = new ArrayList<Integer>();
 		public final List<Integer> jointIndices = new ArrayList<Integer>();
 
-	}
-
-	private VertexWeights createVertexWeights( int vertexCount, WeightInfo wi, String jointsSource, String weightsSource ) {
-		VertexWeights vw = factory.createSkinVertexWeights();
-		vw.setCount( BigInteger.valueOf( vertexCount ) );
-
-		InputLocalOffset jointInput = factory.createInputLocalOffset();
-		jointInput.setSemantic( "JOINT" );
-		jointInput.setSource( "#" + jointsSource );
-		jointInput.setOffset( BigInteger.valueOf( 0 ) );
-		vw.getInput().add( jointInput );
-
-		InputLocalOffset weightInput = factory.createInputLocalOffset();
-		weightInput.setSemantic( "WEIGHT" );
-		weightInput.setSource( "#" + weightsSource );
-		weightInput.setOffset( BigInteger.valueOf( 1 ) );
-		vw.getInput().add( weightInput );
-
-		ArrayList<ColladaSkinWeights> skinWeights = new ArrayList<ColladaSkinWeights>( vertexCount );
-		List<Float> weightArray = new ArrayList<Float>();
-		int jointIndex = 0;
-		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet() ) {
-			InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
-			iatwp.reset();
-			while( !iatwp.isDone() ) {
-				int vertexIndex = iatwp.getIndex();
-				float weight = iatwp.getWeight();
-				weightArray.add( weight );
-				if( skinWeights.get( vertexIndex ) == null ) {
-					skinWeights.set( vertexIndex, new ColladaSkinWeights() );
-				}
-				ColladaSkinWeights vertexWeights = skinWeights.get( vertexIndex );
-				vertexWeights.jointIndices.add( jointIndex );
-				vertexWeights.weightIndices.add( weightArray.size() - 1 );
-
-				iatwp.advance();
-			}
-			jointIndex++;
-		}
-		for( int i = 0; i < skinWeights.size(); i++ ) {
-			ColladaSkinWeights vertexWeights = skinWeights.get( i );
-			vw.getVcount().add( BigInteger.valueOf( vertexWeights.jointIndices.size() ) );
-			for( int j = 0; j < vertexWeights.jointIndices.size(); j++ ) {
-				vw.getV().add( vertexWeights.jointIndices.get( j ).longValue() );
-				vw.getV().add( vertexWeights.weightIndices.get( j ).longValue() );
-			}
-		}
-
-		return vw;
 	}
 
 	private Controller createControllerForMesh( edu.cmu.cs.dennisc.scenegraph.WeightedMesh sgWeightedMesh ) {
