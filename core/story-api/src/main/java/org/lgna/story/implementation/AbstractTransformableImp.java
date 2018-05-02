@@ -44,7 +44,6 @@
 package org.lgna.story.implementation;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Point3;
 
 /**
@@ -1082,109 +1081,65 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		return translation.calculateMagnitude();
 	}
 
-	private enum SpatialRelationDimension {
-		TOP,
-		BOTTOM,
-		LEFT,
-		RIGHT,
-		FRONT,
-		BACK
+	private Point3 getMax( EntityImp entity, ReferenceFrame asSeenBy ) {
+		if( entity instanceof ModelImp ) {
+			AxisAlignedBox bbox = entity.getDynamicAxisAlignedMinimumBoundingBox( asSeenBy );
+			return bbox.getMaximum();
+		} else {
+			return entity.getSgComposite().getTranslation( asSeenBy.getSgReferenceFrame() );
+		}
 	}
 
-	private double getSpatialRelationPoint( EntityImp other, SpatialRelationDimension spatialRelation, ReferenceFrame asSeenBy ) {
-		if( other instanceof ModelImp ) {
-			ModelImp modelImp = (ModelImp)other;
-			AxisAlignedBox bbox = modelImp.getDynamicAxisAlignedMinimumBoundingBox( asSeenBy );
-			switch( spatialRelation ) {
-			case RIGHT:
-				return bbox.getXMaximum();
-			case LEFT:
-				return bbox.getXMinimum();
-			case TOP:
-				return bbox.getYMaximum();
-			case BOTTOM:
-				return bbox.getYMinimum();
-			case BACK:
-				return bbox.getZMaximum();
-			case FRONT:
-				return bbox.getZMinimum();
-			default:
-				return 0;
-			}
+	private Point3 getMin( EntityImp entity, ReferenceFrame asSeenBy ) {
+		if( entity instanceof ModelImp ) {
+			AxisAlignedBox bbox = entity.getDynamicAxisAlignedMinimumBoundingBox( asSeenBy );
+			return bbox.getMinimum();
 		} else {
-			Point3 point = other.getSgComposite().getTranslation( asSeenBy.getSgReferenceFrame() );
-			switch( spatialRelation ) {
-			case RIGHT:
-			case LEFT:
-				return point.x;
-			case TOP:
-			case BOTTOM:
-				return point.y;
-			case BACK:
-			case FRONT:
-				return point.z;
-			default:
-				return 0;
-			}
+			return entity.getSgComposite().getTranslation( asSeenBy.getSgReferenceFrame() );
 		}
 	}
 
 	public double getDistanceAbove( EntityImp other, ReferenceFrame asSeenBy ) {
-		double thisBottomY = getSpatialRelationPoint( this, SpatialRelationDimension.BOTTOM, asSeenBy );
-		double otherTopY = getSpatialRelationPoint( other, SpatialRelationDimension.TOP, asSeenBy );
-		double value = thisBottomY - otherTopY;
-		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
-			value = 0;
-		}
-		return value;
+		return getDistanceAbove( other, this, asSeenBy );
 	}
 
 	public double getDistanceBelow( EntityImp other, ReferenceFrame asSeenBy ) {
-		double thisTopY = getSpatialRelationPoint( this, SpatialRelationDimension.TOP, asSeenBy );
-		double otherBottomY = getSpatialRelationPoint( other, SpatialRelationDimension.BOTTOM, asSeenBy );
-		double value = otherBottomY - thisTopY;
-		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
-			value = 0;
-		}
-		return value;
+		return getDistanceAbove( this, other, asSeenBy );
 	}
 
-	public double getDistanceBehind( EntityImp other, ReferenceFrame asSeenBy ) {
-		double thisFrontZ = getSpatialRelationPoint( this, SpatialRelationDimension.FRONT, asSeenBy );
-		double otherBackZ = getSpatialRelationPoint( other, SpatialRelationDimension.BACK, asSeenBy );
-		double value = ( otherBackZ - thisFrontZ ) * -1; //Front and back calculations are flipped because -Z if front
-		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
-			value = 0;
-		}
-		return value;
-	}
-
-	public double getDistanceInFrontOf( EntityImp other, ReferenceFrame asSeenBy ) {
-		double thisBackZ = getSpatialRelationPoint( this, SpatialRelationDimension.BACK, asSeenBy );
-		double otherFrontZ = getSpatialRelationPoint( other, SpatialRelationDimension.FRONT, asSeenBy );
-		double value = ( thisBackZ - otherFrontZ ) * -1; //Front and back calculations are flipped because -Z if front
-		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
-			value = 0;
-		}
-		return value;
+	private double getDistanceAbove( EntityImp a, EntityImp b, ReferenceFrame asSeenBy ) {
+		return differenceToEpsilon( getMin( b, asSeenBy ).y, getMax( a, asSeenBy ).y );
 	}
 
 	public double getDistanceToTheLeftOf( EntityImp other, ReferenceFrame asSeenBy ) {
-		double thisRightX = getSpatialRelationPoint( this, SpatialRelationDimension.RIGHT, asSeenBy );
-		double otherLeftX = getSpatialRelationPoint( other, SpatialRelationDimension.LEFT, asSeenBy );
-		double value = otherLeftX - thisRightX; //A positive number measuring from the left of the reference object (other) to the right of this
-		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
-			value = 0;
-		}
-		return value;
+		return getDistanceToTheLeftOf( this, other, asSeenBy );
 	}
 
 	public double getDistanceToTheRightOf( EntityImp other, ReferenceFrame asSeenBy ) {
-		double thisLeftX = getSpatialRelationPoint( this, SpatialRelationDimension.LEFT, asSeenBy );
-		double otherRightX = getSpatialRelationPoint( other, SpatialRelationDimension.RIGHT, asSeenBy );
-		double value = thisLeftX - otherRightX; //A positive number measuring from the left of this to the right of the reference object (other)
-		if( EpsilonUtilities.isWithinEpsilon( value, 0d, .01d ) ) {
-			value = 0;
+		return getDistanceToTheLeftOf( other, this, asSeenBy );
+	}
+
+	private double getDistanceToTheLeftOf( EntityImp a, EntityImp b, ReferenceFrame asSeenBy ) {
+		return differenceToEpsilon( getMin( b, asSeenBy ).x, getMax( a, asSeenBy ).x );
+	}
+
+	public double getDistanceBehind( EntityImp other, ReferenceFrame asSeenBy ) {
+		return getDistanceBehind( this, other, asSeenBy );
+	}
+
+	public double getDistanceInFrontOf( EntityImp other, ReferenceFrame asSeenBy ) {
+		return getDistanceBehind( other, this, asSeenBy );
+	}
+
+	private double getDistanceBehind( EntityImp a, EntityImp b, ReferenceFrame asSeenBy ) {
+		//Front and back calculations are flipped because -Z is front
+		return differenceToEpsilon( getMin( a, asSeenBy ).z, getMax( b, asSeenBy ).z );
+	}
+
+	private double differenceToEpsilon( double a, double b ) {
+		double value = a - b;
+		if(Math.abs( value ) < .01d) {
+			return 0;
 		}
 		return value;
 	}
