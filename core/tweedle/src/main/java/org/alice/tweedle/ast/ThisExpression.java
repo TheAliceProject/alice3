@@ -1,13 +1,12 @@
 package org.alice.tweedle.ast;
 
-import org.alice.tweedle.TweedleType;
 import org.alice.tweedle.TweedleValue;
 import org.alice.tweedle.run.Frame;
 
 public class ThisExpression extends TweedleExpression {
 
-	public ThisExpression( TweedleType resultType ) {
-		super( resultType );
+	public ThisExpression() {
+		super();
 	}
 
 	@Override public TweedleValue evaluate( Frame frame ) {

@@ -28,14 +28,6 @@ public class TweedleLibrary {
 		// TODO store the types
 	}
 
-	public TweedleClass newClass(String name) {
-		if (classes.containsKey( name ) ){
-			// TODO - reject names that are primitives
-			// TODO - handle repeated definitions
-		}
-		return classes.put( name, new TweedleClass(name) );
-	}
-
 	public TweedleType getTypeNamed(String name) {
 		// TODO check Primitive Types
 		return classes.get( name );

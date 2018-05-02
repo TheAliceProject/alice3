@@ -154,24 +154,24 @@ public class TweedleParseTest {
 	public void enumShouldIncludeUpValue() {
 		TweedleEnum directionEnum = (TweedleEnum) parseType( "enum Direction {UP, DOWN}" );
 
-		assertTrue("The enum Direction should include UP.",
-						directionEnum.getValues().contains( "UP" ) );
+		assertNotNull("The enum Direction should include UP.",
+						directionEnum.getValue( "UP" ) );
 	}
 
 	@Test
 	public void enumShouldIncludeDownValue() {
 		TweedleEnum directionEnum = (TweedleEnum) parseType( "enum Direction {UP, DOWN}" );
 
-		assertTrue("The enum Direction should include DOWN.",
-						directionEnum.getValues().contains( "DOWN" ) );
+		assertNotNull("The enum Direction should include DOWN.",
+						directionEnum.getValue( "DOWN" ) );
 	}
 
 	@Test
 	public void enumShouldNotIncludeLeftValue() {
 		TweedleEnum directionEnum = (TweedleEnum) parseType( "enum Direction {UP, DOWN}" );
 
-		assertFalse("The enum Direction should not include LEFT.",
-						directionEnum.getValues().contains( "LEFT" ) );
+		assertNull("The enum Direction should not include LEFT.",
+						directionEnum.getValue( "LEFT" ) );
 	}
 
 	@Test
@@ -195,7 +195,7 @@ public class TweedleParseTest {
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
 
-		assertFalse("The class should have a method.", tested.methods.isEmpty() );
+		assertFalse("The class should have a method.", tested.getMethods().isEmpty() );
 	}
 
 	@Test
@@ -206,7 +206,7 @@ public class TweedleParseTest {
 						+ "  }\n"
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
-		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleMethod sumThing = tested.getMethods().get( 0 );
 
 		assertEquals( "The method should return a WholeNumber.", TweedleTypes.WHOLE_NUMBER, sumThing.getType() );
 	}
@@ -219,7 +219,7 @@ public class TweedleParseTest {
 						+ "  }\n"
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
-		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleMethod sumThing = tested.getMethods().get( 0 );
 
 		assertEquals( "The method should be named.", "sumThing", sumThing.getName() );
 	}
@@ -232,7 +232,7 @@ public class TweedleParseTest {
 						+ "  }\n"
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
-		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleMethod sumThing = tested.getMethods().get( 0 );
 
 		assertTrue( "The method should have no params.", sumThing.getRequiredParameters().isEmpty() );
 	}
@@ -245,7 +245,7 @@ public class TweedleParseTest {
 						+ "  }\n"
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
-		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleMethod sumThing = tested.getMethods().get( 0 );
 
 		assertTrue( "The method should have no params.", sumThing.getOptionalParameters().isEmpty() );
 	}
@@ -258,7 +258,7 @@ public class TweedleParseTest {
 						+ "  }\n"
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
-		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleMethod sumThing = tested.getMethods().get( 0 );
 
 		assertEquals( "The method should have one statement.", 1, sumThing.getBody().size() );
 	}
@@ -271,7 +271,7 @@ public class TweedleParseTest {
 						+ "  }\n"
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
-		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleMethod sumThing = tested.getMethods().get( 0 );
 		TweedleStatement stmt = sumThing.getBody().get( 0 );
 
 		assertNotNull( "The method statement should not be null.", stmt );
@@ -285,7 +285,7 @@ public class TweedleParseTest {
 						+ "  }\n"
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
-		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleMethod sumThing = tested.getMethods().get( 0 );
 		TweedleStatement stmt = sumThing.getBody().get( 0 );
 
 		assertTrue( "The method statement should be a return.", stmt instanceof ReturnStatement );
@@ -299,7 +299,7 @@ public class TweedleParseTest {
 						+ "  }\n"
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
-		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleMethod sumThing = tested.getMethods().get( 0 );
 		ReturnStatement stmt = (ReturnStatement) sumThing.getBody().get( 0 );
 
 		assertNotNull( "The return statement should hold an expression.", stmt.getExpression() );
@@ -313,7 +313,7 @@ public class TweedleParseTest {
 						+ "  }\n"
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
-		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleMethod sumThing = tested.getMethods().get( 0 );
 		ReturnStatement stmt = (ReturnStatement) sumThing.getBody().get( 0 );
 
 		assertEquals( "The return statement should hold NULL.", TweedleNull.NULL, stmt.getExpression() );
@@ -327,7 +327,7 @@ public class TweedleParseTest {
 						+ "  }\n"
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
-		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleMethod sumThing = tested.getMethods().get( 0 );
 		TweedleStatement stmt = sumThing.getBody().get( 0 );
 
 		assertNotNull( "The method statement should not be null.", stmt );
@@ -341,7 +341,7 @@ public class TweedleParseTest {
 						+ "  }\n"
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
-		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleMethod sumThing = tested.getMethods().get( 0 );
 		TweedleStatement stmt = sumThing.getBody().get( 0 );
 
 		assertTrue( "The method statement should be a return.", stmt instanceof ReturnStatement );
@@ -355,7 +355,7 @@ public class TweedleParseTest {
 						+ "  }\n"
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
-		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleMethod sumThing = tested.getMethods().get( 0 );
 		ReturnStatement stmt = (ReturnStatement) sumThing.getBody().get( 0 );
 
 		assertNotNull( "The method statement should hold an expression.", stmt.getExpression() );
@@ -369,7 +369,7 @@ public class TweedleParseTest {
 						+ "  }\n"
 						+ "}";
 		TweedleClass tested = (TweedleClass) parseType( scene);
-		TweedleMethod sumThing = tested.methods.get( 0 );
+		TweedleMethod sumThing = tested.getMethods().get( 0 );
 		ReturnStatement stmt = (ReturnStatement) sumThing.getBody().get( 0 );
 
 		assertTrue( "The method statement should hold an addition expression.", stmt.getExpression() instanceof AdditionExpression );

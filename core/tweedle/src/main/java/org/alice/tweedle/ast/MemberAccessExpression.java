@@ -8,7 +8,7 @@ abstract public class MemberAccessExpression extends TweedleExpression {
 	private final TweedleExpression target;
 
 	public MemberAccessExpression( TweedleExpression target ) {
-		super(null);
+		super();
 		this.target = target;
 	}
 

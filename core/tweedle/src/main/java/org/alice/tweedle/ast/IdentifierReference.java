@@ -8,7 +8,7 @@ public class IdentifierReference extends TweedleExpression {
 	private String name;
 
 	public IdentifierReference( String name ) {
-		super( null );
+		super();
 		this.name = name;
 	}
 

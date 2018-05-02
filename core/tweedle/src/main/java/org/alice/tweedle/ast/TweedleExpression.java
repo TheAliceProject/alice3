@@ -11,6 +11,10 @@ abstract public class TweedleExpression {
 		this.type = type;
 	}
 
+	public TweedleExpression() {
+		type = null;
+	}
+
 	public TweedleType getType() {
 		return type;
 	}

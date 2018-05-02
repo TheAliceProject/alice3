@@ -13,6 +13,7 @@ import static java.util.stream.Collectors.toList;
 
 public class TweedleArrayInitializer extends TweedleExpression {
 	private List<TweedleExpression> elements;
+	private TweedleExpression initializeSize;
 
 	public TweedleArrayInitializer( TweedleArrayType arrayType, List<TweedleExpression> elements ) {
 		super(arrayType);
@@ -27,6 +28,11 @@ public class TweedleArrayInitializer extends TweedleExpression {
 	public TweedleArrayInitializer( List<TweedleExpression> elements) {
 		super(new TweedleArrayType( findCommonType(elements) ) );
 		this.elements = elements;
+	}
+
+	public TweedleArrayInitializer(TweedleArrayType arrayType, TweedleExpression initializeSize) {
+		super( arrayType );
+		this.initializeSize = initializeSize;
 	}
 
 	private static TweedleType findCommonType( List<TweedleExpression> elements ) {

@@ -32,45 +32,45 @@ public class TweedleLambdaTest {
 
 	@Test
 	public void classWithMethodShouldHaveMethod() {
-		assertFalse("The class should have a method.", tested.methods.isEmpty() );
+		assertFalse("The class should have a method.", tested.getMethods().isEmpty() );
 	}
 
 	@Test
 	public void methodShouldBeNamed() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		assertEquals( "The method should be named.", "initializeEventListeners", initListeners.getName() );
 	}
 
 	@Test
 	public void methodShouldHaveTwoStatements() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		assertEquals( "The method should have two statements.", 2, initListeners.getBody().size() );
 	}
 
 	@Test
 	public void methodShouldHaveNonNullStatements() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		assertNotNull( "The first method statement should not be null.", initListeners.getBody().get( 0 ) );
 		assertNotNull( "The second method statement should not be null.", initListeners.getBody().get( 1 ) );
 	}
 
 	@Test
 	public void methodsFirstStatementShouldBeAnExpressionStatement() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		final TweedleStatement statement = initListeners.getBody().get( 0 );
 		assertTrue( "The first method statement should be an ExpressionStatement.", statement instanceof ExpressionStatement );
 	}
 
 	@Test
 	public void methodsFirstExpressionStatementShouldHoldAMethodCall() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		final ExpressionStatement statement = (ExpressionStatement) initListeners.getBody().get( 0 );
 		assertTrue( "The expression statement should hold a MethodCall.", statement.getExpression() instanceof MethodCallExpression );
 	}
 
 	@Test
 	public void methodsFirstMethodCallShouldBeAddSceneActivationListener() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		final ExpressionStatement statement = (ExpressionStatement) initListeners.getBody().get( 0 );
 		final MethodCallExpression methodCall = (MethodCallExpression) statement.getExpression();
 		assertEquals( "The first method statement should be calling addSceneActivationListener.",
@@ -79,7 +79,7 @@ public class TweedleLambdaTest {
 
 	@Test
 	public void addSceneActivationListenerShouldHaveOneArg() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		final ExpressionStatement statement = (ExpressionStatement) initListeners.getBody().get( 0 );
 		final MethodCallExpression methodCall = (MethodCallExpression) statement.getExpression();
 		assertNotNull( "The addSceneActivationListener should have a listener arg.",
@@ -88,7 +88,7 @@ public class TweedleLambdaTest {
 
 	@Test
 	public void addSceneActivationListenerOneArgShouldBeLambda() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		final ExpressionStatement statement = (ExpressionStatement) initListeners.getBody().get( 0 );
 		final MethodCallExpression methodCall = (MethodCallExpression) statement.getExpression();
 		assertTrue( "The addSceneActivationListener should have a listener arg.",
@@ -97,7 +97,7 @@ public class TweedleLambdaTest {
 
 	@Test
 	public void addSceneActivationListenerLambdaShouldHaveOneParameter() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		final ExpressionStatement statement = (ExpressionStatement) initListeners.getBody().get( 0 );
 		final MethodCallExpression methodCall = (MethodCallExpression) statement.getExpression();
 		final LambdaExpression listener = (LambdaExpression) methodCall.getArg( "listener" );
@@ -107,7 +107,7 @@ public class TweedleLambdaTest {
 
 	@Test
 	public void addSceneActivationListenerLambdaParameterShouldHaveOneParameterNamedEvent() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		final ExpressionStatement statement = (ExpressionStatement) initListeners.getBody().get( 0 );
 		final MethodCallExpression methodCall = (MethodCallExpression) statement.getExpression();
 		final LambdaExpression listener = (LambdaExpression) methodCall.getArg( "listener" );
@@ -118,7 +118,7 @@ public class TweedleLambdaTest {
 
 	@Test
 	public void addSceneActivationListenerLambdaParameterShouldHaveOneParameterTypedReference() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		final ExpressionStatement statement = (ExpressionStatement) initListeners.getBody().get( 0 );
 		final MethodCallExpression methodCall = (MethodCallExpression) statement.getExpression();
 		final LambdaExpression listener = (LambdaExpression) methodCall.getArg( "listener" );
@@ -129,7 +129,7 @@ public class TweedleLambdaTest {
 
 	@Test
 	public void addSceneActivationListenerLambdaParameterShouldHaveOneParameterTypedSceneActivationEvent() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		final ExpressionStatement statement = (ExpressionStatement) initListeners.getBody().get( 0 );
 		final MethodCallExpression methodCall = (MethodCallExpression) statement.getExpression();
 		final LambdaExpression listener = (LambdaExpression) methodCall.getArg( "listener" );
@@ -141,7 +141,7 @@ public class TweedleLambdaTest {
 
 	@Test
 	public void addSceneActivationListenerSecondLambdaParameterShouldHaveOneParameterTypedArrowKeyEvent() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		final ExpressionStatement statement = (ExpressionStatement) initListeners.getBody().get( 1 );
 		final MethodCallExpression methodCall = (MethodCallExpression) statement.getExpression();
 		final LambdaExpression listener = (LambdaExpression) methodCall.getArg( "listener" );
@@ -153,7 +153,7 @@ public class TweedleLambdaTest {
 
 	@Test
 	public void addSceneActivationListenerLambdaParameterShouldHaveOneStatement() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		final ExpressionStatement statement = (ExpressionStatement) initListeners.getBody().get( 0 );
 		final MethodCallExpression methodCall = (MethodCallExpression) statement.getExpression();
 		final LambdaExpression listener = (LambdaExpression) methodCall.getArg( "listener" );
@@ -163,7 +163,7 @@ public class TweedleLambdaTest {
 
 	@Test
 	public void addSceneActivationListenerLambdaParameterShouldHaveOneNonNullStatement() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		final ExpressionStatement statement = (ExpressionStatement) initListeners.getBody().get( 0 );
 		final MethodCallExpression methodCall = (MethodCallExpression) statement.getExpression();
 		final LambdaExpression listener = (LambdaExpression) methodCall.getArg( "listener" );
@@ -173,7 +173,7 @@ public class TweedleLambdaTest {
 
 	@Test
 	public void addSceneActivationListenerLambdaParameterShouldHaveOneExpressionStatement() {
-		TweedleMethod initListeners = tested.methods.get( 0 );
+		TweedleMethod initListeners = tested.getMethods().get( 0 );
 		final ExpressionStatement statement = (ExpressionStatement) initListeners.getBody().get( 0 );
 		final MethodCallExpression methodCall = (MethodCallExpression) statement.getExpression();
 		final LambdaExpression listener = (LambdaExpression) methodCall.getArg( "listener" );

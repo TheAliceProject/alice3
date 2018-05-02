@@ -3,34 +3,33 @@ package org.alice.tweedle;
 import org.alice.tweedle.run.Frame;
 import org.alice.tweedle.run.TweedleObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TweedleClass extends TweedleType implements InvocableMethodHolder {
-	private InvocableMethodHolder superclass;
+	final private InvocableMethodHolder superclass;
 
-	public List<TweedleField> properties;
-	public List<TweedleMethod> methods;
-	public List<TweedleConstructor> constructors;
+	final private List<TweedleField> properties;
+	final private List<TweedleMethod> methods;
+	final private List<TweedleConstructor> constructors;
 
-	public TweedleClass( String className ) {
+	private TweedleClass( String className, TweedleTypeReference superclass, List<TweedleField> properties,
+												List<TweedleMethod> methods, List<TweedleConstructor> constructors ) {
+		super( className, superclass);
+		this.superclass = superclass;
+		this.properties = properties;
+		this.methods = methods;
+		this.constructors = constructors;
+	}
+	public TweedleClass( String className, String superclassname, List<TweedleField> properties, List<TweedleMethod> methods, List<TweedleConstructor> constructors ) {
+		this( className, new TweedleTypeReference( superclassname ), properties, methods, constructors);
+	}
+
+	public TweedleClass( String className, List<TweedleField> properties, List<TweedleMethod> methods, List<TweedleConstructor> constructors ) {
 		super( className );
 		superclass = null;
-		this.properties = new ArrayList<>();
-		this.methods = new ArrayList<>();
-		this.constructors = new ArrayList<>();
-	}
-
-	private TweedleClass( String className, TweedleTypeReference superClass ) {
-		super( className, superClass );
-		this.superclass = superClass;
-		this.properties = new ArrayList<>();
-		this.methods = new ArrayList<>();
-		this.constructors = new ArrayList<>();
-	}
-
-	public TweedleClass( String className, String superClassName ) {
-		this( className, new TweedleTypeReference( superClassName ));
+		this.properties = properties;
+		this.methods = methods;
+		this.constructors = constructors;
 	}
 
 	public String getSuperclassName() {
@@ -62,5 +61,9 @@ public class TweedleClass extends TweedleType implements InvocableMethodHolder {
 		//		}
 		//		return null;
 		//	}*/
+	}
+
+	public List<TweedleMethod> getMethods() {
+		return methods;
 	}
 }

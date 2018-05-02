@@ -30,7 +30,7 @@ parser grammar TweedleParser;
 options { tokenVocab=TweedleLexer; }
 
 typeDeclaration
-    : classModifier*
+    : visibility?
       (classDeclaration | enumDeclaration)
     | ';'
     ;
@@ -64,7 +64,7 @@ classDeclaration
 identifier : IDENTIFIER ;
 
 enumDeclaration
-    : ENUM identifier '{' enumConstants? '}'
+    : ENUM identifier '{' enumConstants? ','? enumBodyDeclarations? '}'
     ;
 
 enumConstants
@@ -72,7 +72,11 @@ enumConstants
     ;
 
 enumConstant
-    : identifier arguments? classBody?
+    : identifier arguments?
+    ;
+
+enumBodyDeclarations
+    : ';' classBodyDeclaration*
     ;
 
 classBody
@@ -132,10 +136,10 @@ variableInitializer
     ;
 
 arrayInitializer
-    : '{' (expression (',' expression)* (',')? )? '}'
+    : '{' unlabeledExpressionList? '}'
     ;
 
-classOrInterfaceType
+classType
     : IDENTIFIER
     ;
 
@@ -208,6 +212,10 @@ parExpression
     : '(' expression ')'
     ;
 
+unlabeledExpressionList
+    : expression (',' expression)*
+    ;
+
 labeledExpressionList
     : labeledExpression (',' labeledExpression)*
     ;
@@ -220,11 +228,17 @@ methodCall
     : IDENTIFIER '(' labeledExpressionList? ')'
     ;
 
+lambdaCall
+    : '(' ( '-' | unlabeledExpressionList ) ')'
+    ;
+
 expression
     : primary
     | expression bop='.' (IDENTIFIER | methodCall)
-    | expression '[' expression ']'
+    | expression bracket='[' expression ']'
     | NEW creator
+    | expression lambdaCall
+    | methodCall
     | prefix=('+'|'-') expression
     | prefix='!' expression
     | expression bop=('*'|'/'|'%') expression
@@ -243,6 +257,16 @@ lambdaExpression
 
 lambdaParameters
     : '('(requiredParameter (',' requiredParameter)*)?')'
+    ;
+
+lambdaTypeSignature
+    : '<'typeList '->' typeTypeOrVoid'>'
+    ;
+
+typeList
+    : '(' ')'
+    | typeType
+    | '(' typeType (',' typeType)* ')'
     ;
 
 primary
@@ -267,11 +291,12 @@ arrayCreatorRest
     ;
 
 classCreatorRest
-    : arguments classBody?
+    : arguments
     ;
 
 typeType
-    : (classOrInterfaceType | primitiveType) ('[' ']')?
+    : (classType | primitiveType) ('[' ']')?
+    | lambdaTypeSignature
     ;
 
 primitiveType

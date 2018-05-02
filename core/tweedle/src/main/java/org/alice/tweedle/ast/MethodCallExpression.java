@@ -17,6 +17,12 @@ public class MethodCallExpression extends MemberAccessExpression {
 		arguments = new HashMap<>();
 	}
 
+	public MethodCallExpression( TweedleExpression target, String methodName, Map<String, TweedleExpression> arguments ) {
+		super( target );
+		this.methodName = methodName;
+		this.arguments = arguments;
+	}
+
 	@Override public TweedleValue evaluate( Frame frame ) {
 		evaluateTarget( frame );
 		// TODO invoke the method on the target.
