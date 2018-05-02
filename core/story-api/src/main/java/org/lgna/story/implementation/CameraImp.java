@@ -43,10 +43,17 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Layer;
+import edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CameraImp<S extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> extends TransformableImp {
+public abstract class CameraImp<S extends AbstractCamera> extends TransformableImp {
 	private final S sgCamera;
 
 	public CameraImp( S sgCamera ) {
@@ -60,16 +67,14 @@ public abstract class CameraImp<S extends edu.cmu.cs.dennisc.scenegraph.Abstract
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
+	protected CumulativeBound updateCumulativeBound( CumulativeBound rv, AffineMatrix4x4 trans ) {
+		rv.addBoundingBox( new AxisAlignedBox( Point3.ORIGIN, Point3.ORIGIN), trans );
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.scenegraph.Layer getPostRenderLayer() {
+	public Layer getPostRenderLayer() {
 		if( sgCamera.postRenderLayers.getLength() == 0 ) {
-			edu.cmu.cs.dennisc.scenegraph.Layer[] layers = {
-					new edu.cmu.cs.dennisc.scenegraph.Layer()
-			};
-			sgCamera.postRenderLayers.setValue( layers );
+			sgCamera.postRenderLayers.setValue( new Layer[] { new Layer() } );
 		}
 		return sgCamera.postRenderLayers.getValue()[ 0 ];
 	}
