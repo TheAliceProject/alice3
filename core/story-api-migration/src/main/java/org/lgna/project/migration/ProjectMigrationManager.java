@@ -5741,6 +5741,18 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 
 
+					createMoreSpecificFieldPattern( "SQUARE", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "SQUARE_DESERT", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "CRESCENT", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "CRESCENT_DESERT", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "OVAL", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "OVAL_DESERT", "org.lgna.story.resources.prop.SandDunesResource" ),
+
+					createMoreSpecificFieldPattern( "BLOB", "org.lgna.story.resources.prop.SandDunesResource" ),
+					createMoreSpecificFieldReplacement( "BLOB_DESERT", "org.lgna.story.resources.prop.SandDunesResource" ),
+
 					createMoreSpecificFieldPattern( "SQUARE_DRYGRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
 					createMoreSpecificFieldReplacement( "SQUARE_DRY_GRASS", "org.lgna.story.resources.prop.SandDunesResource" ),
 
