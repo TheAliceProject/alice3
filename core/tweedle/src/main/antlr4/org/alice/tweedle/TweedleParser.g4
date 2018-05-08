@@ -50,10 +50,6 @@ visibilityLevel
     | PRIME_TIME
     ;
 
-variableModifier
-    : CONSTANT
-    ;
-
 classDeclaration
     : CLASS identifier
       (EXTENDS typeType)?

@@ -410,16 +410,6 @@ public class TweedleUnlinkedParser {
 																			 visitLabeledArguments(ctx.labeledExpressionList()));
 		}
 
-		@Override public TweedleExpression visitLambdaCall(TweedleParser.LambdaCallContext ctx) {
-			if ( ctx.unlabeledExpressionList() == null ) {
-				return new LambdaEvaluation(null);
-			} else {
-				final List<TweedleExpression> elements =
-								visitUnlabeledArguments( ctx.unlabeledExpressionList(), new ExpressionVisitor() );
-				return new LambdaEvaluation(null, elements );
-			}
-		}
-
 		public @Override TweedleExpression visitSuperSuffix( TweedleParser.SuperSuffixContext context) {
 
 			if (context.IDENTIFIER() != null)
