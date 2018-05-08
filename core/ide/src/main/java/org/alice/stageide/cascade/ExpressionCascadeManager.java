@@ -77,6 +77,8 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.TurnDirection.class );
 		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.RollDirection.class );
 		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.Key.class );
+		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.Color.class );
+		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.Paint.class );
 	}
 
 	@Override
