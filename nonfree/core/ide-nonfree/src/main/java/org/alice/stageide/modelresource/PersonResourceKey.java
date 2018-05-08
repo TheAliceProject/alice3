@@ -42,8 +42,10 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
 /**
  * @author Dennis Cosgrove
@@ -200,6 +202,14 @@ public class PersonResourceKey extends InstanceCreatorKey {
 	@Override
 	public String[] getThemeTags() {
 		return null;
+	}
+
+	@Override public AxisAlignedBox getBoundingBox() {
+		return AliceResourceUtilties.getBoundingBox( getModelResourceCls() );
+	}
+
+	@Override public boolean getPlaceOnGround() {
+		return true;
 	}
 
 	@Override

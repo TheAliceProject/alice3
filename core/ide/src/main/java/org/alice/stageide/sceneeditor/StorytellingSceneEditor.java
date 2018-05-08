@@ -1140,8 +1140,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			Point3 location;
 			if( resourceCls != null ) {
 				ClassResourceKey childKey = new ClassResourceKey( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
-				AxisAlignedBox box = org.alice.stageide.modelresource.IdeAliceResourceUtilities.getBoundingBox( childKey );
-				boolean shouldPlaceOnGround = org.alice.stageide.modelresource.IdeAliceResourceUtilities.getPlaceOnGround( childKey );
+				AxisAlignedBox box = childKey.getBoundingBox();
+				boolean shouldPlaceOnGround = childKey.getPlaceOnGround();
 				double y = ( box != null ) && shouldPlaceOnGround ? -box.getXMinimum() : 0;
 				location = new Point3( 0, y, 0 );
 			} else {

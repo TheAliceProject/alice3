@@ -42,36 +42,45 @@
  *******************************************************************************/
 package org.alice.stageide.modelresource;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
+import org.alice.stageide.icons.IconFactoryManager;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
+import org.lgna.story.resources.ModelResource;
+
+import javax.swing.JComponent;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class ClassResourceKey extends InstanceCreatorKey {
-	private final Class<? extends org.lgna.story.resources.ModelResource> cls;
+	private final Class<? extends ModelResource> cls;
 
-	public ClassResourceKey( Class<? extends org.lgna.story.resources.ModelResource> cls ) {
+	public ClassResourceKey( Class<? extends ModelResource> cls ) {
 		this.cls = cls;
 	}
 
 	@Override
-	public Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls() {
+	public Class<? extends ModelResource> getModelResourceCls() {
 		return this.cls;
 	}
 
-	public org.lgna.project.ast.JavaType getType() {
-		return org.lgna.project.ast.JavaType.getInstance( this.cls );
+	public JavaType getType() {
+		return JavaType.getInstance( this.cls );
 	}
 
 	@Override
 	public String getInternalText() {
-		return IdeAliceResourceUtilities.getModelClassName( this, null );
+		return AliceResourceUtilties.getModelClassName( getModelResourceCls(), null, null );
 	}
 
 	@Override
 	public String getSearchText() {
-		return IdeAliceResourceUtilities.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
+		return AliceResourceUtilties.getModelClassName( getModelResourceCls(), null, JComponent.getDefaultLocale() );
 	}
 
 	@Override
@@ -81,17 +90,17 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+	public IconFactory getIconFactory() {
 		if( this.isLeaf() ) {
-			org.lgna.story.resources.ModelResource modelResource = cls.getEnumConstants()[ 0 ];
-			return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceInstance( modelResource );
+			ModelResource modelResource = cls.getEnumConstants()[ 0 ];
+			return IconFactoryManager.getIconFactoryForResourceInstance( modelResource );
 		} else {
-			return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( cls );
+			return IconFactoryManager.getIconFactoryForResourceCls( cls );
 		}
 	}
 
 	@Override
-	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
+	public InstanceCreation createInstanceCreation() {
 		throw new Error();
 	}
 
@@ -102,17 +111,25 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String[] getTags() {
-		return IdeAliceResourceUtilities.getTags( this, javax.swing.JComponent.getDefaultLocale() );
+		return AliceResourceUtilties.getTags( getModelResourceCls(), null, JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String[] getGroupTags() {
-		return IdeAliceResourceUtilities.getGroupTags( this, javax.swing.JComponent.getDefaultLocale() );
+		return AliceResourceUtilties.getGroupTags( getModelResourceCls(), null, JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String[] getThemeTags() {
-		return IdeAliceResourceUtilities.getThemeTags( this, javax.swing.JComponent.getDefaultLocale() );
+		return AliceResourceUtilties.getThemeTags( getModelResourceCls(), null, JComponent.getDefaultLocale() );
+	}
+
+	@Override public AxisAlignedBox getBoundingBox() {
+		return AliceResourceUtilties.getBoundingBox( getModelResourceCls() );
+	}
+
+	@Override public boolean getPlaceOnGround() {
+		return AliceResourceUtilties.getPlaceOnGround( getModelResourceCls() );
 	}
 
 	@Override

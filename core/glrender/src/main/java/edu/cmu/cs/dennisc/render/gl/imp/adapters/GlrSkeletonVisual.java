@@ -46,6 +46,7 @@ package edu.cmu.cs.dennisc.render.gl.imp.adapters;
 import static com.jogamp.opengl.GL.GL_BACK;
 import static com.jogamp.opengl.GL.GL_CULL_FACE;
 import static com.jogamp.opengl.GL.GL_GREATER;
+import static com.jogamp.opengl.GL.GL_LINES;
 import static com.jogamp.opengl.GL2ES1.GL_ALPHA_TEST;
 
 import java.nio.DoubleBuffer;
@@ -57,6 +58,7 @@ import java.util.List;
 
 import edu.cmu.cs.dennisc.java.util.BufferUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.render.gl.imp.PickContext;
@@ -130,11 +132,17 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 		public void process( edu.cmu.cs.dennisc.scenegraph.Joint joint, AffineMatrix4x4 oTransformation ) {
 			InverseAbsoluteTransformationWeightsPair iatwp = this.weightedMesh.weightInfo.getValue().getMap().get( joint.jointID.getValue() );
 			if( iatwp != null ) {
-				//        	System.out.println("\n  Processing mesh "+this.weightedMesh.hashCode());
-				//        	System.out.println("  On Joint "+joint.hashCode());
-				//        	System.out.println("  Weight Info "+this.weightedMesh.weightInfo.getValue().hashCode());
-				//        	System.out.println("  iatwp "+iatwp.hashCode());
 				AffineMatrix4x4 oDelta = AffineMatrix4x4.createMultiplication( oTransformation, iatwp.getInverseAbsoluteTransformation() );
+				//				System.out.println( "\n  Processing mesh " + this.weightedMesh.getName() );
+				//				System.out.println( "  On Joint " + joint.jointID.getValue() );
+				//				System.out.println( "  Weight Info " + this.weightedMesh.weightInfo.getValue().hashCode() );
+				//				System.out.println( "  iatwp " + iatwp.hashCode() );
+				//				System.out.println( "joint transform:" );
+				//				PrintUtilities.print( oTransformation.translation, oTransformation.orientation );
+				//				System.out.println( "\ninverse transform:" );
+				//				PrintUtilities.print( iatwp.getInverseAbsoluteTransformation().translation, iatwp.getInverseAbsoluteTransformation().orientation );
+				//				System.out.println( "\ndelta:" );
+				//				PrintUtilities.print( oDelta.translation, oDelta.orientation );
 				iatwp.reset();
 				while( !iatwp.isDone() ) {
 					int vertexIndex = iatwp.getIndex();
@@ -204,8 +212,7 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 	private static float ALPHA_TEST_THRESHOLD = .5f;
 
 	@Override
-	public void initialize( SkeletonVisual element )
-	{
+	public void initialize( SkeletonVisual element ) {
 		if( this.owner != null ) {
 			this.owner.setTracker( null );
 		}
@@ -214,26 +221,20 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 		initializeDataIfNecessary();
 	}
 
-	private void initializeDataIfNecessary()
-	{
-		if( this.isDataDirty )
-		{
+	private void initializeDataIfNecessary() {
+		if( this.isDataDirty ) {
 			initializeData();
 		}
 	}
 
-	private void initializeData()
-	{
-		if( this.owner != null )
-		{
-			if( this.currentSkeleton != null )
-			{
+	private void initializeData() {
+		if( this.owner != null ) {
+			if( this.currentSkeleton != null ) {
 				this.setListeningOnSkeleton( this.currentSkeleton, false );
 				System.out.println( "SWITCHING SKELETON FROM " + this.currentSkeleton.hashCode() + " TO " + owner.skeleton.getValue().hashCode() );
 			}
 			this.currentSkeleton = owner.skeleton.getValue();
-			if( this.currentSkeleton != null )
-			{
+			if( this.currentSkeleton != null ) {
 				this.setListeningOnSkeleton( this.currentSkeleton, true );
 				this.skeletonIsDirty = true;
 			}
@@ -246,26 +247,19 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 		this.isDataDirty = false;
 	}
 
-	private void releaseMappedAdapter( GlrElement<? extends Element> adapter )
-	{
-		if( ( adapter != this.glrBackFacingAppearance ) && ( adapter != this.glrFrontFacingAppearance ) )
-		{
+	private void releaseMappedAdapter( GlrElement<? extends Element> adapter ) {
+		if( ( adapter != this.glrBackFacingAppearance ) && ( adapter != this.glrFrontFacingAppearance ) ) {
 			boolean matchesGeometry = false;
-			if( this.glrGeometries != null )
-			{
-				for( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : this.glrGeometries )
-				{
-					if( adapter == geometryAdapter )
-					{
+			if( this.glrGeometries != null ) {
+				for( GlrGeometry<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : this.glrGeometries ) {
+					if( adapter == geometryAdapter ) {
 						matchesGeometry = true;
 						break;
 					}
 				}
 			}
-			if( !matchesGeometry )
-			{
-				if( adapter.owner != null )
-				{
+			if( !matchesGeometry ) {
+				if( adapter.owner != null ) {
 					adapter.handleReleased();
 				}
 			}
@@ -273,17 +267,13 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 	}
 
 	@Override
-	public void handleReleased()
-	{
+	public void handleReleased() {
 		super.handleReleased();
-		for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
-		{
+		for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() ) {
 			releaseMappedAdapter( appearanceEntry.getValue() );
 		}
-		for( java.util.Map.Entry<Integer, GlrMesh<Mesh>[]> meshEntry : this.appearanceIdToGeometryAdapaters.entrySet() )
-		{
-			for( int i = 0; i < meshEntry.getValue().length; i++ )
-			{
+		for( java.util.Map.Entry<Integer, GlrMesh<Mesh>[]> meshEntry : this.appearanceIdToGeometryAdapaters.entrySet() ) {
+			for( int i = 0; i < meshEntry.getValue().length; i++ ) {
 				releaseMappedAdapter( meshEntry.getValue()[ i ] );
 			}
 		}
@@ -293,40 +283,30 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 	}
 
 	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementActuallyRequired )
-	{
+	protected void pickGeometry( PickContext pc, boolean isSubElementActuallyRequired ) {
 
 		//TODO: Enable gl.glEnable( GL_TEXTURE_2D ) alpha test picking
 
 		initializeDataIfNecessary();
-		if( this.skeletonIsDirty )
-		{
+		if( this.skeletonIsDirty ) {
 			this.processWeightedMesh();
 		}
 		int i = 0;
-		for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
-		{
+		for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() ) {
 			WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get( appearanceEntry.getKey() );
 			if( weightedMeshControls != null ) {
-				for( WeightedMeshControl wmc : weightedMeshControls )
-				{
+				for( WeightedMeshControl wmc : weightedMeshControls ) {
 					pc.gl.glPushName( i++ );
-					if( !wmc.weightedMesh.cullBackfaces.getValue() )
-					{
+					if( !wmc.weightedMesh.cullBackfaces.getValue() ) {
 						pc.gl.glDisable( GL_CULL_FACE );
-					}
-					else
-					{
+					} else {
 						pc.gl.glEnable( GL_CULL_FACE );
 						pc.gl.glCullFace( GL_BACK );
 					}
-					if( wmc.weightedMesh.useAlphaTest.getValue() )
-					{
+					if( wmc.weightedMesh.useAlphaTest.getValue() ) {
 						pc.gl.glEnable( GL_ALPHA_TEST );
 						pc.gl.glAlphaFunc( GL_GREATER, ALPHA_TEST_THRESHOLD );
-					}
-					else
-					{
+					} else {
 						pc.gl.glDisable( GL_ALPHA_TEST );
 					}
 					wmc.pickGeometry( pc, isSubElementActuallyRequired );
@@ -336,27 +316,19 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 				}
 			}
 			GlrMesh<Mesh>[] meshAdapters = this.appearanceIdToGeometryAdapaters.get( appearanceEntry.getKey() );
-			if( meshAdapters != null )
-			{
-				for( GlrMesh<Mesh> ma : meshAdapters )
-				{
+			if( meshAdapters != null ) {
+				for( GlrMesh<Mesh> ma : meshAdapters ) {
 					pc.gl.glPushName( i++ );
-					if( !( (Mesh)ma.owner ).cullBackfaces.getValue() )
-					{
+					if( !( (Mesh)ma.owner ).cullBackfaces.getValue() ) {
 						pc.gl.glDisable( GL_CULL_FACE );
-					}
-					else
-					{
+					} else {
 						pc.gl.glEnable( GL_CULL_FACE );
 						pc.gl.glCullFace( GL_BACK );
 					}
-					if( ( (Mesh)ma.owner ).useAlphaTest.getValue() )
-					{
+					if( ( (Mesh)ma.owner ).useAlphaTest.getValue() ) {
 						pc.gl.glEnable( GL_ALPHA_TEST );
 						pc.gl.glAlphaFunc( GL_GREATER, ALPHA_TEST_THRESHOLD );
-					}
-					else
-					{
+					} else {
 						pc.gl.glDisable( GL_ALPHA_TEST );
 					}
 					ma.pickGeometry( pc, isSubElementActuallyRequired );
@@ -371,27 +343,22 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
 		initializeDataIfNecessary();
-		if( this.skeletonIsDirty )
-		{
+		if( this.skeletonIsDirty ) {
 			this.processWeightedMesh();
 		}
 		int i = 0;
-		for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
-		{
+		for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() ) {
 			WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get( appearanceEntry.getKey() );
 			if( weightedMeshControls != null ) {
-				for( WeightedMeshControl wmc : weightedMeshControls )
-				{
+				for( WeightedMeshControl wmc : weightedMeshControls ) {
 					edu.cmu.cs.dennisc.math.AxisAlignedBox b = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
 					edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( b, wmc.vertexBuffer );
 					rv.union( b );
 				}
 			}
 			GlrMesh<Mesh>[] meshAdapters = this.appearanceIdToGeometryAdapaters.get( appearanceEntry.getKey() );
-			if( meshAdapters != null )
-			{
-				for( GlrMesh<Mesh> ma : meshAdapters )
-				{
+			if( meshAdapters != null ) {
+				for( GlrMesh<Mesh> ma : meshAdapters ) {
 					edu.cmu.cs.dennisc.math.AxisAlignedBox b = ma.owner.getAxisAlignedMinimumBoundingBox();
 					rv.union( b );
 				}
@@ -400,103 +367,144 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 		return rv;
 	}
 
+	private void renderJoint( RenderContext rc, Composite currentNode, AffineMatrix4x4 oTransformationPre ) {
+		if( currentNode == null ) {
+			return;
+		}
+
+		AffineMatrix4x4 oTransformationPost = oTransformationPre;
+		if( currentNode instanceof Transformable ) {
+			oTransformationPost = AffineMatrix4x4.createMultiplication( oTransformationPre, ( (Transformable)currentNode ).localTransformation.getValue() );
+
+			if( ( currentNode instanceof Joint ) ) {
+				rc.gl.glPushMatrix();
+				rc.gl.glMultMatrixd( DoubleBuffer.wrap( oTransformationPost.getAsColumnMajorArray16() ) );
+				rc.gl.glBegin( GL_LINES );
+				//				rc.gl.glLineWidth( 50 );
+				try {
+					final float FULL = 1.0f;
+					final float ZERO = 0.0f;
+					final float LENGTH = .1f;
+
+					rc.gl.glDepthFunc( com.jogamp.opengl.GL2.GL_ALWAYS );
+					//					rc.gl.glDisable( com.jogamp.opengl.GL2.GL_DEPTH_TEST );
+					rc.gl.glColor3f( FULL, ZERO, ZERO );
+					rc.gl.glVertex3d( 0, 0, 0 );
+					rc.gl.glVertex3d( LENGTH, 0, 0 );
+					rc.gl.glColor3f( ZERO, FULL, ZERO );
+					rc.gl.glVertex3d( 0, 0, 0 );
+					rc.gl.glVertex3d( 0, LENGTH, 0 );
+					rc.gl.glColor3f( ZERO, ZERO, FULL );
+					rc.gl.glVertex3d( 0, 0, 0 );
+					rc.gl.glVertex3d( 0, 0, LENGTH );
+					rc.gl.glColor3f( FULL, FULL, FULL );
+					rc.gl.glVertex3d( 0, 0, 0 );
+					rc.gl.glVertex3d( 0, 0, -2 * LENGTH );
+					//					rc.gl.glEnable( com.jogamp.opengl.GL2.GL_DEPTH_TEST );
+				} finally {
+					rc.gl.glEnd();
+				}
+				rc.gl.glPopMatrix();
+			}
+		}
+		for( int i = 0; i < currentNode.getComponentCount(); i++ ) {
+			Component comp = currentNode.getComponentAt( i );
+			if( comp instanceof Composite ) {
+				Composite jointChild = (Composite)comp;
+				renderJoint( rc, jointChild, oTransformationPost );
+			}
+		}
+
+	}
+
+	private void renderSkeleton( RenderContext rc ) {
+		AffineMatrix4x4 oTransformationPre = new AffineMatrix4x4();
+		synchronized( this.currentSkeleton ) {
+			renderJoint( rc, this.currentSkeleton, oTransformationPre );
+		}
+	}
+
 	@Override
-	protected void renderGeometry( RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType renderType )
-	{
+	protected void renderGeometry( RenderContext rc, edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType renderType ) {
 		initializeDataIfNecessary();
-		if( this.skeletonIsDirty )
-		{
+		if( this.skeletonIsDirty ) {
 			this.processWeightedMesh();
 		}
 
 		boolean canRenderAlpha = ( renderType == edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType.ALL ) || ( renderType == edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType.ALPHA_BLENDED );
 		boolean canRenderOpaque = ( renderType == edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType.ALL ) || ( renderType == edu.cmu.cs.dennisc.render.gl.imp.adapters.GlrVisual.RenderType.OPAQUE );
-		for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
-		{
-			if( renderType == RenderType.SILHOUETTE ) {
-				//pass
-			} else {
-				appearanceEntry.getValue().setTexturePipelineState( rc );
-			}
+		boolean DEBUG_SKELETON = false;
+		if( !DEBUG_SKELETON ) {
+			for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() ) {
+				if( renderType == RenderType.SILHOUETTE ) {
+					//pass
+				} else {
+					appearanceEntry.getValue().setTexturePipelineState( rc );
+				}
 
-			boolean textureIsAlphaBlend = appearanceEntry.getValue().isAlphaBlended();
+				boolean textureIsAlphaBlend = appearanceEntry.getValue().isAlphaBlended();
 
-			WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get( appearanceEntry.getKey() );
-			if( weightedMeshControls != null ) {
-				for( WeightedMeshControl wmc : weightedMeshControls )
-				{
-					boolean meshIsAlpha = textureIsAlphaBlend && !wmc.weightedMesh.useAlphaTest.getValue();
-					if( ( meshIsAlpha && canRenderAlpha ) || ( !meshIsAlpha && canRenderOpaque ) )
-					{
-						if( !wmc.weightedMesh.cullBackfaces.getValue() )
-						{
-							rc.gl.glDisable( GL_CULL_FACE );
-						}
-						else
-						{
+				WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get( appearanceEntry.getKey() );
+				if( weightedMeshControls != null ) {
+					for( WeightedMeshControl wmc : weightedMeshControls ) {
+						boolean meshIsAlpha = textureIsAlphaBlend && !wmc.weightedMesh.useAlphaTest.getValue();
+						if( ( meshIsAlpha && canRenderAlpha ) || ( !meshIsAlpha && canRenderOpaque ) ) {
+							if( !wmc.weightedMesh.cullBackfaces.getValue() ) {
+								rc.gl.glDisable( GL_CULL_FACE );
+							} else {
+								rc.gl.glEnable( GL_CULL_FACE );
+								rc.gl.glCullFace( GL_BACK );
+							}
+							if( wmc.weightedMesh.useAlphaTest.getValue() ) {
+								rc.gl.glEnable( GL_ALPHA_TEST );
+								rc.gl.glAlphaFunc( GL_GREATER, ALPHA_TEST_THRESHOLD );
+							} else {
+								rc.gl.glDisable( GL_ALPHA_TEST );
+							}
+							wmc.renderGeometry( rc );
 							rc.gl.glEnable( GL_CULL_FACE );
-							rc.gl.glCullFace( GL_BACK );
-						}
-						if( wmc.weightedMesh.useAlphaTest.getValue() )
-						{
-							rc.gl.glEnable( GL_ALPHA_TEST );
-							rc.gl.glAlphaFunc( GL_GREATER, ALPHA_TEST_THRESHOLD );
-						}
-						else
-						{
 							rc.gl.glDisable( GL_ALPHA_TEST );
 						}
-						wmc.renderGeometry( rc );
-						rc.gl.glEnable( GL_CULL_FACE );
-						rc.gl.glDisable( GL_ALPHA_TEST );
 					}
 				}
-			}
-			GlrMesh<Mesh>[] meshAdapters = this.appearanceIdToGeometryAdapaters.get( appearanceEntry.getKey() );
-			if( meshAdapters != null )
-			{
-				for( GlrMesh<Mesh> ma : meshAdapters )
-				{
-					boolean meshIsAlpha = textureIsAlphaBlend && !( (Mesh)ma.owner ).useAlphaTest.getValue();
-					if( ( meshIsAlpha && canRenderAlpha ) || ( !meshIsAlpha && canRenderOpaque ) )
-					{
-						if( !( (Mesh)ma.owner ).cullBackfaces.getValue() )
-						{
-							rc.gl.glDisable( GL_CULL_FACE );
-						}
-						else
-						{
+				GlrMesh<Mesh>[] meshAdapters = this.appearanceIdToGeometryAdapaters.get( appearanceEntry.getKey() );
+				if( meshAdapters != null ) {
+					for( GlrMesh<Mesh> ma : meshAdapters ) {
+						boolean meshIsAlpha = textureIsAlphaBlend && !( (Mesh)ma.owner ).useAlphaTest.getValue();
+						if( ( meshIsAlpha && canRenderAlpha ) || ( !meshIsAlpha && canRenderOpaque ) ) {
+							if( !( (Mesh)ma.owner ).cullBackfaces.getValue() ) {
+								rc.gl.glDisable( GL_CULL_FACE );
+							} else {
+								rc.gl.glEnable( GL_CULL_FACE );
+								rc.gl.glCullFace( GL_BACK );
+							}
+							if( ( (Mesh)ma.owner ).useAlphaTest.getValue() ) {
+								rc.gl.glEnable( GL_ALPHA_TEST );
+								rc.gl.glAlphaFunc( GL_GREATER, ALPHA_TEST_THRESHOLD );
+							} else {
+								rc.gl.glDisable( GL_ALPHA_TEST );
+							}
+							ma.render( rc, renderType );
 							rc.gl.glEnable( GL_CULL_FACE );
-							rc.gl.glCullFace( GL_BACK );
-						}
-						if( ( (Mesh)ma.owner ).useAlphaTest.getValue() )
-						{
-							rc.gl.glEnable( GL_ALPHA_TEST );
-							rc.gl.glAlphaFunc( GL_GREATER, ALPHA_TEST_THRESHOLD );
-						}
-						else
-						{
 							rc.gl.glDisable( GL_ALPHA_TEST );
 						}
-						ma.render( rc, renderType );
-						rc.gl.glEnable( GL_CULL_FACE );
-						rc.gl.glDisable( GL_ALPHA_TEST );
 					}
 				}
-			}
 
+			}
+		} else {
+			renderSkeleton( rc );
 		}
+
 	}
 
 	@Override
 	protected boolean isActuallyShowing() {
 		initializeDataIfNecessary();
-		if( super.isActuallyShowing() )
-		{
+		if( super.isActuallyShowing() ) {
 			return true;
 		}
-		if( this.isShowing && ( appearanceIdToMeshControllersMap != null ) && ( appearanceIdToMeshControllersMap.size() > 0 ) )
-		{
+		if( this.isShowing && ( appearanceIdToMeshControllersMap != null ) && ( appearanceIdToMeshControllersMap.size() > 0 ) ) {
 			if( this.glrFrontFacingAppearance != null ) {
 				if( this.glrFrontFacingAppearance.isActuallyShowing() ) {
 					return true;
@@ -514,8 +522,7 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 	@Override
 	protected boolean hasOpaque() {
 		initializeDataIfNecessary();
-		if( super.hasOpaque() )
-		{
+		if( super.hasOpaque() ) {
 			return true;
 		}
 		//Check the base adapter to see if it's set to be alpha (through a sub 1 opacity setting)
@@ -531,8 +538,7 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 			}
 		}
 		//Check to see if there are non-alpha textures or none "all" alpha values
-		if( ( appearanceIdToMeshControllersMap != null ) && ( appearanceIdToMeshControllersMap.size() > 0 ) )
-		{
+		if( ( appearanceIdToMeshControllersMap != null ) && ( appearanceIdToMeshControllersMap.size() > 0 ) ) {
 			if( this.glrFrontFacingAppearance != null ) {
 				if( !this.glrFrontFacingAppearance.isAlphaBlended() ) {
 					return true;
@@ -543,11 +549,9 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 					return true;
 				}
 			}
-			for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
-			{
+			for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() ) {
 				GlrTexturedAppearance ta = appearanceIdToAdapterMap.get( controlEntry.getKey() );
-				if( ( ta != null ) && ta.isActuallyShowing() && !ta.isAlphaBlended() )
-				{
+				if( ( ta != null ) && ta.isActuallyShowing() && !ta.isAlphaBlended() ) {
 					return true;
 				}
 			}
@@ -556,16 +560,13 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 	}
 
 	@Override
-	protected boolean isAlphaBlended()
-	{
+	protected boolean isAlphaBlended() {
 		initializeDataIfNecessary();
-		if( super.isAlphaBlended() )
-		{
+		if( super.isAlphaBlended() ) {
 			return true;
 		}
 
-		if( ( appearanceIdToMeshControllersMap != null ) && ( appearanceIdToMeshControllersMap.size() > 0 ) )
-		{
+		if( ( appearanceIdToMeshControllersMap != null ) && ( appearanceIdToMeshControllersMap.size() > 0 ) ) {
 			if( this.glrFrontFacingAppearance != null ) {
 				if( this.glrFrontFacingAppearance.isAlphaBlended() ) {
 					return true;
@@ -576,11 +577,9 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 					return true;
 				}
 			}
-			for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
-			{
+			for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() ) {
 				GlrTexturedAppearance ta = appearanceIdToAdapterMap.get( controlEntry.getKey() );
-				if( ( ta != null ) && ta.isActuallyShowing() && ta.isAlphaBlended() )
-				{
+				if( ( ta != null ) && ta.isActuallyShowing() && ta.isAlphaBlended() ) {
 					return true;
 				}
 			}
@@ -590,40 +589,30 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 
 	//PropertyListener methods for listening to changes on skeleton transforms
 	@Override
-	public void propertyChanging( PropertyEvent e )
-	{
+	public void propertyChanging( PropertyEvent e ) {
 		//Do Nothing
 	}
 
-	private void setListeningOnSkeleton( Composite c, boolean shouldListen )
-	{
-		if( c == null )
-		{
+	private void setListeningOnSkeleton( Composite c, boolean shouldListen ) {
+		if( c == null ) {
 			return;
 		}
-		if( c instanceof Joint )
-		{
-			if( shouldListen )
-			{
+		if( c instanceof Joint ) {
+			if( shouldListen ) {
 				( (Joint)c ).localTransformation.addPropertyListener( this );
-			}
-			else
-			{
+			} else {
 				( (Joint)c ).localTransformation.removePropertyListener( this );
 			}
 		}
-		for( int i = 0; i < c.getComponentCount(); i++ )
-		{
-			if( c.getComponentAt( i ) instanceof Composite )
-			{
+		for( int i = 0; i < c.getComponentCount(); i++ ) {
+			if( c.getComponentAt( i ) instanceof Composite ) {
 				setListeningOnSkeleton( (Composite)c.getComponentAt( i ), shouldListen );
 			}
 		}
 	}
 
 	@Override
-	public void propertyChanged( PropertyEvent e )
-	{
+	public void propertyChanged( PropertyEvent e ) {
 		handleSkeletonTransformationChange();
 	}
 
@@ -631,20 +620,15 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 		this.isDataDirty = true;
 	}
 
-	private void handleSkeletonTransformationChange()
-	{
+	private void handleSkeletonTransformationChange() {
 		this.skeletonIsDirty = true;
 	}
 
-	public void processWeightedMesh()
-	{
-		if( this.currentSkeleton != null )
-		{
+	public void processWeightedMesh() {
+		if( this.currentSkeleton != null ) {
 			synchronized( appearanceIdToMeshControllersMap ) {
-				for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
-				{
-					for( WeightedMeshControl wmc : controlEntry.getValue() )
-					{
+				for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() ) {
+					for( WeightedMeshControl wmc : controlEntry.getValue() ) {
 						wmc.preProcess();
 					}
 				}
@@ -654,10 +638,8 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 				synchronized( this.currentSkeleton ) {
 					processWeightedMesh( this.currentSkeleton, oTransformationPre, inverseScale );
 				}
-				for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
-				{
-					for( WeightedMeshControl wmc : controlEntry.getValue() )
-					{
+				for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() ) {
+					for( WeightedMeshControl wmc : controlEntry.getValue() ) {
 						wmc.postProcess();
 					}
 				}
@@ -666,15 +648,12 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 		this.skeletonIsDirty = false;
 	}
 
-	private void processWeightedMesh( Composite currentNode, AffineMatrix4x4 oTransformationPre, edu.cmu.cs.dennisc.math.Matrix3x3 inverseScale )
-	{
-		if( currentNode == null )
-		{
+	private void processWeightedMesh( Composite currentNode, AffineMatrix4x4 oTransformationPre, edu.cmu.cs.dennisc.math.Matrix3x3 inverseScale ) {
+		if( currentNode == null ) {
 			return;
 		}
 		AffineMatrix4x4 oTransformationPost = oTransformationPre;
-		if( currentNode instanceof Transformable )
-		{
+		if( currentNode instanceof Transformable ) {
 			oTransformationPost = AffineMatrix4x4.createMultiplication( oTransformationPre, ( (Transformable)currentNode ).localTransformation.getValue() );
 
 			AffineMatrix4x4 unscaledTransform = new AffineMatrix4x4( oTransformationPost );
@@ -682,22 +661,17 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 			unscaledTransform.translation.y *= inverseScale.up.y;
 			unscaledTransform.translation.z *= inverseScale.backward.z;
 
-			if( currentNode instanceof Joint )
-			{
-				for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
-				{
-					for( WeightedMeshControl wmc : controlEntry.getValue() )
-					{
+			if( currentNode instanceof Joint ) {
+				for( java.util.Map.Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() ) {
+					for( WeightedMeshControl wmc : controlEntry.getValue() ) {
 						wmc.process( (Joint)currentNode, unscaledTransform );
 					}
 				}
 			}
 		}
-		for( int i = 0; i < currentNode.getComponentCount(); i++ )
-		{
+		for( int i = 0; i < currentNode.getComponentCount(); i++ ) {
 			Component comp = currentNode.getComponentAt( i );
-			if( comp instanceof Composite )
-			{
+			if( comp instanceof Composite ) {
 				Composite jointChild = (Composite)comp;
 				processWeightedMesh( jointChild, oTransformationPost, inverseScale );
 			}
@@ -707,28 +681,22 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 	protected void updateAppearanceIdToAdapterMap() {
 		synchronized( appearanceIdToAdapterMap ) {
 			List<GlrElement<? extends Element>> oldAdapters = new ArrayList<GlrElement<? extends Element>>();
-			for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
-			{
-				if( !oldAdapters.contains( appearanceEntry.getValue() ) )
-				{
+			for( java.util.Map.Entry<Integer, GlrTexturedAppearance> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() ) {
+				if( !oldAdapters.contains( appearanceEntry.getValue() ) ) {
 					oldAdapters.add( appearanceEntry.getValue() );
 				}
 			}
 			appearanceIdToAdapterMap.clear();
 			List<GlrElement<? extends Element>> newAdapters = new ArrayList<GlrElement<? extends Element>>();
-			for( TexturedAppearance ta : this.owner.textures.getValue() )
-			{
+			for( TexturedAppearance ta : this.owner.textures.getValue() ) {
 				GlrTexturedAppearance newAdapter = AdapterFactory.getAdapterFor( ta );
 				appearanceIdToAdapterMap.put( ta.textureId.getValue(), newAdapter );
-				if( !newAdapters.contains( newAdapter ) )
-				{
+				if( !newAdapters.contains( newAdapter ) ) {
 					newAdapters.add( newAdapter );
 				}
 			}
-			for( GlrElement<? extends Element> oldAdapter : oldAdapters )
-			{
-				if( !newAdapters.contains( oldAdapter ) )
-				{
+			for( GlrElement<? extends Element> oldAdapter : oldAdapters ) {
+				if( !newAdapters.contains( oldAdapter ) ) {
 					releaseMappedAdapter( oldAdapter );
 				}
 			}
@@ -738,16 +706,12 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 	protected void updateAppearanceToGeometryAdapterMap() {
 		synchronized( appearanceIdToGeometryAdapaters ) {
 			appearanceIdToGeometryAdapaters.clear();
-			for( TexturedAppearance ta : this.owner.textures.getValue() )
-			{
+			for( TexturedAppearance ta : this.owner.textures.getValue() ) {
 				List<GlrMesh<?>> meshAdapters = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-				for( GlrGeometry<?> adapter : this.glrGeometries )
-				{
-					if( adapter instanceof GlrMesh<?> )
-					{
+				for( GlrGeometry<?> adapter : this.glrGeometries ) {
+					if( adapter instanceof GlrMesh<?> ) {
 						GlrMesh<?> ma = (GlrMesh<?>)adapter;
-						if( ma.owner.textureId.getValue() == ta.textureId.getValue() )
-						{
+						if( ma.owner.textureId.getValue() == ta.textureId.getValue() ) {
 							meshAdapters.add( ma );
 						}
 					}
@@ -760,13 +724,10 @@ public class GlrSkeletonVisual extends edu.cmu.cs.dennisc.render.gl.imp.adapters
 	protected void updateAppearanceToMeshControllersMap() {
 		synchronized( appearanceIdToMeshControllersMap ) {
 			appearanceIdToMeshControllersMap.clear();
-			for( TexturedAppearance ta : this.owner.textures.getValue() )
-			{
+			for( TexturedAppearance ta : this.owner.textures.getValue() ) {
 				List<WeightedMeshControl> controls = new LinkedList<WeightedMeshControl>();
-				for( WeightedMesh weightedMesh : this.owner.weightedMeshes.getValue() )
-				{
-					if( weightedMesh.textureId.getValue() == ta.textureId.getValue() )
-					{
+				for( WeightedMesh weightedMesh : this.owner.weightedMeshes.getValue() ) {
+					if( weightedMesh.textureId.getValue() == ta.textureId.getValue() ) {
 						WeightedMeshControl control = new WeightedMeshControl();
 						control.initialize( weightedMesh );
 						controls.add( control );

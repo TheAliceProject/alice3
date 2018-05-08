@@ -60,7 +60,6 @@ import org.lgna.story.resourceutilities.StorytellingResources;
 import org.w3c.dom.Document;
 
 import edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable;
-import edu.cmu.cs.dennisc.java.io.TextFileUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -688,10 +687,6 @@ public class AliceResourceUtilties {
 		return getThumbnailInternal( modelResource, null );
 	}
 
-	public static java.net.URL getThumbnailURL( Class<?> modelResource ) {
-		return getThumbnailURLInternal( modelResource, null );
-	}
-
 	public static java.net.URL getThumbnailURL( Class<?> modelResource, String instanceName ) {
 		return getThumbnailURLInternal( modelResource, instanceName );
 	}
@@ -751,10 +746,6 @@ public class AliceResourceUtilties {
 			}
 			return null;
 		}
-	}
-
-	public static org.lgna.story.resourceutilities.ModelResourceInfo getModelResourceInfo( Class<?> modelResource ) {
-		return getModelResourceInfo( modelResource, null );
 	}
 
 	public static AxisAlignedBox getBoundingBox( Class<?> modelResource, String resourceName ) {
@@ -818,7 +809,7 @@ public class AliceResourceUtilties {
 		return null;
 	}
 
-	/*private*/protected static String getModelClassName( Class<?> modelResource, String resourceName, Locale locale ) {
+	public static String getModelClassName( Class<?> modelResource, String resourceName, Locale locale ) {
 		ModelResourceInfo info = getModelResourceInfo( modelResource, null );
 		String className;
 		String packageName = modelResource.getPackage().getName();
@@ -839,55 +830,6 @@ public class AliceResourceUtilties {
 			}
 			return localizedText;
 		}
-	}
-
-	public static String getJavaCode( Class<?> modelResource ) {
-		String name = getName( modelResource );
-		InputStream is = null;
-		try {
-			is = getAliceResourceAsStream( modelResource, name + "Resource.java" );
-			if( is != null ) {
-				String javaCode = TextFileUtilities.read( is );
-				return javaCode;
-			} else {
-				Logger.severe( "Failed to find java file for " + name );
-			}
-		} catch( Exception e ) {
-			Logger.severe( "Failed to find java file for " + name );
-		} finally {
-			if( is != null ) {
-				try {
-					is.close();
-				} catch( IOException ioe ) {
-
-				}
-			}
-		}
-		return null;
-	}
-
-	public static String getCreator( Class<?> modelResource, String resourceName ) {
-		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
-		if( info != null ) {
-			return info.getCreator();
-		}
-		return null;
-	}
-
-	public static String getCreator( Class<?> modelResource ) {
-		return getCreator( modelResource, null );
-	}
-
-	public static int getCreationYear( Class<?> modelResource, String resourceName ) {
-		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
-		if( info != null ) {
-			return info.getCreationYear();
-		}
-		return -1;
-	}
-
-	public static int getCreationYear( Class<?> modelResource ) {
-		return getCreationYear( modelResource, null );
 	}
 
 	private static String[] getLocalizedTags( String[] tags, String localizerBundleName, Locale locale, boolean acceptNull ) {

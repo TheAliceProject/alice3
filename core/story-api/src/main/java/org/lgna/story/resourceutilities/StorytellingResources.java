@@ -233,6 +233,11 @@ public enum StorytellingResources {
 	}
 
 	private List<File> findAliceResources() {
+		File customResourcesPath = findResourcePath( "assets/custom" );
+		if( customResourcesPath != null ) {
+			ResourcePathManager.addPath( ResourcePathManager.MODEL_RESOURCE_KEY, customResourcesPath );
+		}
+
 		File alicePath = findResourcePath( ALICE_RESOURCE_INSTALL_PATH );
 		if( alicePath != null ) {
 			ResourcePathManager.addPath( ResourcePathManager.MODEL_RESOURCE_KEY, alicePath );
@@ -325,7 +330,7 @@ public enum StorytellingResources {
 			for( int i = 0; i < resourceFiles.length; i++ ) {
 				urlArray[ i ] = resourceFiles[ i ].toURI().toURL();
 			}
-			URLClassLoader cl = new URLClassLoader( urlArray, null );
+			URLClassLoader cl = new URLClassLoader( urlArray, ClassLoader.getSystemClassLoader() );
 			for( String className : classNames ) {
 				try {
 					Class<?> cls = cl.loadClass( className );
@@ -449,6 +454,14 @@ public enum StorytellingResources {
 		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
 		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
 
+	}
+
+	public static boolean initializeModelClassPath() {
+		List<Class<? extends org.lgna.story.resources.ModelResource>> classesLoaded = StorytellingResources.INSTANCE.findAndLoadAliceResourcesIfNecessary();
+		if( classesLoaded != null ) {
+			return true;
+		}
+		return false;
 	}
 
 	/*package-private*/List<Class<? extends org.lgna.story.resources.ModelResource>> findAndLoadAliceResourcesIfNecessary() {

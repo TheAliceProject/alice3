@@ -43,7 +43,7 @@
 package org.alice.stageide.ast.declaration;
 
 import org.alice.ide.identifier.IdentifierNameGenerator;
-import org.alice.stageide.modelresource.ResourceKey;
+import org.alice.stageide.modelresource.InstanceCreatorKey;
 
 /**
  * @author Dennis Cosgrove
@@ -73,7 +73,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		}
 	};
 
-	private ResourceKey resourceKey;
+	private InstanceCreatorKey resourceKey;
 	private boolean isChangeResourceAllowed;
 
 	private AddResourceKeyManagedFieldComposite() {
@@ -85,12 +85,12 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		this.getInitializerState().addAndInvokeNewSchoolValueListener( initializerListener );
 	}
 
-	public void setResourceKeyToBeUsedByGetInitializerInitialValue( ResourceKey resourceKey, boolean isChangeResourceAllowed ) {
+	public void setResourceKeyToBeUsedByGetInitializerInitialValue( InstanceCreatorKey resourceKey, boolean isChangeResourceAllowed ) {
 		this.resourceKey = resourceKey;
 		this.isChangeResourceAllowed = isChangeResourceAllowed;
 	}
 
-	protected ResourceKey getResourceKey() {
+	protected InstanceCreatorKey getResourceKey() {
 		return resourceKey;
 	}
 

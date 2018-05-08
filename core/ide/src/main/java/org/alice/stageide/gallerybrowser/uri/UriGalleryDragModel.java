@@ -42,68 +42,109 @@
  *******************************************************************************/
 package org.alice.stageide.gallerybrowser.uri;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap;
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
 import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.xml.XMLUtilities;
+import org.alice.ide.ast.export.type.FieldInfo;
+import org.alice.ide.ast.export.type.FunctionInfo;
+import org.alice.ide.ast.export.type.ResourceInfo;
+import org.alice.ide.ast.export.type.TypeSummary;
+import org.alice.ide.ast.export.type.TypeSummaryDataSource;
+import org.alice.ide.ast.export.type.TypeXmlUtitlities;
 import org.alice.ide.ast.type.merge.croquet.MembersToolPalette;
 import org.alice.ide.croquet.models.ui.formatter.FormatterState;
 import org.alice.ide.formatter.Formatter;
 import org.alice.nonfree.NebulousIde;
+import org.alice.stageide.icons.IconFactoryManager;
+import org.alice.stageide.modelresource.AddFieldCascade;
+import org.alice.stageide.modelresource.ClassResourceKey;
+import org.alice.stageide.modelresource.EnumConstantResourceKey;
+import org.alice.stageide.modelresource.InstanceCreatorKey;
+import org.alice.stageide.modelresource.ResourceGalleryDragModel;
+import org.alice.stageide.modelresource.ResourceKey;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.lgna.croquet.DropSite;
+import org.lgna.croquet.Model;
+import org.lgna.croquet.history.DragStep;
+import org.lgna.croquet.icon.EmptyIconFactory;
+import org.lgna.croquet.icon.IconFactory;
+import org.lgna.project.VersionNotSupportedException;
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.resources.ModelResource;
+import org.w3c.dom.Document;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import static edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringForKey;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class UriGalleryDragModel extends org.alice.stageide.modelresource.ResourceGalleryDragModel {
+public final class UriGalleryDragModel extends ResourceGalleryDragModel {
 	//public static final java.awt.Dimension URI_LARGE_ICON_SIZE = new java.awt.Dimension( ( getDefaultLargeIconSize().width * 3 ) / 2, getDefaultLargeIconSize().height );
 
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriGalleryDragModel> map = edu.cmu.cs.dennisc.java.util.Maps.newInitializingIfAbsentHashMap();
+	private static InitializingIfAbsentMap<URI, UriGalleryDragModel> map = Maps.newInitializingIfAbsentHashMap();
 
-	public static UriGalleryDragModel getInstance( java.net.URI uri ) {
-		return map.getInitializingIfAbsent( uri, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<java.net.URI, UriGalleryDragModel>() {
+	public static UriGalleryDragModel getInstance( URI uri ) {
+		return map.getInitializingIfAbsent( uri, new InitializingIfAbsentMap.Initializer<URI, UriGalleryDragModel>() {
 			@Override
-			public UriGalleryDragModel initialize( java.net.URI uri ) {
+			public UriGalleryDragModel initialize( URI uri ) {
 				return new UriGalleryDragModel( uri );
 			}
 		} );
 	}
 
-	private final java.net.URI uri;
+	private final URI uri;
 	private String text;
-	private java.util.Map<String, byte[]> mapFilenameToExtractedData;
-	private org.alice.ide.ast.export.type.TypeSummary typeSummary;
-	private org.alice.stageide.modelresource.InstanceCreatorKey resourceKey;
+	private Map<String, byte[]> mapFilenameToExtractedData;
+	private TypeSummary typeSummary;
+	private InstanceCreatorKey resourceKey;
 	private Class<?> thingCls;
-	private org.lgna.croquet.icon.IconFactory iconFactory;
+	private IconFactory iconFactory;
 
-	private UriGalleryDragModel( java.net.URI uri ) {
-		super( java.util.UUID.fromString( "9b784c07-6857-4f3f-83c4-ef6f2334c62a" ) );
+	private UriGalleryDragModel( URI uri ) {
+		super( UUID.fromString( "9b784c07-6857-4f3f-83c4-ef6f2334c62a" ) );
 		this.uri = uri;
 	}
 
-	private java.util.Map<String, byte[]> getFilenameToExtractedData() {
+	private Map<String, byte[]> getFilenameToExtractedData() {
 		if( this.mapFilenameToExtractedData != null ) {
 			//pass
 		} else {
 			try {
-				this.mapFilenameToExtractedData = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extract( new java.io.File( this.uri ) );
-			} catch( java.io.IOException ioe ) {
+				this.mapFilenameToExtractedData = ZipUtilities.extract( new File( this.uri ) );
+			} catch( IOException ioe ) {
 				throw new RuntimeException( ioe );
 			}
 		}
 		return this.mapFilenameToExtractedData;
 	}
 
-	private org.alice.ide.ast.export.type.TypeSummary getTypeSummary() {
+	private TypeSummary getTypeSummary() {
 		if( this.typeSummary != null ) {
 			//pass
 		} else {
-			java.util.Map<String, byte[]> mapFilenameToExtractedData = this.getFilenameToExtractedData();
-			byte[] data = mapFilenameToExtractedData.get( org.alice.ide.ast.export.type.TypeSummaryDataSource.FILENAME );
+			Map<String, byte[]> mapFilenameToExtractedData = this.getFilenameToExtractedData();
+			byte[] data = mapFilenameToExtractedData.get( TypeSummaryDataSource.FILENAME );
 			if( data != null ) {
-				org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.read( new java.io.ByteArrayInputStream( data ) );
+				Document xmlDocument = XMLUtilities.read( new ByteArrayInputStream( data ) );
 				try {
-					this.typeSummary = org.alice.ide.ast.export.type.TypeXmlUtitlities.decode( xmlDocument );
-				} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+					this.typeSummary = TypeXmlUtitlities.decode( xmlDocument );
+				} catch( VersionNotSupportedException vnse ) {
 					throw new RuntimeException( vnse );
 				}
 			}
@@ -111,35 +152,35 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		return this.typeSummary;
 	}
 
-	public org.alice.stageide.modelresource.InstanceCreatorKey getResourceKey() {
+	public InstanceCreatorKey getResourceKey() {
 		if( this.resourceKey != null ) {
 			//pass
 		} else {
 			try {
-				org.alice.ide.ast.export.type.TypeSummary typeSummary = this.getTypeSummary();
+				TypeSummary typeSummary = this.getTypeSummary();
 				if( typeSummary != null ) {
-					org.alice.ide.ast.export.type.ResourceInfo resourceInfo = typeSummary.getResourceInfo();
+					ResourceInfo resourceInfo = typeSummary.getResourceInfo();
 					if( resourceInfo != null ) {
 						String resourceClassName = resourceInfo.getClassName();
 						String resourceFieldName = resourceInfo.getFieldName();
-						Class<? extends org.lgna.story.resources.ModelResource> resourceCls = (Class<? extends org.lgna.story.resources.ModelResource>)Class.forName( resourceClassName );
+						Class<? extends ModelResource> resourceCls = (Class<? extends ModelResource>)Class.forName( resourceClassName );
 						if( resourceFieldName != null ) {
-							java.lang.reflect.Field fld = resourceCls.getField( resourceFieldName );
-							Enum<? extends org.lgna.story.resources.ModelResource> enumConstant = (Enum<? extends org.lgna.story.resources.ModelResource>)fld.get( null );
-							this.resourceKey = new org.alice.stageide.modelresource.EnumConstantResourceKey( enumConstant );
+							Field fld = resourceCls.getField( resourceFieldName );
+							Enum<? extends ModelResource> enumConstant = (Enum<? extends ModelResource>)fld.get( null );
+							this.resourceKey = new EnumConstantResourceKey( enumConstant );
 						} else {
 							if( NebulousIde.nonfree.isPersonResourceAssignableFrom( resourceCls ) ) {
 								this.resourceKey = NebulousIde.nonfree.getPersonResourceKeyInstanceForResourceClass( resourceCls );
 							} else {
-								this.resourceKey = new org.alice.stageide.modelresource.ClassResourceKey( resourceCls );
+								this.resourceKey = new ClassResourceKey( resourceCls );
 							}
 						}
 					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+					Logger.severe( this );
 				}
 			} catch( Throwable t ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, this );
+				Logger.throwable( t, this );
 			}
 		}
 		return this.resourceKey;
@@ -150,18 +191,18 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 			//pass
 		} else {
 			try {
-				org.alice.ide.ast.export.type.TypeSummary typeSummary = this.getTypeSummary();
+				TypeSummary typeSummary = this.getTypeSummary();
 				if( typeSummary != null ) {
-					java.util.List<String> hierarchyClsNames = typeSummary.getHierarchyClassNames();
+					List<String> hierarchyClsNames = typeSummary.getHierarchyClassNames();
 					if( hierarchyClsNames.size() > 0 ) {
 						String clsName = hierarchyClsNames.get( hierarchyClsNames.size() - 1 );
 						this.thingCls = Class.forName( clsName );
 					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+					Logger.severe( this );
 				}
 			} catch( Throwable t ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, this );
+				Logger.throwable( t, this );
 			}
 		}
 		return this.thingCls;
@@ -172,7 +213,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 			//pass
 		} else {
 			sb.append( "<html>" );
-			java.io.File file = new java.io.File( this.uri );
+			File file = new File( this.uri );
 			if( file.exists() ) {
 				sb.append( "add from file: <strong>" );
 				sb.append( file.getName() );
@@ -184,10 +225,10 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 	}
 
 	public String getTypeSummaryToolTipText() {
-		org.alice.ide.ast.export.type.TypeSummary typeSummary = getTypeSummary();
+		TypeSummary typeSummary = getTypeSummary();
 		if( typeSummary != null ) {
 			StringBuilder sb = new StringBuilder();
-			java.util.List<String> procedureNames = typeSummary.getProcedureNames();
+			List<String> procedureNames = typeSummary.getProcedureNames();
 			if( procedureNames.size() > 0 ) {
 				this.appendStartIfNecessary( sb );
 				sb.append( "<em>procedures:</em><ul>" );
@@ -199,11 +240,11 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 				sb.append( "</ul>" );
 			}
 
-			java.util.List<org.alice.ide.ast.export.type.FunctionInfo> functionInfos = typeSummary.getFunctionInfos();
+			List<FunctionInfo> functionInfos = typeSummary.getFunctionInfos();
 			if( functionInfos.size() > 0 ) {
 				this.appendStartIfNecessary( sb );
 				sb.append( "<em>functions:</em><ul>" );
-				for( org.alice.ide.ast.export.type.FunctionInfo functionInfo : functionInfos ) {
+				for( FunctionInfo functionInfo : functionInfos ) {
 					sb.append( "<li>" );
 					sb.append( functionInfo.getReturnClassName() );
 					sb.append( " <strong>" );
@@ -212,11 +253,11 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 				}
 				sb.append( "</ul>" );
 			}
-			java.util.List<org.alice.ide.ast.export.type.FieldInfo> fieldInfos = typeSummary.getFieldInfos();
+			List<FieldInfo> fieldInfos = typeSummary.getFieldInfos();
 			if( fieldInfos.size() > 0 ) {
 				this.appendStartIfNecessary( sb );
 				sb.append( "<em>properties:</em><ul>" );
-				for( org.alice.ide.ast.export.type.FieldInfo fieldInfo : fieldInfos ) {
+				for( FieldInfo fieldInfo : fieldInfos ) {
 					sb.append( "<li>" );
 					sb.append( fieldInfo.getValueClassName() );
 					sb.append( " <strong>" );
@@ -240,10 +281,10 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 	@Override
 	protected void localize() {
 		super.localize();
-		org.alice.ide.ast.export.type.TypeSummary typeSummary = getTypeSummary();
+		TypeSummary typeSummary = getTypeSummary();
 		String typeName = typeSummary != null ? typeSummary.getTypeName() : "???";
 
-		org.alice.stageide.modelresource.InstanceCreatorKey resourceKey = this.getResourceKey();
+		InstanceCreatorKey resourceKey = this.getResourceKey();
 		if( resourceKey != null ) {
 			Class<?> modelResourceCls = resourceKey.getModelResourceCls();
 			if( ( modelResourceCls != null ) && modelResourceCls.isInterface() ) {
@@ -257,9 +298,9 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 		}
 
 		if( typeName != null ) {
-			java.io.File file = new java.io.File( this.uri );
+			File file = new File( this.uri );
 			if( file.exists() ) {
-				String baseName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( file );
+				String baseName = FileUtilities.getBaseName( file );
 				if (!typeName.contentEquals( baseName )) {
 					// Use existing l18n string and remove trailing :
 					String fromFormat = ResourceBundleUtilities.getStringForKey( "MembersToolPalette.fromImportHeader", MembersToolPalette.class );
@@ -293,10 +334,10 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
-		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
+	public AxisAlignedBox getBoundingBox() {
+		InstanceCreatorKey resourceKey = getResourceKey();
 		if( resourceKey != null ) {
-			return org.alice.stageide.modelresource.IdeAliceResourceUtilities.getBoundingBox( resourceKey );
+			return resourceKey.getBoundingBox();
 		} else {
 			return null;
 		}
@@ -304,58 +345,58 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 
 	@Override
 	public boolean placeOnGround() {
-		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
+		InstanceCreatorKey resourceKey = this.getResourceKey();
 		if( resourceKey != null ) {
-			return org.alice.stageide.modelresource.IdeAliceResourceUtilities.getPlaceOnGround( resourceKey );
+			return resourceKey.getPlaceOnGround();
 		} else {
 			return false;
 		}
 	}
 
 	@Override
-	public java.util.List<org.alice.stageide.modelresource.ResourceNode> getNodeChildren() {
-		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
-		if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
-			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
-			Class<? extends org.lgna.story.resources.ModelResource> modelResourceClass = classResourceKey.getModelResourceCls();
+	public List<ResourceNode> getNodeChildren() {
+		ResourceKey resourceKey = this.getResourceKey();
+		if( resourceKey instanceof ClassResourceKey ) {
+			ClassResourceKey classResourceKey = (ClassResourceKey)resourceKey;
+			Class<? extends ModelResource> modelResourceClass = classResourceKey.getModelResourceCls();
 			Class<?> thingCls = this.getThingCls();
 			if( modelResourceClass != null ) {
 				if( modelResourceClass.isEnum() ) {
-					java.util.List<org.alice.stageide.modelresource.ResourceNode> rv = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-					for( org.lgna.story.resources.ModelResource modelResource : modelResourceClass.getEnumConstants() ) {
-						rv.add( new UriBasedResourceNode( new org.alice.stageide.modelresource.EnumConstantResourceKey( (Enum)modelResource ), thingCls, this.uri ) );
+					List<ResourceNode> rv = Lists.newLinkedList();
+					for( ModelResource modelResource : modelResourceClass.getEnumConstants() ) {
+						rv.add( new UriBasedResourceNode( new EnumConstantResourceKey( (Enum)modelResource ), thingCls, this.uri ) );
 					}
 					return rv;
 				} else {
-					return java.util.Collections.emptyList();
+					return Collections.emptyList();
 				}
 			} else {
-				return java.util.Collections.emptyList();
+				return Collections.emptyList();
 			}
 		} else {
-			return java.util.Collections.emptyList();
+			return Collections.emptyList();
 		}
 	}
 
 	@Override
-	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
+	public Model getLeftButtonClickModel() {
+		ResourceKey resourceKey = this.getResourceKey();
 		Class<?> thingCls = this.getThingCls();
 		return ResourceKeyUriIteratingOperation.getInstance( resourceKey, thingCls, this.uri );
 	}
 
 	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
-		if( resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
+	public Model getDropModel( DragStep step, DropSite dropSite ) {
+		ResourceKey resourceKey = this.getResourceKey();
+		if( resourceKey instanceof EnumConstantResourceKey ) {
 			return this.getLeftButtonClickModel();
-		} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
-			org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
+		} else if( resourceKey instanceof ClassResourceKey ) {
+			ClassResourceKey classResourceKey = (ClassResourceKey)resourceKey;
 			if( classResourceKey.isLeaf() ) {
 				//should not happen
 				return null;
 			} else {
-				return new org.alice.stageide.modelresource.AddFieldCascade( this, dropSite );
+				return new AddFieldCascade( this, dropSite );
 			}
 		} else if( NebulousIde.nonfree.isInstanceOfPersonResourceKey( resourceKey ) ) {
 			return this.getLeftButtonClickModel();
@@ -370,20 +411,20 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+	public IconFactory getIconFactory() {
 		if( this.iconFactory != null ) {
 			//pass
 		} else {
-			org.lgna.croquet.icon.IconFactory base;
-			org.alice.stageide.modelresource.ResourceKey resourceKey = this.getResourceKey();
+			IconFactory base;
+			ResourceKey resourceKey = this.getResourceKey();
 			if( resourceKey != null ) {
 				base = resourceKey.getIconFactory();
 			} else {
 				Class<?> thingCls = this.getThingCls();
 				if( thingCls != null ) {
-					base = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( org.lgna.project.ast.JavaType.getInstance( thingCls ) );
+					base = IconFactoryManager.getIconFactoryForType( JavaType.getInstance( thingCls ) );
 				} else {
-					base = org.lgna.croquet.icon.EmptyIconFactory.getInstance();
+					base = EmptyIconFactory.getInstance();
 				}
 			}
 			//this.iconFactory = new org.alice.stageide.icons.UriGalleryIconFactory( this.uri, base, getDefaultLargeIconSize(), this.getIconSize() );
@@ -398,7 +439,7 @@ public final class UriGalleryDragModel extends org.alice.stageide.modelresource.
 	//	}
 
 	@Override
-	protected void appendRepr( java.lang.StringBuilder sb ) {
+	protected void appendRepr( StringBuilder sb ) {
 		super.appendRepr( sb );
 		sb.append( this.uri );
 	}
