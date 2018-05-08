@@ -50,25 +50,4 @@ public class NodeProperty<E extends Node> extends edu.cmu.cs.dennisc.property.In
 		super( owner, null );
 	}
 
-	public boolean valueContentEquals( NodeProperty<E> other, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( this.isToBeIgnored( other, filter ) ) {
-			return true;
-		} else {
-			E thisValue = this.getValue();
-			E otherValue = other.getValue();
-			if( thisValue != null ) {
-				if( otherValue != null ) {
-					return thisValue.contentEquals( otherValue, strictness, filter );
-				} else {
-					return false;
-				}
-			} else {
-				if( otherValue != null ) {
-					return false;
-				} else {
-					return true;
-				}
-			}
-		}
-	}
 }

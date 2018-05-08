@@ -43,6 +43,9 @@
 package org.alice.ide.ast.type.merge.croquet;
 
 import org.alice.ide.ast.type.merge.core.MergeUtilities;
+import org.lgna.project.ast.AbstractNode;
+import org.lgna.project.ast.Member;
+import org.lgna.project.code.CodeAppender;
 
 /**
  * @author Dennis Cosgrove
@@ -215,11 +218,11 @@ public class AddMembersPage extends org.lgna.croquet.WizardPageComposite<org.lgn
 		addRenameIfNecessary( renames, nameState, nameState.getMember() );
 	}
 
-	private <M extends org.lgna.project.ast.Member> M createImportCopy( M original ) {
+	private <M extends AbstractNode & CodeAppender> M createImportCopy( M original ) {
 		return org.lgna.project.ast.AstUtilities.createCopy( original, this.importedRootType );
 	}
 
-	private <M extends org.lgna.project.ast.Member> void addMembersAndRenames( java.util.List<M> membersToAdd, java.util.List<M> membersToRemove, java.util.List<org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData> renames, MembersToolPalette<?, M> addMembersComposite ) {
+	private <M extends AbstractNode & Member & CodeAppender> void addMembersAndRenames( java.util.List<M> membersToAdd, java.util.List<M> membersToRemove, java.util.List<org.alice.ide.ast.type.merge.croquet.edits.RenameMemberData> renames, MembersToolPalette<?, M> addMembersComposite ) {
 		for( ImportOnly<M> importOnly : addMembersComposite.getImportOnlys() ) {
 			if( importOnly.getImportHub().getIsDesiredState().getValue() ) {
 				membersToAdd.add( this.createImportCopy( importOnly.getImportHub().getMember() ) );

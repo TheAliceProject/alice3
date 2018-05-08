@@ -73,21 +73,14 @@ public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?
 	}
 
 	@Override
-	protected boolean valuePropertyContentEquals( AbstractValueLiteral<AbstractType<?, ?, ?>> other, ContentEqualsStrictness strictness, PropertyFilter filter ) {
-		TypeLiteral otherTypeLiteral = (TypeLiteral)other;
-		return this.value.valueContentEquals( otherTypeLiteral.value, strictness, filter );
-	}
-
-	@Override
 	protected void appendRepr( AstLocalizer localizer ) {
 		safeAppendRepr( localizer, this.value.getValue() );
 		localizer.appendText( ".class" );
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendTypeName( this.value.getValue() );
-		generator.appendString( ".class" );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendTypeLiteral( this );
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> value = DeclarationProperty.createReferenceInstance( this );

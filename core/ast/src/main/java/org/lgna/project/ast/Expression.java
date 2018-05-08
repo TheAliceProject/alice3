@@ -57,5 +57,5 @@ public abstract class Expression extends AbstractNode implements CodeAppender {
 	}
 
 	@Override
-	public abstract void appendJava( JavaCodeGenerator generator );
+	public abstract void appendCode( SourceCodeGenerator generator );
 }

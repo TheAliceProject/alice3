@@ -1,8 +1,5 @@
 package org.alice.tweedle;
 
-import org.alice.tweedle.unlinked.UnlinkedClass;
-import org.alice.tweedle.unlinked.UnlinkedEnum;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -29,14 +26,6 @@ public class TweedleLibrary {
 
 	public TweedleLibrary( List<TweedleType> types ) {
 		// TODO store the types
-	}
-
-	public TweedleClass newClass(String name) {
-		if (classes.containsKey( name ) ){
-			// TODO - reject names that are primitives
-			// TODO - handle repeated definitions
-		}
-		return classes.put( name, new TweedleClass(name) );
 	}
 
 	public TweedleType getTypeNamed(String name) {

@@ -42,13 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
-import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.PrecedentedAppender;
 
 /**
  * @author Dennis Cosgrove
  */
 public final class ConditionalInfixExpression extends InfixExpression<ConditionalInfixExpression.Operator> {
-	public static enum Operator implements CodeAppender {
+	public enum Operator implements PrecedentedAppender {
 		AND() {
 			@Override
 			public Boolean operate( Boolean leftOperand, Boolean rightOperand ) {
@@ -56,8 +56,12 @@ public final class ConditionalInfixExpression extends InfixExpression<Conditiona
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendString( "&&" );
+			}
+
+			@Override public int getLevelOfPrecedence() {
+				return 4;
 			}
 		},
 		OR() {
@@ -67,14 +71,18 @@ public final class ConditionalInfixExpression extends InfixExpression<Conditiona
 			}
 
 			@Override
-			public void appendJava( JavaCodeGenerator generator ) {
+			public void appendCode( SourceCodeGenerator generator ) {
 				generator.appendString( "||" );
 			}
 		};
 		public abstract Boolean operate( Boolean leftOperand, Boolean rightOperand );
 
 		@Override
-		public abstract void appendJava( JavaCodeGenerator generator );
+		public abstract void appendCode( SourceCodeGenerator generator );
+
+		@Override public int getLevelOfPrecedence() {
+			return 3;
+		}
 	}
 
 	public ConditionalInfixExpression() {
@@ -97,12 +105,5 @@ public final class ConditionalInfixExpression extends InfixExpression<Conditiona
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return JavaType.BOOLEAN_OBJECT_TYPE;
-	}
-
-	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendExpression( this.leftOperand.getValue() );
-		this.operator.getValue().appendJava( generator );
-		generator.appendExpression( this.rightOperand.getValue() );
 	}
 }

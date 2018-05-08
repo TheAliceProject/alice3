@@ -58,15 +58,6 @@ public class WhileLoop extends AbstractLoop {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			WhileLoop other = (WhileLoop)o;
-			return this.conditional.valueContentEquals( other.conditional, strictness, filter );
-		}
-		return false;
-	}
-
-	@Override
 	protected void appendRepr( AstLocalizer localizer ) {
 		localizer.appendLocalizedText( WhileLoop.class, "while" );
 		localizer.appendSpace();
@@ -74,11 +65,8 @@ public class WhileLoop extends AbstractLoop {
 		super.appendRepr( localizer );
 	}
 
-	@Override
-	protected void appendJavaLoopPrefix( JavaCodeGenerator generator ) {
-		generator.appendString( "while (" );
-		generator.appendExpression( this.conditional.getValue() );
-		generator.appendString( ")" );
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendWhileLoop(this);
 	}
 
 	public final ExpressionProperty conditional = new ExpressionProperty( this ) {

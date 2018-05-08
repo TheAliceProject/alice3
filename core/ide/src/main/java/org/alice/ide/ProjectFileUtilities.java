@@ -60,6 +60,11 @@ class ProjectFileUtilities {
 		IoUtilities.writeProject( file, project, thumbnailDataSources() );
 	}
 
+	void exportCopyOfProjectTo( File file ) throws IOException {
+		Project project = projectApp.getUpToDateProject();
+		IoUtilities.exportProject( file, project, thumbnailDataSources() );
+	}
+
 	private DataSource[] thumbnailDataSources() {
 		DataSource[] dataSources;
 		try {

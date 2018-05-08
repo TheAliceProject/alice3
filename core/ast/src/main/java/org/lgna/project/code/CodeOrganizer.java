@@ -70,6 +70,30 @@ public class CodeOrganizer {
 		}
 	}
 
+	public static CodeOrganizerDefinition defaultCodeOrganizer = new CodeOrganizerDefinition();
+	public static CodeOrganizerDefinition sceneClassCodeOrganizer = new CodeOrganizerDefinition();
+	public static CodeOrganizerDefinition programClassCodeOrganizer = new CodeOrganizerDefinition();
+	static {
+		defaultCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS );
+		defaultCodeOrganizer.addSection( "MethodsAndFunctionsSection", CodeOrganizer.NON_STATIC_METHODS );
+		defaultCodeOrganizer.addSection( "GettersAndSettersSection", CodeOrganizer.GETTERS_AND_SETTERS );
+		defaultCodeOrganizer.addSection( "FieldsSection", CodeOrganizer.FIELDS );
+		defaultCodeOrganizer.addSection( "StaticMethodsSection", CodeOrganizer.STATIC_METHODS );
+
+		sceneClassCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS );
+		sceneClassCodeOrganizer.addSection( "EventListenersSection", "initializeEventListeners" );
+		sceneClassCodeOrganizer.addSection( "MethodsAndFunctionsSection", CodeOrganizer.NON_STATIC_METHODS );
+		sceneClassCodeOrganizer.addSection( "FieldsSection", true, CodeOrganizer.FIELDS );
+		sceneClassCodeOrganizer.addSection( "SceneSetupSection", true, "performCustomSetup", "performGeneratedSetUp" );
+		sceneClassCodeOrganizer.addSection( "MultipleSceneSection", true, "handleActiveChanged", CodeOrganizer.GETTERS_AND_SETTERS );
+		sceneClassCodeOrganizer.addSection( "StaticMethodsSection", CodeOrganizer.STATIC_METHODS );
+
+		programClassCodeOrganizer.addSection( "ConstructorSection", CodeOrganizer.CONSTRUCTORS );
+		programClassCodeOrganizer.addSection( "FieldsSection", "myScene", CodeOrganizer.FIELDS );
+		programClassCodeOrganizer.addSection( "MainFunction", "main" );
+		programClassCodeOrganizer.addSection( "GettersAndSettersSection", CodeOrganizer.GETTERS_AND_SETTERS );
+	}
+
 	private final java.util.LinkedHashMap<String, String[]> codeSections;
 	private final java.util.HashMap<String, Boolean> shouldCollapseSection;
 	private final java.util.Map<String, java.util.List<CodeAppender>> itemLists = new java.util.HashMap<String, java.util.List<CodeAppender>>();

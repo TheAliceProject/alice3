@@ -45,31 +45,34 @@ package org.lgna.project.ast;
 
 import org.lgna.project.code.CodeAppender;
 
+import javax.lang.model.element.Modifier;
+import java.util.Collection;
+
 /**
  * @author Dennis Cosgrove
  */
 public enum AccessLevel implements CodeAppender {
-	PUBLIC( javax.lang.model.element.Modifier.PUBLIC, "public " ),
-	PROTECTED( javax.lang.model.element.Modifier.PROTECTED, "protected " ),
-	PRIVATE( javax.lang.model.element.Modifier.PRIVATE, "private " ),
+	PUBLIC( Modifier.PUBLIC, "public " ),
+	PROTECTED( Modifier.PROTECTED, "protected " ),
+	PRIVATE( Modifier.PRIVATE, "private " ),
 	PACKAGE( null, "/*package-private*/ " );
 
-	private final javax.lang.model.element.Modifier modifier;
+	private final Modifier modifier;
 	private final String javaCodeText;
 
-	AccessLevel( javax.lang.model.element.Modifier modifier, String javaCodeText ) {
+	AccessLevel( Modifier modifier, String javaCodeText ) {
 		this.modifier = modifier;
 		this.javaCodeText = javaCodeText;
 	}
 
-	public void addModifiers( java.util.Collection<javax.lang.model.element.Modifier> modifiers ) {
+	public void addModifiers( Collection<Modifier> modifiers ) {
 		if( this.modifier != null ) {
 			modifiers.add( modifier );
 		}
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendString( this.javaCodeText );
 	}
 

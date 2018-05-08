@@ -43,10 +43,12 @@
 
 package org.lgna.project.ast;
 
+import org.lgna.project.code.PrecedentedAppender;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class LogicalComplement extends Expression {
+public final class LogicalComplement extends Expression implements PrecedentedAppender {
 	public LogicalComplement() {
 	}
 
@@ -71,18 +73,12 @@ public final class LogicalComplement extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			LogicalComplement other = (LogicalComplement)o;
-			return this.operand.valueContentEquals( other.operand, strictness, filter );
-		}
-		return false;
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendLogicalComplement(this);
 	}
 
-	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendChar( '!' );
-		generator.appendExpression( this.operand.getValue() );
+	@Override public int getLevelOfPrecedence() {
+		return 14;
 	}
 
 	public final ExpressionProperty operand = new ExpressionProperty( this ) {

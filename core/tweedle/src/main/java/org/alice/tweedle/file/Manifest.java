@@ -1,13 +1,17 @@
 package org.alice.tweedle.file;
 
+
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Manifest {
+	private static final String DEFAULT_ICON = "thumbnail.png";
+	private static final String DEFAULT_VERSION = "1.0";
 
-	public Description description;
-	public Provenance provenance;
-	public MetaData metadata;
+	public Description description = new Description();
+	public Provenance provenance = new Provenance();
+	public MetaData metadata = new MetaData();
 	public List<ProjectIdentifier> prerequisites = new ArrayList<>();
 	public List<ResourceReference> resources = new ArrayList<>();
 
@@ -19,28 +23,28 @@ public class Manifest {
 		return description.name;
 	}
 
-	static class Description {
+	public static class Description {
 		public String name;
-		public String icon;
-		public List<String> tags;
-		public List<String> groupTags;
-		public List<String> themeTags;
+		public String icon = DEFAULT_ICON;
+		public List<String> tags = new ArrayList<>();
+		public List<String> groupTags = new ArrayList<>();
+		public List<String> themeTags = new ArrayList<>();
 	}
 
-	static class Provenance {
+	public static class Provenance {
 		public String aliceVersion;
-		public String creationYear;
-		public String creator;
+		public String creationYear = Year.now().toString();
+		public String creator = "Anonymous";
 	}
 
-	static class MetaData {
+	public static class MetaData {
 		public String formatVersion;
-		public ProjectIdentifier identifier;
+		public ProjectIdentifier identifier = new ProjectIdentifier();
 	}
 
-	static class ProjectIdentifier {
+	public static class ProjectIdentifier {
 		public String id;
-		public String version;
+		public String version = DEFAULT_VERSION;
 		public ProjectType type;
 	}
 

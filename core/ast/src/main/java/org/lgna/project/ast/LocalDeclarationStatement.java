@@ -55,29 +55,8 @@ public final class LocalDeclarationStatement extends Statement {
 		this.initializer.setValue( initializer );
 	}
 
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			LocalDeclarationStatement other = (LocalDeclarationStatement)o;
-			if( this.local.valueContentEquals( other.local, strictness, filter ) ) {
-				return this.initializer.valueContentEquals( other.initializer, strictness, filter );
-			}
-		}
-		return false;
-	}
-
-	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
-		UserLocal localValue = this.local.getValue();
-		if( localValue.isFinal.getValue() ) {
-			generator.appendString( "final " );
-		}
-		generator.appendTypeName( localValue.getValueType() );
-		generator.appendSpace();
-		generator.appendString( localValue.getValidName() );
-		generator.appendChar( '=' );
-		generator.appendExpression( this.initializer.getValue() );
-		generator.appendSemicolon();
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendLocalDeclaration(this);
 	}
 
 	public final DeclarationProperty<UserLocal> local = new DeclarationProperty<UserLocal>( this ) {

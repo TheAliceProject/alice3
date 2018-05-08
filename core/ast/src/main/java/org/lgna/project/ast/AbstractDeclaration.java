@@ -55,21 +55,6 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			AbstractDeclaration other = (AbstractDeclaration)o;
-			if( strictness == ContentEqualsStrictness.DECLARATIONS_EQUAL ) {
-				return this == other;
-			} else if( strictness == ContentEqualsStrictness.DECLARATIONS_HAVE_SAME_NAME ) {
-				return edu.cmu.cs.dennisc.java.util.Objects.equals( this.getName(), other.getName() );
-			} else {
-				throw new RuntimeException( strictness.name() );
-			}
-		}
-		return false;
-	}
-
-	@Override
 	protected java.util.Set<AbstractDeclaration> fillInDeclarationSet( java.util.Set<AbstractDeclaration> rv, java.util.Set<AbstractNode> nodes ) {
 		rv.add( this );
 		return super.fillInDeclarationSet( rv, nodes );

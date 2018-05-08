@@ -49,7 +49,7 @@ import org.lgna.project.code.CodeGenerator;
 /**
  * @author Dennis Cosgrove
  */
-public final class UserField extends AbstractField implements UserMember, CodeGenerator, CodeAppender {
+public final class UserField extends AbstractField implements UserMember, CodeGenerator {
 	public UserField() {
 	}
 
@@ -145,28 +145,8 @@ public final class UserField extends AbstractField implements UserMember, CodeGe
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendFieldPrefix( this );
-		generator.appendAccessLevel( this.getAccessLevel() );
-		if( this.isStatic() ) {
-			generator.appendString( "static " );
-		}
-		if( this.isFinal() ) {
-			generator.appendString( "final " );
-		}
-		generator.appendTypeName( this.valueType.getValue() );
-		generator.appendSpace();
-		generator.appendString( this.name.getValue() );
-		generator.appendChar( '=' );
-		generator.appendExpression( this.initializer.getValue() );
-		generator.appendSemicolon();
-		generator.appendFieldPostfix( this );
-	}
-
-	@Override
-	public String generateJavaCode( JavaCodeGenerator generator ) {
-		this.appendJava( generator );
-		return generator.getText( false );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendField(this);
 	}
 
 	public final edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );

@@ -54,24 +54,8 @@ public class Comment extends Statement {
 		this.text.setValue( text );
 	}
 
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			Comment other = (Comment)o;
-			return this.text.valueEquals( other.text, filter );
-		}
-		return false;
-	}
-
-	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
-		String[] lines = this.text.getValue().split( "\n" );
-		generator.appendChar( '\n' );
-		for( String line : lines ) {
-			generator.appendString( "//" );
-			generator.appendString( line );
-			generator.appendChar( '\n' );
-		}
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.formatMultiLineComment(text.getValue());
 	}
 
 	public final edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );

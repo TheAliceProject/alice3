@@ -43,13 +43,25 @@
 
 package org.alice.ide.clipboard;
 
+import edu.cmu.cs.dennisc.java.util.Maps;
+import org.alice.ide.IDE;
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.Application;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractNode;
+import org.lgna.project.ast.Node;
+import org.lgna.project.ast.Statement;
+
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CopyToClipboardOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map<org.lgna.project.ast.AbstractNode, CopyToClipboardOperation> map = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
+public class CopyToClipboardOperation extends ActionOperation {
+	private static Map<AbstractNode, CopyToClipboardOperation> map = Maps.newHashMap();
 
-	public static synchronized CopyToClipboardOperation getInstance( org.lgna.project.ast.AbstractNode node ) {
+	public static synchronized CopyToClipboardOperation getInstance( Statement node ) {
 		assert node != null;
 		CopyToClipboardOperation rv = map.get( node );
 		if( rv != null ) {
@@ -61,16 +73,16 @@ public class CopyToClipboardOperation extends org.lgna.croquet.ActionOperation {
 		return rv;
 	}
 
-	private final org.lgna.project.ast.Node node;
+	private final Statement node;
 
-	private CopyToClipboardOperation( org.lgna.project.ast.Node node ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "86025bf5-1f1f-4f2d-8182-190574a3c3d0" ) );
+	private CopyToClipboardOperation( Statement node ) {
+		super( Application.DOCUMENT_UI_GROUP, UUID.fromString( "86025bf5-1f1f-4f2d-8182-190574a3c3d0" ) );
 		this.node = node;
 	}
 
 	@Override
-	protected void perform( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.project.ast.Node copyOfNode = org.alice.ide.IDE.getActiveInstance().createCopy( this.node );
+	protected void perform( CompletionStep<?> step ) {
+		Node copyOfNode = IDE.getActiveInstance().createCopy( this.node );
 		Clipboard.SINGLETON.push( copyOfNode );
 		step.finish();
 	}

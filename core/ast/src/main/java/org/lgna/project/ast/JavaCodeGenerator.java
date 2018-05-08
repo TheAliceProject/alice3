@@ -42,10 +42,30 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.java.util.Lists;
+import edu.cmu.cs.dennisc.java.util.Maps;
+import edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities;
+import edu.cmu.cs.dennisc.java.util.Sets;
+import org.lgna.common.EachInTogetherRunnable;
+import org.lgna.common.Resource;
+import org.lgna.common.ThreadUtilities;
+import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.CodeOrganizer;
+import org.lgna.project.resource.ResourcesTypeWrapper;
+
+import java.lang.reflect.Modifier;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
+
 /**
  * @author Dennis Cosgrove
  */
-public class JavaCodeGenerator {
+public class JavaCodeGenerator extends SourceCodeGenerator{
+
 	public static class Builder {
 		public Builder() {
 		}
@@ -60,7 +80,7 @@ public class JavaCodeGenerator {
 			return this;
 		}
 
-		public Builder setResourcesTypeWrapper( org.lgna.project.resource.ResourcesTypeWrapper resourcesTypeWrapper ) {
+		public Builder setResourcesTypeWrapper( ResourcesTypeWrapper resourcesTypeWrapper ) {
 			this.resourcesTypeWrapper = resourcesTypeWrapper;
 			return this;
 		}
@@ -75,19 +95,19 @@ public class JavaCodeGenerator {
 			return this;
 		}
 
-		public Builder addCodeOrganizerDefinition( String key, org.lgna.project.code.CodeOrganizer.CodeOrganizerDefinition organizerDef ) {
+		public Builder addCodeOrganizerDefinition( String key, CodeOrganizer.CodeOrganizerDefinition organizerDef ) {
 			this.codeOrganizerDefinitionMap.put( key, organizerDef );
 			return this;
 		}
 
-		public Builder addDefaultCodeOrganizerDefinition( org.lgna.project.code.CodeOrganizer.CodeOrganizerDefinition organizerDef ) {
+		public Builder addDefaultCodeOrganizerDefinition( CodeOrganizer.CodeOrganizerDefinition organizerDef ) {
 			this.defaultCodeDefinitionOrganizer = organizerDef;
 			return this;
 		}
 
 		public Builder addImportStaticMethod( java.lang.reflect.Method mthd ) {
 			assert mthd != null;
-			assert java.lang.reflect.Modifier.isStatic( mthd.getModifiers() ) : mthd;
+			assert Modifier.isStatic( mthd.getModifiers() ) : mthd;
 			this.importStaticMethods.add( JavaMethod.getInstance( mthd ) );
 			return this;
 		}
@@ -98,410 +118,383 @@ public class JavaCodeGenerator {
 
 		private boolean isLambdaSupported;
 		private boolean isPublicStaticFinalFieldGetterDesired;
-		private org.lgna.project.resource.ResourcesTypeWrapper resourcesTypeWrapper;
-		private final java.util.List<JavaPackage> importOnDemandPackages = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		private final java.util.List<JavaMethod> importStaticMethods = edu.cmu.cs.dennisc.java.util.Lists.newLinkedList();
-		private final java.util.Map<String, org.lgna.project.code.CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = edu.cmu.cs.dennisc.java.util.Maps.newHashMap();
-		private org.lgna.project.code.CodeOrganizer.CodeOrganizerDefinition defaultCodeDefinitionOrganizer;
+		private ResourcesTypeWrapper resourcesTypeWrapper;
+		private final List<JavaPackage> importOnDemandPackages = Lists.newLinkedList();
+		private final List<JavaMethod> importStaticMethods = Lists.newLinkedList();
+		private final Map<String, CodeOrganizer.CodeOrganizerDefinition> codeOrganizerDefinitionMap = Maps.newHashMap();
+		private CodeOrganizer.CodeOrganizerDefinition defaultCodeDefinitionOrganizer;
 		private String commentsLocalizationBundleName;
-	};
+	}
 
-	protected JavaCodeGenerator( Builder builder ) {
+	JavaCodeGenerator( Builder builder ) {
+		super( builder.codeOrganizerDefinitionMap, builder.defaultCodeDefinitionOrganizer );
 		this.isLambdaSupported = builder.isLambdaSupported;
 		this.isPublicStaticFinalFieldGetterDesired = builder.isPublicStaticFinalFieldGetterDesired;
 		this.resourcesTypeWrapper = builder.resourcesTypeWrapper;
-		this.packagesMarkedForOnDemandImport = java.util.Collections.unmodifiableList( builder.importOnDemandPackages );
-		this.staticMethodsMarkedForImport = java.util.Collections.unmodifiableList( builder.importStaticMethods );
-		this.codeOrganizerMap = java.util.Collections.unmodifiableMap( builder.codeOrganizerDefinitionMap );
-		this.defaultCodeOrganizer = builder.defaultCodeDefinitionOrganizer;
+		this.packagesMarkedForOnDemandImport = Collections.unmodifiableList( builder.importOnDemandPackages );
+		this.staticMethodsMarkedForImport = Collections.unmodifiableList( builder.importStaticMethods );
 		this.commentsLocalizationBundleName = builder.commentsLocalizationBundleName;
 	}
 
-	/* package-private */void pushStatementDisabled() {
-		this.statementDisabledCount++;
-		if( this.statementDisabledCount == 1 ) {
-			this.appendString( "\n/* disabled\n" );
+	@Override protected void pushStatementDisabled() {
+		super.pushStatementDisabled();
+		if( isCodeNowDisabled() ) {
+			appendString( "\n/* disabled\n" );
 		}
 	}
 
-	/* package-private */void popStatementDisabled() {
-		if( this.statementDisabledCount == 1 ) {
-			this.appendString( "\n*/\n" );
-		}
-		this.statementDisabledCount--;
-	}
-
-	/* package-private */boolean isLambdaSupported() {
-		return this.isLambdaSupported;
-	}
-
-	/* package-private */boolean isPublicStaticFinalFieldGetterDesired() {
-		return this.isPublicStaticFinalFieldGetterDesired;
-	}
-
-	/* package-private */void appendBoolean( boolean b ) {
-		this.codeStringBuilder.append( b );
-	}
-
-	/* package-private */void appendChar( char c ) {
-		this.codeStringBuilder.append( c );
-	}
-
-	/* package-private */void appendInt( int n ) {
-		if( n == Integer.MAX_VALUE ) {
-			this.appendString( "Integer.MAX_VALUE" );
-		} else if( n == Integer.MIN_VALUE ) {
-			this.appendString( "Integer.MIN_VALUE" );
-		} else {
-			this.codeStringBuilder.append( n );
+	@Override protected void popStatementDisabled() {
+		super.popStatementDisabled();
+		if(isCodeNowEnabled()) {
+			appendString( "\n*/\n" );
 		}
 	}
 
-	/* package-private */void appendFloat( float f ) {
-		if( Float.isNaN( f ) ) {
-			this.appendString( "Float.NaN" );
-		} else if( f == Float.POSITIVE_INFINITY ) {
-			this.appendString( "Float.POSITIVE_INFINITY" );
-		} else if( f == Float.NEGATIVE_INFINITY ) {
-			this.appendString( "Float.NEGATIVE_INFINITY" );
-		} else {
-			this.codeStringBuilder.append( f );
-			this.appendChar( 'f' );
-		}
+	@Override boolean isLambdaSupported() {
+		return isLambdaSupported;
 	}
 
-	/* package-private */void appendDouble( double d ) {
-		if( Double.isNaN( d ) ) {
-			this.appendString( "Double.NaN" );
-		} else if( d == Double.POSITIVE_INFINITY ) {
-			this.appendString( "Double.POSITIVE_INFINITY" );
-		} else if( d == Double.NEGATIVE_INFINITY ) {
-			this.appendString( "Double.NEGATIVE_INFINITY" );
-		} else {
-			this.codeStringBuilder.append( d );
-		}
+	@Override boolean isPublicStaticFinalFieldGetterDesired() {
+		return isPublicStaticFinalFieldGetterDesired;
 	}
 
-	/* package-private */void appendString( String s ) {
-		this.codeStringBuilder.append( s );
+	@Override protected void appendAssignmentOperator() {
+		appendChar( '=' );
 	}
 
-	private void appendResource( org.lgna.common.Resource resource ) {
-		this.codeStringBuilder.append( org.lgna.project.resource.ResourcesTypeWrapper.getTypeName() );
-		this.codeStringBuilder.append( "." );
-		this.codeStringBuilder.append( org.lgna.project.resource.ResourcesTypeWrapper.getFixedName( resource ) );
+	private void appendResource( Resource resource ) {
+		getCodeStringBuilder().append( ResourcesTypeWrapper.getTypeName() )
+													.append( "." )
+													.append( ResourcesTypeWrapper.getFixedName( resource ) );
 	}
 
-	/* package-private */void appendResourceExpression( ResourceExpression resourceExpression ) {
-		org.lgna.common.Resource resource = resourceExpression.resource.getValue();
+	@Override protected void appendResourceExpression( ResourceExpression resourceExpression ) {
+		Resource resource = resourceExpression.resource.getValue();
 		if( resource != null ) {
-			if( this.resourcesTypeWrapper != null ) {
-				UserField field = this.resourcesTypeWrapper.getFieldForResource( resource );
+			if( resourcesTypeWrapper != null ) {
+				UserField field = resourcesTypeWrapper.getFieldForResource( resource );
 				if( field != null ) {
-					this.codeStringBuilder.append( field.getDeclaringType().getName() );
-					this.codeStringBuilder.append( "." );
-					this.codeStringBuilder.append( field.getName() );
+					getCodeStringBuilder().append( field.getDeclaringType().getName() );
+					getCodeStringBuilder().append( "." );
+					getCodeStringBuilder().append( field.getName() );
 				} else {
-					this.appendResource( resource );
+					appendResource( resource );
 				}
 			} else {
-				this.appendResource( resource );
+				appendResource( resource );
 			}
 		} else {
-			this.codeStringBuilder.append( "null" ); //todo?
+			getCodeStringBuilder().append( "null" ); //todo?
 		}
 	}
 
-	/* package-private */void appendTypeName( AbstractType<?, ?, ?> type ) {
+	@Override void appendClass( CodeOrganizer codeOrganizer, NamedUserType userType ) {
+		super.appendClass( codeOrganizer, userType );
+		// Prepend Imports
+		getCodeStringBuilder().insert( 0, getImports() );
+	}
+
+	@Override protected void appendClassHeader( NamedUserType userType ) {
+		appendString( "class " );
+		appendTypeName( userType );
+		appendString( " extends " );
+		appendTypeName( userType.superType.getValue() );
+		appendString( "{" );
+	}
+
+	@Override protected void appendClassFooter() {
+		appendString( "}" );
+	}
+
+
+	@Override protected void appendSection( CodeOrganizer codeOrganizer, NamedUserType userType,
+																					Map.Entry<String, List<CodeAppender>> entry ) {
+		boolean shouldCollapseSection = codeOrganizer.shouldCollapseSection( entry.getKey() );
+		appendSectionPrefix( userType, entry.getKey(), shouldCollapseSection );
+		super.appendSection( codeOrganizer, userType, entry );
+		appendSectionPostfix( userType, entry.getKey(), shouldCollapseSection );
+	}
+
+	private void appendSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName,
+																							boolean shouldCollapse ) {
+		String sectionComment = getLocalizedMultiLineComment( declaringType, sectionName );
+		if( sectionComment != null ) {
+			getCodeStringBuilder().append( "\n\n" ).append( sectionComment ).append( "\n" );
+		}
+	}
+
+	private void appendSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
+		String sectionComment = getLocalizedMultiLineComment( declaringType, sectionName + ".end" );
+		if( sectionComment != null ) {
+			getCodeStringBuilder().append( "\n" ).append( sectionComment ).append( "\n" );
+		}
+	}
+
+	@Override
+	public void appendConstructor( NamedUserConstructor constructor ) {
+		appendMemberPrefix( constructor );
+		constructor.getAccessLevel().appendCode( this );
+		appendTypeName( constructor.getDeclaringType() );
+		appendParameters( constructor );
+		appendStatement( constructor.body.getValue() );
+		appendMemberPostfix( constructor );
+	}
+
+	@Override protected void appendTypeName( AbstractType<?, ?, ?> type ) {
 		if( type instanceof JavaType ) {
 			JavaType javaType = (JavaType)type;
-			if( javaType.isPrimitive() ) {
-				//pass
-			} else {
+			if (!javaType.isPrimitive()) {
 				JavaPackage javaPackage = javaType.getPackage();
 				if( javaPackage != null ) {
 					JavaType enclosingType = javaType.getEnclosingType();
 					//todo: choose EnclosingTypeName.ClassName instead?
-					boolean isTypeImportingDesired;
-					if( enclosingType != null ) {
-						isTypeImportingDesired = true;
+					if (enclosingType != null || !packagesMarkedForOnDemandImport.contains( javaPackage )) {
+						typesToImport.add( javaType );
 					} else {
-						isTypeImportingDesired = packagesMarkedForOnDemandImport.contains( javaPackage ) == false;
+						packagesToImportOnDemand.add( javaPackage );
 					}
-					if( isTypeImportingDesired ) {
-						this.typesToImport.add( javaType );
-					} else {
-						this.packagesToImportOnDemand.add( javaPackage );
-					}
-				} else {
-					// should be covered already by the primitive check
 				}
-
+				// else - should be covered already by the primitive check
 			}
 		}
 		//todo: handle imports
-		this.appendString( type.getName() );
+		appendString( type.getName() );
 	}
 
-	/* packag-private */void appendCallerExpression( Expression callerExpression, AbstractMethod method ) {
-		boolean isImportStatic = false;
-		if( method instanceof JavaMethod ) {
-			if( method.isStatic() ) {
-				if( this.staticMethodsMarkedForImport.contains( method ) ) {
-					isImportStatic = true;
-				}
-			}
-		}
-		if( isImportStatic ) {
-			this.methodsToImportStatic.add( (JavaMethod)method );
+	@Override protected void appendTargetAndMethodName( Expression target, AbstractMethod method ) {
+		if (method instanceof JavaMethod && method.isStatic() && staticMethodsMarkedForImport.contains( method )) {
+			methodsToImportStatic.add( (JavaMethod) method );
+			appendString( method.getName() );
 		} else {
-			this.appendExpression( callerExpression );
-			this.appendChar( '.' );
+			super.appendTargetAndMethodName( target, method );
 		}
 	}
 
-	/* package-private */void appendExpression( Expression expression ) {
-		expression.appendJava( this );
+	@Override public void appendMethod( UserMethod method ) {
+		appendMemberPrefix( method );
+		super.appendMethod( method );
+		appendMemberPostfix( method );
 	}
 
-	/* package-private */void appendAccessLevel( AccessLevel accessLevel ) {
-		accessLevel.appendJava( this );
-	}
-
-	/* package-private */AbstractType<?, ?, ?> peekTypeForLambda() {
-		return this.typeForLambdaStack.peek();
-	}
-
-	private void appendArgument( AbstractArgument argument ) {
-		AbstractParameter parameter = argument.parameter.getValue();
-		AbstractType<?, ?, ?> type = argument.getExpressionTypeForParameterType( parameter.getValueType() );
-		this.typeForLambdaStack.push( type );
-		try {
-			argument.appendJava( this );
-		} finally {
-			assert this.typeForLambdaStack.pop() == type;
-		}
-	}
-
-	/* package-private */void appendParameters( Code code ) {
-		this.appendChar( '(' );
-		String prefix = "";
-		int i = 0;
-		for( AbstractParameter parameter : code.getRequiredParameters() ) {
-			this.appendString( prefix );
-			this.appendTypeName( parameter.getValueType() );
-			this.appendSpace();
-			String parameterName = parameter.getValidName();
-			this.appendString( parameterName != null ? parameterName : "p" + i );
-			prefix = ",";
-			i += 1;
-		}
-		this.appendChar( ')' );
-	}
-
-	/* package-private */void appendMethodHeader( AbstractMethod method ) {
+	@Override public void appendMethodHeader( AbstractMethod method ) {
 		AbstractMethod overridenMethod = AstUtilities.getOverridenMethod( method );
 		if( overridenMethod != null ) {
-			this.appendString( "@Override " );
+			appendString( "@Override " );
 		}
-		this.appendAccessLevel( method.getAccessLevel() );
+		method.getAccessLevel().appendCode( this );
 		if( method.isStatic() ) {
-			this.appendString( "static " );
+			appendString( "static " );
 		}
-		this.appendTypeName( method.getReturnType() );
-		this.appendSpace();
-		this.appendString( method.getName() );
-		this.appendParameters( method );
+		appendTypeName( method.getReturnType() );
+		appendSpace();
+		appendString( method.getName() );
+		appendParameters( method );
 	}
 
-	/* package-private */void appendArguments( ArgumentOwner argumentOwner ) {
-		String prefix = "";
-		for( SimpleArgument argument : argumentOwner.getRequiredArgumentsProperty() ) {
-			this.appendString( prefix );
-			this.appendArgument( argument );
-			prefix = ",";
-		}
-		for( SimpleArgument argument : argumentOwner.getVariableArgumentsProperty() ) {
-			this.appendString( prefix );
-			this.appendArgument( argument );
-			prefix = ",";
-		}
-		for( JavaKeyedArgument argument : argumentOwner.getKeyedArgumentsProperty() ) {
-			this.appendString( prefix );
-			this.appendArgument( argument );
-			prefix = ",";
-		}
-	}
-
-	/* package-private */void appendSpace() {
-		this.appendChar( ' ' );
-	}
-
-	/* package-private */void appendSemicolon() {
-		this.appendChar( ';' );
-	}
-
-	@Deprecated
-	/* package-private */void todo( Object o ) {
-		codeStringBuilder.append( "todo_" );
-		codeStringBuilder.append( o );
-	}
-
-	protected String getImportsPrefix() {
-		return "";
-	}
-
-	protected String getImportsPostfix() {
-		return "";
-	}
-
-	/* package-private */String getText( boolean areImportsDesired ) {
-		StringBuilder rvStringBuilder = new StringBuilder();
-		if( areImportsDesired ) {
-			rvStringBuilder.append( this.getImportsPrefix() );
-			for( JavaPackage packageToImportOnDemand : this.packagesToImportOnDemand ) {
-				rvStringBuilder.append( "import " );
-				rvStringBuilder.append( packageToImportOnDemand.getName() );
-				rvStringBuilder.append( ".*;" );
+	@Override public void appendLocalDeclaration( LocalDeclarationStatement stmt ) {
+		appendSingleStatement( stmt, () -> {
+			UserLocal localVar = stmt.local.getValue();
+			if (localVar.isFinal.getValue()) {
+				appendString( "final " );
 			}
-			for( JavaType typeToImport : this.typesToImport ) {
-				JavaPackage pack = typeToImport.getPackage();
-				if( "java.lang".contentEquals( pack.getName() ) ) {
-					//pass
-				} else {
-					rvStringBuilder.append( "import " );
-					rvStringBuilder.append( typeToImport.getPackage().getName() );
-					rvStringBuilder.append( '.' );
-					JavaType enclosingType = typeToImport.getEnclosingType();
-					if( enclosingType != null ) {
-						rvStringBuilder.append( enclosingType.getName() );
-						rvStringBuilder.append( '.' );
-					}
-					rvStringBuilder.append( typeToImport.getName() );
-					rvStringBuilder.append( ';' );
+			appendTypeName( localVar.getValueType() );
+			appendSpace();
+			appendString( localVar.getValidName() );
+			appendAssignmentOperator();
+			appendExpression( stmt.initializer.getValue() );
+		} );
+	}
+
+	@Override protected void appendArgument( AbstractParameter parameter, AbstractArgument argument ) {
+		argument.appendCode( this );
+	}
+
+	@Override protected void appendKeyedArgument( JavaKeyedArgument arg ) {
+		Expression expressionValue = arg.expression.getValue();
+		if( expressionValue instanceof MethodInvocation ) {
+			MethodInvocation methodInvocation = (MethodInvocation)expressionValue;
+			AbstractMethod method = methodInvocation.method.getValue();
+			AbstractType<?, ?, ?> factoryType = AstUtilities.getKeywordFactoryType( arg );
+			if( factoryType != null ) {
+				appendTypeName( factoryType );
+				appendChar( '.' );
+				appendString( method.getName() );
+				appendArguments( methodInvocation );
+			} else {
+				appendExpression( expressionValue );
+			}
+		} else {
+			appendExpression( expressionValue );
+		}
+	}
+
+	private StringBuilder getImports() {
+		StringBuilder sb = new StringBuilder();
+		for( JavaPackage packageToImportOnDemand : packagesToImportOnDemand ) {
+			sb.append( "import " );
+			sb.append( packageToImportOnDemand.getName() );
+			sb.append( ".*;" );
+		}
+		for( JavaType typeToImport : typesToImport ) {
+			JavaPackage pack = typeToImport.getPackage();
+			if (!"java.lang".contentEquals( pack.getName() )) {
+				sb.append( "import " );
+				sb.append( typeToImport.getPackage().getName() );
+				sb.append( '.' );
+				JavaType enclosingType = typeToImport.getEnclosingType();
+				if( enclosingType != null ) {
+					sb.append( enclosingType.getName() );
+					sb.append( '.' );
 				}
+				sb.append( typeToImport.getName() );
+				sb.append( ';' );
 			}
-			for( JavaMethod methodToImportStatic : this.methodsToImportStatic ) {
-				rvStringBuilder.append( "import static " );
-				rvStringBuilder.append( methodToImportStatic.getDeclaringType().getPackage().getName() );
-				rvStringBuilder.append( '.' );
-				rvStringBuilder.append( methodToImportStatic.getDeclaringType().getName() );
-				rvStringBuilder.append( '.' );
-				rvStringBuilder.append( methodToImportStatic.getName() );
-				rvStringBuilder.append( ';' );
+		}
+		for( JavaMethod methodToImportStatic : methodsToImportStatic ) {
+			sb.append( "import static " );
+			sb.append( methodToImportStatic.getDeclaringType().getPackage().getName() );
+			sb.append( '.' );
+			sb.append( methodToImportStatic.getDeclaringType().getName() );
+			sb.append( '.' );
+			sb.append( methodToImportStatic.getName() );
+			sb.append( ';' );
+		}
+		return sb;
+	}
+
+	@Override public void appendCountLoop( CountLoop loop ) {
+		appendCodeFlowStatement(loop, () -> {
+			String variableName = loop.getVariableName();
+			appendString( "for(Integer " );
+			appendString( variableName );
+			appendString( "=0;" );
+			appendString( variableName );
+			appendString( "<" );
+			appendExpression( loop.count.getValue() );
+			appendString( ";" );
+			appendString( variableName );
+			appendString( "++)" );
+			appendStatement( loop.body.getValue() );
+		});
+	}
+
+	@Override protected void appendForEachToken() {
+		appendString( "for");
+	}
+
+	@Override protected void appendInEachToken() {
+		appendString( " : " );
+	}
+
+	@Override public void appendDoInOrder( DoInOrder doInOrder ) {
+		final String doInOrderName = ResourceBundleUtilities
+						.getStringFromSimpleNames( doInOrder.getClass(), "org.alice.ide.controlflow.Templates" );
+		openBlock();
+		// TODO adjust CodeFormatter to not insert linefeed before this comment
+		appendSingleLineComment( doInOrderName );
+		BlockStatement blockStatement = doInOrder.body.getValue();
+		for( Statement subStatement : blockStatement.statements ) {
+			appendStatement( subStatement );
+		}
+		closeBlock();
+	}
+
+	@Override public void appendDoTogether( DoTogether doTogether ) {
+		JavaType threadUtilitiesType = JavaType.getInstance( ThreadUtilities.class );
+		JavaMethod doTogetherMethod = threadUtilitiesType.getDeclaredMethod( "doTogether", Runnable[].class );
+		TypeExpression target = new TypeExpression( threadUtilitiesType );
+		appendTargetAndMethodName( target, doTogetherMethod );
+		appendString( "(" );
+		String prefix = "";
+		for( Statement statement : doTogether.body.getValue().statements ) {
+			appendString( prefix );
+			if( isLambdaSupported() ) {
+				appendString( "()->{" );
+			} else {
+				appendString( "new Runnable(){public void run(){" );
 			}
-			rvStringBuilder.append( this.getImportsPostfix() );
+			if( statement instanceof DoInOrder ) {
+				DoInOrder doInOrder = (DoInOrder)statement;
+				BlockStatement blockStatement = doInOrder.body.getValue();
+				for( Statement subStatement : blockStatement.statements ) {
+					appendStatement( subStatement );
+				}
+			} else {
+				appendStatement( statement );
+			}
+			if( isLambdaSupported() ) {
+				appendString( "}" );
+			} else {
+				appendString( "}}" );
+			}
+			prefix = ",";
 		}
-		rvStringBuilder.append( this.codeStringBuilder );
-		return rvStringBuilder.toString();
+		appendString( ");" );
 	}
 
-	/* package-private */org.lgna.project.code.CodeOrganizer getNewCodeOrganizerForTypeName( String typeName ) {
-		if( this.codeOrganizerMap.containsKey( typeName ) ) {
-			return new org.lgna.project.code.CodeOrganizer( this.codeOrganizerMap.get( typeName ) );
+	@Override public void appendEachInTogether( AbstractEachInTogether eachInTogether ) {
+		JavaType threadUtilitiesType = JavaType.getInstance( ThreadUtilities.class );
+		JavaMethod eachInTogetherMethod = threadUtilitiesType.getDeclaredMethod( "eachInTogether", EachInTogetherRunnable.class, Object[].class );
+		TypeExpression target = new TypeExpression( threadUtilitiesType );
+		appendTargetAndMethodName( target, eachInTogetherMethod );
+		appendString( "(" );
+
+		UserLocal itemValue = eachInTogether.item.getValue();
+		AbstractType<?, ?, ?> itemType = itemValue.getValueType();
+		if( isLambdaSupported() ) {
+			appendString( "(" );
+			appendTypeName( itemType );
+			appendSpace();
+			appendString( itemValue.getName() );
+			appendString( ")->" );
+		} else {
+			appendString( "new " );
+			appendTypeName( JavaType.getInstance( EachInTogetherRunnable.class ) );
+			appendString( "<" );
+			appendTypeName( itemType );
+			appendString( ">() { public void run(" );
+			appendTypeName( itemType );
+			appendSpace();
+			appendString( itemValue.getName() );
+			appendString( ")" );
 		}
-		else {
-			return new org.lgna.project.code.CodeOrganizer( this.defaultCodeOrganizer );
+		appendStatement( eachInTogether.body.getValue() );
+		if (!isLambdaSupported()) {
+			appendString( "}" );
 		}
+		Expression arrayOrIterableExpression = eachInTogether.getArrayOrIterableProperty().getValue();
+		if( arrayOrIterableExpression instanceof ArrayInstanceCreation ) {
+			ArrayInstanceCreation arrayInstanceCreation = (ArrayInstanceCreation)arrayOrIterableExpression;
+			for( Expression variableLengthExpression : arrayInstanceCreation.expressions ) {
+				appendString( "," );
+				appendExpression( variableLengthExpression );
+			}
+		} else {
+			appendString( "," );
+			appendExpression( arrayOrIterableExpression );
+		}
+		appendString( ");" );
 	}
 
-	protected String getMemberPrefix( AbstractMember member ) {
-		String memberComment = this.getLocalizedCommentForItemName( member.getDeclaringType(), member.getName(), java.util.Locale.getDefault() );
+	private void appendMemberPrefix( AbstractMember member ) {
+		String memberComment = getLocalizedMultiLineComment( member.getDeclaringType(), member.getName() );
 		if( memberComment != null ) {
-			return "\n" + memberComment + "\n";
-		}
-		else {
-			return "";
+			getCodeStringBuilder().append( "\n" ).append( memberComment ).append( "\n" );
 		}
 	}
 
-	protected String getMemberPostfix( AbstractMember member ) {
-		String memberComment = this.getLocalizedCommentForItemName( member.getDeclaringType(), member.getName() + ".end", java.util.Locale.getDefault() );
+	private void appendMemberPostfix( AbstractMember member ) {
+		String memberComment = getLocalizedMultiLineComment( member.getDeclaringType(), member.getName() + ".end" );
 		if( memberComment != null ) {
-			return "\n" + memberComment + "\n";
-		}
-		else {
-			return "";
+			getCodeStringBuilder().append( "\n" ).append( memberComment ).append( "\n" );
 		}
 	}
-
-	/* package-private */final void appendMemberPrefix( AbstractMember member ) {
-		this.codeStringBuilder.append( this.getMemberPrefix( member ) );
+	@Override public void formatMultiLineComment( String comment ) {
+		appendNewLine();
+		super.formatMultiLineComment( comment );
 	}
 
-	/* package-private */final void appendMemberPostfix( AbstractMember member ) {
-		this.codeStringBuilder.append( this.getMemberPostfix( member ) );
-	}
-
-	protected String getSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
-		String sectionComment = this.getLocalizedCommentForSection( declaringType, sectionName, java.util.Locale.getDefault() );
-		if( sectionComment != null ) {
-			return "\n\n" + sectionComment + "\n";
-		}
-		else {
-			return "";
-		}
-	}
-
-	protected String getSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
-		String sectionComment = this.getLocalizedCommentForSection( declaringType, sectionName + ".end", java.util.Locale.getDefault() );
-		if( sectionComment != null ) {
-			return "\n" + sectionComment + "\n";
-		}
-		else {
-			return "";
-		}
-	}
-
-	/* package-private */final void appendSectionPrefix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
-		this.codeStringBuilder.append( this.getSectionPrefix( declaringType, sectionName, shouldCollapse ) );
-	}
-
-	/* package-private */final void appendSectionPostfix( AbstractType<?, ?, ?> declaringType, String sectionName, boolean shouldCollapse ) {
-		this.codeStringBuilder.append( this.getSectionPostfix( declaringType, sectionName, shouldCollapse ) );
-	}
-
-	protected String getMethodPrefix( UserMethod method ) {
-		return getMemberPrefix( method );
-	}
-
-	protected String getMethodPostfix( UserMethod method ) {
-		return getMemberPostfix( method );
-	}
-
-	/* package-private */final void appendMethodPrefix( UserMethod method ) {
-		this.codeStringBuilder.append( this.getMethodPrefix( method ) );
-	}
-
-	/* package-private */final void appendMethodPostfix( UserMethod method ) {
-		this.codeStringBuilder.append( this.getMethodPostfix( method ) );
-	}
-
-	protected String getFieldPrefix( UserField field ) {
-		return getMemberPrefix( field );
-	}
-
-	protected String getFieldPostfix( UserField field ) {
-		return getMemberPostfix( field );
-	}
-
-	/* package-private */final void appendFieldPrefix( UserField field ) {
-		this.codeStringBuilder.append( this.getFieldPrefix( field ) );
-	}
-
-	/* package-private */final void appendFieldPostfix( UserField field ) {
-		this.codeStringBuilder.append( this.getFieldPostfix( field ) );
-	}
-
-	public Iterable<UserMethod> getMethods( UserType<?> type ) {
-		return type.methods;
-	}
-
-	private static String[] splitIntoLines( String src ) {
-		return src.split( "\n" );
-	}
-
-	public String formatCommentStringForSection( String commentText ) {
+	private String formatBlockComment( String commentText ) {
 		String[] commentLines = splitIntoLines( commentText );
 		StringBuilder sb = new StringBuilder();
 
@@ -516,13 +509,17 @@ public class JavaCodeGenerator {
 		return sb.toString();
 	}
 
-	public String formatCommentStringForItem( String commentText ) {
-		return formatCommentStringForSection( commentText );
+	private String getLocalizedMultiLineComment( AbstractType<?, ?, ?> type, String sectionName ) {
+		String comment = getLocalizedComment( type, sectionName, Locale.getDefault() );
+		if( comment != null ) {
+			comment = formatBlockComment( comment );
+		}
+		return comment;
 	}
 
-	public static String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, String bundleName, java.util.Locale locale ) {
-		if( bundleName != null ) {
-			java.util.ResourceBundle resourceBundle = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getUtf8Bundle( bundleName, locale );
+	@Override public String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, Locale locale ) {
+		if( commentsLocalizationBundleName != null ) {
+			ResourceBundle resourceBundle = ResourceBundleUtilities.getUtf8Bundle( commentsLocalizationBundleName, locale );
 			String key;
 			AbstractType<?, ?, ?> t = type;
 			boolean done = false;
@@ -551,45 +548,48 @@ public class JavaCodeGenerator {
 		return null;
 	}
 
-	public String getLocalizedComment( AbstractType<?, ?, ?> type, String itemName, java.util.Locale locale ) {
-		String comment = getLocalizedComment( type, itemName, this.commentsLocalizationBundleName, locale );
-		return comment;
-	}
-
-	public String getLocalizedCommentForSection( AbstractType<?, ?, ?> type, String sectionName, java.util.Locale locale ) {
-		String comment = getLocalizedComment( type, sectionName, this.commentsLocalizationBundleName, locale );
-		if( comment != null ) {
-			comment = formatCommentStringForSection( comment );
+	@Override public void appendField( UserField field ) {
+		appendMemberPrefix(field);
+		field.getAccessLevel().appendCode( this );
+		if( field.isStatic() ) {
+			appendString( "static " );
 		}
-		return comment;
-	}
-
-	public String getLocalizedCommentForItemName( AbstractType<?, ?, ?> type, String itemName, java.util.Locale locale ) {
-		String comment = getLocalizedComment( type, itemName, this.commentsLocalizationBundleName, locale );
-		if( comment != null ) {
-			comment = formatCommentStringForItem( comment );
+		if( field.isFinal() ) {
+			appendString( "final " );
 		}
-		return comment;
+		super.appendField( field );
+		appendMemberPostfix(field);
 	}
 
-	private final StringBuilder codeStringBuilder = new StringBuilder();
+	@Override public void appendGetter( Getter getter ) {
+		appendMemberPrefix( getter );
+		super.appendGetter( getter );
+		appendMemberPostfix( getter );
+	}
+
+	@Override public void appendSetter( Setter setter ) {
+		appendMemberPrefix( setter );
+		super.appendSetter( setter );
+		appendMemberPostfix( setter );
+	}
+
+	@Override public void appendLambda( UserLambda lambda ) {
+		appendMemberPrefix( lambda );
+		super.appendLambda( lambda );
+		appendMemberPostfix( lambda );
+	}
 
 	private final boolean isLambdaSupported;
 	private final boolean isPublicStaticFinalFieldGetterDesired;
-	private final java.util.Set<JavaPackage> packagesToImportOnDemand = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
-	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
-	private final java.util.Set<JavaMethod> methodsToImportStatic = edu.cmu.cs.dennisc.java.util.Sets.newHashSet();
 
-	private final java.util.List<JavaPackage> packagesMarkedForOnDemandImport;
-	private final java.util.List<JavaMethod> staticMethodsMarkedForImport;
+	private final Set<JavaPackage> packagesToImportOnDemand = Sets.newHashSet();
+	private final Set<JavaType> typesToImport = Sets.newHashSet();
+	private final Set<JavaMethod> methodsToImportStatic = Sets.newHashSet();
 
-	private final edu.cmu.cs.dennisc.java.util.DStack<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Stacks.newStack();
+	private final List<JavaPackage> packagesMarkedForOnDemandImport;
+	private final List<JavaMethod> staticMethodsMarkedForImport;
 
-	private final org.lgna.project.resource.ResourcesTypeWrapper resourcesTypeWrapper;
+	private final ResourcesTypeWrapper resourcesTypeWrapper;
 
-	private int statementDisabledCount;
-
-	private final java.util.Map<String, org.lgna.project.code.CodeOrganizer.CodeOrganizerDefinition> codeOrganizerMap;
-	private final org.lgna.project.code.CodeOrganizer.CodeOrganizerDefinition defaultCodeOrganizer;
 	private final String commentsLocalizationBundleName;
 }

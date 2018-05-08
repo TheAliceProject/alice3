@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.zip.DataSource;
 import org.lgna.project.Project;
 import org.lgna.project.VersionNotSupportedException;
-import org.lgna.project.ast.AbstractType;
+import org.lgna.project.ast.NamedUserType;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -115,7 +115,7 @@ public abstract class IoUtilities {
 		playerWriter().writeProject( new FileOutputStream( file ), project, dataSources );
 	}
 
-	public static void writeType( File file, AbstractType<?, ?, ?> type, DataSource... dataSources ) throws IOException {
+	public static void writeType( File file, NamedUserType type, DataSource... dataSources ) throws IOException {
 		FileUtilities.createParentDirectoriesIfNecessary( file );
 		latestReadbleWriter().writeType( new FileOutputStream( file ), type, dataSources );
 	}
@@ -141,8 +141,7 @@ public abstract class IoUtilities {
 		return new XmlProjectIo();
 	}
 
-	private static IoUtilities playerWriter() {
-		//TODO create JSON export for Unity player
-		return null;
+	private static ProjectIo playerWriter() {
+		return new JsonProjectIo();
 	}
 }

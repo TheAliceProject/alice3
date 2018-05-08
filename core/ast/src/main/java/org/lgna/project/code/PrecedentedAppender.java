@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2018 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,9 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.project.ast;
+package org.lgna.project.code;
 
-/**
- * @author Dennis Cosgrove
- */
-public enum ContentEqualsStrictness {
-	DECLARATIONS_EQUAL,
-	DECLARATIONS_HAVE_SAME_NAME;
-	//DECLARATIONS_CAN_BE_IN_SEPARATE_PROJECTS_BUT_MUST_BE_IDENTICAL_OTHERWISE,
-	//DECLARATIONS_CAN_BE_IN_SEPARATE_PROJECTS_BUT_MUST_HAVE_IDENTICAL_SIGNATURES;
+
+public interface PrecedentedAppender extends CodeAppender {
+	int getLevelOfPrecedence();
 }

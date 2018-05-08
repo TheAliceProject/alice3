@@ -42,13 +42,16 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.InstanceProperty;
 import org.lgna.project.code.CodeAppender;
+import org.lgna.project.code.PrecedentedAppender;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class AssignmentExpression extends Expression {
-	public static enum Operator implements CodeAppender {
+public final class AssignmentExpression extends Expression implements PrecedentedAppender {
+
+	public enum Operator implements CodeAppender {
 		ASSIGN( "=" ),
 		PLUS_ASSIGN( "+=" ),
 		MINUS_ASSIGN( "-=" ),
@@ -63,12 +66,12 @@ public final class AssignmentExpression extends Expression {
 		RIGHT_SHIFT_UNSIGNED_ASSIGN( ">>>=" );
 		private final String text;
 
-		private Operator( String text ) {
+		Operator( String text ) {
 			this.text = text;
 		}
 
 		@Override
-		public void appendJava( JavaCodeGenerator generator ) {
+		public void appendCode( SourceCodeGenerator generator ) {
 			generator.appendString( this.text );
 		}
 	}
@@ -89,25 +92,12 @@ public final class AssignmentExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			AssignmentExpression other = (AssignmentExpression)o;
-			if( this.expressionType.valueContentEquals( other.expressionType, strictness, filter ) ) {
-				if( this.leftHandSide.valueContentEquals( other.leftHandSide, strictness, filter ) ) {
-					if( this.operator.valueEquals( other.operator, filter ) ) {
-						return this.rightHandSide.valueContentEquals( other.rightHandSide, strictness, filter );
-					}
-				}
-			}
-		}
-		return false;
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendAssignmentExpression(this);
 	}
 
-	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendExpression( this.leftHandSide.getValue() );
-		this.operator.getValue().appendJava( generator );
-		generator.appendExpression( this.rightHandSide.getValue() );
+	@Override public int getLevelOfPrecedence() {
+		return 1;
 	}
 
 	public final DeclarationProperty<AbstractType<?, ?, ?>> expressionType = DeclarationProperty.createReferenceInstance( this );
@@ -118,7 +108,7 @@ public final class AssignmentExpression extends Expression {
 		}
 	};
 
-	public final edu.cmu.cs.dennisc.property.InstanceProperty<Operator> operator = new edu.cmu.cs.dennisc.property.InstanceProperty<Operator>( this, null );
+	public final InstanceProperty<Operator> operator = new InstanceProperty<>( this, null );
 	//todo: new name
 	public final ExpressionProperty rightHandSide = new ExpressionProperty( this ) {
 		@Override

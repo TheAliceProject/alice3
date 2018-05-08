@@ -60,38 +60,7 @@ public final class DoTogether extends AbstractStatementWithBody {
 		super.appendRepr( localizer );
 	}
 
-	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
-		JavaType threadUtilitiesType = JavaType.getInstance( org.lgna.common.ThreadUtilities.class );
-		JavaMethod doTogetherMethod = threadUtilitiesType.getDeclaredMethod( "doTogether", Runnable[].class );
-		TypeExpression callerExpression = new TypeExpression( threadUtilitiesType );
-		generator.appendCallerExpression( callerExpression, doTogetherMethod );
-		generator.appendString( doTogetherMethod.getName() );
-		generator.appendString( "(" );
-		String prefix = "";
-		for( Statement statement : this.body.getValue().statements ) {
-			generator.appendString( prefix );
-			if( generator.isLambdaSupported() ) {
-				generator.appendString( "()->{" );
-			} else {
-				generator.appendString( "new Runnable(){public void run(){" );
-			}
-			if( statement instanceof DoInOrder ) {
-				DoInOrder doInOrder = (DoInOrder)statement;
-				BlockStatement blockStatement = doInOrder.body.getValue();
-				for( Statement subStatement : blockStatement.statements ) {
-					subStatement.appendJava( generator );
-				}
-			} else {
-				statement.appendJava( generator );
-			}
-			if( generator.isLambdaSupported() ) {
-				generator.appendString( "}" );
-			} else {
-				generator.appendString( "}}" );
-			}
-			prefix = ",";
-		}
-		generator.appendString( ");" );
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendDoTogether(this);
 	}
 }

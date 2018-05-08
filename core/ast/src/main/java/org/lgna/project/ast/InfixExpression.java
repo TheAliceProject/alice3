@@ -42,11 +42,13 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import edu.cmu.cs.dennisc.property.EnumProperty;
+import org.lgna.project.code.PrecedentedAppender;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InfixExpression<E extends Enum<E>> extends Expression {
+public abstract class InfixExpression<E extends Enum<E> & PrecedentedAppender> extends Expression implements PrecedentedAppender {
 	public InfixExpression() {
 	}
 
@@ -60,17 +62,8 @@ public abstract class InfixExpression<E extends Enum<E>> extends Expression {
 
 	protected abstract AbstractType<?, ?, ?> getRightOperandType();
 
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			InfixExpression<E> other = (InfixExpression<E>)o;
-			if( this.leftOperand.valueContentEquals( other.leftOperand, strictness, filter ) ) {
-				if( this.operator.valueEquals( other.operator, filter ) ) {
-					return this.rightOperand.valueContentEquals( other.rightOperand, strictness, filter );
-				}
-			}
-		}
-		return false;
+	PrecedentedAppender getOperatorValue() {
+		return operator.getValue();
 	}
 
 	public final ExpressionProperty leftOperand = new ExpressionProperty( this ) {
@@ -79,11 +72,20 @@ public abstract class InfixExpression<E extends Enum<E>> extends Expression {
 			return InfixExpression.this.getLeftOperandType();
 		}
 	};
-	public final edu.cmu.cs.dennisc.property.EnumProperty<E> operator = new edu.cmu.cs.dennisc.property.EnumProperty<E>( this, null );
+	public final EnumProperty<E> operator = new EnumProperty<>(this,null );
 	public final ExpressionProperty rightOperand = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {
 			return InfixExpression.this.getRightOperandType();
 		}
 	};
+
+	@Override
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendInfixExpression(this);
+	}
+
+	@Override public int getLevelOfPrecedence() {
+		return getOperatorValue().getLevelOfPrecedence();
+	}
 }

@@ -2,13 +2,15 @@ package org.alice.tweedle.run;
 
 import org.alice.tweedle.TweedleField;
 import org.alice.tweedle.TweedleClass;
+import org.alice.tweedle.TweedleType;
 import org.alice.tweedle.TweedleValue;
 
-public class TweedleObject extends TweedleValue<TweedleClass> {
+public class TweedleObject extends TweedleValue {
 
 	private final TweedleClass clazz;
 
 	public TweedleObject( TweedleClass aClass ) {
+		super(aClass);
 		clazz = aClass;
 	}
 

@@ -61,22 +61,12 @@ public final class SuperExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			SuperExpression other = (SuperExpression)o;
-			//todo: check type?
-			return true;
-		}
-		return false;
-	}
-
-	@Override
 	protected void appendRepr( AstLocalizer localizer ) {
 		localizer.appendText( "super" );
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendString( "super" );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendSuperReference();
 	}
 }

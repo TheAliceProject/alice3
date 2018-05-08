@@ -85,24 +85,7 @@ public final class JavaKeyedArgument extends AbstractArgument {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		Expression expressionValue = this.expression.getValue();
-		if( expressionValue instanceof MethodInvocation ) {
-			MethodInvocation methodInvocation = (MethodInvocation)expressionValue;
-			AbstractMethod method = methodInvocation.method.getValue();
-			AbstractType<?, ?, ?> factoryType = AstUtilities.getKeywordFactoryType( this );
-			if( factoryType != null ) {
-				generator.appendTypeName( factoryType );
-				generator.appendChar( '.' );
-				generator.appendString( method.getName() );
-				generator.appendChar( '(' );
-				generator.appendArguments( methodInvocation );
-				generator.appendChar( ')' );
-			} else {
-				generator.appendExpression( expressionValue );
-			}
-		} else {
-			generator.appendExpression( expressionValue );
-		}
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendKeyedArgument(this);
 	}
 }

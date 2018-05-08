@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2015, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2018 Carnegie Mellon University. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,33 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
-package org.lgna.project.ast;
+package org.alice.ide.croquet.models.projecturi;
 
-/**
- * @author Dennis Cosgrove
- */
-public final class NumberLiteral extends AbstractValueLiteral<Number> {
-	public NumberLiteral() {
+import org.alice.ide.ProjectApplication;
+import org.alice.ide.icons.Icons;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
+public class ExportProjectOperation extends AbstractSaveProjectOperation {
+	private static class SingletonHolder {
+		private static ExportProjectOperation instance = new ExportProjectOperation();
 	}
 
-	public NumberLiteral( Number value ) {
-		this.value.setValue( value );
+	public static ExportProjectOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private ExportProjectOperation() {
+		super( UUID.fromString( "44ffba8a-ff13-4cb5-9736-55cd93c48e9d" ) );
 	}
 
 	@Override
-	public AbstractType<?, ?, ?> getType() {
-		return JavaType.getInstance( Number.class );
+	protected boolean isPromptNecessary( File file ) {
+		return true;
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<Number> getValueProperty() {
-		return this.value;
+	protected void localize() {
+		super.localize();
+		this.setButtonIcon( Icons.SAVE_DOCUMENT_SMALL );
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.todo( this );
+	public boolean isToolBarTextClobbered() {
+		return true;
 	}
 
-	public final edu.cmu.cs.dennisc.property.NumberProperty value = new edu.cmu.cs.dennisc.property.NumberProperty( this, null );
+	@Override
+	protected void save( ProjectApplication application, File file ) throws IOException {
+		application.exportProjectTo( file );
+	}
 }

@@ -65,20 +65,11 @@ public final class LambdaExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			LambdaExpression other = (LambdaExpression)o;
-			return this.value.valueContentEquals( other.value, strictness, filter );
-		}
-		return false;
-	}
-
-	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		Lambda lambda = this.value.getValue();
 		if( lambda instanceof UserLambda ) {
 			UserLambda userLambda = (UserLambda)lambda;
-			userLambda.appendJava( generator );
+			userLambda.appendCode( generator );
 		}
 	}
 

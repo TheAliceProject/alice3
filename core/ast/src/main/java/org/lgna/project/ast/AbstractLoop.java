@@ -56,20 +56,12 @@ public abstract class AbstractLoop extends AbstractStatementWithBody {
 		super( body );
 	}
 
-	protected abstract void appendJavaLoopPrefix( JavaCodeGenerator generator );
-
-	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
-		this.appendJavaLoopPrefix( generator );
-		this.body.getValue().appendJava( generator );
-	}
-
 	@Override
 	public String generateLocalName( UserLocal local ) {
 		return local.isFinal.getValue() ? getConstantName() : getVariableName();
 	}
 
-	String getVariableName() {
+	public String getVariableName() {
 		return "index" + getDepthSuffix();
 	}
 

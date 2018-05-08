@@ -55,26 +55,8 @@ public class BlockStatement extends Statement {
 		this.statements.add( statements );
 	}
 
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			BlockStatement other = (BlockStatement)o;
-			return this.statements.valueContentEquals( other.statements, strictness, filter );
-		}
-		return false;
-	}
-
-	/* package-private */void appendBody( JavaCodeGenerator generator ) {
-		for( Statement statement : this.statements ) {
-			statement.appendJava( generator );
-		}
-	}
-
-	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
-		generator.appendChar( '{' );
-		this.appendBody( generator );
-		generator.appendChar( '}' );
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendBlock(this);
 	}
 
 	public final StatementListProperty statements = new StatementListProperty( this );

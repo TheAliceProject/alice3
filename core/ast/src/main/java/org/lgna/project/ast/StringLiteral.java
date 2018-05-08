@@ -71,10 +71,8 @@ public final class StringLiteral extends AbstractValueLiteral<String> {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendChar( '"' );
-		generator.appendString( this.value.getValue() );
-		generator.appendChar( '"' );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendEscapedStringLiteral(this);
 	}
 
 	public final edu.cmu.cs.dennisc.property.StringProperty value = new edu.cmu.cs.dennisc.property.StringProperty( this, null );

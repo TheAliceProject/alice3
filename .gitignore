@@ -24,3 +24,5 @@ src_gen
 *.class
 *.lst
 *.marker
+
+core/tweedle/src/main/antlr4/org/alice/tweedle/TweedleLexer\.tokens

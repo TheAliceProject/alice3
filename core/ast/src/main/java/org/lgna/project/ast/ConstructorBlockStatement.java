@@ -57,19 +57,8 @@ public final class ConstructorBlockStatement extends BlockStatement {
 		this.constructorInvocationStatement.setValue( constructorInvocationStatement );
 	}
 
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ConstructorBlockStatement other = (ConstructorBlockStatement)o;
-			return this.constructorInvocationStatement.valueContentEquals( other.constructorInvocationStatement, strictness, filter );
-		}
-		return false;
-	}
-
-	@Override
-	/* package-private */void appendBody( org.lgna.project.ast.JavaCodeGenerator generator ) {
-		this.constructorInvocationStatement.getValue().appendJava( generator );
-		super.appendBody( generator );
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendConstructorBlock(this);
 	}
 
 	public final NodeProperty<ConstructorInvocationStatement> constructorInvocationStatement = new NodeProperty<ConstructorInvocationStatement>( this );

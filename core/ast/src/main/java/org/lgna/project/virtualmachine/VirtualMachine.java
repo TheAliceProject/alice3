@@ -722,10 +722,6 @@ public abstract class VirtualMachine {
 		return null;
 	}
 
-	protected Object evaluateNumberLiteral( org.lgna.project.ast.NumberLiteral numberLiteral ) {
-		return numberLiteral.value.getValue();
-	}
-
 	protected Object evaluateDoubleLiteral( org.lgna.project.ast.DoubleLiteral doubleLiteral ) {
 		return doubleLiteral.value.getValue();
 	}
@@ -856,8 +852,6 @@ public abstract class VirtualMachine {
 				rv = this.evaluateNullLiteral( (org.lgna.project.ast.NullLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.StringConcatenation ) {
 				rv = this.evaluateStringConcatenation( (org.lgna.project.ast.StringConcatenation)expression );
-			} else if( expression instanceof org.lgna.project.ast.NumberLiteral ) {
-				rv = this.evaluateNumberLiteral( (org.lgna.project.ast.NumberLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.DoubleLiteral ) {
 				rv = this.evaluateDoubleLiteral( (org.lgna.project.ast.DoubleLiteral)expression );
 			} else if( expression instanceof org.lgna.project.ast.FloatLiteral ) {
@@ -931,10 +925,6 @@ public abstract class VirtualMachine {
 		} else {
 			throw new LgnaVmClassCastException( this, Integer.class, value.getClass() );
 		}
-	}
-
-	protected void executeAssertStatement( org.lgna.project.ast.AssertStatement assertStatement, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) {
-		assert this.evaluateBoolean( assertStatement.expression.getValue(), "assert condition is null" ) : this.evaluate( assertStatement.message.getValue() );
 	}
 
 	protected void executeBlockStatement( org.lgna.project.ast.BlockStatement blockStatement, org.lgna.project.virtualmachine.events.VirtualMachineListener[] listeners ) throws ReturnException {
@@ -1211,9 +1201,7 @@ public abstract class VirtualMachine {
 			}
 
 			try {
-				if( statement instanceof org.lgna.project.ast.AssertStatement ) {
-					this.executeAssertStatement( (org.lgna.project.ast.AssertStatement)statement, listeners );
-				} else if( statement instanceof org.lgna.project.ast.BlockStatement ) {
+				if( statement instanceof org.lgna.project.ast.BlockStatement ) {
 					this.executeBlockStatement( (org.lgna.project.ast.BlockStatement)statement, listeners );
 				} else if( statement instanceof org.lgna.project.ast.ConditionalStatement ) {
 					this.executeConditionalStatement( (org.lgna.project.ast.ConditionalStatement)statement, listeners );

@@ -49,7 +49,7 @@ import org.lgna.project.code.CodeGenerator;
 /**
  * @author Dennis Cosgrove
  */
-public class UserMethod extends AbstractUserMethod implements CodeGenerator, CodeAppender {
+public class UserMethod extends AbstractUserMethod implements CodeGenerator {
 	public UserMethod() {
 	}
 
@@ -108,22 +108,13 @@ public class UserMethod extends AbstractUserMethod implements CodeGenerator, Cod
 	//	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendMethodPrefix( this );
-		generator.appendMethodHeader( this );
-		this.body.getValue().appendJava( generator );
-		generator.appendMethodPostfix( this );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendMethod(this);
 	}
 
 	public String generateHeaderJavaCode( JavaCodeGenerator generator ) {
 		generator.appendMethodHeader( this );
-		return generator.getText( false );
-	}
-
-	@Override
-	public String generateJavaCode( JavaCodeGenerator generator ) {
-		this.appendJava( generator );
-		return generator.getText( false );
+		return generator.getText();
 	}
 
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );

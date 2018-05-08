@@ -42,6 +42,9 @@
  *******************************************************************************/
 package org.alice.ide.ast.type.merge.core;
 
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.code.CodeGenerator;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -84,24 +87,15 @@ public class MergeUtilities {
 				.build();
 	}
 
-	public static boolean isHeaderEquivalent( org.lgna.project.ast.UserMethod a, org.lgna.project.ast.UserMethod b ) {
-		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = createJavaCodeGeneratorForEquivalence();
-		String aText = a.generateJavaCode( javaCodeGenerator );
-		String bText = b.generateJavaCode( javaCodeGenerator );
+	public static boolean isHeaderEquivalent( UserMethod a, UserMethod b ) {
+		String aText = a.generateHeaderJavaCode( createJavaCodeGeneratorForEquivalence() );
+		String bText = b.generateHeaderJavaCode( createJavaCodeGeneratorForEquivalence() );
 		return aText.contentEquals( bText );
 	}
 
-	public static boolean isEquivalent( org.lgna.project.ast.UserMethod a, org.lgna.project.ast.UserMethod b ) {
-		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = createJavaCodeGeneratorForEquivalence();
-		String aText = a.generateJavaCode( javaCodeGenerator );
-		String bText = b.generateJavaCode( javaCodeGenerator );
-		return aText.contentEquals( bText );
-	}
-
-	public static boolean isEquivalent( org.lgna.project.ast.UserField a, org.lgna.project.ast.UserField b ) {
-		org.lgna.project.ast.JavaCodeGenerator javaCodeGenerator = createJavaCodeGeneratorForEquivalence();
-		String aText = a.generateJavaCode( javaCodeGenerator );
-		String bText = b.generateJavaCode( javaCodeGenerator );
+	public static boolean isEquivalent( CodeGenerator a, CodeGenerator b ) {
+		String aText = a.generateCode( createJavaCodeGeneratorForEquivalence() );
+		String bText = b.generateCode( createJavaCodeGeneratorForEquivalence() );
 		return aText.contentEquals( bText );
 	}
 

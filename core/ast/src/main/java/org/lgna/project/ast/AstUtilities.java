@@ -44,6 +44,7 @@
 package org.lgna.project.ast;
 
 import org.alice.serialization.xml.XmlEncoderDecoder;
+import org.lgna.project.code.CodeAppender;
 import org.w3c.dom.Document;
 
 
@@ -55,16 +56,16 @@ public class AstUtilities {
 		throw new AssertionError();
 	}
 
-	public static <N extends Node> N createCopy( N original, NamedUserType root) {
+	public static <N extends AbstractNode & CodeAppender> N createCopy( N original, NamedUserType root ) {
 		java.util.Set<AbstractDeclaration> abstractDeclarations;
 		if( root != null ) {
 			abstractDeclarations = root.createDeclarationSet();
-			( (AbstractNode)original ).removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
+			original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
 		} else {
 			abstractDeclarations = java.util.Collections.emptySet();
 		}
 		XmlEncoderDecoder coder = new XmlEncoderDecoder();
-		Document xmlDocument = coder.encode( (AbstractNode) original , abstractDeclarations);
+		Document xmlDocument = coder.encode( original , abstractDeclarations );
 		try {
 			AbstractNode dst = coder.copy( xmlDocument, abstractDeclarations );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );

@@ -44,11 +44,12 @@
 package org.lgna.project.ast;
 
 import org.lgna.project.ast.localizer.AstLocalizer;
+import org.lgna.project.code.PrecedentedAppender;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldAccess extends Expression {
+public final class FieldAccess extends Expression implements PrecedentedAppender {
 	public FieldAccess() {
 	}
 
@@ -97,17 +98,6 @@ public final class FieldAccess extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			FieldAccess other = (FieldAccess)o;
-			if( this.expression.valueContentEquals( other.expression, strictness, filter ) ) {
-				return this.field.valueContentEquals( other.field, strictness, filter );
-			}
-		}
-		return false;
-	}
-
-	@Override
 	protected void appendRepr( AstLocalizer localizer ) {
 		safeAppendRepr( localizer, this.expression.getValue() );
 		localizer.appendDot();
@@ -115,10 +105,12 @@ public final class FieldAccess extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendExpression( this.expression.getValue() );
-		generator.appendChar( '.' );
-		generator.appendString( this.field.getValue().getName() );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendFieldAccess( this );
+	}
+
+	@Override public int getLevelOfPrecedence() {
+		return 16;
 	}
 
 	public final ExpressionProperty expression = new ExpressionProperty( this ) {

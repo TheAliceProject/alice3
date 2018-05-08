@@ -52,9 +52,9 @@ NUMBER:             'Number';
 PRIME_TIME:         'PrimeTime';
 RETURN:             'return';
 STATIC:             'static';
-STRING:             'String';
 SUPER:              'super';
 THIS:               'this';
+TEXT_STRING:        'TextString';
 TUCKED_AWAY:        'TuckedAway';
 VOID:               'void';
 WHILE:              'while';
@@ -133,7 +133,8 @@ LARROW:             '<-';
 WS:                 [ \t\r\n\u000C]+ -> channel(HIDDEN);
 COMMENT:            '/*' .*? '*/'    -> channel(HIDDEN);
 LINE_COMMENT:       '//' ~[\r\n]*    -> channel(HIDDEN);
-NODE_COMMENT:       '**';
+NODE_DISABLE:       '*<';
+NODE_ENABLE:        '>*';
 
 // Identifiers
 

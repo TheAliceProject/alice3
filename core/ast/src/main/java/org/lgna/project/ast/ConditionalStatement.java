@@ -56,30 +56,8 @@ public final class ConditionalStatement extends Statement {
 		this.elseBody.setValue( elseBody );
 	}
 
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ConditionalStatement other = (ConditionalStatement)o;
-			if( this.booleanExpressionBodyPairs.valueContentEquals( other.booleanExpressionBodyPairs, strictness, filter ) ) {
-				return this.elseBody.valueContentEquals( other.elseBody, strictness, filter );
-			}
-		}
-		return false;
-	}
-
-	@Override
-	protected void appendJavaInternal( JavaCodeGenerator generator ) {
-		String text = "if";
-		for( BooleanExpressionBodyPair booleanExpressionBodyPair : this.booleanExpressionBodyPairs ) {
-			generator.appendString( text );
-			generator.appendString( "(" );
-			generator.appendExpression( booleanExpressionBodyPair.expression.getValue() );
-			generator.appendString( ")" );
-			booleanExpressionBodyPair.body.getValue().appendJava( generator );
-			text = "else if";
-		}
-		generator.appendString( "else" );
-		this.elseBody.getValue().appendJava( generator );
+	@Override public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendConditional(this);
 	}
 
 	public final NodeListProperty<BooleanExpressionBodyPair> booleanExpressionBodyPairs = new NodeListProperty<BooleanExpressionBodyPair>( this );

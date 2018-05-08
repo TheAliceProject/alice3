@@ -1,18 +1,34 @@
 package org.alice.tweedle;
 
-public class TweedleArray<T extends TweedleType> extends TweedleValue<TweedleArrayType<T>>{
-	private final T[] values;
+import java.util.List;
 
-	public TweedleArray( T[] initialValues ) {
+public class TweedleArray extends TweedleValue {
+	private final List<TweedleValue> values;
+	private final TweedleArrayType arrayType;
+
+	public TweedleArray( TweedleArrayType arrayType, List<TweedleValue> initialValues ) {
+		super(arrayType);
 		//TODO capture values type and verify values they match
 		values = initialValues ;
+		this.arrayType = arrayType;
 	}
 
-	public T getAt(int index) {
-		return values[index];
+	public TweedleValue getAt(int index) {
+		return values.get( index );
 	}
 
 	public int length() {
-		return values.length;
+		return values.size();
+	}
+
+	@Override public boolean equals( Object obj ) {
+		return super.equals( obj ) ||
+						obj instanceof TweedleArray &&
+										values.equals( ((TweedleArray) obj).values ) &&
+										arrayType.equals( ((TweedleArray) obj).arrayType );
+	}
+
+	@Override public int hashCode() {
+		return 17 * values.hashCode() + arrayType.hashCode();
 	}
 }

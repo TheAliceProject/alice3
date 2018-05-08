@@ -118,13 +118,13 @@ public class JavaCodeView extends org.lgna.croquet.views.HtmlView {
 		String code;
 		if( this.declaration instanceof org.lgna.project.ast.UserMethod ) {
 			org.lgna.project.ast.UserMethod method = (org.lgna.project.ast.UserMethod)this.declaration;
-			code = method.generateJavaCode( javaCodeGenerator );
+			code = method.generateCode( javaCodeGenerator );
 		} else if( this.declaration instanceof org.lgna.project.ast.UserConstructor ) {
 			org.lgna.project.ast.UserConstructor constructor = (org.lgna.project.ast.UserConstructor)this.declaration;
-			code = constructor.generateJavaCode( javaCodeGenerator );
+			code = constructor.generateCode( javaCodeGenerator );
 		} else if( this.declaration instanceof org.lgna.project.ast.NamedUserType ) {
 			org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)this.declaration;
-			code = type.generateJavaCode( javaCodeGenerator );
+			code = type.generateCode( javaCodeGenerator );
 		} else {
 			code = null;
 		}

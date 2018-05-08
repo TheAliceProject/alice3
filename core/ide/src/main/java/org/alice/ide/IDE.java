@@ -45,6 +45,8 @@ package org.alice.ide;
 import org.alice.ide.croquet.models.projecturi.OpenProjectFromOsOperation;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.croquet.triggers.Trigger;
+import org.lgna.project.ast.AbstractNode;
+import org.lgna.project.code.CodeAppender;
 
 import java.io.File;
 
@@ -102,7 +104,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.lgna.croquet.event.ValueListener<java.util.Locale> localeListener = new org.lgna.croquet.event.ValueListener<java.util.Locale>() {
 			@Override
 			public void valueChanged( org.lgna.croquet.event.ValueEvent<java.util.Locale> e ) {
-				org.lgna.croquet.Application.getActiveInstance().setLocale( e.getNextValue() );
+				setLocale( e.getNextValue() );
 			}
 		};
 		String forcedLocaleString = System.getProperty( "org.alice.ide.locale" );
@@ -366,7 +368,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	public <N extends org.lgna.project.ast.Node> N createCopy( N original ) {
+	public <N extends AbstractNode & CodeAppender> N createCopy( N original ) {
 		org.lgna.project.ast.NamedUserType root = this.getProgramType();
 		return org.lgna.project.ast.AstUtilities.createCopy( original, root );
 	}

@@ -64,19 +64,7 @@ public final class ResourceExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			ResourceExpression other = (ResourceExpression)o;
-			if( this.type.valueContentEquals( other.type, strictness, filter ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "resource equals strictness" );
-				return this.resource.valueEquals( other.resource, filter );
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
+	public void appendCode( SourceCodeGenerator generator ) {
 		generator.appendResourceExpression( this );
 	}
 

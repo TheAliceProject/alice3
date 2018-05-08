@@ -42,27 +42,18 @@
  *******************************************************************************/
 package org.lgna.project.ast;
 
+import org.lgna.project.code.PrecedentedAppender;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class StringConcatenation extends Expression {
+public final class StringConcatenation extends Expression implements PrecedentedAppender {
 	public StringConcatenation() {
 	}
 
 	public StringConcatenation( Expression leftOperand, Expression rightOperand ) {
 		this.leftOperand.setValue( leftOperand );
 		this.rightOperand.setValue( rightOperand );
-	}
-
-	@Override
-	public boolean contentEquals( Node o, ContentEqualsStrictness strictness, edu.cmu.cs.dennisc.property.PropertyFilter filter ) {
-		if( super.contentEquals( o, strictness, filter ) ) {
-			StringConcatenation other = (StringConcatenation)o;
-			if( this.leftOperand.valueContentEquals( other.leftOperand, strictness, filter ) ) {
-				return this.rightOperand.valueContentEquals( other.rightOperand, strictness, filter );
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -78,10 +69,12 @@ public final class StringConcatenation extends Expression {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerator generator ) {
-		generator.appendExpression( this.leftOperand.getValue() );
-		generator.appendChar( '+' );
-		generator.appendExpression( this.rightOperand.getValue() );
+	public void appendCode( SourceCodeGenerator generator ) {
+		generator.appendConcatenation(this);
+	}
+
+	@Override public int getLevelOfPrecedence() {
+		return 11;
 	}
 
 	public final ExpressionProperty leftOperand = new ExpressionProperty( this ) {
