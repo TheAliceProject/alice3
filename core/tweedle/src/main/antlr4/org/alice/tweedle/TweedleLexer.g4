@@ -62,10 +62,10 @@ WHOLE_NUMBER:       'WholeNumber';
 
 // Literals
 
-DECIMAL_LITERAL:    ('0' | [1-9] (Digits? | '_'+ Digits)) [lL]?;
+DECIMAL_LITERAL:    ('0' | [1-9] (Digits? | '_'+ Digits));
 
-FLOAT_LITERAL:      (Digits '.' Digits? | '.' Digits) ExponentPart? [fFdD]?
-             |       Digits (ExponentPart [fFdD]? | [fFdD])
+FLOAT_LITERAL:      (Digits '.' Digits? | '.' Digits) ExponentPart?
+             |       Digits ExponentPart
              ;
 
 BOOL_LITERAL:       'true'
@@ -125,6 +125,7 @@ ARROW:              '->';
 COLONCOLON:         '::';
 // Additional symbols not defined in the lexical specification
 AT:                 '@';
+CONCAT:             '..';
 ELLIPSIS:           '...';
 
 

@@ -24,4 +24,8 @@ public class TweedleEnum extends TweedleType {
 	public TweedleEnumValue getValue(String name) {
 		return values.get( name );
 	}
+
+	@Override public String valueToString( TweedleValue tweedleValue ) {
+		return getName() + "." + ((TweedleEnumValue) tweedleValue).getName();
+	}
 }

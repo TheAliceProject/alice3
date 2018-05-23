@@ -24,4 +24,8 @@ public class TweedleType {
 	public boolean willAcceptValueOfType(TweedleType type) {
 		return this == type || (type.impliedType != null && willAcceptValueOfType( type.impliedType));
 	}
+
+	public String valueToString( TweedleValue tweedleValue ) {
+		return "a" + name;
+	}
 }

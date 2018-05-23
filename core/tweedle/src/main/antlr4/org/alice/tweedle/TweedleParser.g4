@@ -238,6 +238,7 @@ expression
     | prefix=('+'|'-') expression
     | prefix='!' expression
     | expression bop=('*'|'/'|'%') expression
+    | expression bop='..' expression
     | expression bop=('+'|'-') expression
     | expression bop=('<=' | '>=' | '>' | '<') expression
     | expression bop=('==' | '!=') expression

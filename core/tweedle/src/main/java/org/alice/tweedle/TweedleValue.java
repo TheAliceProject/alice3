@@ -12,4 +12,8 @@ public abstract class TweedleValue extends TweedleExpression {
 	@Override public TweedleValue evaluate( Frame frame ) {
 		return this;
 	}
+
+	public String toTextString() {
+		return getType().valueToString(this);
+	}
 }

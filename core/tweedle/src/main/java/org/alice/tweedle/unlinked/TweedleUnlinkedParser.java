@@ -342,6 +342,8 @@ public class TweedleUnlinkedParser {
 					return binaryExpression( EqualToExpression::new, null, context ); //XxY=>B
 				case "!=":
 					return binaryExpression( NotEqualToExpression::new, null, context ); //XxY=>B
+				case "..":
+					return binaryExpression( StringConcatenationExpression::new, null, context ); //XxY=>B
 				case "*":
 					return binaryExpression( MultiplicationExpression::new, TweedleTypes.NUMBER, context );
 				case "/":

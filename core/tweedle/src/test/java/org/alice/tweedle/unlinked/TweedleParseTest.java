@@ -477,4 +477,23 @@ public class TweedleParseTest {
 
 		assertNotNull("The parser should have returned something.", tested );
 	}
+
+
+	@Test
+	public void somethingShouldBeCreatedForClassToString() {
+		String scene = "class SThing {\n"
+						+ "  SThing() {\n"
+						+ "  }\n"
+						+ "  TextString toString() {\n"
+						+ "    if( this.name != null ) {\n"
+						+ "      return this.name;\n"
+						+ "    } else {\n"
+						+ "      return \"unnamed \" + Primitive.getClassName( instance: this );\n"
+						+ "    }\n"
+						+ "  }\n"
+						+ "}";
+		TweedleType tested = parseType( scene);
+
+		assertNotNull("The parser should have returned something.", tested );
+	}
 }

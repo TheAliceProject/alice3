@@ -13,4 +13,8 @@ public class TweedlePrimitiveType<T> extends TweedleType {
 	public TweedlePrimitiveValue<T> createValue( T value ) {
 		return new TweedlePrimitiveValue<T>( value, this );
 	}
+
+	@Override public String valueToString( TweedleValue tweedleValue ) {
+		return ((TweedlePrimitiveValue<?>) tweedleValue).getPrimitiveValue().toString();
+	}
 }

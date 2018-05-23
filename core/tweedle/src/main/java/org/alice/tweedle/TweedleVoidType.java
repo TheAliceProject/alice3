@@ -12,4 +12,7 @@ public class TweedleVoidType extends TweedleType {
 		return "void";
 	}
 
+	@Override public String valueToString(TweedleValue tweedleValue) {
+		return "null";
+	}
 }

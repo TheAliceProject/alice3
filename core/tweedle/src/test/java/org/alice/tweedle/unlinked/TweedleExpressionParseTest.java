@@ -2,14 +2,7 @@ package org.alice.tweedle.unlinked;
 
 import org.alice.tweedle.TweedlePrimitiveValue;
 import org.alice.tweedle.TweedleTypes;
-import org.alice.tweedle.ast.AdditionExpression;
-import org.alice.tweedle.ast.AssignmentExpression;
-import org.alice.tweedle.ast.FieldAccess;
-import org.alice.tweedle.ast.IdentifierReference;
-import org.alice.tweedle.ast.MethodCallExpression;
-import org.alice.tweedle.ast.ThisExpression;
-import org.alice.tweedle.ast.TweedleArrayInitializer;
-import org.alice.tweedle.ast.TweedleExpression;
+import org.alice.tweedle.ast.*;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -48,6 +41,52 @@ public class TweedleExpressionParseTest {
 	public void aThisExpressionShouldBeCreated() {
 		TweedleExpression tested = parseExpression( "this" );
 		assertTrue("The parser should have returned a ThisExpression.", tested instanceof ThisExpression );
+	}
+
+	@Test
+	public void somethingShouldBeCreatedForConcatenation() {
+		TweedleExpression tested = parseExpression( "\"hello\" .. \" there\"" );
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void aConcatenationExpressionShouldBeCreated() {
+		TweedleExpression tested = parseExpression( "\"hello\" .. \" there\"" );
+		assertTrue("The parser should have returned an AdditionExpression.", tested instanceof StringConcatenationExpression );
+	}
+
+	@Test
+	public void createdConcatenationExpressionShouldEvaluate() {
+		StringConcatenationExpression tested = (StringConcatenationExpression) parseExpression( "\"hello\" .. \" there\"" );
+		assertNotNull("The StringConcatenationExpression should evaluate to something.", tested.evaluate( null ));
+	}
+
+	@Test
+	public void createdConcatenationExpressionShouldEvaluateToAPrimitiveValue() {
+		StringConcatenationExpression tested = (StringConcatenationExpression) parseExpression( "\"hello\" .. \" there\"" );
+		assertTrue("The StringConcatenationExpression should evaluate to a tweedle value.", tested.evaluate( null ) instanceof TweedlePrimitiveValue );
+	}
+
+	@Test
+	public void createdConcatenationExpressionShouldContainCorrectResult() {
+		StringConcatenationExpression tested = (StringConcatenationExpression) parseExpression( "\"hello\" .. \" there\"" );
+		assertEquals("The StringConcatenationExpression should evaluate correctly.",
+								 "hello there",
+								 ( (TweedlePrimitiveValue) tested.evaluate( null ) ).getPrimitiveValue() );
+	}
+
+	@Test
+	public void concatenationShouldKnowItsType() {
+		TweedleExpression tested = parseExpression( "\"hello\" .. \" there\"" );
+		assertEquals( "The type should be TextString", TweedleTypes.TEXT_STRING, tested.getType() );
+	}
+
+	@Test
+	public void concatenationExpressionShouldForceType() {
+		StringConcatenationExpression tested = (StringConcatenationExpression) parseExpression( "3 .. 4" );
+		assertEquals("The StringConcatenationExpression should evaluate correctly.",
+								 "34",
+								 ( (TweedlePrimitiveValue) tested.evaluate( null ) ).getPrimitiveValue() );
 	}
 
 	@Test
