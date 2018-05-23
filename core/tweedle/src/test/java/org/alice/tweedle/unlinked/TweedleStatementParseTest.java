@@ -434,4 +434,33 @@ public class TweedleStatementParseTest {
 		DoInOrder tested = (DoInOrder) parseStatement( "doInOrder { *< doInOrder {} >* }" );
 		assertFalse("The inner doInOrder should be disabled.", tested.getStatements().get( 0 ).isEnabled());
 	}
+
+	@Test
+	public void somethingShouldBeCreatedForDeclarationAssignedUntypedExpression() {
+		TweedleStatement tested = parseStatement( "DecimalNumber diff <- a - b;" );
+		assertNotNull("The parser should have returned something.", tested );
+	}
+
+	@Test
+	public void aDeclarationShouldBeCreatedFromDecimalDeclarationAssignedUntypedExpression() {
+		TweedleStatement tested = parseStatement( "DecimalNumber diff <- a - b;" );
+		assertTrue("The parser should have returned a LocalVariableDeclaration.", tested instanceof LocalVariableDeclaration );
+	}
+
+	@Test
+	public void aDeclarationShouldBeCreatedFromWholeNumberDeclarationAssignedUntypedExpression() {
+		TweedleStatement tested = parseStatement( "WholeNumber diff <- a - b;" );
+		assertTrue("The parser should have returned a LocalVariableDeclaration.", tested instanceof LocalVariableDeclaration );
+	}
+
+	@Test
+	public void aDeclarationShouldBeCreatedFromNumberDeclarationAssignedUntypedExpression() {
+		TweedleStatement tested = parseStatement( "Number diff <- a - b;" );
+		assertTrue("The parser should have returned a LocalVariableDeclaration.", tested instanceof LocalVariableDeclaration );
+	}
+
+	@Test(expected=RuntimeException.class)
+	public void aDeclarationShouldNotBeCreatedFromStringDeclarationAssignedUntypedMathExpression() {
+		parseStatement( "TextString diff <- a - b;" );
+	}
 }

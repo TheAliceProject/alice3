@@ -17,6 +17,12 @@ public class TweedleTypes {
 	public static final TweedlePrimitiveValue<Boolean> FALSE = new TweedlePrimitiveValue<>( false, BOOLEAN );
 
 	public static TweedlePrimitiveType commonNumberType( TweedleExpression lhs, TweedleExpression rhs ) {
-		return TweedleTypes.WHOLE_NUMBER.equals(lhs.getType()) && TweedleTypes.WHOLE_NUMBER.equals(rhs.getType()) ? TweedleTypes.WHOLE_NUMBER : TweedleTypes.DECIMAL_NUMBER;
+		if (lhs == null || rhs == null || lhs.getType() == null || rhs.getType() == null ||
+						TweedleTypes.NUMBER.equals(lhs.getType()) || TweedleTypes.NUMBER.equals(rhs.getType())) {
+			return TweedleTypes.NUMBER;
+		}
+		return TweedleTypes.WHOLE_NUMBER.equals(lhs.getType()) && TweedleTypes.WHOLE_NUMBER.equals(rhs.getType())
+						? TweedleTypes.WHOLE_NUMBER
+						: TweedleTypes.DECIMAL_NUMBER;
 	}
 }

@@ -488,7 +488,7 @@ public class TweedleParseTest {
 						+ "    if( this.name != null ) {\n"
 						+ "      return this.name;\n"
 						+ "    } else {\n"
-						+ "      return \"unnamed \" + Primitive.getClassName( instance: this );\n"
+						+ "      return \"unnamed \" .. Primitive.getClassName( instance: this );\n"
 						+ "    }\n"
 						+ "  }\n"
 						+ "}";

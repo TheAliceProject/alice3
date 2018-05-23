@@ -306,8 +306,9 @@ public class TweedleUnlinkedParser {
 		{
 			TweedleExpression expression = buildExpression( context );
 			if (expectedType != null && expression != null && expression.getType() != null
-							&& !expectedType.willAcceptValueOfType( expression.getType() )) {
-				System.out.println(
+							&& !expectedType.willAcceptValueOfType( expression.getType() )
+							&& !expression.getType().willAcceptValueOfType( expectedType )) {
+				throw new RuntimeException(
 								"Had been expecting expression of type " + expectedType + ", but it is typed as " + expression.getType() );
 			}
 			return expression;
