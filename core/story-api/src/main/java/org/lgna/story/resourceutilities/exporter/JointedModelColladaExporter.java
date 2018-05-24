@@ -69,35 +69,11 @@ import org.lgna.story.resources.JointedModelResource;
 import org.lgna.story.resources.biped.AliceResource;
 import org.lgna.story.resources.prop.ColaBottleResource;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
-import org.lgna.story.resourceutilities.exporterutils.collada.Accessor;
-import org.lgna.story.resourceutilities.exporterutils.collada.Asset;
+import org.lgna.story.resourceutilities.exporterutils.collada.*;
 import org.lgna.story.resourceutilities.exporterutils.collada.Asset.Unit;
-import org.lgna.story.resourceutilities.exporterutils.collada.COLLADA;
 import org.lgna.story.resourceutilities.exporterutils.collada.COLLADA.Scene;
-import org.lgna.story.resourceutilities.exporterutils.collada.Controller;
-import org.lgna.story.resourceutilities.exporterutils.collada.FloatArray;
-import org.lgna.story.resourceutilities.exporterutils.collada.Geometry;
-import org.lgna.story.resourceutilities.exporterutils.collada.InputLocal;
-import org.lgna.story.resourceutilities.exporterutils.collada.InputLocalOffset;
-import org.lgna.story.resourceutilities.exporterutils.collada.InstanceWithExtra;
-import org.lgna.story.resourceutilities.exporterutils.collada.LibraryControllers;
-import org.lgna.story.resourceutilities.exporterutils.collada.LibraryGeometries;
-import org.lgna.story.resourceutilities.exporterutils.collada.LibraryVisualScenes;
-import org.lgna.story.resourceutilities.exporterutils.collada.Matrix;
-import org.lgna.story.resourceutilities.exporterutils.collada.Mesh;
-import org.lgna.story.resourceutilities.exporterutils.collada.NameArray;
-import org.lgna.story.resourceutilities.exporterutils.collada.Node;
-import org.lgna.story.resourceutilities.exporterutils.collada.NodeType;
-import org.lgna.story.resourceutilities.exporterutils.collada.ObjectFactory;
-import org.lgna.story.resourceutilities.exporterutils.collada.Param;
-import org.lgna.story.resourceutilities.exporterutils.collada.Skin;
 import org.lgna.story.resourceutilities.exporterutils.collada.Skin.VertexWeights;
-import org.lgna.story.resourceutilities.exporterutils.collada.Source;
 import org.lgna.story.resourceutilities.exporterutils.collada.Source.TechniqueCommon;
-import org.lgna.story.resourceutilities.exporterutils.collada.Triangles;
-import org.lgna.story.resourceutilities.exporterutils.collada.UpAxisType;
-import org.lgna.story.resourceutilities.exporterutils.collada.Vertices;
-import org.lgna.story.resourceutilities.exporterutils.collada.VisualScene;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.Component;
@@ -447,6 +423,7 @@ public class JointedModelColladaExporter {
 
 		WeightInfo wi = sgWeightedMesh.weightInfo.getValue();
 
+		//Build the Joint Source
 		Source jointSource = factory.createSource();
 		String jointSourceName = controllerName + "-Joints";
 		jointSource.setId( jointSourceName );
@@ -460,6 +437,7 @@ public class JointedModelColladaExporter {
 		jointSource.setTechniqueCommon( createTechniqueCommonForArray( jointNameArray.getId(), "name", jointNameArray.getValue().size(), 1 ) );
 		skin.getSourceAttribute2().add( jointSource );
 
+		//Build the Matrix Source
 		Source matricesSource = factory.createSource();
 		String matricesSourceName = controllerName + "-Matrices";
 		matricesSource.setId( matricesSourceName );
@@ -472,32 +450,22 @@ public class JointedModelColladaExporter {
 				matricesArray.getValue().add( element );
 			}
 		}
-		int matrixCount = jointNameArray.getValue().size() / 16;
+		int matrixCount = matricesArray.getValue().size();
 		matricesArray.setCount( BigInteger.valueOf( matrixCount ) );
 		matricesSource.setFloatArray( matricesArray );
 		matricesSource.setTechniqueCommon( createTechniqueCommonForArray( matricesArray.getId(), "float4x4", matrixCount, 16 ) );
 		skin.getSourceAttribute2().add( matricesSource );
 
-		//Add weights
+		//Build the VertexWeights
 		int vertexCount = sgWeightedMesh.vertexBuffer.getValue().limit() / 3;
 		VertexWeights vw = factory.createSkinVertexWeights();
 		vw.setCount( BigInteger.valueOf( vertexCount ) );
-
-		InputLocalOffset jointInput = factory.createInputLocalOffset();
-		jointInput.setSemantic( "JOINT" );
-		jointInput.setSource( "#" + jointSourceName );
-		jointInput.setOffset( BigInteger.valueOf( 0 ) );
-		vw.getInput().add( jointInput );
-
-		InputLocalOffset weightInput = factory.createInputLocalOffset();
-		weightInput.setSemantic( "WEIGHT" );
-		weightInput.setSource( "#" + matricesSourceName );
-		weightInput.setOffset( BigInteger.valueOf( 1 ) );
-		vw.getInput().add( weightInput );
-
 		ColladaSkinWeights[] skinWeights = new ColladaSkinWeights[ vertexCount ];
 		List<Float> weightArray = new ArrayList<Float>();
 		int jointIndex = 0;
+		//Iterate through the WeightInfo and get the joint indices and weight indices
+		//ColladaSkinWeights is an array that uses a vertex index to index to a ColladaSkinWeights
+		//The ColladaSkinWeights object contains the joint indices the vertex is mapped to and the weight indices for those joints
 		for( Entry<String, InverseAbsoluteTransformationWeightsPair> entry : wi.getMap().entrySet() ) {
 			InverseAbsoluteTransformationWeightsPair iatwp = entry.getValue();
 			iatwp.reset();
@@ -516,6 +484,7 @@ public class JointedModelColladaExporter {
 			}
 			jointIndex++;
 		}
+		//Add the ColladaSkinWeights to the VertexWeights structure
 		for( ColladaSkinWeights vertexWeights : skinWeights ) {
 			vw.getVcount().add( BigInteger.valueOf( vertexWeights.jointIndices.size() ) );
 			for( int j = 0; j < vertexWeights.jointIndices.size(); j++ ) {
@@ -524,12 +493,38 @@ public class JointedModelColladaExporter {
 			}
 		}
 
-		skin.setVertexWeights( vw );
-
-		//Build the Position source. This will hold the array of vertices and a accessor that tells the file the array is of stride 3
+		//Build the weights source.
 		String weightsSourceName = controllerName + "-Weights";
 		Source weightsSource = createFloatArraySourceFromInitializer( new FloatListInitializeList( weightArray ), weightsSourceName, 1 );
 		skin.getSourceAttribute2().add( weightsSource );
+
+		InputLocalOffset jointInput = factory.createInputLocalOffset();
+		jointInput.setSemantic( "JOINT" );
+		jointInput.setSource( "#" + jointSourceName );
+		jointInput.setOffset( BigInteger.valueOf( 0 ) );
+		vw.getInput().add( jointInput );
+
+		InputLocalOffset weightInput = factory.createInputLocalOffset();
+		weightInput.setSemantic( "WEIGHT" );
+		weightInput.setSource( "#" + weightsSourceName );
+		weightInput.setOffset( BigInteger.valueOf( 1 ) );
+		vw.getInput().add( weightInput );
+
+		//Create and add Joints object
+		Skin.Joints joints = factory.createSkinJoints();
+		InputLocal localJointInput = factory.createInputLocal();
+		localJointInput.setSemantic( "JOINT" );
+		localJointInput.setSource( "#" + jointSourceName );
+		joints.getInput().add(localJointInput);
+
+		InputLocal localInvBindMatrixInput = factory.createInputLocal();
+		localInvBindMatrixInput.setSemantic( "INV_BIND_MATRIX" );
+		localInvBindMatrixInput.setSource( "#" + matricesSourceName );
+		joints.getInput().add(localInvBindMatrixInput);
+
+		skin.setJoints(joints);
+
+		skin.setVertexWeights( vw );
 
 		return controller;
 	}
@@ -566,8 +561,27 @@ public class JointedModelColladaExporter {
 		}
 	}
 
+	private Node createVisualSceneNodeForWeightedMesh(WeightedMesh sgWeightedMesh) {
+		String meshName = meshNameMap.get( sgWeightedMesh );
+		String controllerURL = "#"+ meshName + "Controller";
+
+		Node visualSceneNode = factory.createNode();
+		visualSceneNode.setName(meshName);
+		visualSceneNode.setId(meshName);
+		visualSceneNode.setSid(meshName);
+
+		InstanceController instanceController = factory.createInstanceController();
+		instanceController.setUrl(controllerURL);
+
+		visualSceneNode.getInstanceController().add(instanceController);
+		return visualSceneNode;
+	}
+
 	public void writeColladaFile( File outputFile ) {
 		COLLADA collada = factory.createCOLLADA();
+
+		//Required part of a collada file
+		collada.setVersion("1.4.1");
 
 		Asset asset = createAsset();
 		collada.setAsset( asset );
@@ -608,6 +622,9 @@ public class JointedModelColladaExporter {
 		for( WeightedMesh sgWM : visual.weightedMeshes.getValue() ) {
 			Controller controller = createControllerForMesh( sgWM );
 			lc.getController().add( controller );
+
+			Node vsNode = createVisualSceneNodeForWeightedMesh(sgWM);
+			visualScene.getNode().add(vsNode);
 		}
 		collada.getLibraryAnimationsOrLibraryAnimationClipsOrLibraryCameras().add( lc );
 
@@ -639,7 +656,9 @@ public class JointedModelColladaExporter {
 		SkeletonVisual sgSkeletonVisual = loadAliceModel( ColaBottleResource.DEFAULT );
 
 		JointedModelColladaExporter exporter = new JointedModelColladaExporter( sgSkeletonVisual, modelInfo );
-		exporter.writeColladaFile( new File( modelInfo.getModelName() + ".dae" ) );
+		File outputFile = new File( modelInfo.getModelName() + ".dae" );
+		exporter.writeColladaFile( outputFile );
+		System.out.println("Wrote collada to: "+outputFile.getAbsolutePath());
 
 	}
 
