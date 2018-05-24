@@ -57,9 +57,7 @@ public class ProjectCollection {
 		}
 
 		public Builder addProjectNames( String... projectNames ) {
-			for( String projectName : projectNames ) {
-				this.projectNames.add( projectName );
-			}
+			Collections.addAll( this.projectNames, projectNames );
 			return this;
 		}
 

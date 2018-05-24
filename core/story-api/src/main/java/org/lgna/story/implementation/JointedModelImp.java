@@ -45,6 +45,7 @@ package org.lgna.story.implementation;
 
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -372,9 +373,7 @@ public abstract class JointedModelImp<A extends SJointedModel, R extends Jointed
 		List<JointId> missingJoints = new ArrayList<JointId>();
 		List<JointId> jointsToCheck = new ArrayList<JointId>();
 		JointId[] rootIds = this.getRootJointIds();
-		for( JointId id : rootIds ) {
-			jointsToCheck.add( id );
-		}
+		Collections.addAll( jointsToCheck, rootIds );
 		while( !jointsToCheck.isEmpty() ) {
 			JointId joint = jointsToCheck.remove( 0 );
 			if( !this.hasJointImplementation( joint ) ) {

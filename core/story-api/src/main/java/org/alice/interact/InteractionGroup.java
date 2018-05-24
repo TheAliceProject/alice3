@@ -43,6 +43,7 @@
 
 package org.alice.interact;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -101,9 +102,7 @@ public final class InteractionGroup {
 	}
 
 	public InteractionGroup( InteractionInfo... interactionInfos ) {
-		for( InteractionInfo info : interactionInfos ) {
-			groups.add( info );
-		}
+		Collections.addAll( groups, interactionInfos );
 	}
 
 	public void addInteractionInfo( InteractionInfo info ) {

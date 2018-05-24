@@ -58,6 +58,7 @@ import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.MethodInvocation;
 
 import javax.swing.JComponent;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -121,8 +122,6 @@ public class JointExpressionMenuModel extends CascadeMenuModel<Expression> {
 				Logger.info( "no fillIn for", method );
 			}
 		}
-		for( JointsSubMenu<MethodInvocation> subMenu : subMenus ) {
-			blankChildren.add( subMenu );
-		}
+		Collections.addAll( blankChildren, subMenus );
 	}
 }

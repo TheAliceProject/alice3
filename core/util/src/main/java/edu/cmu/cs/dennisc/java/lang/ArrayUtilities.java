@@ -46,6 +46,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Vector;
 
 /**
@@ -137,9 +138,7 @@ public class ArrayUtilities {
 				vector.ensureCapacity( array.length );
 			}
 		}
-		for( E e : array ) {
-			collection.add( e );
-		}
+		Collections.addAll( collection, array );
 	}
 
 	public static short[] createShortArray( Collection<Short> collection ) {

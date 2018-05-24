@@ -51,6 +51,7 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
 import org.lgna.story.SThingMarker;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -115,18 +116,10 @@ public class ObjectMarkerImp extends MarkerImp {
 
 		List<Visual> axisVisuals = Lists.newLinkedList();
 
-		for( Visual v : sgXAxis.getVisuals() ) {
-			axisVisuals.add( v );
-		}
-		for( Visual v : sgYAxis.getVisuals() ) {
-			axisVisuals.add( v );
-		}
-		for( Visual v : sgZAxis.getVisuals() ) {
-			axisVisuals.add( v );
-		}
-		for( Visual v : sgFAxis.getVisuals() ) {
-			axisVisuals.add( v );
-		}
+		Collections.addAll( axisVisuals, sgXAxis.getVisuals() );
+		Collections.addAll( axisVisuals, sgYAxis.getVisuals() );
+		Collections.addAll( axisVisuals, sgZAxis.getVisuals() );
+		Collections.addAll( axisVisuals, sgFAxis.getVisuals() );
 
 		this.sgVisuals = axisVisuals.toArray( new Visual[ axisVisuals.size() ] );
 

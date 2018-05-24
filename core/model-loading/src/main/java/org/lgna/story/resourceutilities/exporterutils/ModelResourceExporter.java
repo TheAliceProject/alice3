@@ -657,25 +657,19 @@ public class ModelResourceExporter {
 
 	public void addTags( String... tags ) {
 		if( tags != null ) {
-			for( String s : tags ) {
-				this.tags.add( s );
-			}
+			Collections.addAll( this.tags, tags );
 		}
 	}
 
 	public void addGroupTags( String... tags ) {
 		if( tags != null ) {
-			for( String s : tags ) {
-				this.groupTags.add( s );
-			}
+			Collections.addAll( this.groupTags, tags );
 		}
 	}
 
 	public void addThemeTags( String... tags ) {
 		if( tags != null ) {
-			for( String s : tags ) {
-				this.themeTags.add( s );
-			}
+			Collections.addAll( this.themeTags, tags );
 		}
 	}
 

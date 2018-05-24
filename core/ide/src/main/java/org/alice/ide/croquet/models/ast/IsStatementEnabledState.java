@@ -48,7 +48,6 @@ import org.alice.ide.project.ProjectChangeOfInterestManager;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.event.ValueEvent;
-import org.lgna.croquet.event.ValueListener;
 import org.lgna.project.ast.Statement;
 
 import java.util.Map;
@@ -73,7 +72,7 @@ public class IsStatementEnabledState extends BooleanState {
 
 	private final Statement statement;
 
-	private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
+	private final org.lgna.croquet.event.ValueListener<Boolean> valueListener = new org.lgna.croquet.event.ValueListener<Boolean>() {
 		@Override
 		public void valueChanged( ValueEvent<Boolean> e ) {
 			IsStatementEnabledState.this.statement.isEnabled.setValue( e.getNextValue() );

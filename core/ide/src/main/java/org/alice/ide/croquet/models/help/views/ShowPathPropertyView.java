@@ -48,6 +48,7 @@ import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LabeledFormRow;
 
 import javax.swing.BorderFactory;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -80,8 +81,6 @@ public class ShowPathPropertyView extends FormPanel {
 	protected void appendRows( List<LabeledFormRow> rows ) {
 		ShowPathPropertyComposite composite = (ShowPathPropertyComposite)this.getComposite();
 		String pathSepartor = System.getProperty( "path.separator" );
-		for( LabeledFormRow row : createComponentRowsForSystemProperty( composite.getPropertyName(), pathSepartor ) ) {
-			rows.add( row );
-		}
+		Collections.addAll( rows, createComponentRowsForSystemProperty( composite.getPropertyName(), pathSepartor ) );
 	}
 }

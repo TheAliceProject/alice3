@@ -56,6 +56,7 @@ import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.imp.cascade.BlankNode;
 import org.lgna.project.ast.AbstractMethod;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -109,8 +110,6 @@ public abstract class JointedTypeMenuModel extends CascadeMenuModel<InstanceFact
 				Logger.info( "no fillIn for", method );
 			}
 		}
-		for( JointsSubMenu<InstanceFactory> subMenu : subMenus ) {
-			blankChildren.add( subMenu );
-		}
+		Collections.addAll( blankChildren, subMenus );
 	}
 }

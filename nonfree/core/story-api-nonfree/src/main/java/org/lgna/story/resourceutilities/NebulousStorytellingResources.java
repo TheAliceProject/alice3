@@ -49,6 +49,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -100,9 +101,7 @@ public enum NebulousStorytellingResources {
 			LinkedList<File> directoryFromSavedPreference = new LinkedList<File>();
 			File[] resourceDirs = getNebulousDirsFromPref();
 			if( resourceDirs != null ) {
-				for( File resourceDir : resourceDirs ) {
-					directoryFromSavedPreference.add( resourceDir );
-				}
+				Collections.addAll( directoryFromSavedPreference, resourceDirs );
 			}
 			return directoryFromSavedPreference;
 		}

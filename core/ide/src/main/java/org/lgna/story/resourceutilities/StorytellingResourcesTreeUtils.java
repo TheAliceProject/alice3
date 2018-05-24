@@ -44,6 +44,7 @@ package org.lgna.story.resourceutilities;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import edu.cmu.cs.dennisc.java.util.Lists;
@@ -94,9 +95,7 @@ public enum StorytellingResourcesTreeUtils {
 
 	private void buildGalleryTreeWithJars( File... resourceJars ) {
 		ArrayList<File> jarFiles = new ArrayList<File>();
-		for( File resourceJar : resourceJars ) {
-			jarFiles.add( resourceJar );
-		}
+		Collections.addAll( jarFiles, resourceJars );
 		List<Class<? extends ModelResource>> modelResourceClasses = StorytellingResources.INSTANCE.getAndLoadModelResourceClasses( jarFiles );
 		this.galleryTree = new ModelResourceTree( modelResourceClasses );
 	}

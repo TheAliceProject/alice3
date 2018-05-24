@@ -258,9 +258,7 @@ public enum StorytellingResources {
 			File[] resourceDirs = getAliceDirsFromPref();
 
 			if( resourceDirs != null ) {
-				for( File resourceDir : resourceDirs ) {
-					directoryFromSavedPreference.add( resourceDir );
-				}
+				Collections.addAll( directoryFromSavedPreference, resourceDirs );
 			}
 			return directoryFromSavedPreference;
 		}

@@ -2,6 +2,7 @@ package org.lgna.ik.core.enforcer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -201,9 +202,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 
 			for( Jacobian jacobian : jacobians ) {
 				resultantRowCount += jacobian.getRowCount();
-				for( JacobianAxis ja : jacobian.columnIndexToJacobianColumn ) {
-					resultantJacobianAxisSet.add( ja );
-				}
+				Collections.addAll( resultantJacobianAxisSet, jacobian.columnIndexToJacobianColumn );
 			}
 
 			JacobianAxis[] resultantJacobianAxes = resultantJacobianAxisSet.toArray( new JacobianAxis[ resultantJacobianAxisSet.size() ] );

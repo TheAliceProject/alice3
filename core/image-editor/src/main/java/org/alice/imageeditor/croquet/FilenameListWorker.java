@@ -50,6 +50,7 @@ import edu.cmu.cs.dennisc.worker.WorkerWithProgress;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -77,9 +78,7 @@ import java.util.List;
 		} else {
 			File[] files = dir.listFiles( PNG_FILE_FILTER );
 			if( ( files != null ) && ( files.length > 0 ) ) {
-				for( File childFile : files ) {
-					descendants.add( childFile );
-				}
+				Collections.addAll( descendants, files );
 				this.publish( files );
 				boolean IS_YIELD_BEHAVING_THE_WAY_I_EXPECT = false;
 				if( IS_YIELD_BEHAVING_THE_WAY_I_EXPECT ) {

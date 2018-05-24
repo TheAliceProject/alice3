@@ -45,8 +45,6 @@ package org.lgna.croquet;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.event.ValueEvent;
-import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.imp.booleanstate.BooleanStateImp;
 import org.lgna.croquet.triggers.ItemEventTrigger;
 import org.lgna.croquet.views.CheckBox;
@@ -307,12 +305,8 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		private final OperationButton<? extends JToggleButton, Operation> trueButton;
 		private final OperationButton<? extends JToggleButton, Operation> falseButton;
 		private final int axis;
-		private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
-			@Override
-			public void valueChanged( ValueEvent<Boolean> e ) {
-				handleChanged( e.getNextValue() );
-			}
-		};
+		private final org.lgna.croquet.event.ValueListener<Boolean> valueListener =
+						e -> handleChanged( e.getNextValue() );
 
 		public AbstractToggleButtonsPanel( boolean isVertical, boolean isTrueFirst, OperationButton<? extends JToggleButton, Operation> trueButton, OperationButton<? extends JToggleButton, Operation> falseButton ) {
 			this.axis = isVertical ? BoxLayout.PAGE_AXIS : BoxLayout.LINE_AXIS;

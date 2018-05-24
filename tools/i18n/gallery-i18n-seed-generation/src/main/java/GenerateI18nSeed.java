@@ -93,9 +93,7 @@ public class GenerateI18nSeed {
 						if( tag.startsWith( "*" ) ) {
 							tag = tag.substring( 1 );
 						}
-						for( String subTag : tag.split( ":" ) ) {
-							tags.add( subTag );
-						}
+						Collections.addAll( tags, tag.split( ":" ) );
 					}
 				}
 			}

@@ -42,6 +42,7 @@
  *******************************************************************************/
 package org.lgna.story.resourceutilities;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -115,21 +116,15 @@ public class ModelSubResourceExporter {
 	}
 
 	public void addTags( String... tags ) {
-		for( String tag : tags ) {
-			this.tags.add( tag );
-		}
+		Collections.addAll( this.tags, tags );
 	}
 
 	public void addGroupTags( String... tags ) {
-		for( String tag : tags ) {
-			this.groupTags.add( tag );
-		}
+		Collections.addAll( this.groupTags, tags );
 	}
 
 	public void addThemeTags( String... tags ) {
-		for( String tag : tags ) {
-			this.themeTags.add( tag );
-		}
+		Collections.addAll( this.themeTags, tags );
 	}
 
 }

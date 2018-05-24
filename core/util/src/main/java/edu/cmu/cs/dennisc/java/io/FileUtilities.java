@@ -60,6 +60,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -339,9 +340,7 @@ public class FileUtilities {
 	private static void appendDescendants( List<File> descendants, File dir, FileFilter fileFilter, int depth ) {
 		File[] files = dir.listFiles( fileFilter );
 		if( files != null ) {
-			for( File childFile : files ) {
-				descendants.add( childFile );
-			}
+			Collections.addAll( descendants, files );
 		}
 
 		if( depth != 0 ) {

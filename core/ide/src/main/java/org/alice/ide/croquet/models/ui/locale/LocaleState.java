@@ -45,8 +45,6 @@ package org.alice.ide.croquet.models.ui.locale;
 import org.alice.ide.croquet.codecs.LocaleCodec;
 import org.alice.ide.croquet.models.information.RestartRequiredOperation;
 import org.lgna.croquet.Application;
-import org.lgna.croquet.event.ValueEvent;
-import org.lgna.croquet.event.ValueListener;
 import org.lgna.croquet.preferences.PreferenceMutableDataSingleSelectListState;
 
 import java.util.Locale;
@@ -95,11 +93,6 @@ public class LocaleState extends PreferenceMutableDataSingleSelectListState<Loca
 		//				new java.util.Locale( "zh", "TW" ),
 		//				new java.util.Locale( "ko" ) 
 		);
-		this.addNewSchoolValueListener( new ValueListener<Locale>() {
-			@Override
-			public void valueChanged( ValueEvent<Locale> e ) {
-				RestartRequiredOperation.getInstance().fire();
-			}
-		} );
+		this.addNewSchoolValueListener( e -> RestartRequiredOperation.getInstance().fire() );
 	}
 }
